@@ -38,9 +38,19 @@ var WEBPACK_CONFIG = {
     filename: `${FILE_NAME}.js`,
     libraryTarget: 'umd',
     umdNamedDefine: true,
-    library: MODULE_NAME
+    library: MODULE_NAME,
+    pathinfo: true
   },
-  bail: true
+  bail: true,
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      test: /\.js$/,
+      beautify: true,
+      minimize: false,
+      compress: false,
+      mangle: false
+    })
+  ]
 };
 
 var WEBPACK_CONFIG_MIN = Object.assign({}, WEBPACK_CONFIG, {

@@ -8,10 +8,10 @@ export let PayPalCheckout = xcomponent.create({
     defaultEnv: 'local',
 
     urls: {
-        local: 'http://localhost.paypal.com:8000/webapps/hermes'
+        local: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0'
     },
 
-    url: 'http://localhost.paypal.com:8000/webapps/hermes',
+    url: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0',
 
     props: {
         token: {
@@ -20,9 +20,9 @@ export let PayPalCheckout = xcomponent.create({
         },
 
         getToken: {
-            type: 'getter',
-            prop: 'token',
-            required: false
+            type: 'function',
+            required: false,
+            denodeify: true
         },
 
         onPaymentAuthorize: {

@@ -1,4 +1,6 @@
 
+<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
+
 <script src="../dist/checkout-components.js"></script>
 
 <button onclick="openPayPalCheckout()">Checkout!</button>
@@ -13,11 +15,11 @@
 
             props: {
                 getToken: function(callback) {
-                    $.ajax({
-                        url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1',
+                    jQuery.ajax({
+                        url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1&stage=msmaster',
                         method: 'post',
                         success: function(token) {
-                            return callback(null, token);
+                            return callback(null, token.trim());
                         },
                         error: function() {
                             return callback(new Error('There was an error retrieving the token'));
