@@ -1,0 +1,130 @@
+
+<style>
+    iframe {
+        border: 1px dashed grey;
+    }
+
+    form {
+        border: 1px dashed lightblue;
+        display: inline-block;
+        padding: 10px;
+    }
+</style>
+
+<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
+
+<script src="../dist/checkout-components.js"></script>
+
+<h2>Button in iframe</h2>
+
+<div id="button"></div>
+
+<h2>Standard merchant-owned button with ajax call</h2>
+
+<button onclick="openPayPalCheckout()">Checkout</button>
+
+<h2>Standard merchant-owned link with href</h2>
+
+<a id="checkout-link" href="./checkout.htm">Checkout</a>
+
+<h2>Standard merchant-owned form with target</h2>
+
+<form action="./checkout.htm">
+    <button id="checkout-button">Checkout</button>
+</form>
+
+<h2>Standard merchant-owned form with target, button in iframe</h2>
+
+<form action="./checkout.htm">
+    <div id="button2"></div>
+</form>
+
+<script>
+
+    function getToken(callback) {
+        jQuery.ajax({
+            url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1&stage=msmaster',
+            method: 'post',
+            success: function(token) {
+                return callback(null, token.trim());
+            },
+            error: function() {
+                return callback(new Error('There was an error retrieving the token'));
+            }
+        });
+    }
+
+    function onPaymentAuthorize(token) {
+        console.log('payment authorized with token:', token);
+    }
+
+
+    // Render iframe button
+
+    checkoutComponents.PayPalButton.init({
+
+        url: './button.htm',
+
+        props: {
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize
+        }
+
+    }).render('#button');
+
+
+    // Open checkout manually
+
+    function openPayPalCheckout() {
+
+        var checkout = checkoutComponents.PayPalCheckout.init({
+
+            url: './checkout.htm',
+
+            props: {
+                getToken: getToken,
+                onPaymentAuthorize: onPaymentAuthorize
+            }
+        }).renderPopup();
+    }
+
+
+    // Hijack link
+
+    var checkout = checkoutComponents.PayPalCheckout.init({
+
+        props: {
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize
+        }
+
+    }).hijackToPopup('#checkout-link');
+
+
+    // Hijack form
+
+    var checkout = checkoutComponents.PayPalCheckout.init({
+
+        props: {
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize
+        }
+
+    }).hijackToPopup('#checkout-button');
+
+
+    // Render iframe-within-form button
+
+    checkoutComponents.PayPalButton.init({
+
+        url: './button.htm',
+
+        props: {
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize,
+            submitForm: true
+        }
+
+    }).render('#button2');
+
+</script>

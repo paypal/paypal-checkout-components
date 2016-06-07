@@ -1,40 +1,19 @@
 
-import xcomponent from '../../xcomponent/dist/xcomponent.js';
+import xcomponent from 'xcomponent/src';
+import { props } from './props';
 
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
 
-    defaultEnv: 'local',
+    defaultEnv: 'production',
 
-    urls: {
-        local: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0'
+    envUrls: {
+        local: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0',
+        production: 'https://wwww.paypal.com/checkoutnow?ul=0'
     },
 
-    url: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0',
-
-    props: {
-        token: {
-            type: 'string',
-            required: false
-        },
-
-        getToken: {
-            type: 'function',
-            required: false,
-            denodeify: true
-        },
-
-        onPaymentAuthorize: {
-            type: 'function',
-            required: false
-        },
-
-        onPaymentComplete: {
-            type: 'function',
-            required: false
-        }
-    },
+    props: props,
 
     dimensions: {
         width: 450,

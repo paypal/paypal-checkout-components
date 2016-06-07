@@ -1,0 +1,29 @@
+
+<script src="../dist/checkout-components.js"></script>
+
+<button onclick="checkout()">Checkout</button>
+
+<script>
+
+    var button = checkoutComponents.PayPalButton.attach();
+
+    function checkout() {
+        var checkout = checkoutComponents.PayPalCheckout.init({
+
+            url: './checkout.htm',
+
+            props: {
+                token: button.props.token,
+                getToken: button.props.getToken,
+                onPaymentAuthorize: button.props.onPaymentAuthorize,
+                onPaymentComplete: button.props.onPaymentComplete
+            }
+        });
+
+        if (button.props.submitForm) {
+            checkout.submitParentForm();
+        } else {
+            checkout.renderPopupToParent();
+        }
+    }
+</script>

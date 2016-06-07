@@ -1,35 +1,33 @@
 
-<script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
-
 <script src="../dist/checkout-components.js"></script>
 
-<button onclick="openPayPalCheckout()">Checkout!</button>
+<style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<h1>Checkout!</h1>
+
+<button onclick="authorize()">Authorize Payment</button>
 
 <script>
+    let ecToken;
 
-    function openPayPalCheckout() {
+    var checkout = checkoutComponents.PayPalCheckout.attach({
+        onEnter: function() {
+            this.props.getToken().then(function(token) {
+                ecToken = token;
+                console.log('got paypal token!', token);
+            });
+        }
+    });
 
-        var checkout = checkoutComponents.PayPalCheckout.init({
-
-            env: 'local',
-
-            props: {
-                getToken: function(callback) {
-                    jQuery.ajax({
-                        url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1&stage=msmaster',
-                        method: 'post',
-                        success: function(token) {
-                            return callback(null, token.trim());
-                        },
-                        error: function() {
-                            return callback(new Error('There was an error retrieving the token'));
-                        }
-                    });
-                }
-            }
-        });
-
-        checkout.renderPopup();
+    function authorize() {
+        if (checkout.props.onPaymentAuthorize) {
+            checkout.props.onPaymentAuthorize(ecToken).then(function() {
+                checkout.close();
+            });
+        }
     }
-
 </script>
