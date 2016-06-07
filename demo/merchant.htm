@@ -15,29 +15,49 @@
 
 <script src="../dist/checkout-components.js"></script>
 
-<h2>Button in iframe</h2>
+<!-- -------------------------------------------------- -->
+
+<h2>1. Button in iframe</h2>
 
 <div id="button"></div>
 
-<h2>Standard merchant-owned button with ajax call</h2>
+<hr>
+
+<!-- -------------------------------------------------- -->
+
+<h2>2. Standard merchant-owned button with ajax call</h2>
 
 <button onclick="openPayPalCheckout()">Checkout</button>
 
-<h2>Standard merchant-owned link with href</h2>
+<hr>
+
+<!-- -------------------------------------------------- -->
+
+<h2>3. Standard merchant-owned link with href</h2>
 
 <a id="checkout-link" href="./checkout.htm">Checkout</a>
 
-<h2>Standard merchant-owned form with target</h2>
+<hr>
+
+<!-- -------------------------------------------------- -->
+
+<h2>4. Standard merchant-owned form with target</h2>
 
 <form action="./checkout.htm">
     <button id="checkout-button">Checkout</button>
 </form>
 
-<h2>Standard merchant-owned form with target, button in iframe</h2>
+<hr>
+
+<!-- -------------------------------------------------- -->
+
+<h2>5. Standard merchant-owned form with target, button in iframe</h2>
 
 <form action="./checkout.htm">
     <div id="button2"></div>
 </form>
+
+<!-- -------------------------------------------------- -->
 
 <script>
 
@@ -59,7 +79,10 @@
     }
 
 
-    // Render iframe button
+
+
+
+    // 1. Button in iframe
 
     checkoutComponents.PayPalButton.init({
 
@@ -73,7 +96,10 @@
     }).render('#button');
 
 
-    // Open checkout manually
+    // -----------------------------------------------------------
+
+
+    // 2. Standard merchant-owned button with ajax call
 
     function openPayPalCheckout() {
 
@@ -89,7 +115,11 @@
     }
 
 
-    // Hijack link
+
+    // -----------------------------------------------------------
+
+
+    // 3. Standard merchant-owned link with href
 
     var checkout = checkoutComponents.PayPalCheckout.init({
 
@@ -101,7 +131,12 @@
     }).hijackToPopup('#checkout-link');
 
 
-    // Hijack form
+
+
+    // -----------------------------------------------------------
+
+
+    // 4. Standard merchant-owned form with target
 
     var checkout = checkoutComponents.PayPalCheckout.init({
 
@@ -113,7 +148,12 @@
     }).hijackToPopup('#checkout-button');
 
 
-    // Render iframe-within-form button
+
+
+    // -----------------------------------------------------------
+
+
+    // 5. Standard merchant-owned form with target, button in iframe
 
     checkoutComponents.PayPalButton.init({
 
