@@ -1,0 +1,10 @@
+<div id="ppICMask" class="ppICMask mask"></div>
+<div class="<%=(data.error ? "ppmodal" : "ppmodal loading")%>" id="ppICModal" tabindex="-1">
+    <div class="pplogo">
+    </div>
+    <div id="ppmsg" class="message"><%=data.secureWindow%>
+    <%=data.continueLink%>
+    </div>
+    <a id="closeButton" class="closeButton" role="button" title="<%=data.closeWindow%>" tabindex="2"><%=data.closeWindow%></a>
+    <%=(data.error ? "<div class='text'>" + data.error + "</div>" : "")%>
+</div>
