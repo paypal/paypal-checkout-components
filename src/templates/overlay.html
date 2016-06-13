@@ -1,10 +1,11 @@
-<div id="ppICMask" class="ppICMask mask"></div>
-<div class="<%=(data.error ? "ppmodal" : "ppmodal loading")%>" id="ppICModal" tabindex="-1">
+<a href="#xcomponent-close" class="xcomponent-close"></a>
+<div class="ppmodal"  >
     <div class="pplogo">
     </div>
-    <div id="ppmsg" class="message"><%=data.secureWindow%>
-    <%=data.continueLink%>
+    <div class="ppmsg" >
+        Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.
     </div>
-    <a id="closeButton" class="closeButton" role="button" title="<%=data.closeWindow%>" tabindex="2"><%=data.closeWindow%></a>
-    <%=(data.error ? "<div class='text'>" + data.error + "</div>" : "")%>
+    <div class="continueLink">
+        <a href="#">Continue</a>
+    </div>
 </div>
