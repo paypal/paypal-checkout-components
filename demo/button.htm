@@ -3,27 +3,29 @@
 
 <button onclick="checkout()">Checkout</button>
 
+<button onclick="checkoutComp.close()">close</button>
+
 <script>
+
+    var checkoutComp;
 
     var button = checkoutComponents.PayPalButton.attach();
 
     function checkout() {
-        var checkout = checkoutComponents.PayPalCheckout.init({
+        checkoutComp = checkoutComponents.PayPalCheckout.init({
 
             url: './checkout.htm',
 
-            props: {
-                token: button.props.token,
-                getToken: button.props.getToken,
-                onPaymentAuthorize: button.props.onPaymentAuthorize,
-                onPaymentComplete: button.props.onPaymentComplete
-            }
+            token: button.props.token,
+            getToken: button.props.getToken,
+            onPaymentAuthorize: button.props.onPaymentAuthorize,
+            onPaymentComplete: button.props.onPaymentComplete
         });
 
         if (button.props.submitForm) {
-            checkout.submitParentForm();
+            checkoutComp.hijackSubmitParentForm();
         } else {
-            checkout.renderPopupToParent();
+            checkoutComp.renderPopupToParent();
         }
     }
 </script>

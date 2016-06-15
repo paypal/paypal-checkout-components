@@ -13,7 +13,9 @@ export let PayPalCheckout = xcomponent.create({
         production: 'https://wwww.paypal.com/checkoutnow?ul=0'
     },
 
-    props: props,
+    props: {
+        ...props
+    },
 
     dimensions: {
         width: 450,

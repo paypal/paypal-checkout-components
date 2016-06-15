@@ -88,10 +88,8 @@
 
         url: './button.htm',
 
-        props: {
-            getToken: getToken,
-            onPaymentAuthorize: onPaymentAuthorize
-        }
+        getToken: getToken,
+        onPaymentAuthorize: onPaymentAuthorize
 
     }).render('#button');
 
@@ -107,10 +105,9 @@
 
             url: './checkout.htm',
 
-            props: {
-                getToken: getToken,
-                onPaymentAuthorize: onPaymentAuthorize
-            }
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize
+
         }).renderPopup();
     }
 
@@ -123,12 +120,10 @@
 
     var checkout = checkoutComponents.PayPalCheckout.init({
 
-        props: {
-            getToken: getToken,
-            onPaymentAuthorize: onPaymentAuthorize
-        }
+        getToken: getToken,
+        onPaymentAuthorize: onPaymentAuthorize
 
-    }).hijackToPopup('#checkout-link');
+    }).hijackButtonToPopup('#checkout-link');
 
 
 
@@ -140,12 +135,10 @@
 
     var checkout = checkoutComponents.PayPalCheckout.init({
 
-        props: {
-            getToken: getToken,
-            onPaymentAuthorize: onPaymentAuthorize
-        }
+        getToken: getToken,
+        onPaymentAuthorize: onPaymentAuthorize
 
-    }).hijackToPopup('#checkout-button');
+    }).hijackButtonToPopup('#checkout-button');
 
 
 
@@ -159,11 +152,9 @@
 
         url: './button.htm',
 
-        props: {
-            getToken: getToken,
-            onPaymentAuthorize: onPaymentAuthorize,
-            submitForm: true
-        }
+        getToken: getToken,
+        onPaymentAuthorize: onPaymentAuthorize,
+        submitForm: true
 
     }).render('#button2');
 
