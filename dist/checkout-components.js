@@ -3808,7 +3808,7 @@
             overlay: true,
             open: function open() {
                 var _this2 = this;
-                var dimensions = this.dimensions || {};
+                var dimensions = this.component.dimensions || {};
                 var pos = (0, _window.getPosition)({
                     x: dimensions.x,
                     y: dimensions.y,
@@ -3846,7 +3846,7 @@
             overlay: true,
             open: function open() {
                 this.open(document.body, _constants.CONTEXT_TYPES.IFRAME);
-                var dimensions = this.dimensions || {};
+                var dimensions = this.component.dimensions || {};
                 var pos = (0, _window.getPosition)({
                     x: dimensions.x,
                     y: dimensions.y,
