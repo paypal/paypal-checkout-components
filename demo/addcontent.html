@@ -1,0 +1,51 @@
+
+<!-- Script in order to add more content in the html page -->
+<script src="../dist/checkout-components.js"></script>
+
+<style>
+    body {
+        background-color: white;
+    }
+</style>
+
+<h1>Checkout!</h1>
+<button onclick="addcontent()">Add Content</button>
+<p id="addstuff"></p>
+<button onclick="authorize()">Authorize Payment</button>
+
+<script>
+    let ecToken;
+
+    var checkout = checkoutComponents.PayPalCheckout.attach({
+        onEnter: function() {
+            this.props.getToken().then(function(token) {
+                ecToken = token;
+                console.log('got paypal token!', token);
+            });
+        }
+    });
+
+    function authorize() {
+        if (checkout.props.onPaymentAuthorize) {
+            checkout.props.onPaymentAuthorize(ecToken).then(function() {
+                checkout.close();
+            });
+        }
+    }
+
+    function addcontent() {
+        var a = document.getElementById('addstuff');
+        a.innerHTML = 'Welcome to the Office of Graduate Studies at Georgia Tech!Whether you are an' +
+                ' applicant, a currently enrolled student, a member of the faculty or staff, or just exploring options ' +
+                'for graduate study at Georgia Tech, we hope you will spend some time navigating the wealth of ' +
+                'information and resources available via this site.The mission of the Office of Graduate Studies is ' +
+                'to ensure the quality and relevance of graduate education and the academic success of our graduate ' +
+                'students. Our office supports the nearly 7,000 graduate students enrolled in more than 90 master’s ' +
+                'and doctoral-level degree programs offered at Tech. As a top-ranking institution in the heart of Atlanta, ' +
+                'our students learn, work, and celebrate in a truly diverse environment with graduate students hailing from ' +
+                'across the nation and almost 100 different countries around the world.From admission to orientation, ' +
+                'curriculum requirements, and a myriad of other services, the Office of Graduate Studies is here to help you ' +
+                'succeed throughout your time at Georgia Tech. Please let us know how we can assist you.';
+
+    }
+</script>

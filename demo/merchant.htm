@@ -59,6 +59,16 @@
 
 <!-- -------------------------------------------------- -->
 
+
+<h2>6. Standard merchant-owned button with ajax call; LightBox rendered with Add Content button</h2>
+
+<button onclick="addcontentCheckout()">Checkout</button>
+
+<hr>
+
+<!-- -------------------------------------------------- -->
+
+
 <script>
 
     function getToken(callback) {
@@ -157,5 +167,21 @@
         submitForm: true
 
     }).render('#button2');
+
+
+    // 6. Standard merchant-owned button with ajax call; LightBox rendered with Add Content button
+
+    function addcontentCheckout() {
+
+        var checkout = checkoutComponents.PayPalCheckout.init({
+
+            url: './addcontent.html',
+
+            getToken: getToken,
+            onPaymentAuthorize: onPaymentAuthorize
+
+        }).renderLightbox();
+    }
+
 
 </script>
