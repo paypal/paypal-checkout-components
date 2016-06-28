@@ -1,6 +1,7 @@
 
 import xcomponent from 'xcomponent/src';
-import { props } from './props';
+import { props } from '../props';
+import parentTemplate from './parentTemplate.htm';
 
 export let PayPalCheckout = xcomponent.create({
 
@@ -12,6 +13,8 @@ export let PayPalCheckout = xcomponent.create({
         local: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0',
         production: 'https://wwww.paypal.com/checkoutnow?ul=0'
     },
+
+    parentTemplate,
 
     props: {
         ...props

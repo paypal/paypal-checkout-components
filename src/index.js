@@ -1,3 +1,3 @@
 
-export * from './checkout';
-export * from './button';
+export * from './components';
+export * from './legacy';

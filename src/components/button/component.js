@@ -1,6 +1,6 @@
 
 import xcomponent from 'xcomponent/src';
-import { props } from './props';
+import { props } from '../props';
 
 export let PayPalButton = xcomponent.create({
 
