@@ -15,16 +15,19 @@ export let props = {
 
     onPaymentAuthorize: {
         type: 'function',
-        required: false
+        required: false,
+        autoClose: true
     },
 
     onPaymentComplete: {
         type: 'function',
-        required: false
+        required: false,
+        autoClose: true
     },
 
     onCancel: {
         type: 'function',
-        required: false
+        required: false,
+        autoClose: true
     }
 };
