@@ -15,17 +15,43 @@
     let ecToken;
 
     var checkout = checkoutComponents.PayPalCheckout.attach({
+
         onEnter: function() {
-            this.props.getToken().then(function(token) {
-                ecToken = token;
-                console.log('got paypal token!', token);
-            });
+
+            if (this.props.token) {
+
+                ecToken = this.props.token;
+                console.log('sent paypal token!', ecToken);
+
+            } else if (this.props.getToken) {
+
+                this.props.getToken().then(function(token) {
+                    ecToken = token;
+                    console.log('got paypal token!', ecToken);
+                });
+
+            } else {
+
+                throw new Error('Expected either props.token or props.getToken');
+            }
+        },
+
+        defaultProps: {
+
+            getToken() {
+                console.log('getting token from url', window.location.href);
+                return window.location.href.match(/token=((EC-)?[A-Z0-9]{17})/)[1];
+            }
         }
     });
 
     function authorize() {
         if (checkout.props.onPaymentAuthorize) {
-            checkout.props.onPaymentAuthorize(ecToken).then(function() {
+            checkout.props.onPaymentAuthorize({
+                token: ecToken,
+                payerID: 'SD8778VSD7VD6SV',
+                returnUrl: 'merchant_legacy.htm'
+            }).then(function() {
                 checkout.close();
             });
         }

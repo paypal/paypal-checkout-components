@@ -10,8 +10,15 @@ export let PayPalCheckout = xcomponent.create({
     defaultEnv: 'production',
 
     envUrls: {
-        local: 'http://localhost.paypal.com:8000/webapps/hermes?ul=0',
-        production: 'https://wwww.paypal.com/checkoutnow?ul=0'
+        local: 'http://localhost.paypal.com:8000/webapps/hermes',
+        production: 'https://www.paypal.com/checkoutnow',
+        demo: './checkout.htm'
+    },
+
+    contexts: {
+        iframe: false,
+        lightbox: false,
+        popup: true
     },
 
     parentTemplate,

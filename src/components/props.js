@@ -9,7 +9,8 @@ export let props = {
     getToken: {
         type: 'function',
         required: false,
-        denodeify: true
+        denodeify: true,
+        precall: true
     },
 
     onPaymentAuthorize: {
@@ -18,6 +19,11 @@ export let props = {
     },
 
     onPaymentComplete: {
+        type: 'function',
+        required: false
+    },
+
+    onCancel: {
         type: 'function',
         required: false
     }

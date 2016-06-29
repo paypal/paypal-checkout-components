@@ -18,8 +18,9 @@
 <script>
 
     function getToken(callback) {
+        console.log('calling xotools for token');
         jQuery.ajax({
-            url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1&stage=msmaster',
+            url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?live=1&onlytoken=1',
             method: 'post',
             success: function(token) {
                 return callback(null, token.trim());
@@ -40,8 +41,8 @@
 
 <h2>1. Standard merchant-owned form with target</h2>
 
-<form action="./checkout.htm">
-    <button data-paypal-button>Checkout</button>
+<form method="post" action="./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX">
+    <button data-paypal-button data-env="demo">Checkout</button>
 </form>
 
 <hr>
@@ -50,56 +51,36 @@
 
 <h2>2. Standard merchant-owned link</h2>
 
-<a href="./checkout.htm" data-paypal-button>Checkout</a>
+<a href="./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX" data-paypal-button data-env="demo">Checkout</a>
 
 <hr>
 
 <!-- -------------------------------------------------- -->
 
-<h2>3. Form container with no button</h2>
+<h2>3. Form container with no button with sandbox</h2>
 
-<form id="myContainer" action="./checkout.htm"></form>
+<form id="myContainer1" method="post" action="./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX"></form>
 
 <script>
-  window.paypalCheckoutReady = function () {
     paypal.checkout.setup('Your-Merchant-ID', {
         environment: 'sandbox',
-        container: 'myContainer'
+        container: 'myContainer1'
       });
-  };
 </script>
 
 <hr>
 
 <!-- -------------------------------------------------- -->
 
-<h2>3. Form container with no button</h2>
+<h2>4. Form container with no button</h2>
 
-<form id="myContainer" action="./checkout.htm"></form>
-
-<script>
-    window.paypalCheckoutReady = function () {
-      paypal.checkout.setup('Your-Merchant-ID', {
-        container: 'myContainer'
-      });
-    };
-</script>
-
-<hr>
-
-<!-- -------------------------------------------------- -->
-
-<h2>4. Form container with no button and sandbox env</h2>
-
-<form id="myContainer" action="./checkout.htm"></form>
+<form id="myContainer2" method="post" action="./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX"></form>
 
 <script>
-    window.paypalCheckoutReady = function () {
-      paypal.checkout.setup('Your-Merchant-ID', {
-        environment: 'sandbox',
-        container: 'myContainer'
-      });
-    };
+  paypal.checkout.setup('Your-Merchant-ID', {
+    environment: 'demo',
+    container: 'myContainer2'
+  });
 </script>
 
 <hr>
@@ -108,11 +89,12 @@
 
 <h2>5. Form container with no button and ajax call</h2>
 
-<form id="myContainer" action="./checkout.htm"></form>
+<form id="myContainer3" action="./checkout.htm"></form>
 
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
-      container: 'myContainer',
+      environment: 'demo',
+      container: 'myContainer3',
       click: function () {
         paypal.checkout.initXO();
 
@@ -134,11 +116,12 @@
 
 <h2>6. Form container with no button and failed ajax call</h2>
 
-<form id="myContainer" action="./checkout.htm"></form>
+<form id="myContainer4" action="./checkout.htm"></form>
 
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
-      container: 'myContainer',
+      environment: 'demo',
+      container: 'myContainer4',
       click: function () {
         paypal.checkout.initXO();
 
@@ -160,11 +143,9 @@
 
 <!-- -------------------------------------------------- -->
 
-<h2>6. Form container with custom button and ajax call</h2>
+<h2>7. Form container with custom button and ajax call</h2>
 
-<form id="myContainer" action="./checkout.htm">
-    <button id="checkoutButton"></button>
-</form>
+<button id="checkoutButton">Check out</button>
 
 <script>
     document.getElementById('checkoutButton').addEventListener('click', function() {
@@ -172,13 +153,30 @@
 
         var action = $.post('./checkout.htm');
 
-        action.done(function (data.) {
+        action.done(function (data) {
           paypal.checkout.startFlow('./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX');
         });
 
         action.fail(function () {
           paypal.checkout.closeFlow();
         });
+    });
+</script>
+
+<hr>
+
+
+
+
+<!-- -------------------------------------------------- -->
+
+<h2>8. Form container with custom button immediate startFlow</h2>
+
+<button id="checkoutButton2">Check out</button>
+
+<script>
+    document.getElementById('checkoutButton2').addEventListener('click', function() {
+        paypal.checkout.startFlow('./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX');
     });
 </script>
 
