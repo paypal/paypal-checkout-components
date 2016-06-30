@@ -5,6 +5,7 @@ import { props } from '../props';
 export let PayPalButton = xcomponent.create({
 
     tag: 'paypal-button',
+    name: 'ppbtn',
 
     defaultEnv: 'production',
 

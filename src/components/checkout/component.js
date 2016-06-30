@@ -6,6 +6,7 @@ import parentTemplate from './parentTemplate.htm';
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
+    name: 'ppxo',
 
     defaultEnv: 'production',
 
