@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 71);
+        var _legacy = __webpack_require__(/*! ./legacy */ 72);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -64,7 +64,7 @@
                 }
             });
         });
-        var _checkout = __webpack_require__(/*! ./checkout */ 68);
+        var _checkout = __webpack_require__(/*! ./checkout */ 69);
         Object.keys(_checkout).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -114,7 +114,7 @@
         };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 67);
+        var _props = __webpack_require__(/*! ../props */ 68);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -122,6 +122,7 @@
         }
         var PayPalButton = exports.PayPalButton = _src2["default"].create({
             tag: "paypal-button",
+            name: "ppbtn",
             defaultEnv: "production",
             envUrls: {
                 local: "http://todo",
@@ -2281,14 +2282,14 @@
         var _client2 = _interopRequireDefault(_client);
         var _child = __webpack_require__(/*! ../child */ 45);
         var _parent = __webpack_require__(/*! ../parent */ 55);
-        var _props = __webpack_require__(/*! ./props */ 58);
+        var _props = __webpack_require__(/*! ./props */ 59);
         var _constants = __webpack_require__(/*! ../../constants */ 53);
-        var _validate2 = __webpack_require__(/*! ./validate */ 59);
-        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 60);
+        var _validate2 = __webpack_require__(/*! ./validate */ 60);
+        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 61);
         var _parent3 = _interopRequireDefault(_parent2);
-        var _component = __webpack_require__(/*! ./templates/component.htm */ 61);
+        var _component = __webpack_require__(/*! ./templates/component.htm */ 62);
         var _component2 = _interopRequireDefault(_component);
-        var _drivers = __webpack_require__(/*! ../../drivers */ 62);
+        var _drivers = __webpack_require__(/*! ../../drivers */ 63);
         var drivers = _interopRequireWildcard(_drivers);
         function _interopRequireWildcard(obj) {
             if (obj && obj.__esModule) {
@@ -2329,7 +2330,7 @@
                     }
                 }
                 this.tag = options.tag;
-                this.name = options.tag.replace(/-/g, "_");
+                this.name = options.name || options.tag.replace(/-/g, "_");
                 this.props = _extends({}, options.props, _props.internalProps);
                 this.dimensions = options.dimensions || {};
                 this.defaultEnv = options.defaultEnv;
@@ -2426,17 +2427,17 @@
             }, {
                 key: "log",
                 value: function log(event, payload) {
-                    _client2["default"].info(_constants.XCOMPONENT + "_" + this.name + "_" + event, payload);
+                    _client2["default"].info("xc_" + this.name + "_" + event, payload);
                 }
             }, {
                 key: "logWarning",
                 value: function logWarning(event, payload) {
-                    _client2["default"].warn(_constants.XCOMPONENT + "_" + this.name + "_" + event, payload);
+                    _client2["default"].warn("xc_" + this.name + "_" + event, payload);
                 }
             }, {
                 key: "logError",
                 value: function logError(event, payload) {
-                    _client2["default"].error(_constants.XCOMPONENT + "_" + this.name + "_" + event, payload);
+                    _client2["default"].error("xc_" + this.name + "_" + event, payload);
                 }
             } ]);
             return Component;
@@ -3495,7 +3496,7 @@
         var _lib = __webpack_require__(/*! ../../lib */ 47);
         var _constants = __webpack_require__(/*! ../../constants */ 53);
         var _error = __webpack_require__(/*! ../../error */ 5);
-        var _props = __webpack_require__(/*! ../parent/props */ 54);
+        var _props = __webpack_require__(/*! ../props */ 54);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -3546,6 +3547,7 @@
                 _classCallCheck(this, ChildComponent);
                 var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChildComponent).call(this, component, options));
                 _this.component = component;
+                _this.component.log("construct_child");
                 _this.validate(options);
                 _this.onEnter = _this.tryCatch(options.onEnter || _lib.noop);
                 _this.onClose = _this.tryCatch(options.onClose || _lib.noop);
@@ -3561,10 +3563,12 @@
                 key: "init",
                 value: function init() {
                     var _this2 = this;
+                    this.component.log("init_child");
                     try {
                         this.setWindows();
                     } catch (err) {
                         if (this.standalone) {
+                            this.component.log("child_standalone");
                             return;
                         }
                         throw err;
@@ -3588,11 +3592,13 @@
             }, {
                 key: "sendToParent",
                 value: function sendToParent(name, data) {
+                    this.component.log("send_to_parent_" + name);
                     return _src2["default"].send((0, _lib.getParentWindow)(), name, data);
                 }
             }, {
                 key: "sendToParentComponent",
                 value: function sendToParentComponent(name, data) {
+                    this.component.log("send_to_parent_component_" + name);
                     return _src2["default"].send((0, _window.getParentComponentWindow)(), name, data);
                 }
             }, {
@@ -3608,7 +3614,9 @@
                     if (!(0, _window.getParentComponentWindow)()) {
                         throw new Error("[" + this.component.tag + "] Can not find parent component window");
                     }
-                    var tag = (0, _window.parseWindowName)(window.name).tag;
+                    var winProps = (0, _window.parseWindowName)(window.name);
+                    var tag = winProps.tag;
+                    this.component.log("child_win_props", winProps);
                     if (tag !== this.component.tag) {
                         throw new Error("[" + this.component.tag + "] Parent is " + tag + " - can not attach " + this.component.tag);
                     }
@@ -3619,6 +3627,7 @@
                 value: function watchForClose() {
                     var _this3 = this;
                     (0, _lib.onCloseWindow)(_lib.getParentWindow, function() {
+                        _this3.component.log("parent_window_closed");
                         _this3.onClose(new Error("[" + _this3.component.tag + "] parent window was closed"));
                         if (_this3.context === _constants.CONTEXT_TYPES.POPUP) {
                             window.close();
@@ -3627,6 +3636,7 @@
                     if ((0, _window.getParentComponentWindow)() && (0, _window.getParentComponentWindow)() !== (0, 
                     _lib.getParentWindow)()) {
                         (0, _lib.onCloseWindow)(_window.getParentComponentWindow, function() {
+                            _this3.component.log("parent_component_window_closed");
                             _this3.close(new Error("[" + _this3.component.tag + "] parent component window was closed"));
                         });
                     }
@@ -3657,6 +3667,10 @@
                 value: function resize(width, height) {
                     var _this5 = this;
                     return _promise.SyncPromise.resolve().then(function() {
+                        _this5.component.log("resize", {
+                            width: width,
+                            height: height
+                        });
                         if (_this5.context === _constants.CONTEXT_TYPES.POPUP) {
                             return window.resizeTo(width, height);
                         }
@@ -3669,17 +3683,22 @@
             }, {
                 key: "close",
                 value: function close(err) {
+                    this.component.log("close_child");
                     this.onClose.call(this, err);
                     return this.sendToParent(_constants.POST_MESSAGE.CLOSE);
                 }
             }, {
                 key: "focus",
                 value: function focus() {
+                    this.component.log("focus");
                     window.focus();
                 }
             }, {
                 key: "error",
                 value: function error(err) {
+                    this.component.log("error", {
+                        error: err.stack || err.toString()
+                    });
                     if (!(err instanceof _error.IntegrationError)) {
                         console.error(err.stack);
                         err = new Error("[" + this.component.tag + "] Child lifecycle method threw an error");
@@ -3747,6 +3766,11 @@
                         var task = this.cleanupTasks.pop();
                         task();
                     }
+                }
+            }, {
+                key: "hasCleanupTasks",
+                value: function hasCleanupTasks() {
+                    return Boolean(this.cleanupTasks.length);
                 }
             }, {
                 key: "setForCleanup",
@@ -4418,23 +4442,17 @@
         };
         var CONTEXT_TYPES_LIST = exports.CONTEXT_TYPES_LIST = (0, _lib.values)(CONTEXT_TYPES);
         var MAX_Z_INDEX = exports.MAX_Z_INDEX = 2147483647;
-    }, /*!****************************************************!*\
-  !*** ./~/xcomponent/src/component/parent/props.js ***!
-  \****************************************************/
+    }, /*!*********************************************!*\
+  !*** ./~/xcomponent/src/component/props.js ***!
+  \*********************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-        };
         exports.normalizeProp = normalizeProp;
         exports.normalizeProps = normalizeProps;
-        exports.propsToQuery = propsToQuery;
-        var _lib = __webpack_require__(/*! ../../lib */ 47);
+        var _lib = __webpack_require__(/*! ../lib */ 47);
         function normalizeProp(component, instance, props, key) {
             var prop = component.props[key];
             var value = props[key];
@@ -4450,16 +4468,23 @@
                         value = _lib.noop;
                     }
                 } else {
-                    if (prop.denodeify) {
-                        value = (0, _lib.denodeify)(value);
-                    }
-                    if (prop.once) {
-                        value = (0, _lib.once)(value);
-                    }
-                    if (prop.memoize) {
-                        value = (0, _lib.memoize)(value);
-                    }
-                    value = value.bind(instance);
+                    (function() {
+                        if (prop.denodeify) {
+                            value = (0, _lib.denodeify)(value);
+                        }
+                        var original = value;
+                        value = function value() {
+                            component.log("call_prop_" + key);
+                            return original.apply(this, arguments);
+                        };
+                        if (prop.once) {
+                            value = (0, _lib.once)(value);
+                        }
+                        if (prop.memoize) {
+                            value = (0, _lib.memoize)(value);
+                        }
+                        value = value.bind(instance);
+                    })();
                 }
                 return value;
             } else if (prop.type === "string") {
@@ -4496,30 +4521,6 @@
                 }
             }
             return result;
-        }
-        function propsToQuery(propsDef, props) {
-            return Object.keys(props).map(function(key) {
-                var value = props[key];
-                if (!value) {
-                    return;
-                }
-                if (propsDef[key].queryParam === false) {
-                    return;
-                }
-                var result = void 0;
-                if (typeof value === "boolean") {
-                    result = "1";
-                } else if (typeof value === "string") {
-                    result = value.toString();
-                } else if (typeof value === "function") {
-                    return;
-                } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
-                    result = JSON.stringify(value);
-                } else if (typeof value === "number") {
-                    result = value.toString();
-                }
-                return (0, _lib.urlEncode)(key) + "=" + (0, _lib.urlEncode)(result);
-            }).filter(Boolean).join("&");
         }
     }, /*!****************************************************!*\
   !*** ./~/xcomponent/src/component/parent/index.js ***!
@@ -4568,7 +4569,8 @@
         var _constants = __webpack_require__(/*! ../../constants */ 53);
         var _drivers = __webpack_require__(/*! ./drivers */ 56);
         var _validate = __webpack_require__(/*! ./validate */ 57);
-        var _props = __webpack_require__(/*! ./props */ 54);
+        var _props = __webpack_require__(/*! ./props */ 58);
+        var _props2 = __webpack_require__(/*! ../props */ 54);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4621,6 +4623,7 @@
                 var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ParentComponent).call(this, component, options));
                 (0, _validate.validate)(component, options);
                 _this.component = component;
+                _this.component.log("construct_parent");
                 _this.id = (0, _lib.uniqueID)();
                 if (component.singleton && activeComponents.some(function(comp) {
                     return comp.component === component;
@@ -4637,9 +4640,7 @@
                     id: _this.id,
                     tag: _this.component.tag
                 });
-                _this.entered = false;
                 _this.onInit = new _promise.SyncPromise();
-                _this.component.log("init_parent");
                 return _this;
             }
             _createClass(ParentComponent, [ {
@@ -4647,21 +4648,40 @@
                 value: function setProps(props) {
                     var _this2 = this;
                     (0, _validate.validateProps)(this.component, props);
-                    this.props = (0, _props.normalizeProps)(this.component, this, props);
+                    this.props = (0, _props2.normalizeProps)(this.component, this, props);
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
                     try {
-                        for (var _iterator = Object.keys(this.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var _loop = function _loop() {
                             var key = _step.value;
-                            if (this.props[key] && this.component.props[key].precall) {
-                                (function() {
-                                    var result = _this2.props[key].call();
-                                    _this2.props[key] = function() {
-                                        return result;
-                                    };
-                                })();
+                            var value = _this2.props[key];
+                            if (value) {
+                                var prop = _this2.component.props[key];
+                                if (prop.precall) {
+                                    (function() {
+                                        var result = value.call();
+                                        _this2.props[key] = function() {
+                                            return result;
+                                        };
+                                    })();
+                                }
+                                if (prop.autoClose) {
+                                    (function() {
+                                        var self = _this2;
+                                        _this2.props[key] = function() {
+                                            self.component.log("autoclose", {
+                                                prop: key
+                                            });
+                                            self.close();
+                                            return value.apply(this, arguments);
+                                        };
+                                    })();
+                                }
                             }
+                        };
+                        for (var _iterator = Object.keys(this.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            _loop();
                         }
                     } catch (err) {
                         _didIteratorError = true;
@@ -4699,12 +4719,12 @@
                 key: "updateProps",
                 value: function updateProps(props) {
                     var _this3 = this;
-                    return _promise.SyncPromise.resolve().then(function() {
+                    return this.onInit.then(function() {
                         (0, _validate.validateProps)(_this3.component, props);
                         var oldProps = (0, _lib.stringifyWithFunctions)(_this3.props);
                         var newProps = _extends({}, _this3.props, props);
                         _this3.setProps(newProps);
-                        if (_this3.entered && _this3.window && oldProps !== (0, _lib.stringifyWithFunctions)(_this3.props)) {
+                        if (oldProps !== (0, _lib.stringifyWithFunctions)(_this3.props)) {
                             _this3.component.log("parent_update_props");
                             return _src2["default"].send(_this3.window, _constants.POST_MESSAGE.PROPS, {
                                 props: _this3.props
@@ -4732,9 +4752,9 @@
                     }
                     var _arr = [ _constants.CONTEXT_TYPES.LIGHTBOX, _constants.CONTEXT_TYPES.POPUP ];
                     for (var _i = 0; _i < _arr.length; _i++) {
-                        var _context = _arr[_i];
-                        if (this.component.contexts[_context]) {
-                            return _context;
+                        var renderContext = _arr[_i];
+                        if (this.component.contexts[renderContext]) {
+                            return renderContext;
                         }
                     }
                     throw new Error("[" + this.component.tag + "] No context options available for render");
@@ -4844,9 +4864,7 @@
                     var unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
                         _this6.component.log("navigate_away");
                         _client2["default"].flush();
-                        if (_this6.context === _constants.CONTEXT_TYPES.POPUP && !(0, _lib.isWindowClosed)(_this6.window)) {
-                            _this6.window.close();
-                        }
+                        _this6.destroy();
                     });
                     this.registerForCleanup(function() {
                         closeWindowListener.cancel();
@@ -4926,7 +4944,6 @@
                 value: function listeners() {
                     var _ref;
                     return _ref = {}, _defineProperty(_ref, _constants.POST_MESSAGE.INIT, function(source, data) {
-                        this.entered = true;
                         this.props.onEnter();
                         this.onInit.resolve(this);
                         return {
@@ -4970,12 +4987,22 @@
                 key: "close",
                 value: function close() {
                     var _this10 = this;
-                    this.component.log("close");
-                    this.props.onClose();
-                    return _src2["default"].send(this.window, _constants.POST_MESSAGE.CLOSE)["catch"](function(err) {
-                        console.warn("Error sending message to child", err.stack || err.toString());
-                    }).then(function() {
-                        _this10.destroy();
+                    return _promise.SyncPromise.resolve().then(function() {
+                        if ((0, _lib.isWindowClosed)(_this10.window)) {
+                            return _this10.props.onClose();
+                        }
+                        if (_this10.closePromise) {
+                            return _this10.closePromise;
+                        }
+                        _this10.component.log("close");
+                        _this10.props.onClose();
+                        var closePromise = _src2["default"].send(_this10.window, _constants.POST_MESSAGE.CLOSE)["catch"](function(err) {
+                            console.warn("Error sending message to child", err.stack || err.toString());
+                        }).then(function() {
+                            _this10.destroy();
+                        });
+                        _this10.setForCleanup("closePromise", closePromise);
+                        return _this10.closePromise;
                     });
                 }
             }, {
@@ -5029,13 +5056,15 @@
             }, {
                 key: "destroy",
                 value: function destroy() {
-                    this.component.log("destroy");
-                    this.cleanup();
+                    if (this.hasCleanupTasks()) {
+                        this.component.log("destroy");
+                        this.cleanup();
+                    }
                 }
             }, {
                 key: "error",
                 value: function error(err) {
-                    this.component.log("error", {
+                    this.component.logError("error", {
                         error: err.stack || err.toString()
                     });
                     this.onInit.reject(err);
@@ -5045,18 +5074,40 @@
             } ]);
             return ParentComponent;
         }(_base.BaseComponent);
-        [ _constants.CONTEXT_TYPES.IFRAME, _constants.CONTEXT_TYPES.LIGHTBOX, _constants.CONTEXT_TYPES.POPUP ].forEach(function(context) {
-            var contextName = (0, _lib.capitalizeFirstLetter)(context);
-            ParentComponent.prototype["render" + contextName] = function(element) {
-                return this.render(element, context);
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+        try {
+            var _loop2 = function _loop2() {
+                var context = _step2.value;
+                var contextName = (0, _lib.capitalizeFirstLetter)(context);
+                ParentComponent.prototype["render" + contextName] = function(element) {
+                    return this.render(element, context);
+                };
+                ParentComponent.prototype["render" + contextName + "ToParent"] = function(element) {
+                    return this.renderToParent(element, context);
+                };
+                ParentComponent.prototype["hijackButtonTo" + contextName] = function(button, element) {
+                    return this.hijackButton(button, element, context);
+                };
             };
-            ParentComponent.prototype["render" + contextName + "ToParent"] = function(element) {
-                return this.renderToParent(element, context);
-            };
-            ParentComponent.prototype["hijackButtonTo" + contextName] = function(element) {
-                return this.hijackButton(element, context);
-            };
-        });
+            for (var _iterator2 = _constants.CONTEXT_TYPES_LIST[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                _loop2();
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                    _iterator2["return"]();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
+        }
     }, /*!******************************************************!*\
   !*** ./~/xcomponent/src/component/parent/drivers.js ***!
   \******************************************************/
@@ -5276,6 +5327,45 @@
             }
         }
         function validate(component, options) {}
+    }, /*!****************************************************!*\
+  !*** ./~/xcomponent/src/component/parent/props.js ***!
+  \****************************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
+        exports.propsToQuery = propsToQuery;
+        var _lib = __webpack_require__(/*! ../../lib */ 47);
+        function propsToQuery(propsDef, props) {
+            return Object.keys(props).map(function(key) {
+                var value = props[key];
+                if (!value) {
+                    return;
+                }
+                if (propsDef[key].queryParam === false) {
+                    return;
+                }
+                var result = void 0;
+                if (typeof value === "boolean") {
+                    result = "1";
+                } else if (typeof value === "string") {
+                    result = value.toString();
+                } else if (typeof value === "function") {
+                    return;
+                } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
+                    result = JSON.stringify(value);
+                } else if (typeof value === "number") {
+                    result = value.toString();
+                }
+                return (0, _lib.urlEncode)(key) + "=" + (0, _lib.urlEncode)(result);
+            }).filter(Boolean).join("&");
+        }
     }, /*!*******************************************************!*\
   !*** ./~/xcomponent/src/component/component/props.js ***!
   \*******************************************************/
@@ -5297,7 +5387,8 @@
             timeout: {
                 type: "number",
                 required: false,
-                queryParam: false
+                queryParam: false,
+                autoClose: true
             },
             onEnter: {
                 type: "function",
@@ -5314,6 +5405,7 @@
                 type: "function",
                 required: false,
                 once: true,
+                autoClose: true,
                 def: function def(err) {
                     return this.props.onError(err);
                 }
@@ -5321,6 +5413,7 @@
             onError: {
                 type: "function",
                 required: false,
+                autoClose: true,
                 def: function def(err) {
                     console.error(err.message, "\n", err.stack || err.toString());
                 },
@@ -5341,7 +5434,7 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.validate = validate;
-        var _props = __webpack_require__(/*! ./props */ 58);
+        var _props = __webpack_require__(/*! ./props */ 59);
         var _constants = __webpack_require__(/*! ../../constants */ 53);
         function validateProps(options) {
             if (options.props && !(_typeof(options.props) === "object")) {
@@ -5493,7 +5586,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _script = __webpack_require__(/*! ./script */ 63);
+        var _script = __webpack_require__(/*! ./script */ 64);
         Object.keys(_script).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5503,7 +5596,7 @@
                 }
             });
         });
-        var _react = __webpack_require__(/*! ./react */ 64);
+        var _react = __webpack_require__(/*! ./react */ 65);
         Object.keys(_react).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5513,7 +5606,7 @@
                 }
             });
         });
-        var _angular = __webpack_require__(/*! ./angular */ 65);
+        var _angular = __webpack_require__(/*! ./angular */ 66);
         Object.keys(_angular).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5523,7 +5616,7 @@
                 }
             });
         });
-        var _ember = __webpack_require__(/*! ./ember */ 66);
+        var _ember = __webpack_require__(/*! ./ember */ 67);
         Object.keys(_ember).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5556,6 +5649,7 @@
                     if (!element.attributes["data-component"] || element.attributes["data-component"].value !== component.tag) {
                         return;
                     }
+                    component.log("instantiate_script_component");
                     var props = void 0;
                     eval("props = " + element.innerText);
                     var container = document.createElement("div");
@@ -5615,6 +5709,7 @@
                         return window.React.createElement("div", null);
                     },
                     componentDidMount: function componentDidMount() {
+                        component.log("instantiate_react_component");
                         var parent = component.init((0, _lib.extend)({}, this.props));
                         this.setState({
                             parent: parent
@@ -5679,6 +5774,7 @@
                         return {
                             scope: scope,
                             controller: function controller($scope, $element) {
+                                component.log("instantiate_angular_component");
                                 function getProps() {
                                     var instanceProps = {};
                                     var _iteratorNormalCompletion2 = true;
@@ -5753,15 +5849,21 @@
             },
             onPaymentAuthorize: {
                 type: "function",
-                required: false
+                required: false,
+                once: true,
+                autoClose: true
             },
             onPaymentComplete: {
                 type: "function",
-                required: false
+                required: false,
+                once: true,
+                autoClose: true
             },
             onCancel: {
                 type: "function",
-                required: false
+                required: false,
+                once: true,
+                autoClose: true
             }
         };
     }, /*!******************************************!*\
@@ -5772,7 +5874,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _component = __webpack_require__(/*! ./component */ 69);
+        var _component = __webpack_require__(/*! ./component */ 70);
         Object.keys(_component).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5804,8 +5906,8 @@
         };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 67);
-        var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 70);
+        var _props = __webpack_require__(/*! ../props */ 68);
+        var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 71);
         var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
@@ -5814,6 +5916,7 @@
         }
         var PayPalCheckout = exports.PayPalCheckout = _src2["default"].create({
             tag: "paypal-checkout",
+            name: "ppxo",
             defaultEnv: "production",
             envUrls: {
                 local: "http://localhost.paypal.com:8000/webapps/hermes",
@@ -5900,16 +6003,12 @@
                     var returnUrl = _ref.returnUrl;
                     var token = _ref.token;
                     var payerID = _ref.payerID;
-                    setTimeout(function() {
-                        window.location = returnUrl + "?token=" + token + "&payerID=" + payerID;
-                    }, 50);
+                    window.location = returnUrl + "?token=" + token + "&payerID=" + payerID;
                 },
                 onCancel: function onCancel(_ref2) {
                     var cancelUrl = _ref2.cancelUrl;
                     var token = _ref2.token;
-                    setTimeout(function() {
-                        window.location = cancelUrl + "?token=" + token;
-                    }, 50);
+                    window.location = cancelUrl + "?token=" + token;
                 }
             }, props));
             return component;
