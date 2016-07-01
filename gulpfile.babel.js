@@ -1,17 +1,16 @@
-
-var gulp = require('gulp');
-var webpack = require('webpack');
-var gulpWebpack = require('gulp-webpack');
-var eslint = require('gulp-eslint');
-var Server = require('karma').Server;
-var argv = require('yargs').argv;
+import gulp from 'gulp';
+import webpack from 'webpack';
+import gulpWebpack from 'gulp-webpack';
+import eslint from 'gulp-eslint';
+import { Server } from 'karma';
+import { argv } from 'yargs';
 
 gulp.task('build', ['webpack', 'webpack-min']);
 
-var FILE_NAME = 'checkout-components';
-var MODULE_NAME = 'checkoutComponents';
+let FILE_NAME = 'checkout-components';
+let MODULE_NAME = 'checkoutComponents';
 
-var WEBPACK_CONFIG = {
+let WEBPACK_CONFIG = {
   module: {
     loaders: [
       {
@@ -52,7 +51,7 @@ var WEBPACK_CONFIG = {
   ]
 };
 
-var WEBPACK_CONFIG_MIN = Object.assign({}, WEBPACK_CONFIG, {
+let WEBPACK_CONFIG_MIN = Object.assign({}, WEBPACK_CONFIG, {
   output: {
     filename: `${FILE_NAME}.min.js`,
     libraryTarget: 'umd',
@@ -87,7 +86,7 @@ gulp.task('lint', function() {
 
 gulp.task('karma', ['lint'], function (done) {
 
-  var server = new Server({
+  let server = new Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: !Boolean(argv['keep-browser-open']),
     client: {
