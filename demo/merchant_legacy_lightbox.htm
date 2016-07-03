@@ -20,7 +20,7 @@
 
     window.mockDomain = 'http://www.merchant.com';
 
-    ppxo.postRobot.openBridge('./bridge.htm');
+    ppxo.PayPalCheckout.contexts.lightbox = true;
 
     function getToken(callback) {
         console.log('calling xotools for token');

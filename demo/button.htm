@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 <script src="../dist/checkout-components.js"></script>
 
@@ -9,10 +10,10 @@
 
     var checkoutComp;
 
-    var button = checkoutComponents.PayPalButton.attach();
+    var button = ppxo.PayPalButton.attach();
 
     function checkout() {
-        checkoutComp = checkoutComponents.PayPalCheckout.init({
+        checkoutComp = ppxo.PayPalCheckout.init({
 
             url: './checkout.htm',
 

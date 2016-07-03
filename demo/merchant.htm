@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 <style>
     iframe {
@@ -15,7 +16,7 @@
 
 <script src="../dist/checkout-components.js"></script>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 <h2>1. Button in iframe</h2>
 
@@ -23,7 +24,7 @@
 
 <hr>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 <h2>2. Standard merchant-owned button with ajax call</h2>
 
@@ -31,7 +32,7 @@
 
 <hr>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 <h2>3. Standard merchant-owned link with href</h2>
 
@@ -39,7 +40,7 @@
 
 <hr>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 <h2>4. Standard merchant-owned form with target</h2>
 
@@ -49,7 +50,7 @@
 
 <hr>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 <h2>5. Standard merchant-owned form with target, button in iframe</h2>
 
@@ -57,7 +58,7 @@
     <div id="button2"></div>
 </form>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 
 <h2>6. Standard merchant-owned button with ajax call; LightBox rendered with Add Content button</h2>
@@ -66,7 +67,7 @@
 
 <hr>
 
-<!-- -------------------------------------------------- -->
+<!-- ******************************************* -->
 
 
 <script>
@@ -94,7 +95,7 @@
 
     // 1. Button in iframe
 
-    checkoutComponents.PayPalButton.init({
+    ppxo.PayPalButton.init({
 
         url: './button.htm',
 
@@ -104,14 +105,14 @@
     }).render('#button');
 
 
-    // -----------------------------------------------------------
+    // *******************************************---------
 
 
     // 2. Standard merchant-owned button with ajax call
 
     function openPayPalCheckout() {
 
-        var checkout = checkoutComponents.PayPalCheckout.init({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './checkout.htm',
 
@@ -123,12 +124,12 @@
 
 
 
-    // -----------------------------------------------------------
+    // *******************************************---------
 
 
     // 3. Standard merchant-owned link with href
 
-    var checkout = checkoutComponents.PayPalCheckout.init({
+    var checkout = ppxo.PayPalCheckout.init({
 
         getToken: getToken,
         onPaymentAuthorize: onPaymentAuthorize
@@ -138,12 +139,12 @@
 
 
 
-    // -----------------------------------------------------------
+    // *******************************************---------
 
 
     // 4. Standard merchant-owned form with target
 
-    var checkout = checkoutComponents.PayPalCheckout.init({
+    var checkout = ppxo.PayPalCheckout.init({
 
         getToken: getToken,
         onPaymentAuthorize: onPaymentAuthorize
@@ -153,12 +154,12 @@
 
 
 
-    // -----------------------------------------------------------
+    // *******************************************---------
 
 
     // 5. Standard merchant-owned form with target, button in iframe
 
-    checkoutComponents.PayPalButton.init({
+    ppxo.PayPalButton.init({
 
         url: './button.htm',
 
@@ -173,7 +174,7 @@
 
     function addcontentCheckout() {
 
-        var checkout = checkoutComponents.PayPalCheckout.init({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './addcontent.html',
 

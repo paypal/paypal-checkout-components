@@ -8,7 +8,7 @@ import { argv } from 'yargs';
 gulp.task('build', ['webpack', 'webpack-min']);
 
 let FILE_NAME = 'checkout-components';
-let MODULE_NAME = 'checkoutComponents';
+let MODULE_NAME = 'ppxo';
 
 let WEBPACK_CONFIG = {
   module: {
@@ -22,7 +22,8 @@ let WEBPACK_CONFIG = {
             'transform-object-rest-spread',
             'syntax-object-rest-spread',
             'transform-es3-property-literals',
-            'transform-es3-member-expression-literals'
+            'transform-es3-member-expression-literals',
+            ['transform-es2015-for-of', {loose: true}]
           ]
         }
       },

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 <script src="../dist/checkout-components.js"></script>
 
@@ -9,12 +10,16 @@
 
 <h1>Checkout!</h1>
 
-<button onclick="authorize()">Authorize Payment</button>
+<button onclick="window.authorize()">Authorize Payment</button>
 
 <script>
-    let ecToken;
 
-    var checkout = checkoutComponents.PayPalCheckout.attach({
+    var parent = (window.opener || window.parent);
+    var parentUrl = parent.location.protocol + '//' + parent.location.host + parent.location.pathname;
+
+    var ecToken;
+
+    var checkout = ppxo.PayPalCheckout.attach({
 
         onEnter: function() {
 
@@ -38,19 +43,19 @@
 
         defaultProps: {
 
-            getToken() {
+            getToken: function() {
                 console.log('getting token from url', window.location.href);
                 return window.location.href.match(/token=((EC-)?[A-Z0-9]{17})/)[1];
             }
         }
     });
 
-    function authorize() {
+    window.authorize = function authorize() {
         if (checkout.props.onPaymentAuthorize) {
             checkout.props.onPaymentAuthorize({
                 token: ecToken,
                 payerID: 'SD8778VSD7VD6SV',
-                returnUrl: 'merchant_legacy.htm'
+                returnUrl: parentUrl
             });
         }
     }

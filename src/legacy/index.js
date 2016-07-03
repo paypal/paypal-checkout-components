@@ -111,7 +111,7 @@ function getToken(callback) {
 function drawButton(container) {
 
     let button = document.createElement('button');
-    button.innerText = 'PayPal Checkout';
+    button.innerHTML = 'PayPal Checkout';
 
     document.getElementById(container).appendChild(button);
 
@@ -291,7 +291,7 @@ if (window.paypalCheckoutReady instanceof Function) {
 onDocumentReady(() => {
     let buttons = document.querySelectorAll('[data-paypal-button]');
 
-    for (let button of buttons) {
+    for (let button of Array.prototype.slice.call(buttons)) {
 
         let env = button.attributes['data-env'] && button.attributes['data-env'].value;
 

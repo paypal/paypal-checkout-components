@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+    
 <!-- Script in order to add more content in the html page -->
 <script src="../dist/checkout-components.js"></script>
 
@@ -16,7 +17,7 @@
 <script>
     let ecToken;
 
-    var checkout = checkoutComponents.PayPalCheckout.attach({
+    var checkout = ppxo.PayPalCheckout.attach({
         onEnter: function() {
             this.props.getToken().then(function(token) {
                 ecToken = token;
