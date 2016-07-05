@@ -24,7 +24,9 @@ and you can take your customer to a success page.
 
 ### Simple Integration
 
-This integration lets you specify all of your payment parameters all at once, to render a button onto the page
+This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
+
+We will call the `onPaymentComplete` function you define when the payment has been fully completed by the customer.
 
 ```javascript
 ppxo.PayPalButton.render({
@@ -60,10 +62,16 @@ ppxo.PayPalButton.render({
 ### Advanced Integration (Express-Checkout)
 
 This integration uses [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/),
-which is more useful for advanced integrations. Unlike the simple integration, you will be responsible for calling PayPal's
+which is more useful for advanced integrations.
+
+Unlike the simple integration, you will be responsible for calling PayPal's
 [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
+We will call the `getToken` function you provide, in which you are responsible for calling [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/)
+to retrieve an express-checkout token, and passing it back to the `callback`. Then once the payment has been authorized, we will call the `onPaymentAuthorized`
+function you provide, and you will be responsible for calling [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/)
+to finalize the transaction.
 
 
 ```javascript
@@ -135,7 +143,9 @@ payment is complete, we will notify you using a javascript callback and you can 
 
 ### Simple Integration
 
-This integration lets you specify all of your payment parameters all at once, to initialize the checkout flow
+This integration lets you specify all of your payment parameters all at once, to initialize the checkout flow.
+
+We will call the `onPaymentComplete` function you define when the payment has been fully completed by the customer.
 
 ```javascript
 ppxo.PayPalCheckout.render({
@@ -170,10 +180,14 @@ ppxo.PayPalCheckout.render({
 
 ### Advanced Integration (Express-Checkout)
 
-This integration uses [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/),
-which is more useful for advanced integrations. Unlike the simple integration, you will be responsible for calling PayPal's
+Unlike the simple integration, you will be responsible for calling PayPal's
 [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
+
+We will call the `getToken` function you provide, in which you are responsible for calling [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/)
+to retrieve an express-checkout token, and passing it back to the `callback`. Then once the payment has been authorized, we will call the `onPaymentAuthorized`
+function you provide, and you will be responsible for calling [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/)
+to finalize the transaction.
 
 
 
