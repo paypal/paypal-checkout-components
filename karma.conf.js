@@ -1,6 +1,8 @@
 import { argv } from 'yargs';
 import { WEBPACK_CONFIG } from './webpack.conf';
 
+
+
 module.exports = function(config) {
     config.set({
 
@@ -16,7 +18,7 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-          './test/unit/**/*.js'
+          { pattern: 'test/unit.js', included: true, served: true },
 
         ],
 
@@ -36,7 +38,8 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-          './test/unit/**/*.js': ['webpack']
+          'test/unit.js': ['webpack'],
+          //'src/**/*.js': ['coverage',  'sourcemap']
         },
 
         // test results reporter to use

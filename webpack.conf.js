@@ -7,7 +7,12 @@ export let WEBPACK_CONFIG = {
   module: {
     loaders: [
       {
+        test: /sinon\.js$/,
+        loader: "imports?define=>false,require=>false"
+      },
+      {
         test: /\.js$/,
+        exclude: /(sinon)/,
         loader: 'babel'
       },
       {
