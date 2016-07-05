@@ -1,5 +1,5 @@
 (function webpackUniversalModuleDefinition(root, factory) {
-    if (typeof exports === "object" && typeof module === "object") module.exports = factory(); else if (typeof define === "function" && define.amd) define("ppxo", [], factory); else if (typeof exports === "object") exports["ppxo"] = factory(); else root["ppxo"] = factory();
+    if (typeof exports === "object" && typeof module === "object") module.exports = factory(); else if (typeof define === "function" && define.amd) define("checkoutComponents", [], factory); else if (typeof exports === "object") exports["checkoutComponents"] = factory(); else root["checkoutComponents"] = factory();
 })(this, function() {
     return function(modules) {
         var installedModules = {};
@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 73);
+        var _legacy = __webpack_require__(/*! ./legacy */ 75);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -73,7 +73,7 @@
                 }
             });
         });
-        var _checkout = __webpack_require__(/*! ./checkout */ 70);
+        var _checkout = __webpack_require__(/*! ./checkout */ 72);
         Object.keys(_checkout).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -123,7 +123,7 @@
         };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 69);
+        var _props = __webpack_require__(/*! ../props */ 71);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -169,7 +169,7 @@
         });
         var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _component = __webpack_require__(/*! ./component */ 34);
+        var _component = __webpack_require__(/*! ./component */ 35);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -217,7 +217,7 @@
                 }
             });
         });
-        var _lib = __webpack_require__(/*! ./lib */ 18);
+        var _lib = __webpack_require__(/*! ./lib */ 16);
         Object.defineProperty(exports, "Promise", {
             enumerable: true,
             get: function get() {
@@ -225,13 +225,13 @@
             }
         });
         var _conf = __webpack_require__(/*! ./conf */ 9);
-        var _drivers = __webpack_require__(/*! ./drivers */ 16);
-        var _compat = __webpack_require__(/*! ./compat */ 23);
+        var _drivers = __webpack_require__(/*! ./drivers */ 14);
+        var _compat = __webpack_require__(/*! ./compat */ 24);
         function init() {
             (0, _compat.registerGlobals)();
-            _lib.log.debug("ID", (0, _conf.getWindowID)());
             _lib.util.listen(window, "message", _drivers.messageListener);
             _lib.childWindows.register((0, _conf.getWindowID)(), window, _lib.util.getType());
+            (0, _lib.initOnReady)();
         }
         init();
         exports["default"] = module.exports;
@@ -254,7 +254,7 @@
                 }
             });
         });
-        var _server = __webpack_require__(/*! ./server */ 31);
+        var _server = __webpack_require__(/*! ./server */ 32);
         Object.keys(_server).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -264,7 +264,7 @@
                 }
             });
         });
-        var _proxy = __webpack_require__(/*! ./proxy */ 32);
+        var _proxy = __webpack_require__(/*! ./proxy */ 33);
         Object.keys(_proxy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -274,7 +274,7 @@
                 }
             });
         });
-        var _config = __webpack_require__(/*! ./config */ 33);
+        var _config = __webpack_require__(/*! ./config */ 34);
         Object.keys(_config).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -284,14 +284,14 @@
                 }
             });
         });
-        var _drivers = __webpack_require__(/*! ../drivers */ 16);
+        var _drivers = __webpack_require__(/*! ../drivers */ 14);
         Object.defineProperty(exports, "reset", {
             enumerable: true,
             get: function get() {
                 return _drivers.resetListeners;
             }
         });
-        var _bridge = __webpack_require__(/*! ../compat/bridge */ 24);
+        var _bridge = __webpack_require__(/*! ../compat/bridge */ 25);
         Object.defineProperty(exports, "openBridge", {
             enumerable: true,
             get: function get() {
@@ -305,7 +305,8 @@
                 return _util.util;
             }
         });
-        var parent = exports.parent = _util.util.getParent();
+        var _windows = __webpack_require__(/*! ../lib/windows */ 21);
+        var parent = exports.parent = (0, _windows.getParentWindow)();
     }, /*!**********************************************!*\
   !*** ./~/post-robot/src/interface/client.js ***!
   \**********************************************/
@@ -318,8 +319,8 @@
         exports.send = send;
         exports.sendToParent = sendToParent;
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _drivers = __webpack_require__(/*! ../drivers */ 16);
-        var _lib = __webpack_require__(/*! ../lib */ 18);
+        var _drivers = __webpack_require__(/*! ../drivers */ 14);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
         function request(options) {
             return _lib.promise.nodeify(new _lib.promise.Promise(function(resolve, reject) {
                 if (!options.name) {
@@ -349,38 +350,44 @@
                     throw new Error("Target window is closed");
                 }
                 var hasResult = false;
-                if (options.timeout) {
-                    (function() {
-                        var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
-                            if (hasResult) {
-                                return timeout.cancel();
-                            }
-                            if (!remaining) {
-                                return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
-                            }
-                        }, options.timeout);
-                    })();
-                }
                 options.respond = function(err, result) {
                     if (!err) {
                         hasResult = true;
                     }
                     return err ? reject(err) : resolve(result);
                 };
-                (0, _drivers.sendMessage)(options.window, {
-                    hash: hash,
-                    type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
-                    name: options.name,
-                    data: options.data
-                }, options.domain || "*")["catch"](reject);
-                var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
-                    if (options.ack) {
-                        return ackTimeout.cancel();
+                return _lib.promise.run(function() {
+                    if ((0, _lib.getParentWindow)(options.window) === window) {
+                        return (0, _lib.onWindowReady)(options.window);
                     }
-                    if (!remaining) {
-                        return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
+                }).then(function() {
+                    if (options.timeout) {
+                        (function() {
+                            var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
+                                if (hasResult) {
+                                    return timeout.cancel();
+                                }
+                                if (!remaining) {
+                                    return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
+                                }
+                            }, options.timeout);
+                        })();
                     }
-                });
+                    (0, _drivers.sendMessage)(options.window, {
+                        hash: hash,
+                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
+                        name: options.name,
+                        data: options.data
+                    }, options.domain || "*")["catch"](reject);
+                    var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
+                        if (options.ack) {
+                            return ackTimeout.cancel();
+                        }
+                        if (!remaining) {
+                            return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
+                        }
+                    });
+                })["catch"](reject);
             }), options.callback);
         }
         function send(window, name, data, options, callback) {
@@ -402,11 +409,11 @@
             return request(options);
         }
         function sendToParent(name, data, options, callback) {
-            var window = _lib.util.getParent();
+            var win = (0, _lib.getParentWindow)();
             if (!window) {
                 throw new Error("Window does not have a parent");
             }
-            return send(_lib.util.getParent(), name, data, options, callback);
+            return send(win, name, data, options, callback);
         }
     }, /*!****************************************!*\
   !*** ./~/post-robot/src/conf/index.js ***!
@@ -477,9 +484,9 @@
             LOG_TO_PAGE: false,
             MOCK_MODE: false,
             ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_GLOBAL_METHOD, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_UP_THROUGH_BRIDGE, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_DOWN_THROUGH_BRIDGE, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.GLOBAL_METHOD, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, true), 
             _ALLOWED_POST_MESSAGE)
         };
     }, /*!********************************************!*\
@@ -501,7 +508,8 @@
                 ERROR: "error"
             },
             POST_MESSAGE_NAMES: {
-                METHOD: "postrobot_method"
+                METHOD: "postrobot_method",
+                READY: "postrobot_ready"
             },
             WINDOW_TYPES: {
                 FULLPAGE: "fullpage",
@@ -516,9 +524,9 @@
             },
             SEND_STRATEGIES: {
                 POST_MESSAGE: "postrobot_post_message",
-                POST_MESSAGE_GLOBAL_METHOD: "postrobot_post_message_global_method",
-                POST_MESSAGE_UP_THROUGH_BRIDGE: "postrobot_post_message_up_through_bridge",
-                POST_MESSAGE_DOWN_THROUGH_BRIDGE: "postrobot_post_message_down_through_bridge"
+                GLOBAL_METHOD: "postrobot_global_method",
+                FOREIGN_BRIDGE: "postrobot_foreign_bridge",
+                LOCAL_BRIDGE: "postrobot_local_bridge"
             }
         };
         var POST_MESSAGE_NAMES_LIST = exports.POST_MESSAGE_NAMES_LIST = Object.keys(CONSTANTS.POST_MESSAGE_NAMES).map(function(key) {
@@ -552,7 +560,6 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _promise = __webpack_require__(/*! ./promise */ 14);
         var util = exports.util = {
             isPopup: function isPopup() {
                 return Boolean(window.opener);
@@ -563,12 +570,6 @@
             isFullpage: function isFullpage() {
                 return Boolean(!util.isIframe() && !util.isPopup());
             },
-            windowReady: new _promise.promise.Promise(function(resolve, reject) {
-                if (document.readyState === "complete") {
-                    return resolve();
-                }
-                window.addEventListener("load", resolve);
-            }),
             getType: function getType() {
                 if (util.isPopup()) {
                     return _conf.CONSTANTS.WINDOW_TYPES.POPUP;
@@ -589,46 +590,6 @@
                         return method.apply(this, arguments);
                     }
                 };
-            },
-            getParent: function getParent() {
-                if (util.isPopup()) {
-                    return window.opener;
-                }
-                if (util.isIframe()) {
-                    return window.parent;
-                }
-            },
-            eachParent: function eachParent(method, includeSelf) {
-                var win = window;
-                if (includeSelf) {
-                    method(window);
-                }
-                while (true) {
-                    var parent = void 0;
-                    try {
-                        parent = win.opener || win.parent;
-                    } catch (err) {
-                        return;
-                    }
-                    if (win === parent) {
-                        return;
-                    }
-                    win = parent;
-                    method(win);
-                }
-            },
-            eachFrame: function eachFrame(win, method) {
-                for (var i = 0; i < win.frames.length; i++) {
-                    var frame = void 0;
-                    try {
-                        frame = win.frames[i];
-                    } catch (err) {
-                        continue;
-                    }
-                    if (frame !== window) {
-                        method(frame);
-                    }
-                }
             },
             noop: function noop() {},
             safeHasProp: function safeHasProp(obj, name) {
@@ -828,6 +789,275 @@
                 return win.mockDomain || win.location.protocol + "//" + win.location.host;
             }
         };
+    }, /*!*******************************************!*\
+  !*** ./~/post-robot/src/drivers/index.js ***!
+  \*******************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _receive = __webpack_require__(/*! ./receive */ 15);
+        Object.keys(_receive).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _receive[key];
+                }
+            });
+        });
+        var _send = __webpack_require__(/*! ./send */ 28);
+        Object.keys(_send).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _send[key];
+                }
+            });
+        });
+        var _listeners = __webpack_require__(/*! ./listeners */ 30);
+        Object.keys(_listeners).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _listeners[key];
+                }
+            });
+        });
+    }, /*!***************************************************!*\
+  !*** ./~/post-robot/src/drivers/receive/index.js ***!
+  \***************************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.receiveMessage = receiveMessage;
+        exports.messageListener = messageListener;
+        var _conf = __webpack_require__(/*! ../../conf */ 9);
+        var _lib = __webpack_require__(/*! ../../lib */ 16);
+        var _compat = __webpack_require__(/*! ../../compat */ 24);
+        var _send = __webpack_require__(/*! ../send */ 28);
+        var _listeners = __webpack_require__(/*! ../listeners */ 30);
+        var _types = __webpack_require__(/*! ./types */ 31);
+        var receivedMessages = [];
+        function parseMessage(message) {
+            try {
+                message = JSON.parse(message);
+            } catch (err) {
+                return;
+            }
+            if (!message.type) {
+                return;
+            }
+            if (!_types.RECEIVE_MESSAGE_TYPES[message.type]) {
+                return;
+            }
+            return message;
+        }
+        function getWindow(hint, windowID) {
+            var windowTargets = {
+                "window.parent": function windowParent(id) {
+                    return window.parent;
+                },
+                "window.opener": function windowOpener(id) {
+                    return (0, _lib.getOpener)(window);
+                },
+                "window.parent.opener": function windowParentOpener(id) {
+                    return (0, _lib.getOpener)(window.parent);
+                }
+            };
+            var win = void 0;
+            try {
+                win = windowTargets[hint](windowID);
+            } catch (err) {
+                throw new Error("Can not get " + hint + ": " + err.message);
+            }
+            if (!win) {
+                throw new Error("Can not get " + hint + ": not available");
+            }
+            return win;
+        }
+        function getProxy(source, message) {
+            if (_conf.CONFIG.MOCK_MODE) {
+                return;
+            }
+            if (!message) {
+                return;
+            }
+            var listener = (0, _listeners.getRequestListener)(message.name, source);
+            if (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST && message.name && listener && listener.proxy === false) {
+                return;
+            }
+            var isResponseOrAck = (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK) && _listeners.listeners.response[message.hash];
+            if (!isResponseOrAck) {
+                for (var i = 0; i < _listeners.listeners.proxies.length; i++) {
+                    var proxy = _listeners.listeners.proxies[i];
+                    if (source === proxy.from) {
+                        return proxy.to;
+                    }
+                }
+            }
+            if (message.targetHint) {
+                var win = getWindow(message.targetHint, message.target);
+                delete message.targetHint;
+                return win;
+            }
+            if (message.target && message.target !== (0, _conf.getWindowID)()) {
+                var _win = _lib.childWindows.getWindowById(message.target);
+                if (!_win) {
+                    throw new Error("Unable to find window to proxy message to: " + message.target);
+                }
+                return _win;
+            }
+        }
+        function receiveMessage(event) {
+            try {
+                event.source;
+            } catch (err) {
+                return;
+            }
+            var source = event.source;
+            var origin = event.origin;
+            var data = event.data;
+            var message = parseMessage(data);
+            if (!message) {
+                return;
+            }
+            if (receivedMessages.indexOf(message.id) === -1) {
+                receivedMessages.push(message.id);
+            } else {
+                return;
+            }
+            _lib.childWindows.register(message.source, source, message.windowType);
+            var proxyWindow = getProxy(source, message);
+            var level = _conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 ? "debug" : "info";
+            _lib.log.logLevel(level, [ proxyWindow ? "#receiveproxy" : "#receive", message.type, message.name, message ]);
+            if (proxyWindow) {
+                delete message.target;
+                return (0, _send.sendMessage)(proxyWindow, message, message.domain || "*", true);
+            }
+            if (message.originalSource !== message.source) {
+                if (message.sourceHint) {
+                    source = getWindow(message.sourceHint, message.originalSource);
+                    delete message.sourceHint;
+                } else {
+                    var originalSource = _lib.childWindows.getWindowById(message.originalSource);
+                    if (originalSource) {
+                        source = originalSource;
+                    } else {
+                        throw new Error("Can not find original message source: " + message.originalSource);
+                    }
+                }
+                _lib.childWindows.register(message.originalSource, source, message.originalWindowType);
+            }
+            if (_conf.CONFIG.MOCK_MODE) {
+                return _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+            }
+            if (message.data) {
+                message.data = (0, _lib.deserializeMethods)(source, message.data);
+            }
+            _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+        }
+        function messageListener(event) {
+            try {
+                event.source;
+            } catch (err) {
+                return;
+            }
+            event = {
+                source: event.source || event.sourceElement,
+                origin: event.origin || event.originalEvent.origin,
+                data: event.data
+            };
+            try {
+                (0, _compat.emulateIERestrictions)(event.source, window);
+            } catch (err) {
+                return;
+            }
+            receiveMessage(event);
+        }
+    }, /*!***************************************!*\
+  !*** ./~/post-robot/src/lib/index.js ***!
+  \***************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _promise = __webpack_require__(/*! ./promise */ 17);
+        Object.keys(_promise).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _promise[key];
+                }
+            });
+        });
+        var _util = __webpack_require__(/*! ./util */ 13);
+        Object.keys(_util).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _util[key];
+                }
+            });
+        });
+        var _log = __webpack_require__(/*! ./log */ 20);
+        Object.keys(_log).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _log[key];
+                }
+            });
+        });
+        var _windows = __webpack_require__(/*! ./windows */ 21);
+        Object.keys(_windows).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _windows[key];
+                }
+            });
+        });
+        var _methods = __webpack_require__(/*! ./methods */ 22);
+        Object.keys(_methods).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _methods[key];
+                }
+            });
+        });
+        var _tick = __webpack_require__(/*! ./tick */ 19);
+        Object.keys(_tick).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _tick[key];
+                }
+            });
+        });
+        var _ready = __webpack_require__(/*! ./ready */ 23);
+        Object.keys(_ready).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _ready[key];
+                }
+            });
+        });
     }, /*!*****************************************!*\
   !*** ./~/post-robot/src/lib/promise.js ***!
   \*****************************************/
@@ -837,12 +1067,20 @@
             value: true
         });
         exports.promise = exports.Promise = undefined;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 15);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 18);
+        var _tick = __webpack_require__(/*! ./tick */ 19);
         var Promise = exports.Promise = _promise.SyncPromise;
         var promise = exports.promise = {
             Promise: Promise,
             run: function run(method) {
                 return Promise.resolve().then(method);
+            },
+            nextTick: function nextTick(method) {
+                return new Promise(function(resolve, reject) {
+                    (0, _tick.nextTick)(function() {
+                        return promise.run(method).then(resolve, reject);
+                    });
+                });
             },
             method: function method(_method) {
                 return function promiseWrapper() {
@@ -894,9 +1132,9 @@
                 return Promise.all(results);
             }
         };
-    }, /*!*********************************************!*\
-  !*** ./~/sync-browser-mocks/src/promise.js ***!
-  \*********************************************/
+    }, /*!**********************************************************!*\
+  !*** ./~/post-robot/~/sync-browser-mocks/src/promise.js ***!
+  \**********************************************************/
     function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -1054,264 +1292,34 @@
         function patchPromise() {
             window.Promise = SyncPromise;
         }
-    }, /*!*******************************************!*\
-  !*** ./~/post-robot/src/drivers/index.js ***!
-  \*******************************************/
+    }, /*!**************************************!*\
+  !*** ./~/post-robot/src/lib/tick.js ***!
+  \**************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _receive = __webpack_require__(/*! ./receive */ 17);
-        Object.keys(_receive).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _receive[key];
-                }
-            });
-        });
-        var _send = __webpack_require__(/*! ./send */ 27);
-        Object.keys(_send).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _send[key];
-                }
-            });
-        });
-        var _listeners = __webpack_require__(/*! ./listeners */ 29);
-        Object.keys(_listeners).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _listeners[key];
-                }
-            });
-        });
-    }, /*!***************************************************!*\
-  !*** ./~/post-robot/src/drivers/receive/index.js ***!
-  \***************************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.receiveMessage = receiveMessage;
-        exports.messageListener = messageListener;
-        var _conf = __webpack_require__(/*! ../../conf */ 9);
-        var _lib = __webpack_require__(/*! ../../lib */ 18);
-        var _compat = __webpack_require__(/*! ../../compat */ 23);
-        var _send = __webpack_require__(/*! ../send */ 27);
-        var _listeners = __webpack_require__(/*! ../listeners */ 29);
-        var _types = __webpack_require__(/*! ./types */ 30);
-        var receivedMessages = [];
-        function parseMessage(message) {
-            try {
-                message = JSON.parse(message);
-            } catch (err) {
-                return;
-            }
-            if (!message.type) {
-                return;
-            }
-            if (!_types.RECEIVE_MESSAGE_TYPES[message.type]) {
-                return;
-            }
-            return message;
-        }
-        function getWindow(hint) {
-            var windowTargets = {
-                "window.parent": function windowParent() {
-                    return window.parent;
-                },
-                "window.opener": function windowOpener() {
-                    return window.opener;
-                },
-                "window.parent.opener": function windowParentOpener() {
-                    return window.parent.opener;
-                }
-            };
-            var win = void 0;
-            try {
-                win = windowTargets[hint].call();
-            } catch (err) {
-                throw new Error("Can not get " + hint + ": " + err.message);
-            }
-            if (!win) {
-                throw new Error("Can not get " + hint + ": not available");
-            }
-            return win;
-        }
-        function getProxy(source, message) {
-            if (_conf.CONFIG.MOCK_MODE) {
-                return;
-            }
-            if (!message) {
-                return;
-            }
-            var listener = (0, _listeners.getRequestListener)(message.name, source);
-            if (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST && message.name && listener && listener.proxy === false) {
-                return;
-            }
-            var isResponseOrAck = (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK) && _listeners.listeners.response[message.hash];
-            if (!isResponseOrAck) {
-                for (var i = 0; i < _listeners.listeners.proxies.length; i++) {
-                    var proxy = _listeners.listeners.proxies[i];
-                    if (source === proxy.from) {
-                        return proxy.to;
-                    }
-                }
-            }
-            if (message.targetHint) {
-                var win = getWindow(message.targetHint);
-                delete message.targetHint;
-                return win;
-            }
-            if (message.target && message.target !== (0, _conf.getWindowID)()) {
-                var _win = _lib.childWindows.getWindowById(message.target);
-                if (!_win) {
-                    throw new Error("Unable to find window to proxy message to: " + message.target);
-                }
-                return _win;
-            }
-        }
-        function receiveMessage(event) {
-            try {
-                event.source;
-            } catch (err) {
-                return;
-            }
-            var source = event.source;
-            var origin = event.origin;
-            var data = event.data;
-            var message = parseMessage(data);
-            if (!message) {
-                return;
-            }
-            if (receivedMessages.indexOf(message.id) === -1) {
-                receivedMessages.push(message.id);
-            } else {
-                return;
-            }
-            _lib.childWindows.register(message.source, source, message.windowType);
-            if (message.originalSource !== message.source) {
-                if (message.sourceHint) {
-                    source = getWindow(message.sourceHint);
-                    delete message.sourceHint;
-                } else {
-                    var originalSource = _lib.childWindows.getWindowById(message.originalSource);
-                    if (originalSource) {
-                        source = originalSource;
-                    } else {
-                        throw new Error("Can not find original message source: " + message.originalSource);
-                    }
-                }
-                _lib.childWindows.register(message.originalSource, source, message.originalWindowType);
-            }
-            var proxyWindow = getProxy(source, message);
-            _lib.log.logLevel(_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 ? "debug" : "info", [ proxyWindow ? "#receiveproxy" : "#receive", message.type, message.name, message ]);
-            if (proxyWindow) {
-                delete message.target;
-                return (0, _send.sendMessage)(proxyWindow, message, message.domain || "*", true);
-            }
-            if (_conf.CONFIG.MOCK_MODE) {
-                return _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
-            }
-            if (message.data) {
-                message.data = (0, _lib.deserializeMethods)(source, message.data);
-            }
-            _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
-        }
-        function messageListener(event) {
-            try {
-                event.source;
-            } catch (err) {
-                return;
-            }
-            event = {
-                source: event.source || event.sourceElement,
-                origin: event.origin || event.originalEvent.origin,
-                data: event.data
-            };
-            try {
-                (0, _compat.emulateIERestrictions)(event.source, window);
-            } catch (err) {
-                return;
-            }
-            receiveMessage(event);
-        }
-    }, /*!***************************************!*\
-  !*** ./~/post-robot/src/lib/index.js ***!
-  \***************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _promise = __webpack_require__(/*! ./promise */ 14);
-        Object.keys(_promise).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _promise[key];
-                }
-            });
-        });
+        exports.nextTick = nextTick;
         var _util = __webpack_require__(/*! ./util */ 13);
-        Object.keys(_util).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _util[key];
-                }
-            });
+        var tickMessageName = "__nextTick__postRobot__" + _util.util.uniqueID();
+        var queue = [];
+        window.addEventListener("message", function(event) {
+            if (event.data === tickMessageName) {
+                var method = queue.shift();
+                method.call();
+            }
         });
-        var _log = __webpack_require__(/*! ./log */ 19);
-        Object.keys(_log).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _log[key];
-                }
-            });
-        });
-        var _windows = __webpack_require__(/*! ./windows */ 20);
-        Object.keys(_windows).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _windows[key];
-                }
-            });
-        });
-        var _methods = __webpack_require__(/*! ./methods */ 21);
-        Object.keys(_methods).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _methods[key];
-                }
-            });
-        });
-        var _tick = __webpack_require__(/*! ./tick */ 22);
-        Object.keys(_tick).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _tick[key];
-                }
-            });
-        });
+        function nextTick(method) {
+            if (window.setImmediate) {
+                return window.setImmediate.call(window, method);
+            }
+            if (window.nextTick) {
+                return window.nextTick.call(window, method);
+            }
+            queue.push(method);
+            window.postMessage(tickMessageName, "*");
+        }
     }, /*!*************************************!*\
   !*** ./~/post-robot/src/lib/log.js ***!
   \*************************************/
@@ -1424,24 +1432,34 @@
         });
         exports.childWindows = undefined;
         exports.isSameDomain = isSameDomain;
+        exports.getOpener = getOpener;
+        exports.getParentWindow = getParentWindow;
         var _conf = __webpack_require__(/*! ../conf */ 9);
         var _util = __webpack_require__(/*! ./util */ 13);
-        var _log = __webpack_require__(/*! ./log */ 19);
         var domainMatches = [];
         function isSameDomain(win) {
-            for (var _iterator = domainMatches, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = domainMatches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var _match = _step.value;
+                    if (_match.win === win) {
+                        return _match.match;
+                    }
                 }
-                var _match = _ref;
-                if (_match.win === win) {
-                    return _match.match;
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
                 }
             }
             var match = false;
@@ -1455,6 +1473,55 @@
                 match: match
             });
             return match;
+        }
+        var openers = [];
+        function getOpener(win) {
+            if (!win) {
+                return;
+            }
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+            try {
+                for (var _iterator2 = openers[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var _match2 = _step2.value;
+                    if (_match2.win === win) {
+                        return _match2.match;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                        _iterator2["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+            var match = win.opener;
+            openers.push({
+                win: win,
+                match: match
+            });
+            return match;
+        }
+        getOpener(window);
+        getOpener(window.parent);
+        getOpener(window.opener);
+        function getParentWindow(win) {
+            win = win || window;
+            var opener = getOpener(win);
+            if (opener) {
+                return opener;
+            }
+            if (win.parent !== win) {
+                return win.parent;
+            }
         }
         var windows = [];
         function getMap(key, value) {
@@ -1479,7 +1546,6 @@
                 if (existing) {
                     return;
                 }
-                _log.log.debug("Registering window:", type, id, win);
                 windows.push({
                     id: id,
                     win: win,
@@ -1506,6 +1572,7 @@
             }
             var win = _util.util.apply(openWindow, this, arguments);
             childWindows.register(name, win, _conf.CONSTANTS.WINDOW_TYPES.POPUP);
+            getOpener(win);
             return win;
         };
     }, /*!*****************************************!*\
@@ -1578,33 +1645,69 @@
                 }
             }).obj;
         }
-    }, /*!**************************************!*\
-  !*** ./~/post-robot/src/lib/tick.js ***!
-  \**************************************/
+    }, /*!***************************************!*\
+  !*** ./~/post-robot/src/lib/ready.js ***!
+  \***************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.nextTick = nextTick;
-        var _util = __webpack_require__(/*! ./util */ 13);
-        var tickMessageName = "__nextTick__postRobot__" + _util.util.uniqueID();
-        var queue = [];
-        window.addEventListener("message", function(event) {
-            if (event.data === tickMessageName) {
-                var method = queue.shift();
-                method.call();
+        exports.initOnReady = initOnReady;
+        exports.onWindowReady = onWindowReady;
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _windows = __webpack_require__(/*! ./windows */ 21);
+        var _interface = __webpack_require__(/*! ../interface */ 7);
+        var _log = __webpack_require__(/*! ./log */ 20);
+        var _promise = __webpack_require__(/*! ./promise */ 17);
+        var readyWindows = [];
+        var readyPromises = [];
+        function initOnReady() {
+            (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.READY, function(source, data) {
+                readyWindows.push(source);
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+                try {
+                    for (var _iterator = readyPromises[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var item = _step.value;
+                        if (item.win === source) {
+                            item.resolve(item.win);
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"]) {
+                            _iterator["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+            });
+            var parent = (0, _windows.getParentWindow)();
+            if (parent) {
+                (0, _interface.send)(parent, _conf.CONSTANTS.POST_MESSAGE_NAMES.READY, {})["catch"](function(err) {
+                    _log.log.debug(err.stack || err.toString());
+                });
             }
-        });
-        function nextTick(method) {
-            if (window.setImmediate) {
-                return window.setImmediate.call(window, method);
-            }
-            if (window.nextTick) {
-                return window.nextTick.call(window, method);
-            }
-            queue.push(method);
-            window.postMessage(tickMessageName, "*");
+        }
+        function onWindowReady(win) {
+            return new _promise.promise.Promise(function(resolve) {
+                if (readyWindows.indexOf(win) !== -1) {
+                    return resolve(win);
+                } else {
+                    readyPromises.push({
+                        win: win,
+                        resolve: resolve
+                    });
+                }
+            });
         }
     }, /*!******************************************!*\
   !*** ./~/post-robot/src/compat/index.js ***!
@@ -1614,7 +1717,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _bridge = __webpack_require__(/*! ./bridge */ 24);
+        var _bridge = __webpack_require__(/*! ./bridge */ 25);
         Object.keys(_bridge).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1624,7 +1727,7 @@
                 }
             });
         });
-        var _global = __webpack_require__(/*! ./global */ 25);
+        var _global = __webpack_require__(/*! ./global */ 26);
         Object.keys(_global).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1634,7 +1737,7 @@
                 }
             });
         });
-        var _ie = __webpack_require__(/*! ./ie */ 26);
+        var _ie = __webpack_require__(/*! ./ie */ 27);
         Object.keys(_ie).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1656,7 +1759,8 @@
         exports.getBridge = getBridge;
         exports.getBridgeFor = getBridgeFor;
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _lib = __webpack_require__(/*! ../lib */ 18);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
+        var BRIDGE_NAME_PREFIX = "postrobot_bridge";
         var bridge = void 0;
         var openBridge = exports.openBridge = _lib.util.memoize(function(url) {
             if (bridge) {
@@ -1672,7 +1776,7 @@
             });
             bridge = documentReady.then(function(document) {
                 _lib.log.debug("Opening bridge:", url);
-                var id = "postrobot_bridge_" + _lib.util.uniqueID();
+                var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
                 var iframe = document.createElement("iframe");
                 iframe.setAttribute("name", id);
                 iframe.setAttribute("id", id);
@@ -1688,16 +1792,18 @@
                 iframe.src = url;
                 document.body.appendChild(iframe);
                 return new _lib.promise.Promise(function(resolve, reject) {
-                    iframe.onload = function() {
-                        return resolve(iframe);
-                    };
+                    iframe.onload = resolve;
                     iframe.onerror = reject;
+                }).then(function() {
+                    return (0, _lib.onWindowReady)(iframe.contentWindow);
                 });
             });
             return bridge;
         });
         function getBridge() {
-            return bridge;
+            return _lib.promise.Promise.resolve().then(function() {
+                return bridge;
+            });
         }
         function getBridgeFor(win) {
             try {
@@ -1728,17 +1834,14 @@
         });
         exports.registerGlobals = registerGlobals;
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _lib = __webpack_require__(/*! ../lib */ 18);
-        var _drivers = __webpack_require__(/*! ../drivers */ 16);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
+        var _drivers = __webpack_require__(/*! ../drivers */ 14);
         function registerGlobals() {
             if (window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
                 throw new Error("Attempting to load postRobot twice on the same window");
             }
             window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT] = {
                 postMessage: function postMessage(event) {
-                    if (_lib.util.getDomain(event.source) !== _lib.util.getDomain(window)) {
-                        return;
-                    }
                     (0, _lib.nextTick)(function() {
                         return (0, _drivers.receiveMessage)(event);
                     });
@@ -1755,7 +1858,7 @@
         });
         exports.emulateIERestrictions = emulateIERestrictions;
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _lib = __webpack_require__(/*! ../lib */ 18);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
         function emulateIERestrictions(sourceWindow, targetWindow) {
             if (!_conf.CONFIG.ALLOW_POSTMESSAGE_POPUP) {
                 var isIframeMessagingParent = _lib.util.isFrameOwnedBy(targetWindow, sourceWindow);
@@ -1777,7 +1880,6 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.sendMessage = undefined;
         var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -1790,9 +1892,10 @@
             return target;
         };
         exports.buildMessage = buildMessage;
+        exports.sendMessage = sendMessage;
         var _conf = __webpack_require__(/*! ../../conf */ 9);
-        var _lib = __webpack_require__(/*! ../../lib */ 18);
-        var _strategies = __webpack_require__(/*! ./strategies */ 28);
+        var _lib = __webpack_require__(/*! ../../lib */ 16);
+        var _strategies = __webpack_require__(/*! ./strategies */ 29);
         function buildMessage(win, message) {
             var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
             var id = _lib.util.uniqueID();
@@ -1808,28 +1911,30 @@
                 target: message.target || target
             });
         }
-        var sendMessage = exports.sendMessage = _lib.promise.method(function(win, message, domain, isProxy) {
-            message = buildMessage(win, message, {
-                data: (0, _lib.serializeMethods)(win, message.data),
-                domain: domain
-            });
-            _lib.log.logLevel(_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 ? "debug" : "info", [ isProxy ? "#proxy" : "#send", message.type, message.name, message ]);
-            if (_conf.CONFIG.MOCK_MODE) {
-                delete message.target;
-                return window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
-                    origin: _lib.util.getDomain(window),
-                    source: window,
-                    data: JSON.stringify(message)
+        function sendMessage(win, message, domain, isProxy) {
+            return _lib.promise.run(function() {
+                message = buildMessage(win, message, {
+                    data: (0, _lib.serializeMethods)(win, message.data),
+                    domain: domain
                 });
-            }
-            if (win === window) {
-                throw new Error("Attemping to send message to self");
-            }
-            if (win.closed) {
-                throw new Error("Window is closed");
-            }
-            _lib.log.debug("Running send message strategies", message);
-            return _lib.util.windowReady.then(function() {
+                var level = _conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 ? "debug" : "info";
+                _lib.log.logLevel(level, [ isProxy ? "#sendproxy" : "#send", message.type, message.name, message ]);
+                if (_conf.CONFIG.MOCK_MODE) {
+                    delete message.target;
+                    return window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
+                        origin: _lib.util.getDomain(window),
+                        source: window,
+                        data: JSON.stringify(message)
+                    });
+                }
+                if (win === window) {
+                    throw new Error("Attemping to send message to self");
+                }
+                if (win.closed) {
+                    throw new Error("Window is closed");
+                }
+                _lib.log.debug("Running send message strategies", message);
+                var messages = [];
                 return _lib.promise.map(_lib.util.keys(_strategies.SEND_MESSAGE_STRATEGIES), function(strategyName) {
                     return _lib.promise.run(function() {
                         if (!_conf.CONFIG.ALLOWED_POST_MESSAGE_METHODS[strategyName]) {
@@ -1837,19 +1942,22 @@
                         }
                         return _strategies.SEND_MESSAGE_STRATEGIES[strategyName](win, message, domain);
                     }).then(function() {
-                        _lib.log.debug(strategyName, "success");
+                        messages.push(strategyName + ": success");
                         return true;
                     }, function(err) {
-                        _lib.log.debug(strategyName, "error\n\n", err.message);
+                        messages.push(strategyName + ": " + err.message);
                         return false;
                     });
                 }).then(function(results) {
-                    if (!_lib.util.some(results)) {
-                        throw new Error("No post-message strategy succeeded");
+                    var success = _lib.util.some(results);
+                    var status = message.type + " " + message.name + " " + (success ? "success" : "error") + ":\n  - " + messages.join("\n  - ") + "\n";
+                    _lib.log.debug(status);
+                    if (!success) {
+                        throw new Error(status);
                     }
                 });
             });
-        });
+        }
     }, /*!*****************************************************!*\
   !*** ./~/post-robot/src/drivers/send/strategies.js ***!
   \*****************************************************/
@@ -1861,8 +1969,8 @@
         exports.SEND_MESSAGE_STRATEGIES = undefined;
         var _SEND_MESSAGE_STRATEG;
         var _conf = __webpack_require__(/*! ../../conf */ 9);
-        var _lib = __webpack_require__(/*! ../../lib */ 18);
-        var _compat = __webpack_require__(/*! ../../compat */ 23);
+        var _lib = __webpack_require__(/*! ../../lib */ 16);
+        var _compat = __webpack_require__(/*! ../../compat */ 24);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -1877,82 +1985,90 @@
             return obj;
         }
         var SEND_MESSAGE_STRATEGIES = exports.SEND_MESSAGE_STRATEGIES = (_SEND_MESSAGE_STRATEG = {}, 
-        _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, _lib.promise.method(function(win, message, domain) {
+        _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, function(win, message, domain) {
             (0, _compat.emulateIERestrictions)(window, win);
             return win.postMessage(JSON.stringify(message, 0, 2), domain);
-        })), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_GLOBAL_METHOD, _lib.promise.method(function(win, message, domain) {
-            if (domain !== "*") {
-                var winDomain = void 0;
-                try {
-                    winDomain = _lib.util.getDomain(win);
-                } catch (err) {}
-                if (!winDomain) {
-                    throw new Error("Can post post through global method - domain set to " + domain + ", but we can not verify the domain of the target window");
-                }
-                if (winDomain !== domain) {
-                    throw new Error("Can post post through global method - domain " + domain + " does not match target window domain " + winDomain);
-                }
-            }
+        }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.GLOBAL_METHOD, function(win, message, domain) {
             if (!(0, _lib.isSameDomain)(win)) {
-                throw new Error("window is a different domain");
+                throw new Error("Window is not on the same domain");
+            }
+            var sourceDomain = _lib.util.getDomain(window);
+            var targetDomain = void 0;
+            try {
+                targetDomain = _lib.util.getDomain(win);
+            } catch (err) {
+                throw new Error("Can not read target window domain: " + err.message);
+            }
+            if (sourceDomain !== targetDomain) {
+                throw new Error("Can not send global message - source " + sourceDomain + " does not match target " + targetDomain);
+            }
+            if (domain !== "*" && targetDomain !== domain) {
+                throw new Error("Can post post through global method - specified domain " + domain + " does not match target domain " + targetDomain);
             }
             if (!_lib.util.safeHasProp(win, _conf.CONSTANTS.WINDOW_PROPS.POSTROBOT)) {
-                throw new Error("postRobot not found on window");
+                throw new Error("post-robot not available on target window at " + targetDomain);
             }
             win[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
                 origin: _lib.util.getDomain(window),
                 source: window,
                 data: JSON.stringify(message, 0, 2)
             });
-        })), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_UP_THROUGH_BRIDGE, _lib.promise.method(function(win, message, domain) {
-            if (_lib.util.isFrameOwnedBy(window, win) || _lib.util.isFrameOwnedBy(win, window)) {
-                throw new Error("No need to use bridge for frame to frame message");
+        }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, function(win, message, domain) {
+            if ((0, _lib.getOpener)(win) !== window && (0, _lib.getOpener)(window) !== win) {
+                throw new Error("Can only use bridge to communicate between a window and a child or parent window");
             }
             var frame = (0, _compat.getBridgeFor)(win);
             if (!frame) {
                 throw new Error("No bridge available in window");
             }
             if (!(0, _lib.isSameDomain)(frame)) {
-                throw new Error("Bridge is different domain");
+                throw new Error("Bridge is not on the same domain");
+            }
+            var sourceDomain = _lib.util.getDomain(window);
+            var targetDomain = void 0;
+            try {
+                targetDomain = _lib.util.getDomain(frame);
+            } catch (err) {
+                throw new Error("Can not read bridge window domain: " + err.message);
+            }
+            if (sourceDomain !== targetDomain) {
+                throw new Error("Can not accept global message through bridge - source " + sourceDomain + " does not match bridge " + targetDomain);
             }
             if (!_lib.util.safeHasProp(frame, _conf.CONSTANTS.WINDOW_PROPS.POSTROBOT)) {
-                throw new Error("postRobot not installed in bridge");
+                throw new Error("post-robot not available on bridge at " + targetDomain);
             }
-            if (win === window.opener) {
-                message.targetHint = "window.parent";
-            }
-            if (window === win.opener) {
+            message.targetHint = "window.parent";
+            if (window === (0, _lib.getOpener)(win)) {
                 message.sourceHint = "window.opener";
             }
-            return frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
+            frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
                 origin: _lib.util.getDomain(window),
                 source: window,
                 data: JSON.stringify(message, 0, 2)
             });
-        })), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE_DOWN_THROUGH_BRIDGE, _lib.promise.method(function(win, message, domain) {
-            if (_lib.util.isFrameOwnedBy(window, win) || _lib.util.isFrameOwnedBy(win, window)) {
-                throw new Error("No need to use bridge for frame to frame message");
-            }
-            var bridge = (0, _compat.getBridge)();
-            if (!bridge) {
-                throw new Error("Bridge not initialized");
-            }
-            if (win === window.opener) {
-                message.targetHint = "window.parent.opener";
-            }
-            if (window === win.opener) {
-                message.sourceHint = "window.opener";
+        }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, function(win, message, domain) {
+            if ((0, _lib.getOpener)(win) !== window && (0, _lib.getOpener)(window) !== win) {
+                throw new Error("Can only use bridge to communicate between a window and a child or parent window");
             }
             if (!message.target) {
                 throw new Error("Can not post message down through bridge without target");
             }
-            return bridge.then(function(iframe) {
-                if (win === iframe.contentWindow) {
+            if (win === (0, _lib.getOpener)(window)) {
+                message.targetHint = "window.parent.opener";
+            }
+            if (window === (0, _lib.getOpener)(win)) {
+                message.sourceHint = "window.opener";
+            }
+            return (0, _compat.getBridge)().then(function(bridge) {
+                if (!bridge) {
+                    throw new Error("Bridge not initialized");
+                }
+                if (win === bridge) {
                     throw new Error("Message target is bridge");
                 }
-                iframe.contentWindow.postMessage(JSON.stringify(message, 0, 2), domain);
+                bridge.postMessage(JSON.stringify(message, 0, 2), domain);
             });
-        })), _SEND_MESSAGE_STRATEG);
+        }), _SEND_MESSAGE_STRATEG);
     }, /*!***********************************************!*\
   !*** ./~/post-robot/src/drivers/listeners.js ***!
   \***********************************************/
@@ -1966,7 +2082,7 @@
         exports.getRequestListener = getRequestListener;
         exports.removeRequestListener = removeRequestListener;
         exports.addRequestListener = addRequestListener;
-        var _lib = __webpack_require__(/*! ../lib */ 18);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
         var listeners = exports.listeners = void 0;
         function resetListeners() {
             exports.listeners = listeners = {
@@ -1976,44 +2092,62 @@
             };
         }
         function getRequestListener(name, win) {
-            for (var _iterator = listeners.request, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = listeners.request[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var requestListener = _step.value;
+                    if (requestListener.name !== name) {
+                        continue;
+                    }
+                    if (!requestListener.win) {
+                        return requestListener.options;
+                    }
+                    if (win && _lib.childWindows.isEqual(win, requestListener.win)) {
+                        return requestListener.options;
+                    }
                 }
-                var requestListener = _ref;
-                if (requestListener.name !== name) {
-                    continue;
-                }
-                if (!requestListener.win) {
-                    return requestListener.options;
-                }
-                if (win && _lib.childWindows.isEqual(win, requestListener.win)) {
-                    return requestListener.options;
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
                 }
             }
         }
         function removeRequestListener(options) {
             var listener = void 0;
-            for (var _iterator2 = listeners.request, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+            try {
+                for (var _iterator2 = listeners.request[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var requestListener = _step2.value;
+                    if (requestListener.options === options) {
+                        listener = requestListener;
+                        break;
+                    }
                 }
-                var requestListener = _ref2;
-                if (requestListener.options === options) {
-                    listener = requestListener;
-                    break;
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                        _iterator2["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
                 }
             }
             if (listener) {
@@ -2058,9 +2192,9 @@
             return target;
         };
         var _conf = __webpack_require__(/*! ../../conf */ 9);
-        var _lib = __webpack_require__(/*! ../../lib */ 18);
-        var _send = __webpack_require__(/*! ../send */ 27);
-        var _listeners = __webpack_require__(/*! ../listeners */ 29);
+        var _lib = __webpack_require__(/*! ../../lib */ 16);
+        var _send = __webpack_require__(/*! ../send */ 28);
+        var _listeners = __webpack_require__(/*! ../listeners */ 30);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -2151,8 +2285,8 @@
         exports.on = on;
         exports.once = once;
         var _conf = __webpack_require__(/*! ../conf */ 9);
-        var _lib = __webpack_require__(/*! ../lib */ 18);
-        var _drivers = __webpack_require__(/*! ../drivers */ 16);
+        var _lib = __webpack_require__(/*! ../lib */ 16);
+        var _drivers = __webpack_require__(/*! ../drivers */ 14);
         function listen(options) {
             if (!options.name) {
                 throw new Error("Expected options.name");
@@ -2230,7 +2364,7 @@
         });
         exports.proxy = proxy;
         exports.unproxy = unproxy;
-        var _drivers = __webpack_require__(/*! ../drivers */ 16);
+        var _drivers = __webpack_require__(/*! ../drivers */ 14);
         function proxy(window1, window2) {
             _drivers.listeners.proxies.push({
                 from: window1,
@@ -2291,7 +2425,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _component = __webpack_require__(/*! ./component */ 35);
+        var _component = __webpack_require__(/*! ./component */ 36);
         Object.keys(_component).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2301,7 +2435,7 @@
                 }
             });
         });
-        var _parent = __webpack_require__(/*! ./parent */ 56);
+        var _parent = __webpack_require__(/*! ./parent */ 58);
         Object.keys(_parent).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2311,7 +2445,7 @@
                 }
             });
         });
-        var _child = __webpack_require__(/*! ./child */ 46);
+        var _child = __webpack_require__(/*! ./child */ 47);
         Object.keys(_child).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2357,18 +2491,18 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 36);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 37);
         var _client2 = _interopRequireDefault(_client);
-        var _child = __webpack_require__(/*! ../child */ 46);
-        var _parent = __webpack_require__(/*! ../parent */ 56);
-        var _props = __webpack_require__(/*! ./props */ 60);
-        var _constants = __webpack_require__(/*! ../../constants */ 54);
-        var _validate2 = __webpack_require__(/*! ./validate */ 61);
-        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 62);
+        var _child = __webpack_require__(/*! ../child */ 47);
+        var _parent = __webpack_require__(/*! ../parent */ 58);
+        var _props = __webpack_require__(/*! ./props */ 62);
+        var _constants = __webpack_require__(/*! ../../constants */ 56);
+        var _validate2 = __webpack_require__(/*! ./validate */ 63);
+        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 64);
         var _parent3 = _interopRequireDefault(_parent2);
-        var _component = __webpack_require__(/*! ./templates/component.htm */ 63);
+        var _component = __webpack_require__(/*! ./templates/component.htm */ 65);
         var _component2 = _interopRequireDefault(_component);
-        var _drivers = __webpack_require__(/*! ../../drivers */ 64);
+        var _drivers = __webpack_require__(/*! ../../drivers */ 66);
         var drivers = _interopRequireWildcard(_drivers);
         function _interopRequireWildcard(obj) {
             if (obj && obj.__esModule) {
@@ -2416,38 +2550,56 @@
                 this.envUrls = options.envUrls || {};
                 this.url = options.url || options.envUrls[options.defaultEnv];
                 this.contexts = options.contexts || {};
-                for (var _iterator = _constants.CONTEXT_TYPES_LIST, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        _i = _iterator.next();
-                        if (_i.done) break;
-                        _ref = _i.value;
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+                try {
+                    for (var _iterator = _constants.CONTEXT_TYPES_LIST[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var context = _step.value;
+                        this.contexts[context] = this.contexts[context] === undefined ? true : Boolean(this.contexts[context]);
                     }
-                    var context = _ref;
-                    this.contexts[context] = this.contexts[context] === undefined ? true : Boolean(this.contexts[context]);
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"]) {
+                            _iterator["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
                 }
                 this.defaultContext = options.defaultContext;
                 this.singleton = options.singleton;
                 this.parentTemplate = options.parentTemplate || _parent3["default"];
                 this.componentTemplate = options.componentTemplate || _component2["default"];
                 components[this.tag] = this;
-                for (var _iterator2 = Object.keys(drivers), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        _i2 = _iterator2.next();
-                        if (_i2.done) break;
-                        _ref2 = _i2.value;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+                try {
+                    for (var _iterator2 = Object.keys(drivers)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var driverName = _step2.value;
+                        var driver = drivers[driverName];
+                        if (driver.isActive()) {
+                            driver.register(this);
+                        }
                     }
-                    var driverName = _ref2;
-                    var driver = drivers[driverName];
-                    if (driver.isActive()) {
-                        driver.register(this);
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                            _iterator2["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
                     }
                 }
             }
@@ -2508,15 +2660,15 @@
             } ]);
             return Component;
         }();
-    }, /*!*****************************************!*\
-  !*** ./~/beaver-logger/client/index.js ***!
-  \*****************************************/
+    }, /*!******************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/index.js ***!
+  \******************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _logger = __webpack_require__(/*! ./logger */ 37);
+        var _logger = __webpack_require__(/*! ./logger */ 38);
         Object.keys(_logger).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2526,7 +2678,7 @@
                 }
             });
         });
-        var _init = __webpack_require__(/*! ./init */ 43);
+        var _init = __webpack_require__(/*! ./init */ 44);
         Object.keys(_init).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2536,7 +2688,7 @@
                 }
             });
         });
-        var _transitions = __webpack_require__(/*! ./transitions */ 45);
+        var _transitions = __webpack_require__(/*! ./transitions */ 46);
         Object.keys(_transitions).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2546,7 +2698,7 @@
                 }
             });
         });
-        var _builders = __webpack_require__(/*! ./builders */ 41);
+        var _builders = __webpack_require__(/*! ./builders */ 42);
         Object.keys(_builders).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2557,9 +2709,9 @@
             });
         });
         exports["default"] = module.exports;
-    }, /*!******************************************!*\
-  !*** ./~/beaver-logger/client/logger.js ***!
-  \******************************************/
+    }, /*!*******************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/logger.js ***!
+  \*******************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -2574,9 +2726,9 @@
         exports.warn = warn;
         exports.error = error;
         exports.track = track;
-        var _util = __webpack_require__(/*! ./util */ 38);
-        var _builders = __webpack_require__(/*! ./builders */ 41);
-        var _config = __webpack_require__(/*! ./config */ 42);
+        var _util = __webpack_require__(/*! ./util */ 39);
+        var _builders = __webpack_require__(/*! ./builders */ 42);
+        var _config = __webpack_require__(/*! ./config */ 43);
         var buffer = exports.buffer = [];
         var tracking = exports.tracking = {};
         function print(level, event, payload) {
@@ -2605,56 +2757,83 @@
                 print("info", "tracking", tracking);
             }
             var meta = {};
-            for (var _iterator = _builders.metaBuilders, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = _builders.metaBuilders[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var builder = _step.value;
+                    try {
+                        (0, _util.extend)(meta, builder(), false);
+                    } catch (err) {
+                        console.error("Error in custom meta builder:", err.stack || err.toString());
+                    }
                 }
-                var builder = _ref;
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
                 try {
-                    (0, _util.extend)(meta, builder(), false);
-                } catch (err) {
-                    console.error("Error in custom meta builder:", err.stack || err.toString());
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
                 }
             }
-            for (var _iterator2 = _builders.trackingBuilders, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+            try {
+                for (var _iterator2 = _builders.trackingBuilders[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var _builder = _step2.value;
+                    try {
+                        (0, _util.extend)(tracking, _builder(), false);
+                    } catch (err) {
+                        console.error("Error in custom tracking builder:", err.stack || err.toString());
+                    }
                 }
-                var _builder = _ref2;
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
                 try {
-                    (0, _util.extend)(tracking, _builder(), false);
-                } catch (err) {
-                    console.error("Error in custom tracking builder:", err.stack || err.toString());
+                    if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                        _iterator2["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
                 }
             }
             var headers = {};
-            for (var _iterator3 = _builders.headerBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
+            try {
+                for (var _iterator3 = _builders.headerBuilders[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var _builder2 = _step3.value;
+                    try {
+                        (0, _util.extend)(headers, _builder2(), false);
+                    } catch (err) {
+                        console.error("Error in custom header builder:", err.stack || err.toString());
+                    }
                 }
-                var _builder2 = _ref3;
+            } catch (err) {
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
+            } finally {
                 try {
-                    (0, _util.extend)(headers, _builder2(), false);
-                } catch (err) {
-                    console.error("Error in custom header builder:", err.stack || err.toString());
+                    if (!_iteratorNormalCompletion3 && _iterator3["return"]) {
+                        _iterator3["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError3) {
+                        throw _iteratorError3;
+                    }
                 }
             }
             var events = buffer;
@@ -2690,21 +2869,30 @@
                 };
             }
             payload.timestamp = Date.now();
-            for (var _iterator4 = _builders.payloadBuilders, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i4++];
-                } else {
-                    _i4 = _iterator4.next();
-                    if (_i4.done) break;
-                    _ref4 = _i4.value;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+            try {
+                for (var _iterator4 = _builders.payloadBuilders[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                    var builder = _step4.value;
+                    try {
+                        (0, _util.extend)(payload, builder(), false);
+                    } catch (err) {
+                        console.error("Error in custom payload builder:", err.stack || err.toString());
+                    }
                 }
-                var builder = _ref4;
+            } catch (err) {
+                _didIteratorError4 = true;
+                _iteratorError4 = err;
+            } finally {
                 try {
-                    (0, _util.extend)(payload, builder(), false);
-                } catch (err) {
-                    console.error("Error in custom payload builder:", err.stack || err.toString());
+                    if (!_iteratorNormalCompletion4 && _iterator4["return"]) {
+                        _iterator4["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError4) {
+                        throw _iteratorError4;
+                    }
                 }
             }
             print(level, event, payload);
@@ -2729,9 +2917,9 @@
         function track(payload) {
             (0, _util.extend)(tracking, payload || {}, false);
         }
-    }, /*!****************************************!*\
-  !*** ./~/beaver-logger/client/util.js ***!
-  \****************************************/
+    }, /*!*****************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/util.js ***!
+  \*****************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -2744,7 +2932,7 @@
         exports.promiseDebounce = promiseDebounce;
         exports.safeInterval = safeInterval;
         exports.uniqueID = uniqueID;
-        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 39);
+        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 40);
         function extend(dest, src) {
             var over = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
             dest = dest || {};
@@ -3059,7 +3247,7 @@
                 };
                 var O = 0;
                 h.all = function(a, b) {
-                    return new k(this, a, !0, b).c;
+                    return new k(this, a, (!0), b).c;
                 };
                 h.race = function(a, b) {
                     function c(a) {
@@ -3122,15 +3310,33 @@
                     return z;
                 }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "undefined" !== typeof module && module.exports ? module.exports = z : "undefined" !== typeof this && (this.ES6Promise = z);
             }).call(undefined);
-        }).call(exports, __webpack_require__(/*! ./~/process/browser.js */ 40), function() {
+        }).call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 41), function() {
             return this;
         }());
-    }, /*!******************************!*\
-  !*** ./~/process/browser.js ***!
-  \******************************/
+    }, /*!**********************************************************!*\
+  !*** (webpack)/~/node-libs-browser/~/process/browser.js ***!
+  \**********************************************************/
     function(module, exports) {
         "use strict";
         var process = module.exports = {};
+        var cachedSetTimeout;
+        var cachedClearTimeout;
+        (function() {
+            try {
+                cachedSetTimeout = setTimeout;
+            } catch (e) {
+                cachedSetTimeout = function cachedSetTimeout() {
+                    throw new Error("setTimeout is not defined");
+                };
+            }
+            try {
+                cachedClearTimeout = clearTimeout;
+            } catch (e) {
+                cachedClearTimeout = function cachedClearTimeout() {
+                    throw new Error("clearTimeout is not defined");
+                };
+            }
+        })();
         var queue = [];
         var draining = false;
         var currentQueue;
@@ -3153,7 +3359,7 @@
             if (draining) {
                 return;
             }
-            var timeout = setTimeout(cleanUpNextTick);
+            var timeout = cachedSetTimeout(cleanUpNextTick);
             draining = true;
             var len = queue.length;
             while (len) {
@@ -3169,7 +3375,7 @@
             }
             currentQueue = null;
             draining = false;
-            clearTimeout(timeout);
+            cachedClearTimeout(timeout);
         }
         process.nextTick = function(fun) {
             var args = new Array(arguments.length - 1);
@@ -3180,7 +3386,7 @@
             }
             queue.push(new Item(fun, args));
             if (queue.length === 1 && !draining) {
-                setTimeout(drainQueue, 0);
+                cachedSetTimeout(drainQueue, 0);
             }
         };
         function Item(fun, array) {
@@ -3216,9 +3422,9 @@
         process.umask = function() {
             return 0;
         };
-    }, /*!********************************************!*\
-  !*** ./~/beaver-logger/client/builders.js ***!
-  \********************************************/
+    }, /*!*********************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/builders.js ***!
+  \*********************************************************/
     function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -3244,9 +3450,9 @@
         function addHeaderBuilder(builder) {
             headerBuilders.push(builder);
         }
-    }, /*!******************************************!*\
-  !*** ./~/beaver-logger/client/config.js ***!
-  \******************************************/
+    }, /*!*******************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/config.js ***!
+  \*******************************************************/
     function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -3268,19 +3474,19 @@
             logUnloadSync: false,
             logPerformance: true
         };
-    }, /*!****************************************!*\
-  !*** ./~/beaver-logger/client/init.js ***!
-  \****************************************/
+    }, /*!*****************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/init.js ***!
+  \*****************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
         exports.init = init;
-        var _config = __webpack_require__(/*! ./config */ 42);
-        var _util = __webpack_require__(/*! ./util */ 38);
-        var _performance = __webpack_require__(/*! ./performance */ 44);
-        var _logger = __webpack_require__(/*! ./logger */ 37);
+        var _config = __webpack_require__(/*! ./config */ 43);
+        var _util = __webpack_require__(/*! ./util */ 39);
+        var _performance = __webpack_require__(/*! ./performance */ 45);
+        var _logger = __webpack_require__(/*! ./logger */ 38);
         var initiated = false;
         function init(conf) {
             (0, _util.extend)(_config.config, conf || {});
@@ -3317,9 +3523,9 @@
                 delete window.beaverLogQueue;
             }
         }
-    }, /*!***********************************************!*\
-  !*** ./~/beaver-logger/client/performance.js ***!
-  \***********************************************/
+    }, /*!************************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/performance.js ***!
+  \************************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -3330,10 +3536,10 @@
         exports.reqStartElapsed = reqStartElapsed;
         exports.initHeartBeat = initHeartBeat;
         exports.initPerformance = initPerformance;
-        var _config = __webpack_require__(/*! ./config */ 42);
-        var _logger = __webpack_require__(/*! ./logger */ 37);
-        var _builders = __webpack_require__(/*! ./builders */ 41);
-        var _util = __webpack_require__(/*! ./util */ 38);
+        var _config = __webpack_require__(/*! ./config */ 43);
+        var _logger = __webpack_require__(/*! ./logger */ 38);
+        var _builders = __webpack_require__(/*! ./builders */ 42);
+        var _util = __webpack_require__(/*! ./util */ 39);
         var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
         function now() {
             if (enablePerformance) {
@@ -3435,9 +3641,9 @@
                 }
             });
         }
-    }, /*!***********************************************!*\
-  !*** ./~/beaver-logger/client/transitions.js ***!
-  \***********************************************/
+    }, /*!************************************************************!*\
+  !*** ./~/xcomponent/~/beaver-logger/client/transitions.js ***!
+  \************************************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -3446,11 +3652,11 @@
         exports.startTransition = startTransition;
         exports.endTransition = endTransition;
         exports.transition = transition;
-        var _performance = __webpack_require__(/*! ./performance */ 44);
-        var _logger = __webpack_require__(/*! ./logger */ 37);
-        var _builders = __webpack_require__(/*! ./builders */ 41);
-        var _util = __webpack_require__(/*! ./util */ 38);
-        var _config = __webpack_require__(/*! ./config */ 42);
+        var _performance = __webpack_require__(/*! ./performance */ 45);
+        var _logger = __webpack_require__(/*! ./logger */ 38);
+        var _builders = __webpack_require__(/*! ./builders */ 42);
+        var _util = __webpack_require__(/*! ./util */ 39);
+        var _config = __webpack_require__(/*! ./config */ 43);
         var windowID = (0, _util.uniqueID)();
         var pageID = (0, _util.uniqueID)();
         var currentState = _config.config.initial_state_name;
@@ -3520,13 +3726,13 @@
         }();
         var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 15);
-        var _base = __webpack_require__(/*! ../base */ 47);
-        var _window = __webpack_require__(/*! ../window */ 53);
-        var _lib = __webpack_require__(/*! ../../lib */ 48);
-        var _constants = __webpack_require__(/*! ../../constants */ 54);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 48);
+        var _base = __webpack_require__(/*! ../base */ 49);
+        var _window = __webpack_require__(/*! ../window */ 55);
+        var _lib = __webpack_require__(/*! ../../lib */ 50);
+        var _constants = __webpack_require__(/*! ../../constants */ 56);
         var _error = __webpack_require__(/*! ../../error */ 5);
-        var _props = __webpack_require__(/*! ../props */ 55);
+        var _props = __webpack_require__(/*! ../props */ 57);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -3739,6 +3945,166 @@
             } ]);
             return ChildComponent;
         }(_base.BaseComponent);
+    }, /*!**********************************************************!*\
+  !*** ./~/xcomponent/~/sync-browser-mocks/src/promise.js ***!
+  \**********************************************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.patchPromise = patchPromise;
+        function trycatch(method, successHandler, errorHandler) {
+            var isCalled = false;
+            var isSuccess = false;
+            var isError = false;
+            var err, res;
+            function flush() {
+                if (isCalled) {
+                    if (isError) {
+                        return errorHandler(err);
+                    } else if (isSuccess) {
+                        return successHandler(res);
+                    }
+                }
+            }
+            try {
+                method(function(result) {
+                    res = result;
+                    isSuccess = true;
+                    flush();
+                }, function(error) {
+                    err = error;
+                    isError = true;
+                    flush();
+                });
+            } catch (error) {
+                return errorHandler(error);
+            }
+            isCalled = true;
+            flush();
+        }
+        var SyncPromise = exports.SyncPromise = function SyncPromise(handler) {
+            this.resolved = false;
+            this.rejected = false;
+            this.handlers = [];
+            if (!handler) {
+                return;
+            }
+            var self = this;
+            trycatch(handler, function(res) {
+                return self.resolve(res);
+            }, function(err) {
+                return self.reject(err);
+            });
+        };
+        SyncPromise.resolve = function SyncPromiseResolve(value) {
+            if (value && value.then) {
+                return value;
+            }
+            return new SyncPromise().resolve(value);
+        };
+        SyncPromise.reject = function SyncPromiseResolve(error) {
+            return new SyncPromise().reject(error);
+        };
+        SyncPromise.prototype.resolve = function(result) {
+            if (this.resolved || this.rejected) {
+                return this;
+            }
+            if (result && result.then) {
+                throw new Error("Can not resolve promise with another promise");
+            }
+            this.resolved = true;
+            this.value = result;
+            this.dispatch();
+            return this;
+        };
+        SyncPromise.prototype.reject = function(error) {
+            if (this.resolved || this.rejected) {
+                return this;
+            }
+            if (error && error.then) {
+                throw new Error("Can not reject promise with another promise");
+            }
+            this.rejected = true;
+            this.value = error;
+            this.dispatch();
+            return this;
+        };
+        SyncPromise.prototype.dispatch = function() {
+            if (!this.resolved && !this.rejected) {
+                return;
+            }
+            while (this.handlers.length) {
+                var handler = this.handlers.shift();
+                var result, error;
+                try {
+                    if (this.resolved) {
+                        result = handler.onSuccess ? handler.onSuccess(this.value) : this.value;
+                    } else {
+                        if (handler.onError) {
+                            result = handler.onError(this.value);
+                        } else {
+                            error = this.value;
+                        }
+                    }
+                } catch (err) {
+                    error = err;
+                }
+                if (result === this) {
+                    throw new Error("Can not return a promise from the the same promise");
+                }
+                if (error) {
+                    handler.promise.reject(error);
+                } else if (result && result.then) {
+                    result.then(function(res) {
+                        handler.promise.resolve(res);
+                    }, function(err) {
+                        handler.promise.reject(err);
+                    });
+                } else {
+                    handler.promise.resolve(result);
+                }
+            }
+        };
+        SyncPromise.prototype.then = function(onSuccess, onError) {
+            var promise = new SyncPromise();
+            this.handlers.push({
+                promise: promise,
+                onSuccess: onSuccess,
+                onError: onError
+            });
+            this.dispatch();
+            return promise;
+        };
+        SyncPromise.prototype["catch"] = function(onError) {
+            return this.then(null, onError);
+        };
+        SyncPromise.prototype.done = function(successHandler, errorHandler) {
+            this.then(successHandler, errorHandler || function(err) {
+                console.error(err.stack || err.toString());
+            });
+        };
+        SyncPromise.all = function(promises) {
+            var promise = new SyncPromise();
+            var count = promises.length;
+            var results = [];
+            for (var i = 0; i < promises.length; i++) {
+                promises[i].then(function(result) {
+                    results[i] = result;
+                    count -= 1;
+                    if (count === 0) {
+                        promise.resolve(results);
+                    }
+                }, function(err) {
+                    promise.reject(err);
+                });
+            }
+            return promise;
+        };
+        function patchPromise() {
+            window.Promise = SyncPromise;
+        }
     }, /*!********************************************!*\
   !*** ./~/xcomponent/src/component/base.js ***!
   \********************************************/
@@ -3766,7 +4132,7 @@
         }();
         var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _lib = __webpack_require__(/*! ../lib */ 50);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -3842,33 +4208,41 @@
                         return;
                     }
                     var listeners = this.listeners();
-                    var _loop = function _loop() {
-                        if (_isArray) {
-                            if (_i >= _iterator.length) return "break";
-                            _ref = _iterator[_i++];
-                        } else {
-                            _i = _iterator.next();
-                            if (_i.done) return "break";
-                            _ref = _i.value;
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
+                    try {
+                        var _loop = function _loop() {
+                            var listenerName = _step.value;
+                            var listener = _src2["default"].on(listenerName, {
+                                window: win,
+                                errorHandler: function errorHandler(err) {
+                                    return _this2.error(err);
+                                }
+                            }, function(source, data) {
+                                _this2.component.log("listener_" + listenerName.replace(/^xcomponent_/, ""));
+                                return listeners[listenerName].call(_this2, source, data);
+                            });
+                            _this2.registerForCleanup(function() {
+                                listener.cancel();
+                            });
+                        };
+                        for (var _iterator = Object.keys(listeners)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            _loop();
                         }
-                        var listenerName = _ref;
-                        var listener = _src2["default"].on(listenerName, {
-                            window: win,
-                            errorHandler: function errorHandler(err) {
-                                return _this2.error(err);
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator["return"]) {
+                                _iterator["return"]();
                             }
-                        }, function(source, data) {
-                            _this2.component.log("listener_" + listenerName.replace(/^xcomponent_/, ""));
-                            return listeners[listenerName].call(_this2, source, data);
-                        });
-                        _this2.registerForCleanup(function() {
-                            listener.cancel();
-                        });
-                    };
-                    for (var _iterator = Object.keys(listeners), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        var _ret = _loop();
-                        if (_ret === "break") break;
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
                     }
                 }
             } ]);
@@ -3882,7 +4256,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _dom = __webpack_require__(/*! ./dom */ 49);
+        var _dom = __webpack_require__(/*! ./dom */ 51);
         Object.keys(_dom).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3892,7 +4266,7 @@
                 }
             });
         });
-        var _fn = __webpack_require__(/*! ./fn */ 50);
+        var _fn = __webpack_require__(/*! ./fn */ 52);
         Object.keys(_fn).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3902,7 +4276,7 @@
                 }
             });
         });
-        var _promise = __webpack_require__(/*! ./promise */ 52);
+        var _promise = __webpack_require__(/*! ./promise */ 54);
         Object.keys(_promise).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3912,7 +4286,7 @@
                 }
             });
         });
-        var _util = __webpack_require__(/*! ./util */ 51);
+        var _util = __webpack_require__(/*! ./util */ 53);
         Object.keys(_util).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3943,8 +4317,8 @@
         exports.hijackButton = hijackButton;
         exports.addEventToClass = addEventToClass;
         exports.template = template;
-        var _fn = __webpack_require__(/*! ./fn */ 50);
-        var _util = __webpack_require__(/*! ./util */ 51);
+        var _fn = __webpack_require__(/*! ./fn */ 52);
+        var _util = __webpack_require__(/*! ./util */ 53);
         function getElement(id) {
             if (id instanceof window.Element) {
                 return id;
@@ -3971,18 +4345,27 @@
         function iframe(container, url, options) {
             container = getElement(container);
             var frame = document.createElement("iframe");
-            for (var _iterator = Object.keys(options), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = Object.keys(options)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var key = _step.value;
+                    frame[key] = options[key];
                 }
-                var key = _ref;
-                frame[key] = options[key];
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
             }
             frame.style.backgroundColor = "transparent";
             frame.frameBorder = "0";
@@ -4077,18 +4460,27 @@
                 element.className = options["class"].join(" ");
             }
             if (options.attributes) {
-                for (var _iterator2 = Object.keys(options.attributes), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        _i2 = _iterator2.next();
-                        if (_i2.done) break;
-                        _ref2 = _i2.value;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+                try {
+                    for (var _iterator2 = Object.keys(options.attributes)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var key = _step2.value;
+                        element.setAttribute(key, options.attributes[key]);
                     }
-                    var key = _ref2;
-                    element.setAttribute(key, options.attributes[key]);
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                            _iterator2["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
+                    }
                 }
             }
             if (options.styleSheet) {
@@ -4114,22 +4506,31 @@
             });
         }
         function addEventToClass(element, className, eventName, handler) {
-            for (var _iterator3 = Array.prototype.slice.call(element.getElementsByClassName(className)), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
+            try {
+                for (var _iterator3 = Array.prototype.slice.call(element.getElementsByClassName(className))[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var el = _step3.value;
+                    el.addEventListener(eventName, function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        handler();
+                    });
                 }
-                var el = _ref3;
-                el.addEventListener(eventName, function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    handler();
-                });
+            } catch (err) {
+                _didIteratorError3 = true;
+                _iteratorError3 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion3 && _iterator3["return"]) {
+                        _iterator3["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError3) {
+                        throw _iteratorError3;
+                    }
+                }
             }
         }
         function template(html, context) {
@@ -4326,7 +4727,7 @@
             value: true
         });
         exports.denodeify = denodeify;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 15);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 48);
         function denodeify(method) {
             return function() {
                 var self = this;
@@ -4356,8 +4757,8 @@
         exports.getParentComponentWindow = exports.parseWindowName = undefined;
         exports.buildChildWindowName = buildChildWindowName;
         exports.getPosition = getPosition;
-        var _lib = __webpack_require__(/*! ../lib */ 48);
-        var _constants = __webpack_require__(/*! ../constants */ 54);
+        var _lib = __webpack_require__(/*! ../lib */ 50);
+        var _constants = __webpack_require__(/*! ../constants */ 56);
         function buildChildWindowName(prefix) {
             var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             var name = (0, _lib.b64encode)(JSON.stringify(props));
@@ -4420,7 +4821,7 @@
             value: true
         });
         exports.MAX_Z_INDEX = exports.CONTEXT_TYPES_LIST = exports.EVENT_NAMES = exports.CLASS_NAMES = exports.CONTEXT_TYPES = exports.PROP_TYPES_LIST = exports.PROP_TYPES = exports.POST_MESSAGE = exports.XCOMPONENT = undefined;
-        var _lib = __webpack_require__(/*! ./lib */ 48);
+        var _lib = __webpack_require__(/*! ./lib */ 50);
         var XCOMPONENT = exports.XCOMPONENT = "xcomponent";
         var POST_MESSAGE = exports.POST_MESSAGE = {
             INIT: XCOMPONENT + "_init",
@@ -4468,7 +4869,7 @@
         });
         exports.normalizeProp = normalizeProp;
         exports.normalizeProps = normalizeProps;
-        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _lib = __webpack_require__(/*! ../lib */ 50);
         function normalizeProp(component, instance, props, key) {
             var prop = component.props[key];
             var value = props[key];
@@ -4514,18 +4915,27 @@
         function normalizeProps(component, instance, props) {
             props = props || {};
             var result = {};
-            for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = Object.keys(component.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var key = _step.value;
+                    result[key] = normalizeProp(component, instance, props, key);
                 }
-                var key = _ref;
-                result[key] = normalizeProp(component, instance, props, key);
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
             }
             return result;
         }
@@ -4565,19 +4975,19 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 36);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 37);
         var _client2 = _interopRequireDefault(_client);
         var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 15);
-        var _base = __webpack_require__(/*! ../base */ 47);
-        var _window = __webpack_require__(/*! ../window */ 53);
-        var _lib = __webpack_require__(/*! ../../lib */ 48);
-        var _constants = __webpack_require__(/*! ../../constants */ 54);
-        var _drivers = __webpack_require__(/*! ./drivers */ 57);
-        var _validate = __webpack_require__(/*! ./validate */ 58);
-        var _props = __webpack_require__(/*! ./props */ 59);
-        var _props2 = __webpack_require__(/*! ../props */ 55);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 48);
+        var _base = __webpack_require__(/*! ../base */ 49);
+        var _window = __webpack_require__(/*! ../window */ 55);
+        var _lib = __webpack_require__(/*! ../../lib */ 50);
+        var _constants = __webpack_require__(/*! ../../constants */ 56);
+        var _drivers = __webpack_require__(/*! ./drivers */ 59);
+        var _validate = __webpack_require__(/*! ./validate */ 60);
+        var _props = __webpack_require__(/*! ./props */ 61);
+        var _props2 = __webpack_require__(/*! ../props */ 57);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4656,45 +5066,53 @@
                     var _this2 = this;
                     (0, _validate.validateProps)(this.component, props);
                     this.props = (0, _props2.normalizeProps)(this.component, this, props);
-                    var _loop = function _loop() {
-                        if (_isArray) {
-                            if (_i >= _iterator.length) return "break";
-                            _ref = _iterator[_i++];
-                        } else {
-                            _i = _iterator.next();
-                            if (_i.done) return "break";
-                            _ref = _i.value;
-                        }
-                        var key = _ref;
-                        var value = _this2.props[key];
-                        if (value) {
-                            var prop = _this2.component.props[key];
-                            if (prop.precall) {
-                                (function() {
-                                    var result = value.call();
-                                    _this2.props[key] = function() {
-                                        return result;
-                                    };
-                                })();
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
+                    try {
+                        var _loop = function _loop() {
+                            var key = _step.value;
+                            var value = _this2.props[key];
+                            if (value) {
+                                var prop = _this2.component.props[key];
+                                if (prop.precall) {
+                                    (function() {
+                                        var result = value.call();
+                                        _this2.props[key] = function() {
+                                            return result;
+                                        };
+                                    })();
+                                }
+                                if (prop.autoClose) {
+                                    (function() {
+                                        var self = _this2;
+                                        _this2.props[key] = function() {
+                                            self.component.log("autoclose", {
+                                                prop: key
+                                            });
+                                            self.close();
+                                            return value.apply(this, arguments);
+                                        };
+                                    })();
+                                }
                             }
-                            if (prop.autoClose) {
-                                (function() {
-                                    var self = _this2;
-                                    _this2.props[key] = function() {
-                                        self.component.log("autoclose", {
-                                            prop: key
-                                        });
-                                        self.close();
-                                        return value.apply(this, arguments);
-                                    };
-                                })();
+                        };
+                        for (var _iterator = Object.keys(this.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            _loop();
+                        }
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator["return"]) {
+                                _iterator["return"]();
+                            }
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
                             }
                         }
-                    };
-                    for (var _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        var _ret = _loop();
-                        if (_ret === "break") break;
                     }
                 }
             }, {
@@ -4750,8 +5168,8 @@
                         return this.component.defaultContext;
                     }
                     var _arr = [ _constants.CONTEXT_TYPES.LIGHTBOX, _constants.CONTEXT_TYPES.POPUP ];
-                    for (var _i2 = 0; _i2 < _arr.length; _i2++) {
-                        var renderContext = _arr[_i2];
+                    for (var _i = 0; _i < _arr.length; _i++) {
+                        var renderContext = _arr[_i];
                         if (this.component.contexts[renderContext]) {
                             return renderContext;
                         }
@@ -4941,17 +5359,17 @@
             }, {
                 key: "listeners",
                 value: function listeners() {
-                    var _ref2;
-                    return _ref2 = {}, _defineProperty(_ref2, _constants.POST_MESSAGE.INIT, function(source, data) {
+                    var _ref;
+                    return _ref = {}, _defineProperty(_ref, _constants.POST_MESSAGE.INIT, function(source, data) {
                         this.props.onEnter();
                         this.onInit.resolve(this);
                         return {
                             context: this.context,
                             props: this.props
                         };
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.CLOSE, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.CLOSE, function(source, data) {
                         this.close();
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.RENDER, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER, function(source, data) {
                         var component = this.component.getByTag(data.tag);
                         var instance = component.parent(data.options);
                         if (data.hijackSubmitParentForm) {
@@ -4961,14 +5379,14 @@
                         } else {
                             instance.render(data.element, data.context);
                         }
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.RESIZE, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RESIZE, function(source, data) {
                         if (this.context === _constants.CONTEXT_TYPES.POPUP) {
                             return;
                         }
                         return this.resize(data.width, data.height);
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.ERROR, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.ERROR, function(source, data) {
                         this.error(new Error(data.error));
-                    }), _ref2;
+                    }), _ref;
                 }
             }, {
                 key: "resize",
@@ -5071,31 +5489,39 @@
             } ]);
             return ParentComponent;
         }(_base.BaseComponent);
-        var _loop2 = function _loop2() {
-            if (_isArray2) {
-                if (_i3 >= _iterator2.length) return "break";
-                _ref3 = _iterator2[_i3++];
-            } else {
-                _i3 = _iterator2.next();
-                if (_i3.done) return "break";
-                _ref3 = _i3.value;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+        try {
+            var _loop2 = function _loop2() {
+                var context = _step2.value;
+                var contextName = (0, _lib.capitalizeFirstLetter)(context);
+                ParentComponent.prototype["render" + contextName] = function(element) {
+                    return this.render(element, context);
+                };
+                ParentComponent.prototype["render" + contextName + "ToParent"] = function(element) {
+                    return this.renderToParent(element, context);
+                };
+                ParentComponent.prototype["hijackButtonTo" + contextName] = function(button, element) {
+                    return this.hijackButton(button, element, context);
+                };
+            };
+            for (var _iterator2 = _constants.CONTEXT_TYPES_LIST[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                _loop2();
             }
-            var context = _ref3;
-            var contextName = (0, _lib.capitalizeFirstLetter)(context);
-            ParentComponent.prototype["render" + contextName] = function(element) {
-                return this.render(element, context);
-            };
-            ParentComponent.prototype["render" + contextName + "ToParent"] = function(element) {
-                return this.renderToParent(element, context);
-            };
-            ParentComponent.prototype["hijackButtonTo" + contextName] = function(button, element) {
-                return this.hijackButton(button, element, context);
-            };
-        };
-        for (var _iterator2 = _constants.CONTEXT_TYPES_LIST, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-            var _ref3;
-            var _ret4 = _loop2();
-            if (_ret4 === "break") break;
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                    _iterator2["return"]();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
         }
     }, /*!******************************************************!*\
   !*** ./~/xcomponent/src/component/parent/drivers.js ***!
@@ -5108,9 +5534,9 @@
         exports.RENDER_DRIVERS = undefined;
         var _RENDER_DRIVERS;
         var _error = __webpack_require__(/*! ../../error */ 5);
-        var _lib = __webpack_require__(/*! ../../lib */ 48);
-        var _constants = __webpack_require__(/*! ../../constants */ 54);
-        var _window = __webpack_require__(/*! ../window */ 53);
+        var _lib = __webpack_require__(/*! ../../lib */ 50);
+        var _constants = __webpack_require__(/*! ../../constants */ 56);
+        var _window = __webpack_require__(/*! ../window */ 55);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -5244,58 +5670,76 @@
         exports.validate = validate;
         function validateProps(component, props) {
             props = props || {};
-            for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = Object.keys(props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var key = _step.value;
+                    if (!component.props.hasOwnProperty(key)) {
+                        throw new Error("[" + component.tag + "] Invalid prop: " + key);
+                    }
                 }
-                var key = _ref;
-                if (!component.props.hasOwnProperty(key)) {
-                    throw new Error("[" + component.tag + "] Invalid prop: " + key);
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
                 }
             }
-            for (var _iterator2 = Object.keys(component.props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+            try {
+                for (var _iterator2 = Object.keys(component.props)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var _key = _step2.value;
+                    var prop = component.props[_key];
+                    var value = props[_key];
+                    var hasProp = props.hasOwnProperty(_key) && value !== null && value !== undefined && value !== "";
+                    if (!hasProp) {
+                        if (prop.required !== false && !prop.hasOwnProperty("def")) {
+                            throw new Error("[" + component.tag + "] Prop is required: " + _key);
+                        }
+                        continue;
+                    }
+                    if (prop.type === "function") {
+                        if (!(value instanceof Function)) {
+                            throw new Error("[" + component.tag + "] Prop is not of type function: " + _key);
+                        }
+                    } else if (prop.type === "string") {
+                        if (typeof value !== "string") {
+                            throw new Error("[" + component.tag + "] Prop is not of type string: " + _key);
+                        }
+                    } else if (prop.type === "object") {
+                        try {
+                            JSON.stringify(value);
+                        } catch (err) {
+                            throw new Error("[" + component.tag + "] Unable to serialize prop: " + _key);
+                        }
+                    } else if (prop.type === "number") {
+                        if (isNaN(parseInt(value, 10))) {
+                            throw new Error("[" + component.tag + "] Prop is not a number: " + _key);
+                        }
+                    }
                 }
-                var _key = _ref2;
-                var prop = component.props[_key];
-                var value = props[_key];
-                var hasProp = props.hasOwnProperty(_key) && value !== null && value !== undefined && value !== "";
-                if (!hasProp) {
-                    if (prop.required !== false && !prop.hasOwnProperty("def")) {
-                        throw new Error("[" + component.tag + "] Prop is required: " + _key);
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                        _iterator2["return"]();
                     }
-                    continue;
-                }
-                if (prop.type === "function") {
-                    if (!(value instanceof Function)) {
-                        throw new Error("[" + component.tag + "] Prop is not of type function: " + _key);
-                    }
-                } else if (prop.type === "string") {
-                    if (typeof value !== "string") {
-                        throw new Error("[" + component.tag + "] Prop is not of type string: " + _key);
-                    }
-                } else if (prop.type === "object") {
-                    try {
-                        JSON.stringify(value);
-                    } catch (err) {
-                        throw new Error("[" + component.tag + "] Unable to serialize prop: " + _key);
-                    }
-                } else if (prop.type === "number") {
-                    if (isNaN(parseInt(value, 10))) {
-                        throw new Error("[" + component.tag + "] Prop is not a number: " + _key);
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
                     }
                 }
             }
@@ -5315,7 +5759,7 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.propsToQuery = propsToQuery;
-        var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _lib = __webpack_require__(/*! ../../lib */ 50);
         function propsToQuery(propsDef, props) {
             return Object.keys(props).map(function(key) {
                 var value = props[key];
@@ -5408,39 +5852,48 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.validate = validate;
-        var _props = __webpack_require__(/*! ./props */ 60);
-        var _constants = __webpack_require__(/*! ../../constants */ 54);
+        var _props = __webpack_require__(/*! ./props */ 62);
+        var _constants = __webpack_require__(/*! ../../constants */ 56);
         function validateProps(options) {
             if (options.props && !(_typeof(options.props) === "object")) {
                 throw new Error("[" + options.tag + "] Expected options.props to be an object");
             }
             if (options.props) {
-                for (var _iterator = Object.keys(options.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref;
-                    if (_isArray) {
-                        if (_i >= _iterator.length) break;
-                        _ref = _iterator[_i++];
-                    } else {
-                        _i = _iterator.next();
-                        if (_i.done) break;
-                        _ref = _i.value;
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+                try {
+                    for (var _iterator = Object.keys(options.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var key = _step.value;
+                        var prop = options.props[key];
+                        if (_props.internalProps.hasOwnProperty(key)) {
+                            throw new Error("[" + options.tag + "] Reserved prop name: " + key);
+                        }
+                        if (!prop || !((typeof prop === "undefined" ? "undefined" : _typeof(prop)) === "object")) {
+                            throw new Error("[" + options.tag + "] Expected options.props." + key + " to be an object");
+                        }
+                        if (!prop.type) {
+                            throw new Error("[" + options.tag + "] Expected prop.type");
+                        }
+                        if (_constants.PROP_TYPES_LIST.indexOf(prop.type) === -1) {
+                            throw new Error("[" + options.tag + "] Expected prop.type to be one of " + _constants.PROP_TYPES_LIST.join(", "));
+                        }
+                        if (prop.required && prop.def) {
+                            throw new Error("[" + options.tag + "] Required prop can not have a default value");
+                        }
                     }
-                    var key = _ref;
-                    var prop = options.props[key];
-                    if (_props.internalProps.hasOwnProperty(key)) {
-                        throw new Error("[" + options.tag + "] Reserved prop name: " + key);
-                    }
-                    if (!prop || !((typeof prop === "undefined" ? "undefined" : _typeof(prop)) === "object")) {
-                        throw new Error("[" + options.tag + "] Expected options.props." + key + " to be an object");
-                    }
-                    if (!prop.type) {
-                        throw new Error("[" + options.tag + "] Expected prop.type");
-                    }
-                    if (_constants.PROP_TYPES_LIST.indexOf(prop.type) === -1) {
-                        throw new Error("[" + options.tag + "] Expected prop.type to be one of " + _constants.PROP_TYPES_LIST.join(", "));
-                    }
-                    if (prop.required && prop.def) {
-                        throw new Error("[" + options.tag + "] Required prop can not have a default value");
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"]) {
+                            _iterator["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
                     }
                 }
             }
@@ -5452,22 +5905,31 @@
             validateProps(options);
             if (options.contexts) {
                 var anyEnabled = false;
-                for (var _iterator2 = Object.keys(options.contexts), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        _i2 = _iterator2.next();
-                        if (_i2.done) break;
-                        _ref2 = _i2.value;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+                try {
+                    for (var _iterator2 = Object.keys(options.contexts)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var context = _step2.value;
+                        if (_constants.CONTEXT_TYPES_LIST.indexOf(context) === -1) {
+                            throw new Error("[" + options.tag + "] Unsupported context type: " + context);
+                        }
+                        if (options.contexts[context] || options.contexts[context] === undefined) {
+                            anyEnabled = true;
+                        }
                     }
-                    var context = _ref2;
-                    if (_constants.CONTEXT_TYPES_LIST.indexOf(context) === -1) {
-                        throw new Error("[" + options.tag + "] Unsupported context type: " + context);
-                    }
-                    if (options.contexts[context] || options.contexts[context] === undefined) {
-                        anyEnabled = true;
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                            _iterator2["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
                     }
                 }
                 if (!anyEnabled) {
@@ -5483,19 +5945,28 @@
                 }
             }
             if (options.envUrls) {
-                for (var _iterator3 = Object.keys(options.envUrls), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
-                    if (_isArray3) {
-                        if (_i3 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i3++];
-                    } else {
-                        _i3 = _iterator3.next();
-                        if (_i3.done) break;
-                        _ref3 = _i3.value;
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+                try {
+                    for (var _iterator3 = Object.keys(options.envUrls)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                        var env = _step3.value;
+                        if (!options.envUrls[env]) {
+                            throw new Error("[" + options.tag + "] No url specified for env: " + env);
+                        }
                     }
-                    var env = _ref3;
-                    if (!options.envUrls[env]) {
-                        throw new Error("[" + options.tag + "] No url specified for env: " + env);
+                } catch (err) {
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion3 && _iterator3["return"]) {
+                            _iterator3["return"]();
+                        }
+                    } finally {
+                        if (_didIteratorError3) {
+                            throw _iteratorError3;
+                        }
                     }
                 }
             }
@@ -5533,7 +6004,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _script = __webpack_require__(/*! ./script */ 65);
+        var _script = __webpack_require__(/*! ./script */ 67);
         Object.keys(_script).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5543,7 +6014,7 @@
                 }
             });
         });
-        var _react = __webpack_require__(/*! ./react */ 66);
+        var _react = __webpack_require__(/*! ./react */ 68);
         Object.keys(_react).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5553,7 +6024,7 @@
                 }
             });
         });
-        var _angular = __webpack_require__(/*! ./angular */ 67);
+        var _angular = __webpack_require__(/*! ./angular */ 69);
         Object.keys(_angular).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5563,7 +6034,7 @@
                 }
             });
         });
-        var _ember = __webpack_require__(/*! ./ember */ 68);
+        var _ember = __webpack_require__(/*! ./ember */ 70);
         Object.keys(_ember).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5605,18 +6076,27 @@
                 }
                 function scan() {
                     var scriptTags = Array.prototype.slice.call(document.getElementsByTagName("script"));
-                    for (var _iterator = scriptTags, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            _i = _iterator.next();
-                            if (_i.done) break;
-                            _ref = _i.value;
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
+                    try {
+                        for (var _iterator = scriptTags[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            var element = _step.value;
+                            render(element);
                         }
-                        var element = _ref;
-                        render(element);
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator["return"]) {
+                                _iterator["return"]();
+                            }
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
                     }
                 }
                 scan();
@@ -5636,7 +6116,7 @@
             value: true
         });
         exports.react = undefined;
-        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _lib = __webpack_require__(/*! ../lib */ 50);
         var react = exports.react = {
             isActive: function isActive() {
                 return Boolean(window.React);
@@ -5671,7 +6151,7 @@
             value: true
         });
         exports.angular = undefined;
-        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _lib = __webpack_require__(/*! ../lib */ 50);
         var angular = exports.angular = {
             isActive: function isActive() {
                 return Boolean(window.angular);
@@ -5680,24 +6160,33 @@
                 var register = (0, _lib.once)(function(moduleName) {
                     window.angular.module(moduleName).directive((0, _lib.dasherizeToCamel)(component.tag), function() {
                         var scope = {};
-                        for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
-                            if (_isArray) {
-                                if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
-                            } else {
-                                _i = _iterator.next();
-                                if (_i.done) break;
-                                _ref = _i.value;
+                        var _iteratorNormalCompletion = true;
+                        var _didIteratorError = false;
+                        var _iteratorError = undefined;
+                        try {
+                            for (var _iterator = Object.keys(component.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                var key = _step.value;
+                                var prop = component.props[key];
+                                if (prop.type === "function" || prop.type === "object") {
+                                    scope[key] = "=";
+                                } else if (prop.type === "string" || prop.type === "boolean" || prop.type === "number") {
+                                    scope[key] = "@";
+                                } else {
+                                    throw new Error("Unrecognized prop type: " + prop.type);
+                                }
                             }
-                            var key = _ref;
-                            var prop = component.props[key];
-                            if (prop.type === "function" || prop.type === "object") {
-                                scope[key] = "=";
-                            } else if (prop.type === "string" || prop.type === "boolean" || prop.type === "number") {
-                                scope[key] = "@";
-                            } else {
-                                throw new Error("Unrecognized prop type: " + prop.type);
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator["return"]) {
+                                    _iterator["return"]();
+                                }
+                            } finally {
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
                             }
                         }
                         return {
@@ -5706,18 +6195,27 @@
                                 component.log("instantiate_angular_component");
                                 function getProps() {
                                     var instanceProps = {};
-                                    for (var _iterator2 = Object.keys(scope), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                        var _ref2;
-                                        if (_isArray2) {
-                                            if (_i2 >= _iterator2.length) break;
-                                            _ref2 = _iterator2[_i2++];
-                                        } else {
-                                            _i2 = _iterator2.next();
-                                            if (_i2.done) break;
-                                            _ref2 = _i2.value;
+                                    var _iteratorNormalCompletion2 = true;
+                                    var _didIteratorError2 = false;
+                                    var _iteratorError2 = undefined;
+                                    try {
+                                        for (var _iterator2 = Object.keys(scope)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                            var key = _step2.value;
+                                            instanceProps[key] = $scope[key];
                                         }
-                                        var key = _ref2;
-                                        instanceProps[key] = $scope[key];
+                                    } catch (err) {
+                                        _didIteratorError2 = true;
+                                        _iteratorError2 = err;
+                                    } finally {
+                                        try {
+                                            if (!_iteratorNormalCompletion2 && _iterator2["return"]) {
+                                                _iterator2["return"]();
+                                            }
+                                        } finally {
+                                            if (_didIteratorError2) {
+                                                throw _iteratorError2;
+                                            }
+                                        }
                                     }
                                     return instanceProps;
                                 }
@@ -5794,7 +6292,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _component = __webpack_require__(/*! ./component */ 71);
+        var _component = __webpack_require__(/*! ./component */ 73);
         Object.keys(_component).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5826,8 +6324,8 @@
         };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 69);
-        var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 72);
+        var _props = __webpack_require__(/*! ../props */ 71);
+        var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 74);
         var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
@@ -5982,24 +6480,33 @@
         }
         onDocumentReady(function() {
             var buttons = document.querySelectorAll("[data-paypal-button]");
-            for (var _iterator = Array.prototype.slice.call(buttons), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref3 = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref3 = _i.value;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+            try {
+                for (var _iterator = Array.prototype.slice.call(buttons)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var button = _step.value;
+                    var env = button.attributes["data-env"] && button.attributes["data-env"].value;
+                    if (!env && button.attributes["data-sandbox"]) {
+                        env = "sandbox";
+                    }
+                    initPayPalCheckout({
+                        env: env
+                    }).hijackButton(button);
                 }
-                var button = _ref3;
-                var env = button.attributes["data-env"] && button.attributes["data-env"].value;
-                if (!env && button.attributes["data-sandbox"]) {
-                    env = "sandbox";
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator["return"]) {
+                        _iterator["return"]();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
                 }
-                initPayPalCheckout({
-                    env: env
-                }).hijackButton(button);
             }
         });
         window.paypal = window.paypal || {};
