@@ -1,71 +1,11 @@
 import gulp from 'gulp';
-import webpack from 'webpack';
 import gulpWebpack from 'gulp-webpack';
 import eslint from 'gulp-eslint';
 import { Server } from 'karma';
 import { argv } from 'yargs';
+import { WEBPACK_CONFIG, WEBPACK_CONFIG_MIN } from './webpack.conf';
 
 gulp.task('build', ['webpack', 'webpack-min']);
-
-let FILE_NAME = 'checkout-components';
-let MODULE_NAME = 'ppxo';
-
-let WEBPACK_CONFIG = {
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015'],
-          plugins: [
-            'transform-object-rest-spread',
-            'syntax-object-rest-spread',
-            'transform-es3-property-literals',
-            'transform-es3-member-expression-literals',
-            ['transform-es2015-for-of', {loose: true}]
-          ]
-        }
-      },
-      {
-        test: /\.(html?|css)$/,
-        loader: 'raw-loader'
-      }
-    ]
-  },
-  output: {
-    filename: `${FILE_NAME}.js`,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    library: MODULE_NAME,
-    pathinfo: true
-  },
-  bail: true,
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      test: /\.js$/,
-      beautify: true,
-      minimize: false,
-      compress: false,
-      mangle: false
-    })
-  ]
-};
-
-let WEBPACK_CONFIG_MIN = Object.assign({}, WEBPACK_CONFIG, {
-  output: {
-    filename: `${FILE_NAME}.min.js`,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    library: MODULE_NAME
-  },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      test: /\.js$/,
-      minimize: true
-    })
-  ]
-});
 
 gulp.task('webpack', ['lint'], function() {
   return gulp.src('src/index.js')
