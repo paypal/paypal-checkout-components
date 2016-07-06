@@ -59,9 +59,7 @@ ppxo.PayPalButton.render({
 }, '#myContainerElement');
 ````
 
-You can also drop PayPal buttons as an inline element on your page, using your favorite framework or with a simple `<script>` element:
-
-You can also put PayPal buttons inline on your page, exactly where you want them to display:
+You can also drop PayPal buttons inline on your page, using `React`, `Angular`, or with a simple `<script>` tag:
 
 #### Script Element
 
