@@ -51,7 +51,9 @@ and you can take your customer to a success page.
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
 
-We will call the `onPaymentComplete` function you define when the payment has been fully completed by the customer.
+1. You call `ppxo.PayPalButton.render` to add the PayPal Button to the page
+2. When the buyer clicks the button and completes the payment on PayPal, we call your `onPaymentComplete` function
+3. The payment is now complete!
 
 ````javascript
 ppxo.PayPalButton.render({
@@ -196,13 +198,14 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
-- You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-- We call your `getToken` function, when we need you to generate an Express Checkout token
-- You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
-- When you get the token, you pass it back to us using `callback(null, token)`;
-- We take the buyer through the PayPal Checkout flow to authorize the transaction
-- When we're done, we call your `onPaymentAuthorized` function
-- You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
+1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
+2. We call your `getToken` function, when we need you to generate an Express Checkout token
+3. You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
+4. When you get the token, you pass it back to us using `callback(null, token)`;
+5. We take the buyer through the PayPal Checkout flow to authorize the transaction
+6. When we're done, we call your `onPaymentAuthorized` function
+7. You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
+8. The payment is complete!
 
 ```javascript
 ppxo.PayPalButton.render({
@@ -277,7 +280,9 @@ a **click event**, otherwise the component will be blocked by most web browsers'
 
 This integration lets you specify all of your payment parameters all at once, to initialize the checkout flow.
 
-We will call the `onPaymentComplete` function you define when the payment has been fully completed by the customer.
+1. You call `ppxo.PayPalCheckout.render` to load the PayPal Checkout flow on your page
+2. When the buyer completes the payment on PayPal, we call your `onPaymentComplete` function
+3. The payment is now complete!
 
 ```javascript
 $('#myCheckoutButton').on('click', function() {
@@ -316,14 +321,14 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
-- You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-- We call your `getToken` function, when we need you to generate an Express Checkout token
-- You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
-- When you get the token, you pass it back to us using `callback(null, token)`;
-- We take the buyer through the PayPal Checkout flow to authorize the transaction
-- When we're done, we call your `onPaymentAuthorized` function
-- You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
-
+1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
+2. We call your `getToken` function, when we need you to generate an Express Checkout token
+3. You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
+4. When you get the token, you pass it back to us using `callback(null, token)`;
+5. We take the buyer through the PayPal Checkout flow to authorize the transaction
+6. When we're done, we call your `onPaymentAuthorized` function
+7. You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
+8. The payment is complete!
 
 ```javascript
 $('#myCheckoutButton').on('click', function() {
