@@ -119,7 +119,6 @@ will appear exactly where you place them in your HTML.
 			}
 		}
 	</script>
-
 </div>
 ```
 
@@ -147,7 +146,6 @@ var MyCartComponent = window.React.createClass({
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
 			<ppxo.PayPalButton.React locale='en_US' paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />
-
 		</div>);
 	}
 });
@@ -160,7 +158,8 @@ myapp.controller('cartController', function($scope) {
 
 	$scope.paymentOptions = {
 		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '24.99'
+		amount: '24.99',
+		currency: 'USD'
 	}
 
 	$scope.onPaymentComplete = function(data) {
@@ -178,7 +177,6 @@ myapp.controller('cartController', function($scope) {
 	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
 	<paypal-button locale='en_US' paymentOptions="paymentOptions" onPaymentComplete="onPaymentComplete"></paypal-button>
-
 </div>
 ```
 
