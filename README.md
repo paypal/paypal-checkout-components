@@ -40,7 +40,8 @@ ppxo.PayPalButton.render({
 
 	paymentOptions: {
 		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '5.99'
+		amount: '24.99',
+		currency: 'USD'
 	},
 
 
@@ -141,44 +142,51 @@ You can also put PayPal buttons inline on your page, exactly where you want them
 #### Script Element
 
 ```html
-<script type="application/x-component" data-component="paypal-button">
-    {
-		// Pass your preferred locale, used to render the button
+<div class="myCart">
+	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-		locale: 'en_US',
+	<script type="application/x-component" data-component="paypal-button">
+		{
+			// Pass your preferred locale, used to render the button
 
-
-		// Pass the payment options for your transaction
-
-		paymentOptions: {
-			merchant: 'merchant@my-paypal-enabled-business.com',
-			amount: '5.99'
-		},
+			locale: 'en_US',
 
 
-		// Pass a function to be called when the customer completes the payment
+			// Pass the payment options for your transaction
 
-		onPaymentComplete: function(data) {
+			paymentOptions: {
+				merchant: 'merchant@my-paypal-enabled-business.com',
+				amount: '24.99',
+                currency: 'USD'
+			},
 
-			console.log('The payment was completed!');
-			console.log('Token = ', data.token);
-			console.log('PayerID = ', data.payerID);
 
-			// Go to your success page
+			// Pass a function to be called when the customer completes the payment
+
+			onPaymentComplete: function(data) {
+
+				console.log('The payment was completed!');
+				console.log('Token = ', data.token);
+				console.log('PayerID = ', data.payerID);
+
+				// Go to your success page
+			}
 		}
-    }
-</script>
+	</script>
+
+</div>
 ```
 
 #### React Element
 
 ```javascript
-var MyReactComponent = window.React.createClass({
+var MyCartComponent = window.React.createClass({
 	render: function() {
 
 		var paymentOptions = {
 			merchant: 'merchant@my-paypal-enabled-business.com',
-			amount: '5.99'
+			amount: '24.99',
+			currency: 'USD'
 		}
 
 		function onPaymentComplete(data) {
@@ -189,7 +197,12 @@ var MyReactComponent = window.React.createClass({
 			// Go to your success page
 		}
 
-		return <ppxo.PayPalButton.React locale='en_US' paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />;
+		return (<div className='shoppingCart'>
+			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
+
+			<ppxo.PayPalButton.React locale='en_US' paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />
+
+		</div>);
 	}
 });
 ```
@@ -197,11 +210,11 @@ var MyReactComponent = window.React.createClass({
 #### Angular Element
 
 ```javascript
-myapp.controller('myController', function($scope) {
+myapp.controller('cartController', function($scope) {
 
 	$scope.paymentOptions = {
 		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '5.99'
+		amount: '24.99'
 	}
 
 	$scope.onPaymentComplete = function(data) {
@@ -215,8 +228,11 @@ myapp.controller('myController', function($scope) {
 ```
 
 ```html
-<div ng-controller="myController">
+<div class="shoppingCart" ng-controller="cartController">
+	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
+
 	<paypal-button locale='en_US' paymentOptions="paymentOptions" onPaymentComplete="onPaymentComplete"></paypal-button>
+
 </div>
 ```
 
@@ -246,7 +262,8 @@ ppxo.PayPalCheckout.render({
 
 	paymentOptions: {
 		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '5.99'
+		amount: '24.99',
+		currency: 'USD'
 	},
 
 
