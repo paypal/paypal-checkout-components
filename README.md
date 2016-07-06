@@ -62,7 +62,6 @@ ppxo.PayPalButton.render({
 
 	locale: 'en_US',
 
-
 	// Pass the payment options for your transaction
 
 	paymentOptions: {
@@ -70,7 +69,6 @@ ppxo.PayPalButton.render({
 		amount: '24.99',
 		currency: 'USD'
 	},
-
 
 	// Pass a function to be called when the customer completes the payment
 
