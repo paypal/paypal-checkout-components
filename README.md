@@ -1,25 +1,50 @@
 PayPal Checkout Components
 --------------------------
 
-Components allowing easy integration of PayPal Checkout into your web-site, powered by [xcomponent](https://github.com/krakenjs/xcomponent).
+A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
+[xcomponent](https://github.com/krakenjs/xcomponent).
 
-These components allow you to add PayPal Checkout and PayPal Buttons to your website, using both a simple and an advanced integration style depending on
-the flexibility you need, and how much you need to fine-tune your checkout experience.
+These components support various levels of integration, depending on your requirements:
+
+- A simple PayPal Button which takes your customer through the payment process end-to-end
+- An advanced PayPal Button which allows you to use [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) to accept payments
+- Support for drop-in PayPal Buttons using simple JavaScript, HTML, React, Angular, or Ember, depending on the technology your site uses
+- Stand-alone PayPal Checkout, if you have your own pre-existing checkout button you want to use
+
+### Which Integration is right for me?
+
+- Do you want the **simplest possible PayPal Integration**? If so, you should stick with the **PayPal Checkout Button**
+  using a **Script Element** which allows you to just drop a button straight into your page. This will allow your customer
+  to pay with PayPal, and we'll notify you when they're done.
+
+- Do you use **React, Angular or Ember** to render your page? If so, you should use the **React, Angular or Ember Elements**,
+  which provide native support for each of these frameworks, so you can drop PayPal Buttons in any of your front-end views.
+
+- Do you **have your own checkout button** and you only want to use the PayPal Checkout flow? If so you
+  should use the **PayPal Checkout** component, which opens up the PayPal Checkout flow on-demand, when you decide.
+
+- Do you need **finely grained control** over your transaction; creating and finalizing transactions from your server
+  side using PayPal's REST api? If so you should use the **Advanced Javascript Integration**, which will allow you to create
+  and finalize the transaction yourself on your server side using the [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) APIs.
+  Then you can just use the **PayPal Button** or **PayPal Checkout** components to get the customer's approval for the payment,
+  and do the rest on your server side.
 
 ## Usage
 
-Add `checkout.v4.js` to your page
+1. Add `checkout.v4.js` to your page:
 
-```html
-<script src="https://www.paypalobjects.com/api/checkout.v4.js"></script>
-```
+   ```html
+   <script src="https://www.paypalobjects.com/api/checkout.v4.js"></script>
+   ```
+
+2. Drop one of the following components into your page:
 
 ## PayPal Checkout Button
 
 ![PayPal Button](./button.png)
 
 This component renders a PayPal button onto your page, which will take care of opening up PayPal for you and guiding
-your customer through the payment process. After the payment is complete, we will notify you using a javascript callback
+your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
 and you can take your customer to a success page.
 
 ### Simple Javascript Integration
