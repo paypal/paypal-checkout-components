@@ -8,8 +8,8 @@ These components support various levels of integration, depending on your requir
 
 - A simple PayPal Button which takes your customer through the payment process end-to-end
 - An advanced PayPal Button which allows you to use [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) to accept payments
-- Support for drop-in PayPal Buttons using simple JavaScript, HTML, React, Angular, or Ember, depending on the technology your site uses
-- Stand-alone PayPal Checkout, if you have your own pre-existing checkout button you want to use
+- Support for drop-in PayPal Buttons using simple JavaScript, HTML, React.js, Angular.js, or Ember.js, depending on the technology your site uses
+- Stand-alone PayPal Checkout, if you have your own pre-existing checkout button
 
 ### Which Integration is right for me?
 
@@ -17,7 +17,7 @@ These components support various levels of integration, depending on your requir
   using a **Script Element** which allows you to just drop a button straight into your page. This will allow your customer
   to pay with PayPal, and we'll notify you when they're done.
 
-- Do you use **React, Angular or Ember** to render your page? If so, you should use the **React, Angular or Ember Elements**,
+- Do you use **React.js, Angular.js or Ember.js** to render your page? If so, you should use the **React.js, Angular.js or Ember.js Elements**,
   which provide native support for each of these frameworks, so you can drop PayPal Buttons in any of your front-end views.
 
 - Do you **have your own checkout button** and you only want to use the PayPal Checkout flow? If so you
@@ -27,7 +27,7 @@ These components support various levels of integration, depending on your requir
   side using PayPal's REST api? If so you should use the **Advanced Javascript Integration**, which will allow you to create
   and finalize the transaction yourself on your server side using the [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) APIs.
   Then you can just use the **PayPal Button** or **PayPal Checkout** components to get the customer's approval for the payment,
-  and do the rest on your server side.
+  and do everything else on your server side.
 
 ## Usage
 
@@ -84,7 +84,8 @@ ppxo.PayPalButton.render({
 }, '#myContainerElement');
 ````
 
-You can also drop PayPal buttons inline on your page, using `React`, `Angular`, or with a simple `<script>` tag:
+You can also drop PayPal Buttons inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
+will appear exactly where you place them in your HTML.
 
 #### Script Element
 
@@ -98,7 +99,6 @@ You can also drop PayPal buttons inline on your page, using `React`, `Angular`, 
 
 			locale: 'en_US',
 
-
 			// Pass the payment options for your transaction
 
 			paymentOptions: {
@@ -106,7 +106,6 @@ You can also drop PayPal buttons inline on your page, using `React`, `Angular`, 
 				amount: '24.99',
                 currency: 'USD'
 			},
-
 
 			// Pass a function to be called when the customer completes the payment
 
@@ -124,7 +123,7 @@ You can also drop PayPal buttons inline on your page, using `React`, `Angular`, 
 </div>
 ```
 
-#### React Element
+#### React.js Element
 
 ```javascript
 var MyCartComponent = window.React.createClass({
@@ -154,7 +153,7 @@ var MyCartComponent = window.React.createClass({
 });
 ```
 
-#### Angular Element
+#### Angular.js Element
 
 ```javascript
 myapp.controller('cartController', function($scope) {
@@ -183,6 +182,12 @@ myapp.controller('cartController', function($scope) {
 </div>
 ```
 
+#### Ember.js Element
+
+```javascipt
+// Watch this space
+```
+
 
 ### Advanced Javascript Integration (Express-Checkout)
 
@@ -205,7 +210,6 @@ ppxo.PayPalButton.render({
 	// Pass your preferred locale, used to render the button
 
 	locale: 'en_US',
-
 
 	// Pass a function which will retrieve the express checkout token for the transaction
 
@@ -230,7 +234,6 @@ ppxo.PayPalButton.render({
 				callback(err);
 			});
 	},
-
 
 	// Pass a function to be called when the customer approves the payment
 
@@ -280,7 +283,6 @@ ppxo.PayPalCheckout.render({
 
 	locale: 'en_US',
 
-
 	// Pass the payment options for your transaction
 
 	paymentOptions: {
@@ -288,7 +290,6 @@ ppxo.PayPalCheckout.render({
 		amount: '24.99',
 		currency: 'USD'
 	},
-
 
 	// Pass a function to be called when the customer completes the payment
 
@@ -300,7 +301,6 @@ ppxo.PayPalCheckout.render({
 
 		// Go to your success page
 	}
-
 });
 ```
 
@@ -324,7 +324,6 @@ ppxo.PayPalCheckout.render({
 	// Pass your preferred locale, used to render the checkout flow
 
 	locale: 'en_US',
-
 
 	// Pass a function which will retrieve the express checkout token for the transaction
 
@@ -350,7 +349,6 @@ ppxo.PayPalCheckout.render({
 			});
 	},
 
-
 	// Pass a function to be called when the customer approves the payment
 
 	onPaymentAuthorized: function(data) {
@@ -374,7 +372,6 @@ ppxo.PayPalCheckout.render({
 				// Go to an error page
 			});
 	}
-
 });
 ```
 
