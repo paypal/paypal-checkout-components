@@ -197,7 +197,7 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-2. We call your `getToken` function, when we need you to call the PayPal REST API to create a payment token
+2. We call your `generatePaymentToken` function, when we need you to call the PayPal REST API to create a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
@@ -214,7 +214,7 @@ ppxo.PayPalButton.render({
 
 	// Pass a function which will retrieve the payment token for the transaction
 
-	getToken: function(callback) {
+	generatePaymentToken: function(callback) {
 
 		// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
 		// the PayPal Payment Create api to retrieve the token.
@@ -320,7 +320,7 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
-2. We call your `getToken` function, when we need you to call the PayPal REST API to create a payment token
+2. We call your `generatePaymentToken` function, when we need you to call the PayPal REST API to create a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
@@ -338,7 +338,7 @@ $('#myCheckoutButton').on('click', function() {
 
 		// Pass a function which will retrieve the payment token for the transaction
 
-		getToken: function(callback) {
+		generatePaymentToken: function(callback) {
 
 			// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
 			// the PayPal Payment Create api to retrieve the token.
@@ -510,7 +510,7 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
    ```javascript
    ppxo.PayPalButton.render({
 
-	   getToken: function(callback) {
+	   generatePaymentToken: function(callback) {
 	       // Call your server side to get the approval url from step 3
 
 	       callback(null, approval_url);
