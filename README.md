@@ -7,7 +7,7 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 These components support various levels of integration, depending on your requirements:
 
 - A simple PayPal Button which takes your customer through the payment process end-to-end
-- An advanced PayPal Button which allows you to use [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to accept payments
+- An advanced PayPal Button which allows you to use [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to accept payments
 - Support for drop-in PayPal Buttons using simple JavaScript, HTML, React.js, Angular.js, or Ember.js, depending on the technology your site uses
 - Stand-alone PayPal Checkout, if you have your own pre-existing checkout button
 
@@ -25,7 +25,7 @@ These components support various levels of integration, depending on your requir
 
 - Do you need **finely grained control** over your transaction; creating and finalizing transactions from your server
   side using PayPal's REST api? If so you should use the **Advanced Javascript Integration**, which will allow you to create
-  and finalize the transaction yourself on your server side using the [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/).
+  and finalize the transaction yourself on your server side using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/).
   Then you can just use the **PayPal Button** or **PayPal Checkout** components to get the customer's approval for the payment,
   and do everything else on your server side.
 
@@ -189,11 +189,11 @@ myapp.controller('cartController', function($scope) {
 
 ### Advanced Javascript Integration (Express-Checkout)
 
-This integration uses [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/),
+This integration uses [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/),
 which is more useful for advanced integrations.
 
 Unlike the simple integration, you will be responsible for calling PayPal's
-[PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to set up the
+[PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
@@ -316,7 +316,7 @@ $('#myCheckoutButton').on('click', function() {
 ### Advanced Javascript Integration (Express-Checkout)
 
 Unlike the simple integration, you will be responsible for calling PayPal's
-[PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to set up the
+[PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
