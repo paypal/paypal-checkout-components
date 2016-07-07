@@ -197,7 +197,7 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-2. We call your `generatePaymentToken` function, when we need you to call the PayPal REST API to create a payment token
+2. We call your `generatePaymentToken` function, when we need a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
@@ -320,7 +320,7 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
-2. We call your `generatePaymentToken` function, when we need you to call the PayPal REST API to create a payment token
+2. We call your `generatePaymentToken` function, when we need a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
