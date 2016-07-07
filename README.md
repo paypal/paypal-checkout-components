@@ -221,7 +221,7 @@ ppxo.PayPalButton.render({
 		//
 		// See https://developer.paypal.com/docs/api/payments/#payment_create
 
-		$.post('https://www.my-paypal-store.com/my-api/set-express-checkout')
+		$.post('https://www.my-paypal-store.com/my-api/payment-create')
 
 			// Handle the success case by passing the token to the callback
 
@@ -249,7 +249,7 @@ ppxo.PayPalButton.render({
 		//
 		// See https://developer.paypal.com/docs/api/payments/#payment_execute
 
-		$.post('https://www.my-paypal-store.com/my-api/do-express-checkout');
+		$.post('https://www.my-paypal-store.com/my-api/payment-execute', { token: data.token, payerID: data.payerID });
 
 			.done(function(data) {
 				 // Go to a success page
@@ -345,7 +345,7 @@ $('#myCheckoutButton').on('click', function() {
 			//
 			// See https://developer.paypal.com/docs/api/payments/#payment_create
 
-			$.post('https://www.my-paypal-store.com/my-api/set-express-checkout')
+			$.post('https://www.my-paypal-store.com/my-api/create-payment')
 
 				// Handle the success case by passing the token to the callback
 
@@ -373,7 +373,7 @@ $('#myCheckoutButton').on('click', function() {
 			//
 			// See https://developer.paypal.com/docs/api/payments/#payment_execute
 
-			$.post('https://www.my-paypal-store.com/my-api/do-express-checkout');
+			$.post('https://www.my-paypal-store.com/my-api/execute-payment', { token: data.token, payerID: data.payerID });
 
 				.done(function(data) {
 					 // Go to a success page
@@ -517,12 +517,17 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
    ppxo.PayPalButton.render({
 
 	   generatePaymentToken: function(callback) {
-	       // Call your server side to get the approval url from step 3
 
-	       callback(null, approval_url);
+	       // Call your server side to get the approval url from step 3, then pass it to the callback
+
+		   $.post('https://www.my-paypal-store.com/my-api/payment-create')
+		       .done(function(data) {
+			       callback(null, data.approval_url);
+		       });
 	   },
 
 	   onPaymentAuthorized: function(data) {
+
 	       // Call payment execute (see step 5)
 	   }
 
