@@ -401,6 +401,8 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
    - Your app client id (from step 1)
    - Your app secret (from step 1)
 
+   ---
+
    ```shell
    CLIENT_ID='E4gg1bkY8HgPXVFuqOeQMXppxgdfJglTkYaez4tLVUnVBeRsgTpVBK9ngxGdqp7';
    SECRET='HyltbozR9LCmWfW61XrUmoMnfctxgDmnbl4WlIDX5pvipzHDB0Y65aZ72tJk7aV';
@@ -430,6 +432,8 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 
    - The access token (`access_token` from the response in step 2)
    - The payment details for the transaction you want to create
+
+   ---
 
    ```shell
    ACCESS_TOKEN='89DLEZCl8IxnYLf1fdnpBoJfGZ6iOv3zcdfXjfa3o8Jdg5VBQ9fa4rD3tI6Tczn';
@@ -507,6 +511,8 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 
    - The approval url (`links[i].href` from the response in step 3, where `rel === "approval_url"`)
 
+   ---
+
    ```javascript
    ppxo.PayPalButton.render({
 
@@ -525,11 +531,13 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 
 5. Call `api.paypal.com/v1/payments/payment/PAYMENT-ID/execute` to finalize a transaction
 
-	You'll need:
+   You'll need:
 
-	- The access token (`access_token` from the response in step 2)
-	- The payment id (`id` from the response in step 3)
-	- The payer id (`data.payerID` from the response to `onPaymentAuthorized` from the buyer approval in step 4)
+   - The access token (`access_token` from the response in step 2)
+   - The payment id (`id` from the response in step 3)
+   - The payer id (`data.payerID` from the response to `onPaymentAuthorized` from the buyer approval in step 4)
+
+   ---
 
    ```shell
    ACCESS_TOKEN='89DLEZCl8IxnYLf1fdnpBoJfGZ6iOv3zcdfXjfa3o8Jdg5VBQ9fa4rD3tI6Tczn';
