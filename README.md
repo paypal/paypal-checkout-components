@@ -7,7 +7,7 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 These components support various levels of integration, depending on your requirements:
 
 - A simple PayPal Button which takes your customer through the payment process end-to-end
-- An advanced PayPal Button which allows you to use [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) to accept payments
+- An advanced PayPal Button which allows you to use [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to accept payments
 - Support for drop-in PayPal Buttons using simple JavaScript, HTML, React.js, Angular.js, or Ember.js, depending on the technology your site uses
 - Stand-alone PayPal Checkout, if you have your own pre-existing checkout button
 
@@ -25,7 +25,7 @@ These components support various levels of integration, depending on your requir
 
 - Do you need **finely grained control** over your transaction; creating and finalizing transactions from your server
   side using PayPal's REST api? If so you should use the **Advanced Javascript Integration**, which will allow you to create
-  and finalize the transaction yourself on your server side using the [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) APIs.
+  and finalize the transaction yourself on your server side using the [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/).
   Then you can just use the **PayPal Button** or **PayPal Checkout** components to get the customer's approval for the payment,
   and do everything else on your server side.
 
@@ -189,20 +189,20 @@ myapp.controller('cartController', function($scope) {
 
 ### Advanced Javascript Integration (Express-Checkout)
 
-This integration uses [Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/),
+This integration uses [PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/),
 which is more useful for advanced integrations.
 
 Unlike the simple integration, you will be responsible for calling PayPal's
-[Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
+[PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-2. We call your `getToken` function, when we need you to generate an Express Checkout token
-3. You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
+2. We call your `getToken` function, when we need you to call the PayPal REST API to create a payment token
+3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
 6. When we're done, we call your `onPaymentAuthorized` function
-7. You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
+7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
 8. The payment is complete!
 
 ```javascript
@@ -212,14 +212,14 @@ ppxo.PayPalButton.render({
 
 	locale: 'en_US',
 
-	// Pass a function which will retrieve the express checkout token for the transaction
+	// Pass a function which will retrieve the payment token for the transaction
 
 	getToken: function(callback) {
 
 		// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
-		// the PayPal SetExpressCheckout api to retrieve the token.
+		// the PayPal Payment Create api to retrieve the token.
 		//
-		// See https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
+		// See https://developer.paypal.com/docs/api/payments/#payment_create
 
 		$.post('https://www.my-paypal-store.com/my-api/set-express-checkout')
 
@@ -245,9 +245,9 @@ ppxo.PayPalButton.render({
 		console.log('PayerID = ', data.payerID);
 
 		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
-		// payment. Your back-end should invoke the PayPal DoExpressCheckoutPayment api to finalize the transaction.
+		// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 		//
-		// See https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
+		// See https://developer.paypal.com/docs/api/payments/#payment_execute
 
 		$.post('https://www.my-paypal-store.com/my-api/do-express-checkout');
 
@@ -316,16 +316,16 @@ $('#myCheckoutButton').on('click', function() {
 ### Advanced Javascript Integration (Express-Checkout)
 
 Unlike the simple integration, you will be responsible for calling PayPal's
-[Express Checkout](https://developer.paypal.com/docs/classic/express-checkout/integration-guide/ECGettingStarted/) api to set up the
+[PayPal Payment REST API](https://developer.paypal.com/docs/api/payments/) to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
-2. We call your `getToken` function, when we need you to generate an Express Checkout token
-3. You call your server side, which calls [SetExpresscheckout](https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/) to create an Express Checkout token
+2. We call your `getToken` function, when we need you to call the PayPal REST API to create a payment token
+3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `callback(null, token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
 6. When we're done, we call your `onPaymentAuthorized` function
-7. You then call your server side, which calls the [DoExpressCheckoutPayment](https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/) api to finalize the transaction
+7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
 8. The payment is complete!
 
 ```javascript
@@ -336,14 +336,14 @@ $('#myCheckoutButton').on('click', function() {
 
 		locale: 'en_US',
 
-		// Pass a function which will retrieve the express checkout token for the transaction
+		// Pass a function which will retrieve the payment token for the transaction
 
 		getToken: function(callback) {
 
 			// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
-			// the PayPal SetExpressCheckout api to retrieve the token.
+			// the PayPal Payment Create api to retrieve the token.
 			//
-			// See https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
+			// See https://developer.paypal.com/docs/api/payments/#payment_create
 
 			$.post('https://www.my-paypal-store.com/my-api/set-express-checkout')
 
@@ -369,9 +369,9 @@ $('#myCheckoutButton').on('click', function() {
 			console.log('PayerID = ', data.payerID);
 
 			// At this point, the payment has been authorized, and you will need to call your back-end to complete the
-			// payment. Your back-end should invoke the PayPal DoExpressCheckoutPayment api to finalize the transaction.
+			// payment. Your back-end should invoke the PayPal Payment Exexute api to finalize the transaction.
 			//
-			// See https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
+			// See https://developer.paypal.com/docs/api/payments/#payment_execute
 
 			$.post('https://www.my-paypal-store.com/my-api/do-express-checkout');
 
@@ -389,7 +389,7 @@ $('#myCheckoutButton').on('click', function() {
 
 ## Integrating with the PayPal REST API
 
-If you want to use the advanced javascript integration, you will need a way to create Express Checkout tokens on your
+If you want to use the advanced javascript integration, you will need a way to create payment tokens on your
 server side. The simplest way to do this is using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/)
 
 1. Go to [developer.paypal.com/developer/applications](https://developer.paypal.com/developer/applications) and create a **REST API app**, then note down your client id and secret
@@ -459,7 +459,7 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
      --data "$PAYMENT";
    ```
 
-   The Express Checkout token will be returned under `links[].href` for the `approval_url`:
+   The payment token will be returned under `links[].href` for the `approval_url`:
 
    ```json
    {
@@ -498,6 +498,8 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
      ]
    }
    ```
+
+   Here you can see `token=EC-2003069323602984G`. This is the token we need to use on our front-end.
 
 4. Use the `PayPalButton` or `PayPalCheckout` component to let the buyer authorize the payment
 
