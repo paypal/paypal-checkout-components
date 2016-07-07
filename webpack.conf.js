@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 
-export let FILE_NAME = 'checkout-components';
-export let MODULE_NAME = 'checkoutComponents';
+export let FILE_NAME = 'paypal.checkout.v4';
+export let MODULE_NAME = 'ppxo';
 
 export let WEBPACK_CONFIG = {
   module: {

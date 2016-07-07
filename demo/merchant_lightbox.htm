@@ -76,6 +76,8 @@
 
     ppxo.postRobot.openBridge('./bridge.htm');
 
+    ppxo.PayPalCheckout.contexts.lightbox = true;
+
     function getToken(callback) {
         jQuery.ajax({
             url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?local=1&onlytoken=1&stage=msmaster',
@@ -101,7 +103,7 @@
 
     ppxo.PayPalButton.init({
 
-        url: './button.htm',
+        url: './button.htm?lightbox=true',
 
         getToken: getToken,
         onPaymentAuthorize: onPaymentAuthorize
@@ -116,14 +118,14 @@
 
     function openPayPalCheckout() {
 
-        ppxo.PayPalCheckout.render({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './checkout.htm',
 
             getToken: getToken,
             onPaymentAuthorize: onPaymentAuthorize
 
-        });
+        }).renderLightbox();
     }
 
 
@@ -165,7 +167,7 @@
 
     ppxo.PayPalButton.init({
 
-        url: './button.htm',
+        url: './button.htm?lightbox=true',
 
         getToken: getToken,
         onPaymentAuthorize: onPaymentAuthorize,
@@ -178,14 +180,14 @@
 
     function addcontentCheckout() {
 
-        ppxo.PayPalCheckout.render({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './addcontent.html',
 
             getToken: getToken,
             onPaymentAuthorize: onPaymentAuthorize
 
-        });
+        }).renderLightbox();
     }
 
 

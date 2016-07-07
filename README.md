@@ -34,7 +34,7 @@ These components support various levels of integration, depending on your requir
 1. Add `checkout.v4.js` to your page:
 
    ```html
-   <script src="https://www.paypalobjects.com/api/checkout.v4.js"></script>
+   <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
    ```
 
 2. Drop one of the following components into your page:

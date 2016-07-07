@@ -1,62 +1,82 @@
 <!DOCTYPE html>
 
-<script src="../dist/checkout-components.js"></script>
+<head>
 
-<style>
-    body {
-        background-color: white;
-    }
-</style>
+</head>
 
-<h1>Checkout!</h1>
+<body>
 
-<button onclick="window.authorize()">Authorize Payment</button>
+    <script src="../dist/paypal.checkout.v4.js"></script>
 
-<script>
-
-    var parent = (window.opener || window.parent);
-    var parentUrl = parent.location.protocol + '//' + parent.location.host + parent.location.pathname;
-
-    var ecToken;
-
-    var checkout = ppxo.PayPalCheckout.attach({
-
-        onEnter: function() {
-
-            if (this.props.token) {
-
-                ecToken = this.props.token;
-                console.log('sent paypal token!', ecToken);
-
-            } else if (this.props.getToken) {
-
-                this.props.getToken().then(function(token) {
-                    ecToken = token;
-                    console.log('got paypal token!', ecToken);
-                });
-
-            } else {
-
-                throw new Error('Expected either props.token or props.getToken');
-            }
-        },
-
-        defaultProps: {
-
-            getToken: function() {
-                console.log('getting token from url', window.location.href);
-                return window.location.href.match(/token=((EC-)?[A-Z0-9]{17})/)[1];
-            }
+    <style>
+        body {
+            background-color: white;
         }
-    });
+    </style>
 
-    window.authorize = function authorize() {
-        if (checkout.props.onPaymentAuthorize) {
-            checkout.props.onPaymentAuthorize({
-                token: ecToken,
-                payerID: 'SD8778VSD7VD6SV',
-                returnUrl: parentUrl
+    <h1>Checkout!</h1>
+
+    <button onclick="window.authorize()">Authorize Payment</button><br />
+
+    <button onclick="window.ppclose()">Close</button>
+
+    <script>
+        (function() {
+
+            var parentWindow = (window.opener || window.parent);
+            window.console = parentWindow.console;
+
+            var parent = (window.opener || window.parent);
+            var parentUrl = parent.location.protocol + '//' + parent.location.host + parent.location.pathname;
+
+            var ecToken;
+
+            var checkout = ppxo.PayPalCheckout.attach({
+
+                onEnter: function() {
+
+                    if (this.props.token) {
+
+                        ecToken = this.props.token;
+                        console.log('sent paypal token!', ecToken);
+
+                    } else if (this.props.getToken) {
+
+                        this.props.getToken().then(function(token) {
+                            ecToken = token;
+                            console.log('got paypal token!', ecToken);
+                        });
+
+                    } else {
+
+                        throw new Error('Expected either props.token or props.getToken');
+                    }
+                },
+
+                defaultProps: {
+
+                    getToken: function() {
+                        console.log('getting token from url', window.location.href);
+                        return window.location.href.match(/token=((EC-)?[A-Z0-9]{17})/)[1];
+                    }
+                }
             });
-        }
-    }
-</script>
+
+            window.authorize = function authorize() {
+                if (checkout.props.onPaymentAuthorize) {
+                    checkout.props.onPaymentAuthorize({
+                        token: ecToken,
+                        payerID: 'SD8778VSD7VD6SV',
+                        returnUrl: parentUrl
+                    });
+                }
+            }
+
+            window.ppclose = function() {
+                checkout.close();
+            }
+
+        })();
+    </script>
+
+</body>

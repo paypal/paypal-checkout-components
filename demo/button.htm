@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<script src="../dist/checkout-components.js"></script>
+<script src="../dist/paypal.checkout.v4.js"></script>
 
 <button onclick="checkout()">Checkout</button>
 
@@ -11,6 +11,10 @@
     var checkoutComp;
 
     var button = ppxo.PayPalButton.attach();
+
+    if (window.location.href.indexOf('lightbox=true') !== -1) {
+        ppxo.PayPalCheckout.contexts.lightbox = true;
+    }
 
     function checkout() {
         checkoutComp = ppxo.PayPalCheckout.init({
@@ -26,7 +30,7 @@
         if (button.props.submitForm) {
             checkoutComp.hijackSubmitParentForm();
         } else {
-            checkoutComp.renderPopupToParent();
+            checkoutComp.renderToParent();
         }
     }
 </script>

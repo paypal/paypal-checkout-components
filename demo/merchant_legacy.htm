@@ -14,7 +14,7 @@
 
 <script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
 
-<script src="../dist/checkout-components.js"></script>
+<script src="../dist/paypal.checkout.v4.js"></script>
 
 <script>
 
@@ -25,7 +25,7 @@
     function getToken(callback) {
         console.log('calling xotools for token');
         jQuery.ajax({
-            url: 'http://xotoolslvs01.qa.paypal.com/~dbrain/aries.cgi?live=1&onlytoken=1',
+            url: 'http://xotools/~dbrain/aries.cgi?live=1&onlytoken=1',
             method: 'post',
             success: function(token) {
                 return callback(null, token.trim());
