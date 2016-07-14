@@ -12,9 +12,7 @@ import { PayPalCheckout } from '../components';
     active component and any config that needs to be persisted from the setup() call.
 */
 
-var component;
-
-var config = {
+let config = {
     env: 'production'
 };
 
@@ -62,6 +60,8 @@ function matchToken(token) {
     global methods.
 */
 
+/*
+
 function getToken(callback) {
 
     function cb() {
@@ -91,14 +91,16 @@ function getToken(callback) {
 
     // closeFlow is our 'error' case - we can call our callback with an error
 
-    window.paypal.checkout.closeFlow = function() {
+    window.paypal.checkout.closeFlow = () => {
         cb(new Error('Close Flow Called'));
 
         // We also want to close the component at this point, to preserve the original legacy behavior
 
-        component.close();
+        this.close();
     };
 }
+
+*/
 
 
 /*  Draw Button
@@ -131,7 +133,7 @@ function drawButton(container) {
 
 function initPayPalCheckout(props = {}) {
 
-    component = PayPalCheckout.init({
+    return PayPalCheckout.init({
 
         env: config.env,
 
@@ -145,8 +147,6 @@ function initPayPalCheckout(props = {}) {
 
         ...props
     });
-
-    return component;
 }
 
 
@@ -179,12 +179,16 @@ function setup(id, options) {
             button.addEventListener('click', event => {
                 event.preventDefault();
 
+                /*
+
                 // Open the checkout component
 
                 initPayPalCheckout({
                     env: options.environment,
                     getToken
                 }).render();
+
+                */
 
                 // Call options.click, which should call one or both of initXO / startFlow
 
@@ -203,6 +207,10 @@ function setup(id, options) {
 }
 
 
+
+let component;
+
+
 /*  Init XO
     -------
 
@@ -213,9 +221,19 @@ function setup(id, options) {
 */
 
 function initXO() {
-    initPayPalCheckout({
+
+    /*
+
+    component = initPayPalCheckout({
         getToken
-    }).render();
+    });
+
+    component.render();
+
+    */
+
+    component = initPayPalCheckout();
+    component.preRender();
 }
 
 
@@ -230,9 +248,22 @@ function initXO() {
 */
 
 function startFlow(token) {
-    initPayPalCheckout({
-        token: matchToken(token)
-    }).render();
+
+    token = matchToken(token);
+
+    /*
+
+    component = initPayPalCheckout({ token });
+
+    */
+
+    if (component) {
+        component.updateProps({ token });
+    } else {
+        component = initPayPalCheckout({ token });
+    }
+
+    component.render();
 }
 
 
@@ -245,7 +276,12 @@ function startFlow(token) {
 */
 
 function closeFlow() {
-    component.close();
+    if (component) {
+        component.close();
+        component = null;
+    } else {
+        console.warn('Checkout is not open, can not be closed');
+    }
 }
 
 
@@ -316,3 +352,4 @@ window.paypal.checkout = window.paypal.checkout || {};
 window.paypal.checkout.setup = setup;
 window.paypal.checkout.initXO = initXO;
 window.paypal.checkout.startFlow = startFlow;
+window.paypal.checkout.closeFlow = closeFlow;

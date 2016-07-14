@@ -2,6 +2,7 @@
 import xcomponent from 'xcomponent/src';
 import { props } from '../props';
 import parentTemplate from './parentTemplate.htm';
+import componentTemplate from './componentTemplate.htm';
 
 export let PayPalCheckout = xcomponent.create({
 
@@ -23,6 +24,7 @@ export let PayPalCheckout = xcomponent.create({
     },
 
     parentTemplate,
+    componentTemplate,
 
     props: {
         ...props
