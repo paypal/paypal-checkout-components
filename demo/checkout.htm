@@ -23,9 +23,6 @@
     <script>
         (function() {
 
-            var parentWindow = (window.opener || window.parent);
-            window.console = parentWindow.console;
-
             var parent = (window.opener || window.parent);
             var parentUrl = parent.location.protocol + '//' + parent.location.host + parent.location.pathname;
 

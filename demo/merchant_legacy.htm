@@ -23,17 +23,9 @@
     ppxo.postRobot.openBridge('./bridge.htm');
 
     function getToken(callback) {
-        console.log('calling xotools for token');
-        jQuery.ajax({
-            url: 'http://xotools/~dbrain/aries.cgi?live=1&onlytoken=1',
-            method: 'post',
-            success: function(token) {
-                return callback(null, token.trim());
-            },
-            error: function() {
-                return callback(new Error('There was an error retrieving the token'));
-            }
-        });
+        setTimeout(function() {
+            callback(null, 'EC-XYZ123456789ABCDE');
+        }, 1500);
     }
 
     function onPaymentAuthorize(token) {
