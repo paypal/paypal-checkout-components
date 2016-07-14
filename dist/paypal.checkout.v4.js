@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 73);
+        var _legacy = __webpack_require__(/*! ./legacy */ 74);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -53,24 +53,7 @@
                 "default": obj
             };
         }
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/index.js", hash = "dabd4c50b390cfdaeec72214fd8b36ed";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/index.js","s":{"1":0,"2":0},"b":{},"f":{},"statementMap":{"1":{"start":{"line":7,"column":0},"end":{"line":7,"column":39}},"2":{"start":{"line":8,"column":0},"end":{"line":8,"column":48}}},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
-        ++_cover__().s["1"];
         module.exports.xcomponent = _src2["default"];
-        ++_cover__().s["2"];
         module.exports.postRobot = _src2["default"].postRobot;
     }, /*!*********************************!*\
   !*** ./src/components/index.js ***!
@@ -100,21 +83,6 @@
                 }
             });
         });
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/index.js", hash = "1d511e55125694199ecc14c168813522";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/index.js","s":{},"b":{},"f":{},"statementMap":{},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
     }, /*!****************************************!*\
   !*** ./src/components/button/index.js ***!
   \****************************************/
@@ -133,21 +101,6 @@
                 }
             });
         });
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/button/index.js", hash = "b0fd36bddbeb957d5a006a6b871d4095";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/button/index.js","s":{},"b":{},"f":{},"statementMap":{},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
     }, /*!********************************************!*\
   !*** ./src/components/button/component.js ***!
   \********************************************/
@@ -176,22 +129,7 @@
                 "default": obj
             };
         }
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/button/component.js", hash = "7ebe81e2cf84ce7b7fd8a3f30eb99c33";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/button/component.js","s":{"1":0},"b":{},"f":{},"statementMap":{"1":{"start":{"line":5,"column":26},"end":{"line":31,"column":2}}},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
-        var PayPalButton = exports.PayPalButton = (++_cover__().s["1"], _src2["default"].create({
+        var PayPalButton = exports.PayPalButton = _src2["default"].create({
             tag: "paypal-button",
             name: "ppbtn",
             defaultEnv: "production",
@@ -209,7 +147,7 @@
                 width: 100,
                 height: 50
             }
-        }));
+        });
     }, /*!***********************************!*\
   !*** ./~/xcomponent/src/index.js ***!
   \***********************************/
@@ -421,10 +359,28 @@
                         return (0, _lib.onWindowReady)(options.window);
                     }
                 }).then(function() {
+                    (0, _drivers.sendMessage)(options.window, {
+                        hash: hash,
+                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
+                        name: options.name,
+                        data: options.data,
+                        fireAndForget: options.fireAndForget
+                    }, options.domain || "*")["catch"](reject);
+                    if (options.fireAndForget) {
+                        return resolve();
+                    }
+                    var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
+                        if (options.ack || (0, _lib.isWindowClosed)(options.window)) {
+                            return ackTimeout.cancel();
+                        }
+                        if (!remaining) {
+                            return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
+                        }
+                    });
                     if (options.timeout) {
                         (function() {
                             var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
-                                if (hasResult) {
+                                if (hasResult || (0, _lib.isWindowClosed)(options.window)) {
                                     return timeout.cancel();
                                 }
                                 if (!remaining) {
@@ -433,20 +389,6 @@
                             }, options.timeout);
                         })();
                     }
-                    (0, _drivers.sendMessage)(options.window, {
-                        hash: hash,
-                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
-                        name: options.name,
-                        data: options.data
-                    }, options.domain || "*")["catch"](reject);
-                    var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
-                        if (options.ack) {
-                            return ackTimeout.cancel();
-                        }
-                        if (!remaining) {
-                            return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
-                        }
-                    });
                 })["catch"](reject);
             }), options.callback);
         }
@@ -529,7 +471,7 @@
         }
         var CONFIG = exports.CONFIG = {
             ALLOW_POSTMESSAGE_POPUP: false,
-            LOG_LEVEL: "info",
+            LOG_LEVEL: "debug",
             ACK_TIMEOUT: 500,
             LOG_TO_PAGE: false,
             MOCK_MODE: false,
@@ -732,7 +674,14 @@
             } catch (err) {
                 return _lib.log.debug(err.message);
             }
-            var level = _conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || proxyWindow ? "debug" : "info";
+            var level = void 0;
+            if (_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || proxyWindow) {
+                level = "debug";
+            } else if (message.ack === "error") {
+                level = "error";
+            } else {
+                level = "info";
+            }
             _lib.log.logLevel(level, [ proxyWindow ? "#receiveproxy" : "#receive", message.type, message.name, message ]);
             if (proxyWindow) {
                 if ((0, _lib.isWindowClosed)(proxyWindow)) {
@@ -1043,7 +992,7 @@
                     error = err;
                 }
                 if (result === this) {
-                    throw new Error("Can not return a promise from the the same promise");
+                    throw new Error("Can not return a promise from the the then handler of the same promise");
                 }
                 if (error) {
                     handler.promise.reject(error);
@@ -1071,9 +1020,13 @@
         SyncPromise.prototype["catch"] = function(onError) {
             return this.then(null, onError);
         };
-        SyncPromise.prototype.done = function(successHandler, errorHandler) {
-            this.then(successHandler, errorHandler || function(err) {
-                console.error(err.stack || err.toString());
+        SyncPromise.prototype["finally"] = function(handler) {
+            return this.then(function(result) {
+                handler();
+                return result;
+            }, function(error) {
+                handler();
+                throw error;
             });
         };
         SyncPromise.all = function(promises) {
@@ -1300,7 +1253,7 @@
             replaceObject: function replaceObject(obj, callback) {
                 var newobj = obj instanceof Array ? [] : {};
                 util.each(obj, function(item, key) {
-                    var result = callback(item);
+                    var result = callback(item, key);
                     if (result !== undefined) {
                         newobj[key] = result;
                     } else if ((typeof item === "undefined" ? "undefined" : _typeof(item)) === "object" && item !== null) {
@@ -1640,6 +1593,8 @@
         var _conf = __webpack_require__(/*! ../conf */ 9);
         var _util = __webpack_require__(/*! ./util */ 18);
         var _interface = __webpack_require__(/*! ../interface */ 7);
+        var _log = __webpack_require__(/*! ./log */ 19);
+        var _promise = __webpack_require__(/*! ./promise */ 15);
         var methods = {};
         var listenForMethods = exports.listenForMethods = _util.util.once(function() {
             (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.METHOD, function(source, data) {
@@ -1649,13 +1604,23 @@
                 if (methods[data.id].win !== source) {
                     throw new Error("Method window does not match");
                 }
-                return methods[data.id].method.apply(null, data.args);
+                var method = methods[data.id].method;
+                _log.log.debug("Call local method", data.name, data.args);
+                return _promise.promise.run(function() {
+                    return method.apply(null, data.args);
+                }).then(function(result) {
+                    return {
+                        result: result,
+                        id: data.id,
+                        name: data.name
+                    };
+                });
             });
         });
         function isSerializedMethod(item) {
             return item instanceof Object && item.__type__ === _conf.CONSTANTS.SERIALIZATION_TYPES.METHOD && item.__id__;
         }
-        function serializeMethod(destination, method) {
+        function serializeMethod(destination, method, name) {
             var id = _util.util.uniqueID();
             methods[id] = {
                 win: destination,
@@ -1663,32 +1628,40 @@
             };
             return {
                 __type__: _conf.CONSTANTS.SERIALIZATION_TYPES.METHOD,
-                __id__: id
+                __id__: id,
+                __name__: name
             };
         }
         function serializeMethods(destination, obj) {
             listenForMethods();
             return _util.util.replaceObject({
                 obj: obj
-            }, function(item) {
+            }, function(item, key) {
                 if (item instanceof Function) {
-                    return serializeMethod(destination, item);
+                    return serializeMethod(destination, item, key);
                 }
             }).obj;
         }
         function deserializeMethod(source, obj) {
-            return function() {
+            function wrapper() {
                 var args = Array.prototype.slice.call(arguments);
+                _log.log.debug("Call foreign method", obj.__name__, args);
                 return (0, _interface.send)(source, _conf.CONSTANTS.POST_MESSAGE_NAMES.METHOD, {
                     id: obj.__id__,
+                    name: obj.__name__,
                     args: args
+                }).then(function(data) {
+                    _log.log.debug("Got foreign method result", obj.__name__, data.result);
+                    return data.result;
                 });
-            };
+            }
+            wrapper.__name__ = obj.__name__;
+            return wrapper;
         }
         function deserializeMethods(source, obj) {
             return _util.util.replaceObject({
                 obj: obj
-            }, function(item) {
+            }, function(item, key) {
                 if (isSerializedMethod(item)) {
                     return deserializeMethod(source, item);
                 }
@@ -1948,7 +1921,14 @@
                     data: (0, _lib.serializeMethods)(win, message.data),
                     domain: domain
                 });
-                var level = _conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || isProxy ? "debug" : "info";
+                var level = void 0;
+                if (_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || isProxy) {
+                    level = "debug";
+                } else if (message.ack === "error") {
+                    level = "error";
+                } else {
+                    level = "info";
+                }
                 _lib.log.logLevel(level, [ isProxy ? "#sendproxy" : "#send", message.type, message.name, message ]);
                 if (_conf.CONFIG.MOCK_MODE) {
                     delete message.target;
@@ -2234,8 +2214,8 @@
         }), _defineProperty(_RECEIVE_MESSAGE_TYPE, _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST, function(source, message, origin) {
             var options = (0, _listeners.getRequestListener)(message.name, source);
             function respond(data) {
-                if ((0, _lib.isWindowClosed)(source)) {
-                    return;
+                if (message.fireAndForget || (0, _lib.isWindowClosed)(source)) {
+                    return _lib.promise.Promise.resolve();
                 }
                 return (0, _send.sendMessage)(source, _extends({
                     target: message.originalSource,
@@ -3678,25 +3658,11 @@
         var _window = __webpack_require__(/*! ../window */ 53);
         var _lib = __webpack_require__(/*! ../../lib */ 48);
         var _constants = __webpack_require__(/*! ../../constants */ 54);
-        var _error = __webpack_require__(/*! ../../error */ 5);
         var _props = __webpack_require__(/*! ../props */ 55);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
-        }
-        function _defineProperty(obj, key, value) {
-            if (key in obj) {
-                Object.defineProperty(obj, key, {
-                    value: value,
-                    enumerable: true,
-                    configurable: true,
-                    writable: true
-                });
-            } else {
-                obj[key] = value;
-            }
-            return obj;
         }
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) {
@@ -3756,14 +3722,12 @@
                         }
                         throw err;
                     }
-                    if (this.standalone && !(0, _window.getParentComponentWindow)()) {
+                    if (this.standalone && !(0, _lib.getParentWindow)()) {
                         return _promise.SyncPromise.resolve();
                     }
-                    this.listen((0, _window.getParentComponentWindow)());
-                    if ((0, _lib.getParentWindow)() !== (0, _window.getParentComponentWindow)()) {
-                        this.listen((0, _lib.getParentWindow)());
-                    }
-                    return this.sendToParentComponent(_constants.POST_MESSAGE.INIT).then(function(data) {
+                    return this.sendToParent(_constants.POST_MESSAGE.INIT, {
+                        exports: this.exports()
+                    }).then(function(data) {
                         _this2.context = data.context;
                         (0, _lib.extend)(_this2.props, data.props);
                         _this2.onEnter.call(_this2);
@@ -3779,12 +3743,6 @@
                     return _src2["default"].send((0, _lib.getParentWindow)(), name, data);
                 }
             }, {
-                key: "sendToParentComponent",
-                value: function sendToParentComponent(name, data) {
-                    this.component.log("send_to_parent_component_" + name);
-                    return _src2["default"].send((0, _window.getParentComponentWindow)(), name, data);
-                }
-            }, {
                 key: "setWindows",
                 value: function setWindows() {
                     if (window.__activeXComponent__) {
@@ -3793,9 +3751,6 @@
                     window.__activeXComponent__ = this;
                     if (!(0, _lib.getParentWindow)()) {
                         throw new Error("[" + this.component.tag + "] Can not find parent window");
-                    }
-                    if (!(0, _window.getParentComponentWindow)()) {
-                        throw new Error("[" + this.component.tag + "] Can not find parent component window");
                     }
                     var winProps = (0, _window.parseWindowName)(window.name);
                     this.component.log("child_win_props", winProps);
@@ -3817,32 +3772,28 @@
                     });
                     if ((0, _window.getParentComponentWindow)() && (0, _window.getParentComponentWindow)() !== (0, 
                     _lib.getParentWindow)()) {
-                        (0, _lib.onCloseWindow)(_window.getParentComponentWindow, function() {
+                        (0, _lib.onCloseWindow)((0, _window.getParentComponentWindow)(), function() {
                             _this3.component.log("parent_component_window_closed");
                             _this3.close(new Error("[" + _this3.component.tag + "] parent component window was closed"));
                         });
                     }
+                    (0, _lib.addEventListener)(window, "beforeunload", function() {
+                        return _this3.onClose();
+                    });
                 }
             }, {
                 key: "validate",
                 value: function validate(options) {}
             }, {
-                key: "listeners",
-                value: function listeners() {
-                    var _ref;
-                    return _ref = {}, _defineProperty(_ref, _constants.POST_MESSAGE.PROPS, function(source, data) {
-                        (0, _lib.extend)(this.props, data.props);
-                        this.onProps.call(this);
-                    }), _defineProperty(_ref, _constants.POST_MESSAGE.CLOSE, function(source, data) {
-                        var _this4 = this;
-                        if (source === (0, _lib.getParentWindow)()) {
-                            this.onClose.call(this);
-                        } else {
-                            this.sendToParent(_constants.POST_MESSAGE.CLOSE)["catch"](function(err) {
-                                return _this4.onError(err);
-                            });
+                key: "exports",
+                value: function exports() {
+                    var _this4 = this;
+                    return {
+                        updateProps: function updateProps(props) {
+                            (0, _lib.extend)(_this4.props, props || {});
+                            _this4.onProps.call(_this4);
                         }
-                    }), _ref;
+                    };
                 }
             }, {
                 key: "resize",
@@ -3867,7 +3818,9 @@
                 value: function close(err) {
                     this.component.log("close_child");
                     this.onClose.call(this, err);
-                    return this.sendToParent(_constants.POST_MESSAGE.CLOSE);
+                    this.sendToParent(_constants.POST_MESSAGE.CLOSE, {}, {
+                        fireAndForget: true
+                    });
                 }
             }, {
                 key: "focus",
@@ -3881,11 +3834,7 @@
                     this.component.log("error", {
                         error: err.stack || err.toString()
                     });
-                    if (!(err instanceof _error.IntegrationError)) {
-                        console.error(err.stack);
-                        err = new Error("[" + this.component.tag + "] Child lifecycle method threw an error");
-                    }
-                    return this.sendToParentComponent(_constants.POST_MESSAGE.ERROR, {
+                    return this.sendToParent(_constants.POST_MESSAGE.ERROR, {
                         error: err.stack ? err.message + "\n" + err.stack : err.toString()
                     });
                 }
@@ -4137,7 +4086,6 @@
                 var key = _ref;
                 frame[key] = options[key];
             }
-            frame.style.backgroundColor = "transparent";
             frame.frameBorder = "0";
             frame.allowTransparency = "true";
             container.appendChild(frame);
@@ -4165,12 +4113,12 @@
                 }
             };
             interval = (0, _util.safeInterval)(checkWindowClosed, 50);
-            (0, _util.nextTick)(checkWindowClosed);
+            checkWindowClosed();
             var close = win.close;
             try {
                 win.close = function() {
                     close.apply(this, arguments);
-                    (0, _util.nextTick)(checkWindowClosed);
+                    checkWindowClosed();
                 };
             } catch (err) {}
             return {
@@ -4348,7 +4296,6 @@
         exports.b64encode = b64encode;
         exports.b64decode = b64decode;
         exports.stringifyWithFunctions = stringifyWithFunctions;
-        exports.nextTick = nextTick;
         exports.safeGet = safeGet;
         exports.capitalizeFirstLetter = capitalizeFirstLetter;
         exports.get = get;
@@ -4407,23 +4354,6 @@
                 return val;
             });
         }
-        var tickMessageName = "__nextTick__xcomponent__" + uniqueID();
-        var queue = [];
-        window.addEventListener("message", function(event) {
-            if (event.data === tickMessageName) {
-                queue.shift().call();
-            }
-        });
-        function nextTick(method) {
-            if (window.setImmediate) {
-                return window.setImmediate.call(window, method);
-            }
-            if (window.nextTick) {
-                return window.nextTick.call(window, method);
-            }
-            queue.push(method);
-            window.postMessage(tickMessageName, "*");
-        }
         function safeGet(obj, prop) {
             var result = void 0;
             try {
@@ -4479,6 +4409,7 @@
             value: true
         });
         exports.denodeify = denodeify;
+        exports.promisify = promisify;
         var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
         function denodeify(method) {
             return function() {
@@ -4495,6 +4426,15 @@
                         return err ? reject(err) : resolve(result);
                     });
                     return method.apply(self, args);
+                });
+            };
+        }
+        function promisify(method) {
+            var prom = _promise.SyncPromise.resolve();
+            return function() {
+                var _this = this, _arguments = arguments;
+                return prom.then(function() {
+                    return method.apply(_this, _arguments);
                 });
             };
         }
@@ -4542,11 +4482,15 @@
             if (!winProps) {
                 throw new Error("Window has not been rendered by xcomponent - can not attach here");
             }
+            var parentWindow = (0, _lib.getParentWindow)();
             if (winProps.sibling) {
-                return (0, _lib.getParentWindow)().frames[winProps.parent];
-            } else {
-                return (0, _lib.getParentWindow)();
+                if (parentWindow.frames && parentWindow.frames.length && parentWindow.frames[winProps.parent]) {
+                    parentWindow = parentWindow.frames[winProps.parent];
+                } else if (parentWindow.parent !== parentWindow && parentWindow.parent.frames && parentWindow.parent.frames.length && parentWindow.parent.frames[winProps.parent]) {
+                    parentWindow = parentWindow.parent.frames[winProps.parent];
+                }
             }
+            return parentWindow;
         });
         function getPosition(options) {
             var left = void 0;
@@ -4636,11 +4580,20 @@
                 if (!value) {
                     if (!value && prop.noop) {
                         value = _lib.noop;
+                        if (prop.denodeify) {
+                            value = (0, _lib.denodeify)(value);
+                        }
+                        if (prop.promisify) {
+                            value = (0, _lib.promisify)(value);
+                        }
                     }
                 } else {
                     (function() {
                         if (prop.denodeify) {
                             value = (0, _lib.denodeify)(value);
+                        }
+                        if (prop.promisify) {
+                            value = (0, _lib.promisify)(value);
                         }
                         var original = value;
                         value = function value() {
@@ -4731,7 +4684,6 @@
         var _drivers = __webpack_require__(/*! ./drivers */ 57);
         var _validate = __webpack_require__(/*! ./validate */ 58);
         var _props = __webpack_require__(/*! ./props */ 59);
-        var _props2 = __webpack_require__(/*! ../props */ 55);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4784,7 +4736,6 @@
                 var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ParentComponent).call(this, component, options));
                 (0, _validate.validate)(component, options);
                 _this.component = component;
-                _this.component.log("construct_parent");
                 _this.id = (0, _lib.uniqueID)();
                 if (component.singleton && activeComponents.some(function(comp) {
                     return comp.component === component;
@@ -4795,62 +4746,20 @@
                 _this.registerForCleanup(function() {
                     activeComponents.splice(activeComponents.indexOf(_this), 1);
                 });
-                _this.setProps(options.props || {});
                 _this.childWindowName = options.childWindowName || (0, _window.buildChildWindowName)(_this.component.name, {
                     tag: _this.component.tag,
                     parent: window.name
                 });
+                _this.setProps(options.props || {});
+                _this.component.log("construct_parent");
                 _this.onInit = new _promise.SyncPromise();
                 return _this;
             }
             _createClass(ParentComponent, [ {
                 key: "setProps",
                 value: function setProps(props) {
-                    var _this2 = this;
                     (0, _validate.validateProps)(this.component, props);
-                    this.props = (0, _props2.normalizeProps)(this.component, this, props);
-                    var _loop = function _loop() {
-                        if (_isArray) {
-                            if (_i >= _iterator.length) return "break";
-                            _ref = _iterator[_i++];
-                        } else {
-                            _i = _iterator.next();
-                            if (_i.done) return "break";
-                            _ref = _i.value;
-                        }
-                        var key = _ref;
-                        var value = _this2.props[key];
-                        if (value) {
-                            var prop = _this2.component.props[key];
-                            if (prop.precall) {
-                                (function() {
-                                    var result = value.call();
-                                    _this2.props[key] = function() {
-                                        return result;
-                                    };
-                                })();
-                            }
-                            if (prop.autoClose) {
-                                (function() {
-                                    var self = _this2;
-                                    _this2.props[key] = function() {
-                                        var _this3 = this, _arguments = arguments;
-                                        self.component.log("autoclose", {
-                                            prop: key
-                                        });
-                                        return self.close().then(function() {
-                                            return value.apply(_this3, _arguments);
-                                        });
-                                    };
-                                })();
-                            }
-                        }
-                    };
-                    for (var _iterator = Object.keys(this.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        var _ret = _loop();
-                        if (_ret === "break") break;
-                    }
+                    this.props = (0, _props.normalizeParentProps)(this.component, this, props);
                 }
             }, {
                 key: "buildUrl",
@@ -4872,18 +4781,20 @@
             }, {
                 key: "updateProps",
                 value: function updateProps(props) {
-                    var _this4 = this;
-                    return this.onInit.then(function() {
-                        (0, _validate.validateProps)(_this4.component, props);
-                        var oldProps = (0, _lib.stringifyWithFunctions)(_this4.props);
-                        var newProps = _extends({}, _this4.props, props);
-                        _this4.setProps(newProps);
-                        if (oldProps !== (0, _lib.stringifyWithFunctions)(_this4.props)) {
-                            _this4.component.log("parent_update_props");
-                            return _src2["default"].send(_this4.window, _constants.POST_MESSAGE.PROPS, {
-                                props: _this4.props
-                            });
+                    var _this2 = this;
+                    return _promise.SyncPromise.resolve().then(function() {
+                        (0, _validate.validateProps)(_this2.component, props);
+                        var oldProps = (0, _lib.stringifyWithFunctions)(_this2.props);
+                        _this2.setProps(_extends({}, _this2.props, props));
+                        if (!_this2.initialPropsSent) {
+                            return;
                         }
+                        return _this2.onInit.then(function() {
+                            if (oldProps !== (0, _lib.stringifyWithFunctions)(_this2.props)) {
+                                _this2.component.log("parent_update_props");
+                                return _this2.childExports.updateProps(_this2.props);
+                            }
+                        });
                     });
                 }
             }, {
@@ -4905,8 +4816,8 @@
                         return this.component.defaultContext;
                     }
                     var _arr = [ _constants.CONTEXT_TYPES.LIGHTBOX, _constants.CONTEXT_TYPES.POPUP ];
-                    for (var _i2 = 0; _i2 < _arr.length; _i2++) {
-                        var renderContext = _arr[_i2];
+                    for (var _i = 0; _i < _arr.length; _i++) {
+                        var renderContext = _arr[_i];
                         if (this.component.contexts[renderContext]) {
                             return renderContext;
                         }
@@ -4916,7 +4827,7 @@
             }, {
                 key: "validateRender",
                 value: function validateRender(context) {
-                    if (this.window) {
+                    if (this.window && !this.preRendered) {
                         throw new Error("[" + this.component.tag + "] Can not render: component is already rendered");
                     }
                     if (context && !this.component.contexts[context]) {
@@ -4926,27 +4837,24 @@
             }, {
                 key: "render",
                 value: function render(element, context) {
-                    var _this5 = this;
+                    var _this3 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this5.validateRender(context);
-                        context = _this5.getRenderContext(element, context);
-                        _this5.component.log("render_" + context, {
+                        _this3.validateRender(context);
+                        context = _this3.getRenderContext(element, context);
+                        _this3.component.log("render_" + context, {
                             context: context,
                             element: element
                         });
                         if (_drivers.RENDER_DRIVERS[context].render) {
-                            _drivers.RENDER_DRIVERS[context].render.call(_this5, element);
+                            _drivers.RENDER_DRIVERS[context].render.call(_this3, element);
                         }
-                        _this5.setForCleanup("context", context);
-                        if (_drivers.RENDER_DRIVERS[context].overlay) {
-                            _this5.createParentTemplate();
-                        }
-                        _this5.open(element, context);
-                        _this5.listen(_this5.window);
-                        _this5.loadUrl(_this5.buildUrl());
-                        _this5.runTimeout();
-                        _this5.watchForClose();
-                        return _this5.onInit;
+                        _this3.setForCleanup("context", context);
+                        _this3.preRender(element, context);
+                        _this3.listen(_this3.window);
+                        _this3.loadUrl(context, _this3.buildUrl());
+                        _this3.runTimeout();
+                        _this3.watchForClose();
+                        return _this3.onInit;
                     });
                 }
             }, {
@@ -4959,66 +4867,86 @@
                     });
                     _drivers.RENDER_DRIVERS[context].open.call(this, element);
                     this.watchForClose();
+                }
+            }, {
+                key: "preRender",
+                value: function preRender(element, context) {
+                    if (this.preRendered) {
+                        return;
+                    }
+                    context = this.getRenderContext(element, context);
+                    this.component.log("preRender_" + context, {
+                        element: element,
+                        windowName: this.childWindowName
+                    });
+                    this.setForCleanup("context", context);
+                    this.createParentTemplate(context);
+                    this.open(element, context);
                     this.createComponentTemplate();
+                    this.setForCleanup("preRendered", true);
                 }
             }, {
                 key: "renderToParent",
                 value: function renderToParent(element, context) {
-                    var _this6 = this;
+                    var _this4 = this;
                     var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this6.validateRender(context);
-                        context = _this6.getRenderContext(element, context);
+                        _this4.validateRender(context);
+                        context = _this4.getRenderContext(element, context);
                         if (!(0, _lib.getParentWindow)()) {
-                            throw new Error("[" + _this6.component.tag + "] Can not render to parent - no parent exists");
+                            throw new Error("[" + _this4.component.tag + "] Can not render to parent - no parent exists");
                         }
                         if (!window.name) {
-                            throw new Error("[" + _this6.component.tag + "] Can not render to parent - not in a child component window");
+                            throw new Error("[" + _this4.component.tag + "] Can not render to parent - not in a child component window");
                         }
-                        _this6.component.log("render_" + context + "_to_parent", {
+                        _this4.component.log("render_" + context + "_to_parent", {
                             element: element,
                             context: context
                         });
-                        _this6.childWindowName = (0, _window.buildChildWindowName)(_this6.component.name, {
-                            tag: _this6.component.tag,
+                        _this4.childWindowName = (0, _window.buildChildWindowName)(_this4.component.name, {
+                            tag: _this4.component.tag,
                             parent: window.name,
                             sibling: 1
                         });
-                        _this6.setForCleanup("context", context);
+                        _this4.setForCleanup("context", context);
                         if (_drivers.RENDER_DRIVERS[context].renderToParent) {
-                            _drivers.RENDER_DRIVERS[context].renderToParent.call(_this6, element);
+                            _drivers.RENDER_DRIVERS[context].renderToParent.call(_this4, element);
                         }
                         return _src2["default"].sendToParent(_constants.POST_MESSAGE.RENDER, _extends({}, options, {
-                            tag: _this6.component.tag,
+                            tag: _this4.component.tag,
                             context: context,
                             element: element,
                             options: {
-                                props: _this6.props,
-                                childWindowName: _this6.childWindowName
+                                renderedToParent: true,
+                                childWindowName: _this4.childWindowName,
+                                props: _this4.props
                             }
                         })).then(function(data) {
-                            if (!_this6.window) {
-                                _this6.setForCleanup("window", (0, _lib.getParentWindow)().frames[_this6.childWindowName]);
+                            _this4.childExports = data.childExports;
+                            _this4.close = data.close;
+                            if (!_this4.window) {
+                                _this4.setForCleanup("window", (0, _lib.getParentWindow)().frames[_this4.childWindowName]);
                             }
-                            _this6.listen(_this6.window);
-                            _this6.watchForClose();
-                            return _this6.onInit;
+                            _this4.listen(_this4.window);
+                            _this4.watchForClose();
+                            return _this4.onInit;
                         });
                     });
                 }
             }, {
                 key: "watchForClose",
                 value: function watchForClose() {
-                    var _this7 = this;
+                    var _this5 = this;
                     var closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
-                        _this7.component.log("detect_close_child");
-                        _this7.props.onClose();
-                        _this7.destroy();
+                        _this5.component.log("detect_close_child");
+                        _this5.props.onClose()["finally"](function() {
+                            _this5.destroy();
+                        });
                     });
                     var unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
-                        _this7.component.log("navigate_away");
+                        _this5.component.log("navigate_away");
                         _client2["default"].flush();
-                        _this7.destroy();
+                        _this5.destroy();
                     });
                     this.registerForCleanup(function() {
                         closeWindowListener.cancel();
@@ -5027,45 +4955,42 @@
                 }
             }, {
                 key: "loadUrl",
-                value: function loadUrl(url) {
+                value: function loadUrl(context, url) {
                     this.component.log("load_url");
-                    return _drivers.RENDER_DRIVERS[this.context].loadUrl.call(this, url);
+                    return _drivers.RENDER_DRIVERS[context].loadUrl.call(this, url);
                 }
             }, {
                 key: "hijackButton",
                 value: function hijackButton(button, element, context) {
-                    var _this8 = this;
+                    var _this6 = this;
                     context = this.getRenderContext(element, context);
                     this.component.log("hijack_button", {
                         element: element,
                         context: context
                     });
                     (0, _lib.hijackButton)(button, function(event, targetElement) {
-                        if (_this8.window) {
+                        if (_this6.window && !_this6.preRendered) {
                             event.preventDefault();
-                            throw new Error("[" + _this8.component.tag + "] Component is already rendered");
+                            throw new Error("[" + _this6.component.tag + "] Component is already rendered");
                         }
-                        _this8.renderHijack(targetElement, element, context);
+                        _this6.renderHijack(targetElement, element, context);
                     });
                     return this;
                 }
             }, {
                 key: "renderHijack",
                 value: function renderHijack(targetElement, element, context) {
-                    var _this9 = this;
-                    context = this.getRenderContext(element, context);
-                    this.component.log("render_hijack_" + context);
+                    var _this7 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this9.validateRender(context);
-                        _this9.setForCleanup("context", context);
-                        targetElement.target = _this9.childWindowName;
-                        if (_drivers.RENDER_DRIVERS[context].overlay) {
-                            _this9.createParentTemplate();
-                        }
-                        _this9.open(null, context);
-                        _this9.listen(_this9.window);
-                        _this9.runTimeout();
-                        return _this9.onInit;
+                        context = _this7.getRenderContext(element, context);
+                        _this7.component.log("render_hijack_" + context);
+                        _this7.validateRender(context);
+                        _this7.setForCleanup("context", context);
+                        targetElement.target = _this7.childWindowName;
+                        _this7.preRender(element, context);
+                        _this7.listen(_this7.window);
+                        _this7.runTimeout();
+                        return _this7.onInit;
                     });
                 }
             }, {
@@ -5080,15 +5005,16 @@
             }, {
                 key: "runTimeout",
                 value: function runTimeout() {
-                    var _this10 = this;
+                    var _this8 = this;
                     if (this.props.timeout) {
                         setTimeout(function() {
-                            var error = new Error("[" + _this10.component.tag + "] Loading component " + _this10.component.tag + " timed out after " + _this10.props.timeout + " milliseconds");
-                            _this10.onInit.reject(error)["catch"](function(err) {
-                                _this10.component.log("timed_out", {
-                                    timeout: _this10.props.timeout
+                            var error = new Error("[" + _this8.component.tag + "] Loading component " + _this8.component.tag + " timed out after " + _this8.props.timeout + " milliseconds");
+                            _this8.onInit.reject(error)["catch"](function(err) {
+                                return _this8.props.onTimeout(err)["finally"](function() {
+                                    _this8.component.log("timed_out", {
+                                        timeout: _this8.props.timeout
+                                    });
                                 });
-                                _this10.props.onTimeout(err);
                             });
                         }, this.props.timeout);
                     }
@@ -5096,77 +5022,71 @@
             }, {
                 key: "listeners",
                 value: function listeners() {
-                    var _ref2;
-                    return _ref2 = {}, _defineProperty(_ref2, _constants.POST_MESSAGE.INIT, function(source, data) {
-                        this.props.onEnter();
+                    var _ref;
+                    return _ref = {}, _defineProperty(_ref, _constants.POST_MESSAGE.INIT, function(source, data) {
+                        var _this9 = this;
+                        this.childExports = data.exports;
                         this.onInit.resolve(this);
-                        return {
-                            context: this.context,
-                            props: this.props
-                        };
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.CLOSE, function(source, data) {
+                        return this.props.onEnter().then(function() {
+                            _this9.setForCleanup("initialPropsSent", true);
+                            return {
+                                context: _this9.context,
+                                props: _this9.props
+                            };
+                        });
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.CLOSE, function(source, data) {
                         this.close();
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.RENDER, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER, function(source, data) {
+                        var _this10 = this;
                         var component = this.component.getByTag(data.tag);
                         var instance = component.parent(data.options);
+                        this.registerForCleanup(function() {
+                            instance.destroy();
+                        });
                         if (data.hijackSubmitParentForm) {
                             var form = (0, _lib.getParentNode)(this.iframe, "form");
                             instance.renderHijack(form, data.element, data.context);
                             form.submit();
                         } else {
-                            instance.render(data.element, data.context);
+                            return instance.render(data.element, data.context).then(function() {
+                                return {
+                                    childExports: instance.childExports,
+                                    close: function close() {
+                                        return _this10.close();
+                                    }
+                                };
+                            });
                         }
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.RESIZE, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RESIZE, function(source, data) {
                         if (this.context === _constants.CONTEXT_TYPES.POPUP) {
                             return;
                         }
                         return this.resize(data.width, data.height);
-                    }), _defineProperty(_ref2, _constants.POST_MESSAGE.ERROR, function(source, data) {
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.ERROR, function(source, data) {
                         this.error(new Error(data.error));
-                    }), _ref2;
+                    }), _ref;
                 }
             }, {
                 key: "resize",
-                value: function resize(height, width) {
+                value: function resize(width, height) {
                     this.component.log("resize", {
                         height: height,
                         width: width
                     });
-                    if (this.iframe) {
-                        this.iframe.height = height;
-                        this.iframe.width = width;
-                    }
+                    return _drivers.RENDER_DRIVERS[this.context].resize.call(this, width, height);
+                }
+            }, {
+                key: "restyle",
+                value: function restyle() {
+                    return _drivers.RENDER_DRIVERS[this.context].restyle.call(this);
                 }
             }, {
                 key: "close",
                 value: function close() {
                     var _this11 = this;
-                    return _promise.SyncPromise.resolve().then(function() {
-                        if ((0, _lib.isWindowClosed)(_this11.window)) {
-                            return _this11.props.onClose();
-                        }
-                        if (_this11.closePromise) {
-                            return _this11.closePromise;
-                        }
+                    return this.props.onClose().then(function() {
                         _this11.component.log("close");
-                        _this11.props.onClose();
-                        var closePromise = _src2["default"].send(_this11.window, _constants.POST_MESSAGE.CLOSE)["catch"](function(err) {
-                            console.warn("Error sending message to child", err.stack || err.toString());
-                            throw err;
-                        });
-                        if ((0, _lib.getParentWindow)(_this11.window) !== window) {
-                            closePromise = closePromise["catch"](function() {
-                                return _this11.destroy();
-                            });
-                        } else {
-                            closePromise = closePromise.then(function() {
-                                return _this11.destroy();
-                            }, function() {
-                                return _this11.destroy();
-                            });
-                        }
-                        _this11.setForCleanup("closePromise", closePromise);
-                        return _this11.closePromise;
+                        _this11.destroy();
                     });
                 }
             }, {
@@ -5185,12 +5105,17 @@
                         id: _constants.CLASS_NAMES.XCOMPONENT + "-" + this.id,
                         CLASS: _constants.CLASS_NAMES
                     });
-                    this.window.document.write(html);
+                    try {
+                        this.window.document.write(html);
+                    } catch (err) {}
                 }
             }, {
                 key: "createParentTemplate",
-                value: function createParentTemplate() {
+                value: function createParentTemplate(context) {
                     var _this12 = this;
+                    if (!_drivers.RENDER_DRIVERS[context].overlay) {
+                        return;
+                    }
                     this.parentTemplate = (0, _lib.createElement)("div", {
                         html: (0, _lib.template)(this.component.parentTemplate, {
                             id: _constants.CLASS_NAMES.XCOMPONENT + "-" + this.id,
@@ -5230,21 +5155,21 @@
                         error: err.stack || err.toString()
                     });
                     this.onInit.reject(err);
-                    this.props.onError(err);
+                    return this.props.onError(err);
                 }
             } ]);
             return ParentComponent;
         }(_base.BaseComponent);
-        var _loop2 = function _loop2() {
-            if (_isArray2) {
-                if (_i3 >= _iterator2.length) return "break";
-                _ref3 = _iterator2[_i3++];
+        var _loop = function _loop() {
+            if (_isArray) {
+                if (_i2 >= _iterator.length) return "break";
+                _ref2 = _iterator[_i2++];
             } else {
-                _i3 = _iterator2.next();
-                if (_i3.done) return "break";
-                _ref3 = _i3.value;
+                _i2 = _iterator.next();
+                if (_i2.done) return "break";
+                _ref2 = _i2.value;
             }
-            var context = _ref3;
+            var context = _ref2;
             var contextName = (0, _lib.capitalizeFirstLetter)(context);
             ParentComponent.prototype["render" + contextName] = function(element) {
                 return this.render(element, context);
@@ -5256,10 +5181,10 @@
                 return this.hijackButton(button, element, context);
             };
         };
-        for (var _iterator2 = _constants.CONTEXT_TYPES_LIST, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-            var _ref3;
-            var _ret4 = _loop2();
-            if (_ret4 === "break") break;
+        for (var _iterator = _constants.CONTEXT_TYPES_LIST, _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            var _ref2;
+            var _ret = _loop();
+            if (_ret === "break") break;
         }
     }, /*!******************************************************!*\
   !*** ./~/xcomponent/src/component/parent/drivers.js ***!
@@ -5301,10 +5226,11 @@
                     throw new Error("[" + this.component.tag + "] Must specify element to render to iframe");
                 }
                 this.iframe = (0, _lib.iframe)(element, null, {
-                    name: this.childWindowName,
-                    width: this.component.dimensions.width,
-                    height: this.component.dimensions.height
+                    name: this.childWindowName
                 });
+                var dimensions = this.component.dimensions || {};
+                this.resize(dimensions.width, dimensions.height);
+                this.restyle();
                 this.window = this.iframe.contentWindow;
                 this.registerForCleanup(function() {
                     _this.window.close();
@@ -5317,6 +5243,13 @@
                     }
                 });
                 return this;
+            },
+            resize: function resize(width, height) {
+                this.iframe.style.width = width + "px";
+                this.iframe.style.height = height + "px";
+            },
+            restyle: function restyle() {
+                this.iframe.style.backgroundColor = "transparent";
             },
             renderToParent: function renderToParent(element) {
                 if (!element) {
@@ -5337,7 +5270,7 @@
                     width: dimensions.width,
                     height: dimensions.height
                 });
-                this.window = (0, _lib.popup)("about:blank", {
+                this.window = (0, _lib.popup)("", {
                     name: this.childWindowName,
                     width: dimensions.width,
                     height: dimensions.height,
@@ -5356,8 +5289,11 @@
                 }
                 return this;
             },
+            resize: function resize() {},
+            restyle: function restyle() {},
             renderToParent: function renderToParent() {
                 this.open(null, _constants.CONTEXT_TYPES.POPUP);
+                this.createComponentTemplate();
             },
             loadUrl: function loadUrl(url) {
                 this.window.location = url;
@@ -5367,31 +5303,33 @@
             open: function open() {
                 var element = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || document.body;
                 RENDER_DRIVERS[_constants.CONTEXT_TYPES.IFRAME].open.call(this, element);
-                var dimensions = this.component.dimensions || {};
                 this.iframe.style.zIndex = _constants.MAX_Z_INDEX;
                 this.iframe.style.position = "fixed";
-                if (dimensions.width) {
-                    this.iframe.style.width = dimensions.width + "px";
+                return this;
+            },
+            resize: function resize(width, height) {
+                if (width) {
+                    this.iframe.style.width = width + "px";
                     this.iframe.style.left = "50%";
-                    this.iframe.style.marginLeft = "-" + Math.floor(dimensions.width / 2) + "px";
+                    this.iframe.style.marginLeft = "-" + Math.floor(width / 2) + "px";
                 } else {
                     this.iframe.style.left = 0;
                     this.iframe.style.width = "100%";
                     this.iframe.style.marginLeft = "0px";
                     this.iframe.width = "100%";
                 }
-                if (dimensions.height) {
-                    this.iframe.style.height = dimensions.height + "px";
+                if (height) {
+                    this.iframe.style.height = height + "px";
                     this.iframe.style.top = "50%";
-                    this.iframe.style.marginTop = "-" + Math.floor(dimensions.height / 2) + "px";
+                    this.iframe.style.marginTop = "-" + Math.floor(height / 2) + "px";
                 } else {
                     this.iframe.style.top = 0;
                     this.iframe.style.height = "100%";
                     this.iframe.style.marginTop = "0px";
                     this.iframe.height = "100%";
                 }
-                return this;
             },
+            restyle: function restyle() {},
             loadUrl: function loadUrl(url) {
                 this.iframe.src = url;
             }
@@ -5479,7 +5417,9 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.propsToQuery = propsToQuery;
+        exports.normalizeParentProps = normalizeParentProps;
         var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _props = __webpack_require__(/*! ../props */ 55);
         function propsToQuery(propsDef, props) {
             return Object.keys(props).map(function(key) {
                 var value = props[key];
@@ -5504,6 +5444,49 @@
                 return (0, _lib.urlEncode)(key) + "=" + (0, _lib.urlEncode)(result);
             }).filter(Boolean).join("&");
         }
+        function normalizeParentProps(component, instance, props) {
+            props = (0, _props.normalizeProps)(component, instance, props);
+            var _loop = function _loop() {
+                if (_isArray) {
+                    if (_i >= _iterator.length) return "break";
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) return "break";
+                    _ref = _i.value;
+                }
+                var key = _ref;
+                var value = props[key];
+                if (value) {
+                    var prop = component.props[key];
+                    if (prop.precall) {
+                        (function() {
+                            var result = value.call();
+                            props[key] = function() {
+                                return result;
+                            };
+                        })();
+                    }
+                    if (prop.autoClose) {
+                        props[key] = function() {
+                            var _this = this, _arguments = arguments;
+                            instance.component.log("autoclose", {
+                                prop: key
+                            });
+                            return instance.close().then(function() {
+                                return value.apply(_this, _arguments);
+                            });
+                        };
+                    }
+                }
+            };
+            for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                var _ret = _loop();
+                if (_ret === "break") break;
+            }
+            return props;
+        }
     }, /*!*******************************************************!*\
   !*** ./~/xcomponent/src/component/component/props.js ***!
   \*******************************************************/
@@ -5525,25 +5508,27 @@
             timeout: {
                 type: "number",
                 required: false,
-                queryParam: false,
-                autoClose: true
+                queryParam: false
             },
             onEnter: {
                 type: "function",
                 required: false,
-                noop: true
+                noop: true,
+                promisify: true
             },
             onClose: {
                 type: "function",
                 required: false,
                 noop: true,
-                once: true
+                once: true,
+                promisify: true
             },
             onTimeout: {
                 type: "function",
                 required: false,
                 once: true,
                 autoClose: true,
+                promisify: true,
                 def: function def(err) {
                     return this.props.onError(err);
                 }
@@ -5552,6 +5537,7 @@
                 type: "function",
                 required: false,
                 autoClose: true,
+                promisify: true,
                 def: function def(err) {
                     console.error(err.message, "\n", err.stack || err.toString());
                 },
@@ -5636,6 +5622,11 @@
                 }
                 if (!anyEnabled) {
                     throw new Error("[" + options.tag + "] No context type is enabled");
+                }
+                if (options.contexts.iframe !== false) {
+                    if (!options.dimensions || !options.dimensions.width || !options.dimensions.height) {
+                        throw new Error("[" + options.tag + "] dimesions.width and dimensions.height required for rendering to iframe");
+                    }
                 }
             }
             if (options.defaultContext) {
@@ -5920,22 +5911,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/props.js", hash = "73923834adae41c1b9de897186f78b09";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/props.js","s":{"1":0},"b":{},"f":{},"statementMap":{"1":{"start":{"line":2,"column":19},"end":{"line":36,"column":1}}},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
-        var props = exports.props = (++_cover__().s["1"], {
+        var props = exports.props = {
             token: {
                 type: "string",
                 required: false
@@ -5964,7 +5940,7 @@
                 once: true,
                 autoClose: true
             }
-        });
+        };
     }, /*!******************************************!*\
   !*** ./src/components/checkout/index.js ***!
   \******************************************/
@@ -5983,21 +5959,6 @@
                 }
             });
         });
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/checkout/index.js", hash = "7bb2858e362a96755e9fea619d3df90c";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/checkout/index.js","s":{},"b":{},"f":{},"statementMap":{},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
     }, /*!**********************************************!*\
   !*** ./src/components/checkout/component.js ***!
   \**********************************************/
@@ -6023,27 +5984,14 @@
         var _props = __webpack_require__(/*! ../props */ 69);
         var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 72);
         var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
+        var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 73);
+        var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/components/checkout/component.js", hash = "741eec2e05457e9bf1ef56cbd0e3764f";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/components/checkout/component.js","s":{"1":0},"b":{},"f":{},"statementMap":{"1":{"start":{"line":6,"column":28},"end":{"line":35,"column":2}}},"fnMap":{},"branchMap":{}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
-        var PayPalCheckout = exports.PayPalCheckout = (++_cover__().s["1"], _src2["default"].create({
+        var PayPalCheckout = exports.PayPalCheckout = _src2["default"].create({
             tag: "paypal-checkout",
             name: "ppxo",
             defaultEnv: "production",
@@ -6058,17 +6006,23 @@
                 popup: true
             },
             parentTemplate: _parentTemplate2["default"],
+            componentTemplate: _componentTemplate2["default"],
             props: _extends({}, _props.props),
             dimensions: {
                 width: 450,
                 height: 535
             }
-        }));
+        });
     }, /*!****************************************************!*\
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
         module.exports = '\n<div class="xcomponent-overlay xcomponent-focus">\n    <a href="#xcomponent-close" class="xcomponent-close"></a>\n    <div class="ppmodal">\n        <div class="pplogo">\n        </div>\n        <div class="ppmsg" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="continueLink">\n            <a href="#" class="xcomponent-focus">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT}"></div>\n</div>\n\n<style>\n\n    .xcomponent-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n    }\n\n    .xcomponent-overlay.xcomponent-popup {\n        cursor: pointer;\n    }\n\n    .xcomponent-overlay .ppmodal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    .xcomponent-overlay .ppmodal .pplogo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    .xcomponent-overlay .ppmodal .ppmsg{\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    .xcomponent-overlay .ppmodal .continueLink{\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    .xcomponent-close {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    .xcomponent-close:hover {\n        opacity: 1;\n    }\n\n    .xcomponent-close:before, .xcomponent-close:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    .xcomponent-close:before {\n        transform: rotate(45deg);\n    }\n\n    .xcomponent-close:after {\n        transform: rotate(-45deg);\n    }\n\n    a{\n\n        color: white;\n    }\n\n    .xcomponent-lightbox iframe {\n        border-radius: 10px;\n    }\n\n</style>\n';
+    }, /*!*******************************************************!*\
+  !*** ./src/components/checkout/componentTemplate.htm ***!
+  \*******************************************************/
+    function(module, exports) {
+        module.exports = "<head>\n\n    <style>\n        body {\n            background-color: white;\n            width: 100%;\n            height: 100%;\n            border-radius: 10px;\n            overflow: hidden;\n            position: fixed;\n            top: 0;\n            left: 0;\n        }\n    </style>\n\n</head>\n\n<body>\n    loading...\n</body>\n";
     }, /*!*****************************!*\
   !*** ./src/legacy/index.js ***!
   \*****************************/
@@ -6086,211 +6040,103 @@
             return target;
         };
         var _components = __webpack_require__(/*! ../components */ 1);
-        var _coverage__file;
-        function _cover__() {
-            if (!_coverage__file) _coverage__file = _coverage__getInitialState();
-            return _coverage__file;
-        }
-        function _coverage__getInitialState() {
-            var path = "/Users/dbrain/nfra/checkout-components/src/legacy/index.js", hash = "a6aa15d017a5a5f9fd1f294512e57414";
-            var global = new Function("return this")();
-            var coverage = global["__coverage__"] || (global["__coverage__"] = {});
-            if (coverage[path] && coverage[path].hash === hash) return coverage[path];
-            var coverageData = global["JSON"].parse('{"path":"/Users/dbrain/nfra/checkout-components/src/legacy/index.js","s":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"24":0,"25":0,"26":0,"27":0,"28":0,"29":0,"30":0,"31":0,"32":0,"33":0,"34":0,"35":0,"36":0,"37":0,"38":0,"39":0,"40":0,"41":0,"42":0,"43":0,"44":0,"45":0,"46":0,"47":0,"48":0,"49":0,"50":0,"51":0,"52":0,"53":0,"54":0,"55":0,"56":0,"57":0,"58":0,"59":0,"60":0,"61":0,"62":0,"63":0,"64":0,"65":0,"66":0,"67":0},"b":{"1":[0,0],"2":[0,0],"3":[0,0],"4":[0,0],"5":[0,0],"6":[0,0],"7":[0,0],"8":[0,0],"9":[0,0],"10":[0,0],"11":[0,0],"12":[0,0],"13":[0,0],"14":[0,0]},"f":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0},"statementMap":{"1":{"start":{"line":17,"column":13},"end":{"line":19,"column":1}},"2":{"start":{"line":31,"column":4},"end":{"line":33,"column":5}},"3":{"start":{"line":32,"column":8},"end":{"line":32,"column":15}},"4":{"start":{"line":37,"column":4},"end":{"line":39,"column":5}},"5":{"start":{"line":38,"column":8},"end":{"line":38,"column":21}},"6":{"start":{"line":43,"column":16},"end":{"line":43,"column":58}},"7":{"start":{"line":45,"column":4},"end":{"line":47,"column":5}},"8":{"start":{"line":46,"column":8},"end":{"line":46,"column":24}},"9":{"start":{"line":71,"column":8},"end":{"line":71,"column":47}},"10":{"start":{"line":72,"column":8},"end":{"line":72,"column":53}},"11":{"start":{"line":73,"column":8},"end":{"line":73,"column":53}},"12":{"start":{"line":77,"column":8},"end":{"line":77,"column":40}},"13":{"start":{"line":82,"column":4},"end":{"line":84,"column":6}},"14":{"start":{"line":88,"column":4},"end":{"line":90,"column":6}},"15":{"start":{"line":89,"column":8},"end":{"line":89,"column":36}},"16":{"start":{"line":94,"column":4},"end":{"line":100,"column":6}},"17":{"start":{"line":95,"column":8},"end":{"line":95,"column":43}},"18":{"start":{"line":99,"column":8},"end":{"line":99,"column":26}},"19":{"start":{"line":113,"column":17},"end":{"line":113,"column":49}},"20":{"start":{"line":114,"column":4},"end":{"line":114,"column":41}},"21":{"start":{"line":116,"column":4},"end":{"line":116,"column":59}},"22":{"start":{"line":118,"column":4},"end":{"line":118,"column":18}},"23":{"start":{"line":132,"column":36},"end":{"line":132,"column":38}},"24":{"start":{"line":134,"column":4},"end":{"line":147,"column":7}},"25":{"start":{"line":139,"column":12},"end":{"line":139,"column":79}},"26":{"start":{"line":143,"column":12},"end":{"line":143,"column":60}},"27":{"start":{"line":149,"column":4},"end":{"line":149,"column":21}},"28":{"start":{"line":165,"column":4},"end":{"line":165,"column":28}},"29":{"start":{"line":165,"column":25},"end":{"line":165,"column":27}},"30":{"start":{"line":166,"column":4},"end":{"line":166,"column":37}},"31":{"start":{"line":170,"column":4},"end":{"line":202,"column":5}},"32":{"start":{"line":174,"column":21},"end":{"line":174,"column":50}},"33":{"start":{"line":178,"column":8},"end":{"line":201,"column":9}},"34":{"start":{"line":179,"column":12},"end":{"line":192,"column":15}},"35":{"start":{"line":180,"column":16},"end":{"line":180,"column":39}},"36":{"start":{"line":184,"column":16},"end":{"line":187,"column":28}},"37":{"start":{"line":191,"column":16},"end":{"line":191,"column":37}},"38":{"start":{"line":198,"column":12},"end":{"line":200,"column":36}},"39":{"start":{"line":216,"column":4},"end":{"line":218,"column":16}},"40":{"start":{"line":233,"column":4},"end":{"line":235,"column":16}},"41":{"start":{"line":248,"column":4},"end":{"line":248,"column":22}},"42":{"start":{"line":259,"column":21},"end":{"line":259,"column":91}},"43":{"start":{"line":259,"column":59},"end":{"line":259,"column":91}},"44":{"start":{"line":263,"column":4},"end":{"line":265,"column":5}},"45":{"start":{"line":264,"column":8},"end":{"line":264,"column":24}},"46":{"start":{"line":267,"column":4},"end":{"line":270,"column":7}},"47":{"start":{"line":268,"column":8},"end":{"line":268,"column":30}},"48":{"start":{"line":269,"column":8},"end":{"line":269,"column":24}},"49":{"start":{"line":280,"column":0},"end":{"line":282,"column":1}},"50":{"start":{"line":281,"column":4},"end":{"line":281,"column":48}},"51":{"start":{"line":291,"column":0},"end":{"line":304,"column":3}},"52":{"start":{"line":292,"column":18},"end":{"line":292,"column":67}},"53":{"start":{"line":294,"column":4},"end":{"line":303,"column":5}},"54":{"start":{"line":294,"column":23},"end":{"line":294,"column":58}},"55":{"start":{"line":296,"column":18},"end":{"line":296,"column":86}},"56":{"start":{"line":296,"column":51},"end":{"line":296,"column":86}},"57":{"start":{"line":298,"column":8},"end":{"line":300,"column":9}},"58":{"start":{"line":298,"column":20},"end":{"line":298,"column":53}},"59":{"start":{"line":299,"column":12},"end":{"line":299,"column":28}},"60":{"start":{"line":302,"column":8},"end":{"line":302,"column":57}},"61":{"start":{"line":313,"column":0},"end":{"line":313,"column":36}},"62":{"start":{"line":313,"column":33},"end":{"line":313,"column":35}},"63":{"start":{"line":314,"column":0},"end":{"line":314,"column":54}},"64":{"start":{"line":314,"column":51},"end":{"line":314,"column":53}},"65":{"start":{"line":316,"column":0},"end":{"line":316,"column":37}},"66":{"start":{"line":317,"column":0},"end":{"line":317,"column":39}},"67":{"start":{"line":318,"column":0},"end":{"line":318,"column":45}}},"fnMap":{"1":{"name":null,"line":29,"loc":{"start":{"line":29,"column":0},"end":{"line":48,"column":1}}},"2":{"name":null,"line":65,"loc":{"start":{"line":65,"column":0},"end":{"line":101,"column":1}}},"3":{"name":null,"line":67,"loc":{"start":{"line":67,"column":4},"end":{"line":78,"column":5}}},"4":{"name":null,"line":82,"loc":{"start":{"line":82,"column":36},"end":{"line":84,"column":5}}},"5":{"name":null,"line":88,"loc":{"start":{"line":88,"column":39},"end":{"line":90,"column":5}}},"6":{"name":null,"line":94,"loc":{"start":{"line":94,"column":39},"end":{"line":100,"column":5}}},"7":{"name":null,"line":111,"loc":{"start":{"line":111,"column":0},"end":{"line":119,"column":1}}},"8":{"name":null,"line":132,"loc":{"start":{"line":132,"column":0},"end":{"line":150,"column":1}}},"9":{"name":null,"line":164,"loc":{"start":{"line":164,"column":0},"end":{"line":203,"column":1}}},"10":{"name":null,"line":179,"loc":{"start":{"line":179,"column":45},"end":{"line":192,"column":13}}},"11":{"name":null,"line":215,"loc":{"start":{"line":215,"column":0},"end":{"line":219,"column":1}}},"12":{"name":null,"line":232,"loc":{"start":{"line":232,"column":0},"end":{"line":236,"column":1}}},"13":{"name":null,"line":247,"loc":{"start":{"line":247,"column":0},"end":{"line":249,"column":1}}},"14":{"name":null,"line":261,"loc":{"start":{"line":261,"column":0},"end":{"line":271,"column":1}}},"15":{"name":null,"line":267,"loc":{"start":{"line":267,"column":57},"end":{"line":270,"column":5}}},"16":{"name":null,"line":291,"loc":{"start":{"line":291,"column":16},"end":{"line":304,"column":1}}}},"branchMap":{"1":{"line":31,"type":"if","locations":[{"start":{"line":31,"column":16},"end":{"line":33,"column":5}},{"start":{"line":31,"column":16},"end":{"line":33,"column":5}}]},"2":{"line":37,"type":"if","locations":[{"start":{"line":37,"column":45},"end":{"line":39,"column":5}},{"start":{"line":37,"column":45},"end":{"line":39,"column":5}}]},"3":{"line":45,"type":"if","locations":[{"start":{"line":45,"column":15},"end":{"line":47,"column":5}},{"start":{"line":45,"column":15},"end":{"line":47,"column":5}}]},"4":{"line":165,"type":"binary-expr","locations":[{"start":{"line":165,"column":14},"end":{"line":165,"column":21}},{"start":{"line":165,"column":14},"end":{"line":165,"column":21}}]},"5":{"line":170,"type":"if","locations":[{"start":{"line":170,"column":27},"end":{"line":202,"column":5}},{"start":{"line":170,"column":27},"end":{"line":202,"column":5}}]},"6":{"line":178,"type":"if","locations":[{"start":{"line":178,"column":27},"end":{"line":194,"column":9}},{"start":{"line":194,"column":15},"end":{"line":201,"column":9}}]},"7":{"line":259,"type":"binary-expr","locations":[{"start":{"line":259,"column":21},"end":{"line":259,"column":55}},{"start":{"line":259,"column":21},"end":{"line":259,"column":55}}]},"8":{"line":263,"type":"if","locations":[{"start":{"line":263,"column":24},"end":{"line":265,"column":5}},{"start":{"line":263,"column":24},"end":{"line":265,"column":5}}]},"9":{"line":280,"type":"if","locations":[{"start":{"line":280,"column":52},"end":{"line":282,"column":1}},{"start":{"line":280,"column":52},"end":{"line":282,"column":1}}]},"10":{"line":296,"type":"binary-expr","locations":[{"start":{"line":296,"column":18},"end":{"line":296,"column":47}},{"start":{"line":296,"column":18},"end":{"line":296,"column":47}}]},"11":{"line":298,"type":"if","locations":[{"start":{"line":298,"column":55},"end":{"line":300,"column":9}},{"start":{"line":298,"column":55},"end":{"line":300,"column":9}}]},"12":{"line":298,"type":"binary-expr","locations":[{"start":{"line":298,"column":12},"end":{"line":298,"column":16}},{"start":{"line":298,"column":12},"end":{"line":298,"column":16}}]},"13":{"line":313,"type":"binary-expr","locations":[{"start":{"line":313,"column":16},"end":{"line":313,"column":29}},{"start":{"line":313,"column":16},"end":{"line":313,"column":29}}]},"14":{"line":314,"type":"binary-expr","locations":[{"start":{"line":314,"column":25},"end":{"line":314,"column":47}},{"start":{"line":314,"column":25},"end":{"line":314,"column":47}}]}}}');
-            coverageData.hash = hash;
-            return coverage[path] = coverageData;
-        }
-        _cover__();
-        var component;
-        var config = (++_cover__().s["1"], {
+        var config = {
             env: "production"
-        });
+        };
         function matchToken(token) {
-            ++_cover__().f["1"];
-            ++_cover__().s["2"];
             if (!token) {
-                ++_cover__().b["1"][0];
-                ++_cover__().s["3"];
                 return;
-            } else {
-                ++_cover__().b["1"][1];
             }
-            ++_cover__().s["4"];
             if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
-                ++_cover__().b["2"][0];
-                ++_cover__().s["5"];
                 return token;
-            } else {
-                ++_cover__().b["2"][1];
             }
-            var match = (++_cover__().s["6"], token.match(/token=((EC-)?[A-Z0-9]{17})$/));
-            ++_cover__().s["7"];
+            var match = token.match(/token=((EC-)?[A-Z0-9]{17})$/);
             if (match) {
-                ++_cover__().b["3"][0];
-                ++_cover__().s["8"];
                 return match[1];
-            } else {
-                ++_cover__().b["3"][1];
             }
-        }
-        function getToken(callback) {
-            ++_cover__().f["2"];
-            function cb() {
-                ++_cover__().f["3"];
-                ++_cover__().s["9"];
-                window.paypal.checkout.initXO = initXO;
-                ++_cover__().s["10"];
-                window.paypal.checkout.startFlow = startFlow;
-                ++_cover__().s["11"];
-                window.paypal.checkout.closeFlow = closeFlow;
-                ++_cover__().s["12"];
-                callback.apply(this, arguments);
-            }
-            ++_cover__().s["13"];
-            window.paypal.checkout.initXO = function() {
-                ++_cover__().f["4"];
-            };
-            ++_cover__().s["14"];
-            window.paypal.checkout.startFlow = function(token) {
-                ++_cover__().f["5"];
-                ++_cover__().s["15"];
-                cb(null, matchToken(token));
-            };
-            ++_cover__().s["16"];
-            window.paypal.checkout.closeFlow = function() {
-                ++_cover__().f["6"];
-                ++_cover__().s["17"];
-                cb(new Error("Close Flow Called"));
-                ++_cover__().s["18"];
-                component.close();
-            };
         }
         function drawButton(container) {
-            ++_cover__().f["7"];
-            var button = (++_cover__().s["19"], document.createElement("button"));
-            ++_cover__().s["20"];
+            var button = document.createElement("button");
             button.innerHTML = "PayPal Checkout";
-            ++_cover__().s["21"];
             document.getElementById(container).appendChild(button);
-            ++_cover__().s["22"];
             return button;
         }
         function initPayPalCheckout() {
-            var props = arguments.length <= 0 || arguments[0] === undefined ? (++_cover__().s["23"], 
-            {}) : arguments[0];
-            ++_cover__().f["8"];
-            ++_cover__().s["24"];
-            component = _components.PayPalCheckout.init(_extends({
+            var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            return _components.PayPalCheckout.init(_extends({
                 env: config.env,
                 onPaymentAuthorize: function onPaymentAuthorize(_ref) {
                     var returnUrl = _ref.returnUrl;
                     var token = _ref.token;
                     var payerID = _ref.payerID;
-                    ++_cover__().s["25"];
                     window.location = returnUrl + "?token=" + token + "&payerID=" + payerID;
                 },
                 onCancel: function onCancel(_ref2) {
                     var cancelUrl = _ref2.cancelUrl;
                     var token = _ref2.token;
-                    ++_cover__().s["26"];
                     window.location = cancelUrl + "?token=" + token;
                 }
             }, props));
-            ++_cover__().s["27"];
-            return component;
         }
         function setup(id, options) {
-            ++_cover__().f["9"];
-            ++_cover__().s["28"];
-            options = (++_cover__().b["4"][0], options) || (++_cover__().b["4"][1], ++_cover__().s["29"], 
-            {});
-            ++_cover__().s["30"];
+            options = options || {};
             config.env = options.environment;
-            ++_cover__().s["31"];
             if (options.container) {
-                ++_cover__().b["5"][0];
-                var button = (++_cover__().s["32"], drawButton(options.container));
-                ++_cover__().s["33"];
+                var button = drawButton(options.container);
                 if (options.click) {
-                    ++_cover__().b["6"][0];
-                    ++_cover__().s["34"];
                     button.addEventListener("click", function(event) {
-                        ++_cover__().f["10"];
-                        ++_cover__().s["35"];
                         event.preventDefault();
-                        ++_cover__().s["36"];
-                        initPayPalCheckout({
-                            env: options.environment,
-                            getToken: getToken
-                        }).render();
-                        ++_cover__().s["37"];
                         options.click.call();
                     });
                 } else {
-                    ++_cover__().b["6"][1];
-                    ++_cover__().s["38"];
                     initPayPalCheckout({
                         env: options.environment
                     }).hijackButton(button);
                 }
-            } else {
-                ++_cover__().b["5"][1];
             }
         }
+        var component = void 0;
         function initXO() {
-            ++_cover__().f["11"];
-            ++_cover__().s["39"];
-            initPayPalCheckout({
-                getToken: getToken
-            }).render();
+            component = initPayPalCheckout();
+            component.preRender();
         }
         function startFlow(token) {
-            ++_cover__().f["12"];
-            ++_cover__().s["40"];
-            initPayPalCheckout({
-                token: matchToken(token)
-            }).render();
+            token = matchToken(token);
+            if (component) {
+                component.updateProps({
+                    token: token
+                });
+            } else {
+                component = initPayPalCheckout({
+                    token: token
+                });
+            }
+            component.render();
         }
         function closeFlow() {
-            ++_cover__().f["13"];
-            ++_cover__().s["41"];
-            component.close();
-        }
-        var documentLoaded = (++_cover__().s["42"], (++_cover__().b["7"][0], document.readyState === "complete") || (++_cover__().b["7"][1], 
-        ++_cover__().s["43"], document.readyState === "loaded"));
-        function onDocumentReady(method) {
-            ++_cover__().f["14"];
-            ++_cover__().s["44"];
-            if (documentLoaded) {
-                ++_cover__().b["8"][0];
-                ++_cover__().s["45"];
-                return method();
+            if (component) {
+                component.close();
+                component = null;
             } else {
-                ++_cover__().b["8"][1];
+                console.warn("Checkout is not open, can not be closed");
             }
-            ++_cover__().s["46"];
+        }
+        var documentLoaded = document.readyState === "complete" || document.readyState === "loaded";
+        function onDocumentReady(method) {
+            if (documentLoaded) {
+                return method();
+            }
             return document.addEventListener("DOMContentLoaded", function(event) {
-                ++_cover__().f["15"];
-                ++_cover__().s["47"];
                 documentLoaded = true;
-                ++_cover__().s["48"];
                 return method();
             });
         }
-        ++_cover__().s["49"];
         if (window.paypalCheckoutReady instanceof Function) {
-            ++_cover__().b["9"][0];
-            ++_cover__().s["50"];
             onDocumentReady(window.paypalCheckoutReady);
-        } else {
-            ++_cover__().b["9"][1];
         }
-        ++_cover__().s["51"];
         onDocumentReady(function() {
-            ++_cover__().f["16"];
-            var buttons = (++_cover__().s["52"], document.querySelectorAll("[data-paypal-button]"));
-            ++_cover__().s["53"];
-            for (var _iterator = (++_cover__().s["54"], Array.prototype.slice.call(buttons)), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            var buttons = document.querySelectorAll("[data-paypal-button]");
+            for (var _iterator = Array.prototype.slice.call(buttons), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref3;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
@@ -6301,35 +6147,21 @@
                     _ref3 = _i.value;
                 }
                 var button = _ref3;
-                var env = (++_cover__().s["55"], (++_cover__().b["10"][0], button.attributes["data-env"]) && (++_cover__().b["10"][1], 
-                ++_cover__().s["56"], button.attributes["data-env"].value));
-                ++_cover__().s["57"];
-                if ((++_cover__().b["12"][0], !env) && (++_cover__().b["12"][1], ++_cover__().s["58"], 
-                button.attributes["data-sandbox"])) {
-                    ++_cover__().b["11"][0];
-                    ++_cover__().s["59"];
+                var env = button.attributes["data-env"] && button.attributes["data-env"].value;
+                if (!env && button.attributes["data-sandbox"]) {
                     env = "sandbox";
-                } else {
-                    ++_cover__().b["11"][1];
                 }
-                ++_cover__().s["60"];
                 initPayPalCheckout({
                     env: env
                 }).hijackButton(button);
             }
         });
-        ++_cover__().s["61"];
-        window.paypal = (++_cover__().b["13"][0], window.paypal) || (++_cover__().b["13"][1], 
-        ++_cover__().s["62"], {});
-        ++_cover__().s["63"];
-        window.paypal.checkout = (++_cover__().b["14"][0], window.paypal.checkout) || (++_cover__().b["14"][1], 
-        ++_cover__().s["64"], {});
-        ++_cover__().s["65"];
+        window.paypal = window.paypal || {};
+        window.paypal.checkout = window.paypal.checkout || {};
         window.paypal.checkout.setup = setup;
-        ++_cover__().s["66"];
         window.paypal.checkout.initXO = initXO;
-        ++_cover__().s["67"];
         window.paypal.checkout.startFlow = startFlow;
+        window.paypal.checkout.closeFlow = closeFlow;
     } ]);
 });
 
