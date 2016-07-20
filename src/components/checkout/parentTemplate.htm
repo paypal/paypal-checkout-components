@@ -1,13 +1,13 @@
 
-<div class="overlay {CLASS.FOCUS}">
+<div class="paypal-checkout-overlay {CLASS.FOCUS}">
     <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>
-    <div class="ppmodal">
-        <div class="pplogo"></div>
-        <div class="ppmsg" >
+    <div class="paypal-checkout-modal">
+        <div class="paypal-checkout-logo"></div>
+        <div class="paypal-checkout-message" >
             Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.
         </div>
-        <div class="continueLink">
-            <a href="#" class="{CLASS.FOCUS}">Continue</a>
+        <div class="paypal-checkout-continue">
+            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
 
 <style>
 
-    #{id} .overlay {
+    #{id} .paypal-checkout-overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -25,11 +25,11 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-    #{id}.{CLASS.POPUP} .overlay {
+    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {
         cursor: pointer;
     }
 
-    #{id} .overlay .ppmodal {
+    #{id} .paypal-checkout-overlay .paypal-checkout-modal {
         font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
         font-size: 14px;
         text-align: center;
@@ -48,7 +48,7 @@
         cursor: pointer;
     }
 
-    #{id} .overlay .ppmodal .pplogo {
+    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {
         background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;
         width: 132px;
         height: 36px;
@@ -57,13 +57,13 @@
         margin-bottom: 30px;
     }
 
-    #{id} .overlay .ppmodal .ppmsg{
+    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {
         font-size: 15px;
         line-height: 1.35;
         padding: 25px 0;
     }
 
-    #{id} .overlay .ppmodal .continueLink{
+    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {
         font-size: 15px;
         line-height: 1.35;
         padding: 10px 0;
