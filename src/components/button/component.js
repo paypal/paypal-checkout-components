@@ -1,6 +1,5 @@
 
 import xcomponent from 'xcomponent/src';
-import { props } from '../props';
 
 export let PayPalButton = xcomponent.create({
 
@@ -18,8 +17,6 @@ export let PayPalButton = xcomponent.create({
 
     props: {
 
-        ...props,
-
         paymentToken: {
             type: 'string',
             required: false,
@@ -30,6 +27,24 @@ export let PayPalButton = xcomponent.create({
         submitForm: {
             type: 'boolean',
             def: false
+        },
+
+        onPaymentAuthorize: {
+            type: 'function',
+            required: false,
+            once: true
+        },
+
+        onPaymentComplete: {
+            type: 'function',
+            required: false,
+            once: true
+        },
+
+        onCancel: {
+            type: 'function',
+            required: false,
+            once: true
         }
     },
 

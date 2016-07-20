@@ -15,7 +15,7 @@
 <button onclick="authorize()">Authorize Payment</button>
 
 <script>
-    let ecToken;
+    var ecToken;
 
     var checkout = ppxo.PayPalCheckout.attach({
         onEnter: function() {

@@ -1,6 +1,5 @@
 
 import xcomponent from 'xcomponent/src';
-import { props } from '../props';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
@@ -27,7 +26,7 @@ export let PayPalCheckout = xcomponent.create({
     parentTemplate,
     componentTemplate,
 
-    autoResize: true,
+    autoResize: false,
 
     props: {
         paymentToken: {
@@ -37,7 +36,26 @@ export let PayPalCheckout = xcomponent.create({
             queryParam: 'token'
         },
 
-        ...props
+        onPaymentAuthorize: {
+            type: 'function',
+            required: false,
+            once: true,
+            autoClose: true
+        },
+
+        onPaymentComplete: {
+            type: 'function',
+            required: false,
+            once: true,
+            autoClose: true
+        },
+
+        onCancel: {
+            type: 'function',
+            required: false,
+            once: true,
+            autoClose: true
+        }
     },
 
     dimensions: {

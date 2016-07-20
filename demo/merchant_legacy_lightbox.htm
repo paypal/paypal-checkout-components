@@ -22,10 +22,16 @@
 
     ppxo.PayPalCheckout.contexts.lightbox = true;
 
-    function getToken(callback) {
-        setTimeout(function() {
-            callback(null, 'EC-XYZ123456789ABCDE');
-        }, 1500);
+    function paymentToken(resolve) {
+        $.get('./token.htm?ts=' + Date.now()).then(function(result) {
+            resolve(result.trim());
+        });
+    }
+
+    function paymentTokenError(resolve, reject) {
+        $.get('./token_404.htm?ts=' + Date.now()).error(function(result) {
+            reject(new Error('Error from token ajax call'));
+        });
     }
 
     function onPaymentAuthorize(token) {
@@ -95,12 +101,7 @@
       click: function () {
         paypal.checkout.initXO();
 
-        getToken(function(err, token) {
-
-            if (err) {
-                return paypal.checkout.closeFlow();
-            }
-
+        paymentToken(function(token) {
             return paypal.checkout.startFlow(token);
         });
       }
@@ -122,9 +123,9 @@
       click: function () {
         paypal.checkout.initXO();
 
-        setTimeout(function() {
+        paymentTokenError(null, function(err) {
             paypal.checkout.closeFlow();
-        }, 1500);
+        });
       }
     });
 </script>

@@ -85,15 +85,15 @@
     ppxo.postRobot.openBridge('./bridge.htm');
 
     function paymentToken(resolve) {
-        setTimeout(function() {
-            resolve('EC-XYZ123456789ABCDE');
-        }, 1500);
+        $.get('./token.htm?ts=' + Date.now()).then(function(result) {
+            resolve(result.trim());
+        });
     }
 
     function paymentTokenError(resolve, reject) {
-        setTimeout(function() {
-            reject(new Error('Some Ajax Error'));
-        }, 1500);
+        $.get('./token_404.htm?ts=' + Date.now()).error(function(result) {
+            reject(new Error('Error from token ajax call'));
+        });
     }
 
     function onPaymentAuthorize(token) {
