@@ -5273,15 +5273,12 @@
                         CLASS: _constants.CLASS_NAMES
                     });
                     try {
-                        (0, _lib.createElement)("div", {
-                            html: html
-                        }, this.window.document.body);
+                        this.window.document.open();
+                        this.window.document.write(html);
+                        this.window.document.close();
                     } catch (err) {
-                        try {
-                            this.window.document.write(html);
-                        } catch (err2) {
-                            this.window.location = "javascript: document.write(JSON.stringify(html))";
-                        }
+                        console.error(err);
+                        this.window.location = "javascript: document.write(JSON.stringify(html))";
                     }
                 }
             }, {
