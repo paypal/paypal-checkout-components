@@ -69,19 +69,35 @@
 
 <!-- ******************************************* -->
 
+<h2>7. Standard merchant-owned button with erroring ajax call</h2>
+
+<button onclick="openPayPalCheckoutError()">Checkout</button>
+
+<hr>
+
+<!-- ******************************************* -->
+
 
 <script>
 
     window.mockDomain = 'http://www.merchant.com';
 
-    function getToken(callback) {
+    ppxo.postRobot.openBridge('./bridge.htm');
+
+    function paymentToken(resolve) {
         setTimeout(function() {
-            callback(null, 'EC-XYZ123456789ABCDE');
+            resolve('EC-XYZ123456789ABCDE');
+        }, 1500);
+    }
+
+    function paymentTokenError(resolve, reject) {
+        setTimeout(function() {
+            reject(new Error('Some Ajax Error'));
         }, 1500);
     }
 
     function onPaymentAuthorize(token) {
-        console.log('payment authorized with token:', token);
+        console.log('payment authorized with paymentToken:', token);
     }
 
 
@@ -94,7 +110,7 @@
 
         url: './button.htm',
 
-        getToken: getToken,
+        paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize
 
     }).render('#button');
@@ -107,14 +123,14 @@
 
     function openPayPalCheckout() {
 
-        ppxo.PayPalCheckout.render({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './checkout.htm',
 
-            getToken: getToken,
+            paymentToken: paymentToken,
             onPaymentAuthorize: onPaymentAuthorize
 
-        });
+        }).render();
     }
 
 
@@ -126,10 +142,10 @@
 
     var checkout = ppxo.PayPalCheckout.init({
 
-        getToken: getToken,
+        paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize
 
-    }).hijackButtonToPopup('#checkout-link');
+    }).hijackButton('#checkout-link');
 
 
 
@@ -141,10 +157,10 @@
 
     var checkout = ppxo.PayPalCheckout.init({
 
-        getToken: getToken,
+        paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize
 
-    }).hijackButtonToPopup('#checkout-button');
+    }).hijackButton('#checkout-button');
 
 
 
@@ -158,7 +174,7 @@
 
         url: './button.htm',
 
-        getToken: getToken,
+        paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize,
         submitForm: true
 
@@ -169,14 +185,32 @@
 
     function addcontentCheckout() {
 
-        ppxo.PayPalCheckout.render({
+        var checkout = ppxo.PayPalCheckout.init({
 
             url: './addcontent.html',
 
-            getToken: getToken,
+            paymentToken: paymentToken,
             onPaymentAuthorize: onPaymentAuthorize
 
-        });
+        }).render();
+    }
+
+
+    // *******************************************---------
+
+
+    // 7. Standard merchant-owned button with failed ajax call
+
+    function openPayPalCheckoutError() {
+
+        var checkout = ppxo.PayPalCheckout.init({
+
+            url: './checkout.htm',
+
+            paymentToken: paymentTokenError,
+            onPaymentAuthorize: onPaymentAuthorize
+
+        }).render();
     }
 
 

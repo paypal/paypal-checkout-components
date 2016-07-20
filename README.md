@@ -75,7 +75,7 @@ ppxo.PayPalButton.render({
 	onPaymentComplete: function(data) {
 
 		console.log('The payment was completed!');
-		console.log('Token = ', data.token);
+		console.log('Token = ', data.paymentToken);
 		console.log('PayerID = ', data.payerID);
 
 		// Go to your success page
@@ -112,7 +112,7 @@ will appear exactly where you place them in your HTML.
 			onPaymentComplete: function(data) {
 
 				console.log('The payment was completed!');
-				console.log('Token = ', data.token);
+				console.log('Token = ', data.paymentToken);
 				console.log('PayerID = ', data.payerID);
 
 				// Go to your success page
@@ -136,7 +136,7 @@ var MyCartComponent = window.React.createClass({
 
 		function onPaymentComplete(data) {
 			console.log('The payment was completed!');
-			console.log('Token = ', data.token);
+			console.log('Token = ', data.paymentToken);
 			console.log('PayerID = ', data.payerID);
 
 			// Go to your success page
@@ -164,7 +164,7 @@ myapp.controller('cartController', function($scope) {
 
 	$scope.onPaymentComplete = function(data) {
 		console.log('The payment was completed!');
-		console.log('Token = ', data.token);
+		console.log('Token = ', data.paymentToken);
 		console.log('PayerID = ', data.payerID);
 
 		// Go to your success page
@@ -197,9 +197,9 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
-2. We call your `generatePaymentToken` function, when we need a payment token
+2. We call your `paymentToken` function, when we need a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
-4. When you get the token, you pass it back to us using `callback(null, token)`;
+4. When you get the token, you pass it back to us using `resolve(token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
 6. When we're done, we call your `onPaymentAuthorized` function
 7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
@@ -214,7 +214,7 @@ ppxo.PayPalButton.render({
 
 	// Pass a function which will retrieve the payment token for the transaction
 
-	generatePaymentToken: function(callback) {
+	paymentToken: function(resolve, reject) {
 
 		// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
 		// the PayPal Payment Create api to retrieve the token.
@@ -223,16 +223,16 @@ ppxo.PayPalButton.render({
 
 		jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
 
-			// Handle the success case by passing the token to the callback
+			// Handle the success case by passing the token to the resolve callback
 
 			.done(function(data) {
-				callback(null, data.token);
+				resolve(data.token);
 			})
 
-			// Handle the error case by passing the error to the callback
+			// Handle the error case by passing the error to the reject callback
 
 			.fail(function(err) {
-				callback(err);
+				reject(err);
 			});
 	},
 
@@ -241,7 +241,7 @@ ppxo.PayPalButton.render({
 	onPaymentAuthorized: function(data) {
 
 		console.log('The payment was authorized!');
-		console.log('Token = ', data.token);
+		console.log('Token = ', data.paymentToken);
 		console.log('PayerID = ', data.payerID);
 
 		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
@@ -249,7 +249,7 @@ ppxo.PayPalButton.render({
 		//
 		// See https://developer.paypal.com/docs/api/payments/#payment_execute
 
-		jQuery.post('https://www.my-paypal-store.com/my-api/payment-execute', { token: data.token, payerID: data.payerID });
+		jQuery.post('https://www.my-paypal-store.com/my-api/payment-execute', { token: data.paymentToken, payerID: data.payerID });
 
 			.done(function(data) {
 				 // Go to a success page
@@ -303,7 +303,7 @@ $('#myCheckoutButton').on('click', function() {
 		onPaymentComplete: function(data) {
 
 			console.log('The payment was completed!');
-			console.log('Token = ', data.token);
+			console.log('Token = ', data.paymentToken);
 			console.log('PayerID = ', data.payerID);
 
 			// Go to your success page
@@ -320,9 +320,9 @@ Unlike the simple integration, you will be responsible for calling PayPal's
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
-2. We call your `generatePaymentToken` function, when we need a payment token
+2. We call your `paymentToken` function, when we need a payment token
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
-4. When you get the token, you pass it back to us using `callback(null, token)`;
+4. When you get the payment token, you pass it back to us using `resolve(token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
 6. When we're done, we call your `onPaymentAuthorized` function
 7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
@@ -338,7 +338,7 @@ $('#myCheckoutButton').on('click', function() {
 
 		// Pass a function which will retrieve the payment token for the transaction
 
-		generatePaymentToken: function(callback) {
+		paymentToken: function(resolve, reject) {
 
 			// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
 			// the PayPal Payment Create api to retrieve the token.
@@ -347,16 +347,16 @@ $('#myCheckoutButton').on('click', function() {
 
 			jQuery.post('https://www.my-paypal-store.com/my-api/create-payment')
 
-				// Handle the success case by passing the token to the callback
+				// Handle the success case by passing the token to the resolve callback
 
 				.done(function(data) {
-					callback(null, data.token);
+					resolve(data.token);
 				})
 
-				// Handle the error case by passing the error to the callback
+				// Handle the error case by passing the error to the reject callback
 
 				.fail(function(err) {
-					callback(err);
+					reject(err);
 				});
 		},
 
@@ -365,7 +365,7 @@ $('#myCheckoutButton').on('click', function() {
 		onPaymentAuthorized: function(data) {
 
 			console.log('The payment was authorized!');
-			console.log('Token = ', data.token);
+			console.log('Token = ', data.paymentToken);
 			console.log('PayerID = ', data.payerID);
 
 			// At this point, the payment has been authorized, and you will need to call your back-end to complete the
@@ -516,13 +516,13 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
    ```javascript
    ppxo.PayPalButton.render({
 
-	   generatePaymentToken: function(callback) {
+	   paymentToken: function(resolve) {
 
-	       // Call your server side to get the approval url from step 3, then pass it to the callback
+	       // Call your server side to get the approval url from step 3, then pass it to the resolve callback
 
 		   jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
 		       .done(function(data) {
-			       callback(null, data.approval_url);
+			       resolve(data.approval_url);
 		       });
 	   },
 

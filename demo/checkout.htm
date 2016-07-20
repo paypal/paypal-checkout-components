@@ -32,27 +32,15 @@
 
                 onEnter: function() {
 
-                    if (this.props.token) {
-
-                        ecToken = this.props.token;
-                        console.log('sent paypal token!', ecToken);
-
-                    } else if (this.props.getToken) {
-
-                        this.props.getToken().then(function(token) {
-                            ecToken = token;
-                            console.log('got paypal token!', ecToken);
-                        });
-
-                    } else {
-
-                        throw new Error('Expected either props.token or props.getToken');
-                    }
+                    this.props.paymentToken().then(function(token) {
+                        ecToken = token;
+                        console.log('got paypal token!', ecToken);
+                    });
                 },
 
                 defaultProps: {
 
-                    getToken: function() {
+                    paymentToken: function() {
                         console.log('getting token from url', window.location.href);
                         return window.location.href.match(/token=((EC-)?[A-Z0-9]{17})/)[1];
                     }
@@ -62,7 +50,7 @@
             window.authorize = function authorize() {
                 if (checkout.props.onPaymentAuthorize) {
                     checkout.props.onPaymentAuthorize({
-                        token: ecToken,
+                        paymentToken: ecToken,
                         payerID: 'SD8778VSD7VD6SV',
                         returnUrl: parentUrl
                     });

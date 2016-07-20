@@ -13,6 +13,7 @@ export let PayPalCheckout = xcomponent.create({
 
     envUrls: {
         local: 'http://localhost.paypal.com:8000/webapps/hermes',
+        sandbox: 'https://www.sandbox.paypal.com/checkoutnow',
         production: 'https://www.paypal.com/checkoutnow',
         demo: './checkout.htm'
     },
@@ -26,7 +27,16 @@ export let PayPalCheckout = xcomponent.create({
     parentTemplate,
     componentTemplate,
 
+    autoResize: true,
+
     props: {
+        paymentToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'token'
+        },
+
         ...props
     },
 

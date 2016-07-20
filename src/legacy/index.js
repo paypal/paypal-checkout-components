@@ -1,5 +1,6 @@
 
 import { PayPalCheckout } from '../components';
+import xcomponent from 'xcomponent/src';
 
 
 /*  Global State
@@ -12,9 +13,7 @@ import { PayPalCheckout } from '../components';
     active component and any config that needs to be persisted from the setup() call.
 */
 
-let config = {
-    env: 'production'
-};
+let env = 'production';
 
 
 /*  Match Token
@@ -60,21 +59,15 @@ function matchToken(token) {
     global methods.
 */
 
-/*
+function getPaymentToken(resolve, reject) {
 
-function getToken(callback) {
-
-    function cb() {
+    function reset() {
 
         // Once our callback has been called, we can set the global methods to their original values
 
         window.paypal.checkout.initXO = initXO;
         window.paypal.checkout.startFlow = startFlow;
         window.paypal.checkout.closeFlow = closeFlow;
-
-        // Then call the original callback
-
-        callback.apply(this, arguments);
     }
 
     // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
@@ -85,22 +78,24 @@ function getToken(callback) {
 
     // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-    window.paypal.checkout.startFlow = token => {
-        cb(null, matchToken(token));
+    window.paypal.checkout.startFlow = (token) => {
+        reset();
+
+        resolve(matchToken(token));
     };
 
     // closeFlow is our 'error' case - we can call our callback with an error
 
     window.paypal.checkout.closeFlow = () => {
-        cb(new Error('Close Flow Called'));
+        reset();
+
+        reject(new Error('Close Flow Called'));
 
         // We also want to close the component at this point, to preserve the original legacy behavior
 
         this.close();
     };
 }
-
-*/
 
 
 /*  Draw Button
@@ -121,6 +116,18 @@ function drawButton(container) {
 }
 
 
+function logError(err) {
+    err = err.stack || err.toString();
+    if (window.console) {
+        if (window.console.error) {
+            window.console.error(err);
+        } else if (window.console.log) {
+            window.console.log(err);
+        }
+    }
+}
+
+
 /*  Init PayPal Checkout
     --------------------
 
@@ -135,14 +142,16 @@ function initPayPalCheckout(props = {}) {
 
     return PayPalCheckout.init({
 
-        env: config.env,
+        env,
 
-        onPaymentAuthorize({ returnUrl, token, payerID }) {
-            window.location = `${returnUrl}?token=${token}&payerID=${payerID}`;
+        paymentToken: getPaymentToken,
+
+        onPaymentAuthorize({ returnUrl, paymentToken, payerID }) {
+            window.location = `${returnUrl}?token=${paymentToken}&payerID=${payerID}`;
         },
 
-        onCancel({ cancelUrl, token }) {
-            window.location = `${cancelUrl}?token=${token}`;
+        onCancel({ cancelUrl, paymentToken }) {
+            window.location = `${cancelUrl}?token=${paymentToken}`;
         },
 
         ...props
@@ -163,7 +172,7 @@ function initPayPalCheckout(props = {}) {
 
 function setup(id, options) {
     options = options || {};
-    config.env = options.environment;
+    env = options.environment;
 
     // If we're given a container element, the merchant expects us to render a button to the page
 
@@ -179,16 +188,9 @@ function setup(id, options) {
             button.addEventListener('click', event => {
                 event.preventDefault();
 
-                /*
-
                 // Open the checkout component
 
-                initPayPalCheckout({
-                    env: options.environment,
-                    getToken
-                }).render();
-
-                */
+                initPayPalCheckout().render().catch(logError);
 
                 // Call options.click, which should call one or both of initXO / startFlow
 
@@ -200,15 +202,11 @@ function setup(id, options) {
             // Hijack the button we created, assuming it will submit the parent form
 
             initPayPalCheckout({
-                env: options.environment
-            }).hijackButton(button);
+                paymentToken: xcomponent.PROP_DEFER_TO_URL
+            }).hijackButton(button).catch(logError);
         }
     }
 }
-
-
-
-let component;
 
 
 /*  Init XO
@@ -221,19 +219,7 @@ let component;
 */
 
 function initXO() {
-
-    /*
-
-    component = initPayPalCheckout({
-        getToken
-    });
-
-    component.render();
-
-    */
-
-    component = initPayPalCheckout();
-    component.preRender();
+    initPayPalCheckout().render().catch(logError);
 }
 
 
@@ -249,21 +235,9 @@ function initXO() {
 
 function startFlow(token) {
 
-    token = matchToken(token);
-
-    /*
-
-    component = initPayPalCheckout({ token });
-
-    */
-
-    if (component) {
-        component.updateProps({ token });
-    } else {
-        component = initPayPalCheckout({ token });
-    }
-
-    component.render();
+    initPayPalCheckout({
+        paymentToken: matchToken(token)
+    }).render().catch(logError);
 }
 
 
@@ -276,12 +250,7 @@ function startFlow(token) {
 */
 
 function closeFlow() {
-    if (component) {
-        component.close();
-        component = null;
-    } else {
-        console.warn('Checkout is not open, can not be closed');
-    }
+    console.warn('Checkout is not open, can not be closed');
 }
 
 
@@ -329,13 +298,16 @@ onDocumentReady(() => {
 
     for (let button of Array.prototype.slice.call(buttons)) {
 
-        let env = button.attributes['data-env'] && button.attributes['data-env'].value;
+        let buttonEnv = button.attributes['data-env'] && button.attributes['data-env'].value;
 
         if (!env && button.attributes['data-sandbox']) {
-            env = 'sandbox';
+            buttonEnv = 'sandbox';
         }
 
-        initPayPalCheckout({ env }).hijackButton(button);
+        initPayPalCheckout({
+            env: buttonEnv,
+            paymentToken: xcomponent.PROP_DEFER_TO_URL
+        }).hijackButton(button).catch(logError);
     }
 });
 

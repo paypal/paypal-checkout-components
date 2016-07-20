@@ -1,14 +1,13 @@
 
-<div class="xcomponent-overlay xcomponent-focus">
-    <a href="#xcomponent-close" class="xcomponent-close"></a>
+<div class="overlay {CLASS.FOCUS}">
+    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>
     <div class="ppmodal">
-        <div class="pplogo">
-        </div>
+        <div class="pplogo"></div>
         <div class="ppmsg" >
             Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.
         </div>
         <div class="continueLink">
-            <a href="#" class="xcomponent-focus">Continue</a>
+            <a href="#" class="{CLASS.FOCUS}">Continue</a>
         </div>
     </div>
 
@@ -17,7 +16,7 @@
 
 <style>
 
-    .xcomponent-overlay {
+    #{id} .overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -26,11 +25,11 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-    .xcomponent-overlay.xcomponent-popup {
+    #{id}.{CLASS.POPUP} .overlay {
         cursor: pointer;
     }
 
-    .xcomponent-overlay .ppmodal {
+    #{id} .overlay .ppmodal {
         font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
         font-size: 14px;
         text-align: center;
@@ -49,7 +48,7 @@
         cursor: pointer;
     }
 
-    .xcomponent-overlay .ppmodal .pplogo {
+    #{id} .overlay .ppmodal .pplogo {
         background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;
         width: 132px;
         height: 36px;
@@ -58,19 +57,19 @@
         margin-bottom: 30px;
     }
 
-    .xcomponent-overlay .ppmodal .ppmsg{
+    #{id} .overlay .ppmodal .ppmsg{
         font-size: 15px;
         line-height: 1.35;
         padding: 25px 0;
     }
 
-    .xcomponent-overlay .ppmodal .continueLink{
+    #{id} .overlay .ppmodal .continueLink{
         font-size: 15px;
         line-height: 1.35;
         padding: 10px 0;
     }
 
-    .xcomponent-close {
+    #{id} .{CLASS.CLOSE} {
         position: absolute;
         right: 16px;
         top: 16px;
@@ -79,11 +78,11 @@
         opacity: 0.6;
     }
 
-    .xcomponent-close:hover {
+    #{id} .{CLASS.CLOSE}:hover {
         opacity: 1;
     }
 
-    .xcomponent-close:before, .xcomponent-close:after {
+    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {
         position: absolute;
         left: 8px;
         content: ' ';
@@ -92,31 +91,22 @@
         background-color: white;
     }
 
-    .xcomponent-close:before {
+    #{id} .{CLASS.CLOSE}:before {
         transform: rotate(45deg);
     }
 
-    .xcomponent-close:after {
+    #{id} .{CLASS.CLOSE}:after {
         transform: rotate(-45deg);
     }
 
-    a{
-
+    #{id} a {
         color: white;
     }
 
-    .xcomponent-lightbox iframe {
+    #{id}.{CLASS.LIGHTBOX} iframe {
         border-radius: 10px;
-    }
+        background-color: white;
 
-    /*!
- * animate.css -http://daneden.me/animate
- * Version - 3.5.1
- * Licensed under the MIT license - http://opensource.org/licenses/MIT
- *
- * Copyright (c) 2016 Daniel Eden
- */
-    .xcomponent-lightbox-open {
         -webkit-animation-duration: 1s;
         animation-duration: 1s;
         -webkit-animation-fill-mode: both;
@@ -124,6 +114,16 @@
         -webkit-animation-name: bounceInUp;
         animation-name: bounceInUp;
     }
+
+
+
+    /*!
+     * animate.css -http://daneden.me/animate
+     * Version - 3.5.1
+     * Licensed under the MIT license - http://opensource.org/licenses/MIT
+     *
+     * Copyright (c) 2016 Daniel Eden
+     */
 
     @-webkit-keyframes bounceInUp {
         from, 60%, 75%, 90%, to {
@@ -192,7 +192,4 @@
             transform: translate3d(0, 0, 0);
         }
     }
-
-
-
 </style>

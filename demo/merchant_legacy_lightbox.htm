@@ -29,7 +29,7 @@
     }
 
     function onPaymentAuthorize(token) {
-        console.log('payment authorized with token:', token);
+        console.log('payment authorized with paymentToken:', token);
     }
 
 </script>
@@ -122,15 +122,9 @@
       click: function () {
         paypal.checkout.initXO();
 
-        var action = $.post('http://thissitedoesnotexistxxxxxxx.com/checkout.htm');
-
-        action.done(function (data) {
-          paypal.checkout.startFlow('./checkout.htm?token=EC-XXXXXXXXXXXXXXXXX');
-        });
-
-        action.fail(function () {
-          paypal.checkout.closeFlow();
-        });
+        setTimeout(function() {
+            paypal.checkout.closeFlow();
+        }, 1500);
       }
     });
 </script>

@@ -11,12 +11,21 @@ export let PayPalButton = xcomponent.create({
 
     envUrls: {
         local: 'http://todo',
-        production: 'https://todo'
+        sandbox: 'http://todo',
+        production: 'https://todo',
+        demo: './button.htm'
     },
 
     props: {
 
         ...props,
+
+        paymentToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: false
+        },
 
         submitForm: {
             type: 'boolean',
