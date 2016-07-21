@@ -31,7 +31,7 @@ export let PayPalCheckout = xcomponent.create({
     props: {
         paymentToken: {
             type: 'string',
-            required: false,
+            required: true,
             getter: true,
             queryParam: 'token'
         },
@@ -50,7 +50,7 @@ export let PayPalCheckout = xcomponent.create({
             autoClose: true
         },
 
-        onCancel: {
+        onPaymentCancel: {
             type: 'function',
             required: false,
             once: true,

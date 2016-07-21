@@ -19,7 +19,7 @@ export let PayPalButton = xcomponent.create({
 
         paymentToken: {
             type: 'string',
-            required: false,
+            required: true,
             getter: true,
             queryParam: false
         },
@@ -41,7 +41,7 @@ export let PayPalButton = xcomponent.create({
             once: true
         },
 
-        onCancel: {
+        onPaymentCancel: {
             type: 'function',
             required: false,
             once: true

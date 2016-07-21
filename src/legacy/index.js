@@ -146,12 +146,12 @@ function initPayPalCheckout(props = {}) {
 
         paymentToken: getPaymentToken,
 
-        onPaymentAuthorize({ returnUrl, paymentToken, payerID }) {
-            window.location = `${returnUrl}?token=${paymentToken}&payerID=${payerID}`;
+        onPaymentAuthorize({ returnUrl }) {
+            window.location = returnUrl;
         },
 
-        onCancel({ cancelUrl, paymentToken }) {
-            window.location = `${cancelUrl}?token=${paymentToken}`;
+        onPaymentCancel({ cancelUrl }) {
+            window.location = cancelUrl;
         },
 
         ...props
@@ -203,7 +203,7 @@ function setup(id, options) {
 
             initPayPalCheckout({
                 paymentToken: xcomponent.PROP_DEFER_TO_URL
-            }).hijackButton(button).catch(logError);
+            }).hijackButton(button);
         }
     }
 }
