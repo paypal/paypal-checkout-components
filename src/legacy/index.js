@@ -204,6 +204,10 @@ function setup(id, options) {
 
         let button = drawButton(options.container);
 
+        if (!isEligible()) {
+            return;
+        }
+
         // Handle button click
 
         if (options.click) {
@@ -241,6 +245,11 @@ function setup(id, options) {
 */
 
 function initXO() {
+
+    if (!isEligible()) {
+        return;
+    }
+
     initPayPalCheckout().render();
 }
 
@@ -328,6 +337,11 @@ if (window.paypalCheckoutReady instanceof Function) {
 */
 
 onDocumentReady(() => {
+
+    if (!isEligible()) {
+        return;
+    }
+
     let buttons = document.querySelectorAll('[data-paypal-button]');
 
     for (let button of Array.prototype.slice.call(buttons)) {

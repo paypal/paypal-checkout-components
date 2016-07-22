@@ -23,6 +23,18 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.8);
+
+        -webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+    }
+
+    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-name: fadeOut;
+        animation-name: fadeOut;
     }
 
     #{id}.{CLASS.POPUP} .paypal-checkout-overlay {
@@ -103,24 +115,34 @@
         color: white;
     }
 
+    #{id} .paypal-checkout-lightbox-wrapper.set-width.set-height {
+        padding: 5px;
+        border-radius: 10px;
+    }
+
     #{id} .paypal-checkout-lightbox-wrapper {
         display: none;
-        padding: 5px;
         background-color: white;
-        border-radius: 10px;
 
         -webkit-transition: all 0.6s ease;
         -moz-transition: all 0.6s ease;
         -ms-transition: all 0.6s ease;
         -o-transition: all 0.6 ease;
         transition: all 0.6s ease;
-        
+
         -webkit-animation-duration: 1s;
         animation-duration: 1s;
         -webkit-animation-fill-mode: both;
         animation-fill-mode: both;
+
         -webkit-animation-name: bounceInUp;
         animation-name: bounceInUp;
+    }
+
+    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {
+
+        -webkit-animation-name: bounceOutDown;
+        animation-name: bounceOutDown;
     }
 
     #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {
@@ -202,6 +224,92 @@
         to {
             -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @-webkit-keyframes bounceOutDown {
+        20% {
+            -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0);
+        }
+
+        40%, 45% {
+            opacity: 1;
+            -webkit-transform: translate3d(0, -20px, 0);
+            transform: translate3d(0, -20px, 0);
+        }
+
+        to {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 2000px, 0);
+            transform: translate3d(0, 2000px, 0);
+        }
+    }
+
+    @keyframes bounceOutDown {
+        20% {
+            -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0);
+        }
+
+        40%, 45% {
+            opacity: 1;
+            -webkit-transform: translate3d(0, -20px, 0);
+            transform: translate3d(0, -20px, 0);
+        }
+
+        to {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 2000px, 0);
+            transform: translate3d(0, 2000px, 0);
+        }
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
         }
     }
 </style>

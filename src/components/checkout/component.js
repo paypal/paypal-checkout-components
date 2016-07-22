@@ -3,6 +3,8 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
+import { isDevice } from '../../lib';
+
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
@@ -27,6 +29,7 @@ export let PayPalCheckout = xcomponent.create({
     componentTemplate,
 
     autoResize: false,
+    closeDelay: 1000,
 
     props: {
         paymentToken: {
@@ -58,7 +61,7 @@ export let PayPalCheckout = xcomponent.create({
         }
     },
 
-    dimensions: {
+    dimensions: isDevice() ? null : {
         width: 450,
         height: 535
     }

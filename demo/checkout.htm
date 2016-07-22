@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<head>
 
 </head>
 
@@ -52,7 +56,7 @@
                     checkout.props.onPaymentAuthorize({
                         paymentToken: ecToken,
                         payerID: 'SD8778VSD7VD6SV',
-                        returnUrl: parentUrl
+                        returnUrl: parentUrl + '?token=' + ecToken + '&payerId=SD8778VSD7VD6SV&ts=' + Date.now()
                     });
                 }
             }
