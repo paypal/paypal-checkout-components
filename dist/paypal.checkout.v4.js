@@ -48,6 +48,7 @@
         });
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
+        __webpack_require__(/*! ./bridge */ 77);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -110,20 +111,8 @@
             value: true
         });
         exports.PayPalButton = undefined;
-        var _extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
-                    if (Object.prototype.hasOwnProperty.call(source, key)) {
-                        target[key] = source[key];
-                    }
-                }
-            }
-            return target;
-        };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 70);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -139,18 +128,33 @@
                 production: "https://todo",
                 demo: "./button.htm"
             },
-            props: _extends({}, _props.props, {
+            props: {
                 paymentToken: {
                     type: "string",
-                    required: false,
+                    required: true,
                     getter: true,
                     queryParam: false
                 },
                 submitForm: {
                     type: "boolean",
                     def: false
+                },
+                onPaymentAuthorize: {
+                    type: "function",
+                    required: false,
+                    once: true
+                },
+                onPaymentComplete: {
+                    type: "function",
+                    required: false,
+                    once: true
+                },
+                onPaymentCancel: {
+                    type: "function",
+                    required: false,
+                    once: true
                 }
-            }),
+            },
             dimensions: {
                 width: 100,
                 height: 50
@@ -183,9 +187,9 @@
                 return _constants.PROP_DEFER_TO_URL;
             }
         });
-        var _src = __webpack_require__(/*! post-robot/src */ 13);
+        var _src = __webpack_require__(/*! post-robot/src */ 14);
         var _src2 = _interopRequireDefault(_src);
-        var _component = __webpack_require__(/*! ./component */ 40);
+        var _component = __webpack_require__(/*! ./component */ 41);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -233,7 +237,8 @@
             REDIRECT: XCOMPONENT + "_redirect",
             RESIZE: XCOMPONENT + "_resize",
             RENDER: XCOMPONENT + "_render",
-            ERROR: XCOMPONENT + "_error"
+            ERROR: XCOMPONENT + "_error",
+            HIDE: XCOMPONENT + "_hide"
         };
         var PROP_TYPES = exports.PROP_TYPES = {
             STRING: "string",
@@ -293,7 +298,7 @@
                 }
             });
         });
-        var _promise = __webpack_require__(/*! ./promise */ 11);
+        var _promise = __webpack_require__(/*! ./promise */ 12);
         Object.keys(_promise).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -595,7 +600,7 @@
     }, /*!**************************************!*\
   !*** ./~/xcomponent/src/lib/util.js ***!
   \**************************************/
-    function(module, exports) {
+    function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
@@ -619,6 +624,13 @@
         exports.get = get;
         exports.safeInterval = safeInterval;
         exports.safeTimeout = safeTimeout;
+        var _Base = __webpack_require__(/*! Base64 */ 11);
+        var _Base2 = _interopRequireDefault(_Base);
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
         function urlEncode(str) {
             return str.replace(/\?/g, "%3F").replace(/\&/g, "%26");
         }
@@ -659,10 +671,11 @@
             });
         }
         function b64encode(str) {
-            return window.btoa(str).replace(/[=]/g, "_");
+            return (window.btoa ? window.btoa(str) : _Base2["default"].btoa(str)).replace(/[=]/g, "_");
         }
         function b64decode(str) {
-            return window.atob(str.replace(/[_]/g, "="));
+            str = str.replace(/[_]/g, "=");
+            return window.atob ? window.atob(str) : _Base2["default"].atob(str);
         }
         function stringifyWithFunctions(obj) {
             return JSON.stringify(obj, function(key, val) {
@@ -719,6 +732,43 @@
             }, 100);
         }
     }, /*!*****************************************!*\
+  !*** ./~/xcomponent/~/Base64/base64.js ***!
+  \*****************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        (function() {
+            var object = true ? exports : self;
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            function InvalidCharacterError(message) {
+                this.message = message;
+            }
+            InvalidCharacterError.prototype = new Error();
+            InvalidCharacterError.prototype.name = "InvalidCharacterError";
+            object.btoa || (object.btoa = function(input) {
+                var str = String(input);
+                for (var block, charCode, idx = 0, map = chars, output = ""; str.charAt(idx | 0) || (map = "=", 
+                idx % 1); output += map.charAt(63 & block >> 8 - idx % 1 * 8)) {
+                    charCode = str.charCodeAt(idx += 3 / 4);
+                    if (charCode > 255) {
+                        throw new InvalidCharacterError("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
+                    }
+                    block = block << 8 | charCode;
+                }
+                return output;
+            });
+            object.atob || (object.atob = function(input) {
+                var str = String(input).replace(/=+$/, "");
+                if (str.length % 4 == 1) {
+                    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
+                }
+                for (var bc = 0, bs, buffer, idx = 0, output = ""; buffer = str.charAt(idx++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, 
+                bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+                    buffer = chars.indexOf(buffer);
+                }
+                return output;
+            });
+        })();
+    }, /*!*****************************************!*\
   !*** ./~/xcomponent/src/lib/promise.js ***!
   \*****************************************/
     function(module, exports, __webpack_require__) {
@@ -729,7 +779,7 @@
         exports.denodeify = denodeify;
         exports.promisify = promisify;
         exports.getter = getter;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
         function denodeify(method) {
             return function() {
                 var self = this;
@@ -810,10 +860,52 @@
             isCalled = true;
             flush();
         }
-        var SyncPromise = exports.SyncPromise = function SyncPromise(handler) {
+        var possiblyUnhandledPromises = [];
+        var possiblyUnhandledPromiseTimeout;
+        function addPossiblyUnhandledPromise(promise) {
+            possiblyUnhandledPromises.push(promise);
+            possiblyUnhandledPromiseTimeout = possiblyUnhandledPromiseTimeout || setTimeout(flushPossiblyUnhandledPromises, 1);
+        }
+        function flushPossiblyUnhandledPromises() {
+            possiblyUnhandledPromiseTimeout = null;
+            var promises = possiblyUnhandledPromises;
+            possiblyUnhandledPromises = [];
+            for (var i = 0; i < promises.length; i++) {
+                var promise = promises[i];
+                if (!promise.hasHandlers) {
+                    promise.handlers.push({
+                        onError: function onError(err) {
+                            if (!promise.hasHandlers) {
+                                logError(err);
+                            }
+                        }
+                    });
+                    promise.dispatch();
+                }
+            }
+        }
+        function logError(err) {
+            setTimeout(function() {
+                throw err;
+            });
+        }
+        function isPromise(item) {
+            try {
+                if (item && item.then instanceof Function) {
+                    return true;
+                }
+            } catch (err) {
+                return false;
+            }
+            return false;
+        }
+        var SyncPromise = exports.SyncPromise = function SyncPromise(handler, parent) {
+            this.parent = parent;
             this.resolved = false;
             this.rejected = false;
+            this.hasHandlers = false;
             this.handlers = [];
+            addPossiblyUnhandledPromise(this);
             if (!handler) {
                 return;
             }
@@ -825,7 +917,7 @@
             });
         };
         SyncPromise.resolve = function SyncPromiseResolve(value) {
-            if (value && value.then) {
+            if (isPromise(value)) {
                 return value;
             }
             return new SyncPromise().resolve(value);
@@ -837,7 +929,7 @@
             if (this.resolved || this.rejected) {
                 return this;
             }
-            if (result && result.then) {
+            if (isPromise(result)) {
                 throw new Error("Can not resolve promise with another promise");
             }
             this.resolved = true;
@@ -849,7 +941,7 @@
             if (this.resolved || this.rejected) {
                 return this;
             }
-            if (error && error.then) {
+            if (isPromise(error)) {
                 throw new Error("Can not reject promise with another promise");
             }
             this.rejected = true;
@@ -858,31 +950,34 @@
             return this;
         };
         SyncPromise.prototype.dispatch = function() {
+            var _this = this;
             if (!this.resolved && !this.rejected) {
                 return;
             }
-            while (this.handlers.length) {
-                var handler = this.handlers.shift();
-                var result, error;
+            var _loop = function _loop() {
+                var handler = _this.handlers.shift();
                 try {
-                    if (this.resolved) {
-                        result = handler.onSuccess ? handler.onSuccess(this.value) : this.value;
+                    if (_this.resolved) {
+                        result = handler.onSuccess ? handler.onSuccess(_this.value) : _this.value;
                     } else {
                         if (handler.onError) {
-                            result = handler.onError(this.value);
+                            result = handler.onError(_this.value);
                         } else {
-                            error = this.value;
+                            error = _this.value;
                         }
                     }
                 } catch (err) {
                     error = err;
                 }
-                if (result === this) {
+                if (result === _this) {
                     throw new Error("Can not return a promise from the the then handler of the same promise");
+                }
+                if (!handler.promise) {
+                    return "continue";
                 }
                 if (error) {
                     handler.promise.reject(error);
-                } else if (result && result.then) {
+                } else if (isPromise(result)) {
                     result.then(function(res) {
                         handler.promise.resolve(res);
                     }, function(err) {
@@ -891,15 +986,21 @@
                 } else {
                     handler.promise.resolve(result);
                 }
+            };
+            while (this.handlers.length) {
+                var result, error;
+                var _ret = _loop();
+                if (_ret === "continue") continue;
             }
         };
         SyncPromise.prototype.then = function(onSuccess, onError) {
-            var promise = new SyncPromise();
+            var promise = new SyncPromise(null, this);
             this.handlers.push({
                 promise: promise,
                 onSuccess: onSuccess,
                 onError: onError
             });
+            this.hasHandlers = true;
             this.dispatch();
             return promise;
         };
@@ -944,7 +1045,7 @@
             value: true
         });
         exports.Promise = undefined;
-        var _interface = __webpack_require__(/*! ./interface */ 14);
+        var _interface = __webpack_require__(/*! ./interface */ 15);
         Object.keys(_interface).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -954,15 +1055,15 @@
                 }
             });
         });
-        var _lib = __webpack_require__(/*! ./lib */ 21);
+        var _lib = __webpack_require__(/*! ./lib */ 22);
         Object.defineProperty(exports, "Promise", {
             enumerable: true,
             get: function get() {
                 return _lib.Promise;
             }
         });
-        var _drivers = __webpack_require__(/*! ./drivers */ 19);
-        var _compat = __webpack_require__(/*! ./compat */ 29);
+        var _drivers = __webpack_require__(/*! ./drivers */ 20);
+        var _compat = __webpack_require__(/*! ./compat */ 30);
         function init() {
             (0, _compat.registerGlobals)();
             _lib.util.listen(window, "message", _drivers.messageListener);
@@ -979,7 +1080,7 @@
             value: true
         });
         exports.util = exports.openBridge = exports.reset = exports.parent = undefined;
-        var _client = __webpack_require__(/*! ./client */ 15);
+        var _client = __webpack_require__(/*! ./client */ 16);
         Object.keys(_client).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -989,7 +1090,7 @@
                 }
             });
         });
-        var _server = __webpack_require__(/*! ./server */ 37);
+        var _server = __webpack_require__(/*! ./server */ 38);
         Object.keys(_server).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -999,7 +1100,7 @@
                 }
             });
         });
-        var _proxy = __webpack_require__(/*! ./proxy */ 38);
+        var _proxy = __webpack_require__(/*! ./proxy */ 39);
         Object.keys(_proxy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1009,7 +1110,7 @@
                 }
             });
         });
-        var _config = __webpack_require__(/*! ./config */ 39);
+        var _config = __webpack_require__(/*! ./config */ 40);
         Object.keys(_config).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1019,28 +1120,28 @@
                 }
             });
         });
-        var _drivers = __webpack_require__(/*! ../drivers */ 19);
+        var _drivers = __webpack_require__(/*! ../drivers */ 20);
         Object.defineProperty(exports, "reset", {
             enumerable: true,
             get: function get() {
                 return _drivers.resetListeners;
             }
         });
-        var _bridge = __webpack_require__(/*! ../compat/bridge */ 30);
+        var _bridge = __webpack_require__(/*! ../compat/bridge */ 31);
         Object.defineProperty(exports, "openBridge", {
             enumerable: true,
             get: function get() {
                 return _bridge.openBridge;
             }
         });
-        var _util = __webpack_require__(/*! ../lib/util */ 24);
+        var _util = __webpack_require__(/*! ../lib/util */ 25);
         Object.defineProperty(exports, "util", {
             enumerable: true,
             get: function get() {
                 return _util.util;
             }
         });
-        var _windows = __webpack_require__(/*! ../lib/windows */ 26);
+        var _windows = __webpack_require__(/*! ../lib/windows */ 27);
         var parent = exports.parent = (0, _windows.getParentWindow)();
     }, /*!**********************************************!*\
   !*** ./~/post-robot/src/interface/client.js ***!
@@ -1053,9 +1154,9 @@
         exports.request = request;
         exports.send = send;
         exports.sendToParent = sendToParent;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _drivers = __webpack_require__(/*! ../drivers */ 19);
-        var _lib = __webpack_require__(/*! ../lib */ 21);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _drivers = __webpack_require__(/*! ../drivers */ 20);
+        var _lib = __webpack_require__(/*! ../lib */ 22);
         function request(options) {
             return _lib.promise.nodeify(new _lib.promise.Promise(function(resolve, reject) {
                 if (!options.name) {
@@ -1162,7 +1263,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _config = __webpack_require__(/*! ./config */ 17);
+        var _config = __webpack_require__(/*! ./config */ 18);
         Object.keys(_config).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1172,7 +1273,7 @@
                 }
             });
         });
-        var _constants = __webpack_require__(/*! ./constants */ 18);
+        var _constants = __webpack_require__(/*! ./constants */ 19);
         Object.keys(_constants).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1192,7 +1293,7 @@
         });
         exports.CONFIG = undefined;
         var _ALLOWED_POST_MESSAGE;
-        var _constants = __webpack_require__(/*! ./constants */ 18);
+        var _constants = __webpack_require__(/*! ./constants */ 19);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -1269,7 +1370,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _receive = __webpack_require__(/*! ./receive */ 20);
+        var _receive = __webpack_require__(/*! ./receive */ 21);
         Object.keys(_receive).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1279,7 +1380,7 @@
                 }
             });
         });
-        var _send = __webpack_require__(/*! ./send */ 33);
+        var _send = __webpack_require__(/*! ./send */ 34);
         Object.keys(_send).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1289,7 +1390,7 @@
                 }
             });
         });
-        var _listeners = __webpack_require__(/*! ./listeners */ 35);
+        var _listeners = __webpack_require__(/*! ./listeners */ 36);
         Object.keys(_listeners).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1309,12 +1410,12 @@
         });
         exports.receiveMessage = receiveMessage;
         exports.messageListener = messageListener;
-        var _conf = __webpack_require__(/*! ../../conf */ 16);
-        var _lib = __webpack_require__(/*! ../../lib */ 21);
-        var _compat = __webpack_require__(/*! ../../compat */ 29);
-        var _send = __webpack_require__(/*! ../send */ 33);
-        var _listeners = __webpack_require__(/*! ../listeners */ 35);
-        var _types = __webpack_require__(/*! ./types */ 36);
+        var _conf = __webpack_require__(/*! ../../conf */ 17);
+        var _lib = __webpack_require__(/*! ../../lib */ 22);
+        var _compat = __webpack_require__(/*! ../../compat */ 30);
+        var _send = __webpack_require__(/*! ../send */ 34);
+        var _listeners = __webpack_require__(/*! ../listeners */ 36);
+        var _types = __webpack_require__(/*! ./types */ 37);
         var receivedMessages = [];
         function parseMessage(message) {
             try {
@@ -1340,6 +1441,9 @@
                 },
                 "window.parent.opener": function windowParentOpener(id) {
                     return (0, _lib.getOpener)(window.parent);
+                },
+                "window.opener.parent": function windowOpenerParent(id) {
+                    return (0, _lib.getOpener)(window).parent;
                 }
             };
             var win = void 0;
@@ -1478,7 +1582,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _promise = __webpack_require__(/*! ./promise */ 22);
+        var _promise = __webpack_require__(/*! ./promise */ 23);
         Object.keys(_promise).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1488,7 +1592,7 @@
                 }
             });
         });
-        var _util = __webpack_require__(/*! ./util */ 24);
+        var _util = __webpack_require__(/*! ./util */ 25);
         Object.keys(_util).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1498,7 +1602,7 @@
                 }
             });
         });
-        var _log = __webpack_require__(/*! ./log */ 25);
+        var _log = __webpack_require__(/*! ./log */ 26);
         Object.keys(_log).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1508,7 +1612,7 @@
                 }
             });
         });
-        var _windows = __webpack_require__(/*! ./windows */ 26);
+        var _windows = __webpack_require__(/*! ./windows */ 27);
         Object.keys(_windows).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1518,7 +1622,7 @@
                 }
             });
         });
-        var _methods = __webpack_require__(/*! ./methods */ 27);
+        var _methods = __webpack_require__(/*! ./methods */ 28);
         Object.keys(_methods).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1528,7 +1632,7 @@
                 }
             });
         });
-        var _tick = __webpack_require__(/*! ./tick */ 23);
+        var _tick = __webpack_require__(/*! ./tick */ 24);
         Object.keys(_tick).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1538,7 +1642,7 @@
                 }
             });
         });
-        var _ready = __webpack_require__(/*! ./ready */ 28);
+        var _ready = __webpack_require__(/*! ./ready */ 29);
         Object.keys(_ready).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -1557,8 +1661,8 @@
             value: true
         });
         exports.promise = exports.Promise = undefined;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
-        var _tick = __webpack_require__(/*! ./tick */ 23);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
+        var _tick = __webpack_require__(/*! ./tick */ 24);
         var Promise = exports.Promise = _promise.SyncPromise;
         var promise = exports.promise = {
             Promise: Promise,
@@ -1631,7 +1735,7 @@
             value: true
         });
         exports.nextTick = nextTick;
-        var _util = __webpack_require__(/*! ./util */ 24);
+        var _util = __webpack_require__(/*! ./util */ 25);
         var tickMessageName = "__nextTick__postRobot__" + _util.util.uniqueID();
         var queue = [];
         window.addEventListener("message", function(event) {
@@ -1658,7 +1762,7 @@
         } : function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
-        var _conf = __webpack_require__(/*! ../conf */ 16);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
         var util = exports.util = {
             isPopup: function isPopup() {
                 return Boolean(window.opener);
@@ -1874,9 +1978,19 @@
             value: true
         });
         exports.log = undefined;
-        var _util = __webpack_require__(/*! ./util */ 24);
-        var _conf = __webpack_require__(/*! ../conf */ 16);
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
+        var _util = __webpack_require__(/*! ./util */ 25);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
         var LOG_LEVELS = [ "debug", "info", "warn", "error" ];
+        if (Function.prototype.bind && window.console && _typeof(console.log) === "object") {
+            [ "log", "info", "warn", "error" ].forEach(function(method) {
+                console[method] = this.bind(console[method], console);
+            }, Function.prototype.call);
+        }
         var log = exports.log = {
             clearLogs: function clearLogs() {
                 if (window.console && window.console.clear) {
@@ -1937,8 +2051,9 @@
                     return;
                 }
                 args = Array.prototype.slice.call(args);
+                args.unshift(window.location.pathname);
                 args.unshift(window.location.host);
-                args.unshift(_util.util.getType().toLowerCase());
+                args.unshift("<" + _util.util.getType().toLowerCase() + ">");
                 args.unshift("[post-robot]");
                 if (_conf.CONFIG.LOG_TO_PAGE) {
                     log.writeToPage(level, args);
@@ -1984,7 +2099,7 @@
         exports.registerWindow = registerWindow;
         exports.isWindowEqual = isWindowEqual;
         exports.isSameTopWindow = isSameTopWindow;
-        var _util = __webpack_require__(/*! ./util */ 24);
+        var _util = __webpack_require__(/*! ./util */ 25);
         function safeGet(obj, prop) {
             var result = void 0;
             try {
@@ -2163,11 +2278,11 @@
         exports.serializeMethods = serializeMethods;
         exports.deserializeMethod = deserializeMethod;
         exports.deserializeMethods = deserializeMethods;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _util = __webpack_require__(/*! ./util */ 24);
-        var _interface = __webpack_require__(/*! ../interface */ 14);
-        var _log = __webpack_require__(/*! ./log */ 25);
-        var _promise = __webpack_require__(/*! ./promise */ 22);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _util = __webpack_require__(/*! ./util */ 25);
+        var _interface = __webpack_require__(/*! ../interface */ 15);
+        var _log = __webpack_require__(/*! ./log */ 26);
+        var _promise = __webpack_require__(/*! ./promise */ 23);
         var methods = {};
         var listenForMethods = exports.listenForMethods = _util.util.once(function() {
             (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.METHOD, function(source, data) {
@@ -2250,11 +2365,11 @@
         });
         exports.initOnReady = initOnReady;
         exports.onWindowReady = onWindowReady;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _windows = __webpack_require__(/*! ./windows */ 26);
-        var _interface = __webpack_require__(/*! ../interface */ 14);
-        var _log = __webpack_require__(/*! ./log */ 25);
-        var _promise = __webpack_require__(/*! ./promise */ 22);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _windows = __webpack_require__(/*! ./windows */ 27);
+        var _interface = __webpack_require__(/*! ../interface */ 15);
+        var _log = __webpack_require__(/*! ./log */ 26);
+        var _promise = __webpack_require__(/*! ./promise */ 23);
         var readyWindows = [];
         var readyPromises = [];
         function initOnReady() {
@@ -2284,7 +2399,8 @@
             }
         }
         function onWindowReady(win) {
-            return new _promise.promise.Promise(function(resolve) {
+            var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
+            return new _promise.promise.Promise(function(resolve, reject) {
                 if (readyWindows.indexOf(win) !== -1) {
                     return resolve(win);
                 } else {
@@ -2292,6 +2408,9 @@
                         win: win,
                         resolve: resolve
                     });
+                    setTimeout(function() {
+                        return reject(new Error("Bridge did not load after " + timeout + "ms"));
+                    }, timeout);
                 }
             });
         }
@@ -2303,7 +2422,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _bridge = __webpack_require__(/*! ./bridge */ 30);
+        var _bridge = __webpack_require__(/*! ./bridge */ 31);
         Object.keys(_bridge).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2313,7 +2432,7 @@
                 }
             });
         });
-        var _global = __webpack_require__(/*! ./global */ 31);
+        var _global = __webpack_require__(/*! ./global */ 32);
         Object.keys(_global).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2323,7 +2442,7 @@
                 }
             });
         });
-        var _ie = __webpack_require__(/*! ./ie */ 32);
+        var _ie = __webpack_require__(/*! ./ie */ 33);
         Object.keys(_ie).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2341,16 +2460,17 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.openBridge = undefined;
-        exports.getBridge = getBridge;
+        exports.openBridge = openBridge;
         exports.getBridgeFor = getBridgeFor;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _lib = __webpack_require__(/*! ../lib */ 21);
-        var BRIDGE_NAME_PREFIX = "postrobot_bridge";
+        exports.getBridge = getBridge;
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _lib = __webpack_require__(/*! ../lib */ 22);
+        var BRIDGE_NAME_PREFIX = "__postrobot_bridge__";
+        var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
         var bridge = void 0;
-        var openBridge = exports.openBridge = _lib.util.memoize(function(url) {
+        function openBridge(url) {
             if (bridge) {
-                throw new Error("Only one bridge supported");
+                throw new Error("Only one bridge supported!");
             }
             var documentReady = new _lib.promise.Promise(function(resolve) {
                 if (window.document.body) {
@@ -2362,7 +2482,6 @@
             });
             bridge = documentReady.then(function(document) {
                 _lib.log.debug("Opening bridge:", url);
-                var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
                 var iframe = document.createElement("iframe");
                 iframe.setAttribute("name", id);
                 iframe.setAttribute("id", id);
@@ -2385,22 +2504,23 @@
                 });
             });
             return bridge;
-        });
-        function getBridge() {
-            return _lib.promise.Promise.resolve().then(function() {
-                return bridge;
-            });
         }
         function getBridgeFor(win) {
+            try {
+                var frame = win.frames[id];
+                if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                    return frame;
+                }
+            } catch (err) {}
             try {
                 if (!win || !win.frames || !win.frames.length) {
                     return;
                 }
                 for (var i = 0; i < win.frames.length; i++) {
                     try {
-                        var frame = win.frames[i];
-                        if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                            return frame;
+                        var _frame = win.frames[i];
+                        if (_frame && _frame !== window && (0, _lib.isSameDomain)(_frame) && _frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                            return _frame;
                         }
                     } catch (err) {
                         continue;
@@ -2409,6 +2529,11 @@
             } catch (err) {
                 return;
             }
+        }
+        function getBridge() {
+            return _lib.promise.Promise.resolve().then(function() {
+                return bridge || getBridgeFor(window);
+            });
         }
     }, /*!*******************************************!*\
   !*** ./~/post-robot/src/compat/global.js ***!
@@ -2419,8 +2544,8 @@
             value: true
         });
         exports.registerGlobals = registerGlobals;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _drivers = __webpack_require__(/*! ../drivers */ 19);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _drivers = __webpack_require__(/*! ../drivers */ 20);
         function registerGlobals() {
             if (window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
                 throw new Error("Attempting to load postRobot twice on the same window");
@@ -2440,8 +2565,8 @@
             value: true
         });
         exports.emulateIERestrictions = emulateIERestrictions;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _lib = __webpack_require__(/*! ../lib */ 21);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _lib = __webpack_require__(/*! ../lib */ 22);
         function emulateIERestrictions(sourceWindow, targetWindow) {
             if (!_conf.CONFIG.ALLOW_POSTMESSAGE_POPUP) {
                 if (!(0, _lib.isSameTopWindow)(sourceWindow, targetWindow)) {
@@ -2470,9 +2595,9 @@
         };
         exports.buildMessage = buildMessage;
         exports.sendMessage = sendMessage;
-        var _conf = __webpack_require__(/*! ../../conf */ 16);
-        var _lib = __webpack_require__(/*! ../../lib */ 21);
-        var _strategies = __webpack_require__(/*! ./strategies */ 34);
+        var _conf = __webpack_require__(/*! ../../conf */ 17);
+        var _lib = __webpack_require__(/*! ../../lib */ 22);
+        var _strategies = __webpack_require__(/*! ./strategies */ 35);
         function buildMessage(win, message) {
             var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
             var id = _lib.util.uniqueID();
@@ -2552,9 +2677,9 @@
         });
         exports.SEND_MESSAGE_STRATEGIES = undefined;
         var _SEND_MESSAGE_STRATEG;
-        var _conf = __webpack_require__(/*! ../../conf */ 16);
-        var _lib = __webpack_require__(/*! ../../lib */ 21);
-        var _compat = __webpack_require__(/*! ../../compat */ 29);
+        var _conf = __webpack_require__(/*! ../../conf */ 17);
+        var _lib = __webpack_require__(/*! ../../lib */ 22);
+        var _compat = __webpack_require__(/*! ../../compat */ 30);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -2643,8 +2768,12 @@
             if (win === (0, _lib.getOpener)(window)) {
                 message.targetHint = "window.parent.opener";
             }
-            if (window === (0, _lib.getOpener)(win)) {
+            var opener = (0, _lib.getOpener)(win);
+            if (opener && window === opener) {
                 message.sourceHint = "window.opener";
+            }
+            if (opener && window === opener.parent) {
+                message.sourceHint = "window.opener.parent";
             }
             return (0, _compat.getBridge)().then(function(bridge) {
                 if (!bridge) {
@@ -2669,7 +2798,7 @@
         exports.getRequestListener = getRequestListener;
         exports.removeRequestListener = removeRequestListener;
         exports.addRequestListener = addRequestListener;
-        var _lib = __webpack_require__(/*! ../lib */ 21);
+        var _lib = __webpack_require__(/*! ../lib */ 22);
         var listeners = exports.listeners = void 0;
         function resetListeners() {
             exports.listeners = listeners = {
@@ -2760,10 +2889,10 @@
             }
             return target;
         };
-        var _conf = __webpack_require__(/*! ../../conf */ 16);
-        var _lib = __webpack_require__(/*! ../../lib */ 21);
-        var _send = __webpack_require__(/*! ../send */ 33);
-        var _listeners = __webpack_require__(/*! ../listeners */ 35);
+        var _conf = __webpack_require__(/*! ../../conf */ 17);
+        var _lib = __webpack_require__(/*! ../../lib */ 22);
+        var _send = __webpack_require__(/*! ../send */ 34);
+        var _listeners = __webpack_require__(/*! ../listeners */ 36);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -2853,9 +2982,9 @@
         exports.listen = listen;
         exports.on = on;
         exports.once = once;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
-        var _lib = __webpack_require__(/*! ../lib */ 21);
-        var _drivers = __webpack_require__(/*! ../drivers */ 19);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _lib = __webpack_require__(/*! ../lib */ 22);
+        var _drivers = __webpack_require__(/*! ../drivers */ 20);
         function listen(options) {
             if (!options.name) {
                 throw new Error("Expected options.name");
@@ -2933,7 +3062,7 @@
         });
         exports.proxy = proxy;
         exports.unproxy = unproxy;
-        var _drivers = __webpack_require__(/*! ../drivers */ 19);
+        var _drivers = __webpack_require__(/*! ../drivers */ 20);
         function proxy(window1, window2) {
             _drivers.listeners.proxies.push({
                 from: window1,
@@ -2967,7 +3096,7 @@
         exports.CONSTANTS = exports.CONFIG = undefined;
         exports.enableMockMode = enableMockMode;
         exports.disableMockMode = disableMockMode;
-        var _conf = __webpack_require__(/*! ../conf */ 16);
+        var _conf = __webpack_require__(/*! ../conf */ 17);
         Object.defineProperty(exports, "CONFIG", {
             enumerable: true,
             get: function get() {
@@ -2994,7 +3123,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _component = __webpack_require__(/*! ./component */ 41);
+        var _component = __webpack_require__(/*! ./component */ 42);
         Object.keys(_component).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3004,7 +3133,7 @@
                 }
             });
         });
-        var _parent = __webpack_require__(/*! ./parent */ 57);
+        var _parent = __webpack_require__(/*! ./parent */ 58);
         Object.keys(_parent).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3014,7 +3143,7 @@
                 }
             });
         });
-        var _child = __webpack_require__(/*! ./child */ 52);
+        var _child = __webpack_require__(/*! ./child */ 53);
         Object.keys(_child).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3060,18 +3189,18 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 42);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 43);
         var _client2 = _interopRequireDefault(_client);
-        var _child = __webpack_require__(/*! ../child */ 52);
-        var _parent = __webpack_require__(/*! ../parent */ 57);
-        var _props = __webpack_require__(/*! ./props */ 61);
+        var _child = __webpack_require__(/*! ../child */ 53);
+        var _parent = __webpack_require__(/*! ../parent */ 58);
+        var _props = __webpack_require__(/*! ./props */ 62);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
-        var _validate2 = __webpack_require__(/*! ./validate */ 62);
-        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 63);
+        var _validate2 = __webpack_require__(/*! ./validate */ 63);
+        var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 64);
         var _parent3 = _interopRequireDefault(_parent2);
-        var _component = __webpack_require__(/*! ./templates/component.htm */ 64);
+        var _component = __webpack_require__(/*! ./templates/component.htm */ 65);
         var _component2 = _interopRequireDefault(_component);
-        var _drivers = __webpack_require__(/*! ../../drivers */ 65);
+        var _drivers = __webpack_require__(/*! ../../drivers */ 66);
         var drivers = _interopRequireWildcard(_drivers);
         function _interopRequireWildcard(obj) {
             if (obj && obj.__esModule) {
@@ -3223,7 +3352,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _logger = __webpack_require__(/*! ./logger */ 43);
+        var _logger = __webpack_require__(/*! ./logger */ 44);
         Object.keys(_logger).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3233,7 +3362,7 @@
                 }
             });
         });
-        var _init = __webpack_require__(/*! ./init */ 49);
+        var _init = __webpack_require__(/*! ./init */ 50);
         Object.keys(_init).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3243,7 +3372,7 @@
                 }
             });
         });
-        var _transitions = __webpack_require__(/*! ./transitions */ 51);
+        var _transitions = __webpack_require__(/*! ./transitions */ 52);
         Object.keys(_transitions).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3253,7 +3382,7 @@
                 }
             });
         });
-        var _builders = __webpack_require__(/*! ./builders */ 47);
+        var _builders = __webpack_require__(/*! ./builders */ 48);
         Object.keys(_builders).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3273,6 +3402,11 @@
             value: true
         });
         exports.flush = exports.tracking = exports.buffer = undefined;
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
         exports.print = print;
         exports.immediateFlush = immediateFlush;
         exports.log = log;
@@ -3281,11 +3415,16 @@
         exports.warn = warn;
         exports.error = error;
         exports.track = track;
-        var _util = __webpack_require__(/*! ./util */ 44);
-        var _builders = __webpack_require__(/*! ./builders */ 47);
-        var _config = __webpack_require__(/*! ./config */ 48);
+        var _util = __webpack_require__(/*! ./util */ 45);
+        var _builders = __webpack_require__(/*! ./builders */ 48);
+        var _config = __webpack_require__(/*! ./config */ 49);
         var buffer = exports.buffer = [];
         var tracking = exports.tracking = {};
+        if (Function.prototype.bind && window.console && _typeof(console.log) === "object") {
+            [ "log", "info", "warn", "error" ].forEach(function(method) {
+                console[method] = this.bind(console[method], console);
+            }, Function.prototype.call);
+        }
         function print(level, event, payload) {
             if (!window.console || !window.console.log) {
                 return;
@@ -3296,7 +3435,13 @@
             if (payload.error || payload.warning) {
                 args.push("\n\n", payload.error || payload.warning);
             }
-            (window.console[level] || window.console.log).apply(window.console, args);
+            if (window.console) {
+                if (window.console[level] && window.console[level].apply) {
+                    window.console[level].apply(window.console, args);
+                } else if (window.console.log && window.console.log.apply) {
+                    window.console.log.apply(window.console, args);
+                }
+            }
         }
         function immediateFlush() {
             var async = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
@@ -3451,7 +3596,7 @@
         exports.promiseDebounce = promiseDebounce;
         exports.safeInterval = safeInterval;
         exports.uniqueID = uniqueID;
-        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 45);
+        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 46);
         function extend(dest, src) {
             var over = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
             dest = dest || {};
@@ -3829,7 +3974,7 @@
                     return z;
                 }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "undefined" !== typeof module && module.exports ? module.exports = z : "undefined" !== typeof this && (this.ES6Promise = z);
             }).call(undefined);
-        }).call(exports, __webpack_require__(/*! ./~/process/browser.js */ 46), function() {
+        }).call(exports, __webpack_require__(/*! ./~/process/browser.js */ 47), function() {
             return this;
         }());
     }, /*!******************************!*\
@@ -3984,10 +4129,10 @@
             value: true
         });
         exports.init = init;
-        var _config = __webpack_require__(/*! ./config */ 48);
-        var _util = __webpack_require__(/*! ./util */ 44);
-        var _performance = __webpack_require__(/*! ./performance */ 50);
-        var _logger = __webpack_require__(/*! ./logger */ 43);
+        var _config = __webpack_require__(/*! ./config */ 49);
+        var _util = __webpack_require__(/*! ./util */ 45);
+        var _performance = __webpack_require__(/*! ./performance */ 51);
+        var _logger = __webpack_require__(/*! ./logger */ 44);
         var initiated = false;
         function init(conf) {
             (0, _util.extend)(_config.config, conf || {});
@@ -4037,10 +4182,10 @@
         exports.reqStartElapsed = reqStartElapsed;
         exports.initHeartBeat = initHeartBeat;
         exports.initPerformance = initPerformance;
-        var _config = __webpack_require__(/*! ./config */ 48);
-        var _logger = __webpack_require__(/*! ./logger */ 43);
-        var _builders = __webpack_require__(/*! ./builders */ 47);
-        var _util = __webpack_require__(/*! ./util */ 44);
+        var _config = __webpack_require__(/*! ./config */ 49);
+        var _logger = __webpack_require__(/*! ./logger */ 44);
+        var _builders = __webpack_require__(/*! ./builders */ 48);
+        var _util = __webpack_require__(/*! ./util */ 45);
         var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
         function now() {
             if (enablePerformance) {
@@ -4153,11 +4298,11 @@
         exports.startTransition = startTransition;
         exports.endTransition = endTransition;
         exports.transition = transition;
-        var _performance = __webpack_require__(/*! ./performance */ 50);
-        var _logger = __webpack_require__(/*! ./logger */ 43);
-        var _builders = __webpack_require__(/*! ./builders */ 47);
-        var _util = __webpack_require__(/*! ./util */ 44);
-        var _config = __webpack_require__(/*! ./config */ 48);
+        var _performance = __webpack_require__(/*! ./performance */ 51);
+        var _logger = __webpack_require__(/*! ./logger */ 44);
+        var _builders = __webpack_require__(/*! ./builders */ 48);
+        var _util = __webpack_require__(/*! ./util */ 45);
+        var _config = __webpack_require__(/*! ./config */ 49);
         var windowID = (0, _util.uniqueID)();
         var pageID = (0, _util.uniqueID)();
         var currentState = _config.config.initial_state_name;
@@ -4225,15 +4370,15 @@
                 return Constructor;
             };
         }();
-        var _src = __webpack_require__(/*! post-robot/src */ 13);
+        var _src = __webpack_require__(/*! post-robot/src */ 14);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
-        var _base = __webpack_require__(/*! ../base */ 53);
-        var _window = __webpack_require__(/*! ../window */ 54);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
+        var _base = __webpack_require__(/*! ../base */ 54);
+        var _window = __webpack_require__(/*! ../window */ 55);
         var _lib = __webpack_require__(/*! ../../lib */ 7);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
-        var _props = __webpack_require__(/*! ../props */ 55);
-        var _props2 = __webpack_require__(/*! ./props */ 56);
+        var _props = __webpack_require__(/*! ../props */ 56);
+        var _props2 = __webpack_require__(/*! ./props */ 57);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4288,16 +4433,12 @@
                 value: function init() {
                     var _this2 = this;
                     this.component.log("init_child");
-                    try {
-                        this.setWindows();
-                    } catch (err) {
-                        if (this.standalone) {
-                            this.component.log("child_standalone");
-                            return;
-                        }
-                        throw err;
+                    if (!(0, _window.isXComponentWindow)(window.name) && this.standalone) {
+                        this.component.log("child_standalone");
+                        return;
                     }
-                    if (this.standalone && !(0, _lib.getParentWindow)()) {
+                    this.setWindows();
+                    if (this.standalone && !(0, _window.getParentWindow)()) {
                         return _promise.SyncPromise.resolve();
                     }
                     if (this.component.autoResize) {
@@ -4314,6 +4455,11 @@
                     });
                 }
             }, {
+                key: "isXComponent",
+                value: function isXComponent() {
+                    return (0, _window.isXComponentWindow)(window.name);
+                }
+            }, {
                 key: "setProps",
                 value: function setProps() {
                     var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -4328,7 +4474,7 @@
                 key: "sendToParent",
                 value: function sendToParent(name, data) {
                     this.component.log("send_to_parent_" + name);
-                    return _src2["default"].send((0, _lib.getParentWindow)(), name, data);
+                    return _src2["default"].send((0, _window.getParentWindow)(), name, data);
                 }
             }, {
                 key: "setWindows",
@@ -4337,7 +4483,7 @@
                         throw new Error("[" + this.component.tag + "] Can not attach multiple components to the same window");
                     }
                     window.__activeXComponent__ = this;
-                    if (!(0, _lib.getParentWindow)()) {
+                    if (!(0, _window.getParentWindow)()) {
                         throw new Error("[" + this.component.tag + "] Can not find parent window");
                     }
                     var winProps = (0, _window.parseWindowName)(window.name);
@@ -4351,7 +4497,7 @@
                 key: "watchForClose",
                 value: function watchForClose() {
                     var _this3 = this;
-                    (0, _lib.onCloseWindow)(_lib.getParentWindow, function() {
+                    (0, _lib.onCloseWindow)(_window.getParentWindow, function() {
                         _this3.component.log("parent_window_closed");
                         _this3.onClose(new Error("[" + _this3.component.tag + "] parent window was closed"));
                         if (_this3.context === _constants.CONTEXT_TYPES.POPUP) {
@@ -4359,7 +4505,7 @@
                         }
                     });
                     if ((0, _window.getParentComponentWindow)() && (0, _window.getParentComponentWindow)() !== (0, 
-                    _lib.getParentWindow)()) {
+                    _window.getParentWindow)()) {
                         (0, _lib.onCloseWindow)((0, _window.getParentComponentWindow)(), function() {
                             _this3.component.log("parent_component_window_closed");
                             _this3.close(new Error("[" + _this3.component.tag + "] parent component window was closed"));
@@ -4401,6 +4547,9 @@
                     return {
                         updateProps: function updateProps(props) {
                             return _this5.setProps(props);
+                        },
+                        close: function close() {
+                            return window.close();
                         }
                     };
                 }
@@ -4421,6 +4570,11 @@
                             height: height
                         });
                     });
+                }
+            }, {
+                key: "hide",
+                value: function hide() {
+                    return this.sendToParent(_constants.POST_MESSAGE.HIDE);
                 }
             }, {
                 key: "close",
@@ -4475,7 +4629,7 @@
                 return Constructor;
             };
         }();
-        var _src = __webpack_require__(/*! post-robot/src */ 13);
+        var _src = __webpack_require__(/*! post-robot/src */ 14);
         var _src2 = _interopRequireDefault(_src);
         var _lib = __webpack_require__(/*! ../lib */ 7);
         function _interopRequireDefault(obj) {
@@ -4593,7 +4747,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.getParentComponentWindow = exports.parseWindowName = undefined;
+        exports.getParentComponentWindow = exports.getParentWindow = exports.isXComponentWindow = exports.parseWindowName = undefined;
         exports.buildChildWindowName = buildChildWindowName;
         exports.getPosition = getPosition;
         var _lib = __webpack_require__(/*! ../lib */ 7);
@@ -4624,18 +4778,38 @@
             }
             return winProps;
         });
+        var isXComponentWindow = exports.isXComponentWindow = (0, _lib.memoize)(function(name) {
+            return Boolean(parseWindowName(name));
+        });
+        var getParentWindow = exports.getParentWindow = (0, _lib.memoize)(function() {
+            var win = void 0;
+            if (window.opener) {
+                win = window.opener;
+            } else if (window.parent && window.parent !== window) {
+                win = window.parent;
+            } else {
+                throw new Error("Can not find parent window");
+            }
+            var winProps = parseWindowName(window.name);
+            if (!winProps) {
+                throw new Error("Window has not been rendered by xcomponent");
+            }
+            if (!win.parent || win.parent === win) {
+                return win;
+            }
+            if (winProps.sibling && win.parent.frames && win.parent.frames[winProps.parent] === win) {
+                return win.parent;
+            }
+            return win;
+        });
         var getParentComponentWindow = exports.getParentComponentWindow = (0, _lib.memoize)(function() {
             var winProps = parseWindowName(window.name);
             if (!winProps) {
                 throw new Error("Window has not been rendered by xcomponent - can not attach here");
             }
-            var parentWindow = (0, _lib.getParentWindow)();
+            var parentWindow = getParentWindow();
             if (winProps.sibling) {
-                if (parentWindow.frames && parentWindow.frames.length && parentWindow.frames[winProps.parent]) {
-                    parentWindow = parentWindow.frames[winProps.parent];
-                } else if (parentWindow.parent !== parentWindow && parentWindow.parent.frames && parentWindow.parent.frames.length && parentWindow.parent.frames[winProps.parent]) {
-                    parentWindow = parentWindow.parent.frames[winProps.parent];
-                }
+                return parentWindow.frames[winProps.parent];
             }
             return parentWindow;
         });
@@ -4666,7 +4840,7 @@
         });
         exports.normalizeProp = normalizeProp;
         exports.normalizeProps = normalizeProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
         var _lib = __webpack_require__(/*! ../lib */ 7);
         var _constants = __webpack_require__(/*! ../constants */ 6);
         function normalizeProp(component, instance, props, key) {
@@ -4758,7 +4932,7 @@
             value: true
         });
         exports.normalizeChildProps = normalizeChildProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
         var _lib = __webpack_require__(/*! ../../lib */ 7);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
         function normalizeChildProps(component, props) {
@@ -4815,6 +4989,39 @@
             }
             return target;
         };
+        var _slicedToArray = function() {
+            function sliceIterator(arr, i) {
+                var _arr = [];
+                var _n = true;
+                var _d = false;
+                var _e = undefined;
+                try {
+                    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+                        _arr.push(_s.value);
+                        if (i && _arr.length === i) break;
+                    }
+                } catch (err) {
+                    _d = true;
+                    _e = err;
+                } finally {
+                    try {
+                        if (!_n && _i["return"]) _i["return"]();
+                    } finally {
+                        if (_d) throw _e;
+                    }
+                }
+                return _arr;
+            }
+            return function(arr, i) {
+                if (Array.isArray(arr)) {
+                    return arr;
+                } else if (Symbol.iterator in Object(arr)) {
+                    return sliceIterator(arr, i);
+                } else {
+                    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+                }
+            };
+        }();
         var _createClass = function() {
             function defineProperties(target, props) {
                 for (var i = 0; i < props.length; i++) {
@@ -4831,18 +5038,18 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 42);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 43);
         var _client2 = _interopRequireDefault(_client);
-        var _src = __webpack_require__(/*! post-robot/src */ 13);
+        var _src = __webpack_require__(/*! post-robot/src */ 14);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
-        var _base = __webpack_require__(/*! ../base */ 53);
-        var _window = __webpack_require__(/*! ../window */ 54);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
+        var _base = __webpack_require__(/*! ../base */ 54);
+        var _window = __webpack_require__(/*! ../window */ 55);
         var _lib = __webpack_require__(/*! ../../lib */ 7);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
-        var _drivers = __webpack_require__(/*! ./drivers */ 58);
-        var _validate = __webpack_require__(/*! ./validate */ 59);
-        var _props = __webpack_require__(/*! ./props */ 60);
+        var _drivers = __webpack_require__(/*! ./drivers */ 59);
+        var _validate = __webpack_require__(/*! ./validate */ 60);
+        var _props = __webpack_require__(/*! ./props */ 61);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4934,7 +5141,30 @@
                             url = _this2.component.url;
                         }
                         if (queryString) {
-                            url = "" + url + (url.indexOf("?") === -1 ? "?" : "&") + queryString;
+                            var base = void 0;
+                            var query = void 0;
+                            var hash = void 0;
+                            var _url$split = url.split("#");
+                            var _url$split2 = _slicedToArray(_url$split, 2);
+                            base = _url$split2[0];
+                            hash = _url$split2[1];
+                            var _base$split = base.split("?");
+                            var _base$split2 = _slicedToArray(_base$split, 2);
+                            base = _base$split2[0];
+                            query = _base$split2[1];
+                            if (query) {
+                                query = query + "&" + queryString;
+                            } else {
+                                query = queryString;
+                            }
+                            url = base;
+                            if (query) {
+                                url = url + "?" + query;
+                            }
+                            if (hash) {
+                                url = url + "#" + hash;
+                            }
+                            return url;
                         }
                         return url;
                     });
@@ -4944,7 +5174,6 @@
                 value: function updateProps(props) {
                     var _this3 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        (0, _validate.validateProps)(_this3.component, props);
                         var oldProps = (0, _lib.stringifyWithFunctions)(_this3.props);
                         _this3.setProps(_extends({}, _this3.props, props));
                         if (!_this3.initialPropsSent) {
@@ -5012,12 +5241,15 @@
                         _this4.setForCleanup("context", context);
                         _this4.preRender(element, context);
                         _this4.listen(_this4.window);
+                        _this4.watchForClose();
                         return _this4.buildUrl().then(function(url) {
                             _this4.loadUrl(context, url);
                             _this4.runTimeout();
-                            _this4.watchForClose();
                             return _this4.onInit;
                         });
+                    })["catch"](function(err) {
+                        _this4.destroy();
+                        throw err;
                     });
                 }
             }, {
@@ -5056,7 +5288,8 @@
                     return _promise.SyncPromise.resolve().then(function() {
                         _this5.validateRender(context);
                         context = _this5.getRenderContext(element, context);
-                        if (!(0, _lib.getParentWindow)()) {
+                        var parentWindow = (0, _lib.getParentWindow)();
+                        if (!parentWindow) {
                             throw new Error("[" + _this5.component.tag + "] Can not render to parent - no parent exists");
                         }
                         if (!window.name) {
@@ -5088,7 +5321,7 @@
                             _this5.childExports = data.childExports;
                             _this5.close = data.close;
                             if (!_this5.window) {
-                                _this5.setForCleanup("window", (0, _lib.getParentWindow)().frames[_this5.childWindowName]);
+                                _this5.setForCleanup("window", parentWindow.frames[_this5.childWindowName]);
                             }
                             _this5.listen(_this5.window);
                             _this5.watchForClose();
@@ -5207,25 +5440,30 @@
                         this.registerForCleanup(function() {
                             instance.destroy();
                         });
-                        if (data.hijackSubmitParentForm) {
-                            var form = (0, _lib.getParentNode)(this.iframe, "form");
-                            instance.renderHijack(form, data.element, data.context);
-                            form.submit();
-                        } else {
-                            return instance.render(data.element, data.context).then(function() {
-                                return {
-                                    childExports: instance.childExports,
-                                    close: function close() {
-                                        return _this11.close();
-                                    }
-                                };
-                            });
-                        }
+                        return _promise.SyncPromise.resolve().then(function() {
+                            if (data.hijackSubmitParentForm) {
+                                var form = (0, _lib.getParentNode)(_this11.iframe, "form");
+                                var promise = instance.renderHijack(form, data.element, data.context);
+                                form.submit();
+                                return promise;
+                            } else {
+                                return instance.render(data.element, data.context);
+                            }
+                        }).then(function() {
+                            return {
+                                childExports: instance.childExports,
+                                close: function close() {
+                                    return instance.close();
+                                }
+                            };
+                        });
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.RESIZE, function(source, data) {
                         if (this.context === _constants.CONTEXT_TYPES.POPUP) {
                             return;
                         }
                         return this.resize(data.width, data.height);
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.HIDE, function(source, data) {
+                        this.hide();
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.ERROR, function(source, data) {
                         this.error(new Error(data.error));
                     }), _ref;
@@ -5245,14 +5483,25 @@
                     return _drivers.RENDER_DRIVERS[this.context].restyle.call(this);
                 }
             }, {
+                key: "hide",
+                value: function hide() {
+                    if (this.parentTemplate) {
+                        this.parentTemplate.style.display = "none";
+                    }
+                    return _drivers.RENDER_DRIVERS[this.context].hide.call(this);
+                }
+            }, {
                 key: "close",
                 value: function close() {
                     var _this12 = this;
+                    this.component.log("close");
                     if (this.parentTemplate) {
                         this.parentTemplate.className += " " + _constants.CLASS_NAMES.CLOSING;
                     }
                     return this.props.onClose().then(function() {
-                        _this12.component.log("close");
+                        if (_this12.childExports && !(0, _lib.isWindowClosed)(_this12.window)) {
+                            _this12.childExports.close()["catch"](_lib.noop);
+                        }
                         _this12.destroy();
                     });
                 }
@@ -5277,8 +5526,7 @@
                         this.window.document.write(html);
                         this.window.document.close();
                     } catch (err) {
-                        console.error(err);
-                        this.window.location = "javascript: document.write(JSON.stringify(html))";
+                        this.window.location = "javascript: document.open(); document.write(JSON.stringify(html)); document.close();";
                     }
                 }
             }, {
@@ -5371,7 +5619,7 @@
         var _error = __webpack_require__(/*! ../../error */ 5);
         var _lib = __webpack_require__(/*! ../../lib */ 7);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
-        var _window = __webpack_require__(/*! ../window */ 54);
+        var _window = __webpack_require__(/*! ../window */ 55);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -5420,6 +5668,9 @@
                 this.iframe.style.width = width + "px";
                 this.iframe.style.height = height + "px";
             },
+            hide: function hide() {
+                this.iframe.style.display = "none";
+            },
             restyle: function restyle() {
                 this.iframe.style.backgroundColor = "transparent";
             },
@@ -5462,6 +5713,9 @@
                 return this;
             },
             resize: function resize() {},
+            hide: function hide() {
+                throw new Error("Can not hide popup");
+            },
             restyle: function restyle() {},
             renderToParent: function renderToParent() {
                 this.open(null, _constants.CONTEXT_TYPES.POPUP);
@@ -5475,31 +5729,39 @@
             open: function open() {
                 var element = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || document.body;
                 RENDER_DRIVERS[_constants.CONTEXT_TYPES.IFRAME].open.call(this, element);
-                this.iframe.style.zIndex = _constants.MAX_Z_INDEX;
-                this.iframe.style.position = "fixed";
                 return this;
             },
             resize: function resize(width, height) {
+                var container = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || this.iframe;
+                container.style.zIndex = _constants.MAX_Z_INDEX;
+                container.style.position = "fixed";
                 if (width) {
                     this.iframe.style.width = width + "px";
-                    this.iframe.style.left = "50%";
-                    this.iframe.style.marginLeft = "-" + Math.floor(width / 2) + "px";
+                    container.style.width = width + "px";
+                    container.style.left = "50%";
+                    container.style.marginLeft = "-" + Math.floor(width / 2) + "px";
                 } else {
-                    this.iframe.style.left = 0;
                     this.iframe.style.width = "100%";
-                    this.iframe.style.marginLeft = "0px";
-                    this.iframe.width = "100%";
+                    container.style.width = "100%";
+                    container.style.left = 0;
+                    container.style.marginLeft = "0px";
+                    container.width = "100%";
                 }
                 if (height) {
                     this.iframe.style.height = height + "px";
-                    this.iframe.style.top = "50%";
-                    this.iframe.style.marginTop = "-" + Math.floor(height / 2) + "px";
+                    container.style.height = height + "px";
+                    container.style.top = "50%";
+                    container.style.marginTop = "-" + Math.floor(height / 2) + "px";
                 } else {
-                    this.iframe.style.top = 0;
                     this.iframe.style.height = "100%";
-                    this.iframe.style.marginTop = "0px";
-                    this.iframe.height = "100%";
+                    container.style.height = "100%";
+                    container.style.top = 0;
+                    container.style.marginTop = "0px";
+                    container.height = "100%";
                 }
+            },
+            hide: function hide() {
+                this.iframe.style.display = "none";
             },
             restyle: function restyle() {},
             loadUrl: function loadUrl(url) {
@@ -5605,10 +5867,10 @@
         };
         exports.propsToQuery = propsToQuery;
         exports.normalizeParentProps = normalizeParentProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 12);
-        var _validate = __webpack_require__(/*! ./validate */ 59);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
+        var _validate = __webpack_require__(/*! ./validate */ 60);
         var _lib = __webpack_require__(/*! ../../lib */ 7);
-        var _props = __webpack_require__(/*! ../props */ 55);
+        var _props = __webpack_require__(/*! ../props */ 56);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
         function propsToQuery(propsDef, props) {
             var params = [];
@@ -5763,7 +6025,7 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.validate = validate;
-        var _props = __webpack_require__(/*! ./props */ 61);
+        var _props = __webpack_require__(/*! ./props */ 62);
         var _constants = __webpack_require__(/*! ../../constants */ 6);
         function validateProps(options) {
             if (options.props && !(_typeof(options.props) === "object")) {
@@ -5893,7 +6155,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _script = __webpack_require__(/*! ./script */ 66);
+        var _script = __webpack_require__(/*! ./script */ 67);
         Object.keys(_script).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5903,7 +6165,7 @@
                 }
             });
         });
-        var _react = __webpack_require__(/*! ./react */ 67);
+        var _react = __webpack_require__(/*! ./react */ 68);
         Object.keys(_react).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5913,7 +6175,7 @@
                 }
             });
         });
-        var _angular = __webpack_require__(/*! ./angular */ 68);
+        var _angular = __webpack_require__(/*! ./angular */ 69);
         Object.keys(_angular).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -5923,7 +6185,7 @@
                 }
             });
         });
-        var _ember = __webpack_require__(/*! ./ember */ 69);
+        var _ember = __webpack_require__(/*! ./ember */ 70);
         Object.keys(_ember).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -6108,34 +6370,6 @@
   \*******************************************/
     function(module, exports) {
         "use strict";
-    }, /*!*********************************!*\
-  !*** ./src/components/props.js ***!
-  \*********************************/
-    function(module, exports) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var props = exports.props = {
-            onPaymentAuthorize: {
-                type: "function",
-                required: false,
-                once: true,
-                autoClose: true
-            },
-            onPaymentComplete: {
-                type: "function",
-                required: false,
-                once: true,
-                autoClose: true
-            },
-            onCancel: {
-                type: "function",
-                required: false,
-                once: true,
-                autoClose: true
-            }
-        };
     }, /*!******************************************!*\
   !*** ./src/components/checkout/index.js ***!
   \******************************************/
@@ -6163,20 +6397,8 @@
             value: true
         });
         exports.PayPalCheckout = undefined;
-        var _extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
-                    if (Object.prototype.hasOwnProperty.call(source, key)) {
-                        target[key] = source[key];
-                    }
-                }
-            }
-            return target;
-        };
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _props = __webpack_require__(/*! ../props */ 70);
         var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 73);
         var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
         var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 74);
@@ -6203,15 +6425,33 @@
             },
             parentTemplate: _parentTemplate2["default"],
             componentTemplate: _componentTemplate2["default"],
-            autoResize: true,
-            props: _extends({
+            autoResize: false,
+            props: {
                 paymentToken: {
                     type: "string",
-                    required: false,
+                    required: true,
                     getter: true,
                     queryParam: "token"
+                },
+                onPaymentAuthorize: {
+                    type: "function",
+                    required: false,
+                    once: true,
+                    autoClose: true
+                },
+                onPaymentComplete: {
+                    type: "function",
+                    required: false,
+                    once: true,
+                    autoClose: true
+                },
+                onPaymentCancel: {
+                    type: "function",
+                    required: false,
+                    once: true,
+                    autoClose: true
                 }
-            }, _props.props),
+            },
             dimensions: {
                 width: 450,
                 height: 535
@@ -6221,7 +6461,7 @@
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
-        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT}"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} iframe {\n        border-radius: 10px;\n        background-color: white;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n</style>\n';
+        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        padding: 5px;\n        background-color: white;\n        border-radius: 10px;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n</style>\n';
     }, /*!*******************************************************!*\
   !*** ./src/components/checkout/componentTemplate.htm ***!
   \*******************************************************/
@@ -6246,23 +6486,33 @@
         var _components = __webpack_require__(/*! ../components */ 1);
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
+        var _eligibility = __webpack_require__(/*! ./eligibility */ 76);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
+        var PROD_BASE_URL = "https://www.paypal.com/checkoutnow";
         var env = "production";
         function matchToken(token) {
+            return token && token.match(/^(EC-)?[A-Z0-9]{17}$/);
+        }
+        function parseToken(token) {
             if (!token) {
                 return;
             }
             if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
                 return token;
             }
-            var match = token.match(/token=((EC-)?[A-Z0-9]{17})$/);
+            var match = token.match(/token=((EC-)?[A-Z0-9]{17})/);
             if (match) {
                 return match[1];
             }
+        }
+        function getFullpageRedirectUrl(token) {
+            var baseUrl = env && _components.PayPalCheckout.envUrls[env] || PROD_BASE_URL;
+            var url = matchToken(token) ? baseUrl + "?token=" + token : token;
+            return url;
         }
         function getPaymentToken(resolve, reject) {
             var _this = this;
@@ -6274,7 +6524,20 @@
             window.paypal.checkout.initXO = function() {};
             window.paypal.checkout.startFlow = function(token) {
                 reset();
-                resolve(matchToken(token));
+                var ecToken = parseToken(token);
+                if (!ecToken) {
+                    throw new Error('Expected "' + token + '" passed to window.paypal.checkout.startFlow to contain express-checkout payment token');
+                }
+                if (!(0, _eligibility.isEligible)()) {
+                    window.location = getFullpageRedirectUrl(token);
+                    return;
+                }
+                if (!matchToken(token)) {
+                    _this.updateProps({
+                        url: token
+                    });
+                }
+                resolve(ecToken);
             };
             window.paypal.checkout.closeFlow = function() {
                 reset();
@@ -6288,16 +6551,6 @@
             document.getElementById(container).appendChild(button);
             return button;
         }
-        function logError(err) {
-            err = err.stack || err.toString();
-            if (window.console) {
-                if (window.console.error) {
-                    window.console.error(err);
-                } else if (window.console.log) {
-                    window.console.log(err);
-                }
-            }
-        }
         function initPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             return _components.PayPalCheckout.init(_extends({
@@ -6305,14 +6558,11 @@
                 paymentToken: getPaymentToken,
                 onPaymentAuthorize: function onPaymentAuthorize(_ref) {
                     var returnUrl = _ref.returnUrl;
-                    var paymentToken = _ref.paymentToken;
-                    var payerID = _ref.payerID;
-                    window.location = returnUrl + "?token=" + paymentToken + "&payerID=" + payerID;
+                    window.location = returnUrl;
                 },
-                onCancel: function onCancel(_ref2) {
+                onPaymentCancel: function onPaymentCancel(_ref2) {
                     var cancelUrl = _ref2.cancelUrl;
-                    var paymentToken = _ref2.paymentToken;
-                    window.location = cancelUrl + "?token=" + paymentToken;
+                    window.location = cancelUrl;
                 }
             }, props));
         }
@@ -6324,23 +6574,32 @@
                 if (options.click) {
                     button.addEventListener("click", function(event) {
                         event.preventDefault();
-                        initPayPalCheckout().render()["catch"](logError);
+                        initPayPalCheckout().render();
                         options.click.call();
                     });
                 } else {
                     initPayPalCheckout({
                         paymentToken: _src2["default"].PROP_DEFER_TO_URL
-                    }).hijackButton(button)["catch"](logError);
+                    }).hijackButton(button);
                 }
             }
         }
         function initXO() {
-            initPayPalCheckout().render()["catch"](logError);
+            initPayPalCheckout().render();
         }
         function startFlow(token) {
+            var ecToken = parseToken(token);
+            if (!ecToken) {
+                throw new Error('Expected "' + token + '" passed to window.paypal.checkout.startFlow to contain express-checkout payment token');
+            }
+            if (!(0, _eligibility.isEligible)()) {
+                window.location = getFullpageRedirectUrl(token);
+                return;
+            }
             initPayPalCheckout({
-                paymentToken: matchToken(token)
-            }).render()["catch"](logError);
+                url: matchToken(token) ? null : token,
+                paymentToken: ecToken
+            }).render();
         }
         function closeFlow() {
             console.warn("Checkout is not open, can not be closed");
@@ -6378,7 +6637,7 @@
                 initPayPalCheckout({
                     env: buttonEnv,
                     paymentToken: _src2["default"].PROP_DEFER_TO_URL
-                }).hijackButton(button)["catch"](logError);
+                }).hijackButton(button);
             }
         });
         window.paypal = window.paypal || {};
@@ -6387,6 +6646,87 @@
         window.paypal.checkout.initXO = initXO;
         window.paypal.checkout.startFlow = startFlow;
         window.paypal.checkout.closeFlow = closeFlow;
+    }, /*!***********************************!*\
+  !*** ./src/legacy/eligibility.js ***!
+  \***********************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
+        exports.isEligible = isEligible;
+        var SUPPORTED_AGENTS = {
+            Chrome: 27,
+            IE: 9,
+            MSIE: 9,
+            Firefox: 30,
+            Safari: 5.1,
+            Opera: 23
+        };
+        function isDevice() {
+            var userAgent = window.navigator.userAgent;
+            if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+                return true;
+            }
+            return false;
+        }
+        function isWebView() {
+            var userAgent = window.navigator.userAgent;
+            return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+        }
+        function getAgent(agent) {
+            var ua = window.navigator.userAgent;
+            var tem = void 0;
+            var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident/i.test(M[1])) {
+                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return [ "IE", tem[1] || "" ];
+            }
+            if (M[1] === "Chrome") {
+                tem = ua.match(/\bOPR\/(\d+)/);
+                if (tem !== null) {
+                    return [ "Opera", tem[1] ];
+                }
+            }
+            M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
+            if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
+                M.splice(1, 1, tem[1]);
+            }
+            return M;
+        }
+        function isOldIE() {
+            return window.navigator.userAgent.match(/MSIE [5678]\./i);
+        }
+        function isEligible() {
+            var currentAgent = getAgent();
+            if ((typeof currentAgent === "undefined" ? "undefined" : _typeof(currentAgent)) === "object" && currentAgent.length === 2) {
+                if (parseFloat(currentAgent[1]) < SUPPORTED_AGENTS[currentAgent[0]]) {
+                    return false;
+                }
+            }
+            return !(isDevice() || isWebView() || isOldIE());
+        }
+    }, /*!***********************!*\
+  !*** ./src/bridge.js ***!
+  \***********************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        var _src = __webpack_require__(/*! xcomponent/src */ 4);
+        var _src2 = _interopRequireDefault(_src);
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        var BRIDGE_URL = "http://localhost.paypal.com:8000/webapps/hermes/static/html/paypal-checkout-meta.html";
+        if (window.location.href !== BRIDGE_URL) {
+            _src2["default"].postRobot.openBridge(BRIDGE_URL);
+        }
     } ]);
 });
 
