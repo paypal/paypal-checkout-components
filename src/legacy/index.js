@@ -1,6 +1,10 @@
 
 import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
+import { isEligible } from './eligibility';
+
+
+const PROD_BASE_URL = 'https://www.paypal.com/checkoutnow';
 
 
 /*  Global State
@@ -16,14 +20,20 @@ import xcomponent from 'xcomponent/src';
 let env = 'production';
 
 
-/*  Match Token
+
+function matchToken(token) {
+    return token && token.match(/^(EC-)?[A-Z0-9]{17}$/);
+}
+
+
+/*  Parse Token
     -----------
 
     We are passed either a token, or a url containing the token. In order to run the new checkout component we need to
     strip out the token from the url in order to pass it down as a prop
 */
 
-function matchToken(token) {
+function parseToken(token) {
 
     if (!token) {
         return;
@@ -37,11 +47,18 @@ function matchToken(token) {
 
     // Otherwise strip the token from the url we're sent
 
-    let match = token.match(/token=((EC-)?[A-Z0-9]{17})$/);
+    let match = token.match(/token=((EC-)?[A-Z0-9]{17})/);
 
     if (match) {
         return match[1];
     }
+}
+
+
+function getFullpageRedirectUrl(token) {
+    let baseUrl = env && PayPalCheckout.envUrls[env] || PROD_BASE_URL;
+    let url = matchToken(token) ? `${baseUrl}?token=${token}` : token;
+    return url;
 }
 
 
@@ -81,7 +98,24 @@ function getPaymentToken(resolve, reject) {
     window.paypal.checkout.startFlow = (token) => {
         reset();
 
-        resolve(matchToken(token));
+        let ecToken = parseToken(token);
+
+        if (!ecToken) {
+            throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
+        }
+
+        if (!isEligible()) {
+            window.location = getFullpageRedirectUrl(token);
+            return;
+        }
+
+        if (!matchToken(token)) {
+            this.updateProps({
+                url: token
+            });
+        }
+
+        resolve(ecToken);
     };
 
     // closeFlow is our 'error' case - we can call our callback with an error
@@ -113,18 +147,6 @@ function drawButton(container) {
     document.getElementById(container).appendChild(button);
 
     return button;
-}
-
-
-function logError(err) {
-    err = err.stack || err.toString();
-    if (window.console) {
-        if (window.console.error) {
-            window.console.error(err);
-        } else if (window.console.log) {
-            window.console.log(err);
-        }
-    }
 }
 
 
@@ -190,7 +212,7 @@ function setup(id, options) {
 
                 // Open the checkout component
 
-                initPayPalCheckout().render().catch(logError);
+                initPayPalCheckout().render();
 
                 // Call options.click, which should call one or both of initXO / startFlow
 
@@ -219,7 +241,7 @@ function setup(id, options) {
 */
 
 function initXO() {
-    initPayPalCheckout().render().catch(logError);
+    initPayPalCheckout().render();
 }
 
 
@@ -235,9 +257,21 @@ function initXO() {
 
 function startFlow(token) {
 
+    let ecToken = parseToken(token);
+
+    if (!ecToken) {
+        throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
+    }
+
+    if (!isEligible()) {
+        window.location = getFullpageRedirectUrl(token);
+        return;
+    }
+
     initPayPalCheckout({
-        paymentToken: matchToken(token)
-    }).render().catch(logError);
+        url: matchToken(token) ? null : token,
+        paymentToken: ecToken
+    }).render();
 }
 
 
@@ -307,7 +341,7 @@ onDocumentReady(() => {
         initPayPalCheckout({
             env: buttonEnv,
             paymentToken: xcomponent.PROP_DEFER_TO_URL
-        }).hijackButton(button).catch(logError);
+        }).hijackButton(button);
     }
 });
 
