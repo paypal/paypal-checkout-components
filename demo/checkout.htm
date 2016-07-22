@@ -36,9 +36,13 @@
 
                 onEnter: function() {
 
-                    this.props.paymentToken().then(function(token) {
+                    this.props.paymentToken().then(token => {
                         ecToken = token;
                         console.log('got paypal token!', ecToken);
+
+                        this.props.init({
+                            cancelUrl: parentUrl + '?token=' + ecToken + '&ts=' + Date.now()
+                        });
                     });
                 },
 

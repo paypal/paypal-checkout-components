@@ -162,11 +162,17 @@ function drawButton(container) {
 
 function initPayPalCheckout(props = {}) {
 
+    let initialCancelUrl;
+
     return PayPalCheckout.init({
 
         env,
 
         paymentToken: getPaymentToken,
+
+        init(data) {
+            initialCancelUrl = data.cancelUrl;
+        },
 
         onPaymentAuthorize({ returnUrl }) {
             window.location = returnUrl;
@@ -174,6 +180,16 @@ function initPayPalCheckout(props = {}) {
 
         onPaymentCancel({ cancelUrl }) {
             window.location = cancelUrl;
+        },
+
+        onClose(reason) {
+            let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
+
+            if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED ].indexOf(reason) !== -1) {
+                return this.props.onPaymentCancel({
+                    cancelUrl: initialCancelUrl
+                });
+            }
         },
 
         ...props
@@ -228,7 +244,7 @@ function setup(id, options) {
             // Hijack the button we created, assuming it will submit the parent form
 
             initPayPalCheckout({
-                paymentToken: xcomponent.PROP_DEFER_TO_URL
+                paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
             }).hijackButton(button);
         }
     }
@@ -354,7 +370,7 @@ onDocumentReady(() => {
 
         initPayPalCheckout({
             env: buttonEnv,
-            paymentToken: xcomponent.PROP_DEFER_TO_URL
+            paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
         }).hijackButton(button);
     }
 });

@@ -32,6 +32,12 @@ export let PayPalCheckout = xcomponent.create({
     closeDelay: 1000,
 
     props: {
+        init: {
+            type: 'function',
+            required: false,
+            once: true
+        },
+
         paymentToken: {
             type: 'string',
             required: true,
