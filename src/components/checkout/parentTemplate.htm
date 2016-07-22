@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="{CLASS.ELEMENT}"></div>
+    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>
 </div>
 
 <style>
@@ -103,24 +103,28 @@
         color: white;
     }
 
-    #{id}.{CLASS.LIGHTBOX} iframe {
-        border-radius: 10px;
-
+    #{id} .paypal-checkout-lightbox-wrapper {
+        display: none;
+        padding: 5px;
         background-color: white;
+        border-radius: 10px;
 
         -webkit-transition: all 0.6s ease;
         -moz-transition: all 0.6s ease;
         -ms-transition: all 0.6s ease;
         -o-transition: all 0.6 ease;
         transition: all 0.6s ease;
-
-
+        
         -webkit-animation-duration: 1s;
         animation-duration: 1s;
         -webkit-animation-fill-mode: both;
         animation-fill-mode: both;
         -webkit-animation-name: bounceInUp;
         animation-name: bounceInUp;
+    }
+
+    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {
+        display: block;
     }
 
 
