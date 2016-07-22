@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 75);
+        var _legacy = __webpack_require__(/*! ./legacy */ 77);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -48,7 +48,7 @@
         });
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        __webpack_require__(/*! ./bridge */ 77);
+        __webpack_require__(/*! ./bridge */ 79);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -2099,6 +2099,7 @@
         exports.registerWindow = registerWindow;
         exports.isWindowEqual = isWindowEqual;
         exports.isSameTopWindow = isSameTopWindow;
+        exports.onOpenWindow = onOpenWindow;
         var _util = __webpack_require__(/*! ./util */ 25);
         function safeGet(obj, prop) {
             var result = void 0;
@@ -2255,6 +2256,10 @@
                 return false;
             }
         }
+        var windowOpenListeners = [];
+        function onOpenWindow(method) {
+            windowOpenListeners.push(method);
+        }
         var openWindow = window.open;
         window.open = function(url, name, x, y) {
             if (!name) {
@@ -2262,6 +2267,19 @@
                 arguments[1] = name;
             }
             var win = _util.util.apply(openWindow, this, arguments);
+            for (var _iterator3 = windowOpenListeners, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref3 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref3 = _i3.value;
+                }
+                var listener = _ref3;
+                listener(url, win);
+            }
             registerWindow(name, win);
             return win;
         };
@@ -2400,6 +2418,7 @@
         }
         function onWindowReady(win) {
             var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
+            var name = arguments.length <= 2 || arguments[2] === undefined ? "Window" : arguments[2];
             return new _promise.promise.Promise(function(resolve, reject) {
                 if (readyWindows.indexOf(win) !== -1) {
                     return resolve(win);
@@ -2409,7 +2428,7 @@
                         resolve: resolve
                     });
                     setTimeout(function() {
-                        return reject(new Error("Bridge did not load after " + timeout + "ms"));
+                        return reject(new Error(name + " did not load after " + timeout + "ms"));
                     }, timeout);
                 }
             });
@@ -2460,27 +2479,98 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
+        exports.getBridgeByDomain = getBridgeByDomain;
+        exports.getBridgeByWindow = getBridgeByWindow;
         exports.openBridge = openBridge;
-        exports.getBridgeFor = getBridgeFor;
-        exports.getBridge = getBridge;
+        exports.getRemoteBridge = getRemoteBridge;
         var _conf = __webpack_require__(/*! ../conf */ 17);
         var _lib = __webpack_require__(/*! ../lib */ 22);
         var BRIDGE_NAME_PREFIX = "__postrobot_bridge__";
-        var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
-        var bridge = void 0;
-        function openBridge(url) {
-            if (bridge) {
-                throw new Error("Only one bridge supported!");
+        function getDomain(url) {
+            var domain = void 0;
+            if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
+                domain = url;
+            } else {
+                domain = window.location.href;
             }
-            var documentReady = new _lib.promise.Promise(function(resolve) {
-                if (window.document.body) {
+            domain = domain.split("/").slice(0, 3).join("/");
+            return domain;
+        }
+        function documentReady() {
+            return new _lib.promise.Promise(function(resolve) {
+                if (window.document && window.document.body) {
                     return resolve(window.document);
                 }
                 window.document.addEventListener("DOMContentLoaded", function(event) {
                     return resolve(window.document);
                 });
             });
-            bridge = documentReady.then(function(document) {
+        }
+        var bridges = [];
+        function getBridgeByDomain(domain) {
+            for (var _iterator = bridges, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var bridge = _ref;
+                if (domain === bridge.domain) {
+                    return bridge.bridge;
+                }
+            }
+        }
+        function getBridgeByWindow(win) {
+            for (var _iterator2 = bridges, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                }
+                var bridge = _ref2;
+                if (bridge.windows.indexOf(win) !== -1) {
+                    return bridge.bridge;
+                }
+            }
+        }
+        var windowBuffer = {};
+        (0, _lib.onOpenWindow)(function(url, win) {
+            var domain = getDomain(url);
+            for (var _iterator3 = bridges, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref3 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref3 = _i3.value;
+                }
+                var bridge = _ref3;
+                if (domain === bridge.domain) {
+                    bridge.windows.push(win);
+                    return;
+                }
+            }
+            windowBuffer[domain] = windowBuffer[domain] || [];
+            windowBuffer[domain].push(win);
+        });
+        function openBridge(url) {
+            var domain = getDomain(url);
+            var existingBridge = getBridgeByDomain(domain);
+            if (existingBridge) {
+                return existingBridge;
+            }
+            var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
+            var bridge = documentReady().then(function(document) {
                 _lib.log.debug("Opening bridge:", url);
                 var iframe = document.createElement("iframe");
                 iframe.setAttribute("name", id);
@@ -2500,27 +2590,28 @@
                     iframe.onload = resolve;
                     iframe.onerror = reject;
                 }).then(function() {
-                    return (0, _lib.onWindowReady)(iframe.contentWindow);
+                    return (0, _lib.onWindowReady)(iframe.contentWindow, 5e3, "Bridge " + url);
                 });
             });
+            bridges.push({
+                id: id,
+                domain: domain,
+                bridge: bridge,
+                windows: windowBuffer[domain] || []
+            });
+            delete windowBuffer[domain];
             return bridge;
         }
-        function getBridgeFor(win) {
-            try {
-                var frame = win.frames[id];
-                if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                    return frame;
-                }
-            } catch (err) {}
+        function getRemoteBridge(win) {
             try {
                 if (!win || !win.frames || !win.frames.length) {
                     return;
                 }
                 for (var i = 0; i < win.frames.length; i++) {
                     try {
-                        var _frame = win.frames[i];
-                        if (_frame && _frame !== window && (0, _lib.isSameDomain)(_frame) && _frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                            return _frame;
+                        var frame = win.frames[i];
+                        if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                            return frame;
                         }
                     } catch (err) {
                         continue;
@@ -2529,11 +2620,6 @@
             } catch (err) {
                 return;
             }
-        }
-        function getBridge() {
-            return _lib.promise.Promise.resolve().then(function() {
-                return bridge || getBridgeFor(window);
-            });
         }
     }, /*!*******************************************!*\
   !*** ./~/post-robot/src/compat/global.js ***!
@@ -2729,7 +2815,7 @@
             if ((0, _lib.isSameTopWindow)(window, win)) {
                 throw new Error("Can only use bridge to communicate between two different windows, not between frames");
             }
-            var frame = (0, _compat.getBridgeFor)(win);
+            var frame = (0, _compat.getRemoteBridge)(win);
             if (!frame) {
                 throw new Error("No bridge available in window");
             }
@@ -2775,7 +2861,7 @@
             if (opener && window === opener.parent) {
                 message.sourceHint = "window.opener.parent";
             }
-            return (0, _compat.getBridge)().then(function(bridge) {
+            return (0, _compat.getBridgeByWindow)(win).then(function(bridge) {
                 if (!bridge) {
                     throw new Error("Bridge not initialized");
                 }
@@ -3261,6 +3347,7 @@
                     var context = _ref;
                     this.contexts[context] = this.contexts[context] === undefined ? true : Boolean(this.contexts[context]);
                 }
+                this.closeDelay = options.closeDelay;
                 this.defaultContext = options.defaultContext;
                 this.singleton = options.singleton;
                 this.autoResize = options.autoResize || false;
@@ -5342,7 +5429,9 @@
                     var unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
                         _this6.component.log("navigate_away");
                         _client2["default"].flush();
-                        _this6.destroy();
+                        if (_this6.context === _constants.CONTEXT_TYPES.POPUP) {
+                            _this6.destroy();
+                        }
                     });
                     this.registerForCleanup(function() {
                         closeWindowListener.cancel();
@@ -5499,10 +5588,18 @@
                         this.parentTemplate.className += " " + _constants.CLASS_NAMES.CLOSING;
                     }
                     return this.props.onClose().then(function() {
-                        if (_this12.childExports && !(0, _lib.isWindowClosed)(_this12.window)) {
-                            _this12.childExports.close()["catch"](_lib.noop);
-                        }
-                        _this12.destroy();
+                        return new _promise.SyncPromise(function(resolve) {
+                            if (_this12.component.closeDelay && _this12.context !== _constants.CONTEXT_TYPES.POPUP) {
+                                setTimeout(resolve, _this12.component.closeDelay);
+                            } else {
+                                resolve();
+                            }
+                        }).then(function() {
+                            if (_this12.childExports && !(0, _lib.isWindowClosed)(_this12.window)) {
+                                _this12.childExports.close()["catch"](_lib.noop);
+                            }
+                            _this12.destroy();
+                        });
                     });
                 }
             }, {
@@ -5736,11 +5833,13 @@
                 container.style.zIndex = _constants.MAX_Z_INDEX;
                 container.style.position = "fixed";
                 if (width) {
+                    container.className += " set-width";
                     this.iframe.style.width = width + "px";
                     container.style.width = width + "px";
                     container.style.left = "50%";
                     container.style.marginLeft = "-" + Math.floor(width / 2) + "px";
                 } else {
+                    container.className += " max-width";
                     this.iframe.style.width = "100%";
                     container.style.width = "100%";
                     container.style.left = 0;
@@ -5748,11 +5847,13 @@
                     container.width = "100%";
                 }
                 if (height) {
+                    container.className += " set-height";
                     this.iframe.style.height = height + "px";
                     container.style.height = height + "px";
                     container.style.top = "50%";
                     container.style.marginTop = "-" + Math.floor(height / 2) + "px";
                 } else {
+                    container.className += " max-height";
                     this.iframe.style.height = "100%";
                     container.style.height = "100%";
                     container.style.top = 0;
@@ -6403,6 +6504,7 @@
         var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
         var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 74);
         var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
+        var _lib = __webpack_require__(/*! ../../lib */ 75);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6426,6 +6528,7 @@
             parentTemplate: _parentTemplate2["default"],
             componentTemplate: _componentTemplate2["default"],
             autoResize: false,
+            closeDelay: 1e3,
             props: {
                 paymentToken: {
                     type: "string",
@@ -6452,7 +6555,7 @@
                     autoClose: true
                 }
             },
-            dimensions: {
+            dimensions: (0, _lib.isDevice)() ? null : {
                 width: 450,
                 height: 535
             }
@@ -6461,12 +6564,72 @@
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
-        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        padding: 5px;\n        background-color: white;\n        border-radius: 10px;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n        \n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n</style>\n';
+        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper.set-width.set-height {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n</style>\n';
     }, /*!*******************************************************!*\
   !*** ./src/components/checkout/componentTemplate.htm ***!
   \*******************************************************/
     function(module, exports) {
         module.exports = '<style>\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .loading #main {\n        opacity: .1\n    }\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n    .spinner .spinWrap {\n        width: 200px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        height: 48px;\n        margin-top: -24px\n    }\n    .framed .spinner {\n        position: fixed\n    }\n    .framed .spinner .spinWrap {\n        position: fixed;\n        top: 50%;\n        height: 75px;\n        margin-top: -37.5px\n    }\n    .spinner .loader {\n        height: 30px;\n        width: 30px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        margin: 0 0 0 -23px;\n        opacity: 1;\n        filter: alpha(opacity=100);\n        background-color: rgba(255, 255, 255, .701961);\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 8px solid rgba(0, 0, 0, .2);\n        border-right: 8px solid rgba(0, 0, 0, .2);\n        border-bottom: 8px solid rgba(0, 0, 0, .2);\n        border-top: 8px solid #2180c0;\n        border-radius: 100%\n    }\n    .spinner .loadingMessage {\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 100%;\n        margin-top: 55px;\n        text-align: center;\n        z-index: 100;\n        outline: 0\n    }\n    .spinner .loadingSubHeading {\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 150%;\n        margin-top: 10px;\n        margin-left: -42px;\n        text-align: center;\n        z-index: 100;\n        outline: 0\n    }\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n</style>\n\n<div id="preloaderSpinner" class="preloader spinner">\n    <div class="spinWrap">\n        <p class="loader"></p>\n        <p class="loadingMessage" id="spinnerMessage"></p>\n        <p class="loadingSubHeading" id="spinnerSubHeading"></p>\n    </div>\n</div>\n';
+    }, /*!**************************!*\
+  !*** ./src/lib/index.js ***!
+  \**************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _device = __webpack_require__(/*! ./device */ 76);
+        Object.keys(_device).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _device[key];
+                }
+            });
+        });
+    }, /*!***************************!*\
+  !*** ./src/lib/device.js ***!
+  \***************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.isDevice = isDevice;
+        exports.isWebView = isWebView;
+        exports.getAgent = getAgent;
+        function isDevice() {
+            var userAgent = window.navigator.userAgent;
+            if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+                return true;
+            }
+            return false;
+        }
+        function isWebView() {
+            var userAgent = window.navigator.userAgent;
+            return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+        }
+        function getAgent(agent) {
+            var ua = window.navigator.userAgent;
+            var tem = void 0;
+            var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident/i.test(M[1])) {
+                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return [ "IE", tem[1] || "" ];
+            }
+            if (M[1] === "Chrome") {
+                tem = ua.match(/\bOPR\/(\d+)/);
+                if (tem !== null) {
+                    return [ "Opera", tem[1] ];
+                }
+            }
+            M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
+            if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
+                M.splice(1, 1, tem[1]);
+            }
+            return M;
+        }
     }, /*!*****************************!*\
   !*** ./src/legacy/index.js ***!
   \*****************************/
@@ -6486,7 +6649,7 @@
         var _components = __webpack_require__(/*! ../components */ 1);
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _eligibility = __webpack_require__(/*! ./eligibility */ 76);
+        var _eligibility = __webpack_require__(/*! ./eligibility */ 78);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6571,6 +6734,9 @@
             env = options.environment;
             if (options.container) {
                 var button = drawButton(options.container);
+                if (!(0, _eligibility.isEligible)()) {
+                    return;
+                }
                 if (options.click) {
                     button.addEventListener("click", function(event) {
                         event.preventDefault();
@@ -6585,6 +6751,9 @@
             }
         }
         function initXO() {
+            if (!(0, _eligibility.isEligible)()) {
+                return;
+            }
             initPayPalCheckout().render();
         }
         function startFlow(token) {
@@ -6618,6 +6787,9 @@
             onDocumentReady(window.paypalCheckoutReady);
         }
         onDocumentReady(function() {
+            if (!(0, _eligibility.isEligible)()) {
+                return;
+            }
             var buttons = document.querySelectorAll("[data-paypal-button]");
             for (var _iterator = Array.prototype.slice.call(buttons), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref3;
@@ -6649,7 +6821,7 @@
     }, /*!***********************************!*\
   !*** ./src/legacy/eligibility.js ***!
   \***********************************/
-    function(module, exports) {
+    function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
@@ -6660,6 +6832,7 @@
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
         exports.isEligible = isEligible;
+        var _lib = __webpack_require__(/*! ../lib */ 75);
         var SUPPORTED_AGENTS = {
             Chrome: 27,
             IE: 9,
@@ -6668,48 +6841,17 @@
             Safari: 5.1,
             Opera: 23
         };
-        function isDevice() {
-            var userAgent = window.navigator.userAgent;
-            if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
-                return true;
-            }
-            return false;
-        }
-        function isWebView() {
-            var userAgent = window.navigator.userAgent;
-            return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
-        }
-        function getAgent(agent) {
-            var ua = window.navigator.userAgent;
-            var tem = void 0;
-            var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-            if (/trident/i.test(M[1])) {
-                tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-                return [ "IE", tem[1] || "" ];
-            }
-            if (M[1] === "Chrome") {
-                tem = ua.match(/\bOPR\/(\d+)/);
-                if (tem !== null) {
-                    return [ "Opera", tem[1] ];
-                }
-            }
-            M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
-            if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
-                M.splice(1, 1, tem[1]);
-            }
-            return M;
-        }
         function isOldIE() {
             return window.navigator.userAgent.match(/MSIE [5678]\./i);
         }
         function isEligible() {
-            var currentAgent = getAgent();
+            var currentAgent = (0, _lib.getAgent)();
             if ((typeof currentAgent === "undefined" ? "undefined" : _typeof(currentAgent)) === "object" && currentAgent.length === 2) {
                 if (parseFloat(currentAgent[1]) < SUPPORTED_AGENTS[currentAgent[0]]) {
                     return false;
                 }
             }
-            return !(isDevice() || isWebView() || isOldIE());
+            return !((0, _lib.isWebView)() || isOldIE());
         }
     }, /*!***********************!*\
   !*** ./src/bridge.js ***!
