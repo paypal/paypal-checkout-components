@@ -75,6 +75,14 @@
         padding: 25px 0;
     }
 
+    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-modal {
+        display: none;
+    }
+
+    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {
+        display: none;
+    }
+
     #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {
         font-size: 15px;
         line-height: 1.35;
@@ -115,7 +123,7 @@
         color: white;
     }
 
-    #{id} .paypal-checkout-lightbox-wrapper.set-width.set-height {
+    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {
         padding: 5px;
         border-radius: 10px;
     }
