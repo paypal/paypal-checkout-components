@@ -168,7 +168,6 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.PROP_DEFER_TO_URL = undefined;
         exports.create = create;
         var _error = __webpack_require__(/*! ./error */ 5);
         Object.keys(_error).forEach(function(key) {
@@ -180,16 +179,25 @@
                 }
             });
         });
-        var _constants = __webpack_require__(/*! ./constants */ 6);
-        Object.defineProperty(exports, "PROP_DEFER_TO_URL", {
-            enumerable: true,
-            get: function get() {
-                return _constants.PROP_DEFER_TO_URL;
-            }
-        });
-        var _src = __webpack_require__(/*! post-robot/src */ 14);
+        var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _component = __webpack_require__(/*! ./component */ 41);
+        var _component = __webpack_require__(/*! ./component */ 34);
+        var _constants = __webpack_require__(/*! ./constants */ 55);
+        var CONSTANTS = _interopRequireWildcard(_constants);
+        function _interopRequireWildcard(obj) {
+            if (obj && obj.__esModule) {
+                return obj;
+            } else {
+                var newObj = {};
+                if (obj != null) {
+                    for (var key in obj) {
+                        if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                    }
+                }
+                newObj["default"] = obj;
+                return newObj;
+            }
+        }
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -198,6 +206,7 @@
         function create(options) {
             return new _component.Component(options);
         }
+        module.exports.CONSTANTS = CONSTANTS;
         module.exports.postRobot = _src2["default"];
         exports["default"] = module.exports;
     }, /*!***********************************!*\
@@ -218,87 +227,559 @@
             this.message = message;
         }
         IntegrationError.prototype = Object.create(Error.prototype);
+    }, /*!***********************************!*\
+  !*** ./~/post-robot/src/index.js ***!
+  \***********************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.Promise = undefined;
+        var _interface = __webpack_require__(/*! ./interface */ 7);
+        Object.keys(_interface).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _interface[key];
+                }
+            });
+        });
+        var _lib = __webpack_require__(/*! ./lib */ 14);
+        Object.defineProperty(exports, "Promise", {
+            enumerable: true,
+            get: function get() {
+                return _lib.Promise;
+            }
+        });
+        var _drivers = __webpack_require__(/*! ./drivers */ 12);
+        var _compat = __webpack_require__(/*! ./compat */ 23);
+        function init() {
+            (0, _compat.registerGlobals)();
+            _lib.util.listen(window, "message", _drivers.messageListener);
+            (0, _lib.initOnReady)();
+        }
+        init();
+        exports["default"] = module.exports;
+    }, /*!*********************************************!*\
+  !*** ./~/post-robot/src/interface/index.js ***!
+  \*********************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.linkUrl = exports.util = exports.openBridge = exports.reset = exports.parent = undefined;
+        var _client = __webpack_require__(/*! ./client */ 8);
+        Object.keys(_client).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _client[key];
+                }
+            });
+        });
+        var _server = __webpack_require__(/*! ./server */ 31);
+        Object.keys(_server).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _server[key];
+                }
+            });
+        });
+        var _proxy = __webpack_require__(/*! ./proxy */ 32);
+        Object.keys(_proxy).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _proxy[key];
+                }
+            });
+        });
+        var _config = __webpack_require__(/*! ./config */ 33);
+        Object.keys(_config).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _config[key];
+                }
+            });
+        });
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
+        Object.defineProperty(exports, "reset", {
+            enumerable: true,
+            get: function get() {
+                return _drivers.resetListeners;
+            }
+        });
+        var _bridge = __webpack_require__(/*! ../compat/bridge */ 24);
+        Object.defineProperty(exports, "openBridge", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.openBridge;
+            }
+        });
+        var _util = __webpack_require__(/*! ../lib/util */ 18);
+        Object.defineProperty(exports, "util", {
+            enumerable: true,
+            get: function get() {
+                return _util.util;
+            }
+        });
+        var _windows = __webpack_require__(/*! ../lib/windows */ 20);
+        Object.defineProperty(exports, "linkUrl", {
+            enumerable: true,
+            get: function get() {
+                return _windows.linkUrl;
+            }
+        });
+        var parent = exports.parent = (0, _windows.getParentWindow)();
+    }, /*!**********************************************!*\
+  !*** ./~/post-robot/src/interface/client.js ***!
+  \**********************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.request = request;
+        exports.send = send;
+        exports.sendToParent = sendToParent;
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
+        var _lib = __webpack_require__(/*! ../lib */ 14);
+        function request(options) {
+            return _lib.promise.nodeify(new _lib.promise.Promise(function(resolve, reject) {
+                if (!options.name) {
+                    throw new Error("Expected options.name");
+                }
+                if (!options.window) {
+                    throw new Error("Expected options.window");
+                }
+                if (_conf.CONFIG.MOCK_MODE) {
+                    options.window = window;
+                } else if (typeof options.window === "string") {
+                    var el = document.getElementById(options.window);
+                    if (!el) {
+                        throw new Error("Expected options.window " + options.window + " to be a valid element id");
+                    }
+                    if (el.tagName.toLowerCase() !== "iframe") {
+                        throw new Error("Expected options.window " + options.window + " to be an iframe");
+                    }
+                    options.window = el.contentWindow;
+                    if (!options.window) {
+                        throw new Error("Expected options.window");
+                    }
+                }
+                var hash = options.name + "_" + _lib.util.uniqueID();
+                _drivers.listeners.response[hash] = options;
+                if ((0, _lib.isWindowClosed)(options.window)) {
+                    throw new Error("Target window is closed");
+                }
+                var hasResult = false;
+                options.respond = function(err, result) {
+                    if (!err) {
+                        hasResult = true;
+                    }
+                    return err ? reject(err) : resolve(result);
+                };
+                return _lib.promise.run(function() {
+                    if ((0, _lib.getParentWindow)(options.window) === window) {
+                        return (0, _lib.onWindowReady)(options.window);
+                    }
+                }).then(function() {
+                    (0, _drivers.sendMessage)(options.window, {
+                        hash: hash,
+                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
+                        name: options.name,
+                        data: options.data,
+                        fireAndForget: options.fireAndForget
+                    }, options.domain || "*")["catch"](reject);
+                    if (options.fireAndForget) {
+                        return resolve();
+                    }
+                    var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
+                        if (options.ack || (0, _lib.isWindowClosed)(options.window)) {
+                            return ackTimeout.cancel();
+                        }
+                        if (!remaining) {
+                            return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
+                        }
+                    });
+                    if (options.timeout) {
+                        (function() {
+                            var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
+                                if (hasResult || (0, _lib.isWindowClosed)(options.window)) {
+                                    return timeout.cancel();
+                                }
+                                if (!remaining) {
+                                    return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
+                                }
+                            }, options.timeout);
+                        })();
+                    }
+                })["catch"](reject);
+            }), options.callback);
+        }
+        function send(window, name, data, options, callback) {
+            if (!callback) {
+                if (!options && data instanceof Function) {
+                    callback = data;
+                    options = {};
+                    data = {};
+                } else if (options instanceof Function) {
+                    callback = options;
+                    options = {};
+                }
+            }
+            options = options || {};
+            options.window = window;
+            options.name = name;
+            options.data = data;
+            options.callback = callback;
+            return request(options);
+        }
+        function sendToParent(name, data, options, callback) {
+            var win = (0, _lib.getParentWindow)();
+            if (!window) {
+                throw new Error("Window does not have a parent");
+            }
+            return send(win, name, data, options, callback);
+        }
+    }, /*!****************************************!*\
+  !*** ./~/post-robot/src/conf/index.js ***!
+  \****************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _config = __webpack_require__(/*! ./config */ 10);
+        Object.keys(_config).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _config[key];
+                }
+            });
+        });
+        var _constants = __webpack_require__(/*! ./constants */ 11);
+        Object.keys(_constants).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _constants[key];
+                }
+            });
+        });
+    }, /*!*****************************************!*\
+  !*** ./~/post-robot/src/conf/config.js ***!
+  \*****************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.CONFIG = undefined;
+        var _ALLOWED_POST_MESSAGE;
+        var _constants = __webpack_require__(/*! ./constants */ 11);
+        function _defineProperty(obj, key, value) {
+            if (key in obj) {
+                Object.defineProperty(obj, key, {
+                    value: value,
+                    enumerable: true,
+                    configurable: true,
+                    writable: true
+                });
+            } else {
+                obj[key] = value;
+            }
+            return obj;
+        }
+        var CONFIG = exports.CONFIG = {
+            ALLOW_POSTMESSAGE_POPUP: false,
+            LOG_LEVEL: "info",
+            ACK_TIMEOUT: 500,
+            LOG_TO_PAGE: false,
+            MOCK_MODE: false,
+            ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.GLOBAL_METHOD, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, true), 
+            _ALLOWED_POST_MESSAGE)
+        };
+    }, /*!********************************************!*\
+  !*** ./~/post-robot/src/conf/constants.js ***!
+  \********************************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var CONSTANTS = exports.CONSTANTS = {
+            POST_MESSAGE_TYPE: {
+                REQUEST: "postrobot_message_request",
+                RESPONSE: "postrobot_message_response",
+                ACK: "postrobot_message_ack"
+            },
+            POST_MESSAGE_ACK: {
+                SUCCESS: "success",
+                ERROR: "error"
+            },
+            POST_MESSAGE_NAMES: {
+                METHOD: "postrobot_method",
+                READY: "postrobot_ready"
+            },
+            WINDOW_TYPES: {
+                FULLPAGE: "fullpage",
+                POPUP: "popup",
+                IFRAME: "iframe"
+            },
+            WINDOW_PROPS: {
+                POSTROBOT: "__postRobot__"
+            },
+            SERIALIZATION_TYPES: {
+                METHOD: "postrobot_method"
+            },
+            SEND_STRATEGIES: {
+                POST_MESSAGE: "postrobot_post_message",
+                GLOBAL_METHOD: "postrobot_global_method",
+                FOREIGN_BRIDGE: "postrobot_foreign_bridge",
+                LOCAL_BRIDGE: "postrobot_local_bridge"
+            }
+        };
+        var POST_MESSAGE_NAMES_LIST = exports.POST_MESSAGE_NAMES_LIST = Object.keys(CONSTANTS.POST_MESSAGE_NAMES).map(function(key) {
+            return CONSTANTS.POST_MESSAGE_NAMES[key];
+        });
+    }, /*!*******************************************!*\
+  !*** ./~/post-robot/src/drivers/index.js ***!
+  \*******************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _receive = __webpack_require__(/*! ./receive */ 13);
+        Object.keys(_receive).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _receive[key];
+                }
+            });
+        });
+        var _send = __webpack_require__(/*! ./send */ 27);
+        Object.keys(_send).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _send[key];
+                }
+            });
+        });
+        var _listeners = __webpack_require__(/*! ./listeners */ 29);
+        Object.keys(_listeners).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _listeners[key];
+                }
+            });
+        });
+    }, /*!***************************************************!*\
+  !*** ./~/post-robot/src/drivers/receive/index.js ***!
+  \***************************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.receiveMessage = receiveMessage;
+        exports.messageListener = messageListener;
+        var _conf = __webpack_require__(/*! ../../conf */ 9);
+        var _lib = __webpack_require__(/*! ../../lib */ 14);
+        var _compat = __webpack_require__(/*! ../../compat */ 23);
+        var _send = __webpack_require__(/*! ../send */ 27);
+        var _listeners = __webpack_require__(/*! ../listeners */ 29);
+        var _types = __webpack_require__(/*! ./types */ 30);
+        var receivedMessages = [];
+        function parseMessage(message) {
+            try {
+                message = JSON.parse(message);
+            } catch (err) {
+                return;
+            }
+            if (!message.type) {
+                return;
+            }
+            if (!_types.RECEIVE_MESSAGE_TYPES[message.type]) {
+                return;
+            }
+            return message;
+        }
+        function getWindow(hint, windowID) {
+            var windowTargets = {
+                "window.parent": function windowParent(id) {
+                    return window.parent;
+                },
+                "window.opener": function windowOpener(id) {
+                    return (0, _lib.getOpener)(window);
+                },
+                "window.parent.opener": function windowParentOpener(id) {
+                    return (0, _lib.getOpener)(window.parent);
+                },
+                "window.opener.parent": function windowOpenerParent(id) {
+                    return (0, _lib.getOpener)(window).parent;
+                }
+            };
+            var win = void 0;
+            try {
+                win = windowTargets[hint](windowID);
+            } catch (err) {
+                throw new Error("Can not get " + hint + ": " + err.message);
+            }
+            if (!win) {
+                throw new Error("Can not get " + hint + ": not available");
+            }
+            return win;
+        }
+        function getProxy(source, message) {
+            if (_conf.CONFIG.MOCK_MODE) {
+                return;
+            }
+            if (!message) {
+                return;
+            }
+            var listener = (0, _listeners.getRequestListener)(message.name, source);
+            if (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST && message.name && listener && listener.proxy === false) {
+                return;
+            }
+            var isResponseOrAck = (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK) && _listeners.listeners.response[message.hash];
+            if (!isResponseOrAck) {
+                for (var i = 0; i < _listeners.listeners.proxies.length; i++) {
+                    var proxy = _listeners.listeners.proxies[i];
+                    if (source === proxy.from) {
+                        return proxy.to;
+                    }
+                }
+            }
+            if (message.targetHint) {
+                var win = getWindow(message.targetHint, message.target);
+                delete message.targetHint;
+                return win;
+            }
+            if (message.target && message.target !== (0, _lib.getWindowId)(window)) {
+                var _win = (0, _lib.getWindowById)(message.target);
+                if (!_win) {
+                    throw new Error("Unable to find window to proxy message to: " + message.target);
+                }
+                return _win;
+            }
+        }
+        function receiveMessage(event) {
+            try {
+                event.source;
+            } catch (err) {
+                return;
+            }
+            var source = event.source;
+            var origin = event.origin;
+            var data = event.data;
+            var message = parseMessage(data);
+            if (!message) {
+                return;
+            }
+            if (receivedMessages.indexOf(message.id) === -1) {
+                receivedMessages.push(message.id);
+            } else {
+                return;
+            }
+            (0, _lib.registerWindow)(message.source, source);
+            var proxyWindow = void 0;
+            try {
+                proxyWindow = getProxy(source, message);
+            } catch (err) {
+                return _lib.log.debug(err.message);
+            }
+            var level = void 0;
+            if (_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || proxyWindow) {
+                level = "debug";
+            } else if (message.ack === "error") {
+                level = "error";
+            } else {
+                level = "info";
+            }
+            _lib.log.logLevel(level, [ proxyWindow ? "#receiveproxy" : "#receive", message.type, message.name, message ]);
+            if (proxyWindow) {
+                if ((0, _lib.isWindowClosed)(proxyWindow)) {
+                    return _lib.log.debug("Target window is closed: " + message.target + " - can not proxy " + message.type + " " + message.name);
+                }
+                delete message.target;
+                return (0, _send.sendMessage)(proxyWindow, message, message.domain || "*", true);
+            }
+            if (message.originalSource !== message.source) {
+                if (message.sourceHint) {
+                    source = getWindow(message.sourceHint, message.originalSource);
+                    delete message.sourceHint;
+                } else {
+                    var originalSource = (0, _lib.getWindowById)(message.originalSource);
+                    if (originalSource) {
+                        source = originalSource;
+                    } else {
+                        throw new Error("Can not find original message source: " + message.originalSource);
+                    }
+                }
+                (0, _lib.registerWindow)(message.originalSource, source);
+            }
+            if ((0, _lib.isWindowClosed)(source)) {
+                return _lib.log.debug("Source window is closed: " + message.originalSource + " - can not send " + message.type + " " + message.name);
+            }
+            if (_conf.CONFIG.MOCK_MODE) {
+                return _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+            }
+            if (message.data) {
+                message.data = (0, _lib.deserializeMethods)(source, message.data);
+            }
+            _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+        }
+        function messageListener(event) {
+            try {
+                event.source;
+            } catch (err) {
+                return;
+            }
+            event = {
+                source: event.source || event.sourceElement,
+                origin: event.origin || event.originalEvent.origin,
+                data: event.data
+            };
+            try {
+                (0, _compat.emulateIERestrictions)(event.source, window);
+            } catch (err) {
+                return;
+            }
+            receiveMessage(event);
+        }
     }, /*!***************************************!*\
-  !*** ./~/xcomponent/src/constants.js ***!
+  !*** ./~/post-robot/src/lib/index.js ***!
   \***************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.PROP_DEFER_TO_URL = exports.MAX_Z_INDEX = exports.CONTEXT_TYPES_LIST = exports.EVENT_NAMES = exports.CLASS_NAMES = exports.CONTEXT_TYPES = exports.PROP_TYPES_LIST = exports.PROP_TYPES = exports.POST_MESSAGE = exports.XCOMPONENT = undefined;
-        var _lib = __webpack_require__(/*! ./lib */ 7);
-        var XCOMPONENT = exports.XCOMPONENT = "xcomponent";
-        var POST_MESSAGE = exports.POST_MESSAGE = {
-            INIT: XCOMPONENT + "_init",
-            PROPS: XCOMPONENT + "_props",
-            PROP_CALLBACK: XCOMPONENT + "_prop_callback",
-            CLOSE: XCOMPONENT + "_close",
-            REDIRECT: XCOMPONENT + "_redirect",
-            RESIZE: XCOMPONENT + "_resize",
-            RENDER: XCOMPONENT + "_render",
-            ERROR: XCOMPONENT + "_error",
-            HIDE: XCOMPONENT + "_hide"
-        };
-        var PROP_TYPES = exports.PROP_TYPES = {
-            STRING: "string",
-            OBJECT: "object",
-            FUNCTION: "function",
-            BOOLEAN: "boolean",
-            NUMBER: "number"
-        };
-        var PROP_TYPES_LIST = exports.PROP_TYPES_LIST = (0, _lib.values)(PROP_TYPES);
-        var CONTEXT_TYPES = exports.CONTEXT_TYPES = {
-            IFRAME: "iframe",
-            LIGHTBOX: "lightbox",
-            POPUP: "popup"
-        };
-        var CLASS_NAMES = exports.CLASS_NAMES = {
-            XCOMPONENT: "" + XCOMPONENT,
-            COMPONENT: XCOMPONENT + "-component",
-            CLOSE: XCOMPONENT + "-close",
-            FOCUS: XCOMPONENT + "-focus",
-            ELEMENT: XCOMPONENT + "-element",
-            IFRAME: XCOMPONENT + "-iframe",
-            LIGHTBOX: XCOMPONENT + "-lightbox",
-            POPUP: XCOMPONENT + "-popup",
-            CLOSING: XCOMPONENT + "-closing"
-        };
-        var EVENT_NAMES = exports.EVENT_NAMES = {
-            CLICK: "click"
-        };
-        var CONTEXT_TYPES_LIST = exports.CONTEXT_TYPES_LIST = (0, _lib.values)(CONTEXT_TYPES);
-        var MAX_Z_INDEX = exports.MAX_Z_INDEX = 2147483647;
-        var PROP_DEFER_TO_URL = exports.PROP_DEFER_TO_URL = "xcomponent_prop_defer_to_url";
-    }, /*!***************************************!*\
-  !*** ./~/xcomponent/src/lib/index.js ***!
-  \***************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _dom = __webpack_require__(/*! ./dom */ 8);
-        Object.keys(_dom).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _dom[key];
-                }
-            });
-        });
-        var _fn = __webpack_require__(/*! ./fn */ 9);
-        Object.keys(_fn).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _fn[key];
-                }
-            });
-        });
-        var _promise = __webpack_require__(/*! ./promise */ 12);
+        var _promise = __webpack_require__(/*! ./promise */ 15);
         Object.keys(_promise).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -308,7 +789,7 @@
                 }
             });
         });
-        var _util = __webpack_require__(/*! ./util */ 10);
+        var _util = __webpack_require__(/*! ./util */ 18);
         Object.keys(_util).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -318,509 +799,130 @@
                 }
             });
         });
-    }, /*!*************************************!*\
-  !*** ./~/xcomponent/src/lib/dom.js ***!
-  \*************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
+        var _log = __webpack_require__(/*! ./log */ 19);
+        Object.keys(_log).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _log[key];
+                }
+            });
         });
-        exports.getElement = getElement;
-        exports.popup = popup;
-        exports.iframe = iframe;
-        exports.isWindowClosed = isWindowClosed;
-        exports.onCloseWindow = onCloseWindow;
-        exports.addEventListener = addEventListener;
-        exports.getParentWindow = getParentWindow;
-        exports.getParentNode = getParentNode;
-        exports.scanForJavascript = scanForJavascript;
-        exports.createElement = createElement;
-        exports.hijackButton = hijackButton;
-        exports.addEventToClass = addEventToClass;
-        exports.template = template;
-        exports.getUrlParams = getUrlParams;
-        exports.getUrlParam = getUrlParam;
-        var _fn = __webpack_require__(/*! ./fn */ 9);
-        var _util = __webpack_require__(/*! ./util */ 10);
-        function getElement(id) {
-            if (id instanceof window.Element) {
-                return id;
-            }
-            if (typeof id === "string") {
-                var element = document.getElementById(id);
-                if (element) {
-                    return element;
+        var _windows = __webpack_require__(/*! ./windows */ 20);
+        Object.keys(_windows).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _windows[key];
                 }
-                if (document.querySelector) {
-                    return document.querySelector(id);
-                }
-            }
-        }
-        function popup(url, options) {
-            var params = Object.keys(options).map(function(key) {
-                if (options[key]) {
-                    return key + "=" + options[key];
-                }
-            }).filter(Boolean).join(",");
-            var win = window.open(url, options.name, params, true);
-            return win;
-        }
-        function iframe(container, url, options) {
-            container = getElement(container);
-            var frame = document.createElement("iframe");
-            for (var _iterator = Object.keys(options), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
-                }
-                var key = _ref;
-                frame[key] = options[key];
-            }
-            frame.frameBorder = "0";
-            frame.allowTransparency = "true";
-            container.appendChild(frame);
-            return frame;
-        }
-        function isWindowClosed(win) {
-            try {
-                return !win || win.closed || typeof win.closed === "undefined" || (0, _util.safeGet)(win, "mockclosed");
-            } catch (err) {
-                return true;
-            }
-        }
-        function onCloseWindow(win, callback) {
-            callback = (0, _fn.once)(callback);
-            var isFunction = win instanceof Function;
-            var interval = void 0;
-            var checkWindowClosed = function checkWindowClosed() {
-                var myWin = void 0;
-                try {
-                    myWin = isFunction ? win() : win;
-                } catch (err) {}
-                if (isWindowClosed(myWin)) {
-                    clearInterval(interval);
-                    return callback();
-                }
-            };
-            interval = (0, _util.safeInterval)(checkWindowClosed, 50);
-            checkWindowClosed();
-            var close = win.close;
-            try {
-                win.close = function() {
-                    close.apply(this, arguments);
-                    checkWindowClosed();
-                };
-            } catch (err) {}
-            return {
-                cancel: function cancel() {
-                    interval.cancel();
-                    callback = _fn.noop;
-                }
-            };
-        }
-        function addEventListener(obj, event, handler) {
-            obj.addEventListener(event, handler);
-            return {
-                cancel: function cancel() {
-                    obj.removeEventListener(event, handler);
-                }
-            };
-        }
-        function getParentWindow(win) {
-            win = win || window;
-            if (win.opener) {
-                return win.opener;
-            }
-            if (win.parent && win.parent !== win) {
-                return win.parent;
-            }
-        }
-        function getParentNode(el, tag) {
-            tag = tag.toLowerCase();
-            while (el.parentNode) {
-                el = el.parentNode;
-                if (el.tagName.toLowerCase() === tag) {
-                    return el;
-                }
-            }
-        }
-        function scanForJavascript(str) {
-            if (!str) {
-                return str;
-            }
-            if (str.match(/<script|on\w+\s*=|javascript:|expression\s*\(|eval\(|new\s*Function/)) {
-                throw new Error("HTML contains potential javascript: " + str);
-            }
-            return str;
-        }
-        function createElement() {
-            var tag = arguments.length <= 0 || arguments[0] === undefined ? "div" : arguments[0];
-            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-            var container = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-            var element = document.createElement(tag);
-            if (options.style) {
-                (0, _util.extend)(element.style, options.style);
-            }
-            if (options.html) {
-                element.innerHTML = options.html;
-            }
-            if (options["class"]) {
-                element.className = options["class"].join(" ");
-            }
-            if (options.attributes) {
-                for (var _iterator2 = Object.keys(options.attributes), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        _i2 = _iterator2.next();
-                        if (_i2.done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var key = _ref2;
-                    element.setAttribute(key, options.attributes[key]);
-                }
-            }
-            if (options.styleSheet) {
-                if (element.styleSheet) {
-                    element.styleSheet.cssText = options.styleSheet;
-                } else {
-                    element.appendChild(document.createTextNode(options.styleSheet));
-                }
-            }
-            if (container) {
-                container.appendChild(element);
-            }
-            return element;
-        }
-        function hijackButton(element, callback) {
-            var el = getElement(element);
-            if (!el) {
-                throw new Error("Can not find element: " + element);
-            }
-            var targetElement = el.form ? el.form : el;
-            el.addEventListener("click", function(event) {
-                callback(event, targetElement);
             });
-        }
-        function addEventToClass(element, className, eventName, handler) {
-            for (var _iterator3 = Array.prototype.slice.call(element.getElementsByClassName(className)), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
-                }
-                var el = _ref3;
-                el.addEventListener(eventName, function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    handler();
-                });
-            }
-        }
-        function template(html, context) {
-            return html.replace(/\{([\w_\.]+)\}/g, function(variable) {
-                return (0, _util.get)(context, variable.slice(1, variable.length - 1), "");
-            });
-        }
-        function getUrlParams(queryString) {
-            queryString = queryString || window.location.search.slice(1);
-            var params = {};
-            if (!queryString) {
-                return params;
-            }
-            for (var _iterator4 = queryString.split("&"), _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i4++];
-                } else {
-                    _i4 = _iterator4.next();
-                    if (_i4.done) break;
-                    _ref4 = _i4.value;
-                }
-                var pair = _ref4;
-                pair = pair.split("=");
-                if (pair[0] && pair[1]) {
-                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-                }
-            }
-            return params;
-        }
-        function getUrlParam(name) {
-            return getUrlParams()[name];
-        }
-    }, /*!************************************!*\
-  !*** ./~/xcomponent/src/lib/fn.js ***!
-  \************************************/
-    function(module, exports) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
         });
-        exports.noop = noop;
-        exports.once = once;
-        exports.memoize = memoize;
-        function noop() {}
-        function once(method) {
-            var called = false;
-            return function() {
-                if (!called) {
-                    called = true;
-                    return method.apply(this, arguments);
+        var _methods = __webpack_require__(/*! ./methods */ 21);
+        Object.keys(_methods).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _methods[key];
                 }
-            };
-        }
-        function memoize(method) {
-            var results = {};
-            return function() {
-                var args = void 0;
-                try {
-                    args = JSON.stringify(arguments);
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-                if (!results.hasOwnProperty(args)) {
-                    results[args] = method.apply(this, arguments);
-                }
-                return results[args];
-            };
-        }
-    }, /*!**************************************!*\
-  !*** ./~/xcomponent/src/lib/util.js ***!
-  \**************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
+            });
         });
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-        };
-        exports.urlEncode = urlEncode;
-        exports.camelToDasherize = camelToDasherize;
-        exports.dasherizeToCamel = dasherizeToCamel;
-        exports.extend = extend;
-        exports.values = values;
-        exports.uniqueID = uniqueID;
-        exports.b64encode = b64encode;
-        exports.b64decode = b64decode;
-        exports.stringifyWithFunctions = stringifyWithFunctions;
-        exports.safeGet = safeGet;
-        exports.capitalizeFirstLetter = capitalizeFirstLetter;
-        exports.get = get;
-        exports.safeInterval = safeInterval;
-        exports.safeTimeout = safeTimeout;
-        var _Base = __webpack_require__(/*! Base64 */ 11);
-        var _Base2 = _interopRequireDefault(_Base);
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {
-                "default": obj
-            };
-        }
-        function urlEncode(str) {
-            return str.replace(/\?/g, "%3F").replace(/\&/g, "%26");
-        }
-        function camelToDasherize(string) {
-            return string.replace(/([A-Z])/g, function(g) {
-                return "-" + g.toLowerCase();
+        var _tick = __webpack_require__(/*! ./tick */ 17);
+        Object.keys(_tick).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _tick[key];
+                }
             });
-        }
-        function dasherizeToCamel(string) {
-            return string.replace(/-([a-z])/g, function(g) {
-                return g[1].toUpperCase();
+        });
+        var _ready = __webpack_require__(/*! ./ready */ 22);
+        Object.keys(_ready).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _ready[key];
+                }
             });
-        }
-        function extend(obj, source) {
-            if (!source) {
-                return obj;
-            }
-            for (var key in source) {
-                if (source.hasOwnProperty(key)) {
-                    obj[key] = source[key];
-                }
-            }
-            return obj;
-        }
-        function values(obj) {
-            var results = [];
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    results.push(obj[key]);
-                }
-            }
-            return results;
-        }
-        function uniqueID() {
-            var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, function() {
-                return chars.charAt(Math.floor(Math.random() * chars.length));
-            });
-        }
-        function b64encode(str) {
-            return (window.btoa ? window.btoa(str) : _Base2["default"].btoa(str)).replace(/[=]/g, "_");
-        }
-        function b64decode(str) {
-            str = str.replace(/[_]/g, "=");
-            return window.atob ? window.atob(str) : _Base2["default"].atob(str);
-        }
-        function stringifyWithFunctions(obj) {
-            return JSON.stringify(obj, function(key, val) {
-                if (typeof val === "function") {
-                    return val.toString();
-                }
-                return val;
-            });
-        }
-        function safeGet(obj, prop) {
-            var result = void 0;
-            try {
-                result = obj[prop];
-            } catch (err) {}
-            return result;
-        }
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-        }
-        function get(item, path, def) {
-            if (!path) {
-                return def;
-            }
-            path = path.split(".");
-            for (var i = 0; i < path.length; i++) {
-                if ((typeof item === "undefined" ? "undefined" : _typeof(item)) === "object" && item !== null) {
-                    item = item[path[i]];
-                } else {
-                    return def;
-                }
-            }
-            return item === undefined ? def : item;
-        }
-        function safeInterval(method, time) {
-            var timeout = void 0;
-            function runInterval() {
-                timeout = setTimeout(runInterval, time);
-                method.call();
-            }
-            timeout = setTimeout(runInterval, time);
-            return {
-                cancel: function cancel() {
-                    clearTimeout(timeout);
-                }
-            };
-        }
-        function safeTimeout(method, time) {
-            var interval = safeInterval(function() {
-                time -= 100;
-                if (time <= 0) {
-                    interval.cancel();
-                    method();
-                }
-            }, 100);
-        }
+        });
     }, /*!*****************************************!*\
-  !*** ./~/xcomponent/~/Base64/base64.js ***!
-  \*****************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        (function() {
-            var object = true ? exports : self;
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-            function InvalidCharacterError(message) {
-                this.message = message;
-            }
-            InvalidCharacterError.prototype = new Error();
-            InvalidCharacterError.prototype.name = "InvalidCharacterError";
-            object.btoa || (object.btoa = function(input) {
-                var str = String(input);
-                for (var block, charCode, idx = 0, map = chars, output = ""; str.charAt(idx | 0) || (map = "=", 
-                idx % 1); output += map.charAt(63 & block >> 8 - idx % 1 * 8)) {
-                    charCode = str.charCodeAt(idx += 3 / 4);
-                    if (charCode > 255) {
-                        throw new InvalidCharacterError("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
-                    }
-                    block = block << 8 | charCode;
-                }
-                return output;
-            });
-            object.atob || (object.atob = function(input) {
-                var str = String(input).replace(/=+$/, "");
-                if (str.length % 4 == 1) {
-                    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
-                }
-                for (var bc = 0, bs, buffer, idx = 0, output = ""; buffer = str.charAt(idx++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, 
-                bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
-                    buffer = chars.indexOf(buffer);
-                }
-                return output;
-            });
-        })();
-    }, /*!*****************************************!*\
-  !*** ./~/xcomponent/src/lib/promise.js ***!
+  !*** ./~/post-robot/src/lib/promise.js ***!
   \*****************************************/
     function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.denodeify = denodeify;
-        exports.promisify = promisify;
-        exports.getter = getter;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        function denodeify(method) {
-            return function() {
-                var self = this;
-                var args = Array.prototype.slice.call(arguments);
-                if (args.length >= method.length) {
-                    return _promise.SyncPromise.resolve(method.apply(self, args));
-                }
-                return new _promise.SyncPromise(function(resolve, reject) {
-                    args.push(function(err, result) {
-                        if (err && !(err instanceof Error)) {
-                            throw new Error("Passed non-Error object in callback: [ " + err + " ] -- callbacks should either be called with callback(new Error(...)) or callback(null, result).");
-                        }
-                        return err ? reject(err) : resolve(result);
+        exports.promise = exports.Promise = undefined;
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        var _tick = __webpack_require__(/*! ./tick */ 17);
+        var Promise = exports.Promise = _promise.SyncPromise;
+        var promise = exports.promise = {
+            Promise: Promise,
+            run: function run(method) {
+                return Promise.resolve().then(method);
+            },
+            nextTick: function nextTick(method) {
+                return new Promise(function(resolve, reject) {
+                    (0, _tick.nextTick)(function() {
+                        return promise.run(method).then(resolve, reject);
                     });
-                    return method.apply(self, args);
                 });
-            };
-        }
-        function promisify(method) {
-            var prom = _promise.SyncPromise.resolve();
-            return function() {
-                var _this = this, _arguments = arguments;
-                return prom.then(function() {
-                    return method.apply(_this, _arguments);
+            },
+            method: function method(_method) {
+                return function promiseWrapper() {
+                    var _this = this, _arguments = arguments;
+                    return Promise.resolve().then(function() {
+                        return _method.apply(_this, _arguments);
+                    });
+                };
+            },
+            nodeify: function nodeify(prom, callback) {
+                if (!callback) {
+                    return prom;
+                }
+                prom.then(function(result) {
+                    callback(null, result);
+                }, function(err) {
+                    callback(err);
                 });
-            };
-        }
-        function getter(method) {
-            return function() {
-                var _this2 = this;
-                return new _promise.SyncPromise(function(resolve, reject) {
-                    var result = method.call(_this2, resolve, reject);
-                    if (result && result.then instanceof Function) {
-                        return result.then(resolve, reject);
+            },
+            deNodeify: function deNodeify(method) {
+                for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                    args[_key - 1] = arguments[_key];
+                }
+                return new Promise(function(resolve, reject) {
+                    try {
+                        if (args.length < method.length) {
+                            return method.apply(undefined, args.concat([ function(err, result) {
+                                return err ? reject(err) : resolve(result);
+                            } ]));
+                        }
+                        return promise.run(function() {
+                            return method.apply(undefined, args);
+                        }).then(resolve, reject);
+                    } catch (err) {
+                        return reject(err);
                     }
-                    if (result !== undefined) {
-                        return resolve(result);
-                    }
                 });
-            };
-        }
+            },
+            map: function map(items, method) {
+                var results = [];
+                var _loop = function _loop(i) {
+                    results.push(promise.run(function() {
+                        return method(items[i]);
+                    }));
+                };
+                for (var i = 0; i < items.length; i++) {
+                    _loop(i);
+                }
+                return Promise.all(results);
+            }
+        };
     }, /*!*********************************************!*\
   !*** ./~/sync-browser-mocks/src/promise.js ***!
   \*********************************************/
@@ -1036,696 +1138,6 @@
         function patchPromise() {
             window.Promise = SyncPromise;
         }
-    }, /*!***********************************!*\
-  !*** ./~/post-robot/src/index.js ***!
-  \***********************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.Promise = undefined;
-        var _interface = __webpack_require__(/*! ./interface */ 15);
-        Object.keys(_interface).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _interface[key];
-                }
-            });
-        });
-        var _lib = __webpack_require__(/*! ./lib */ 22);
-        Object.defineProperty(exports, "Promise", {
-            enumerable: true,
-            get: function get() {
-                return _lib.Promise;
-            }
-        });
-        var _drivers = __webpack_require__(/*! ./drivers */ 20);
-        var _compat = __webpack_require__(/*! ./compat */ 30);
-        function init() {
-            (0, _compat.registerGlobals)();
-            _lib.util.listen(window, "message", _drivers.messageListener);
-            (0, _lib.initOnReady)();
-        }
-        init();
-        exports["default"] = module.exports;
-    }, /*!*********************************************!*\
-  !*** ./~/post-robot/src/interface/index.js ***!
-  \*********************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.util = exports.openBridge = exports.reset = exports.parent = undefined;
-        var _client = __webpack_require__(/*! ./client */ 16);
-        Object.keys(_client).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _client[key];
-                }
-            });
-        });
-        var _server = __webpack_require__(/*! ./server */ 38);
-        Object.keys(_server).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _server[key];
-                }
-            });
-        });
-        var _proxy = __webpack_require__(/*! ./proxy */ 39);
-        Object.keys(_proxy).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _proxy[key];
-                }
-            });
-        });
-        var _config = __webpack_require__(/*! ./config */ 40);
-        Object.keys(_config).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _config[key];
-                }
-            });
-        });
-        var _drivers = __webpack_require__(/*! ../drivers */ 20);
-        Object.defineProperty(exports, "reset", {
-            enumerable: true,
-            get: function get() {
-                return _drivers.resetListeners;
-            }
-        });
-        var _bridge = __webpack_require__(/*! ../compat/bridge */ 31);
-        Object.defineProperty(exports, "openBridge", {
-            enumerable: true,
-            get: function get() {
-                return _bridge.openBridge;
-            }
-        });
-        var _util = __webpack_require__(/*! ../lib/util */ 25);
-        Object.defineProperty(exports, "util", {
-            enumerable: true,
-            get: function get() {
-                return _util.util;
-            }
-        });
-        var _windows = __webpack_require__(/*! ../lib/windows */ 27);
-        var parent = exports.parent = (0, _windows.getParentWindow)();
-    }, /*!**********************************************!*\
-  !*** ./~/post-robot/src/interface/client.js ***!
-  \**********************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.request = request;
-        exports.send = send;
-        exports.sendToParent = sendToParent;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _drivers = __webpack_require__(/*! ../drivers */ 20);
-        var _lib = __webpack_require__(/*! ../lib */ 22);
-        function request(options) {
-            return _lib.promise.nodeify(new _lib.promise.Promise(function(resolve, reject) {
-                if (!options.name) {
-                    throw new Error("Expected options.name");
-                }
-                if (!options.window) {
-                    throw new Error("Expected options.window");
-                }
-                if (_conf.CONFIG.MOCK_MODE) {
-                    options.window = window;
-                } else if (typeof options.window === "string") {
-                    var el = document.getElementById(options.window);
-                    if (!el) {
-                        throw new Error("Expected options.window " + options.window + " to be a valid element id");
-                    }
-                    if (el.tagName.toLowerCase() !== "iframe") {
-                        throw new Error("Expected options.window " + options.window + " to be an iframe");
-                    }
-                    options.window = el.contentWindow;
-                    if (!options.window) {
-                        throw new Error("Expected options.window");
-                    }
-                }
-                var hash = options.name + "_" + _lib.util.uniqueID();
-                _drivers.listeners.response[hash] = options;
-                if ((0, _lib.isWindowClosed)(options.window)) {
-                    throw new Error("Target window is closed");
-                }
-                var hasResult = false;
-                options.respond = function(err, result) {
-                    if (!err) {
-                        hasResult = true;
-                    }
-                    return err ? reject(err) : resolve(result);
-                };
-                return _lib.promise.run(function() {
-                    if ((0, _lib.getParentWindow)(options.window) === window) {
-                        return (0, _lib.onWindowReady)(options.window);
-                    }
-                }).then(function() {
-                    (0, _drivers.sendMessage)(options.window, {
-                        hash: hash,
-                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST,
-                        name: options.name,
-                        data: options.data,
-                        fireAndForget: options.fireAndForget
-                    }, options.domain || "*")["catch"](reject);
-                    if (options.fireAndForget) {
-                        return resolve();
-                    }
-                    var ackTimeout = _lib.util.intervalTimeout(_conf.CONFIG.ACK_TIMEOUT, 100, function(remaining) {
-                        if (options.ack || (0, _lib.isWindowClosed)(options.window)) {
-                            return ackTimeout.cancel();
-                        }
-                        if (!remaining) {
-                            return reject(new Error("No ack for postMessage " + options.name + " in " + _conf.CONFIG.ACK_TIMEOUT + "ms"));
-                        }
-                    });
-                    if (options.timeout) {
-                        (function() {
-                            var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
-                                if (hasResult || (0, _lib.isWindowClosed)(options.window)) {
-                                    return timeout.cancel();
-                                }
-                                if (!remaining) {
-                                    return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
-                                }
-                            }, options.timeout);
-                        })();
-                    }
-                })["catch"](reject);
-            }), options.callback);
-        }
-        function send(window, name, data, options, callback) {
-            if (!callback) {
-                if (!options && data instanceof Function) {
-                    callback = data;
-                    options = {};
-                    data = {};
-                } else if (options instanceof Function) {
-                    callback = options;
-                    options = {};
-                }
-            }
-            options = options || {};
-            options.window = window;
-            options.name = name;
-            options.data = data;
-            options.callback = callback;
-            return request(options);
-        }
-        function sendToParent(name, data, options, callback) {
-            var win = (0, _lib.getParentWindow)();
-            if (!window) {
-                throw new Error("Window does not have a parent");
-            }
-            return send(win, name, data, options, callback);
-        }
-    }, /*!****************************************!*\
-  !*** ./~/post-robot/src/conf/index.js ***!
-  \****************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _config = __webpack_require__(/*! ./config */ 18);
-        Object.keys(_config).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _config[key];
-                }
-            });
-        });
-        var _constants = __webpack_require__(/*! ./constants */ 19);
-        Object.keys(_constants).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _constants[key];
-                }
-            });
-        });
-    }, /*!*****************************************!*\
-  !*** ./~/post-robot/src/conf/config.js ***!
-  \*****************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.CONFIG = undefined;
-        var _ALLOWED_POST_MESSAGE;
-        var _constants = __webpack_require__(/*! ./constants */ 19);
-        function _defineProperty(obj, key, value) {
-            if (key in obj) {
-                Object.defineProperty(obj, key, {
-                    value: value,
-                    enumerable: true,
-                    configurable: true,
-                    writable: true
-                });
-            } else {
-                obj[key] = value;
-            }
-            return obj;
-        }
-        var CONFIG = exports.CONFIG = {
-            ALLOW_POSTMESSAGE_POPUP: false,
-            LOG_LEVEL: "info",
-            ACK_TIMEOUT: 500,
-            LOG_TO_PAGE: false,
-            MOCK_MODE: false,
-            ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.GLOBAL_METHOD, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, true), 
-            _ALLOWED_POST_MESSAGE)
-        };
-    }, /*!********************************************!*\
-  !*** ./~/post-robot/src/conf/constants.js ***!
-  \********************************************/
-    function(module, exports) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var CONSTANTS = exports.CONSTANTS = {
-            POST_MESSAGE_TYPE: {
-                REQUEST: "postrobot_message_request",
-                RESPONSE: "postrobot_message_response",
-                ACK: "postrobot_message_ack"
-            },
-            POST_MESSAGE_ACK: {
-                SUCCESS: "success",
-                ERROR: "error"
-            },
-            POST_MESSAGE_NAMES: {
-                METHOD: "postrobot_method",
-                READY: "postrobot_ready"
-            },
-            WINDOW_TYPES: {
-                FULLPAGE: "fullpage",
-                POPUP: "popup",
-                IFRAME: "iframe"
-            },
-            WINDOW_PROPS: {
-                POSTROBOT: "__postRobot__"
-            },
-            SERIALIZATION_TYPES: {
-                METHOD: "postrobot_method"
-            },
-            SEND_STRATEGIES: {
-                POST_MESSAGE: "postrobot_post_message",
-                GLOBAL_METHOD: "postrobot_global_method",
-                FOREIGN_BRIDGE: "postrobot_foreign_bridge",
-                LOCAL_BRIDGE: "postrobot_local_bridge"
-            }
-        };
-        var POST_MESSAGE_NAMES_LIST = exports.POST_MESSAGE_NAMES_LIST = Object.keys(CONSTANTS.POST_MESSAGE_NAMES).map(function(key) {
-            return CONSTANTS.POST_MESSAGE_NAMES[key];
-        });
-    }, /*!*******************************************!*\
-  !*** ./~/post-robot/src/drivers/index.js ***!
-  \*******************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _receive = __webpack_require__(/*! ./receive */ 21);
-        Object.keys(_receive).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _receive[key];
-                }
-            });
-        });
-        var _send = __webpack_require__(/*! ./send */ 34);
-        Object.keys(_send).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _send[key];
-                }
-            });
-        });
-        var _listeners = __webpack_require__(/*! ./listeners */ 36);
-        Object.keys(_listeners).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _listeners[key];
-                }
-            });
-        });
-    }, /*!***************************************************!*\
-  !*** ./~/post-robot/src/drivers/receive/index.js ***!
-  \***************************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.receiveMessage = receiveMessage;
-        exports.messageListener = messageListener;
-        var _conf = __webpack_require__(/*! ../../conf */ 17);
-        var _lib = __webpack_require__(/*! ../../lib */ 22);
-        var _compat = __webpack_require__(/*! ../../compat */ 30);
-        var _send = __webpack_require__(/*! ../send */ 34);
-        var _listeners = __webpack_require__(/*! ../listeners */ 36);
-        var _types = __webpack_require__(/*! ./types */ 37);
-        var receivedMessages = [];
-        function parseMessage(message) {
-            try {
-                message = JSON.parse(message);
-            } catch (err) {
-                return;
-            }
-            if (!message.type) {
-                return;
-            }
-            if (!_types.RECEIVE_MESSAGE_TYPES[message.type]) {
-                return;
-            }
-            return message;
-        }
-        function getWindow(hint, windowID) {
-            var windowTargets = {
-                "window.parent": function windowParent(id) {
-                    return window.parent;
-                },
-                "window.opener": function windowOpener(id) {
-                    return (0, _lib.getOpener)(window);
-                },
-                "window.parent.opener": function windowParentOpener(id) {
-                    return (0, _lib.getOpener)(window.parent);
-                },
-                "window.opener.parent": function windowOpenerParent(id) {
-                    return (0, _lib.getOpener)(window).parent;
-                }
-            };
-            var win = void 0;
-            try {
-                win = windowTargets[hint](windowID);
-            } catch (err) {
-                throw new Error("Can not get " + hint + ": " + err.message);
-            }
-            if (!win) {
-                throw new Error("Can not get " + hint + ": not available");
-            }
-            return win;
-        }
-        function getProxy(source, message) {
-            if (_conf.CONFIG.MOCK_MODE) {
-                return;
-            }
-            if (!message) {
-                return;
-            }
-            var listener = (0, _listeners.getRequestListener)(message.name, source);
-            if (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST && message.name && listener && listener.proxy === false) {
-                return;
-            }
-            var isResponseOrAck = (message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.REQUEST || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK) && _listeners.listeners.response[message.hash];
-            if (!isResponseOrAck) {
-                for (var i = 0; i < _listeners.listeners.proxies.length; i++) {
-                    var proxy = _listeners.listeners.proxies[i];
-                    if (source === proxy.from) {
-                        return proxy.to;
-                    }
-                }
-            }
-            if (message.targetHint) {
-                var win = getWindow(message.targetHint, message.target);
-                delete message.targetHint;
-                return win;
-            }
-            if (message.target && message.target !== (0, _lib.getWindowId)(window)) {
-                var _win = (0, _lib.getWindowById)(message.target);
-                if (!_win) {
-                    throw new Error("Unable to find window to proxy message to: " + message.target);
-                }
-                return _win;
-            }
-        }
-        function receiveMessage(event) {
-            try {
-                event.source;
-            } catch (err) {
-                return;
-            }
-            var source = event.source;
-            var origin = event.origin;
-            var data = event.data;
-            var message = parseMessage(data);
-            if (!message) {
-                return;
-            }
-            if (receivedMessages.indexOf(message.id) === -1) {
-                receivedMessages.push(message.id);
-            } else {
-                return;
-            }
-            (0, _lib.registerWindow)(message.source, source);
-            var proxyWindow = void 0;
-            try {
-                proxyWindow = getProxy(source, message);
-            } catch (err) {
-                return _lib.log.debug(err.message);
-            }
-            var level = void 0;
-            if (_conf.POST_MESSAGE_NAMES_LIST.indexOf(message.name) !== -1 || message.type === _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK || proxyWindow) {
-                level = "debug";
-            } else if (message.ack === "error") {
-                level = "error";
-            } else {
-                level = "info";
-            }
-            _lib.log.logLevel(level, [ proxyWindow ? "#receiveproxy" : "#receive", message.type, message.name, message ]);
-            if (proxyWindow) {
-                if ((0, _lib.isWindowClosed)(proxyWindow)) {
-                    return _lib.log.debug("Target window is closed: " + message.target + " - can not proxy " + message.type + " " + message.name);
-                }
-                delete message.target;
-                return (0, _send.sendMessage)(proxyWindow, message, message.domain || "*", true);
-            }
-            if (message.originalSource !== message.source) {
-                if (message.sourceHint) {
-                    source = getWindow(message.sourceHint, message.originalSource);
-                    delete message.sourceHint;
-                } else {
-                    var originalSource = (0, _lib.getWindowById)(message.originalSource);
-                    if (originalSource) {
-                        source = originalSource;
-                    } else {
-                        throw new Error("Can not find original message source: " + message.originalSource);
-                    }
-                }
-                (0, _lib.registerWindow)(message.originalSource, source);
-            }
-            if ((0, _lib.isWindowClosed)(source)) {
-                return _lib.log.debug("Source window is closed: " + message.originalSource + " - can not send " + message.type + " " + message.name);
-            }
-            if (_conf.CONFIG.MOCK_MODE) {
-                return _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
-            }
-            if (message.data) {
-                message.data = (0, _lib.deserializeMethods)(source, message.data);
-            }
-            _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
-        }
-        function messageListener(event) {
-            try {
-                event.source;
-            } catch (err) {
-                return;
-            }
-            event = {
-                source: event.source || event.sourceElement,
-                origin: event.origin || event.originalEvent.origin,
-                data: event.data
-            };
-            try {
-                (0, _compat.emulateIERestrictions)(event.source, window);
-            } catch (err) {
-                return;
-            }
-            receiveMessage(event);
-        }
-    }, /*!***************************************!*\
-  !*** ./~/post-robot/src/lib/index.js ***!
-  \***************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _promise = __webpack_require__(/*! ./promise */ 23);
-        Object.keys(_promise).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _promise[key];
-                }
-            });
-        });
-        var _util = __webpack_require__(/*! ./util */ 25);
-        Object.keys(_util).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _util[key];
-                }
-            });
-        });
-        var _log = __webpack_require__(/*! ./log */ 26);
-        Object.keys(_log).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _log[key];
-                }
-            });
-        });
-        var _windows = __webpack_require__(/*! ./windows */ 27);
-        Object.keys(_windows).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _windows[key];
-                }
-            });
-        });
-        var _methods = __webpack_require__(/*! ./methods */ 28);
-        Object.keys(_methods).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _methods[key];
-                }
-            });
-        });
-        var _tick = __webpack_require__(/*! ./tick */ 24);
-        Object.keys(_tick).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _tick[key];
-                }
-            });
-        });
-        var _ready = __webpack_require__(/*! ./ready */ 29);
-        Object.keys(_ready).forEach(function(key) {
-            if (key === "default") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _ready[key];
-                }
-            });
-        });
-    }, /*!*****************************************!*\
-  !*** ./~/post-robot/src/lib/promise.js ***!
-  \*****************************************/
-    function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.promise = exports.Promise = undefined;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        var _tick = __webpack_require__(/*! ./tick */ 24);
-        var Promise = exports.Promise = _promise.SyncPromise;
-        var promise = exports.promise = {
-            Promise: Promise,
-            run: function run(method) {
-                return Promise.resolve().then(method);
-            },
-            nextTick: function nextTick(method) {
-                return new Promise(function(resolve, reject) {
-                    (0, _tick.nextTick)(function() {
-                        return promise.run(method).then(resolve, reject);
-                    });
-                });
-            },
-            method: function method(_method) {
-                return function promiseWrapper() {
-                    var _this = this, _arguments = arguments;
-                    return Promise.resolve().then(function() {
-                        return _method.apply(_this, _arguments);
-                    });
-                };
-            },
-            nodeify: function nodeify(prom, callback) {
-                if (!callback) {
-                    return prom;
-                }
-                prom.then(function(result) {
-                    callback(null, result);
-                }, function(err) {
-                    callback(err);
-                });
-            },
-            deNodeify: function deNodeify(method) {
-                for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-                    args[_key - 1] = arguments[_key];
-                }
-                return new Promise(function(resolve, reject) {
-                    try {
-                        if (args.length < method.length) {
-                            return method.apply(undefined, args.concat([ function(err, result) {
-                                return err ? reject(err) : resolve(result);
-                            } ]));
-                        }
-                        return promise.run(function() {
-                            return method.apply(undefined, args);
-                        }).then(resolve, reject);
-                    } catch (err) {
-                        return reject(err);
-                    }
-                });
-            },
-            map: function map(items, method) {
-                var results = [];
-                var _loop = function _loop(i) {
-                    results.push(promise.run(function() {
-                        return method(items[i]);
-                    }));
-                };
-                for (var i = 0; i < items.length; i++) {
-                    _loop(i);
-                }
-                return Promise.all(results);
-            }
-        };
     }, /*!**************************************!*\
   !*** ./~/post-robot/src/lib/tick.js ***!
   \**************************************/
@@ -1735,7 +1147,7 @@
             value: true
         });
         exports.nextTick = nextTick;
-        var _util = __webpack_require__(/*! ./util */ 25);
+        var _util = __webpack_require__(/*! ./util */ 18);
         var tickMessageName = "__nextTick__postRobot__" + _util.util.uniqueID();
         var queue = [];
         window.addEventListener("message", function(event) {
@@ -1762,7 +1174,7 @@
         } : function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
-        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
         var util = exports.util = {
             isPopup: function isPopup() {
                 return Boolean(window.opener);
@@ -1983,8 +1395,8 @@
         } : function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
-        var _util = __webpack_require__(/*! ./util */ 25);
-        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _util = __webpack_require__(/*! ./util */ 18);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
         var LOG_LEVELS = [ "debug", "info", "warn", "error" ];
         if (Function.prototype.bind && window.console && _typeof(console.log) === "object") {
             [ "log", "info", "warn", "error" ].forEach(function(method) {
@@ -2100,7 +1512,8 @@
         exports.isWindowEqual = isWindowEqual;
         exports.isSameTopWindow = isSameTopWindow;
         exports.onOpenWindow = onOpenWindow;
-        var _util = __webpack_require__(/*! ./util */ 25);
+        exports.linkUrl = linkUrl;
+        var _util = __webpack_require__(/*! ./util */ 18);
         function safeGet(obj, prop) {
             var result = void 0;
             try {
@@ -2283,6 +1696,21 @@
             registerWindow(name, win);
             return win;
         };
+        function linkUrl(win, url) {
+            for (var _iterator4 = windowOpenListeners, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref4 = _iterator4[_i4++];
+                } else {
+                    _i4 = _iterator4.next();
+                    if (_i4.done) break;
+                    _ref4 = _i4.value;
+                }
+                var listener = _ref4;
+                listener(url, win);
+            }
+        }
     }, /*!*****************************************!*\
   !*** ./~/post-robot/src/lib/methods.js ***!
   \*****************************************/
@@ -2296,11 +1724,11 @@
         exports.serializeMethods = serializeMethods;
         exports.deserializeMethod = deserializeMethod;
         exports.deserializeMethods = deserializeMethods;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _util = __webpack_require__(/*! ./util */ 25);
-        var _interface = __webpack_require__(/*! ../interface */ 15);
-        var _log = __webpack_require__(/*! ./log */ 26);
-        var _promise = __webpack_require__(/*! ./promise */ 23);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _util = __webpack_require__(/*! ./util */ 18);
+        var _interface = __webpack_require__(/*! ../interface */ 7);
+        var _log = __webpack_require__(/*! ./log */ 19);
+        var _promise = __webpack_require__(/*! ./promise */ 15);
         var methods = {};
         var listenForMethods = exports.listenForMethods = _util.util.once(function() {
             (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.METHOD, function(source, data) {
@@ -2383,11 +1811,11 @@
         });
         exports.initOnReady = initOnReady;
         exports.onWindowReady = onWindowReady;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _windows = __webpack_require__(/*! ./windows */ 27);
-        var _interface = __webpack_require__(/*! ../interface */ 15);
-        var _log = __webpack_require__(/*! ./log */ 26);
-        var _promise = __webpack_require__(/*! ./promise */ 23);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _windows = __webpack_require__(/*! ./windows */ 20);
+        var _interface = __webpack_require__(/*! ../interface */ 7);
+        var _log = __webpack_require__(/*! ./log */ 19);
+        var _promise = __webpack_require__(/*! ./promise */ 15);
         var readyWindows = [];
         var readyPromises = [];
         function initOnReady() {
@@ -2441,7 +1869,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _bridge = __webpack_require__(/*! ./bridge */ 31);
+        var _bridge = __webpack_require__(/*! ./bridge */ 24);
         Object.keys(_bridge).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2451,7 +1879,7 @@
                 }
             });
         });
-        var _global = __webpack_require__(/*! ./global */ 32);
+        var _global = __webpack_require__(/*! ./global */ 25);
         Object.keys(_global).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2461,7 +1889,7 @@
                 }
             });
         });
-        var _ie = __webpack_require__(/*! ./ie */ 33);
+        var _ie = __webpack_require__(/*! ./ie */ 26);
         Object.keys(_ie).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -2483,8 +1911,8 @@
         exports.getBridgeByWindow = getBridgeByWindow;
         exports.openBridge = openBridge;
         exports.getRemoteBridge = getRemoteBridge;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _lib = __webpack_require__(/*! ../lib */ 22);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _lib = __webpack_require__(/*! ../lib */ 14);
         var BRIDGE_NAME_PREFIX = "__postrobot_bridge__";
         function getDomain(url) {
             var domain = void 0;
@@ -2540,9 +1968,13 @@
                     return bridge.bridge;
                 }
             }
+            return Promise.resolve();
         }
         var windowBuffer = {};
         (0, _lib.onOpenWindow)(function(url, win) {
+            if (!url) {
+                return;
+            }
             var domain = getDomain(url);
             for (var _iterator3 = bridges, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                 var _ref3;
@@ -2630,8 +2062,8 @@
             value: true
         });
         exports.registerGlobals = registerGlobals;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _drivers = __webpack_require__(/*! ../drivers */ 20);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
         function registerGlobals() {
             if (window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
                 throw new Error("Attempting to load postRobot twice on the same window");
@@ -2651,8 +2083,8 @@
             value: true
         });
         exports.emulateIERestrictions = emulateIERestrictions;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _lib = __webpack_require__(/*! ../lib */ 22);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _lib = __webpack_require__(/*! ../lib */ 14);
         function emulateIERestrictions(sourceWindow, targetWindow) {
             if (!_conf.CONFIG.ALLOW_POSTMESSAGE_POPUP) {
                 if (!(0, _lib.isSameTopWindow)(sourceWindow, targetWindow)) {
@@ -2681,9 +2113,9 @@
         };
         exports.buildMessage = buildMessage;
         exports.sendMessage = sendMessage;
-        var _conf = __webpack_require__(/*! ../../conf */ 17);
-        var _lib = __webpack_require__(/*! ../../lib */ 22);
-        var _strategies = __webpack_require__(/*! ./strategies */ 35);
+        var _conf = __webpack_require__(/*! ../../conf */ 9);
+        var _lib = __webpack_require__(/*! ../../lib */ 14);
+        var _strategies = __webpack_require__(/*! ./strategies */ 28);
         function buildMessage(win, message) {
             var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
             var id = _lib.util.uniqueID();
@@ -2763,9 +2195,9 @@
         });
         exports.SEND_MESSAGE_STRATEGIES = undefined;
         var _SEND_MESSAGE_STRATEG;
-        var _conf = __webpack_require__(/*! ../../conf */ 17);
-        var _lib = __webpack_require__(/*! ../../lib */ 22);
-        var _compat = __webpack_require__(/*! ../../compat */ 30);
+        var _conf = __webpack_require__(/*! ../../conf */ 9);
+        var _lib = __webpack_require__(/*! ../../lib */ 14);
+        var _compat = __webpack_require__(/*! ../../compat */ 23);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -2884,7 +2316,7 @@
         exports.getRequestListener = getRequestListener;
         exports.removeRequestListener = removeRequestListener;
         exports.addRequestListener = addRequestListener;
-        var _lib = __webpack_require__(/*! ../lib */ 22);
+        var _lib = __webpack_require__(/*! ../lib */ 14);
         var listeners = exports.listeners = void 0;
         function resetListeners() {
             exports.listeners = listeners = {
@@ -2975,10 +2407,10 @@
             }
             return target;
         };
-        var _conf = __webpack_require__(/*! ../../conf */ 17);
-        var _lib = __webpack_require__(/*! ../../lib */ 22);
-        var _send = __webpack_require__(/*! ../send */ 34);
-        var _listeners = __webpack_require__(/*! ../listeners */ 36);
+        var _conf = __webpack_require__(/*! ../../conf */ 9);
+        var _lib = __webpack_require__(/*! ../../lib */ 14);
+        var _send = __webpack_require__(/*! ../send */ 27);
+        var _listeners = __webpack_require__(/*! ../listeners */ 29);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -3068,9 +2500,9 @@
         exports.listen = listen;
         exports.on = on;
         exports.once = once;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
-        var _lib = __webpack_require__(/*! ../lib */ 22);
-        var _drivers = __webpack_require__(/*! ../drivers */ 20);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
+        var _lib = __webpack_require__(/*! ../lib */ 14);
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
         function listen(options) {
             if (!options.name) {
                 throw new Error("Expected options.name");
@@ -3148,7 +2580,7 @@
         });
         exports.proxy = proxy;
         exports.unproxy = unproxy;
-        var _drivers = __webpack_require__(/*! ../drivers */ 20);
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
         function proxy(window1, window2) {
             _drivers.listeners.proxies.push({
                 from: window1,
@@ -3182,7 +2614,7 @@
         exports.CONSTANTS = exports.CONFIG = undefined;
         exports.enableMockMode = enableMockMode;
         exports.disableMockMode = disableMockMode;
-        var _conf = __webpack_require__(/*! ../conf */ 17);
+        var _conf = __webpack_require__(/*! ../conf */ 9);
         Object.defineProperty(exports, "CONFIG", {
             enumerable: true,
             get: function get() {
@@ -3209,7 +2641,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _component = __webpack_require__(/*! ./component */ 42);
+        var _component = __webpack_require__(/*! ./component */ 35);
         Object.keys(_component).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3229,7 +2661,7 @@
                 }
             });
         });
-        var _child = __webpack_require__(/*! ./child */ 53);
+        var _child = __webpack_require__(/*! ./child */ 46);
         Object.keys(_child).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3275,12 +2707,12 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 43);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 36);
         var _client2 = _interopRequireDefault(_client);
-        var _child = __webpack_require__(/*! ../child */ 53);
+        var _child = __webpack_require__(/*! ../child */ 46);
         var _parent = __webpack_require__(/*! ../parent */ 58);
         var _props = __webpack_require__(/*! ./props */ 62);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         var _validate2 = __webpack_require__(/*! ./validate */ 63);
         var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 64);
         var _parent3 = _interopRequireDefault(_parent2);
@@ -3439,7 +2871,7 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _logger = __webpack_require__(/*! ./logger */ 44);
+        var _logger = __webpack_require__(/*! ./logger */ 37);
         Object.keys(_logger).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3449,7 +2881,7 @@
                 }
             });
         });
-        var _init = __webpack_require__(/*! ./init */ 50);
+        var _init = __webpack_require__(/*! ./init */ 43);
         Object.keys(_init).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3459,7 +2891,7 @@
                 }
             });
         });
-        var _transitions = __webpack_require__(/*! ./transitions */ 52);
+        var _transitions = __webpack_require__(/*! ./transitions */ 45);
         Object.keys(_transitions).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3469,7 +2901,7 @@
                 }
             });
         });
-        var _builders = __webpack_require__(/*! ./builders */ 48);
+        var _builders = __webpack_require__(/*! ./builders */ 41);
         Object.keys(_builders).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -3502,9 +2934,9 @@
         exports.warn = warn;
         exports.error = error;
         exports.track = track;
-        var _util = __webpack_require__(/*! ./util */ 45);
-        var _builders = __webpack_require__(/*! ./builders */ 48);
-        var _config = __webpack_require__(/*! ./config */ 49);
+        var _util = __webpack_require__(/*! ./util */ 38);
+        var _builders = __webpack_require__(/*! ./builders */ 41);
+        var _config = __webpack_require__(/*! ./config */ 42);
         var buffer = exports.buffer = [];
         var tracking = exports.tracking = {};
         if (Function.prototype.bind && window.console && _typeof(console.log) === "object") {
@@ -3683,7 +3115,7 @@
         exports.promiseDebounce = promiseDebounce;
         exports.safeInterval = safeInterval;
         exports.uniqueID = uniqueID;
-        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 46);
+        var _es6PromiseMin = __webpack_require__(/*! es6-promise-min */ 39);
         function extend(dest, src) {
             var over = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
             dest = dest || {};
@@ -4061,7 +3493,7 @@
                     return z;
                 }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "undefined" !== typeof module && module.exports ? module.exports = z : "undefined" !== typeof this && (this.ES6Promise = z);
             }).call(undefined);
-        }).call(exports, __webpack_require__(/*! ./~/process/browser.js */ 47), function() {
+        }).call(exports, __webpack_require__(/*! ./~/process/browser.js */ 40), function() {
             return this;
         }());
     }, /*!******************************!*\
@@ -4216,10 +3648,10 @@
             value: true
         });
         exports.init = init;
-        var _config = __webpack_require__(/*! ./config */ 49);
-        var _util = __webpack_require__(/*! ./util */ 45);
-        var _performance = __webpack_require__(/*! ./performance */ 51);
-        var _logger = __webpack_require__(/*! ./logger */ 44);
+        var _config = __webpack_require__(/*! ./config */ 42);
+        var _util = __webpack_require__(/*! ./util */ 38);
+        var _performance = __webpack_require__(/*! ./performance */ 44);
+        var _logger = __webpack_require__(/*! ./logger */ 37);
         var initiated = false;
         function init(conf) {
             (0, _util.extend)(_config.config, conf || {});
@@ -4269,10 +3701,10 @@
         exports.reqStartElapsed = reqStartElapsed;
         exports.initHeartBeat = initHeartBeat;
         exports.initPerformance = initPerformance;
-        var _config = __webpack_require__(/*! ./config */ 49);
-        var _logger = __webpack_require__(/*! ./logger */ 44);
-        var _builders = __webpack_require__(/*! ./builders */ 48);
-        var _util = __webpack_require__(/*! ./util */ 45);
+        var _config = __webpack_require__(/*! ./config */ 42);
+        var _logger = __webpack_require__(/*! ./logger */ 37);
+        var _builders = __webpack_require__(/*! ./builders */ 41);
+        var _util = __webpack_require__(/*! ./util */ 38);
         var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
         function now() {
             if (enablePerformance) {
@@ -4385,11 +3817,11 @@
         exports.startTransition = startTransition;
         exports.endTransition = endTransition;
         exports.transition = transition;
-        var _performance = __webpack_require__(/*! ./performance */ 51);
-        var _logger = __webpack_require__(/*! ./logger */ 44);
-        var _builders = __webpack_require__(/*! ./builders */ 48);
-        var _util = __webpack_require__(/*! ./util */ 45);
-        var _config = __webpack_require__(/*! ./config */ 49);
+        var _performance = __webpack_require__(/*! ./performance */ 44);
+        var _logger = __webpack_require__(/*! ./logger */ 37);
+        var _builders = __webpack_require__(/*! ./builders */ 41);
+        var _util = __webpack_require__(/*! ./util */ 38);
+        var _config = __webpack_require__(/*! ./config */ 42);
         var windowID = (0, _util.uniqueID)();
         var pageID = (0, _util.uniqueID)();
         var currentState = _config.config.initial_state_name;
@@ -4457,13 +3889,13 @@
                 return Constructor;
             };
         }();
-        var _src = __webpack_require__(/*! post-robot/src */ 14);
+        var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        var _base = __webpack_require__(/*! ../base */ 54);
-        var _window = __webpack_require__(/*! ../window */ 55);
-        var _lib = __webpack_require__(/*! ../../lib */ 7);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        var _base = __webpack_require__(/*! ../base */ 47);
+        var _window = __webpack_require__(/*! ../window */ 54);
+        var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         var _props = __webpack_require__(/*! ../props */ 56);
         var _props2 = __webpack_require__(/*! ./props */ 57);
         function _interopRequireDefault(obj) {
@@ -4586,16 +4018,16 @@
                     var _this3 = this;
                     (0, _lib.onCloseWindow)(_window.getParentWindow, function() {
                         _this3.component.log("parent_window_closed");
-                        _this3.onClose(new Error("[" + _this3.component.tag + "] parent window was closed"));
+                        _this3.onClose(_constants.CLOSE_REASONS.PARENT_CLOSE_DETECTED);
                         if (_this3.context === _constants.CONTEXT_TYPES.POPUP) {
-                            window.close();
+                            _this3.destroy();
                         }
                     });
                     if ((0, _window.getParentComponentWindow)() && (0, _window.getParentComponentWindow)() !== (0, 
                     _window.getParentWindow)()) {
                         (0, _lib.onCloseWindow)((0, _window.getParentComponentWindow)(), function() {
                             _this3.component.log("parent_component_window_closed");
-                            _this3.close(new Error("[" + _this3.component.tag + "] parent component window was closed"));
+                            _this3.close(_constants.CLOSE_REASONS.PARENT_CLOSE_DETECTED);
                         });
                     }
                     (0, _lib.addEventListener)(window, "beforeunload", function() {
@@ -4665,12 +4097,20 @@
                 }
             }, {
                 key: "close",
-                value: function close(err) {
+                value: function close() {
+                    var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.CHILD_CALL : arguments[0];
                     this.component.log("close_child");
-                    this.onClose.call(this, err);
-                    this.sendToParent(_constants.POST_MESSAGE.CLOSE, {}, {
+                    this.onClose.call(this, reason);
+                    this.sendToParent(_constants.POST_MESSAGE.CLOSE, {
+                        reason: reason
+                    }, {
                         fireAndForget: true
                     });
+                }
+            }, {
+                key: "destroy",
+                value: function destroy() {
+                    window.close();
                 }
             }, {
                 key: "focus",
@@ -4716,9 +4156,9 @@
                 return Constructor;
             };
         }();
-        var _src = __webpack_require__(/*! post-robot/src */ 14);
+        var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _lib = __webpack_require__(/*! ../lib */ 7);
+        var _lib = __webpack_require__(/*! ../lib */ 48);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -4826,6 +4266,568 @@
             } ]);
             return BaseComponent;
         }();
+    }, /*!***************************************!*\
+  !*** ./~/xcomponent/src/lib/index.js ***!
+  \***************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _dom = __webpack_require__(/*! ./dom */ 49);
+        Object.keys(_dom).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _dom[key];
+                }
+            });
+        });
+        var _fn = __webpack_require__(/*! ./fn */ 50);
+        Object.keys(_fn).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _fn[key];
+                }
+            });
+        });
+        var _promise = __webpack_require__(/*! ./promise */ 53);
+        Object.keys(_promise).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _promise[key];
+                }
+            });
+        });
+        var _util = __webpack_require__(/*! ./util */ 51);
+        Object.keys(_util).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _util[key];
+                }
+            });
+        });
+    }, /*!*************************************!*\
+  !*** ./~/xcomponent/src/lib/dom.js ***!
+  \*************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.getElement = getElement;
+        exports.popup = popup;
+        exports.iframe = iframe;
+        exports.isWindowClosed = isWindowClosed;
+        exports.onCloseWindow = onCloseWindow;
+        exports.addEventListener = addEventListener;
+        exports.getParentWindow = getParentWindow;
+        exports.getParentNode = getParentNode;
+        exports.scanForJavascript = scanForJavascript;
+        exports.createElement = createElement;
+        exports.hijackButton = hijackButton;
+        exports.addEventToClass = addEventToClass;
+        exports.template = template;
+        exports.getUrlParams = getUrlParams;
+        exports.getUrlParam = getUrlParam;
+        exports.getDomain = getDomain;
+        var _fn = __webpack_require__(/*! ./fn */ 50);
+        var _util = __webpack_require__(/*! ./util */ 51);
+        function getElement(id) {
+            if (id instanceof window.Element) {
+                return id;
+            }
+            if (typeof id === "string") {
+                var element = document.getElementById(id);
+                if (element) {
+                    return element;
+                }
+                if (document.querySelector) {
+                    return document.querySelector(id);
+                }
+            }
+        }
+        function popup(url, options) {
+            var params = Object.keys(options).map(function(key) {
+                if (options[key]) {
+                    return key + "=" + options[key];
+                }
+            }).filter(Boolean).join(",");
+            var win = window.open(url, options.name, params, true);
+            return win;
+        }
+        function iframe(container, url, options) {
+            container = getElement(container);
+            var frame = document.createElement("iframe");
+            for (var _iterator = Object.keys(options), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var key = _ref;
+                frame[key] = options[key];
+            }
+            frame.frameBorder = "0";
+            frame.allowTransparency = "true";
+            container.appendChild(frame);
+            return frame;
+        }
+        function isWindowClosed(win) {
+            try {
+                return !win || win.closed || typeof win.closed === "undefined" || (0, _util.safeGet)(win, "mockclosed");
+            } catch (err) {
+                return true;
+            }
+        }
+        function onCloseWindow(win, callback) {
+            callback = (0, _fn.once)(callback);
+            var isFunction = win instanceof Function;
+            var interval = void 0;
+            var checkWindowClosed = function checkWindowClosed() {
+                var myWin = void 0;
+                try {
+                    myWin = isFunction ? win() : win;
+                } catch (err) {}
+                if (isWindowClosed(myWin)) {
+                    clearInterval(interval);
+                    return callback();
+                }
+            };
+            interval = (0, _util.safeInterval)(checkWindowClosed, 50);
+            checkWindowClosed();
+            var close = win.close;
+            try {
+                win.close = function() {
+                    close.apply(this, arguments);
+                    checkWindowClosed();
+                };
+            } catch (err) {}
+            return {
+                cancel: function cancel() {
+                    interval.cancel();
+                    callback = _fn.noop;
+                }
+            };
+        }
+        function addEventListener(obj, event, handler) {
+            obj.addEventListener(event, handler);
+            return {
+                cancel: function cancel() {
+                    obj.removeEventListener(event, handler);
+                }
+            };
+        }
+        function getParentWindow(win) {
+            win = win || window;
+            if (win.opener) {
+                return win.opener;
+            }
+            if (win.parent && win.parent !== win) {
+                return win.parent;
+            }
+        }
+        function getParentNode(el, tag) {
+            tag = tag.toLowerCase();
+            while (el.parentNode) {
+                el = el.parentNode;
+                if (el.tagName.toLowerCase() === tag) {
+                    return el;
+                }
+            }
+        }
+        function scanForJavascript(str) {
+            if (!str) {
+                return str;
+            }
+            if (str.match(/<script|on\w+\s*=|javascript:|expression\s*\(|eval\(|new\s*Function/)) {
+                throw new Error("HTML contains potential javascript: " + str);
+            }
+            return str;
+        }
+        function createElement() {
+            var tag = arguments.length <= 0 || arguments[0] === undefined ? "div" : arguments[0];
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            var container = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+            var element = document.createElement(tag);
+            if (options.style) {
+                (0, _util.extend)(element.style, options.style);
+            }
+            if (options.html) {
+                element.innerHTML = options.html;
+            }
+            if (options["class"]) {
+                element.className = options["class"].join(" ");
+            }
+            if (options.attributes) {
+                for (var _iterator2 = Object.keys(options.attributes), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var key = _ref2;
+                    element.setAttribute(key, options.attributes[key]);
+                }
+            }
+            if (options.styleSheet) {
+                if (element.styleSheet) {
+                    element.styleSheet.cssText = options.styleSheet;
+                } else {
+                    element.appendChild(document.createTextNode(options.styleSheet));
+                }
+            }
+            if (container) {
+                container.appendChild(element);
+            }
+            return element;
+        }
+        function hijackButton(element, callback) {
+            var el = getElement(element);
+            if (!el) {
+                throw new Error("Can not find element: " + element);
+            }
+            var targetElement = el.form ? el.form : el;
+            el.addEventListener("click", function(event) {
+                callback(event, targetElement);
+            });
+        }
+        function addEventToClass(element, className, eventName, handler) {
+            for (var _iterator3 = Array.prototype.slice.call(element.getElementsByClassName(className)), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref3 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref3 = _i3.value;
+                }
+                var el = _ref3;
+                el.addEventListener(eventName, function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    handler();
+                });
+            }
+        }
+        function template(html, context) {
+            return html.replace(/\{([\w_\.]+)\}/g, function(variable) {
+                return (0, _util.get)(context, variable.slice(1, variable.length - 1), "");
+            });
+        }
+        function getUrlParams(queryString) {
+            queryString = queryString || window.location.search.slice(1);
+            var params = {};
+            if (!queryString) {
+                return params;
+            }
+            for (var _iterator4 = queryString.split("&"), _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref4 = _iterator4[_i4++];
+                } else {
+                    _i4 = _iterator4.next();
+                    if (_i4.done) break;
+                    _ref4 = _i4.value;
+                }
+                var pair = _ref4;
+                pair = pair.split("=");
+                if (pair[0] && pair[1]) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            }
+            return params;
+        }
+        function getUrlParam(name) {
+            return getUrlParams()[name];
+        }
+        function getDomain(url) {
+            var domain = void 0;
+            if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
+                domain = url;
+            } else {
+                domain = window.location.href;
+            }
+            domain = domain.split("/").slice(0, 3).join("/");
+            return domain;
+        }
+    }, /*!************************************!*\
+  !*** ./~/xcomponent/src/lib/fn.js ***!
+  \************************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.noop = noop;
+        exports.once = once;
+        exports.memoize = memoize;
+        function noop() {}
+        function once(method) {
+            var called = false;
+            return function() {
+                if (!called) {
+                    called = true;
+                    return method.apply(this, arguments);
+                }
+            };
+        }
+        function memoize(method) {
+            var results = {};
+            return function() {
+                var args = void 0;
+                try {
+                    args = JSON.stringify(arguments);
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                if (!results.hasOwnProperty(args)) {
+                    results[args] = method.apply(this, arguments);
+                }
+                return results[args];
+            };
+        }
+    }, /*!**************************************!*\
+  !*** ./~/xcomponent/src/lib/util.js ***!
+  \**************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
+        exports.urlEncode = urlEncode;
+        exports.camelToDasherize = camelToDasherize;
+        exports.dasherizeToCamel = dasherizeToCamel;
+        exports.extend = extend;
+        exports.values = values;
+        exports.uniqueID = uniqueID;
+        exports.b64encode = b64encode;
+        exports.b64decode = b64decode;
+        exports.stringifyWithFunctions = stringifyWithFunctions;
+        exports.safeGet = safeGet;
+        exports.capitalizeFirstLetter = capitalizeFirstLetter;
+        exports.get = get;
+        exports.safeInterval = safeInterval;
+        exports.safeTimeout = safeTimeout;
+        var _Base = __webpack_require__(/*! Base64 */ 52);
+        var _Base2 = _interopRequireDefault(_Base);
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        function urlEncode(str) {
+            return str.replace(/\?/g, "%3F").replace(/\&/g, "%26");
+        }
+        function camelToDasherize(string) {
+            return string.replace(/([A-Z])/g, function(g) {
+                return "-" + g.toLowerCase();
+            });
+        }
+        function dasherizeToCamel(string) {
+            return string.replace(/-([a-z])/g, function(g) {
+                return g[1].toUpperCase();
+            });
+        }
+        function extend(obj, source) {
+            if (!source) {
+                return obj;
+            }
+            for (var key in source) {
+                if (source.hasOwnProperty(key)) {
+                    obj[key] = source[key];
+                }
+            }
+            return obj;
+        }
+        function values(obj) {
+            var results = [];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    results.push(obj[key]);
+                }
+            }
+            return results;
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }
+        function b64encode(str) {
+            return (window.btoa ? window.btoa(str) : _Base2["default"].btoa(str)).replace(/[=]/g, "_");
+        }
+        function b64decode(str) {
+            str = str.replace(/[_]/g, "=");
+            return window.atob ? window.atob(str) : _Base2["default"].atob(str);
+        }
+        function stringifyWithFunctions(obj) {
+            return JSON.stringify(obj, function(key, val) {
+                if (typeof val === "function") {
+                    return val.toString();
+                }
+                return val;
+            });
+        }
+        function safeGet(obj, prop) {
+            var result = void 0;
+            try {
+                result = obj[prop];
+            } catch (err) {}
+            return result;
+        }
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+        function get(item, path, def) {
+            if (!path) {
+                return def;
+            }
+            path = path.split(".");
+            for (var i = 0; i < path.length; i++) {
+                if ((typeof item === "undefined" ? "undefined" : _typeof(item)) === "object" && item !== null) {
+                    item = item[path[i]];
+                } else {
+                    return def;
+                }
+            }
+            return item === undefined ? def : item;
+        }
+        function safeInterval(method, time) {
+            var timeout = void 0;
+            function runInterval() {
+                timeout = setTimeout(runInterval, time);
+                method.call();
+            }
+            timeout = setTimeout(runInterval, time);
+            return {
+                cancel: function cancel() {
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        function safeTimeout(method, time) {
+            var interval = safeInterval(function() {
+                time -= 100;
+                if (time <= 0) {
+                    interval.cancel();
+                    method();
+                }
+            }, 100);
+        }
+    }, /*!*****************************************!*\
+  !*** ./~/xcomponent/~/Base64/base64.js ***!
+  \*****************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        (function() {
+            var object = true ? exports : self;
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            function InvalidCharacterError(message) {
+                this.message = message;
+            }
+            InvalidCharacterError.prototype = new Error();
+            InvalidCharacterError.prototype.name = "InvalidCharacterError";
+            object.btoa || (object.btoa = function(input) {
+                var str = String(input);
+                for (var block, charCode, idx = 0, map = chars, output = ""; str.charAt(idx | 0) || (map = "=", 
+                idx % 1); output += map.charAt(63 & block >> 8 - idx % 1 * 8)) {
+                    charCode = str.charCodeAt(idx += 3 / 4);
+                    if (charCode > 255) {
+                        throw new InvalidCharacterError("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
+                    }
+                    block = block << 8 | charCode;
+                }
+                return output;
+            });
+            object.atob || (object.atob = function(input) {
+                var str = String(input).replace(/=+$/, "");
+                if (str.length % 4 == 1) {
+                    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
+                }
+                for (var bc = 0, bs, buffer, idx = 0, output = ""; buffer = str.charAt(idx++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, 
+                bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+                    buffer = chars.indexOf(buffer);
+                }
+                return output;
+            });
+        })();
+    }, /*!*****************************************!*\
+  !*** ./~/xcomponent/src/lib/promise.js ***!
+  \*****************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.denodeify = denodeify;
+        exports.promisify = promisify;
+        exports.getter = getter;
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        function denodeify(method) {
+            return function() {
+                var self = this;
+                var args = Array.prototype.slice.call(arguments);
+                if (args.length >= method.length) {
+                    return _promise.SyncPromise.resolve(method.apply(self, args));
+                }
+                return new _promise.SyncPromise(function(resolve, reject) {
+                    args.push(function(err, result) {
+                        if (err && !(err instanceof Error)) {
+                            throw new Error("Passed non-Error object in callback: [ " + err + " ] -- callbacks should either be called with callback(new Error(...)) or callback(null, result).");
+                        }
+                        return err ? reject(err) : resolve(result);
+                    });
+                    return method.apply(self, args);
+                });
+            };
+        }
+        function promisify(method) {
+            var prom = _promise.SyncPromise.resolve();
+            return function() {
+                var _this = this, _arguments = arguments;
+                return prom.then(function() {
+                    return method.apply(_this, _arguments);
+                });
+            };
+        }
+        function getter(method) {
+            return function() {
+                var _this2 = this;
+                return new _promise.SyncPromise(function(resolve, reject) {
+                    var result = method.call(_this2, resolve, reject);
+                    if (result && result.then instanceof Function) {
+                        return result.then(resolve, reject);
+                    }
+                    if (result !== undefined) {
+                        return resolve(result);
+                    }
+                });
+            };
+        }
     }, /*!**********************************************!*\
   !*** ./~/xcomponent/src/component/window.js ***!
   \**********************************************/
@@ -4837,8 +4839,8 @@
         exports.getParentComponentWindow = exports.getParentWindow = exports.isXComponentWindow = exports.parseWindowName = undefined;
         exports.buildChildWindowName = buildChildWindowName;
         exports.getPosition = getPosition;
-        var _lib = __webpack_require__(/*! ../lib */ 7);
-        var _constants = __webpack_require__(/*! ../constants */ 6);
+        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _constants = __webpack_require__(/*! ../constants */ 55);
         function buildChildWindowName(prefix) {
             var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             props.id = (0, _lib.uniqueID)();
@@ -4917,6 +4919,66 @@
                 y: top
             };
         }
+    }, /*!***************************************!*\
+  !*** ./~/xcomponent/src/constants.js ***!
+  \***************************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.PROP_DEFER_TO_URL = exports.MAX_Z_INDEX = exports.CONTEXT_TYPES_LIST = exports.CLOSE_REASONS = exports.EVENT_NAMES = exports.CLASS_NAMES = exports.CONTEXT_TYPES = exports.PROP_TYPES_LIST = exports.PROP_TYPES = exports.POST_MESSAGE = exports.XCOMPONENT = undefined;
+        var _lib = __webpack_require__(/*! ./lib */ 48);
+        var XCOMPONENT = exports.XCOMPONENT = "xcomponent";
+        var POST_MESSAGE = exports.POST_MESSAGE = {
+            INIT: XCOMPONENT + "_init",
+            PROPS: XCOMPONENT + "_props",
+            PROP_CALLBACK: XCOMPONENT + "_prop_callback",
+            CLOSE: XCOMPONENT + "_close",
+            REDIRECT: XCOMPONENT + "_redirect",
+            RESIZE: XCOMPONENT + "_resize",
+            RENDER: XCOMPONENT + "_render",
+            ERROR: XCOMPONENT + "_error",
+            HIDE: XCOMPONENT + "_hide"
+        };
+        var PROP_TYPES = exports.PROP_TYPES = {
+            STRING: "string",
+            OBJECT: "object",
+            FUNCTION: "function",
+            BOOLEAN: "boolean",
+            NUMBER: "number"
+        };
+        var PROP_TYPES_LIST = exports.PROP_TYPES_LIST = (0, _lib.values)(PROP_TYPES);
+        var CONTEXT_TYPES = exports.CONTEXT_TYPES = {
+            IFRAME: "iframe",
+            LIGHTBOX: "lightbox",
+            POPUP: "popup"
+        };
+        var CLASS_NAMES = exports.CLASS_NAMES = {
+            XCOMPONENT: "" + XCOMPONENT,
+            COMPONENT: XCOMPONENT + "-component",
+            CLOSE: XCOMPONENT + "-close",
+            FOCUS: XCOMPONENT + "-focus",
+            ELEMENT: XCOMPONENT + "-element",
+            IFRAME: XCOMPONENT + "-iframe",
+            LIGHTBOX: XCOMPONENT + "-lightbox",
+            POPUP: XCOMPONENT + "-popup",
+            CLOSING: XCOMPONENT + "-closing"
+        };
+        var EVENT_NAMES = exports.EVENT_NAMES = {
+            CLICK: "click"
+        };
+        var CLOSE_REASONS = exports.CLOSE_REASONS = {
+            TEMPLATE_BUTTON: "template_button",
+            PARENT_CALL: "parent_call",
+            CHILD_CALL: "child_call",
+            AUTOCLOSE: "autoclose",
+            CLOSE_DETECTED: "close_detected",
+            PARENT_CLOSE_DETECTED: "parent_close_detected"
+        };
+        var CONTEXT_TYPES_LIST = exports.CONTEXT_TYPES_LIST = (0, _lib.values)(CONTEXT_TYPES);
+        var MAX_Z_INDEX = exports.MAX_Z_INDEX = 2147483647;
+        var PROP_DEFER_TO_URL = exports.PROP_DEFER_TO_URL = "xcomponent_prop_defer_to_url";
     }, /*!*********************************************!*\
   !*** ./~/xcomponent/src/component/props.js ***!
   \*********************************************/
@@ -4927,9 +4989,9 @@
         });
         exports.normalizeProp = normalizeProp;
         exports.normalizeProps = normalizeProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        var _lib = __webpack_require__(/*! ../lib */ 7);
-        var _constants = __webpack_require__(/*! ../constants */ 6);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        var _lib = __webpack_require__(/*! ../lib */ 48);
+        var _constants = __webpack_require__(/*! ../constants */ 55);
         function normalizeProp(component, instance, props, key) {
             var prop = component.props[key];
             var value = props[key];
@@ -5019,9 +5081,9 @@
             value: true
         });
         exports.normalizeChildProps = normalizeChildProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        var _lib = __webpack_require__(/*! ../../lib */ 7);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         function normalizeChildProps(component, props) {
             var result = {};
             for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -5125,15 +5187,15 @@
                 return Constructor;
             };
         }();
-        var _client = __webpack_require__(/*! beaver-logger/client */ 43);
+        var _client = __webpack_require__(/*! beaver-logger/client */ 36);
         var _client2 = _interopRequireDefault(_client);
-        var _src = __webpack_require__(/*! post-robot/src */ 14);
+        var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
-        var _base = __webpack_require__(/*! ../base */ 54);
-        var _window = __webpack_require__(/*! ../window */ 55);
-        var _lib = __webpack_require__(/*! ../../lib */ 7);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        var _base = __webpack_require__(/*! ../base */ 47);
+        var _window = __webpack_require__(/*! ../window */ 54);
+        var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         var _drivers = __webpack_require__(/*! ./drivers */ 59);
         var _validate = __webpack_require__(/*! ./validate */ 60);
         var _props = __webpack_require__(/*! ./props */ 61);
@@ -5330,6 +5392,7 @@
                         _this4.listen(_this4.window);
                         _this4.watchForClose();
                         return _this4.buildUrl().then(function(url) {
+                            _src2["default"].linkUrl(_this4.window, url);
                             _this4.loadUrl(context, url);
                             _this4.runTimeout();
                             return _this4.onInit;
@@ -5348,7 +5411,6 @@
                         windowName: this.childWindowName
                     });
                     _drivers.RENDER_DRIVERS[context].open.call(this, element);
-                    this.watchForClose();
                 }
             }, {
                 key: "preRender",
@@ -5364,6 +5426,7 @@
                     this.setForCleanup("context", context);
                     this.createParentTemplate(context);
                     this.open(element, context);
+                    this.watchForClose();
                     this.createComponentTemplate();
                     this.setForCleanup("preRendered", true);
                 }
@@ -5410,9 +5473,7 @@
                             if (!_this5.window) {
                                 _this5.setForCleanup("window", parentWindow.frames[_this5.childWindowName]);
                             }
-                            _this5.listen(_this5.window);
-                            _this5.watchForClose();
-                            return _this5.onInit;
+                            return _this5;
                         });
                     });
                 }
@@ -5422,7 +5483,7 @@
                     var _this6 = this;
                     var closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
                         _this6.component.log("detect_close_child");
-                        _this6.props.onClose()["finally"](function() {
+                        _this6.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED)["finally"](function() {
                             _this6.destroy();
                         });
                     });
@@ -5521,7 +5582,7 @@
                             };
                         });
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.CLOSE, function(source, data) {
-                        this.close();
+                        this.close(data.reason);
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER, function(source, data) {
                         var _this11 = this;
                         var component = this.component.getByTag(data.tag);
@@ -5541,8 +5602,8 @@
                         }).then(function() {
                             return {
                                 childExports: instance.childExports,
-                                close: function close() {
-                                    return instance.close();
+                                close: function close(reason) {
+                                    return instance.close(reason);
                                 }
                             };
                         });
@@ -5583,11 +5644,12 @@
                 key: "close",
                 value: function close() {
                     var _this12 = this;
+                    var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
                     this.component.log("close");
                     if (this.parentTemplate) {
                         this.parentTemplate.className += " " + _constants.CLASS_NAMES.CLOSING;
                     }
-                    return this.props.onClose().then(function() {
+                    return this.props.onClose(reason).then(function() {
                         return new _promise.SyncPromise(function(resolve) {
                             if (_this12.component.closeDelay && _this12.context !== _constants.CONTEXT_TYPES.POPUP) {
                                 setTimeout(resolve, _this12.component.closeDelay);
@@ -5623,7 +5685,9 @@
                         this.window.document.write(html);
                         this.window.document.close();
                     } catch (err) {
-                        this.window.location = "javascript: document.open(); document.write(JSON.stringify(html)); document.close();";
+                        try {
+                            this.window.location = "javascript: document.open(); document.write(JSON.stringify(html)); document.close();";
+                        } catch (err2) {}
                     }
                 }
             }, {
@@ -5650,7 +5714,7 @@
                         return _this13.focus();
                     });
                     (0, _lib.addEventToClass)(this.parentTemplate, _constants.CLASS_NAMES.CLOSE, _constants.EVENT_NAMES.CLICK, function(event) {
-                        return _this13.close();
+                        return _this13.close(_constants.CLOSE_REASONS.TEMPLATE_BUTTON);
                     });
                     this.registerForCleanup(function() {
                         document.body.removeChild(_this13.parentTemplate);
@@ -5714,9 +5778,9 @@
         exports.RENDER_DRIVERS = undefined;
         var _RENDER_DRIVERS;
         var _error = __webpack_require__(/*! ../../error */ 5);
-        var _lib = __webpack_require__(/*! ../../lib */ 7);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
-        var _window = __webpack_require__(/*! ../window */ 55);
+        var _lib = __webpack_require__(/*! ../../lib */ 48);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
+        var _window = __webpack_require__(/*! ../window */ 54);
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -5833,13 +5897,13 @@
                 container.style.zIndex = _constants.MAX_Z_INDEX;
                 container.style.position = "fixed";
                 if (width) {
-                    container.className += " set-width";
-                    this.iframe.style.width = width + "px";
+                    this.parentTemplate.className += " set-width";
+                    this.iframe.style.width = "100%";
                     container.style.width = width + "px";
                     container.style.left = "50%";
                     container.style.marginLeft = "-" + Math.floor(width / 2) + "px";
                 } else {
-                    container.className += " max-width";
+                    this.parentTemplate.className += " max-width";
                     this.iframe.style.width = "100%";
                     container.style.width = "100%";
                     container.style.left = 0;
@@ -5847,13 +5911,13 @@
                     container.width = "100%";
                 }
                 if (height) {
-                    container.className += " set-height";
-                    this.iframe.style.height = height + "px";
+                    this.parentTemplate.className += " set-height";
+                    this.iframe.style.height = "100%";
                     container.style.height = height + "px";
                     container.style.top = "50%";
                     container.style.marginTop = "-" + Math.floor(height / 2) + "px";
                 } else {
-                    container.className += " max-height";
+                    this.parentTemplate.className += " max-height";
                     this.iframe.style.height = "100%";
                     container.style.height = "100%";
                     container.style.top = 0;
@@ -5880,7 +5944,7 @@
         exports.validateProp = validateProp;
         exports.validateProps = validateProps;
         exports.validate = validate;
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         function validateProp(prop, key, value) {
             var hasProp = value !== null && value !== undefined && value !== "";
             if (!hasProp) {
@@ -5968,11 +6032,11 @@
         };
         exports.propsToQuery = propsToQuery;
         exports.normalizeParentProps = normalizeParentProps;
-        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 13);
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
         var _validate = __webpack_require__(/*! ./validate */ 60);
-        var _lib = __webpack_require__(/*! ../../lib */ 7);
+        var _lib = __webpack_require__(/*! ../../lib */ 48);
         var _props = __webpack_require__(/*! ../props */ 56);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         function propsToQuery(propsDef, props) {
             var params = [];
             return _promise.SyncPromise.all(Object.keys(props).map(function(key) {
@@ -6041,7 +6105,7 @@
                             instance.component.log("autoclose", {
                                 prop: key
                             });
-                            return instance.close().then(function() {
+                            return instance.close(_constants.CLOSE_REASONS.AUTOCLOSE).then(function() {
                                 return value.apply(_this, _arguments);
                             });
                         };
@@ -6127,7 +6191,7 @@
         };
         exports.validate = validate;
         var _props = __webpack_require__(/*! ./props */ 62);
-        var _constants = __webpack_require__(/*! ../../constants */ 6);
+        var _constants = __webpack_require__(/*! ../../constants */ 55);
         function validateProps(options) {
             if (options.props && !(_typeof(options.props) === "object")) {
                 throw new Error("[" + options.tag + "] Expected options.props to be an object");
@@ -6359,7 +6423,7 @@
             value: true
         });
         exports.react = undefined;
-        var _lib = __webpack_require__(/*! ../lib */ 7);
+        var _lib = __webpack_require__(/*! ../lib */ 48);
         var react = exports.react = {
             isActive: function isActive() {
                 return Boolean(window.React);
@@ -6394,7 +6458,7 @@
             value: true
         });
         exports.angular = undefined;
-        var _lib = __webpack_require__(/*! ../lib */ 7);
+        var _lib = __webpack_require__(/*! ../lib */ 48);
         var angular = exports.angular = {
             isActive: function isActive() {
                 return Boolean(window.angular);
@@ -6530,6 +6594,11 @@
             autoResize: false,
             closeDelay: 1e3,
             props: {
+                init: {
+                    type: "function",
+                    required: false,
+                    once: true
+                },
                 paymentToken: {
                     type: "string",
                     required: true,
@@ -6564,7 +6633,7 @@
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
-        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper.set-width.set-height {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n</style>\n';
+        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-modal {\n        display: none;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n</style>\n';
     }, /*!*******************************************************!*\
   !*** ./src/components/checkout/componentTemplate.htm ***!
   \*******************************************************/
@@ -6657,6 +6726,9 @@
         }
         var PROD_BASE_URL = "https://www.paypal.com/checkoutnow";
         var env = "production";
+        function redirect(url) {
+            window.location = url;
+        }
         function matchToken(token) {
             return token && token.match(/^(EC-)?[A-Z0-9]{17}$/);
         }
@@ -6692,8 +6764,7 @@
                     throw new Error('Expected "' + token + '" passed to window.paypal.checkout.startFlow to contain express-checkout payment token');
                 }
                 if (!(0, _eligibility.isEligible)()) {
-                    window.location = getFullpageRedirectUrl(token);
-                    return;
+                    return redirect(getFullpageRedirectUrl(token));
                 }
                 if (!matchToken(token)) {
                     _this.updateProps({
@@ -6716,16 +6787,31 @@
         }
         function initPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            var initialCancelUrl = void 0;
             return _components.PayPalCheckout.init(_extends({
                 env: env,
                 paymentToken: getPaymentToken,
+                init: function init(data) {
+                    initialCancelUrl = data.cancelUrl;
+                },
                 onPaymentAuthorize: function onPaymentAuthorize(_ref) {
                     var returnUrl = _ref.returnUrl;
-                    window.location = returnUrl;
+                    return redirect(returnUrl);
                 },
                 onPaymentCancel: function onPaymentCancel(_ref2) {
                     var cancelUrl = _ref2.cancelUrl;
-                    window.location = cancelUrl;
+                    return redirect(cancelUrl);
+                },
+                onClose: function onClose(reason) {
+                    if (!initialCancelUrl) {
+                        return;
+                    }
+                    var CLOSE_REASONS = _src2["default"].CONSTANTS.CLOSE_REASONS;
+                    if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED ].indexOf(reason) !== -1) {
+                        return this.props.onPaymentCancel({
+                            cancelUrl: initialCancelUrl
+                        });
+                    }
                 }
             }, props));
         }
@@ -6745,7 +6831,7 @@
                     });
                 } else {
                     initPayPalCheckout({
-                        paymentToken: _src2["default"].PROP_DEFER_TO_URL
+                        paymentToken: _src2["default"].CONSTANTS.PROP_DEFER_TO_URL
                     }).hijackButton(button);
                 }
             }
@@ -6762,8 +6848,7 @@
                 throw new Error('Expected "' + token + '" passed to window.paypal.checkout.startFlow to contain express-checkout payment token');
             }
             if (!(0, _eligibility.isEligible)()) {
-                window.location = getFullpageRedirectUrl(token);
-                return;
+                return redirect(getFullpageRedirectUrl(token));
             }
             initPayPalCheckout({
                 url: matchToken(token) ? null : token,
@@ -6808,7 +6893,7 @@
                 }
                 initPayPalCheckout({
                     env: buttonEnv,
-                    paymentToken: _src2["default"].PROP_DEFER_TO_URL
+                    paymentToken: _src2["default"].CONSTANTS.PROP_DEFER_TO_URL
                 }).hijackButton(button);
             }
         });
