@@ -21,6 +21,11 @@ let env = 'production';
 
 
 
+function redirect(url) {
+    window.location = url;
+}
+
+
 function matchToken(token) {
     return token && token.match(/^(EC-)?[A-Z0-9]{17}$/);
 }
@@ -105,8 +110,7 @@ function getPaymentToken(resolve, reject) {
         }
 
         if (!isEligible()) {
-            window.location = getFullpageRedirectUrl(token);
-            return;
+            return redirect(getFullpageRedirectUrl(token));
         }
 
         if (!matchToken(token)) {
@@ -175,14 +179,19 @@ function initPayPalCheckout(props = {}) {
         },
 
         onPaymentAuthorize({ returnUrl }) {
-            window.location = returnUrl;
+            return redirect(returnUrl);
         },
 
         onPaymentCancel({ cancelUrl }) {
-            window.location = cancelUrl;
+            return redirect(cancelUrl);
         },
 
         onClose(reason) {
+
+            if (!initialCancelUrl) {
+                return;
+            }
+
             let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
             if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED ].indexOf(reason) !== -1) {
@@ -289,8 +298,7 @@ function startFlow(token) {
     }
 
     if (!isEligible()) {
-        window.location = getFullpageRedirectUrl(token);
-        return;
+        return redirect(getFullpageRedirectUrl(token));
     }
 
     initPayPalCheckout({
