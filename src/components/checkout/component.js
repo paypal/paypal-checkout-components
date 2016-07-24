@@ -4,13 +4,16 @@ import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
 import { isDevice } from '../../lib';
+import { config } from '../../config';
 
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
     name: 'ppxo',
 
-    defaultEnv: 'production',
+    get defaultEnv() {
+        return  config.env || 'production';
+    },
 
     envUrls: {
         local: 'http://localhost.paypal.com:8000/webapps/hermes',
