@@ -2738,11 +2738,17 @@
                 return _conf.CONSTANTS;
             }
         });
+        exports.disable = disable;
+        var _drivers = __webpack_require__(/*! ../drivers */ 12);
         function enableMockMode() {
             _conf.CONFIG.MOCK_MODE = true;
         }
         function disableMockMode() {
             _conf.CONFIG.MOCK_MODE = false;
+        }
+        function disable() {
+            delete window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT];
+            window.removeEventListener("message", _drivers.messageListener);
         }
     }, /*!*********************************************!*\
   !*** ./~/xcomponent/src/component/index.js ***!
@@ -2823,6 +2829,7 @@
         var _child = __webpack_require__(/*! ../child */ 46);
         var _parent = __webpack_require__(/*! ../parent */ 58);
         var _props = __webpack_require__(/*! ./props */ 62);
+        var _window = __webpack_require__(/*! ../window */ 54);
         var _constants = __webpack_require__(/*! ../../constants */ 55);
         var _validate2 = __webpack_require__(/*! ./validate */ 63);
         var _parent2 = __webpack_require__(/*! ./templates/parent.htm */ 64);
@@ -2915,6 +2922,11 @@
                 }
             }
             _createClass(Component, [ {
+                key: "isXComponent",
+                value: function isXComponent() {
+                    return (0, _window.isXComponentWindow)(window.name);
+                }
+            }, {
                 key: "parent",
                 value: function parent(options) {
                     return new _parent.ParentComponent(this, options);
@@ -4083,11 +4095,6 @@
                     })["catch"](function(err) {
                         return _this2.onError(err);
                     });
-                }
-            }, {
-                key: "isXComponent",
-                value: function isXComponent() {
-                    return (0, _window.isXComponentWindow)(window.name);
                 }
             }, {
                 key: "setProps",
@@ -5384,7 +5391,6 @@
             _createClass(ParentComponent, [ {
                 key: "setProps",
                 value: function setProps(props) {
-                    props.xcomponent = this.component.tag;
                     (0, _validate.validateProps)(this.component, props);
                     this.props = (0, _props.normalizeParentProps)(this.component, this, props);
                 }
@@ -6239,11 +6245,6 @@
             value: true
         });
         var internalProps = exports.internalProps = {
-            xcomponent: {
-                type: "string",
-                required: false,
-                queryParam: true
-            },
             url: {
                 type: "string",
                 required: false,
