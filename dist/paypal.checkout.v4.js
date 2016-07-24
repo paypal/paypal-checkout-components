@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 77);
+        var _legacy = __webpack_require__(/*! ./legacy */ 78);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -46,16 +46,28 @@
                 }
             });
         });
+        var _setup = __webpack_require__(/*! ./setup */ 80);
+        Object.keys(_setup).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _setup[key];
+                }
+            });
+        });
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        __webpack_require__(/*! ./bridge */ 79);
+        var _src3 = __webpack_require__(/*! post-robot/src */ 6);
+        var _src4 = _interopRequireDefault(_src3);
+        __webpack_require__(/*! ./bridge */ 81);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
         module.exports.xcomponent = _src2["default"];
-        module.exports.postRobot = _src2["default"].postRobot;
+        module.exports.postRobot = _src4["default"];
     }, /*!*********************************!*\
   !*** ./src/components/index.js ***!
   \*********************************/
@@ -512,7 +524,7 @@
             MOCK_MODE: false,
             ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.POST_MESSAGE, true), 
             _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.GLOBAL_METHOD, true), 
-            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, true), 
+            _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.REMOTE_BRIDGE, true), 
             _defineProperty(_ALLOWED_POST_MESSAGE, _constants.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, true), 
             _ALLOWED_POST_MESSAGE)
         };
@@ -552,7 +564,7 @@
             SEND_STRATEGIES: {
                 POST_MESSAGE: "postrobot_post_message",
                 GLOBAL_METHOD: "postrobot_global_method",
-                FOREIGN_BRIDGE: "postrobot_foreign_bridge",
+                REMOTE_BRIDGE: "postrobot_remote_bridge",
                 LOCAL_BRIDGE: "postrobot_local_bridge"
             }
         };
@@ -705,7 +717,7 @@
             } else {
                 return;
             }
-            (0, _lib.registerWindow)(message.source, source);
+            (0, _lib.registerWindow)(message.source, source, origin);
             var proxyWindow = void 0;
             try {
                 proxyWindow = getProxy(source, message);
@@ -728,30 +740,32 @@
                 delete message.target;
                 return (0, _send.sendMessage)(proxyWindow, message, message.domain || "*", true);
             }
+            var originalSource = source;
             if (message.originalSource !== message.source) {
                 if (message.sourceHint) {
-                    source = getWindow(message.sourceHint, message.originalSource);
+                    originalSource = getWindow(message.sourceHint, message.originalSource);
                     delete message.sourceHint;
                 } else {
-                    var originalSource = (0, _lib.getWindowById)(message.originalSource);
-                    if (originalSource) {
-                        source = originalSource;
-                    } else {
+                    originalSource = (0, _lib.getWindowById)(message.originalSource);
+                    if (!originalSource) {
                         throw new Error("Can not find original message source: " + message.originalSource);
                     }
                 }
-                (0, _lib.registerWindow)(message.originalSource, source);
+                (0, _lib.registerWindow)(message.originalSource, originalSource, message.originalSourceDomain);
             }
-            if ((0, _lib.isWindowClosed)(source)) {
+            if (originalSource !== source) {
+                (0, _compat.registerBridge)(source, originalSource);
+            }
+            if ((0, _lib.isWindowClosed)(originalSource)) {
                 return _lib.log.debug("Source window is closed: " + message.originalSource + " - can not send " + message.type + " " + message.name);
             }
             if (_conf.CONFIG.MOCK_MODE) {
-                return _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+                return _types.RECEIVE_MESSAGE_TYPES[message.type](originalSource, message, origin);
             }
             if (message.data) {
-                message.data = (0, _lib.deserializeMethods)(source, message.data);
+                message.data = (0, _lib.deserializeMethods)(originalSource, message.data);
             }
-            _types.RECEIVE_MESSAGE_TYPES[message.type](source, message, origin);
+            _types.RECEIVE_MESSAGE_TYPES[message.type](originalSource, message, origin);
         }
         function messageListener(event) {
             try {
@@ -1378,7 +1392,38 @@
                 return safeInterval;
             },
             getDomain: function getDomain(win) {
+                win = win || window;
                 return win.mockDomain || win.location.protocol + "//" + win.location.host;
+            },
+            getDomainFromUrl: function getDomainFromUrl(url) {
+                var domain = void 0;
+                if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
+                    domain = url;
+                } else {
+                    return this.getDomain();
+                }
+                domain = domain.split("/").slice(0, 3).join("/");
+                return domain;
+            },
+            isFrameOwnedBy: function isFrameOwnedBy(win, frame) {
+                try {
+                    if (frame.parent === win) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (err) {
+                    try {
+                        for (var i = 0; i < win.frames.length; i++) {
+                            if (win.frames[i] === frame) {
+                                return true;
+                            }
+                        }
+                    } catch (err2) {
+                        return false;
+                    }
+                }
+                return false;
             }
         };
     }, /*!*************************************!*\
@@ -1508,10 +1553,10 @@
         exports.getParentWindow = getParentWindow;
         exports.getWindowId = getWindowId;
         exports.getWindowById = getWindowById;
+        exports.getWindowDomain = getWindowDomain;
         exports.registerWindow = registerWindow;
         exports.isWindowEqual = isWindowEqual;
         exports.isSameTopWindow = isSameTopWindow;
-        exports.onOpenWindow = onOpenWindow;
         exports.linkUrl = linkUrl;
         var _util = __webpack_require__(/*! ./util */ 18);
         function safeGet(obj, prop) {
@@ -1621,7 +1666,22 @@
                 }
             }
         }
-        function registerWindow(id, win) {
+        function getWindowDomain(win) {
+            if (win === window) {
+                return _util.util.getDomain(window);
+            }
+            for (var i = windows.length - 1; i >= 0; i--) {
+                var map = windows[i];
+                try {
+                    if (map.win === win && map.domain) {
+                        return map.domain;
+                    }
+                } catch (err) {
+                    continue;
+                }
+            }
+        }
+        function registerWindow(id, win, domain) {
             for (var _iterator2 = windows, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref2;
                 if (_isArray2) {
@@ -1635,6 +1695,7 @@
                 var map = _ref2;
                 try {
                     if (map.id === id && map.win === win) {
+                        map.domain = domain;
                         return;
                     }
                 } catch (err) {
@@ -1648,7 +1709,8 @@
             }
             windows.push({
                 id: id,
-                win: win
+                win: win,
+                domain: domain
             });
         }
         function isWindowEqual(win1, win2) {
@@ -1669,9 +1731,13 @@
                 return false;
             }
         }
-        var windowOpenListeners = [];
-        function onOpenWindow(method) {
-            windowOpenListeners.push(method);
+        function linkUrl(name, win, url) {
+            var domain = _util.util.getDomainFromUrl(url);
+            registerWindow(name, win, domain);
+            domainMatches.push({
+                win: win,
+                match: _util.util.getDomain() === domain
+            });
         }
         var openWindow = window.open;
         window.open = function(url, name, x, y) {
@@ -1680,37 +1746,13 @@
                 arguments[1] = name;
             }
             var win = _util.util.apply(openWindow, this, arguments);
-            for (var _iterator3 = windowOpenListeners, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
-                }
-                var listener = _ref3;
-                listener(url, win);
+            if (url) {
+                linkUrl(name, win, url);
+            } else {
+                registerWindow(name, win);
             }
-            registerWindow(name, win);
             return win;
         };
-        function linkUrl(win, url) {
-            for (var _iterator4 = windowOpenListeners, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i4++];
-                } else {
-                    _i4 = _iterator4.next();
-                    if (_i4.done) break;
-                    _ref4 = _i4.value;
-                }
-                var listener = _ref4;
-                listener(url, win);
-            }
-        }
     }, /*!*****************************************!*\
   !*** ./~/post-robot/src/lib/methods.js ***!
   \*****************************************/
@@ -1815,12 +1857,10 @@
         var _windows = __webpack_require__(/*! ./windows */ 20);
         var _interface = __webpack_require__(/*! ../interface */ 7);
         var _log = __webpack_require__(/*! ./log */ 19);
-        var _promise = __webpack_require__(/*! ./promise */ 15);
-        var readyWindows = [];
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
         var readyPromises = [];
         function initOnReady() {
-            (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.READY, function(source, data) {
-                readyWindows.push(source);
+            (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.READY, function(win, data) {
                 for (var _iterator = readyPromises, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
                     if (_isArray) {
@@ -1832,10 +1872,15 @@
                         _ref = _i.value;
                     }
                     var item = _ref;
-                    if (item.win === source) {
-                        item.resolve(item.win);
+                    if (item.win === win) {
+                        item.promise.resolve(win);
+                        return;
                     }
                 }
+                readyPromises.push({
+                    win: win,
+                    promise: new _promise.SyncPromise().resolve(win)
+                });
             });
             var parent = (0, _windows.getParentWindow)();
             if (parent) {
@@ -1847,19 +1892,30 @@
         function onWindowReady(win) {
             var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
             var name = arguments.length <= 2 || arguments[2] === undefined ? "Window" : arguments[2];
-            return new _promise.promise.Promise(function(resolve, reject) {
-                if (readyWindows.indexOf(win) !== -1) {
-                    return resolve(win);
+            for (var _iterator2 = readyPromises, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
                 } else {
-                    readyPromises.push({
-                        win: win,
-                        resolve: resolve
-                    });
-                    setTimeout(function() {
-                        return reject(new Error(name + " did not load after " + timeout + "ms"));
-                    }, timeout);
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
                 }
+                var item = _ref2;
+                if (item.win === win) {
+                    return item.promise;
+                }
+            }
+            var promise = new _promise.SyncPromise();
+            readyPromises.push({
+                win: win,
+                promise: promise
             });
+            setTimeout(function() {
+                return promise.reject(new Error(name + " did not load after " + timeout + "ms"));
+            }, timeout);
+            return promise;
         }
     }, /*!******************************************!*\
   !*** ./~/post-robot/src/compat/index.js ***!
@@ -1907,23 +1963,21 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.getBridgeByDomain = getBridgeByDomain;
-        exports.getBridgeByWindow = getBridgeByWindow;
+        exports.getLocalBridgeForDomain = getLocalBridgeForDomain;
+        exports.getLocalBridgeForWindow = getLocalBridgeForWindow;
+        exports.getRemoteBridgeForDomain = getRemoteBridgeForDomain;
+        exports.getRemoteBridgeForWindow = getRemoteBridgeForWindow;
+        exports.registerBridge = registerBridge;
         exports.openBridge = openBridge;
-        exports.getRemoteBridge = getRemoteBridge;
         var _conf = __webpack_require__(/*! ../conf */ 9);
         var _lib = __webpack_require__(/*! ../lib */ 14);
         var BRIDGE_NAME_PREFIX = "__postrobot_bridge__";
-        function getDomain(url) {
-            var domain = void 0;
-            if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
-                domain = url;
-            } else {
-                domain = window.location.href;
-            }
-            domain = domain.split("/").slice(0, 3).join("/");
-            return domain;
-        }
+        var pendingBridges = {};
+        var bridges = [];
+        var ZONES = {
+            LOCAL: "local",
+            REMOTE: "remote"
+        };
         function documentReady() {
             return new _lib.promise.Promise(function(resolve) {
                 if (window.document && window.document.body) {
@@ -1934,48 +1988,104 @@
                 });
             });
         }
-        var bridges = [];
-        function getBridgeByDomain(domain) {
-            for (var _iterator = bridges, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
+        function getBridgeForDomain(domain) {
+            var zone = arguments.length <= 1 || arguments[1] === undefined ? ZONES.LOCAL : arguments[1];
+            return _lib.promise.run(function() {
+                if (zone === ZONES.LOCAL && pendingBridges[domain]) {
+                    return pendingBridges[domain];
                 }
-                var bridge = _ref;
-                if (domain === bridge.domain) {
-                    return bridge.bridge;
+                for (var _iterator = bridges, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        _i = _iterator.next();
+                        if (_i.done) break;
+                        _ref = _i.value;
+                    }
+                    var item = _ref;
+                    if (item.domain === domain && item.zone === zone) {
+                        return item.bridge;
+                    }
                 }
-            }
+            }).then(function(bridge) {
+                if (bridge && zone === ZONES.LOCAL) {
+                    return (0, _lib.onWindowReady)(bridge);
+                }
+                return bridge;
+            });
         }
-        function getBridgeByWindow(win) {
-            for (var _iterator2 = bridges, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
+        function getBridgeForWindow(win) {
+            var zone = arguments.length <= 1 || arguments[1] === undefined ? ZONES.LOCAL : arguments[1];
+            return _lib.promise.run(function() {
+                if ((0, _lib.getOpener)(win) === window) {
+                    return (0, _lib.onWindowReady)(win);
                 }
-                var bridge = _ref2;
-                if (bridge.windows.indexOf(win) !== -1) {
-                    return bridge.bridge;
+            }).then(function() {
+                for (var _iterator2 = bridges, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var item = _ref2;
+                    if (item.win === win && item.zone === zone) {
+                        return item.bridge;
+                    }
                 }
-            }
-            return Promise.resolve();
+                var domain = (0, _lib.getWindowDomain)(win);
+                if (domain) {
+                    return getBridgeForDomain(domain, zone);
+                }
+            }).then(function(bridge) {
+                if (bridge && zone === ZONES.LOCAL) {
+                    return (0, _lib.onWindowReady)(bridge);
+                }
+                return bridge;
+            });
         }
-        var windowBuffer = {};
-        (0, _lib.onOpenWindow)(function(url, win) {
-            if (!url) {
-                return;
-            }
-            var domain = getDomain(url);
+        function getLocalBridgeForDomain(domain) {
+            return getBridgeForDomain(domain, ZONES.LOCAL);
+        }
+        function getLocalBridgeForWindow(win) {
+            return getBridgeForWindow(win, ZONES.LOCAL);
+        }
+        function getRemoteBridgeForDomain(domain) {
+            return getBridgeForDomain(domain, ZONES.REMOTE);
+        }
+        function getRemoteBridgeForWindow(win) {
+            return _lib.promise.run(function() {
+                return getBridgeForWindow(win, ZONES.REMOTE);
+            }).then(function(bridge) {
+                if (bridge) {
+                    return bridge;
+                }
+                try {
+                    if (!win || !win.frames || !win.frames.length) {
+                        return;
+                    }
+                    for (var i = 0; i < win.frames.length; i++) {
+                        try {
+                            var frame = win.frames[i];
+                            if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                                return frame;
+                            }
+                        } catch (err) {
+                            continue;
+                        }
+                    }
+                } catch (err) {
+                    return;
+                }
+            });
+        }
+        function registerBridge(bridge, win) {
+            var result = void 0;
             for (var _iterator3 = bridges, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                 var _ref3;
                 if (_isArray3) {
@@ -1986,23 +2096,38 @@
                     if (_i3.done) break;
                     _ref3 = _i3.value;
                 }
-                var bridge = _ref3;
-                if (domain === bridge.domain) {
-                    bridge.windows.push(win);
-                    return;
+                var item = _ref3;
+                if (item.bridge === bridge) {
+                    result = item;
+                    break;
                 }
             }
-            windowBuffer[domain] = windowBuffer[domain] || [];
-            windowBuffer[domain].push(win);
-        });
-        function openBridge(url) {
-            var domain = getDomain(url);
-            var existingBridge = getBridgeByDomain(domain);
-            if (existingBridge) {
-                return existingBridge;
+            if (!result) {
+                var zone = _lib.util.isFrameOwnedBy(window, bridge) ? ZONES.LOCAL : ZONES.REMOTE;
+                result = {
+                    bridge: bridge,
+                    domain: (0, _lib.getWindowDomain)(bridge),
+                    windows: [],
+                    zone: zone
+                };
+                bridges.push(result);
             }
-            var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
-            var bridge = documentReady().then(function(document) {
+            if (win && result.windows.indexOf(win) === -1) {
+                result.windows.push(win);
+            }
+        }
+        function openBridge(url, domain) {
+            domain = domain || _lib.util.getDomainFromUrl(url);
+            var bridgePromise = _lib.promise.run(function() {
+                return getLocalBridgeForDomain(domain);
+            }).then(function(existingBridge) {
+                if (existingBridge) {
+                    return existingBridge;
+                }
+                if (_lib.util.getDomain() === domain) {
+                    return;
+                }
+                var id = BRIDGE_NAME_PREFIX + "_" + _lib.util.uniqueID();
                 _lib.log.debug("Opening bridge:", url);
                 var iframe = document.createElement("iframe");
                 iframe.setAttribute("name", id);
@@ -2017,41 +2142,24 @@
                 iframe.setAttribute("title", "");
                 iframe.setAttribute("role", "presentation");
                 iframe.src = url;
-                document.body.appendChild(iframe);
-                return new _lib.promise.Promise(function(resolve, reject) {
-                    iframe.onload = resolve;
-                    iframe.onerror = reject;
-                }).then(function() {
-                    return (0, _lib.onWindowReady)(iframe.contentWindow, 5e3, "Bridge " + url);
+                return documentReady().then(function(document) {
+                    document.body.appendChild(iframe);
+                    var bridge = iframe.contentWindow;
+                    (0, _lib.registerWindow)(id, bridge, domain);
+                    registerBridge(bridge);
+                    delete pendingBridges[domain];
+                    return new _lib.promise.Promise(function(resolve, reject) {
+                        iframe.onload = resolve;
+                        iframe.onerror = reject;
+                    }).then(function() {
+                        return (0, _lib.onWindowReady)(bridge, 5e3, "Bridge " + url);
+                    }).then(function() {
+                        return bridge;
+                    });
                 });
             });
-            bridges.push({
-                id: id,
-                domain: domain,
-                bridge: bridge,
-                windows: windowBuffer[domain] || []
-            });
-            delete windowBuffer[domain];
-            return bridge;
-        }
-        function getRemoteBridge(win) {
-            try {
-                if (!win || !win.frames || !win.frames.length) {
-                    return;
-                }
-                for (var i = 0; i < win.frames.length; i++) {
-                    try {
-                        var frame = win.frames[i];
-                        if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                            return frame;
-                        }
-                    } catch (err) {
-                        continue;
-                    }
-                }
-            } catch (err) {
-                return;
-            }
+            pendingBridges[domain] = bridgePromise;
+            return bridgePromise;
         }
     }, /*!*******************************************!*\
   !*** ./~/post-robot/src/compat/global.js ***!
@@ -2122,10 +2230,13 @@
             var source = (0, _lib.getWindowId)(window);
             var type = _lib.util.getType();
             var target = (0, _lib.getWindowId)(win);
+            var sourceDomain = _lib.util.getDomain(window);
             return _extends({}, message, options, {
                 id: message.id || id,
                 source: source,
                 originalSource: message.originalSource || source,
+                sourceDomain: sourceDomain,
+                originalSourceDomain: message.sourceDomain || sourceDomain,
                 windowType: type,
                 originalWindowType: message.originalWindowType || type,
                 target: message.target || target
@@ -2243,48 +2354,46 @@
                 source: window,
                 data: JSON.stringify(message, 0, 2)
             });
-        }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.FOREIGN_BRIDGE, function(win, message, domain) {
+        }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.REMOTE_BRIDGE, function(win, message, domain) {
             if ((0, _lib.isSameTopWindow)(window, win)) {
                 throw new Error("Can only use bridge to communicate between two different windows, not between frames");
             }
-            var frame = (0, _compat.getRemoteBridge)(win);
-            if (!frame) {
-                throw new Error("No bridge available in window");
-            }
-            if (!(0, _lib.isSameDomain)(frame)) {
-                throw new Error("Bridge is not on the same domain");
-            }
-            var sourceDomain = _lib.util.getDomain(window);
-            var targetDomain = void 0;
-            try {
-                targetDomain = _lib.util.getDomain(frame);
-            } catch (err) {
-                throw new Error("Can not read bridge window domain: " + err.message);
-            }
-            if (sourceDomain !== targetDomain) {
-                throw new Error("Can not accept global message through bridge - source " + sourceDomain + " does not match bridge " + targetDomain);
-            }
-            if (!_lib.util.safeHasProp(frame, _conf.CONSTANTS.WINDOW_PROPS.POSTROBOT)) {
-                throw new Error("post-robot not available on bridge at " + targetDomain);
-            }
-            message.targetHint = "window.parent";
-            if (window === (0, _lib.getOpener)(win)) {
-                message.sourceHint = "window.opener";
-            }
-            frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
-                origin: _lib.util.getDomain(window),
-                source: window,
-                data: JSON.stringify(message, 0, 2)
+            return (0, _compat.getRemoteBridgeForWindow)(win).then(function(bridge) {
+                if (!bridge) {
+                    throw new Error("No bridge available in window");
+                }
+                var sourceDomain = _lib.util.getDomain(window);
+                var targetDomain = void 0;
+                try {
+                    targetDomain = _lib.util.getDomain(bridge);
+                } catch (err) {
+                    throw new Error("Can not read bridge window domain: " + err.message);
+                }
+                if (sourceDomain !== targetDomain) {
+                    throw new Error("Can not accept global message through bridge - source " + sourceDomain + " does not match bridge " + targetDomain);
+                }
+                if (!_lib.util.safeHasProp(bridge, _conf.CONSTANTS.WINDOW_PROPS.POSTROBOT)) {
+                    throw new Error("post-robot not available on bridge at " + targetDomain);
+                }
+                message.targetHint = "window.parent";
+                if (window === (0, _lib.getOpener)(win)) {
+                    message.sourceHint = "window.opener";
+                }
+                bridge[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].postMessage({
+                    origin: _lib.util.getDomain(window),
+                    source: window,
+                    data: JSON.stringify(message, 0, 2)
+                });
             });
         }), _defineProperty(_SEND_MESSAGE_STRATEG, _conf.CONSTANTS.SEND_STRATEGIES.LOCAL_BRIDGE, function(win, message, domain) {
             if ((0, _lib.isSameTopWindow)(window, win)) {
                 throw new Error("Can only use bridge to communicate between two different windows, not between frames");
             }
-            if (!message.target) {
-                throw new Error("Can not post message down through bridge without target");
-            }
             if (win === (0, _lib.getOpener)(window)) {
                 message.targetHint = "window.parent.opener";
+            }
+            if (!message.target && !message.targetHint) {
+                throw new Error("Can not post message down through bridge without target or targetHint");
             }
             var opener = (0, _lib.getOpener)(win);
             if (opener && window === opener) {
@@ -2293,7 +2402,7 @@
             if (opener && window === opener.parent) {
                 message.sourceHint = "window.opener.parent";
             }
-            return (0, _compat.getBridgeByWindow)(win).then(function(bridge) {
+            return (0, _compat.getLocalBridgeForWindow)(win).then(function(bridge) {
                 if (!bridge) {
                     throw new Error("Bridge not initialized");
                 }
@@ -2443,34 +2552,32 @@
                     name: message.name
                 }, data), "*");
             }
-            return respond({
+            return _lib.promise.Promise.all([ respond({
                 type: _conf.CONSTANTS.POST_MESSAGE_TYPE.ACK
-            }).then(function() {
-                return _lib.promise.run(function() {
-                    if (!options) {
-                        throw new Error("No postmessage request handler for " + message.name + " in " + window.location.href);
+            }), _lib.promise.run(function() {
+                if (!options) {
+                    throw new Error("No postmessage request handler for " + message.name + " in " + window.location.href);
+                }
+                if (options.domain) {
+                    var match = typeof options.domain === "string" && origin === options.domain || options.domain instanceof RegExp && origin.match(options.domain);
+                    if (!match) {
+                        throw new Error("Message origin " + origin + " does not match domain " + options.domain);
                     }
-                    if (options.domain) {
-                        var match = typeof options.domain === "string" && origin === options.domain || options.domain instanceof RegExp && origin.match(options.domain);
-                        if (!match) {
-                            throw new Error("Message origin " + origin + " does not match domain " + options.domain);
-                        }
-                    }
-                    return _lib.promise.deNodeify(options.handler, source, message.data);
-                }).then(function(data) {
-                    return respond({
-                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.RESPONSE,
-                        ack: _conf.CONSTANTS.POST_MESSAGE_ACK.SUCCESS,
-                        data: data
-                    });
-                }, function(err) {
-                    return respond({
-                        type: _conf.CONSTANTS.POST_MESSAGE_TYPE.RESPONSE,
-                        ack: _conf.CONSTANTS.POST_MESSAGE_ACK.ERROR,
-                        error: err.stack ? err.message + "\n" + err.stack : err.toString()
-                    });
+                }
+                return _lib.promise.deNodeify(options.handler, source, message.data);
+            }).then(function(data) {
+                return respond({
+                    type: _conf.CONSTANTS.POST_MESSAGE_TYPE.RESPONSE,
+                    ack: _conf.CONSTANTS.POST_MESSAGE_ACK.SUCCESS,
+                    data: data
                 });
-            })["catch"](function(err) {
+            }, function(err) {
+                return respond({
+                    type: _conf.CONSTANTS.POST_MESSAGE_TYPE.RESPONSE,
+                    ack: _conf.CONSTANTS.POST_MESSAGE_ACK.ERROR,
+                    error: err.stack ? err.message + "\n" + err.stack : err.toString()
+                });
+            }) ])["catch"](function(err) {
                 if (options && options.handleError) {
                     return options.handleError(err);
                 } else {
@@ -2547,6 +2654,7 @@
                 handler = options;
                 options = {};
             }
+            options = options || {};
             options.name = name;
             options.handler = handler || options.handler;
             options.errorHandler = errorHandler || options.errorHandler;
@@ -2558,12 +2666,15 @@
                 handler = options;
                 options = {};
             }
+            options = options || {};
             options.name = name;
             options.handler = handler || options.handler;
             options.errorHandler = errorHandler || options.errorHandler;
             options.once = true;
             var prom = new _lib.promise.Promise(function(resolve, reject) {
-                options.handler = options.handler || resolve;
+                options.handler = options.handler || function(source, data) {
+                    return resolve(data);
+                };
                 options.errorHandler = options.errorHandler || reject;
             });
             var listener = listen(options);
@@ -5273,6 +5384,7 @@
             _createClass(ParentComponent, [ {
                 key: "setProps",
                 value: function setProps(props) {
+                    props.xcomponent = this.component.tag;
                     (0, _validate.validateProps)(this.component, props);
                     this.props = (0, _props.normalizeParentProps)(this.component, this, props);
                 }
@@ -5392,7 +5504,6 @@
                         _this4.listen(_this4.window);
                         _this4.watchForClose();
                         return _this4.buildUrl().then(function(url) {
-                            _src2["default"].linkUrl(_this4.window, url);
                             _this4.loadUrl(context, url);
                             _this4.runTimeout();
                             return _this4.onInit;
@@ -5503,19 +5614,19 @@
                 key: "loadUrl",
                 value: function loadUrl(context, url) {
                     this.component.log("load_url");
+                    _src2["default"].linkUrl(this.childWindowName, this.window, url);
                     return _drivers.RENDER_DRIVERS[context].loadUrl.call(this, url);
                 }
             }, {
                 key: "hijackButton",
                 value: function hijackButton(button, element, context) {
                     var _this7 = this;
-                    context = this.getRenderContext(element, context);
                     this.component.log("hijack_button", {
-                        element: element,
-                        context: context
+                        element: element
                     });
                     return new _promise.SyncPromise(function(resolve, reject) {
                         (0, _lib.hijackButton)(button, function(event, targetElement) {
+                            context = _this7.getRenderContext(element, context);
                             if (_this7.window && !_this7.preRendered) {
                                 event.preventDefault();
                                 throw new Error("[" + _this7.component.tag + "] Component is already rendered");
@@ -6128,6 +6239,11 @@
             value: true
         });
         var internalProps = exports.internalProps = {
+            xcomponent: {
+                type: "string",
+                required: false,
+                queryParam: true
+            },
             url: {
                 type: "string",
                 required: false,
@@ -6569,6 +6685,7 @@
         var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 74);
         var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
         var _lib = __webpack_require__(/*! ../../lib */ 75);
+        var _config = __webpack_require__(/*! ../../config */ 77);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6577,7 +6694,9 @@
         var PayPalCheckout = exports.PayPalCheckout = _src2["default"].create({
             tag: "paypal-checkout",
             name: "ppxo",
-            defaultEnv: "production",
+            get defaultEnv() {
+                return _config.config.env || "production";
+            },
             envUrls: {
                 local: "http://localhost.paypal.com:8000/webapps/hermes",
                 sandbox: "https://www.sandbox.paypal.com/checkoutnow",
@@ -6699,6 +6818,28 @@
             }
             return M;
         }
+    }, /*!***********************!*\
+  !*** ./src/config.js ***!
+  \***********************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var config = exports.config = {
+            env: "production",
+            locale: {
+                country: "US",
+                lang: "en"
+            },
+            enableBridge: true,
+            bridgeUrls: {
+                local: "http://localhost.paypal.com:8000/webapps/hermes/component-meta",
+                sandbox: "https://www.sandbox.paypal.com/webapps/hermes/component-meta",
+                production: "https://www.paypal.com/webapps/hermes/component-meta",
+                demo: "./checkout.htm"
+            }
+        };
     }, /*!*****************************!*\
   !*** ./src/legacy/index.js ***!
   \*****************************/
@@ -6718,7 +6859,7 @@
         var _components = __webpack_require__(/*! ../components */ 1);
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _eligibility = __webpack_require__(/*! ./eligibility */ 78);
+        var _eligibility = __webpack_require__(/*! ./eligibility */ 79);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6938,21 +7079,64 @@
             }
             return !((0, _lib.isWebView)() || isOldIE());
         }
+    }, /*!**********************!*\
+  !*** ./src/setup.js ***!
+  \**********************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.setup = setup;
+        var _config = __webpack_require__(/*! ./config */ 77);
+        var _bridge = __webpack_require__(/*! ./bridge */ 81);
+        function setup(options) {
+            _config.config.env = options.env || _config.config.env;
+            _config.config.bridgeUrl = options.bridgeUrl;
+            if (options.noBridge) {
+                _config.config.enableBridge = false;
+            }
+            if (_config.config.enableBridge) {
+                (0, _bridge.setupBridge)(_config.config.env, _config.config.bridgeUrl);
+            }
+        }
+        if (document.currentScript) {
+            var script = document.currentScript;
+            setup({
+                env: script.getAttribute("data-env"),
+                bridgeUrl: script.getAttribute("data-bridge-url"),
+                noBridge: script.hasAttribute("no-bridge")
+            });
+        }
     }, /*!***********************!*\
   !*** ./src/bridge.js ***!
   \***********************/
     function(module, exports, __webpack_require__) {
         "use strict";
-        var _src = __webpack_require__(/*! xcomponent/src */ 4);
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.setupBridge = setupBridge;
+        var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
+        var _components = __webpack_require__(/*! ./components */ 1);
+        var _config = __webpack_require__(/*! ./config */ 77);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
-        var BRIDGE_URL = "http://localhost.paypal.com:8000/webapps/hermes/static/html/paypal-checkout-meta.html";
-        if (window.location.href !== BRIDGE_URL) {
-            _src2["default"].postRobot.openBridge(BRIDGE_URL);
+        _src2["default"].once("meta").then(function(data) {
+            _components.PayPalCheckout.contexts.lightbox = data.iframeEligible;
+            _config.config.locale.country = data.locale.country;
+            _config.config.locale.lang = data.locale.lang;
+        });
+        function setupBridge(env, bridgeUrl) {
+            bridgeUrl = bridgeUrl || _config.config.bridgeUrls[env];
+            if (!bridgeUrl) {
+                throw new Error("Can not find bridge url for env: " + env);
+            }
+            _src2["default"].openBridge(bridgeUrl);
         }
     } ]);
 });
