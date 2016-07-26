@@ -154,6 +154,20 @@ function drawButton(container) {
 }
 
 
+function urlWillRedirectPage(url) {
+
+    if (url.indexOf('#') === -1) {
+        return true;
+    }
+
+    if (url.split('#')[0] === window.location.href.split('#')[0]) {
+        return false;
+    }
+
+    return true;
+}
+
+
 /*  Init PayPal Checkout
     --------------------
 
@@ -168,6 +182,8 @@ function initPayPalCheckout(props = {}) {
 
     let initialCancelUrl;
 
+    PayPalCheckout.autocloseParentTemplate = false;
+
     return PayPalCheckout.init({
 
         env,
@@ -179,10 +195,20 @@ function initPayPalCheckout(props = {}) {
         },
 
         onPaymentAuthorize({ returnUrl }) {
+
+            if (!urlWillRedirectPage(returnUrl)) {
+                this.closeParentTemplate();
+            }
+
             return redirect(returnUrl);
         },
 
         onPaymentCancel({ cancelUrl }) {
+
+            if (!urlWillRedirectPage(cancelUrl)) {
+                this.closeParentTemplate();
+            }
+
             return redirect(cancelUrl);
         },
 
@@ -194,11 +220,15 @@ function initPayPalCheckout(props = {}) {
 
             let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-            if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED ].indexOf(reason) !== -1) {
+            if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
                 return this.props.onPaymentCancel({
                     cancelUrl: initialCancelUrl
                 });
             }
+        },
+
+        fallback(url) {
+            redirect(url);
         },
 
         ...props

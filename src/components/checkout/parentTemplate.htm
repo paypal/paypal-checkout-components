@@ -4,10 +4,13 @@
     <div class="paypal-checkout-modal">
         <div class="paypal-checkout-logo"></div>
         <div class="paypal-checkout-message" >
-            Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.
+            #windowMessage
         </div>
         <div class="paypal-checkout-continue">
-            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>
+            <a href="#{CLASS.FOCUS}" class="{CLASS.FOCUS}">#continue</a>
+        </div>
+        <div class="paypal-checkout-loading">
+            <div class="paypal-spinner"></div>
         </div>
     </div>
 
@@ -30,11 +33,17 @@
         animation-name: fadeIn;
     }
 
-    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {
+    #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {
         -webkit-animation-duration: 1s;
         animation-duration: 1s;
         -webkit-animation-name: fadeOut;
         animation-name: fadeOut;
+
+        animation-fill-mode:forwards;
+        animation-iteration-count: 1;
+
+        -webkit-animation-fill-mode:forwards;
+        -webkit-animation-iteration-count: 1;
     }
 
     #{id}.{CLASS.POPUP} .paypal-checkout-overlay {
@@ -58,6 +67,19 @@
         margin-left: -165px;
         margin-top: -80px;
         cursor: pointer;
+        text-align: center;
+    }
+
+    #{id}.{CLASS.CLOSING} .paypal-checkout-message, #{id}.{CLASS.CLOSING} .paypal-checkout-continue {
+        display: none;
+    }
+
+    .paypal-checkout-loading {
+        display: none;
+    }
+
+    #{id}.{CLASS.CLOSING} .paypal-checkout-loading {
+        display: block;
     }
 
     #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {
@@ -65,17 +87,17 @@
         width: 132px;
         height: 36px;
         cursor: pointer;
-        margin: 26px 0 0 109px;
         margin-bottom: 30px;
+        display: inline-block;
     }
 
     #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {
         font-size: 15px;
-        line-height: 1.35;
-        padding: 25px 0;
+        line-height: 1.5;
+        padding: 10px 0;
     }
 
-    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-modal {
+    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-message, #{id}.{CLASS.LIGHTBOX} .paypal-checkout-continue {
         display: none;
     }
 
@@ -87,6 +109,8 @@
         font-size: 15px;
         line-height: 1.35;
         padding: 10px 0;
+        text-decoration: underline;
+        font-weight: bold;
     }
 
     #{id} .{CLASS.CLOSE} {
@@ -96,6 +120,10 @@
         width: 16px;
         height: 16px;
         opacity: 0.6;
+    }
+
+    #{id}.{CLASS.CLOSING} .{CLASS.CLOSE} {
+        display: none;
     }
 
     #{id} .{CLASS.CLOSE}:hover {
@@ -318,6 +346,58 @@
 
         to {
             opacity: 0;
+        }
+    }
+
+
+
+    .paypal-spinner {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        opacity: 1;
+        filter: alpha(opacity=100);
+        -webkit-animation: rotation .7s infinite linear;
+        -moz-animation: rotation .7s infinite linear;
+        -o-animation: rotation .7s infinite linear;
+        animation: rotation .7s infinite linear;
+        border-left: 8px solid rgba(0, 0, 0, .2);
+        border-right: 8px solid rgba(0, 0, 0, .2);
+        border-bottom: 8px solid rgba(0, 0, 0, .2);
+        border-top: 8px solid #fff;
+        border-radius: 100%
+    }
+
+    @-webkit-keyframes rotation {
+        from {
+            -webkit-transform: rotate(0deg)
+        }
+        to {
+            -webkit-transform: rotate(359deg)
+        }
+    }
+    @-moz-keyframes rotation {
+        from {
+            -moz-transform: rotate(0deg)
+        }
+        to {
+            -moz-transform: rotate(359deg)
+        }
+    }
+    @-o-keyframes rotation {
+        from {
+            -o-transform: rotate(0deg)
+        }
+        to {
+            -o-transform: rotate(359deg)
+        }
+    }
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg)
+        }
+        to {
+            transform: rotate(359deg)
         }
     }
 </style>

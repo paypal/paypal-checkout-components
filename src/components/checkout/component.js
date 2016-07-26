@@ -6,6 +6,8 @@ import componentTemplate from './componentTemplate.htm';
 import { isDevice } from '../../lib';
 import { config } from '../../config';
 
+import { content } from './content';
+
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
@@ -28,7 +30,17 @@ export let PayPalCheckout = xcomponent.create({
         popup: true
     },
 
-    parentTemplate,
+    parentTemplate() {
+
+        let template = parentTemplate;
+        let localeContent = content[config.locale.country][config.locale.lang];
+
+        template = template.replace('#windowMessage', localeContent.windowMessage);
+        template = template.replace('#continue', localeContent.continue);
+
+        return template;
+    },
+
     componentTemplate,
 
     autoResize: false,
@@ -63,6 +75,13 @@ export let PayPalCheckout = xcomponent.create({
         },
 
         onPaymentCancel: {
+            type: 'function',
+            required: false,
+            once: true,
+            autoClose: true
+        },
+
+        fallback: {
             type: 'function',
             required: false,
             once: true,

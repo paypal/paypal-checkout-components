@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 
+<head>
+    <meta charset="utf-8" />
+</head>
+
 <script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
 
 <script src="../dist/paypal.checkout.v4.js" data-env="local"></script>
@@ -17,6 +21,16 @@
     function paymentTokenError(resolve, reject) {
         $.get('./token_404.htm?ts=' + Date.now()).error(function(result) {
             reject(new Error('Error from token ajax call'));
+        });
+    }
+
+    function paymentTokenHashUrl(resolve) {
+        var url = window.location.href.split('#')[0];
+        var returnUrl = url + '#success';
+        var cancelUrl = url + '#cancel';
+
+        $.get('http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0&noredir=1&ts=' + Date.now() + '&returnurl=' + encodeURIComponent(returnUrl) + '&cancelurl=' + encodeURIComponent(cancelUrl)).then(function(result) {
+            resolve(result.trim());
         });
     }
 
@@ -76,7 +90,7 @@
 
 <h2>5. Form container with no button and ajax call</h2>
 
-<form id="myContainer3" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0"></form>
+<form id="myContainer3"></form>
 
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
@@ -97,7 +111,7 @@
 
 <h2>6. Form container with no button and failed ajax call</h2>
 
-<form id="myContainer4" action=".http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0"></form>
+<form id="myContainer4"></form>
 
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
@@ -138,23 +152,43 @@
 
 <!-- ******************************************* -->
 
-<h2>8. Form container with custom button immediate startFlow</h2>
+<h2>8. Form container with custom button, sync ajax call, immediate startFlow</h2>
 
 <button id="checkoutButton2">Check out</button>
 
 <script>
-    let token8;
-
-    paymentToken(function(token) {
-        token8 = token;
-    });
-
     document.getElementById('checkoutButton2').addEventListener('click', function() {
-        paypal.checkout.startFlow(token8);
+
+        jQuery.ajaxSetup({ async: false });
+
+        paymentToken(function(token) {
+            jQuery.ajaxSetup({ async: true });
+
+            paypal.checkout.startFlow(token);
+        });
     });
 </script>
 
 <hr>
 
+<!-- ******************************************* -->
 
+<h2>9. Form container with no button and ajax call, hash url</h2>
+
+<form id="myContainer9"></form>
+
+<script>
+    paypal.checkout.setup('Your-Merchant-ID', {
+      container: 'myContainer9',
+      click: function () {
+        paypal.checkout.initXO();
+
+        paymentTokenHashUrl(function(token) {
+            return paypal.checkout.startFlow(token);
+        });
+      }
+    });
+</script>
+
+<hr>
 

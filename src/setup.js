@@ -17,12 +17,29 @@ export function setup(options) {
 }
 
 
-if (document.currentScript) {
-    let script = document.currentScript;
+let currentScript;
+
+if (!currentScript) {
+    let scripts = document.getElementsByTagName('script');
+
+    for (let script of scripts) {
+        if (script.src === config.scriptUrl) {
+            currentScript = script;
+        }
+    }
+
+    if (!currentScript) {
+        currentScript = scripts[scripts.length - 1];
+    }
+}
+
+
+
+if (currentScript) {
 
     setup({
-        env: script.getAttribute('data-env'),
-        bridgeUrl: script.getAttribute('data-bridge-url'),
-        noBridge: script.hasAttribute('no-bridge')
+        env:       currentScript.getAttribute('data-env'),
+        bridgeUrl: currentScript.getAttribute('data-bridge-url'),
+        noBridge:  currentScript.hasAttribute('no-bridge')
     });
 }
