@@ -10393,7 +10393,7 @@
         }
         var currentScript = void 0;
         if (!currentScript) {
-            var scripts = document.getElementsByTagName("script");
+            var scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
             for (var _iterator = scripts, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 if (_isArray) {
