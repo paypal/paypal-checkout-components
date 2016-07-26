@@ -20,7 +20,7 @@ export function setup(options) {
 let currentScript;
 
 if (!currentScript) {
-    let scripts = document.getElementsByTagName('script');
+    let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
         if (script.src === config.scriptUrl) {
