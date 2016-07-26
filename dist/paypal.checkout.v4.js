@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 78);
+        var _legacy = __webpack_require__(/*! ./legacy */ 79);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -46,7 +46,7 @@
                 }
             });
         });
-        var _setup = __webpack_require__(/*! ./setup */ 80);
+        var _setup = __webpack_require__(/*! ./setup */ 81);
         Object.keys(_setup).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -60,7 +60,7 @@
         var _src2 = _interopRequireDefault(_src);
         var _src3 = __webpack_require__(/*! post-robot/src */ 6);
         var _src4 = _interopRequireDefault(_src3);
-        __webpack_require__(/*! ./bridge */ 81);
+        __webpack_require__(/*! ./bridge */ 82);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -2901,6 +2901,7 @@
                 this.defaultContext = options.defaultContext;
                 this.singleton = options.singleton;
                 this.autoResize = options.autoResize || false;
+                this.autocloseParentTemplate = options.autocloseParentTemplate === undefined ? true : options.autocloseParentTemplate;
                 this.parentTemplate = options.parentTemplate || _parent3["default"];
                 this.componentTemplate = options.componentTemplate || _component2["default"];
                 components[this.tag] = this;
@@ -2924,7 +2925,7 @@
             _createClass(Component, [ {
                 key: "isXComponent",
                 value: function isXComponent() {
-                    return (0, _window.isXComponentWindow)(window.name);
+                    return (0, _window.isXComponentWindow)();
                 }
             }, {
                 key: "parent",
@@ -4075,7 +4076,7 @@
                 value: function init() {
                     var _this2 = this;
                     this.component.log("init_child");
-                    if (!(0, _window.isXComponentWindow)(window.name) && this.standalone) {
+                    if (!(0, _window.isXComponentWindow)() && this.standalone) {
                         this.component.log("child_standalone");
                         return;
                     }
@@ -4123,10 +4124,9 @@
                     if (!(0, _window.getParentWindow)()) {
                         throw new Error("[" + this.component.tag + "] Can not find parent window");
                     }
-                    var winProps = (0, _window.parseWindowName)(window.name);
-                    this.component.log("child_win_props", winProps);
-                    if (winProps.tag !== this.component.tag) {
-                        throw new Error("[" + this.component.tag + "] Parent is " + winProps.tag + " - can not attach " + this.component.tag);
+                    var componentMeta = (0, _window.getComponentMeta)();
+                    if (componentMeta.tag !== this.component.tag) {
+                        throw new Error("[" + this.component.tag + "] Parent is " + componentMeta.tag + " - can not attach " + this.component.tag);
                     }
                     this.watchForClose();
                 }
@@ -4212,6 +4212,11 @@
                 key: "hide",
                 value: function hide() {
                     return this.sendToParent(_constants.POST_MESSAGE.HIDE);
+                }
+            }, {
+                key: "userClose",
+                value: function userClose() {
+                    return this.close(_constants.CLOSE_REASONS.USER_CLOSED);
                 }
             }, {
                 key: "close",
@@ -4954,69 +4959,64 @@
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.getParentComponentWindow = exports.getParentWindow = exports.isXComponentWindow = exports.parseWindowName = undefined;
+        exports.getParentComponentWindow = exports.getParentWindow = exports.isXComponentWindow = exports.getComponentMeta = undefined;
         exports.buildChildWindowName = buildChildWindowName;
         exports.getPosition = getPosition;
         var _lib = __webpack_require__(/*! ../lib */ 48);
         var _constants = __webpack_require__(/*! ../constants */ 55);
         function buildChildWindowName(prefix) {
-            var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-            props.id = (0, _lib.uniqueID)();
-            var name = (0, _lib.b64encode)(JSON.stringify(props));
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            options.id = (0, _lib.uniqueID)();
+            var name = (0, _lib.b64encode)(JSON.stringify(options));
             return _constants.XCOMPONENT + "_" + prefix.replace(/_/g, "") + "_" + name;
         }
-        var parseWindowName = exports.parseWindowName = (0, _lib.memoize)(function(name) {
-            var winProps = void 0;
-            if (!name) {
+        var getComponentMeta = exports.getComponentMeta = (0, _lib.memoize)(function() {
+            if (!window.name) {
                 return;
             }
-            var segments = name.split("_");
-            var props = segments.slice(2).join("_");
+            var segments = window.name.split("_");
+            var options = segments.slice(2).join("_");
             if (segments[0] !== _constants.XCOMPONENT) {
                 return;
             }
             try {
-                winProps = JSON.parse((0, _lib.b64decode)(props));
+                return JSON.parse((0, _lib.b64decode)(options));
             } catch (err) {
                 return;
             }
-            if (!winProps) {
-                return;
-            }
-            return winProps;
         });
-        var isXComponentWindow = exports.isXComponentWindow = (0, _lib.memoize)(function(name) {
-            return Boolean(parseWindowName(name));
+        var isXComponentWindow = exports.isXComponentWindow = (0, _lib.memoize)(function() {
+            return Boolean(getComponentMeta());
         });
         var getParentWindow = exports.getParentWindow = (0, _lib.memoize)(function() {
-            var win = void 0;
+            var parentWindow = void 0;
             if (window.opener) {
-                win = window.opener;
+                parentWindow = window.opener;
             } else if (window.parent && window.parent !== window) {
-                win = window.parent;
+                parentWindow = window.parent;
             } else {
                 throw new Error("Can not find parent window");
             }
-            var winProps = parseWindowName(window.name);
-            if (!winProps) {
-                throw new Error("Window has not been rendered by xcomponent");
+            var componentMeta = getComponentMeta();
+            if (!componentMeta) {
+                return parentWindow;
             }
-            if (!win.parent || win.parent === win) {
-                return win;
+            if (!parentWindow.parent || parentWindow.parent === parentWindow) {
+                return parentWindow;
             }
-            if (winProps.sibling && win.parent.frames && win.parent.frames[winProps.parent] === win) {
-                return win.parent;
+            if (componentMeta.sibling && parentWindow.parent.frames && parentWindow.parent.frames[componentMeta.parent] === parentWindow) {
+                return parentWindow.parent;
             }
-            return win;
+            return parentWindow;
         });
         var getParentComponentWindow = exports.getParentComponentWindow = (0, _lib.memoize)(function() {
-            var winProps = parseWindowName(window.name);
-            if (!winProps) {
-                throw new Error("Window has not been rendered by xcomponent - can not attach here");
+            var componentMeta = getComponentMeta();
+            if (!componentMeta) {
+                throw new Error("Can not get parent component window - window not rendered by xcomponent");
             }
             var parentWindow = getParentWindow();
-            if (winProps.sibling) {
-                return parentWindow.frames[winProps.parent];
+            if (componentMeta.sibling && parentWindow.frames[componentMeta.parent]) {
+                return parentWindow.frames[componentMeta.parent];
             }
             return parentWindow;
         });
@@ -5081,7 +5081,8 @@
             IFRAME: XCOMPONENT + "-iframe",
             LIGHTBOX: XCOMPONENT + "-lightbox",
             POPUP: XCOMPONENT + "-popup",
-            CLOSING: XCOMPONENT + "-closing"
+            CLOSING: XCOMPONENT + "-closing",
+            AUTOCLOSE: XCOMPONENT + "-autoclose"
         };
         var EVENT_NAMES = exports.EVENT_NAMES = {
             CLICK: "click"
@@ -5092,6 +5093,7 @@
             CHILD_CALL: "child_call",
             AUTOCLOSE: "autoclose",
             CLOSE_DETECTED: "close_detected",
+            USER_CLOSED: "user_closed",
             PARENT_CLOSE_DETECTED: "parent_close_detected"
         };
         var CONTEXT_TYPES_LIST = exports.CONTEXT_TYPES_LIST = (0, _lib.values)(CONTEXT_TYPES);
@@ -5508,7 +5510,6 @@
                         _this4.setForCleanup("context", context);
                         _this4.preRender(element, context);
                         _this4.listen(_this4.window);
-                        _this4.watchForClose();
                         return _this4.buildUrl().then(function(url) {
                             _this4.loadUrl(context, url);
                             _this4.runTimeout();
@@ -5598,13 +5599,13 @@
                 key: "watchForClose",
                 value: function watchForClose() {
                     var _this6 = this;
-                    var closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
+                    this.closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
                         _this6.component.log("detect_close_child");
                         _this6.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED)["finally"](function() {
                             _this6.destroy();
                         });
                     });
-                    var unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
+                    this.unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
                         _this6.component.log("navigate_away");
                         _client2["default"].flush();
                         if (_this6.context === _constants.CONTEXT_TYPES.POPUP) {
@@ -5612,8 +5613,14 @@
                         }
                     });
                     this.registerForCleanup(function() {
-                        closeWindowListener.cancel();
-                        unloadListener.cancel();
+                        if (_this6.closeWindowListener) {
+                            _this6.closeWindowListener.cancel();
+                            delete _this6.closeWindowListener;
+                        }
+                        if (_this6.unloadListener) {
+                            _this6.unloadListener.cancel();
+                            delete _this6.unloadListener;
+                        }
                     });
                 }
             }, {
@@ -5758,15 +5765,32 @@
                     return _drivers.RENDER_DRIVERS[this.context].hide.call(this);
                 }
             }, {
+                key: "userClose",
+                value: function userClose() {
+                    return this.close(_constants.CLOSE_REASONS.USER_CLOSED);
+                }
+            }, {
                 key: "close",
                 value: function close() {
                     var _this12 = this;
                     var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
+                    if (this.closePromise) {
+                        return this.closePromise;
+                    }
                     this.component.log("close");
+                    if (this.closeWindowListener) {
+                        this.closeWindowListener.cancel();
+                    }
+                    if (this.unloadListener) {
+                        this.unloadListener.cancel();
+                    }
                     if (this.parentTemplate) {
                         this.parentTemplate.className += " " + _constants.CLASS_NAMES.CLOSING;
+                        if (this.component.autocloseParentTemplate) {
+                            this.parentTemplate.className += " " + _constants.CLASS_NAMES.AUTOCLOSE;
+                        }
                     }
-                    return this.props.onClose(reason).then(function() {
+                    var closePromise = this.props.onClose(reason).then(function() {
                         return new _promise.SyncPromise(function(resolve) {
                             if (_this12.component.closeDelay && _this12.context !== _constants.CONTEXT_TYPES.POPUP) {
                                 setTimeout(resolve, _this12.component.closeDelay);
@@ -5780,6 +5804,8 @@
                             _this12.destroy();
                         });
                     });
+                    this.setForCleanup("closePromise", closePromise);
+                    return closePromise;
                 }
             }, {
                 key: "focus",
@@ -5793,7 +5819,8 @@
             }, {
                 key: "createComponentTemplate",
                 value: function createComponentTemplate() {
-                    var html = (0, _lib.template)(this.component.componentTemplate, {
+                    var componentTemplate = this.component.componentTemplate instanceof Function ? this.component.componentTemplate() : this.component.componentTemplate;
+                    var html = (0, _lib.template)(componentTemplate, {
                         id: _constants.CLASS_NAMES.XCOMPONENT + "-" + this.id,
                         CLASS: _constants.CLASS_NAMES
                     });
@@ -5814,8 +5841,9 @@
                     if (!_drivers.RENDER_DRIVERS[context].parentTemplate) {
                         return;
                     }
+                    var parentTemplate = this.component.parentTemplate instanceof Function ? this.component.parentTemplate() : this.component.parentTemplate;
                     this.parentTemplate = (0, _lib.createElement)("div", {
-                        html: (0, _lib.template)(this.component.parentTemplate, {
+                        html: (0, _lib.template)(parentTemplate, {
                             id: _constants.CLASS_NAMES.XCOMPONENT + "-" + this.id,
                             CLASS: _constants.CLASS_NAMES
                         }),
@@ -5834,9 +5862,18 @@
                         return _this13.close(_constants.CLOSE_REASONS.TEMPLATE_BUTTON);
                     });
                     this.registerForCleanup(function() {
-                        document.body.removeChild(_this13.parentTemplate);
-                        delete _this13.parentTemplate;
+                        if (_this13.component.autocloseParentTemplate && _this13.parentTemplate) {
+                            _this13.closeParentTemplate();
+                        }
                     });
+                }
+            }, {
+                key: "closeParentTemplate",
+                value: function closeParentTemplate() {
+                    if (this.parentTemplate) {
+                        document.body.removeChild(this.parentTemplate);
+                        delete this.parentTemplate;
+                    }
                 }
             }, {
                 key: "destroy",
@@ -6218,12 +6255,12 @@
                     var prop = component.props[key];
                     if (prop.autoClose) {
                         props[key] = function() {
-                            var _this = this, _arguments = arguments;
                             instance.component.log("autoclose", {
                                 prop: key
                             });
-                            return instance.close(_constants.CLOSE_REASONS.AUTOCLOSE).then(function() {
-                                return value.apply(_this, _arguments);
+                            var result = _promise.SyncPromise.resolve(value.apply(this, arguments));
+                            return _promise.SyncPromise.all([ result, instance.close(_constants.CLOSE_REASONS.AUTOCLOSE) ]).then(function() {
+                                return result;
                             });
                         };
                     }
@@ -6681,12 +6718,13 @@
         exports.PayPalCheckout = undefined;
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _parentTemplate = __webpack_require__(/*! ./parentTemplate.htm */ 73);
-        var _parentTemplate2 = _interopRequireDefault(_parentTemplate);
+        var _parentTemplate2 = __webpack_require__(/*! ./parentTemplate.htm */ 73);
+        var _parentTemplate3 = _interopRequireDefault(_parentTemplate2);
         var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 74);
         var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
         var _lib = __webpack_require__(/*! ../../lib */ 75);
         var _config = __webpack_require__(/*! ../../config */ 77);
+        var _content = __webpack_require__(/*! ./content */ 78);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6709,7 +6747,13 @@
                 lightbox: false,
                 popup: true
             },
-            parentTemplate: _parentTemplate2["default"],
+            parentTemplate: function parentTemplate() {
+                var template = _parentTemplate3["default"];
+                var localeContent = _content.content[_config.config.locale.country][_config.config.locale.lang];
+                template = template.replace("#windowMessage", localeContent.windowMessage);
+                template = template.replace("#continue", localeContent["continue"]);
+                return template;
+            },
             componentTemplate: _componentTemplate2["default"],
             autoResize: false,
             closeDelay: 1e3,
@@ -6742,6 +6786,12 @@
                     required: false,
                     once: true,
                     autoClose: true
+                },
+                fallback: {
+                    type: "function",
+                    required: false,
+                    once: true,
+                    autoClose: true
                 }
             },
             dimensions: (0, _lib.isDevice)() ? null : {
@@ -6753,7 +6803,7 @@
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
-        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.CLOSE}" class="{CLASS.FOCUS}">Continue</a>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin: 26px 0 0 109px;\n        margin-bottom: 30px;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 25px 0;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-modal {\n        display: none;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n</style>\n';
+        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            #windowMessage\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.FOCUS}" class="{CLASS.FOCUS}">#continue</a>\n        </div>\n        <div class="paypal-checkout-loading">\n            <div class="paypal-spinner"></div>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background-color: rgba(0, 0, 0, 0.8);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n    }\n\n    #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n\n        animation-fill-mode:forwards;\n        animation-iteration-count: 1;\n\n        -webkit-animation-fill-mode:forwards;\n        -webkit-animation-iteration-count: 1;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n        text-align: center;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-message, #{id}.{CLASS.CLOSING} .paypal-checkout-continue {\n        display: none;\n    }\n\n    .paypal-checkout-loading {\n        display: none;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-loading {\n        display: block;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin-bottom: 30px;\n        display: inline-block;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.5;\n        padding: 10px 0;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-message, #{id}.{CLASS.LIGHTBOX} .paypal-checkout-continue {\n        display: none;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n        text-decoration: underline;\n        font-weight: bold;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id}.{CLASS.CLOSING} .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n\n\n    .paypal-spinner {\n        height: 30px;\n        width: 30px;\n        display: inline-block;\n        opacity: 1;\n        filter: alpha(opacity=100);\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 8px solid rgba(0, 0, 0, .2);\n        border-right: 8px solid rgba(0, 0, 0, .2);\n        border-bottom: 8px solid rgba(0, 0, 0, .2);\n        border-top: 8px solid #fff;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n</style>\n';
     }, /*!*******************************************************!*\
   !*** ./src/components/checkout/componentTemplate.htm ***!
   \*******************************************************/
@@ -6828,6 +6878,7 @@
             value: true
         });
         var config = exports.config = {
+            scriptUrl: "https://www.paypalobjects.com/api/paypal.checkout.v4.js",
             env: "production",
             locale: {
                 country: "US",
@@ -6839,6 +6890,3226 @@
                 sandbox: "https://www.sandbox.paypal.com/webapps/hermes/component-meta",
                 production: "https://www.paypal.com/webapps/hermes/component-meta",
                 demo: "./checkout.htm"
+            }
+        };
+    }, /*!********************************************!*\
+  !*** ./src/components/checkout/content.js ***!
+  \********************************************/
+    function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var content = exports.content = {
+            AT: {
+                de: {
+                    windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht?  können Sie es wieder öffnen und Ihren Einkauf abschließen.",
+                    "continue": "Weiter"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ZW: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ZM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ZA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            YT: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            YE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            WS: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            WF: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            VU: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            VG: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            VE: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            VC: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            VA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            UY: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            UG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TV: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TT: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            TO: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TN: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            TM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TJ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            TD: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            TC: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            SZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SV: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            ST: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SR: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            SO: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SN: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            SM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SL: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SJ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SH: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SC: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            SB: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            RW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            RS: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            RE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            QA: {
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                },
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PY: {
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            PW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PN: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PF: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PE: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            PA: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            OM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            NU: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NR: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NP: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NI: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            NG: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NF: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            NC: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MV: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MU: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MT: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MS: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            MR: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MQ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MN: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ML: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            MK: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MH: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ME: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MD: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MC: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            MA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            LS: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            LK: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            LI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            LC: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            LA: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KY: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            KW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            KN: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            KM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            KI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KH: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            JO: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            JM: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            IS: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            HR: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            HN: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            GY: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            GW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GT: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            GP: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GN: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            GM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GL: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                da: {
+                    windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                    "continue": "Fortsæt"
+                }
+            },
+            GI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GF: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GD: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            GA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            FO: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                da: {
+                    windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                    "continue": "Fortsæt"
+                }
+            },
+            FM: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            FK: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            FJ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ET: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ER: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            EG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            EC: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            DZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            DO: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            DM: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            DJ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            CY: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            CV: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            CR: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            CO: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            CM: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            CL: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            CK: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            CI: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            CG: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            CD: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            BZ: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            BY: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BW: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BT: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BS: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            BO: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            BN: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BM: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            BJ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            BI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            BH: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            BG: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BF: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                }
+            },
+            BB: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            BA: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AW: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            AO: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AN: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            AM: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AL: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AI: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            AG: {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            AE: {
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                },
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AD: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            CN: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                    "continue": "继续"
+                }
+            },
+            GB: {
+                fr: {
+                    windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AR: {
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                }
+            },
+            US: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            VN: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            UA: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                    "continue": "Продолжить"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TW: {
+                zh: {
+                    windowMessage: "看不到安全連線的 PayPal 瀏覽器？我們將會重新啟動視窗以完成付款。  ",
+                    "continue": "繼續"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            TR: {
+                tr: {
+                    windowMessage: "Güvenli PayPal tarayıcısını görmüyor musunuz? Alışverişinizi tamamlamak için pencereyi yeniden başlatmanıza yardımcı olacağız.  ",
+                    "continue": "Devam"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            TH: {
+                th: {
+                    windowMessage: "ถ้าคุณไม่เห็นเบราว์เซอร์ที่มีระบบความปลอดภัยของ PayPal เราจะช่วยคุณเปิดหน้าต่างอีกครั้งเพื่อชำระเงินให้เรียบร้อย ",
+                    "continue": "ดำเนินการต่อ"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            SK: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            SG: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            SE: {
+                sv: {
+                    windowMessage: "Ser du inte den säkra PayPal-webbläsaren? Vi hjälper dig att starta om fönstret för att slutföra ditt köp. ",
+                    "continue": "Fortsätt"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            RU: {
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.",
+                    "continue": "Продолжить"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            RO: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PT: {
+                pt: {
+                    windowMessage: "Não vê a indicação de sessão segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PL: {
+                pl: {
+                    windowMessage: "Nie widzisz bezpiecznej przeglądarki PayPal? Pomożemy Ci ponownie uruchomić to okno w celu dokonania zakupu.  ",
+                    "continue": "Kontynuuj"
+                },
+                en: {
+                    windowMessage: "You don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            PH: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            NZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à relancer la fenêtre pour effectuer votre paiement.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar su pago.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            NO: {
+                no: {
+                    windowMessage: "Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med å starte vinduet på nytt så du kan fullføre kjøpet.  ",
+                    "continue": "Fortsett"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            NL: {
+                nl: {
+                    windowMessage: "Ziet u geen beveiligde PayPal-browser? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.  ",
+                    "continue": "Doorgaan"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            MY: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            MX: {
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            LV: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                    "continue": "Продолжить"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            LU: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                de: {
+                    windowMessage: "Das PayPal-Fenster wird nicht angezeigt?  können Sie es wieder öffnen und Ihren Einkauf abschließen.",
+                    "continue": "Weiter"
+                }
+            },
+            LT: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                    "continue": "Продолжить"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            KR: {
+                ko: {
+                    windowMessage: "보안 PayPal 브라우저가 보이지 않으신가요? 창을 다시 실행하여 결제를 완료할 수 있도록 도와드리겠습니다.  ",
+                    "continue": "계속"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            JP: {
+                ja: {
+                    windowMessage: "セキュアなブラウザが表示されない場合は、ウィンドウを再起動して、支払いを完了できるようお手伝いいたします。",
+                    "continue": "続行"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            IT: {
+                it: {
+                    windowMessage: "Non vedi la pagina sicura di PayPal? Ti aiuteremo a riaprire la finestra per completare l'acquisto.  ",
+                    "continue": "Continua"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            IN: {
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            IL: {
+                he: {
+                    windowMessage: "לא רואה את דפדפן PayPal המאובטח? נעזור לך לפתוח מחדש את החלון כדי להשלים את הקנייה שלך.  ",
+                    "continue": "המשך"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            IE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            HU: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ID: {
+                id: {
+                    windowMessage: "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembayaran Anda.  ",
+                    "continue": "Lanjutkan"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            HK: {
+                zh: {
+                    windowMessage: "看不到安全的 PayPal 瀏覽器視窗？我們會助你重新開啟視窗，以完成付款。",
+                    "continue": "繼續"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            "GROUP-LATAM": {
+                zh: {
+                    windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
+                    "continue": "Continue"
+                }
+            },
+            "GROUP-EMEA": {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                    "continue": "Продолжить"
+                },
+                pt: {
+                    windowMessage: "Não vê a indicação de sessão segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
+                    "continue": "Continuar"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                de: {
+                    windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht?  können Sie es wieder öffnen und Ihren Einkauf abschließen.",
+                    "continue": "Weiter"
+                },
+                da: {
+                    windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                    "continue": "Fortsæt"
+                },
+                ar: {
+                    windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                    "continue": "متابعة"
+                }
+            },
+            "GROUP-APAC": {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                    "continue": "继续"
+                },
+                ko: {
+                    windowMessage: "보안 PayPal 브라우저가 보이지 않으신가요? 창을 다시 실행하여 구매를 완료할 수 있도록 도와드리겠습니다. ",
+                    "continue": "계속"
+                },
+                id: {
+                    windowMessage: "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembelian Anda. ",
+                    "continue": "Lanjutkan"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            GR: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            FR: {
+                fr: {
+                    windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            ES: {
+                es: {
+                    windowMessage: "¿No ve el símbolo de navegación segura de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar la compra. ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            FI: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            EE: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                ru: {
+                    windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                    "continue": "Продолжить"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            DK: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                da: {
+                    windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                    "continue": "Fortsæt"
+                }
+            },
+            CZ: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                    "continue": "继续"
+                },
+                fr: {
+                    windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
+                    "continue": "Continuer"
+                },
+                es: {
+                    windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            DE: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                de: {
+                    windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht?  können Sie es wieder öffnen und Ihren Einkauf abschließen.",
+                    "continue": "Weiter"
+                }
+            },
+            CH: {
+                fr: {
+                    windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                },
+                de: {
+                    windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht?  können Sie es wieder öffnen und Ihren Einkauf abschließen.",
+                    "continue": "Weiter"
+                }
+            },
+            CA: {
+                fr: {
+                    windowMessage: "Vous ne voyez pas le navigateur sécurisé de PayPal ? Nous vous aiderons à relancer la fenêtre afin d'effectuer votre achat.  ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you relaunch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            C2: {
+                zh: {
+                    windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                    "continue": "继续"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
+                    "continue": "Continue"
+                }
+            },
+            BE: {
+                nl: {
+                    windowMessage: "Ziet u de beveiligde PayPal-browser niet? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.  ",
+                    "continue": "Doorgaan"
+                },
+                fr: {
+                    windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
+                    "continue": "Continuer"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            BR: {
+                pt: {
+                    windowMessage: "Não está vendo o navegador seguro do PayPal? Ajudaremos você a reabrir a janela para concluir a compra.  ",
+                    "continue": "Continuar"
+                },
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
+            },
+            AU: {
+                en: {
+                    windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.  ",
+                    "continue": "Continue"
+                }
             }
         };
     }, /*!*****************************!*\
@@ -6860,7 +10131,7 @@
         var _components = __webpack_require__(/*! ../components */ 1);
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _eligibility = __webpack_require__(/*! ./eligibility */ 79);
+        var _eligibility = __webpack_require__(/*! ./eligibility */ 80);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6927,9 +10198,19 @@
             document.getElementById(container).appendChild(button);
             return button;
         }
+        function urlWillRedirectPage(url) {
+            if (url.indexOf("#") === -1) {
+                return true;
+            }
+            if (url.split("#")[0] === window.location.href.split("#")[0]) {
+                return false;
+            }
+            return true;
+        }
         function initPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             var initialCancelUrl = void 0;
+            _components.PayPalCheckout.autocloseParentTemplate = false;
             return _components.PayPalCheckout.init(_extends({
                 env: env,
                 paymentToken: getPaymentToken,
@@ -6938,10 +10219,16 @@
                 },
                 onPaymentAuthorize: function onPaymentAuthorize(_ref) {
                     var returnUrl = _ref.returnUrl;
+                    if (!urlWillRedirectPage(returnUrl)) {
+                        this.closeParentTemplate();
+                    }
                     return redirect(returnUrl);
                 },
                 onPaymentCancel: function onPaymentCancel(_ref2) {
                     var cancelUrl = _ref2.cancelUrl;
+                    if (!urlWillRedirectPage(cancelUrl)) {
+                        this.closeParentTemplate();
+                    }
                     return redirect(cancelUrl);
                 },
                 onClose: function onClose(reason) {
@@ -6949,11 +10236,14 @@
                         return;
                     }
                     var CLOSE_REASONS = _src2["default"].CONSTANTS.CLOSE_REASONS;
-                    if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED ].indexOf(reason) !== -1) {
+                    if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
                         return this.props.onPaymentCancel({
                             cancelUrl: initialCancelUrl
                         });
                     }
+                },
+                fallback: function fallback(url) {
+                    redirect(url);
                 }
             }, props));
         }
@@ -7090,7 +10380,7 @@
         });
         exports.setup = setup;
         var _config = __webpack_require__(/*! ./config */ 77);
-        var _bridge = __webpack_require__(/*! ./bridge */ 81);
+        var _bridge = __webpack_require__(/*! ./bridge */ 82);
         function setup(options) {
             _config.config.env = options.env || _config.config.env;
             _config.config.bridgeUrl = options.bridgeUrl;
@@ -7101,12 +10391,33 @@
                 (0, _bridge.setupBridge)(_config.config.env, _config.config.bridgeUrl);
             }
         }
-        if (document.currentScript) {
-            var script = document.currentScript;
+        var currentScript = void 0;
+        if (!currentScript) {
+            var scripts = document.getElementsByTagName("script");
+            for (var _iterator = scripts, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var script = _ref;
+                if (script.src === _config.config.scriptUrl) {
+                    currentScript = script;
+                }
+            }
+            if (!currentScript) {
+                currentScript = scripts[scripts.length - 1];
+            }
+        }
+        if (currentScript) {
             setup({
-                env: script.getAttribute("data-env"),
-                bridgeUrl: script.getAttribute("data-bridge-url"),
-                noBridge: script.hasAttribute("no-bridge")
+                env: currentScript.getAttribute("data-env"),
+                bridgeUrl: currentScript.getAttribute("data-bridge-url"),
+                noBridge: currentScript.hasAttribute("no-bridge")
             });
         }
     }, /*!***********************!*\
