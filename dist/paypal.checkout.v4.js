@@ -36,7 +36,7 @@
                 }
             });
         });
-        var _legacy = __webpack_require__(/*! ./legacy */ 79);
+        var _legacy = __webpack_require__(/*! ./legacy */ 80);
         Object.keys(_legacy).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -46,7 +46,7 @@
                 }
             });
         });
-        var _setup = __webpack_require__(/*! ./setup */ 81);
+        var _setup = __webpack_require__(/*! ./setup */ 82);
         Object.keys(_setup).forEach(function(key) {
             if (key === "default") return;
             Object.defineProperty(exports, key, {
@@ -60,7 +60,7 @@
         var _src2 = _interopRequireDefault(_src);
         var _src3 = __webpack_require__(/*! post-robot/src */ 6);
         var _src4 = _interopRequireDefault(_src3);
-        __webpack_require__(/*! ./bridge */ 82);
+        __webpack_require__(/*! ./bridge */ 83);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -459,8 +459,10 @@
         }
         function sendToParent(name, data, options, callback) {
             var win = (0, _lib.getParentWindow)();
-            if (!window) {
-                throw new Error("Window does not have a parent");
+            if (!win) {
+                return new _lib.promise.Promise(function(resolve, reject) {
+                    return reject(new Error("Window does not have a parent"));
+                });
             }
             return send(win, name, data, options, callback);
         }
@@ -988,15 +990,8 @@
             possiblyUnhandledPromises = [];
             for (var i = 0; i < promises.length; i++) {
                 var promise = promises[i];
-                if (!promise.hasHandlers) {
-                    promise.handlers.push({
-                        onError: function onError(err) {
-                            if (!promise.hasHandlers) {
-                                logError(err);
-                            }
-                        }
-                    });
-                    promise.dispatch();
+                if (!promise.hasHandlers && promise.rejected) {
+                    logError(promise.value);
                 }
             }
         }
@@ -1005,8 +1000,24 @@
                 throw err;
             });
         }
+        var toString = {}.toString;
         function isPromise(item) {
             try {
+                if (!item) {
+                    return false;
+                }
+                if (window.Window && item instanceof window.Window) {
+                    return false;
+                }
+                if (window.constructor && item instanceof window.constructor) {
+                    return false;
+                }
+                if (toString) {
+                    var name = toString.call(item);
+                    if (name === "[object Window]" || name === "[object global]" || name === "[object DOMWindow]") {
+                        return false;
+                    }
+                }
                 if (item && item.then instanceof Function) {
                     return true;
                 }
@@ -1567,6 +1578,7 @@
             return result;
         }
         var domainMatches = [];
+        var domainMatchTimeout = void 0;
         function isSameDomain(win) {
             for (var _iterator = domainMatches, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
@@ -1602,6 +1614,12 @@
                 win: win,
                 match: match
             });
+            if (!domainMatchTimeout) {
+                domainMatchTimeout = setTimeout(function() {
+                    domainMatches = [];
+                    domainMatchTimeout = null;
+                }, 1);
+            }
             return match;
         }
         function isWindowClosed(win) {
@@ -4159,21 +4177,23 @@
                 key: "watchForResize",
                 value: function watchForResize() {
                     var _this4 = this;
+                    var resize = (0, _lib.debounce)(function(width, height) {
+                        return _this4.sendToParent(_constants.POST_MESSAGE.RESIZE, {
+                            width: width,
+                            height: height
+                        });
+                    }, 100);
                     var elm = document.body;
                     if (!elm) {
                         return;
                     }
-                    var lastWidth = elm.scrollWidth;
-                    var newWidth = void 0;
                     var lastHeight = elm.scrollHeight;
                     var newHeight = void 0;
                     setInterval(function() {
-                        newWidth = elm.scrollWidth;
                         newHeight = elm.scrollHeight;
-                        if (lastHeight !== newHeight || lastWidth !== newWidth) {
-                            _this4.resize(newWidth, newHeight);
+                        if (lastHeight !== newHeight) {
+                            resize(_this4.component.dimensions.width, newHeight);
                         }
-                        lastWidth = newWidth;
                         lastHeight = newHeight;
                     }, 50);
                 }
@@ -4509,7 +4529,7 @@
         }
         function isWindowClosed(win) {
             try {
-                return !win || win.closed || typeof win.closed === "undefined" || (0, _util.safeGet)(win, "mockclosed");
+                return !win || win.closed || typeof win.closed === "undefined";
             } catch (err) {
                 return true;
             }
@@ -4702,6 +4722,8 @@
         exports.noop = noop;
         exports.once = once;
         exports.memoize = memoize;
+        exports.throttle = throttle;
+        exports.debounce = debounce;
         function noop() {}
         function once(method) {
             var called = false;
@@ -4725,6 +4747,31 @@
                     results[args] = method.apply(this, arguments);
                 }
                 return results[args];
+            };
+        }
+        function throttle(method) {
+            var time = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+            var enabled = true;
+            return function() {
+                if (!enabled) {
+                    return;
+                }
+                enabled = false;
+                setTimeout(function() {
+                    enabled = true;
+                }, time);
+                return method.apply(this, arguments);
+            };
+        }
+        function debounce(method) {
+            var time = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+            var timeout = void 0;
+            return function() {
+                var _this = this, _arguments = arguments;
+                clearTimeout(timeout);
+                setTimeout(function() {
+                    return method.apply(_this, _arguments);
+                }, time);
             };
         }
     }, /*!**************************************!*\
@@ -4909,6 +4956,7 @@
         exports.denodeify = denodeify;
         exports.promisify = promisify;
         exports.getter = getter;
+        exports.delay = delay;
         var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
         function denodeify(method) {
             return function() {
@@ -4951,6 +4999,11 @@
                 });
             };
         }
+        function delay(time) {
+            return new _promise.SyncPromise(function(resolve) {
+                setTimeout(resolve, time);
+            });
+        }
     }, /*!**********************************************!*\
   !*** ./~/xcomponent/src/component/window.js ***!
   \**********************************************/
@@ -4967,6 +5020,8 @@
         function buildChildWindowName(prefix) {
             var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             options.id = (0, _lib.uniqueID)();
+            options.parent = window.name;
+            options.parentDomain = window.location.protocol + "//" + window.location.host;
             var name = (0, _lib.b64encode)(JSON.stringify(options));
             return _constants.XCOMPONENT + "_" + prefix.replace(/_/g, "") + "_" + name;
         }
@@ -4989,25 +5044,12 @@
             return Boolean(getComponentMeta());
         });
         var getParentWindow = exports.getParentWindow = (0, _lib.memoize)(function() {
-            var parentWindow = void 0;
             if (window.opener) {
-                parentWindow = window.opener;
+                return window.opener;
             } else if (window.parent && window.parent !== window) {
-                parentWindow = window.parent;
-            } else {
-                throw new Error("Can not find parent window");
+                return window.parent;
             }
-            var componentMeta = getComponentMeta();
-            if (!componentMeta) {
-                return parentWindow;
-            }
-            if (!parentWindow.parent || parentWindow.parent === parentWindow) {
-                return parentWindow;
-            }
-            if (componentMeta.sibling && parentWindow.parent.frames && parentWindow.parent.frames[componentMeta.parent] === parentWindow) {
-                return parentWindow.parent;
-            }
-            return parentWindow;
+            throw new Error("Can not find parent window");
         });
         var getParentComponentWindow = exports.getParentComponentWindow = (0, _lib.memoize)(function() {
             var componentMeta = getComponentMeta();
@@ -5015,7 +5057,7 @@
                 throw new Error("Can not get parent component window - window not rendered by xcomponent");
             }
             var parentWindow = getParentWindow();
-            if (componentMeta.sibling && parentWindow.frames[componentMeta.parent]) {
+            if (parentWindow && componentMeta.parent && parentWindow.frames && parentWindow.frames[componentMeta.parent]) {
                 return parentWindow.frames[componentMeta.parent];
             }
             return parentWindow;
@@ -5055,7 +5097,8 @@
             CLOSE: XCOMPONENT + "_close",
             REDIRECT: XCOMPONENT + "_redirect",
             RESIZE: XCOMPONENT + "_resize",
-            RENDER: XCOMPONENT + "_render",
+            RENDER_REMOTE: XCOMPONENT + "_render_remote",
+            RENDER_LOCAL: XCOMPONENT + "_render_local",
             ERROR: XCOMPONENT + "_error",
             HIDE: XCOMPONENT + "_hide"
         };
@@ -5485,12 +5528,9 @@
                 }
             }, {
                 key: "validateRender",
-                value: function validateRender(context) {
-                    if (this.window && !this.preRendered) {
+                value: function validateRender() {
+                    if (this.window) {
                         throw new Error("[" + this.component.tag + "] Can not render: component is already rendered");
-                    }
-                    if (context && !this.component.contexts[context]) {
-                        throw new Error("Invalid context: " + context);
                     }
                 }
             }, {
@@ -5498,26 +5538,27 @@
                 value: function render(element, context) {
                     var _this4 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this4.validateRender(context);
                         context = _this4.getRenderContext(element, context);
                         _this4.component.log("render_" + context, {
                             context: context,
                             element: element
                         });
-                        if (_drivers.RENDER_DRIVERS[context].render) {
-                            _drivers.RENDER_DRIVERS[context].render.call(_this4, element);
-                        }
-                        _this4.setForCleanup("context", context);
                         _this4.preRender(element, context);
-                        _this4.listen(_this4.window);
-                        return _this4.buildUrl().then(function(url) {
-                            _this4.loadUrl(context, url);
-                            _this4.runTimeout();
-                            return _this4.onInit;
-                        });
+                        return _this4.initUrl(context);
+                    }).then(function() {
+                        return _this4.onInit;
                     })["catch"](function(err) {
                         _this4.destroy();
                         throw err;
+                    });
+                }
+            }, {
+                key: "initUrl",
+                value: function initUrl(context) {
+                    var _this5 = this;
+                    return this.buildUrl().then(function(url) {
+                        _this5.loadUrl(context, url);
+                        _this5.runTimeout();
                     });
                 }
             }, {
@@ -5533,93 +5574,111 @@
             }, {
                 key: "preRender",
                 value: function preRender(element, context) {
-                    if (this.preRendered) {
-                        return;
-                    }
+                    this.validateRender();
                     context = this.getRenderContext(element, context);
-                    this.component.log("preRender_" + context, {
-                        element: element,
-                        windowName: this.childWindowName
-                    });
+                    _drivers.RENDER_DRIVERS[context].render.call(this, element);
                     this.setForCleanup("context", context);
                     this.createParentTemplate(context);
                     this.open(element, context);
                     this.watchForClose();
                     this.createComponentTemplate();
-                    this.setForCleanup("preRendered", true);
+                    this.listen(this.window);
+                }
+            }, {
+                key: "renderToParentRemote",
+                value: function renderToParentRemote(element, context) {
+                    var _this6 = this;
+                    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                    return _src2["default"].sendToParent(_constants.POST_MESSAGE.RENDER_REMOTE, _extends({}, options, {
+                        tag: this.component.tag,
+                        context: context,
+                        element: element,
+                        options: {
+                            props: this.props,
+                            childWindowName: this.childWindowName
+                        }
+                    })).then(function(data) {
+                        (0, _lib.extend)(_this6, data.overrides);
+                        _this6.setForCleanup("window", (0, _lib.getParentWindow)().frames[data.childWindowName]);
+                    });
+                }
+            }, {
+                key: "renderToParentLocal",
+                value: function renderToParentLocal(element, context) {
+                    var _this7 = this;
+                    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                    var renderPromise = this.render(element, _constants.CONTEXT_TYPES.POPUP);
+                    var renderParentPromise = _src2["default"].sendToParent(_constants.POST_MESSAGE.RENDER_LOCAL, _extends({}, options, {
+                        tag: this.component.tag,
+                        context: context,
+                        element: element,
+                        overrides: {
+                            close: function close(reason) {
+                                return _this7.close(reason);
+                            },
+                            focus: function focus() {
+                                return _this7.focus();
+                            }
+                        },
+                        options: {
+                            props: this.props
+                        }
+                    })).then(function(data) {
+                        _this7.registerForCleanup(data.destroy);
+                        (0, _lib.extend)(_this7, data.overrides);
+                    });
+                    return _promise.SyncPromise.all([ renderPromise, renderParentPromise ]).then(function() {
+                        return renderPromise;
+                    });
                 }
             }, {
                 key: "renderToParent",
                 value: function renderToParent(element, context) {
-                    var _this5 = this;
+                    var _this8 = this;
                     var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this5.validateRender(context);
-                        context = _this5.getRenderContext(element, context);
+                        _this8.validateRender();
+                        context = _this8.getRenderContext(element, context);
                         var parentWindow = (0, _lib.getParentWindow)();
                         if (!parentWindow) {
-                            throw new Error("[" + _this5.component.tag + "] Can not render to parent - no parent exists");
+                            throw new Error("[" + _this8.component.tag + "] Can not render to parent - no parent exists");
                         }
-                        if (!window.name) {
-                            throw new Error("[" + _this5.component.tag + "] Can not render to parent - not in a child component window");
+                        if (!(0, _window.isXComponentWindow)()) {
+                            throw new Error("[" + _this8.component.tag + "] Can not render to parent - not in a child component window");
                         }
-                        _this5.component.log("render_" + context + "_to_parent", {
+                        _this8.component.log("render_" + context + "_to_parent", {
                             element: element,
                             context: context
                         });
-                        _this5.childWindowName = (0, _window.buildChildWindowName)(_this5.component.name, {
-                            tag: _this5.component.tag,
-                            parent: window.name,
-                            sibling: 1
-                        });
-                        _this5.setForCleanup("context", context);
-                        if (_drivers.RENDER_DRIVERS[context].renderToParent) {
-                            _drivers.RENDER_DRIVERS[context].renderToParent.call(_this5, element);
-                        }
-                        return _src2["default"].sendToParent(_constants.POST_MESSAGE.RENDER, _extends({}, options, {
-                            tag: _this5.component.tag,
-                            context: context,
-                            element: element,
-                            options: {
-                                renderedToParent: true,
-                                childWindowName: _this5.childWindowName,
-                                props: _this5.props
-                            }
-                        })).then(function(data) {
-                            _this5.childExports = data.childExports;
-                            _this5.close = data.close;
-                            if (!_this5.window) {
-                                _this5.setForCleanup("window", parentWindow.frames[_this5.childWindowName]);
-                            }
-                            return _this5;
-                        });
+                        _this8.setForCleanup("context", context);
+                        return _drivers.RENDER_DRIVERS[context].renderToParent.call(_this8, element, options);
                     });
                 }
             }, {
                 key: "watchForClose",
                 value: function watchForClose() {
-                    var _this6 = this;
+                    var _this9 = this;
                     this.closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
-                        _this6.component.log("detect_close_child");
-                        _this6.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED)["finally"](function() {
-                            _this6.destroy();
+                        _this9.component.log("detect_close_child");
+                        _this9.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED)["finally"](function() {
+                            _this9.destroy();
                         });
                     });
                     this.unloadListener = (0, _lib.addEventListener)(window, "beforeunload", function() {
-                        _this6.component.log("navigate_away");
+                        _this9.component.log("navigate_away");
                         _client2["default"].flush();
-                        if (_this6.context === _constants.CONTEXT_TYPES.POPUP) {
-                            _this6.destroy();
+                        if (_this9.context === _constants.CONTEXT_TYPES.POPUP) {
+                            _this9.destroy();
                         }
                     });
                     this.registerForCleanup(function() {
-                        if (_this6.closeWindowListener) {
-                            _this6.closeWindowListener.cancel();
-                            delete _this6.closeWindowListener;
+                        if (_this9.closeWindowListener) {
+                            _this9.closeWindowListener.cancel();
+                            delete _this9.closeWindowListener;
                         }
-                        if (_this6.unloadListener) {
-                            _this6.unloadListener.cancel();
-                            delete _this6.unloadListener;
+                        if (_this9.unloadListener) {
+                            _this9.unloadListener.cancel();
+                            delete _this9.unloadListener;
                         }
                     });
                 }
@@ -5633,35 +5692,30 @@
             }, {
                 key: "hijackButton",
                 value: function hijackButton(button, element, context) {
-                    var _this7 = this;
+                    var _this10 = this;
                     this.component.log("hijack_button", {
                         element: element
                     });
                     return new _promise.SyncPromise(function(resolve, reject) {
                         (0, _lib.hijackButton)(button, function(event, targetElement) {
-                            context = _this7.getRenderContext(element, context);
-                            if (_this7.window && !_this7.preRendered) {
-                                event.preventDefault();
-                                throw new Error("[" + _this7.component.tag + "] Component is already rendered");
-                            }
-                            _this7.renderHijack(targetElement, element, context).then(resolve, reject);
+                            _this10.renderHijack(targetElement, element, context).then(resolve, reject);
                         });
                     });
                 }
             }, {
                 key: "renderHijack",
                 value: function renderHijack(targetElement, element, context) {
-                    var _this8 = this;
+                    var _this11 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        context = _this8.getRenderContext(element, context);
-                        _this8.component.log("render_hijack_" + context);
-                        _this8.validateRender(context);
-                        _this8.setForCleanup("context", context);
-                        targetElement.target = _this8.childWindowName;
-                        _this8.preRender(element, context);
-                        _this8.listen(_this8.window);
-                        _this8.runTimeout();
-                        return _this8.onInit;
+                        context = _this11.getRenderContext(element, context);
+                        _this11.component.log("render_hijack_" + context);
+                        targetElement.target = _this11.childWindowName;
+                        _this11.preRender(element, context);
+                        _this11.runTimeout();
+                        return _this11.onInit;
+                    })["catch"](function(err) {
+                        _this11.destroy();
+                        throw err;
                     });
                 }
             }, {
@@ -5676,14 +5730,14 @@
             }, {
                 key: "runTimeout",
                 value: function runTimeout() {
-                    var _this9 = this;
+                    var _this12 = this;
                     if (this.props.timeout) {
                         setTimeout(function() {
-                            var error = new Error("[" + _this9.component.tag + "] Loading component " + _this9.component.tag + " timed out after " + _this9.props.timeout + " milliseconds");
-                            _this9.onInit.reject(error)["catch"](function(err) {
-                                return _this9.props.onTimeout(err)["finally"](function() {
-                                    _this9.component.log("timed_out", {
-                                        timeout: _this9.props.timeout
+                            var error = new Error("[" + _this12.component.tag + "] Loading component " + _this12.component.tag + " timed out after " + _this12.props.timeout + " milliseconds");
+                            _this12.onInit.reject(error)["catch"](function(err) {
+                                return _this12.props.onTimeout(err)["finally"](function() {
+                                    _this12.component.log("timed_out", {
+                                        timeout: _this12.props.timeout
                                     });
                                 });
                             });
@@ -5695,28 +5749,29 @@
                 value: function listeners() {
                     var _ref;
                     return _ref = {}, _defineProperty(_ref, _constants.POST_MESSAGE.INIT, function(source, data) {
-                        var _this10 = this;
+                        var _this13 = this;
                         this.childExports = data.exports;
                         this.onInit.resolve(this);
                         return this.props.onEnter().then(function() {
-                            _this10.setForCleanup("initialPropsSent", true);
+                            _this13.setForCleanup("initialPropsSent", true);
                             return {
-                                context: _this10.context,
-                                props: _this10.props
+                                context: _this13.context,
+                                props: _this13.props
                             };
                         });
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.CLOSE, function(source, data) {
                         this.close(data.reason);
-                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER, function(source, data) {
-                        var _this11 = this;
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER_REMOTE, function(source, data) {
+                        var _this14 = this;
                         var component = this.component.getByTag(data.tag);
                         var instance = component.parent(data.options);
+                        (0, _lib.extend)(instance, data.overrides);
                         this.registerForCleanup(function() {
                             instance.destroy();
                         });
                         return _promise.SyncPromise.resolve().then(function() {
                             if (data.hijackSubmitParentForm) {
-                                var form = (0, _lib.getParentNode)(_this11.iframe, "form");
+                                var form = (0, _lib.getParentNode)(_this14.iframe, "form");
                                 var promise = instance.renderHijack(form, data.element, data.context);
                                 form.submit();
                                 return promise;
@@ -5725,12 +5780,31 @@
                             }
                         }).then(function() {
                             return {
-                                childExports: instance.childExports,
-                                close: function close(reason) {
-                                    return instance.close(reason);
+                                childWindowName: _this14.childWindowName,
+                                overrides: {
+                                    childExports: instance.childExports,
+                                    close: function close(reason) {
+                                        return instance.close(reason);
+                                    }
                                 }
                             };
                         });
+                    }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER_LOCAL, function(source, data) {
+                        var component = this.component.getByTag(data.tag);
+                        var instance = component.parent(data.options);
+                        instance.setForCleanup("context", data.context);
+                        (0, _lib.extend)(instance, data.overrides);
+                        instance.createParentTemplate(data.context);
+                        return {
+                            destroy: function destroy() {
+                                return instance.destroy();
+                            },
+                            overrides: {
+                                addCloseClasses: function addCloseClasses() {
+                                    return instance.addCloseClasses();
+                                }
+                            }
+                        };
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.RESIZE, function(source, data) {
                         if (this.context === _constants.CONTEXT_TYPES.POPUP) {
                             return;
@@ -5772,7 +5846,7 @@
             }, {
                 key: "close",
                 value: function close() {
-                    var _this12 = this;
+                    var _this15 = this;
                     var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
                     if (this.closePromise) {
                         return this.closePromise;
@@ -5784,37 +5858,40 @@
                     if (this.unloadListener) {
                         this.unloadListener.cancel();
                     }
+                    this.addCloseClasses();
+                    var closePromise = _promise.SyncPromise.resolve().then(function() {
+                        if (_this15.component.closeDelay && _this15.context !== _constants.CONTEXT_TYPES.POPUP) {
+                            return (0, _lib.delay)(_this15.component.closeDelay);
+                        }
+                    }).then(function() {
+                        if (_this15.childExports && !(0, _lib.isWindowClosed)(_this15.window)) {
+                            _this15.childExports.close()["catch"](_lib.noop);
+                        }
+                        _this15.destroy();
+                        return _this15.props.onClose(reason);
+                    });
+                    this.setForCleanup("closePromise", closePromise);
+                    return closePromise;
+                }
+            }, {
+                key: "addCloseClasses",
+                value: function addCloseClasses() {
                     if (this.parentTemplate) {
                         this.parentTemplate.className += " " + _constants.CLASS_NAMES.CLOSING;
                         if (this.component.autocloseParentTemplate) {
                             this.parentTemplate.className += " " + _constants.CLASS_NAMES.AUTOCLOSE;
                         }
                     }
-                    var closePromise = this.props.onClose(reason).then(function() {
-                        return new _promise.SyncPromise(function(resolve) {
-                            if (_this12.component.closeDelay && _this12.context !== _constants.CONTEXT_TYPES.POPUP) {
-                                setTimeout(resolve, _this12.component.closeDelay);
-                            } else {
-                                resolve();
-                            }
-                        }).then(function() {
-                            if (_this12.childExports && !(0, _lib.isWindowClosed)(_this12.window)) {
-                                _this12.childExports.close()["catch"](_lib.noop);
-                            }
-                            _this12.destroy();
-                        });
-                    });
-                    this.setForCleanup("closePromise", closePromise);
-                    return closePromise;
                 }
             }, {
                 key: "focus",
                 value: function focus() {
-                    this.component.log("focus");
                     if (this.window) {
+                        this.component.log("focus");
                         this.window.focus();
+                    } else {
+                        throw new Error("No window to focus");
                     }
-                    return this;
                 }
             }, {
                 key: "createComponentTemplate",
@@ -5837,7 +5914,7 @@
             }, {
                 key: "createParentTemplate",
                 value: function createParentTemplate(context) {
-                    var _this13 = this;
+                    var _this16 = this;
                     if (!_drivers.RENDER_DRIVERS[context].parentTemplate) {
                         return;
                     }
@@ -5855,15 +5932,17 @@
                             zIndex: _constants.MAX_Z_INDEX - 1
                         }
                     }, document.body);
-                    (0, _lib.addEventToClass)(this.parentTemplate, _constants.CLASS_NAMES.FOCUS, _constants.EVENT_NAMES.CLICK, function(event) {
-                        return _this13.focus();
-                    });
+                    if (_drivers.RENDER_DRIVERS[context].focusable) {
+                        (0, _lib.addEventToClass)(this.parentTemplate, _constants.CLASS_NAMES.FOCUS, _constants.EVENT_NAMES.CLICK, function(event) {
+                            return _this16.focus();
+                        });
+                    }
                     (0, _lib.addEventToClass)(this.parentTemplate, _constants.CLASS_NAMES.CLOSE, _constants.EVENT_NAMES.CLICK, function(event) {
-                        return _this13.close(_constants.CLOSE_REASONS.TEMPLATE_BUTTON);
+                        return _this16.close(_constants.CLOSE_REASONS.TEMPLATE_BUTTON);
                     });
                     this.registerForCleanup(function() {
-                        if (_this13.component.autocloseParentTemplate && _this13.parentTemplate) {
-                            _this13.closeParentTemplate();
+                        if (_this16.component.autocloseParentTemplate && _this16.parentTemplate) {
+                            _this16.closeParentTemplate();
                         }
                     });
                 }
@@ -5989,16 +6068,19 @@
             restyle: function restyle() {
                 this.iframe.style.backgroundColor = "transparent";
             },
-            renderToParent: function renderToParent(element) {
+            renderToParent: function renderToParent(element, options) {
                 if (!element) {
                     throw new Error("[" + this.component.tag + "] Must specify element to render to iframe");
                 }
+                return this.renderToParentRemote(element, _constants.CONTEXT_TYPES.IFRAME, options);
             },
             loadUrl: function loadUrl(url) {
                 this.iframe.src = url;
             }
         }), _defineProperty(_RENDER_DRIVERS, _constants.CONTEXT_TYPES.POPUP, {
             parentTemplate: true,
+            focusable: true,
+            render: function render() {},
             open: function open() {
                 var _this2 = this;
                 var dimensions = this.component.dimensions || {};
@@ -6027,26 +6109,35 @@
                 }
                 return this;
             },
-            resize: function resize() {},
+            resize: function resize(width, height) {
+                width = Math.min(width, window.innerWidth);
+                height = Math.min(height, window.innerHeight);
+                return this.window.resizeTo(width, height);
+            },
             hide: function hide() {
                 throw new Error("Can not hide popup");
             },
             restyle: function restyle() {},
-            renderToParent: function renderToParent() {
-                this.open(null, _constants.CONTEXT_TYPES.POPUP);
-                this.createComponentTemplate();
+            renderToParent: function renderToParent(element, options) {
+                return this.renderToParentLocal(element, _constants.CONTEXT_TYPES.POPUP, options);
             },
             loadUrl: function loadUrl(url) {
                 this.window.location = url;
             }
         }), _defineProperty(_RENDER_DRIVERS, _constants.CONTEXT_TYPES.LIGHTBOX, {
             parentTemplate: true,
+            render: function render() {},
+            renderToParent: function renderToParent(element, options) {
+                return this.renderToParentRemote(element, _constants.CONTEXT_TYPES.LIGHTBOX, options);
+            },
             open: function open() {
                 var element = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || document.body;
                 RENDER_DRIVERS[_constants.CONTEXT_TYPES.IFRAME].open.call(this, element);
                 return this;
             },
             resize: function resize(width, height) {
+                width = Math.min(width, window.innerWidth);
+                height = Math.min(height, window.innerHeight);
                 var container = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || this.iframe;
                 container.style.zIndex = _constants.MAX_Z_INDEX;
                 container.style.position = "fixed";
@@ -6723,8 +6814,8 @@
         var _componentTemplate = __webpack_require__(/*! ./componentTemplate.htm */ 74);
         var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
         var _lib = __webpack_require__(/*! ../../lib */ 75);
-        var _config = __webpack_require__(/*! ../../config */ 77);
-        var _content = __webpack_require__(/*! ./content */ 78);
+        var _config = __webpack_require__(/*! ../../config */ 78);
+        var _content = __webpack_require__(/*! ./content */ 79);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -6755,7 +6846,7 @@
                 return template;
             },
             componentTemplate: _componentTemplate2["default"],
-            autoResize: false,
+            autoResize: true,
             closeDelay: 1e3,
             props: {
                 init: {
@@ -6803,7 +6894,7 @@
   !*** ./src/components/checkout/parentTemplate.htm ***!
   \****************************************************/
     function(module, exports) {
-        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            #windowMessage\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.FOCUS}" class="{CLASS.FOCUS}">#continue</a>\n        </div>\n        <div class="paypal-checkout-loading">\n            <div class="paypal-spinner"></div>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n\n        background-color: black;\n\n        background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n        cursor: pointer;\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        -ms-transform: translate3d(0, 0, 0);\n        -o-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n    }\n\n    #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n\n        animation-fill-mode:forwards;\n        animation-iteration-count: 1;\n\n        -webkit-animation-fill-mode:forwards;\n        -webkit-animation-iteration-count: 1;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n        text-align: center;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-message, #{id}.{CLASS.CLOSING} .paypal-checkout-continue {\n        display: none;\n    }\n\n    .paypal-checkout-loading {\n        display: none;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-loading {\n        display: block;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin-bottom: 30px;\n        display: inline-block;\n    }\n\n    @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n        #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n            background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n            background-size: 200px 200px;\n        }\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.5;\n        padding: 10px 0;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-message, #{id}.{CLASS.LIGHTBOX} .paypal-checkout-continue {\n        display: none;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n        text-decoration: underline;\n        font-weight: bold;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id}.{CLASS.CLOSING} .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n\n\n    .paypal-spinner {\n        height: 30px;\n        width: 30px;\n        display: inline-block;\n        opacity: 1;\n        filter: alpha(opacity=100);\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 8px solid rgba(0, 0, 0, .2);\n        border-right: 8px solid rgba(0, 0, 0, .2);\n        border-bottom: 8px solid rgba(0, 0, 0, .2);\n        border-top: 8px solid #fff;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n</style>\n';
+        module.exports = '\n<div class="paypal-checkout-overlay {CLASS.FOCUS}">\n    <a href="#{CLASS.CLOSE}" class="{CLASS.CLOSE}"></a>\n    <div class="paypal-checkout-modal">\n        <div class="paypal-checkout-logo"></div>\n        <div class="paypal-checkout-message" >\n            #windowMessage\n        </div>\n        <div class="paypal-checkout-continue">\n            <a href="#{CLASS.FOCUS}" class="{CLASS.FOCUS}">#continue</a>\n        </div>\n        <div class="paypal-checkout-loading">\n            <div class="paypal-spinner"></div>\n        </div>\n    </div>\n\n    <div class="{CLASS.ELEMENT} paypal-checkout-lightbox-wrapper"></div>\n</div>\n\n<style>\n\n    #{id} .paypal-checkout-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n\n        background-color: black;\n\n        background-color: rgba(0, 0, 0, 0.8);\n\n        background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n        background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n        -webkit-animation-duration: 0.5s;\n        animation-duration: 0.5s;\n        -webkit-animation-name: fadeIn;\n        animation-name: fadeIn;\n\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        -ms-transform: translate3d(0, 0, 0);\n        -o-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-name: fadeOut;\n        animation-name: fadeOut;\n\n        animation-fill-mode:forwards;\n        animation-iteration-count: 1;\n\n        -webkit-animation-fill-mode:forwards;\n        -webkit-animation-iteration-count: 1;\n    }\n\n    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {\n        cursor: pointer;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal {\n        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n        font-size: 14px;\n        text-align: center;\n        color: #fff;\n        z-index: 1000000002;\n        -webkit-box-sizing: border-box;\n        -moz-box-sizing: border-box;\n        -ms-box-sizing: border-box;\n        box-sizing: border-box;\n        width: 350px;\n        top: 50%;\n        left: 50%;\n        position: fixed;\n        margin-left: -165px;\n        margin-top: -80px;\n        cursor: pointer;\n        text-align: center;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-message, #{id}.{CLASS.CLOSING} .paypal-checkout-continue {\n        display: none;\n    }\n\n    .paypal-checkout-loading {\n        display: none;\n    }\n\n    #{id}.{CLASS.CLOSING} .paypal-checkout-loading {\n        display: block;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n        background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n        width: 132px;\n        height: 36px;\n        cursor: pointer;\n        margin-bottom: 30px;\n        display: inline-block;\n    }\n\n    @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n        #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n            background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n            background-size: 200px 200px;\n        }\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n        font-size: 15px;\n        line-height: 1.5;\n        padding: 10px 0;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-message, #{id}.{CLASS.LIGHTBOX} .paypal-checkout-continue {\n        display: none;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.max-width.max-height .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n        font-size: 15px;\n        line-height: 1.35;\n        padding: 10px 0;\n        text-decoration: underline;\n        font-weight: bold;\n    }\n\n    #{id} .{CLASS.CLOSE} {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n    }\n\n    #{id}.{CLASS.CLOSING} .{CLASS.CLOSE} {\n        display: none;\n    }\n\n    #{id} .{CLASS.CLOSE}:hover {\n        opacity: 1;\n    }\n\n    #{id} .{CLASS.CLOSE}:before, .{CLASS.CLOSE}:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 16px;\n        width: 2px;\n        background-color: white;\n    }\n\n    #{id} .{CLASS.CLOSE}:before {\n        transform: rotate(45deg);\n    }\n\n    #{id} .{CLASS.CLOSE}:after {\n        transform: rotate(-45deg);\n    }\n\n    #{id} a {\n        color: white;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.set-width.set-height .paypal-checkout-lightbox-wrapper {\n        padding: 5px;\n        border-radius: 10px;\n    }\n\n    #{id} .paypal-checkout-lightbox-wrapper {\n        display: none;\n        background-color: white;\n\n        -webkit-transition: all 0.6s ease;\n        -moz-transition: all 0.6s ease;\n        -ms-transition: all 0.6s ease;\n        -o-transition: all 0.6 ease;\n        transition: all 0.6s ease;\n\n        -webkit-animation-duration: 1s;\n        animation-duration: 1s;\n        -webkit-animation-fill-mode: both;\n        animation-fill-mode: both;\n\n        -webkit-animation-name: bounceInUp;\n        animation-name: bounceInUp;\n    }\n\n    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {\n\n        -webkit-animation-name: bounceOutDown;\n        animation-name: bounceOutDown;\n    }\n\n    #{id}.{CLASS.LIGHTBOX} .paypal-checkout-lightbox-wrapper {\n        display: block;\n    }\n\n\n\n    /*!\n     * animate.css -http://daneden.me/animate\n     * Version - 3.5.1\n     * Licensed under the MIT license - http://opensource.org/licenses/MIT\n     *\n     * Copyright (c) 2016 Daniel Eden\n     */\n\n    @-webkit-keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @keyframes bounceInUp {\n        from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);\n        }\n\n        from {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 3000px, 0);\n            transform: translate3d(0, 3000px, 0);\n        }\n\n        60% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        75% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        90% {\n            -webkit-transform: translate3d(0, -5px, 0);\n            transform: translate3d(0, -5px, 0);\n        }\n\n        to {\n            -webkit-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n    }\n\n    @-webkit-keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @keyframes bounceOutDown {\n        20% {\n            -webkit-transform: translate3d(0, 10px, 0);\n            transform: translate3d(0, 10px, 0);\n        }\n\n        40%, 45% {\n            opacity: 1;\n            -webkit-transform: translate3d(0, -20px, 0);\n            transform: translate3d(0, -20px, 0);\n        }\n\n        to {\n            opacity: 0;\n            -webkit-transform: translate3d(0, 2000px, 0);\n            transform: translate3d(0, 2000px, 0);\n        }\n    }\n\n    @-webkit-keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @keyframes fadeIn {\n        from {\n            opacity: 0;\n        }\n\n        to {\n            opacity: 1;\n        }\n    }\n\n    @-webkit-keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n    @keyframes fadeOut {\n        from {\n            opacity: 1;\n        }\n\n        50% {\n            opacity: 1;\n        }\n\n        to {\n            opacity: 0;\n        }\n    }\n\n\n\n    .paypal-spinner {\n        height: 30px;\n        width: 30px;\n        display: inline-block;\n        opacity: 1;\n        filter: alpha(opacity=100);\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 8px solid rgba(0, 0, 0, .2);\n        border-right: 8px solid rgba(0, 0, 0, .2);\n        border-bottom: 8px solid rgba(0, 0, 0, .2);\n        border-top: 8px solid #fff;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n</style>\n';
     }, /*!*******************************************************!*\
   !*** ./src/components/checkout/componentTemplate.htm ***!
   \*******************************************************/
@@ -6824,6 +6915,16 @@
                 enumerable: true,
                 get: function get() {
                     return _device[key];
+                }
+            });
+        });
+        var _util = __webpack_require__(/*! ./util */ 77);
+        Object.keys(_util).forEach(function(key) {
+            if (key === "default") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _util[key];
                 }
             });
         });
@@ -6868,6 +6969,39 @@
                 M.splice(1, 1, tem[1]);
             }
             return M;
+        }
+    }, /*!*************************!*\
+  !*** ./src/lib/util.js ***!
+  \*************************/
+    function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.loadScript = loadScript;
+        var _promise = __webpack_require__(/*! sync-browser-mocks/src/promise */ 16);
+        function loadScript(src, timeout) {
+            return new _promise.SyncPromise(function(resolve, reject) {
+                var script = document.createElement("script");
+                script.onload = function() {
+                    resolve();
+                };
+                script.onreadystatechange = function() {
+                    if (this.readyState === "complete" || this.readyState === "loaded") {
+                        resolve();
+                    }
+                };
+                script.onerror = function(event) {
+                    return reject(new Error("script_loading_error"));
+                };
+                if (timeout) {
+                    setTimeout(function() {
+                        return reject(new Error("script_loading_timed_out"));
+                    }, timeout);
+                }
+                script.setAttribute("src", src);
+                document.body.appendChild(script);
+            });
         }
     }, /*!***********************!*\
   !*** ./src/config.js ***!
@@ -10131,13 +10265,16 @@
         var _components = __webpack_require__(/*! ../components */ 1);
         var _src = __webpack_require__(/*! xcomponent/src */ 4);
         var _src2 = _interopRequireDefault(_src);
-        var _eligibility = __webpack_require__(/*! ./eligibility */ 80);
+        var _eligibility = __webpack_require__(/*! ./eligibility */ 81);
+        var _lib = __webpack_require__(/*! ../lib */ 75);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
         var PROD_BASE_URL = "https://www.paypal.com/checkoutnow";
+        var BUTTON_JS_URL = "//www.paypalobjects.com/api/button.js";
+        var buttonJS = void 0;
         var env = "production";
         function redirect(url) {
             window.location = url;
@@ -10192,11 +10329,53 @@
                 _this.close();
             };
         }
-        function drawButton(container) {
-            var button = document.createElement("button");
-            button.innerHTML = "PayPal Checkout";
-            document.getElementById(container).appendChild(button);
-            return button;
+        function getButtonRendered(id, options) {
+            var jsBtnIds = options.container;
+            var btnColor = options.color;
+            var btnSize = options.size;
+            var btnShape = options.shape;
+            var btnLanguage = options.locale;
+            var btnsConfigList = options.buttons;
+            if (jsBtnIds) {
+                var dataAttrs = {
+                    lc: btnLanguage,
+                    color: btnColor,
+                    shape: btnShape,
+                    size: btnSize
+                };
+                if (jsBtnIds instanceof Array) {
+                    for (var i = 0; i < jsBtnIds.length; i++) {
+                        var directButton = drawButton(id, dataAttrs, jsBtnIds[i]);
+                        handleClick(directButton, options);
+                    }
+                } else {
+                    var _directButton = drawButton(id, dataAttrs, jsBtnIds);
+                    handleClick(_directButton, options);
+                }
+            } else if (btnsConfigList && btnsConfigList.length) {
+                for (var j = 0; j < btnsConfigList.length; j++) {
+                    var _dataAttrs = {
+                        color: btnsConfigList[j].color,
+                        shape: btnsConfigList[j].shape,
+                        size: btnsConfigList[j].size
+                    };
+                    var arrayButton = drawButton(id, _dataAttrs, btnsConfigList[j].container);
+                    handleClick(arrayButton, options);
+                }
+            } else {}
+        }
+        function drawButton(id, options, btnContainer) {
+            var buttonDom = window.paypal.button.create(id, {
+                lc: options.lc || "en_US",
+                color: options.color || "gold",
+                shape: options.shape || "pill",
+                size: options.size || "small"
+            }, {
+                label: "checkout",
+                type: "button"
+            });
+            document.getElementById(btnContainer).appendChild(buttonDom.el);
+            return buttonDom.el.childNodes[0];
         }
         function urlWillRedirectPage(url) {
             if (url.indexOf("#") === -1) {
@@ -10247,25 +10426,43 @@
                 }
             }, props));
         }
+        function handleClick(button, options) {
+            if (!(0, _eligibility.isEligible)()) {
+                return;
+            }
+            if (options.click) {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    initPayPalCheckout().render();
+                    options.click.call();
+                });
+            } else {
+                initPayPalCheckout({
+                    paymentToken: _src2["default"].CONSTANTS.PROP_DEFER_TO_URL
+                }).hijackButton(button);
+            }
+        }
+        function checkforContainer(options) {
+            var btnListConfig = options.buttons;
+            if (btnListConfig && btnListConfig.length) {
+                for (var i = 0; i < btnListConfig.length; i++) {
+                    if (btnListConfig[i].container) {
+                        return true;
+                    }
+                }
+            } else if (options && options.container) {
+                return true;
+            }
+            return false;
+        }
         function setup(id, options) {
             options = options || {};
             env = options.environment;
-            if (options.container) {
-                var button = drawButton(options.container);
-                if (!(0, _eligibility.isEligible)()) {
-                    return;
-                }
-                if (options.click) {
-                    button.addEventListener("click", function(event) {
-                        event.preventDefault();
-                        initPayPalCheckout().render();
-                        options.click.call();
-                    });
-                } else {
-                    initPayPalCheckout({
-                        paymentToken: _src2["default"].CONSTANTS.PROP_DEFER_TO_URL
-                    }).hijackButton(button);
-                }
+            if (checkforContainer(options)) {
+                buttonJS = buttonJS || (0, _lib.loadScript)(BUTTON_JS_URL);
+                return buttonJS.then(function() {
+                    getButtonRendered(id, options);
+                });
             }
         }
         function initXO() {
@@ -10348,6 +10545,8 @@
         } : function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
+        exports.isUnsupportedIE = isUnsupportedIE;
+        exports.isOldIE = isOldIE;
         exports.isEligible = isEligible;
         var _lib = __webpack_require__(/*! ../lib */ 75);
         var SUPPORTED_AGENTS = {
@@ -10358,8 +10557,11 @@
             Safari: 5.1,
             Opera: 23
         };
+        function isUnsupportedIE() {
+            return window.navigator.userAgent.match(/MSIE (5|6|7|8)\./i);
+        }
         function isOldIE() {
-            return window.navigator.userAgent.match(/MSIE [5678]\./i);
+            return window.navigator.userAgent.match(/MSIE (5|6|7|8|9|10)\./i);
         }
         function isEligible() {
             var currentAgent = (0, _lib.getAgent)();
@@ -10368,7 +10570,7 @@
                     return false;
                 }
             }
-            return !((0, _lib.isWebView)() || isOldIE());
+            return !((0, _lib.isWebView)() || isUnsupportedIE());
         }
     }, /*!**********************!*\
   !*** ./src/setup.js ***!
@@ -10379,8 +10581,8 @@
             value: true
         });
         exports.setup = setup;
-        var _config = __webpack_require__(/*! ./config */ 77);
-        var _bridge = __webpack_require__(/*! ./bridge */ 82);
+        var _config = __webpack_require__(/*! ./config */ 78);
+        var _bridge = __webpack_require__(/*! ./bridge */ 83);
         function setup(options) {
             _config.config.env = options.env || _config.config.env;
             _config.config.bridgeUrl = options.bridgeUrl;
@@ -10432,7 +10634,7 @@
         var _src = __webpack_require__(/*! post-robot/src */ 6);
         var _src2 = _interopRequireDefault(_src);
         var _components = __webpack_require__(/*! ./components */ 1);
-        var _config = __webpack_require__(/*! ./config */ 77);
+        var _config = __webpack_require__(/*! ./config */ 78);
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
