@@ -36,7 +36,7 @@
 
                 onEnter: function() {
 
-                    this.props.paymentToken().then(token => {
+                    this.props.paymentToken().then(function(token) {
                         ecToken = token;
                         console.log('got paypal token!', ecToken);
 

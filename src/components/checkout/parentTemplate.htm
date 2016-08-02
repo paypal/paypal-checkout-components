@@ -28,12 +28,12 @@
 
         background-color: black;
 
+        background-color: rgba(0, 0, 0, 0.8);
+
         background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
         background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
         background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
         background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
-
-        cursor: pointer;
 
         -webkit-animation-duration: 0.5s;
         animation-duration: 0.5s;
@@ -45,6 +45,10 @@
         -ms-transform: translate3d(0, 0, 0);
         -o-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
+    }
+
+    #{id}.{CLASS.POPUP} .paypal-checkout-overlay {
+        cursor: pointer;
     }
 
     #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {

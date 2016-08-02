@@ -43,7 +43,7 @@ export let PayPalCheckout = xcomponent.create({
 
     componentTemplate,
 
-    autoResize: false,
+    autoResize: true,
     closeDelay: 1000,
 
     props: {

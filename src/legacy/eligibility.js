@@ -10,8 +10,12 @@ const SUPPORTED_AGENTS = {
     Opera: 23
 };
 
-function isOldIE() {
-    return window.navigator.userAgent.match(/MSIE [5678]\./i);
+export function isUnsupportedIE() {
+    return window.navigator.userAgent.match(/MSIE (5|6|7|8)\./i);
+}
+
+export function isOldIE() {
+    return window.navigator.userAgent.match(/MSIE (5|6|7|8|9|10)\./i);
 }
 
 export function isEligible() {
@@ -24,5 +28,5 @@ export function isEligible() {
         }
     }
 
-    return !(isWebView() || isOldIE());
+    return !(isWebView() || isUnsupportedIE());
 }
