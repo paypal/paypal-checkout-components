@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*!
  * paypaljsbuttons
  * JavaScript integration for PayPal's buttons
@@ -7,7 +9,6 @@
  * @license MIT
  */
 
-/* eslint-disable */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
