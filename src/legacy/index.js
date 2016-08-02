@@ -2,10 +2,12 @@
 import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
 import { isEligible } from './eligibility';
+import { loadScript } from '../lib';
 
 const PROD_BASE_URL = 'https://www.paypal.com/checkoutnow';
+const BUTTON_JS_URL = '//www.paypalobjects.com/api/button.js';
 
-import './button';
+let buttonJS;
 
 /*  Global State
     ------------
@@ -368,9 +370,13 @@ function setup(id, options) {
 
     if (checkforContainer(options)) {
 
-        // Render button to the container
+        buttonJS = buttonJS || loadScript(BUTTON_JS_URL);
 
-        getButtonRendered(id, options);
+        return buttonJS.then(() => {
+
+            // Render button to the container
+            getButtonRendered(id, options);
+        });
     }
 }
 
