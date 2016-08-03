@@ -201,7 +201,7 @@ transaction and create an express-checkout token, and to finalize the transactio
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the token, you pass it back to us using `resolve(token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
-6. When we're done, we call your `onPaymentAuthorized` function
+6. When we're done, we call your `onPaymentAuthorize` function
 7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
 8. The payment is complete!
 
@@ -238,7 +238,7 @@ ppxo.PayPalButton.render({
 
 	// Pass a function to be called when the customer approves the payment
 
-	onPaymentAuthorized: function(data) {
+	onPaymentAuthorize: function(data) {
 
 		console.log('The payment was authorized!');
 		console.log('Token = ', data.paymentToken);
@@ -324,7 +324,7 @@ transaction and create an express-checkout token, and to finalize the transactio
 3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
 4. When you get the payment token, you pass it back to us using `resolve(token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
-6. When we're done, we call your `onPaymentAuthorized` function
+6. When we're done, we call your `onPaymentAuthorize` function
 7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
 8. The payment is complete!
 
@@ -362,7 +362,7 @@ $('#myCheckoutButton').on('click', function() {
 
 		// Pass a function to be called when the customer approves the payment
 
-		onPaymentAuthorized: function(data) {
+		onPaymentAuthorize: function(data) {
 
 			console.log('The payment was authorized!');
 			console.log('Token = ', data.paymentToken);
@@ -526,7 +526,7 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 		       });
 	   },
 
-	   onPaymentAuthorized: function(data) {
+	   onPaymentAuthorize: function(data) {
 
 	       // Call payment execute (see step 5)
 	   }
@@ -540,7 +540,7 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 
    - The access token (`access_token` from the response in step 2)
    - The payment id (`id` from the response in step 3)
-   - The payer id (`data.payerID` from the response to `onPaymentAuthorized` from the buyer approval in step 4)
+   - The payer id (`data.payerID` from the response to `onPaymentAuthorize` from the buyer approval in step 4)
 
    ---
 
