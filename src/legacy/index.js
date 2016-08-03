@@ -3,6 +3,7 @@ import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
 import { isEligible } from './eligibility';
 import { loadScript } from '../lib';
+import { config } from '../config';
 
 const PROD_BASE_URL = 'https://www.paypal.com/checkoutnow';
 const BUTTON_JS_URL = '//www.paypalobjects.com/api/button.js';
@@ -204,7 +205,7 @@ function getButtonRendered(id, options) {
 function drawButton(id, options, btnContainer) {
 
     let buttonDom = window.paypal.button.create(id, {
-        lc:    options.lc    || 'en_US',
+        lc:    options.lc    || `${config.locale.lang}_${config.locale.country}`,
         color: options.color || 'gold',
         shape: options.shape || 'pill',
         size:  options.size  || 'small'
