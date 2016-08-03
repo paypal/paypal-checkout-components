@@ -16,7 +16,7 @@ export let WEBPACK_CONFIG = {
         loader: 'babel'
       },
       {
-        test: /\.(html?|css)$/,
+        test: /\.(html?|css|json)$/,
         loader: 'raw-loader'
       }
     ]

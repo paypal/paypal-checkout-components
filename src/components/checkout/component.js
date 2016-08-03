@@ -6,7 +6,8 @@ import componentTemplate from './componentTemplate.htm';
 import { isDevice } from '../../lib';
 import { config } from '../../config';
 
-import { content } from './content';
+import contentJSON from './content';
+let content = JSON.parse(contentJSON);
 
 export let PayPalCheckout = xcomponent.create({
 
