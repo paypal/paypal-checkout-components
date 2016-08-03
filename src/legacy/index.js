@@ -246,8 +246,6 @@ function urlWillRedirectPage(url) {
 
 function initPayPalCheckout(props = {}) {
 
-    let initialCancelUrl;
-
     PayPalCheckout.autocloseParentTemplate = false;
 
     return PayPalCheckout.init({
@@ -255,10 +253,6 @@ function initPayPalCheckout(props = {}) {
         env,
 
         paymentToken: getPaymentToken,
-
-        init(data) {
-            initialCancelUrl = data.cancelUrl;
-        },
 
         onPaymentAuthorize({ returnUrl }) {
 
@@ -276,21 +270,6 @@ function initPayPalCheckout(props = {}) {
             }
 
             return redirect(cancelUrl);
-        },
-
-        onClose(reason) {
-
-            if (!initialCancelUrl) {
-                return;
-            }
-
-            let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
-
-            if ([ CLOSE_REASONS.TEMPLATE_BUTTON, CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
-                return this.props.onPaymentCancel({
-                    cancelUrl: initialCancelUrl
-                });
-            }
         },
 
         fallback(url) {

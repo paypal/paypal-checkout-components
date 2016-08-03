@@ -48,10 +48,16 @@ export let PayPalCheckout = xcomponent.create({
     closeDelay: 1000,
 
     props: {
+
         init: {
             type: 'function',
             required: false,
-            once: true
+            once: true,
+
+            def(data) {
+                this.token     = data.token;
+                this.cancelUrl = data.cancelUrl;
+            }
         },
 
         paymentToken: {
@@ -87,6 +93,24 @@ export let PayPalCheckout = xcomponent.create({
             required: false,
             once: true,
             autoClose: true
+        },
+
+        onClose: {
+            type: 'function',
+            required: false,
+            memoize: true,
+
+            def(reason) {
+
+                let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
+
+                if ([ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                    return this.props.onPaymentCancel({
+                        token:     this.token,
+                        cancelUrl: this.cancelUrl
+                    });
+                }
+            }
         }
     },
 
