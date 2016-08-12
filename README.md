@@ -53,13 +53,15 @@ onto your web page, and the PayPal Checkout flow will be launched whenever your 
 
 ### [Simple Javascript Button Integration](./docs/button-simple.md)
 
-This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
+This integration lets you specify all of your payment parameters all at once on the client side, to render a button onto the page. When the customer clicks
+on the button, the PayPal Checkout flow will be invoked. The payment will then be automatically completed once the buyer clicks the
+pay button, then you can take your buyer to a success page.
 
 ### [Advanced Javascript Button Integration](./docs/button-advanced.md)
 
-This component renders a PayPal button onto your page, which will take care of opening up PayPal for you and guiding
-your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
-and you can take your customer to a success page.
+This integration requires you to manually create a payment token using the [PayPal REST API](./docs/paypal-rest-api.md) on your server side. After the
+buyer has authorized the payment, we will notify you using a javascript callback. You are then responsible for calling the [PayPal REST API](./docs/paypal-rest-api.md)
+again to complete the payment, then you can take your buyer to a success page.
 
 -----
 
@@ -75,12 +77,14 @@ integration is using the PayPal Button, which will invoke PayPal Checkout direct
 
 ### [Simple Javascript Checkout Integration](./docs/checkout-simple.md)
 
-This integration lets you specify all of your payment parameters all at once, to initialize the checkout flow.
+This integration lets you specify all of your payment parameters all at once on the client side, to initialize the checkout flow. The payment will be automatically
+completed once the buyer clicks the pay button, then you can take your buyer to a success page.
 
 ### [Advanced Javascript Checkout Integration](./docs/checkout-advanced.md)
 
-This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
-payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
+This integration requires you to manually create a payment token using the [PayPal REST API](./docs/paypal-rest-api.md) on your server side. After the
+buyer has authorized the payment, we will notify you using a javascript callback. You are then responsible for calling the [PayPal REST API](./docs/paypal-rest-api.md)
+again to complete the payment, then you can take your buyer to a success page.
 
 -----
 
