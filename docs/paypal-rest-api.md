@@ -3,6 +3,14 @@
 If you want to use the advanced javascript integration, you will need a way to create payment tokens on your
 server side. The simplest way to do this is using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/)
 
+The way this works is:
+
+1. You call [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token, with all of your payment details
+2. You invoke the PayPal Button or PayPal Checkout component to get your buyer's approval for the payment, using this token
+3. You then call [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) to finalize the transaction
+
+-----
+
 1. Go to [developer.paypal.com/developer/applications](https://developer.paypal.com/developer/applications) and create a **REST API app**, then note down your client id and secret
 
 2. Call `api.paypal.com/v1/oauth2/token` to get a temporary access token
