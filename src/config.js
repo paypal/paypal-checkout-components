@@ -1,7 +1,9 @@
 
 export let config = {
 
-    scriptUrl: 'https://www.paypalobjects.com/api/paypal.checkout.v4.js',
+    scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
+
+    ppobjects: false,
 
     env: 'production',
 

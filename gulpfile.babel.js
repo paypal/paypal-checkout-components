@@ -3,21 +3,36 @@ import gulpWebpack from 'gulp-webpack';
 import eslint from 'gulp-eslint';
 import { Server } from 'karma';
 import { argv } from 'yargs';
-import { WEBPACK_CONFIG, WEBPACK_CONFIG_MIN } from './webpack.conf';
+import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN } from './webpack.conf';
 
-gulp.task('build', ['webpack', 'webpack-min']);
+gulp.task('build', ['lint', 'webpack']);
 
-gulp.task('webpack', ['lint'], function() {
+gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min']);
+
+gulp.task('webpack-major', ['lint'], function() {
   return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG))
+      .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR))
       .pipe(gulp.dest('dist'));
 });
 
-gulp.task('webpack-min', ['lint'], function() {
+gulp.task('webpack-minor', ['lint'], function() {
   return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_MIN))
+      .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR))
       .pipe(gulp.dest('dist'));
 });
+
+gulp.task('webpack-major-min', ['lint'], function() {
+  return gulp.src('src/index.js')
+      .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR_MIN))
+      .pipe(gulp.dest('dist'));
+});
+
+gulp.task('webpack-minor-min', ['lint'], function() {
+  return gulp.src('src/index.js')
+      .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR_MIN))
+      .pipe(gulp.dest('dist'));
+});
+
 
 gulp.task('lint', function() {
   return gulp.src('src/**/*.js').pipe(eslint())

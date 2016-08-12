@@ -16,26 +16,26 @@ export function setup(options) {
     }
 }
 
+function getCurrentScript() {
 
-let currentScript;
+    if (document.currentScript) {
+        return document.currentScript;
+    }
 
-if (!currentScript) {
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src === config.scriptUrl) {
-            currentScript = script;
+        if (script.src && script.src.replace(/^https?/, '') === config.scriptUrl) {
+            return script;
         }
-    }
-
-    if (!currentScript) {
-        currentScript = scripts[scripts.length - 1];
     }
 }
 
-
+let currentScript = getCurrentScript();
 
 if (currentScript) {
+
+    config.ppobjects = true;
 
     setup({
         env:       currentScript.getAttribute('data-env'),

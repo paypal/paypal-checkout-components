@@ -22,7 +22,11 @@
         "window": true,
         "document": true,
         "Promise": false,
-        "performance": true
+        "performance": true,
+        "__MINOR_VERSION__": true,
+        "__MAJOR_VERSION__": true,
+        "__FILE_NAME__": true,
+        "__FILE_VERSION__": true
     },
 
     "fix": true,

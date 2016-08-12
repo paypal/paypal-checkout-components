@@ -18,5 +18,7 @@ export function setupBridge(env, bridgeUrl) {
         throw new Error(`Can not find bridge url for env: ${env}`);
     }
 
-    postRobot.openBridge(bridgeUrl);
+    let version = config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+
+    postRobot.openBridge(`${bridgeUrl}?xcomponent=1&version=${version}`);
 }

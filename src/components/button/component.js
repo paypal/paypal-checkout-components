@@ -1,10 +1,15 @@
 
 import xcomponent from 'xcomponent/src';
 
+import { config } from '../../config';
+
 export let PayPalButton = xcomponent.create({
 
     tag: 'paypal-button',
-    name: 'ppbtn',
+
+    get version() {
+        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+    },
 
     defaultEnv: 'production',
 
