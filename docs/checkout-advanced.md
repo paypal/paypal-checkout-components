@@ -1,23 +1,6 @@
-## PayPal Checkout
+## PayPal Checkout Advanced
 
 ![PayPal Checkout](./checkout.png)
-
-This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
-payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
-
-Please note - this advanced integration only covers the **buyer authorization** portion of the Checkout. It expects you
-to use PayPal's REST api to initiate the payment, and execute the payment once the buyer authorization is complete.
-Please see the [PayPal REST API Docs](./paypal-rest-api.md) for information on creating the payment token and executing
-the payment.
-
-**Important Note:** Since PayPal Checkout opens a popup window, you must call `ppxo.PayPalCheckout.render()` only during
-a **click event**, otherwise the component will be blocked by most web browsers' inbuilt popup blockers.
-
-### Advanced Javascript Integration (Express-Checkout)
-
-Unlike the simple integration, you will be responsible for calling PayPal's
-[PayPal Payments REST API](./paypal-rest-api.md) to set up the
-transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalCheckout.render` to invoke PayPal Checkout
 2. We call your `paymentToken` function, when we need a payment token
@@ -27,6 +10,9 @@ transaction and create an express-checkout token, and to finalize the transactio
 6. When we're done, we call your `onPaymentAuthorize` function
 7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction - see [PayPal REST API](./paypal-rest-api.md)
 8. The payment is complete!
+
+**Important Note:** Since PayPal Checkout opens a popup window, you must call `ppxo.PayPalCheckout.render()` only during
+a **click event**, otherwise the component will be blocked by most web browsers' inbuilt popup blockers.
 
 ```javascript
 // The PayPal Checkout component MUST be rendered on a click event, to function correctly

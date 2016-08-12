@@ -2,12 +2,6 @@
 
 ![PayPal Button](./button.png)
 
-This component renders a PayPal button onto your page, which will take care of opening up PayPal for you and guiding
-your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
-and you can take your customer to a success page.
-
-### Simple Javascript Integration
-
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
 
 1. You call `ppxo.PayPalButton.render` to add the PayPal Button to the page
