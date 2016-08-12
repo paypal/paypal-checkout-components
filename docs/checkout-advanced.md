@@ -2,7 +2,7 @@
 
 ![PayPal Checkout](./checkout.png)
 
-This component immediately opens PayPal on your page, and guides your customer through th epayment process. After the
+This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
 **Important Note:** Since PayPal Checkout opens a popup window, you must call `ppxo.PayPalCheckout.render()` only during

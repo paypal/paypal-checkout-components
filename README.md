@@ -62,7 +62,7 @@ and you can take your customer to a success page.
 
 ![PayPal Checkout](./docs/checkout.png)
 
-This component immediately opens PayPal on your page, and guides your customer through th epayment process. After the
+This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
 **Important Note:** This component should only be used if you do not require a PayPal Button on your page. The recommended
@@ -74,7 +74,7 @@ This integration lets you specify all of your payment parameters all at once, to
 
 ### [Advanced Javascript Checkout Integration](./docs/advanced-checkout.md)
 
-This component immediately opens PayPal on your page, and guides your customer through th epayment process. After the
+This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
 ## Integrating with the PayPal REST API
