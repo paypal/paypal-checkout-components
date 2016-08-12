@@ -13,20 +13,19 @@ the payment.
 
 ### Advanced Javascript Integration (Express-Checkout)
 
-This integration uses [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/),
-which is more useful for advanced integrations.
+This integration uses [PayPal Payments REST API](./paypal-rest-api.md), which is more useful for advanced integrations.
 
 Unlike the simple integration, you will be responsible for calling PayPal's
-[PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to set up the
+[PayPal Payments REST API](./paypal-rest-api.md) to set up the
 transaction and create an express-checkout token, and to finalize the transaction once your customer has approved the payment.
 
 1. You call `ppxo.PayPalButton.render` to invoke PayPal Checkout
 2. We call your `paymentToken` function, when we need a payment token
-3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token
+3. You call your server side, which calls [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token - see [PayPal REST API](./paypal-rest-api.md)
 4. When you get the token, you pass it back to us using `resolve(token)`;
 5. We take the buyer through the PayPal Checkout flow to authorize the transaction
 6. When we're done, we call your `onPaymentAuthorize` function
-7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction
+7. You then call your server side, which calls the [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) api to finalize the transaction - see [PayPal REST API](./paypal-rest-api.md)
 8. The payment is complete!
 
 ```javascript
