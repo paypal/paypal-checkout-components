@@ -47,11 +47,11 @@ This component renders a PayPal button onto your page, which will take care of o
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
 and you can take your customer to a success page.
 
-### [Simple Javascript Button Integration](./docs/simple-button.md)
+### [Simple Javascript Button Integration](./docs/button-simple.md)
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
 
-### [Advanced Javascript Button Integration](./docs/advanced-button.md)
+### [Advanced Javascript Button Integration](./docs/button-advanced.md)
 
 This component renders a PayPal button onto your page, which will take care of opening up PayPal for you and guiding
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
@@ -68,11 +68,11 @@ payment is complete, we will notify you using a javascript callback and you can 
 **Important Note:** This component should only be used if you do not require a PayPal Button on your page. The recommended
 integration is using the PayPal Button.
 
-### [Simple Javascript Checkout Integration](./docs/simple-checkout.md)
+### [Simple Javascript Checkout Integration](./docs/checkout-simple.md)
 
 This integration lets you specify all of your payment parameters all at once, to initialize the checkout flow.
 
-### [Advanced Javascript Checkout Integration](./docs/advanced-checkout.md)
+### [Advanced Javascript Checkout Integration](./docs/checkout-advanced.md)
 
 This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
