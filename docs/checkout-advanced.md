@@ -25,7 +25,10 @@ transaction and create an express-checkout token, and to finalize the transactio
 8. The payment is complete!
 
 ```javascript
-$('#myCheckoutButton').on('click', function() {
+// The PayPal Checkout component MUST be rendered on a click event, to function correctly
+
+document.getElementById('myButton').addEventListener('click', function() {
+
 	ppxo.PayPalCheckout.render({
 
 		// Pass your preferred locale, used to render the checkout flow (optional)
