@@ -11,6 +11,8 @@ The way this works is:
 
 -----
 
+### How to integrate with the REST API
+
 1. Go to [developer.paypal.com/developer/applications](https://developer.paypal.com/developer/applications) and create a **REST API app**, then note down your client id and secret
 
 2. Call `api.paypal.com/v1/oauth2/token` to get a temporary access token
