@@ -7,13 +7,14 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 These components support various levels of integration, depending on your requirements:
 
 - A simple PayPal Button which takes your customer through the payment process end-to-end
-- An advanced PayPal Button which allows you to use [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to accept payments
-- Support for drop-in PayPal Buttons using simple JavaScript, HTML, React.js, Angular.js, or Ember.js, depending on the technology your site uses
+- An advanced PayPal Button which allows you to use [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to accept and process payments
 - Stand-alone PayPal Checkout, if you have your own pre-existing checkout button
+
+We also support native React, Angular and Ember components for the PayPal Button.
 
 ### Which Integration is right for me?
 
-- Do you want the **simplest possible PayPal Integration**? If so, you should stick with the **PayPal Checkout Button**
+- Do you want the **simplest possible PayPal Integration**? If so, you should stick with the **Simple PayPal Checkout Button**
   using a **Script Element** which allows you to just drop a button straight into your page. This will allow your customer
   to pay with PayPal, and we'll notify you when they're done.
 
@@ -57,6 +58,7 @@ This component renders a PayPal button onto your page, which will take care of o
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
 and you can take your customer to a success page.
 
+-----
 
 ## PayPal Checkout
 
@@ -77,9 +79,11 @@ This integration lets you specify all of your payment parameters all at once, to
 This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
+-----
+
 ## Integrating with the PayPal REST API
 
-If you want to use the advanced javascript integration, you will need a way to create payment tokens on your
+If you want to use the advanced javascript integrations, you will need a way to create payment tokens on your
 server side. The simplest way to do this is using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/)
 
 ### [Integrating with the PayPal REST API](./docs/paypal-rest-api.md)
