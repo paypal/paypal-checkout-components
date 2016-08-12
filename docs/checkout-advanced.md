@@ -5,9 +5,13 @@
 This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
+Please note - this advanced integration only covers the **buyer authorization** portion of the Checkout. It expects you
+to use PayPal's REST api to initiate the payment, and execute the payment once the buyer authorization is complete.
+Please see the [PayPal REST API Docs](./paypal-rest-api.md) for information on creating the payment token and executing
+the payment.
+
 **Important Note:** Since PayPal Checkout opens a popup window, you must call `ppxo.PayPalCheckout.render()` only during
 a **click event**, otherwise the component will be blocked by most web browsers' inbuilt popup blockers.
-
 
 ### Advanced Javascript Integration (Express-Checkout)
 

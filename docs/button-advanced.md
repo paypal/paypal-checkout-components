@@ -6,6 +6,11 @@ This component renders a PayPal button onto your page, which will take care of o
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
 and you can take your customer to a success page.
 
+Please note - this advanced integration only covers the **buyer authorization** portion of the Checkout. It expects you
+to use PayPal's REST api to initiate the payment, and execute the payment once the buyer authorization is complete.
+Please see the [PayPal REST API Docs](./paypal-rest-api.md) for information on creating the payment token and executing
+the payment.
+
 ### Advanced Javascript Integration (Express-Checkout)
 
 This integration uses [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/),
