@@ -65,8 +65,8 @@ and you can take your customer to a success page.
 This component immediately opens PayPal on your page, and guides your customer through th epayment process. After the
 payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
 
-**Important Note:** Since PayPal Checkout opens a popup window, you must call `ppxo.PayPalCheckout.render()` only during
-a **click event**, otherwise the component will be blocked by most web browsers' inbuilt popup blockers.
+**Important Note:** This component should only be used if you do not require a PayPal Button on your page. The recommended
+integration is using the PayPal Button.
 
 ### [Simple Javascript Checkout Integration](./docs/simple-checkout.md)
 
