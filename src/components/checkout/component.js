@@ -18,8 +18,6 @@ export let PayPalCheckout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    version: __FILE_VERSION__,
-
     get defaultEnv() {
         return  config.env || 'production';
     },
