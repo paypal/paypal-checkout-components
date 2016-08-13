@@ -11,6 +11,7 @@
 
 <h1>Checkout!</h1>
 <button onclick="addcontent()">Add Content</button>
+<button onclick="removeContent()">Remove Content</button>
 <p id="addstuff"></p>
 <button onclick="authorize()">Authorize Payment</button>
 
@@ -32,6 +33,11 @@
                 checkout.close();
             });
         }
+    }
+
+    function removeContent() {
+        var a = document.getElementById('addstuff');
+        a.innerHTML = '';
     }
 
     function addcontent() {
