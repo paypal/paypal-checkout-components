@@ -118,8 +118,22 @@ export let PayPalCheckout = xcomponent.create({
         }
     },
 
-    dimensions: isDevice() ? null : {
-        width: 450,
-        height: 535
+    get dimensions() {
+
+        if (isDevice()) {
+            return;
+        }
+
+        if (this.contexts.lightbox) {
+            return {
+                width: 450,
+                height: 200
+            };
+        }
+
+        return {
+            width: 450,
+            height: 535
+        };
     }
 });
