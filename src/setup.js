@@ -1,11 +1,17 @@
 
+import $logger from 'beaver-logger/client';
+
 import { config } from './config';
 import { setupBridge } from './bridge';
+import { initLogger } from './lib';
 
 export function setup(options) {
 
     config.env = options.env || config.env;
     config.bridgeUrl = options.bridgeUrl;
+    config.state = options.state || config.state;
+
+    $logger.info(`ppxo_setup_${config.env}`);
 
     if (options.noBridge) {
         config.enableBridge = false;
@@ -14,6 +20,8 @@ export function setup(options) {
     if (config.enableBridge) {
         setupBridge(config.env, config.bridgeUrl);
     }
+
+    initLogger();
 }
 
 function getCurrentScript() {
@@ -40,6 +48,11 @@ if (currentScript) {
     setup({
         env:       currentScript.getAttribute('data-env'),
         bridgeUrl: currentScript.getAttribute('data-bridge-url'),
-        noBridge:  currentScript.hasAttribute('no-bridge')
+        noBridge:  currentScript.hasAttribute('data-no-bridge'),
+        state:     currentScript.getAttribute('data-state')
     });
+
+} else {
+
+    $logger.debug(`ppxo_no_current_script`);
 }

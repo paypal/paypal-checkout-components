@@ -12,6 +12,7 @@ let content = JSON.parse(contentJSON);
 export let PayPalCheckout = xcomponent.create({
 
     tag: 'paypal-checkout',
+    name: 'ppcheckout',
 
     get version() {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;

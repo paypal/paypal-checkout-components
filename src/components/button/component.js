@@ -6,6 +6,7 @@ import { config } from '../../config';
 export let PayPalButton = xcomponent.create({
 
     tag: 'paypal-button',
+    name: 'ppbutton',
 
     get version() {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;

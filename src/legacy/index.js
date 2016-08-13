@@ -1,4 +1,6 @@
 
+import $logger from 'beaver-logger/client';
+
 import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
 import { isEligible } from './eligibility';
@@ -22,9 +24,48 @@ let buttonJS;
 
 let env = 'production';
 
+let LOG_PREFIX = `ppxo_legacy`;
+
+function logDebug(event, payload = {}) {
+    $logger.debug(`${LOG_PREFIX}_${event}`, payload);
+}
+
+function logInfo(event, payload = {}) {
+    $logger.info(`${LOG_PREFIX}_${event}`, payload);
+}
+
+function logWarning(event, payload = {}) {
+    $logger.warn(`${LOG_PREFIX}_${event}`, payload);
+}
+
+function logError(event, payload = {}) {
+    $logger.error(`${LOG_PREFIX}_${event}`, payload);
+}
+
+
+function loadButtonJS() {
+
+    if (buttonJS) {
+        return buttonJS;
+    }
+
+    logDebug(`buttonjs_load`);
+
+    buttonJS = loadScript(BUTTON_JS_URL);
+
+    return buttonJS.then(result => {
+        logDebug(`buttonjs_load_success`);
+        return result;
+    }).catch(err => {
+        logError(`buttonjs_load_error`, { error: err.stack || err.toString() });
+        throw err;
+    });
+}
+
 
 
 function redirect(url) {
+    logInfo(`redirect`, { url });
     window.location = url;
 }
 
@@ -98,25 +139,32 @@ function getPaymentToken(resolve, reject) {
     // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
 
     window.paypal.checkout.initXO = function() {
-        // pass
+        logDebug(`paymenttoken_initxo`);
     };
 
     // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
     window.paypal.checkout.startFlow = (token) => {
+        logDebug(`paymenttoken_startflow`, { token });
+
         reset();
 
         let ecToken = parseToken(token);
 
         if (!ecToken) {
+            logError(`paymenttoken_startflow_notoken`, { token });
             throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
         }
 
         if (!isEligible()) {
+            logDebug(`paymenttoken_startflow_ineligible`, { token: ecToken });
             return redirect(getFullpageRedirectUrl(token));
         }
 
-        if (!matchToken(token)) {
+        if (matchToken(token)) {
+            logDebug(`paymenttoken_startflow_tokenpassed`, { token });
+        } else {
+            logDebug(`paymenttoken_startflow_urlpassed`, { token });
             this.updateProps({
                 url: token
             });
@@ -128,6 +176,8 @@ function getPaymentToken(resolve, reject) {
     // closeFlow is our 'error' case - we can call our callback with an error
 
     window.paypal.checkout.closeFlow = () => {
+        logWarning(`paymenttoken_closeflow`);
+
         reset();
 
         reject(new Error('Close Flow Called'));
@@ -246,6 +296,8 @@ function urlWillRedirectPage(url) {
 
 function initPayPalCheckout(props = {}) {
 
+    logInfo(`init_checkout`);
+
     PayPalCheckout.autocloseParentTemplate = false;
 
     return PayPalCheckout.init({
@@ -256,6 +308,8 @@ function initPayPalCheckout(props = {}) {
 
         onPaymentAuthorize({ returnUrl }) {
 
+            logInfo(`payment_authorized`);
+
             if (!urlWillRedirectPage(returnUrl)) {
                 this.closeParentTemplate();
             }
@@ -265,7 +319,10 @@ function initPayPalCheckout(props = {}) {
 
         onPaymentCancel({ cancelUrl }) {
 
+            logInfo(`payment_canceled`);
+
             if (!urlWillRedirectPage(cancelUrl)) {
+                logInfo(`hash_change_close_overlay`);
                 this.closeParentTemplate();
             }
 
@@ -273,6 +330,7 @@ function initPayPalCheckout(props = {}) {
         },
 
         fallback(url) {
+            logInfo(`fallback`, { url });
             redirect(url);
         },
 
@@ -291,6 +349,8 @@ function handleClick(button, options) {
         button.addEventListener('click', event => {
             event.preventDefault();
 
+            logInfo(`button_click`);
+
             // Open the checkout component
 
             initPayPalCheckout().render();
@@ -301,6 +361,8 @@ function handleClick(button, options) {
         });
 
     } else {
+
+        logDebug(`button_hijack`);
 
         // Hijack the button we created, assuming it will submit the parent form
 
@@ -344,19 +406,24 @@ function setup(id, options) {
     options = options || {};
     env = options.environment;
 
+    logInfo(`setup`);
+
     // The merchant expects us to render a button to the page in either of the two scenarios:
     // a) options.container is true
     // b) options.buttons[i].container is true
 
     if (checkforContainer(options)) {
 
-        buttonJS = buttonJS || loadScript(BUTTON_JS_URL);
+        logDebug(`container_passed`);
 
-        return buttonJS.then(() => {
+        return loadButtonJS().then(() => {
 
             // Render button to the container
             getButtonRendered(id, options);
         });
+
+    } else {
+        logDebug(`container_passed`);
     }
 }
 
@@ -371,6 +438,8 @@ function setup(id, options) {
 */
 
 function initXO() {
+
+    logDebug(`initxo`);
 
     if (!isEligible()) {
         return;
@@ -392,13 +461,17 @@ function initXO() {
 
 function startFlow(token) {
 
+    logDebug(`startflow`, { token });
+
     let ecToken = parseToken(token);
 
     if (!ecToken) {
+        logWarning(`startflow_notoken`);
         throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
     }
 
     if (!isEligible()) {
+        logDebug(`startflow_ineligible`);
         return redirect(getFullpageRedirectUrl(token));
     }
 
@@ -418,6 +491,8 @@ function startFlow(token) {
 */
 
 function closeFlow() {
+    logDebug(`closeflow`);
+
     console.warn('Checkout is not open, can not be closed');
 }
 
@@ -451,7 +526,11 @@ function onDocumentReady(method) {
 */
 
 if (window.paypalCheckoutReady instanceof Function) {
-    onDocumentReady(window.paypalCheckoutReady);
+    logDebug(`paypal_checkout_ready_passed`);
+    onDocumentReady(() => {
+        logDebug(`paypal_checkout_ready`);
+        window.paypalCheckoutReady();
+    });
 }
 
 
@@ -467,9 +546,13 @@ onDocumentReady(() => {
         return;
     }
 
-    let buttons = document.querySelectorAll('[data-paypal-button]');
+    let buttons = Array.prototype.slice.call(document.querySelectorAll('[data-paypal-button]'));
 
-    for (let button of Array.prototype.slice.call(buttons)) {
+    if (buttons && buttons.length) {
+        logDebug(`data_paypal_button`, { number: buttons.length });
+    }
+
+    for (let button of buttons) {
 
         let buttonEnv = button.attributes['data-env'] && button.attributes['data-env'].value;
 
