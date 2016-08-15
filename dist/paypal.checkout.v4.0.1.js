@@ -1751,9 +1751,15 @@
             var source = event.source;
             var origin = event.origin;
             var data = event.data;
+            if ((0, _lib.isSameDomain)(source, false)) {
+                origin = _lib.util.getDomain(source);
+            }
             var message = parseMessage(data);
             if (!message) {
                 return;
+            }
+            if (message.sourceDomain.indexOf("mock://") === 0) {
+                origin = message.sourceDomain;
             }
             if (receivedMessages.indexOf(message.id) === -1) {
                 receivedMessages.push(message.id);
@@ -2228,8 +2234,12 @@
                 return safeInterval;
             },
             getDomain: function getDomain(win) {
+                var allowMockDomain = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
                 win = win || window;
-                return win.mockDomain || win.location.protocol + "//" + win.location.host;
+                if (win.mockDomain && allowMockDomain && win.mockDomain.indexOf("mock://") === 0) {
+                    return win.mockDomain;
+                }
+                return win.location.protocol + "//" + win.location.host;
             },
             getDomainFromUrl: function getDomainFromUrl(url) {
                 var domain = void 0;
@@ -2405,6 +2415,7 @@
         var domainMatches = [];
         var domainMatchTimeout = void 0;
         function isSameDomain(win) {
+            var allowMockDomain = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
             for (var _iterator = domainMatches, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 if (_isArray) {
@@ -2417,27 +2428,23 @@
                 }
                 var _match = _ref;
                 if (_match.win === win) {
-                    if (!_match.match) {
-                        return false;
-                    }
-                    _match.match = false;
-                    try {
-                        _match.match = _util.util.getDomain(window) === _util.util.getDomain(win);
-                    } catch (err) {
-                        return;
-                    }
-                    return _match.match;
+                    return allowMockDomain ? _match.match : _match.actualMatch;
                 }
             }
             var match = false;
+            var actualMatch = false;
             try {
                 if (_util.util.getDomain(window) === _util.util.getDomain(win)) {
                     match = true;
                 }
+                if (_util.util.getDomain(window, false) === _util.util.getDomain(win, false)) {
+                    actualMatch = true;
+                }
             } catch (err) {}
             domainMatches.push({
                 win: win,
-                match: match
+                match: match,
+                actualMatch: actualMatch
             });
             if (!domainMatchTimeout) {
                 domainMatchTimeout = setTimeout(function() {
@@ -2445,7 +2452,7 @@
                     domainMatchTimeout = null;
                 }, 1);
             }
-            return match;
+            return allowMockDomain ? match : actualMatch;
         }
         function isWindowClosed(win) {
             try {
@@ -4968,6 +4975,11 @@
                 key: "loadUrl",
                 value: function loadUrl(context, url) {
                     this.component.log("load_url");
+                    if (window.location.href.split("#")[0] === url.split("#")[0]) {
+                        url = (0, _lib.extendUrl)(url, {
+                            query: _defineProperty({}, (0, _lib.uniqueID)(), "1")
+                        });
+                    }
                     _src2["default"].linkUrl(this.childWindowName, this.window, url);
                     return _drivers.RENDER_DRIVERS[context].loadUrl.call(this, url);
                 }
@@ -5077,6 +5089,9 @@
                     }), _defineProperty(_ref, _constants.POST_MESSAGE.RENDER_LOCAL, function(source, data) {
                         var component = this.component.getByTag(data.tag);
                         var instance = component.parent(data.options);
+                        this.registerForCleanup(function() {
+                            instance.destroy();
+                        });
                         instance.setForCleanup("context", data.context);
                         (0, _lib.extend)(instance, data.overrides);
                         instance.createParentTemplate(data.context);
