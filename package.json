@@ -1,6 +1,6 @@
 {
   "name": "checkout-components",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Checkout components, for integratng checkout products.",
   "main": "index.js",
   "scripts": {
