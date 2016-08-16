@@ -188,85 +188,48 @@ function getPaymentToken(resolve, reject) {
     };
 }
 
-function getButtonRendered(id, options) {
 
-    let jsBtnIds = options.container;
-    let btnColor = options.color;
-    let btnSize = options.size;
-    let btnShape = options.shape;
-    let btnLanguage = options.locale;
-    let btnsConfigList = options.buttons;
-
-
-    if (jsBtnIds) { // When options.containers is true
-
-        let dataAttrs = {
-            lc: btnLanguage,
-            color: btnColor,
-            shape: btnShape,
-            size: btnSize
-        };
-
-        if (jsBtnIds instanceof Array) {
-            for (let i = 0; i < jsBtnIds.length; i++) {
-                let directButton = drawButton(id, dataAttrs, jsBtnIds[i]);
-
-                // Handle button click for every button
-                handleClick(directButton, options);
-            }
-        } else {
-            let directButton = drawButton(id, dataAttrs, jsBtnIds);
-
-            // Handle button click for every button
-            handleClick(directButton, options);
-        }
-
-    } else if (btnsConfigList && btnsConfigList.length) { // When buttons array is true
-
-
-        for (let j = 0; j < btnsConfigList.length; j++) {
-
-            let dataAttrs = {
-                color: btnsConfigList[j].color,
-                shape: btnsConfigList[j].shape,
-                size: btnsConfigList[j].size
-            };
-
-            let arrayButton = drawButton(id, dataAttrs, btnsConfigList[j].container);
-
-            // Handle button click for every button
-            handleClick(arrayButton, options);
-        }
-
-
-    } else {
-        // Log an error: Container element not specified
-    }
-}
-
-
-/*  Draw Button
-    -----------
-
-    The legacy script was responsible for drawing a button directly onto the page. We need to preserve this functionality
-    for now. Eventually we can migrate this into the PayPalButton component
-*/
-
-function drawButton(id, options, btnContainer) {
+function renderButton(id, container, options) {
 
     let buttonDom = window.paypal.button.create(id, {
-        lc:    options.lc    || `${config.locale.lang}_${config.locale.country}`,
-        color: options.color || 'gold',
-        shape: options.shape || 'pill',
-        size:  options.size  || 'small'
+        lc:    options.locale || `${config.locale.lang}_${config.locale.country}`,
+        color: options.color  || 'gold',
+        shape: options.shape  || 'pill',
+        size:  options.size   || 'small'
     }, {
         label: 'checkout',
         type: 'button'
     });
 
-    document.getElementById(btnContainer).appendChild(buttonDom.el);
+    document.getElementById(container).appendChild(buttonDom.el);
 
-    return buttonDom.el.childNodes[0];
+    handleClick(buttonDom.el.childNodes[0], options);
+}
+
+
+function renderButtons(id, options) {
+
+    return loadButtonJS().then(() => {
+
+        if (options.container) {
+
+            if (options.container instanceof Array) {
+                options.container.forEach(container => {
+                    renderButton(id, container, options);
+                });
+
+            } else {
+                renderButton(id, options.container, options);
+            }
+        }
+
+        if (options.buttons instanceof Array) {
+
+            options.buttons.forEach(button => {
+                renderButton(id, button.container, button);
+            });
+        }
+    });
 }
 
 
@@ -345,48 +308,30 @@ function handleClick(button, options) {
         return;
     }
 
-    if (options.click) {
-        button.addEventListener('click', event => {
-            event.preventDefault();
+    button.addEventListener('click', event => {
 
-            logInfo(`button_click`);
-
-            // Open the checkout component
-
-            initPayPalCheckout().render();
-
-            // Call options.click, which should call one or both of initXO / startFlow
-
-            options.click.call();
-        });
-
-    } else {
-
-        logDebug(`button_hijack`);
-
-        // Hijack the button we created, assuming it will submit the parent form
-
-        initPayPalCheckout({
-            paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
-        }).hijackButton(button);
-    }
-}
-
-
-function checkforContainer(options) {
-    let btnListConfig = options.buttons;
-
-    if (btnListConfig && btnListConfig.length) {
-        for (let i = 0; i < btnListConfig.length; i++) {
-            if (btnListConfig[i].container) {
-                return true;
-            }
+        if (options.condition instanceof Function && !options.condition.call()) {
+            logDebug(`button_click_condition_disabled`);
+            return;
         }
-    } else if (options && options.container) {
-        return true;
-    }
 
-    return false;
+        logInfo(`button_click`);
+
+        if (options.click) {
+            logDebug(`button_clickhandler`);
+
+            event.preventDefault();
+            initPayPalCheckout().render();
+            options.click.call();
+
+        } else {
+            logDebug(`button_hijack`);
+
+            initPayPalCheckout({
+                paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
+            }).renderHijack(button.form);
+        }
+    });
 }
 
 
@@ -402,29 +347,12 @@ function checkforContainer(options) {
 */
 
 
-function setup(id, options) {
-    options = options || {};
-    env = options.environment;
-
+function setup(id, options = {}) {
     logInfo(`setup`);
 
-    // The merchant expects us to render a button to the page in either of the two scenarios:
-    // a) options.container is true
-    // b) options.buttons[i].container is true
+    env = options.environment;
 
-    if (checkforContainer(options)) {
-
-        logDebug(`container_passed`);
-
-        return loadButtonJS().then(() => {
-
-            // Render button to the container
-            getButtonRendered(id, options);
-        });
-
-    } else {
-        logDebug(`container_passed`);
-    }
+    renderButtons(id, options);
 }
 
 
