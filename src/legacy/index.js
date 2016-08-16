@@ -514,3 +514,9 @@ window.paypal.checkout.setup = setup;
 window.paypal.checkout.initXO = initXO;
 window.paypal.checkout.startFlow = startFlow;
 window.paypal.checkout.closeFlow = closeFlow;
+
+window.paypal.checkout.events = {
+    on(name) {
+        logError(`eventing_unsupported`, { name });
+    }
+};
