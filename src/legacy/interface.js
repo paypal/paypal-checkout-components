@@ -233,8 +233,16 @@ function handleClick(button, options) {
     - Render a button to initiate the checkout window
 */
 
+let setupCalled = false;
 
 function setup(id, options = {}) {
+
+    if (setupCalled) {
+        return console.error(`Error: You are calling paypal.checkout.setup() more than once. This function can only be called once per page load. Any further calls will be ignored.`);
+    }
+
+    setupCalled = true;
+
     logInfo(`setup`);
 
     env = options.environment;
@@ -380,13 +388,18 @@ onDocumentReady(() => {
 window.paypal = window.paypal || {};
 window.paypal.checkout = window.paypal.checkout || {};
 
-window.paypal.checkout.setup = setup;
-window.paypal.checkout.initXO = initXO;
-window.paypal.checkout.startFlow = startFlow;
-window.paypal.checkout.closeFlow = closeFlow;
+if (window.paypal.checkout.setup) {
+    console.error('Error: window.paypal.checkout already exists. You may have inserted the checkout.js script more than once. Ignoring further attempts to assign to window.paypal.checkout.');
+} else {
 
-window.paypal.checkout.events = {
-    on(name) {
-        logError(`eventing_unsupported`, { name });
-    }
-};
+    window.paypal.checkout.setup = setup;
+    window.paypal.checkout.initXO = initXO;
+    window.paypal.checkout.startFlow = startFlow;
+    window.paypal.checkout.closeFlow = closeFlow;
+
+    window.paypal.checkout.events = {
+        on(name) {
+            logError(`eventing_unsupported`, { name });
+        }
+    };
+}
