@@ -18,8 +18,15 @@ export let PayPalCheckout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get url() {
-        return config.checkoutUrl;
+    get defaultEnv() {
+        return  config.env || 'production';
+    },
+
+    envUrls: {
+        local:      `${config.paypalUrls.local}/webapps/hermes`,
+        sandbox:    `${config.paypalUrls.sandbox}/checkoutnow`,
+        production: `${config.paypalUrls.production}/checkoutnow`,
+        demo:       `./checkout.htm`
     },
 
     contexts: {

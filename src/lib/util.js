@@ -21,7 +21,7 @@ export function loadScript(src, timeout) {
         };
 
         if (timeout) {
-            setTimeout(function () {
+            setTimeout(() => {
                 return reject(new Error('script_loading_timed_out'));
             }, timeout);
         }
