@@ -23,10 +23,8 @@ export function initLogger() {
         };
     });
 
-    let logUrl = config.env && config.loggerUrls[config.env] || config.loggerUrls.production;
-
     $logger.init({
-        uri: logUrl,
+        uri: config.loggerUrl,
         heartbeat: false,
         logPerformance: false
     });

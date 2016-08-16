@@ -7,13 +7,25 @@ import { initLogger } from './lib';
 
 export function setup(options) {
 
-    config.env = options.env || config.env;
-    config.bridgeUrl = options.bridgeUrl;
-    config.state = options.state || config.state;
+    $logger.info(`ppxo_setup_${options.env || config.env}`);
 
-    $logger.info(`ppxo_setup_${config.env}`);
+    if (options.env) {
+        delete config.env;
+        config.env = options.env;
+    }
+
+    if (options.paypalUrl) {
+        delete config.paypalUrl;
+        config.paypalUrl = options.paypalUrl;
+    }
+
+    if (options.state) {
+        delete config.state;
+        config.state = options.state;
+    }
 
     if (options.noBridge) {
+        delete config.enableBridge;
         config.enableBridge = false;
     }
 
@@ -47,12 +59,11 @@ if (currentScript) {
 
     setup({
         env:       currentScript.getAttribute('data-env'),
-        bridgeUrl: currentScript.getAttribute('data-bridge-url'),
+        paypalUrl: currentScript.getAttribute('data-paypal-url'),
         noBridge:  currentScript.hasAttribute('data-no-bridge'),
         state:     currentScript.getAttribute('data-state')
     });
 
 } else {
-
     $logger.debug(`ppxo_no_current_script`);
 }

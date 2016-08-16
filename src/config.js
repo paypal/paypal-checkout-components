@@ -16,16 +16,30 @@ export let config = {
 
     enableBridge: true,
 
-    bridgeUrls: {
-        local: 'http://localhost.paypal.com:8000/webapps/hermes/component-meta',
-        sandbox: 'https://www.sandbox.paypal.com/webapps/hermes/component-meta',
-        production: 'https://www.paypal.com/webapps/hermes/component-meta',
-        demo: './checkout.htm'
+    paypalUrls: {
+        local: 'http://localhost.paypal.com:8000',
+        sandbox: 'https://www.sandbox.paypal.com',
+        production: 'https://www.paypal.com'
     },
 
-    loggerUrls: {
-        local: 'http://localhost.paypal.com:8000/webapps/hermes/api/logger',
-        sandbox: 'https://www.sandbox.paypal.com/webapps/hermes/api/logger',
-        production: 'https://www.paypal.com/webapps/hermes/api/logger'
+    get paypalUrl() {
+        if (!config.paypalUrls[config.env]) {
+            throw new Error(`Invalid env: ${config.env}`);
+        }
+
+        return config.paypalUrls[config.env];
+    },
+
+    get checkoutUrl() {
+        let isProd = (config.paypalUrl === config.paypalUrls.sandbox || config.paypalUrl === config.paypalUrls.production);
+        return `${config.paypalUrl}/${ isProd ? 'checkoutnow' : 'webapps/hermes' }`;
+    },
+
+    get bridgeUrl() {
+        return `${config.paypalUrl}/webapps/hermes/component-meta`;
+    },
+
+    get loggerUrl() {
+        return `${config.paypalUrl}/webapps/hermes/api/logger`;
     }
 };

@@ -18,8 +18,6 @@ postRobot.once('meta').then(data => {
 export function setupBridge(env, bridgeUrl) {
     $logger.debug(`ppxo_setup_bridge`, { env });
 
-    bridgeUrl = bridgeUrl || config.bridgeUrls[env];
-
     if (!bridgeUrl) {
         $logger.error(`ppxo_setup_bridge_no_url`, { env });
         throw new Error(`Can not find bridge url for env: ${env}`);
