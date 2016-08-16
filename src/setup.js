@@ -5,7 +5,7 @@ import { config } from './config';
 import { setupBridge } from './bridge';
 import { initLogger } from './lib';
 
-export function setup(options) {
+export function setup(options = {}) {
 
     $logger.info(`ppxo_setup_${options.env || config.env}`);
 

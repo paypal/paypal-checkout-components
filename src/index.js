@@ -10,3 +10,5 @@ import './bridge';
 
 module.exports.xcomponent = xcomponent;
 module.exports.postRobot = postRobot;
+
+export let version = __MINOR_VERSION__;
