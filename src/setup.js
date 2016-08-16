@@ -38,14 +38,10 @@ export function setup(options) {
 
 function getCurrentScript() {
 
-    if (document.currentScript) {
-        return document.currentScript;
-    }
-
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src && script.src.replace(/^https?/, '') === config.scriptUrl) {
+        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl) {
             return script;
         }
     }
