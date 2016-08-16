@@ -488,10 +488,15 @@ onDocumentReady(() => {
             buttonEnv = 'sandbox';
         }
 
-        initPayPalCheckout({
-            env: buttonEnv,
-            paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
-        }).hijackButton(button);
+        button.addEventListener('click', event => {
+
+            let target = button.form ? button.form : button;
+
+            initPayPalCheckout({
+                env: buttonEnv,
+                paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
+            }).renderHijack(target);
+        });
     }
 });
 
