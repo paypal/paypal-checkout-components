@@ -7816,7 +7816,9 @@
         var setupCalled = false;
         function setup(id) {
             var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-            if (setupCalled) {}
+            if (setupCalled) {
+                return console.error("Error: You are calling paypal.checkout.setup() more than once. This function can only be called once per page load. Any further calls will be ignored.");
+            }
             setupCalled = true;
             (0, _log.logInfo)("setup");
             env = options.environment;
