@@ -5,11 +5,13 @@ import postRobot from 'post-robot/src';
 import { PayPalCheckout } from './components';
 import { config } from './config';
 
-postRobot.once('meta').then(data => {
+export let getMeta = postRobot.once('meta').then(data => {
 
     PayPalCheckout.contexts.lightbox = data.iframeEligible;
 
-    $logger.info(data.iframeEligible ? `ppxo_lightbox_eligible_${data.iframeEligibleReason}` : `ppxo_lightbox_ineligible_${data.iframeEligibleReason}`);
+    $logger.info(data.iframeEligible ?
+        `ppxo_lightbox_eligible_${data.iframeEligibleReason}` :
+        `ppxo_lightbox_ineligible_${data.iframeEligibleReason}`);
 
     config.locale.country = data.locale.country;
     config.locale.lang    = data.locale.lang;

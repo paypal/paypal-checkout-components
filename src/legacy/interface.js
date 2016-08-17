@@ -3,6 +3,7 @@ import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
 import { isEligible } from './eligibility';
 import { config } from '../config';
+import { getMeta } from '../bridge';
 
 import { urlWillRedirectPage, redirect, matchToken, onDocumentReady } from './util';
 import { renderButtons } from './button';
@@ -249,6 +250,14 @@ function setup(id, options = {}) {
     logInfo(`setup`);
 
     env = options.environment;
+
+    if (options.locale) {
+        let [ lang, country ] = options.locale.split('_');
+        getMeta.then(() => {
+            config.locale.country = country;
+            config.locale.lang    = lang;
+        });
+    }
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
