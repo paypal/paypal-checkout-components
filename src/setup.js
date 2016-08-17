@@ -29,6 +29,10 @@ export function setup(options = {}) {
         config.enableBridge = false;
     }
 
+    if (options.ppobjects) {
+        config.ppobjects = true;
+    }
+
     if (config.enableBridge) {
         setupBridge(config.env, config.bridgeUrl);
     }
@@ -41,7 +45,7 @@ function getCurrentScript() {
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl) {
+        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl || script.hasAttribute('data-ppxo')) {
             return script;
         }
     }
@@ -51,13 +55,12 @@ let currentScript = getCurrentScript();
 
 if (currentScript) {
 
-    config.ppobjects = true;
-
     setup({
         env:       currentScript.getAttribute('data-env'),
         paypalUrl: currentScript.getAttribute('data-paypal-url'),
         noBridge:  currentScript.hasAttribute('data-no-bridge'),
-        state:     currentScript.getAttribute('data-state')
+        state:     currentScript.getAttribute('data-state'),
+        ppobjects: true
     });
 
 } else {
