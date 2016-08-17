@@ -150,9 +150,12 @@ function initPayPalCheckout(props = {}) {
 
     PayPalCheckout.autocloseParentTemplate = false;
 
+    let uid = window.localStorage && window.localStorage.getItem('pp_uid');
+
     return PayPalCheckout.init({
 
         env,
+        uid,
 
         paymentToken: getPaymentToken,
 
