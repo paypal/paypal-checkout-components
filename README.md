@@ -1,5 +1,7 @@
+ppxo
+----
+
 PayPal Checkout Components
---------------------------
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [xcomponent](https://github.com/krakenjs/xcomponent).
