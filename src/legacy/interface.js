@@ -215,7 +215,7 @@ function handleClick(button, options) {
 
             event.preventDefault();
             initPayPalCheckout().render();
-            options.click.call();
+            options.click.call(null, event);
 
         } else {
             logDebug(`button_hijack`);
