@@ -69,10 +69,13 @@ export function renderButtons(id, options) {
         if (options.buttons instanceof Array) {
 
             options.buttons.forEach(button => {
-                buttons.push({
-                    el: renderButton(id, button.container, button),
-                    options: button
-                });
+                if (button) {
+                    button.click = button.click || options.click;
+                    buttons.push({
+                        el: renderButton(id, button.container, button),
+                        options: button
+                    });
+                }
             });
         }
 
