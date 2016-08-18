@@ -151,7 +151,9 @@ function initPayPalCheckout(props = {}) {
 
     PayPalCheckout.autocloseParentTemplate = false;
 
-    let uid = window.localStorage && window.localStorage.getItem('pp_uid');
+    // let uid = window.localStorage && window.localStorage.getItem('pp_uid');
+
+    let uid = window.pp_uid;
 
     return PayPalCheckout.init({
 
