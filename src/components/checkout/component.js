@@ -59,8 +59,8 @@ export let PayPalCheckout = xcomponent.create({
             once: true,
 
             def(data) {
-                this.token     = data.token;
-                this.cancelUrl = data.cancelUrl;
+                this.paymentToken = data.paymentToken;
+                this.cancelUrl    = data.cancelUrl;
             }
         },
 
@@ -110,8 +110,8 @@ export let PayPalCheckout = xcomponent.create({
 
                 if ([ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
                     return this.props.onPaymentCancel({
-                        token:     this.token,
-                        cancelUrl: this.cancelUrl
+                        paymentToken: this.paymentToken,
+                        cancelUrl:    this.cancelUrl
                     });
                 }
             }
