@@ -44,3 +44,68 @@ export function onDocumentReady(method) {
         return method();
     });
 }
+
+
+export function isNodeList(nodes) {
+
+    let result = Object.prototype.toString.call(nodes);
+
+    if (result === '[object HTMLCollection]' || result === '[object NodeList]') {
+        return true;
+    }
+
+    return false;
+}
+
+export function isArray(item) {
+    return item instanceof Array;
+}
+
+export function isElement(item) {
+    return item instanceof window.HTMLElement;
+}
+
+export function getElement(item) {
+
+    if (!item) {
+        return;
+    }
+
+    if (isElement(item)) {
+        return item;
+    }
+
+    if (typeof item === 'string') {
+        let result = document.querySelector && document.querySelector(item);
+
+        if (result) {
+            return result;
+        }
+
+        return document.getElementById(item);
+    }
+}
+
+
+export function eachElement(collection, method) {
+
+    if (!collection) {
+        return;
+    }
+
+    if (isArray(collection) || isNodeList(collection)) {
+        for (let i = 0; i < collection.length; i++) {
+            let el = getElement(collection[i]);
+            if (el) {
+                method(el, i);
+            }
+        }
+
+        return;
+    }
+
+    let el = getElement(collection);
+    if (el) {
+        method(el, 0);
+    }
+}

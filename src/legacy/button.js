@@ -3,6 +3,7 @@ import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
 import { logDebug, logError } from './log';
+import { eachElement } from './util';
 
 let buttonJS;
 
@@ -25,7 +26,7 @@ function loadButtonJS() {
     });
 }
 
-function renderButton(id, container, options) {
+function renderButton(id, container, options, label) {
 
     let buttonDom = window.paypal.button.create(id, {
         lc:    options.locale || `${config.locale.lang}_${config.locale.country}`,
@@ -33,11 +34,11 @@ function renderButton(id, container, options) {
         shape: options.shape  || 'pill',
         size:  options.size   || 'small'
     }, {
-        label: 'checkout',
+        label: label || 'checkout',
         type: 'button'
     });
 
-    document.getElementById(container).appendChild(buttonDom.el);
+    container.appendChild(buttonDom.el);
 
     return buttonDom.el.childNodes[0];
 }
@@ -50,30 +51,33 @@ export function renderButtons(id, options) {
 
         if (options.container) {
 
-            if (options.container instanceof Array) {
-                options.container.forEach(container => {
-                    buttons.push({
-                        el: renderButton(id, container, options),
-                        options
-                    });
-                });
+            let labels = [];
 
-            } else {
-                buttons.push({
-                    el: renderButton(id, options.container, options),
-                    options
-                });
+            if (typeof options.type === 'string') {
+                labels.push(options.type);
+            } else if (options.type instanceof Array) {
+                labels = options.type;
             }
+
+            eachElement(options.container, (container, i) => {
+                buttons.push({
+                    el: renderButton(id, container, options, labels[i]),
+                    click: options.click,
+                    condition: options.condition
+                });
+            });
         }
 
         if (options.buttons instanceof Array) {
-
             options.buttons.forEach(button => {
                 if (button) {
                     button.click = button.click || options.click;
-                    buttons.push({
-                        el: renderButton(id, button.container, button),
-                        options: button
+                    eachElement(button.container, container => {
+                        buttons.push({
+                            el: renderButton(id, container, button, button.type),
+                            click: button.click || options.click,
+                            condition: button.condition || options.condition
+                        });
                     });
                 }
             });

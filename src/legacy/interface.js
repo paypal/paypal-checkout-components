@@ -5,7 +5,7 @@ import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
 
-import { urlWillRedirectPage, redirect, matchToken, onDocumentReady } from './util';
+import { urlWillRedirectPage, redirect, matchToken, onDocumentReady, eachElement } from './util';
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
@@ -195,7 +195,7 @@ function initPayPalCheckout(props = {}) {
 }
 
 
-function handleClick(button, options) {
+function handleClick(button, click, condition) {
 
     if (!isEligible()) {
         return;
@@ -203,19 +203,19 @@ function handleClick(button, options) {
 
     button.addEventListener('click', event => {
 
-        if (options.condition instanceof Function && !options.condition.call()) {
+        if (condition instanceof Function && !condition.call()) {
             logDebug(`button_click_condition_disabled`);
             return;
         }
 
         logInfo(`button_click`);
 
-        if (options.click) {
+        if (click instanceof Function) {
             logDebug(`button_clickhandler`);
 
             event.preventDefault();
             initPayPalCheckout().render();
-            options.click.call(null, event);
+            click.call(null, event);
 
         } else {
             logDebug(`button_hijack`);
@@ -263,8 +263,12 @@ function setup(id, options = {}) {
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
-            handleClick(button.el, button.options);
+            handleClick(button.el, button.condition, button.click);
         });
+    });
+
+    eachElement(options.button, el => {
+        handleClick(el, options.condition, options.click);
     });
 }
 
