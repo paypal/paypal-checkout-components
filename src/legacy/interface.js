@@ -416,4 +416,9 @@ if (window.paypal.checkout.setup) {
             logError(`eventing_unsupported`, { name });
         }
     };
+
+    window.PAYPAL = window.PAYPAL || {};
+    window.PAYPAL.checkout = window.paypal.checkout;
+    window.PAYPAL.apps = window.PAYPAL.apps || {};
+    window.PAYPAL.apps.checkout = window.paypal.checkout;
 }
