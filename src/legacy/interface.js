@@ -425,3 +425,16 @@ if (window.paypalCheckoutReady instanceof Function) {
         window.paypalCheckoutReady();
     });
 }
+
+try {
+    Object.defineProperty(window, 'paypalCheckoutReady', {
+        set(method) {
+            onDocumentReady(() => {
+                logDebug(`paypal_checkout_ready_setter`);
+                method.call(window);
+            });
+        }
+    });
+} catch (err) {
+    logError('paypal_checkout_ready_setter_error', { error: err.stack || err.toString() });
+}
