@@ -263,12 +263,12 @@ function setup(id, options = {}) {
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
-            handleClick(button.el, button.condition, button.click);
+            handleClick(button.el, button.click, button.condition);
         });
     });
 
     eachElement(options.button, el => {
-        handleClick(el, options.condition, options.click);
+        handleClick(el, options.click, options.condition);
     });
 }
 
