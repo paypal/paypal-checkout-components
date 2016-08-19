@@ -182,7 +182,7 @@ function initPayPalCheckout(props = {}) {
 }
 
 
-function handleClick(button, click, condition, env) {
+function handleClick(button, env, click, condition) {
 
     if (!isEligible()) {
         return;
@@ -241,12 +241,14 @@ function setup(id, options = {}) {
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
-            handleClick(button.el, button.click, button.condition, options.environment);
+            logInfo(`listen_click_paypal_button`);
+            handleClick(button.el, options.environment, button.click, button.condition);
         });
     });
 
     eachElement(options.button, el => {
-        handleClick(el, options.click, options.condition, options.environment);
+        logInfo(`listen_click_custom_button`);
+        handleClick(el, options.environment, options.click, options.condition);
     });
 }
 
@@ -336,27 +338,21 @@ onDocumentReady(() => {
 
     if (buttons && buttons.length) {
         logDebug(`data_paypal_button`, { number: buttons.length });
-    }
 
-    for (let button of buttons) {
+        for (let button of buttons) {
 
-        let env;
+            let id = button.getAttribute('data-paypal-id');
 
-        if (button.hasAttribute('data-env')) {
-            env = button.getAttribute('data-env');
-        } else if (button.hasAttribute('data-sandbox')) {
-            env = 'sandbox';
+            let environment;
+
+            if (button.hasAttribute('data-env')) {
+                environment = button.getAttribute('data-env');
+            } else if (button.hasAttribute('data-sandbox')) {
+                environment = 'sandbox';
+            }
+
+            setup(id, { environment, button });
         }
-
-        button.addEventListener('click', event => {
-
-            let target = button.form ? button.form : button;
-
-            initPayPalCheckout({
-                env,
-                paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
-            }).renderHijack(target);
-        });
     }
 });
 
