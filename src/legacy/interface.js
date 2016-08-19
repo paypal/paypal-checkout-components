@@ -396,9 +396,10 @@ if (window.paypal.checkout.setup) {
 
 if (window.paypalCheckoutReady instanceof Function) {
     logDebug(`paypal_checkout_ready_passed`);
+    let paypalCheckoutReady = window.paypalCheckoutReady;
     onDocumentReady(() => {
         logDebug(`paypal_checkout_ready`);
-        window.paypalCheckoutReady();
+        paypalCheckoutReady();
     });
 }
 
