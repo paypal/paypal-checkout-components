@@ -28,18 +28,22 @@ function loadButtonJS() {
 
 function renderButton(id, container, options, label) {
 
-    let buttonDom = window.paypal.button.create(id, {
-        lc:    options.locale || `${config.locale.lang}_${config.locale.country}`,
-        color: options.color  || 'gold',
-        shape: options.shape  || 'pill',
-        size:  options.size   || 'small'
-    }, {
-        label: label || 'checkout',
-        type: 'button'
-    });
+    let lc    = options.locale || `${config.locale.lang}_${config.locale.country}`;
+    let color = options.color  || 'gold';
+    let shape = options.shape  || 'pill';
+    let size  = options.size   || 'small';
 
+    let type = 'button';
+    label = label || 'checkout';
+
+    logDebug(`render_button_lc_${lc}`);
+    logDebug(`render_button_color_${color}`);
+    logDebug(`render_button_shape_${shape}`);
+    logDebug(`render_button_size_${size}`);
+    logDebug(`render_button_label_${label}`);
+
+    let buttonDom = window.paypal.button.create(id, { lc, color, shape, size }, { type, label });
     container.appendChild(buttonDom.el);
-
     return buttonDom.el.childNodes[0];
 }
 
