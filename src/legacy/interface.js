@@ -340,10 +340,12 @@ onDocumentReady(() => {
 
     for (let button of buttons) {
 
-        let buttonEnv = button.attributes['data-env'] && button.attributes['data-env'].value;
+        let env;
 
-        if (!env && button.attributes['data-sandbox']) {
-            buttonEnv = 'sandbox';
+        if (button.hasAttribute('data-env')) {
+            env = button.getAttribute('data-env');
+        } else if (button.hasAttribute('data-sandbox')) {
+            env = 'sandbox';
         }
 
         button.addEventListener('click', event => {
@@ -351,7 +353,7 @@ onDocumentReady(() => {
             let target = button.form ? button.form : button;
 
             initPayPalCheckout({
-                env: buttonEnv,
+                env,
                 paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
             }).renderHijack(target);
         });
