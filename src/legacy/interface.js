@@ -342,22 +342,6 @@ function closeFlow() {
 }
 
 
-
-/*  PayPal Checkout Ready
-    ---------------------
-
-    Call window.paypalCheckoutReady on document ready, if it has been defined by the merchant
-*/
-
-if (window.paypalCheckoutReady instanceof Function) {
-    logDebug(`paypal_checkout_ready_passed`);
-    onDocumentReady(() => {
-        logDebug(`paypal_checkout_ready`);
-        window.paypalCheckoutReady();
-    });
-}
-
-
 /*  Scan for buttons
     ----------------
 
@@ -425,4 +409,19 @@ if (window.paypal.checkout.setup) {
     window.PAYPAL.checkout = window.paypal.checkout;
     window.PAYPAL.apps = window.PAYPAL.apps || {};
     window.PAYPAL.apps.checkout = window.paypal.checkout;
+}
+
+
+/*  PayPal Checkout Ready
+    ---------------------
+
+    Call window.paypalCheckoutReady on document ready, if it has been defined by the merchant
+*/
+
+if (window.paypalCheckoutReady instanceof Function) {
+    logDebug(`paypal_checkout_ready_passed`);
+    onDocumentReady(() => {
+        logDebug(`paypal_checkout_ready`);
+        window.paypalCheckoutReady();
+    });
 }
