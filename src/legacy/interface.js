@@ -9,18 +9,6 @@ import { urlWillRedirectPage, redirect, matchToken, onDocumentReady, eachElement
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
-/*  Global State
-    ------------
-
-    The legacy integration used global window.paypal.checkout.* methods which kept (essentially) global state
-    regarding open windows, component, etc.
-
-    Since we're emulating that integration, we have to store a little bit of global state, including the currently
-    active component and any config that needs to be persisted from the setup() call.
-*/
-
-let env = 'production';
-
 /*  Parse Token
     -----------
 
@@ -157,7 +145,6 @@ function initPayPalCheckout(props = {}) {
 
     return PayPalCheckout.init({
 
-        env,
         uid,
 
         paymentToken: getPaymentToken,
@@ -195,7 +182,7 @@ function initPayPalCheckout(props = {}) {
 }
 
 
-function handleClick(button, click, condition) {
+function handleClick(button, click, condition, env) {
 
     if (!isEligible()) {
         return;
@@ -214,13 +201,14 @@ function handleClick(button, click, condition) {
             logDebug(`button_clickhandler`);
 
             event.preventDefault();
-            initPayPalCheckout().render();
+            initPayPalCheckout({ env }).render();
             click.call(null, event);
 
         } else {
             logDebug(`button_hijack`);
 
             initPayPalCheckout({
+                env,
                 paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
             }).renderHijack(button.form);
         }
@@ -239,19 +227,9 @@ function handleClick(button, click, condition) {
     - Render a button to initiate the checkout window
 */
 
-let setupCalled = false;
-
 function setup(id, options = {}) {
 
-    if (setupCalled) {
-        return console.error(`Error: You are calling paypal.checkout.setup() more than once. This function can only be called once per page load. Any further calls will be ignored.`);
-    }
-
-    setupCalled = true;
-
-    logInfo(`setup`);
-
-    env = options.environment;
+    logInfo(`setup`, { env: options.environment });
 
     if (options.locale) {
         let [ lang, country ] = options.locale.split('_');
@@ -263,12 +241,12 @@ function setup(id, options = {}) {
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
-            handleClick(button.el, button.click, button.condition);
+            handleClick(button.el, button.click, button.condition, options.environment);
         });
     });
 
     eachElement(options.button, el => {
-        handleClick(el, options.click, options.condition);
+        handleClick(el, options.click, options.condition, options.environment);
     });
 }
 
