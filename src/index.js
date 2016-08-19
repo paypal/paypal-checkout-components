@@ -1,14 +1,18 @@
 
-import xcomponent from 'xcomponent/src';
-import postRobot from 'post-robot/src';
+if (window.ppxo) {
 
-export * from './components';
-export * from './legacy';
-export * from './setup';
+    let error = 'PayPal Checkout Integration Script already loaded on page';
 
-import './bridge';
+    if (window.console) {
+        if (window.console.warn) {
+            window.console.warn(error);
+        } else {
+            window.console.log(error);
+        }
+    }
 
-module.exports.xcomponent = xcomponent;
-module.exports.postRobot = postRobot;
+    module.exports = window.ppxo;
 
-export let version = __MINOR_VERSION__;
+} else {
+    module.exports = require('./interface');
+}
