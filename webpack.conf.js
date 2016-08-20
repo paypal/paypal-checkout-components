@@ -49,7 +49,7 @@ function getWebpackConfig(version) {
       },
       output: {
         filename: filename,
-        libraryTarget: 'umd',
+        libraryTarget: 'this',
         umdNamedDefine: true,
         library: MODULE_NAME,
         pathinfo: true
