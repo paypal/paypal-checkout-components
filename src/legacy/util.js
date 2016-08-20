@@ -42,8 +42,8 @@ let documentReady = new Promise(resolve => {
     }
 
     let interval = setInterval(() => {
-        clearInterval(interval);
         if (isDocumentReady()) {
+            clearInterval(interval);
             return resolve();
         }
     }, 50);
