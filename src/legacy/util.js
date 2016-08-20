@@ -31,18 +31,26 @@ export function matchToken(token) {
     Call the callback when the document is ready, or immediately if the document has already loaded
 */
 
-let documentLoaded = document.readyState === 'complete' || document.readyState === 'loaded';
+function isDocumentReady() {
+    return document.readyState === 'complete';
+}
 
-export function onDocumentReady(method) {
+let documentReady = new Promise(resolve => {
 
-    if (documentLoaded) {
-        return method();
+    if (isDocumentReady()) {
+        return resolve();
     }
 
-    return document.addEventListener('DOMContentLoaded', event => {
-        documentLoaded = true;
-        return method();
-    });
+    let interval = setInterval(() => {
+        clearInterval(interval);
+        if (isDocumentReady()) {
+            return resolve();
+        }
+    }, 50);
+});
+
+export function onDocumentReady(method) {
+    return documentReady.then(method);
 }
 
 
