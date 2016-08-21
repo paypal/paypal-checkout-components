@@ -220,10 +220,24 @@ function handleClick(button, env, click, condition) {
         } else {
             logDebug(`button_hijack`);
 
+            let targetElement;
+
+            if (button && button.form) {
+                targetElement = button.form;
+            } else if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
+                targetElement = button;
+            } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode.tagName.toLowerCase() === 'a') {
+                targetElement = button.parentNode;
+            } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
+                targetElement = button.parentNode.parentNode;
+            } else if (this && this.hasOwnProperty('target') && typeof this.target !== 'undefined') { // not sure what this use case is
+                targetElement = this; // eslint-disable-line
+            }
+
             initPayPalCheckout({
                 env,
                 paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
-            }).renderHijack(button.form);
+            }).renderHijack(targetElement);
         }
     });
 }
