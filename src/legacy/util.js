@@ -1,5 +1,6 @@
 
 import { logInfo } from './log';
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 
 export function urlWillRedirectPage(url) {

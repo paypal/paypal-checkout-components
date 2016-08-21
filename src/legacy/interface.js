@@ -39,9 +39,22 @@ function parseToken(token) {
 
 
 function getFullpageRedirectUrl(token) {
-    let baseUrl = config.checkoutUrl;
-    let url = matchToken(token) ? `${baseUrl}?token=${token}` : token;
-    return url;
+
+    if (!token) {
+        throw new Error(`Can not get redirect url - token is blank`);
+    }
+
+    if (token.match(/^https?:\/\//)) {
+        return token;
+    }
+
+    let ecToken = matchToken(token);
+
+    if (!ecToken) {
+        throw new Error(`Can not match token in ${token}`);
+    }
+
+    return `${config.checkoutUrl}?token=${ecToken}`;
 }
 
 
@@ -86,8 +99,8 @@ function getPaymentToken(resolve, reject) {
         let ecToken = parseToken(token);
 
         if (!ecToken) {
-            logError(`paymenttoken_startflow_notoken`, { token });
-            throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
+            logWarning(`paymenttoken_startflow_notoken`, { token });
+            ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
         }
 
         if (!isEligible()) {
@@ -292,7 +305,7 @@ function startFlow(token) {
 
     if (!ecToken) {
         logWarning(`startflow_notoken`);
-        throw new Error(`Expected "${token}" passed to window.paypal.checkout.startFlow to contain express-checkout payment token`);
+        ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
     }
 
     if (!isEligible()) {
