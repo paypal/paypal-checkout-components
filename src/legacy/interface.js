@@ -213,7 +213,6 @@ function handleClick(button, env, click, condition) {
         if (click instanceof Function) {
             logDebug(`button_clickhandler`);
 
-            event.preventDefault();
             initPayPalCheckout({ env }).render();
             click.call(null, event);
 
