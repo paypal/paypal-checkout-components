@@ -108,7 +108,7 @@ export let PayPalCheckout = xcomponent.create({
 
                 let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-                if ([ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                if (this.props.onPaymentCancel && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
                     return this.props.onPaymentCancel({
                         paymentToken: this.paymentToken,
                         cancelUrl:    this.cancelUrl
