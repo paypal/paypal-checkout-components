@@ -154,7 +154,7 @@ function(module, exports, __webpack_require__) {
         tag: "paypal-button",
         name: "ppbutton",
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.8";
+            return _config.config.ppobjects ? "4.0.8" : "4.0.8";
         },
         defaultEnv: "production",
         envUrls: {
@@ -6258,7 +6258,7 @@ function(module, exports, __webpack_require__) {
         value: true
     });
     var config = exports.config = {
-        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.js",
+        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.0.8.js",
         ppobjects: false,
         env: "production",
         state: "ppxo_xcomponent",
@@ -6336,7 +6336,7 @@ function(module, exports, __webpack_require__) {
         tag: "paypal-checkout",
         name: "ppcheckout",
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.8";
+            return _config.config.ppobjects ? "4.0.8" : "4.0.8";
         },
         get defaultEnv() {
             return _config.config.env || "production";
@@ -8337,7 +8337,7 @@ function(module, exports, __webpack_require__) {
             });
             throw new Error("Can not find bridge url for env: " + env);
         }
-        var version = _config.config.ppobjects ? "4" : "4.0.8";
+        var version = _config.config.ppobjects ? "4.0.8" : "4.0.8";
         _src2["default"].openBridge(bridgeUrl + "?xcomponent=1&version=" + version + "&env=" + _config.config.env);
     }
 }, /*!**********************!*\
