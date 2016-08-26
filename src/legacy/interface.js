@@ -195,6 +195,23 @@ function initPayPalCheckout(props = {}) {
 }
 
 
+function renderPayPalCheckout(props = {}) {
+
+    return initPayPalCheckout.render().catch(err => {
+
+        let url = getFullpageRedirectUrl(props.url || props.paymentToken);
+
+        if (url) {
+            setTimeout(function() {
+                redirect(url);
+            }, 500);
+        }
+
+        throw err;
+    });
+}
+
+
 function handleClick(button, env, click, condition) {
 
     if (!isEligible()) {
@@ -213,7 +230,7 @@ function handleClick(button, env, click, condition) {
         if (click instanceof Function) {
             logDebug(`button_clickhandler`);
 
-            initPayPalCheckout({ env }).render();
+            renderPayPalCheckout({ env });
             click.call(null, event);
 
         } else {
@@ -320,7 +337,7 @@ function initXO() {
         return;
     }
 
-    initPayPalCheckout().render();
+    renderPayPalCheckout();
 }
 
 
@@ -338,11 +355,11 @@ function startFlow(token) {
 
     logDebug(`startflow`, { token });
 
-    let ecToken = parseToken(token);
+    let paymentToken = parseToken(token);
 
     if (!ecToken) {
         logWarning(`startflow_notoken`);
-        ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+        paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
     }
 
     if (!isEligible()) {
@@ -350,10 +367,12 @@ function startFlow(token) {
         return redirect(getFullpageRedirectUrl(token));
     }
 
-    initPayPalCheckout({
-        url: matchToken(token) ? null : token,
-        paymentToken: ecToken
-    }).render();
+    let url = matchToken(token) ? null : token;
+
+    renderPayPalCheckout({
+        url,
+        paymentToken
+    });
 }
 
 
