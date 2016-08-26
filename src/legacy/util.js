@@ -95,26 +95,27 @@ export function getElement(item) {
     }
 }
 
+export function getElements(collection) {
 
-export function eachElement(collection, method) {
+    let result = [];
 
     if (!collection) {
-        return;
+        return collection;
     }
 
     if (isArray(collection) || isNodeList(collection)) {
         for (let i = 0; i < collection.length; i++) {
             let el = getElement(collection[i]);
             if (el) {
-                method(el, i);
+                result.push(el);
             }
         }
 
-        return;
+        return result;
     }
 
     let el = getElement(collection);
     if (el) {
-        method(el, 0);
+        return [el];
     }
 }

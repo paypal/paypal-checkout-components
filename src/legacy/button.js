@@ -3,7 +3,7 @@ import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
 import { logDebug, logError } from './log';
-import { eachElement } from './util';
+import { getElements } from './util';
 
 let buttonJS;
 
@@ -55,15 +55,17 @@ export function renderButtons(id, options) {
 
         if (options.container) {
 
-            let labels = [];
+            let labels;
 
             if (typeof options.type === 'string') {
-                labels.push(options.type);
+                labels = [options.type];
             } else if (options.type instanceof Array) {
                 labels = options.type;
+            } else {
+                labels = [];
             }
 
-            eachElement(options.container, (container, i) => {
+            getElements(options.container).forEach((container, i) => {
                 buttons.push({
                     el: renderButton(id, container, options, labels[i]),
                     click: options.click,
@@ -75,12 +77,15 @@ export function renderButtons(id, options) {
         if (options.buttons instanceof Array) {
             options.buttons.forEach(button => {
                 if (button) {
-                    button.click = button.click || options.click;
-                    eachElement(button.container, container => {
+
+                    button.click     = button.click || options.click;
+                    button.condition = button.condition || options.condition;
+
+                    getElements(button.container).forEach(container => {
                         buttons.push({
                             el: renderButton(id, container, button, button.type),
-                            click: button.click || options.click,
-                            condition: button.condition || options.condition
+                            click: button.click,
+                            condition: button.condition
                         });
                     });
                 }

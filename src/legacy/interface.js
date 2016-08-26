@@ -5,7 +5,7 @@ import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
 
-import { urlWillRedirectPage, redirect, matchToken, onDocumentReady, eachElement } from './util';
+import { urlWillRedirectPage, redirect, matchToken, onDocumentReady, getElements } from './util';
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
@@ -268,17 +268,38 @@ function setup(id, options = {}) {
         });
     }
 
-    renderButtons(id, options).then(buttons => {
-        buttons.forEach(button => {
-            logInfo(`listen_click_paypal_button`);
-            handleClick(button.el, options.environment, button.click, button.condition);
-        });
-    });
+    if (options.buttons) {
+        let elements = getElements(options.buttons);
 
-    eachElement(options.button, el => {
-        logInfo(`listen_click_custom_button`);
-        handleClick(el, options.environment, options.click, options.condition);
-    });
+        if (elements.length) {
+
+            elements.forEach(el => {
+                logInfo(`listen_click_custom_button`);
+                handleClick(el, options.environment, options.click, options.condition);
+            });
+
+        } else {
+
+            renderButtons(id, options).then(buttons => {
+                buttons.forEach(button => {
+                    logInfo(`listen_click_paypal_button`);
+                    handleClick(button.el, options.environment, button.click, button.condition);
+                });
+            });
+        }
+    }
+
+    if (options.button) {
+
+        getElements(options.button).forEach(el => {
+            logInfo(`listen_click_custom_button`);
+            handleClick(el, options.environment, options.click, options.condition);
+        });
+    }
+
+
+
+
 }
 
 
