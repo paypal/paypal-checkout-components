@@ -380,6 +380,12 @@ onDocumentReady(() => {
             setup(id, { environment, button });
         }
     }
+
+    // Show hidden buttons
+
+    Array.prototype.slice.call(document.getElementsByClassName('paypal-button-hidden')).forEach(el => {
+        el.className = el.className.replace('paypal-button-hidden', '');
+    });
 });
 
 
