@@ -254,8 +254,11 @@ function handleClick(button, env, click, condition) {
 */
 
 function setup(id, options = {}) {
-
     logInfo(`setup`, { env: options.environment });
+
+    if (!PayPalCheckout.envUrls[options.environment]) {
+        options.environment = PayPalCheckout.defaultEnv;
+    }
 
     if (options.locale) {
         let [ lang, country ] = options.locale.split('_');
