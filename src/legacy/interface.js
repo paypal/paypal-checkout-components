@@ -313,10 +313,6 @@ function setup(id, options = {}) {
             handleClick(el, options.environment, options.click, options.condition);
         });
     }
-
-
-
-
 }
 
 
@@ -357,7 +353,7 @@ function startFlow(token) {
 
     let paymentToken = parseToken(token);
 
-    if (!ecToken) {
+    if (!paymentToken) {
         logWarning(`startflow_notoken`);
         paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
     }
