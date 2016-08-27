@@ -197,7 +197,7 @@ function initPayPalCheckout(props = {}) {
 
 function renderPayPalCheckout(props = {}) {
 
-    return initPayPalCheckout.render().catch(err => {
+    return initPayPalCheckout(props).render().catch(err => {
 
         let url = getFullpageRedirectUrl(props.url || props.paymentToken);
 
