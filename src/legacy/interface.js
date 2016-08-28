@@ -285,29 +285,19 @@ function setup(id, options = {}) {
         });
     }
 
-    if (options.buttons) {
-        let elements = getElements(options.buttons);
-
-        if (elements.length) {
-
-            elements.forEach(el => {
-                logInfo(`listen_click_custom_button`);
-                handleClick(el, options.environment, options.click, options.condition);
-            });
-
-        } else {
-
-            renderButtons(id, options).then(buttons => {
-                buttons.forEach(button => {
-                    logInfo(`listen_click_paypal_button`);
-                    handleClick(button.el, options.environment, button.click, button.condition);
-                });
-            });
-        }
+    if (getElements(options.buttons)) {
+        options.button = options.buttons;
+        delete options.buttons;
     }
 
-    if (options.button) {
+    renderButtons(id, options).then(buttons => {
+        buttons.forEach(button => {
+            logInfo(`listen_click_paypal_button`);
+            handleClick(button.el, options.environment, button.click, button.condition);
+        });
+    });
 
+    if (options.button) {
         getElements(options.button).forEach(el => {
             logInfo(`listen_click_custom_button`);
             handleClick(el, options.environment, options.click, options.condition);
