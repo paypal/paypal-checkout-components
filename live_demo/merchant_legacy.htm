@@ -96,7 +96,8 @@
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
       container: 'myContainer3',
-      click: function () {
+      click: function (event) {
+        event.preventDefault();
         paypal.checkout.initXO();
 
         paymentToken(function(token) {
@@ -117,7 +118,8 @@
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
       container: 'myContainer4',
-      click: function () {
+      click: function (event) {
+        event.preventDefault();
         paypal.checkout.initXO();
 
         paymentTokenError(null, function(err) {
@@ -181,7 +183,8 @@
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
       container: 'myContainer9',
-      click: function () {
+      click: function (event) {
+        event.preventDefault();
         paypal.checkout.initXO();
 
         paymentTokenHashUrl(function(token) {
