@@ -53,7 +53,7 @@ export function renderButtons(id, options) {
 
         let buttons = [];
 
-        if (options.container) {
+        if (options.container && options.container.length !== 0) {
 
             let labels;
 
@@ -87,18 +87,22 @@ export function renderButtons(id, options) {
                     button.click     = button.click || options.click;
                     button.condition = button.condition || options.condition;
 
-                    let buttonContainerElements = getElements(button.container);
+                    if (button.container && button.container.length !== 0) {
+                        let buttonContainerElements = getElements(button.container);
 
-                    if (buttonContainerElements.length) {
-                        buttonContainerElements.forEach(container => {
-                            buttons.push({
-                                el: renderButton(id, container, button, button.type),
-                                click: button.click,
-                                condition: button.condition
+                        if (buttonContainerElements.length) {
+                            buttonContainerElements.forEach(container => {
+                                buttons.push({
+                                    el: renderButton(id, container, button, button.type),
+                                    click: button.click,
+                                    condition: button.condition
+                                });
                             });
-                        });
+                        } else {
+                            logWarning(`button_container_not_found`, { container: JSON.stringify(button.container) });
+                        }
                     } else {
-                        logWarning(`button_container_not_found`, { container: JSON.stringify(button.container) });
+                        logWarning(`button_container_not_passed`, { button: JSON.stringify(button) });
                     }
                 }
             });

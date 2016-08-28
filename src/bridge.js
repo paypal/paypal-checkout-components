@@ -13,8 +13,15 @@ export let getMeta = postRobot.once('meta').then(data => {
         `ppxo_lightbox_eligible_${data.iframeEligibleReason}` :
         `ppxo_lightbox_ineligible_${data.iframeEligibleReason}`);
 
-    config.locale.country = data.locale.country;
-    config.locale.lang    = data.locale.lang;
+    if (config.locales[data.locale.country]) {
+        config.locale.country = data.locale.country;
+
+        if (config.locales[data.locale.country].indexOf(data.locale.lang) !== -1) {
+            config.locale.lang = data.locale.lang;
+        } else {
+            config.locale.lang = config.locales[data.locale.country][0];
+        }
+    }
 });
 
 export function setupBridge(env, bridgeUrl) {

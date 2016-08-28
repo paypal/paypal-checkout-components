@@ -35,6 +35,12 @@ function parseToken(token) {
     if (match) {
         return match[1];
     }
+
+    match = token.match(/(EC-[A-Z0-9]{17})/);
+
+    if (match) {
+        return match[1];
+    }
 }
 
 
@@ -200,6 +206,8 @@ function renderPayPalCheckout(props = {}) {
 
     return initPayPalCheckout(props).render().catch(err => {
 
+        logError(`error`, { error: err.stack || err.toString() });
+
         if (props.url || props.paymentToken) {
             let url = getFullpageRedirectUrl(props.url || props.paymentToken);
 
@@ -286,9 +294,22 @@ function setup(id, options = {}) {
 
     if (options.locale) {
         let [ lang, country ] = options.locale.split('_');
+
         getMeta.then(() => {
-            config.locale.country = country;
-            config.locale.lang    = lang;
+
+            if (config.locales[country]) {
+                config.locale.country = country;
+
+                if (config.locales[country].indexOf(lang) !== -1) {
+                    config.locale.lang = lang;
+                } else {
+                    logWarning(`invalid_user_lang`, { lang, def: config.locales[country][0] });
+                    config.locale.lang = config.locales[country][0];
+                }
+
+            } else {
+                logWarning(`invalid_user_country`, { country });
+            }
         });
     }
 
@@ -304,7 +325,7 @@ function setup(id, options = {}) {
         });
     });
 
-    if (options.button) {
+    if (options.button && options.button.length !== 0) {
         let buttonElements = getElements(options.button);
 
         if (buttonElements.length) {
@@ -437,6 +458,10 @@ onDocumentReady(() => {
     Set paypal.checkout global functions to support legacy integrations
 */
 
+if (window.paypal) {
+    logWarning(`window_paypal_exists`);
+}
+
 window.paypal = window.paypal || {};
 window.paypal.checkout = window.paypal.checkout || {};
 
@@ -448,6 +473,8 @@ if (window.paypal.checkout.setup) {
     window.paypal.checkout.initXO = initXO;
     window.paypal.checkout.startFlow = startFlow;
     window.paypal.checkout.closeFlow = closeFlow;
+
+    window.paypal.checkout.urlPrefix = `${config.checkoutUrl}?token=`;
 
     window.paypal.checkout.events = {
         on(name) {
@@ -478,6 +505,8 @@ if (window.paypalCheckoutReady instanceof Function) {
 }
 
 try {
+    delete window.paypalCheckoutReady;
+
     Object.defineProperty(window, 'paypalCheckoutReady', {
         set(method) {
             onDocumentReady(() => {
