@@ -103,6 +103,7 @@ export let PayPalCheckout = xcomponent.create({
             type: 'function',
             required: false,
             memoize: true,
+            promisify: true,
 
             def(reason) {
 
