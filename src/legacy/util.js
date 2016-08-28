@@ -97,11 +97,11 @@ export function getElement(item) {
 
 export function getElements(collection) {
 
-    let result = [];
-
     if (!collection) {
-        return collection;
+        return [];
     }
+
+    let result = [];
 
     if (isArray(collection) || isNodeList(collection)) {
         for (let i = 0; i < collection.length; i++) {
@@ -118,4 +118,6 @@ export function getElements(collection) {
     if (el) {
         return [el];
     }
+
+    return [];
 }

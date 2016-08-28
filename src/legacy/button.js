@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
-import { logDebug, logError } from './log';
+import { logDebug, logError, logWarning } from './log';
 import { getElements } from './util';
 
 let buttonJS;
@@ -65,13 +65,19 @@ export function renderButtons(id, options) {
                 labels = [];
             }
 
-            getElements(options.container).forEach((container, i) => {
-                buttons.push({
-                    el: renderButton(id, container, options, labels[i]),
-                    click: options.click,
-                    condition: options.condition
+            let containerElements = getElements(options.container);
+
+            if (containerElements.length) {
+                containerElements.forEach((container, i) => {
+                    buttons.push({
+                        el: renderButton(id, container, options, labels[i]),
+                        click: options.click,
+                        condition: options.condition
+                    });
                 });
-            });
+            } else {
+                logWarning(`button_container_not_found`, { container: JSON.stringify(options.container) });
+            }
         }
 
         if (options.buttons instanceof Array) {
@@ -81,13 +87,19 @@ export function renderButtons(id, options) {
                     button.click     = button.click || options.click;
                     button.condition = button.condition || options.condition;
 
-                    getElements(button.container).forEach(container => {
-                        buttons.push({
-                            el: renderButton(id, container, button, button.type),
-                            click: button.click,
-                            condition: button.condition
+                    let buttonContainerElements = getElements(button.container);
+
+                    if (buttonContainerElements.length) {
+                        buttonContainerElements.forEach(container => {
+                            buttons.push({
+                                el: renderButton(id, container, button, button.type),
+                                click: button.click,
+                                condition: button.condition
+                            });
                         });
-                    });
+                    } else {
+                        logWarning(`button_container_not_found`, { container: JSON.stringify(button.container) });
+                    }
                 }
             });
         }

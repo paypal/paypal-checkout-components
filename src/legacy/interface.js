@@ -132,6 +132,7 @@ function getPaymentToken(resolve, reject) {
         // We also want to close the component at this point, to preserve the original legacy behavior
 
         this.close();
+        this.closeParentTemplate();
     };
 }
 
@@ -199,12 +200,14 @@ function renderPayPalCheckout(props = {}) {
 
     return initPayPalCheckout(props).render().catch(err => {
 
-        let url = getFullpageRedirectUrl(props.url || props.paymentToken);
+        if (props.url || props.paymentToken) {
+            let url = getFullpageRedirectUrl(props.url || props.paymentToken);
 
-        if (url) {
-            setTimeout(function() {
-                redirect(url);
-            }, 500);
+            if (url) {
+                setTimeout(() => {
+                    redirect(url);
+                }, 500);
+            }
         }
 
         throw err;
@@ -271,7 +274,11 @@ function handleClick(button, env, click, condition) {
 */
 
 function setup(id, options = {}) {
-    logInfo(`setup`, { env: options.environment });
+
+    logInfo(`setup`, {
+        env: options.environment,
+        options: JSON.stringify(options)
+    });
 
     if (!PayPalCheckout.envUrls[options.environment]) {
         options.environment = PayPalCheckout.defaultEnv;
@@ -285,7 +292,7 @@ function setup(id, options = {}) {
         });
     }
 
-    if (getElements(options.buttons)) {
+    if (options.buttons && getElements(options.buttons).length) {
         options.button = options.buttons;
         delete options.buttons;
     }
@@ -298,10 +305,16 @@ function setup(id, options = {}) {
     });
 
     if (options.button) {
-        getElements(options.button).forEach(el => {
-            logInfo(`listen_click_custom_button`);
-            handleClick(el, options.environment, options.click, options.condition);
-        });
+        let buttonElements = getElements(options.button);
+
+        if (buttonElements.length) {
+            buttonElements.forEach(el => {
+                logInfo(`listen_click_custom_button`);
+                handleClick(el, options.environment, options.click, options.condition);
+            });
+        } else {
+            logWarning(`button_element_not_found`, { element: JSON.stringify(options.button) });
+        }
     }
 }
 
