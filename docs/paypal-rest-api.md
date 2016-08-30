@@ -25,10 +25,11 @@ The way this works is:
    ---
 
    ```shell
+   URL='https://api.paypal.com/v1/oauth2/token';
    CLIENT_ID='E4gg1bkY8HgPXVFuqOeQMXppxgdfJglTkYaez4tLVUnVBeRsgTpVBK9ngxGdqp7';
    SECRET='HyltbozR9LCmWfW61XrUmoMnfctxgDmnbl4WlIDX5pvipzHDB0Y65aZ72tJk7aV';
 
-   curl 'https://api.paypal.com/v1/oauth2/token' \
+   curl "$URL" \
      --request POST \
      --user "$CLIENT_ID:$SECRET" \
      --data 'grant_type=client_credentials';
@@ -57,6 +58,7 @@ The way this works is:
    ---
 
    ```shell
+   URL='https://api.paypal.com/v1/payments/payment';
    ACCESS_TOKEN='89DLEZCl8IxnYLf1fdnpBoJfGZ6iOv3zcdfXjfa3o8Jdg5VBQ9fa4rD3tI6Tczn';
 
    PAYMENT='{
@@ -78,7 +80,7 @@ The way this works is:
      ]
    }';
 
-   curl 'https://api.paypal.com/v1/payments/payment' \
+   curl "$URL" \
      --header "Authorization: Bearer $ACCESS_TOKEN" \
      --header 'Content-type: application/json' \
      --data "$PAYMENT";
@@ -168,9 +170,10 @@ The way this works is:
    ```shell
    ACCESS_TOKEN='89DLEZCl8IxnYLf1fdnpBoJfGZ6iOv3zcdfXjfa3o8Jdg5VBQ9fa4rD3tI6Tczn';
    PAYMENT_ID='PAY-0J356327TH335450NK56Y2PQ';
-   PAYER_ID='GSF4567F5DSCGH34'
+   PAYER_ID='GSF4567F5DSCGH34';
+   URL="https://api.paypal.com/v1/payments/payment/$PAYMENT_ID/execute"
 
-   curl "https://api.paypal.com/v1/payments/payment/$PAYMENT_ID/execute" \
+   curl "$URL" \
      --header "Authorization: Bearer $ACCESS_TOKEN" \
      --header 'Content-type: application/json' \
      --data "{\"payer_id\": \"$PAYER_ID\"}";
