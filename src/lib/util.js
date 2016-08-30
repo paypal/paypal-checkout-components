@@ -31,3 +31,19 @@ export function loadScript(src, timeout) {
         document.body.appendChild(script);
     });
 }
+
+
+export function extend(target, source) {
+
+    for (let key in source) {
+        if (source.hasOwnProperty(key)) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        }
+    }
+
+    return target;
+}
+
+export function merge(one, two) {
+    return extend(extend({}, one), two);
+}

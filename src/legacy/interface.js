@@ -44,6 +44,12 @@ function parseToken(token) {
 }
 
 
+function getCheckoutUrl() {
+    let isProd = (config.paypalUrl === config.paypalUrls.sandbox || config.paypalUrl === config.paypalUrls.production);
+    return `${config.paypalUrl}/${ isProd ? 'checkoutnow' : 'webapps/hermes' }`;
+}
+
+
 function getFullpageRedirectUrl(token) {
 
     if (!token) {
@@ -60,7 +66,7 @@ function getFullpageRedirectUrl(token) {
         throw new Error(`Can not match token in ${token}`);
     }
 
-    return `${config.checkoutUrl}?token=${ecToken}`;
+    return `${getCheckoutUrl()}?token=${ecToken}`;
 }
 
 
@@ -288,8 +294,8 @@ function setup(id, options = {}) {
         options: JSON.stringify(options)
     });
 
-    if (!PayPalCheckout.envUrls[options.environment]) {
-        options.environment = PayPalCheckout.defaultEnv;
+    if (!config.paypalUrls[options.environment]) {
+        options.environment = config.env;
     }
 
     if (options.locale) {
@@ -474,7 +480,7 @@ if (window.paypal.checkout.setup) {
     window.paypal.checkout.startFlow = startFlow;
     window.paypal.checkout.closeFlow = closeFlow;
 
-    window.paypal.checkout.urlPrefix = `${config.checkoutUrl}?token=`;
+    window.paypal.checkout.urlPrefix = `${getCheckoutUrl()}?token=`;
 
     window.paypal.checkout.events = {
         on(name) {

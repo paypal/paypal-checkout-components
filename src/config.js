@@ -22,17 +22,28 @@ export let config = {
         production: 'https://www.paypal.com'
     },
 
+    get checkoutUrls() {
+        return {
+            local:      `${config.paypalUrls.local}/webapps/hermes`,
+            sandbox:    `${config.paypalUrls.sandbox}/checkoutnow`,
+            production: `${config.paypalUrls.production}/checkoutnow`
+        };
+    },
+
+    get billingUrls() {
+        return {
+            local:      `${config.paypalUrls.local}/webapps/hermes/agreements`,
+            sandbox:    `${config.paypalUrls.sandbox}/agreements/approve`,
+            production: `${config.paypalUrls.production}/agreements/approve`
+        };
+    },
+
     get paypalUrl() {
         if (!config.paypalUrls[config.env]) {
             throw new Error(`Invalid env: ${config.env}`);
         }
 
         return config.paypalUrls[config.env];
-    },
-
-    get checkoutUrl() {
-        let isProd = (config.paypalUrl === config.paypalUrls.sandbox || config.paypalUrl === config.paypalUrls.production);
-        return `${config.paypalUrl}/${ isProd ? 'checkoutnow' : 'webapps/hermes' }`;
     },
 
     get bridgeUrl() {
@@ -250,3 +261,14 @@ export let config = {
         ZW: ['en']
     }
 };
+
+// Best-guess for current env
+
+let currentDomain = `${window.location.protocol}//${window.location.host}`;
+
+for (let env of Object.keys(config.paypalUrls)) {
+    if (config.paypalUrls[env] === currentDomain) {
+        config.env = env;
+        break;
+    }
+}

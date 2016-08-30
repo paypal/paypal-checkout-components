@@ -7,12 +7,17 @@ import { initLogger } from './lib';
 
 export function setup(options = {}) {
 
-    $logger.info(`ppxo_setup_${options.env || config.env}`);
-
     if (options.env) {
+        if (!config.paypalUrls[options.env]) {
+            throw new Error(`Invalid env: ${options.env}`);
+        }
+
         delete config.env;
         config.env = options.env;
+
     }
+
+    $logger.info(`ppxo_setup_${config.env}`);
 
     if (options.paypalUrl) {
         delete config.paypalUrl;
@@ -45,7 +50,7 @@ function getCurrentScript() {
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl || script.hasAttribute('data-ppxo')) {
+        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl || script.hasAttribute('data-ppxo') || script.hasAttribute('data-paypal-checkout')) {
             return script;
         }
     }

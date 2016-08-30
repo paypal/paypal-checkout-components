@@ -3,30 +3,21 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice } from '../../lib';
+import { isDevice, merge } from '../../lib';
 import { config } from '../../config';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
 
-export let PayPalCheckout = xcomponent.create({
 
-    tag: 'paypal-checkout',
-    name: 'ppcheckout',
+let component = {
 
     get version() {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
     get defaultEnv() {
-        return  config.env || 'production';
-    },
-
-    envUrls: {
-        local:      `${config.paypalUrls.local}/webapps/hermes`,
-        sandbox:    `${config.paypalUrls.sandbox}/checkoutnow`,
-        production: `${config.paypalUrls.production}/checkoutnow`,
-        demo:       `./checkout.htm`
+        return config.env;
     },
 
     contexts: {
@@ -35,7 +26,7 @@ export let PayPalCheckout = xcomponent.create({
         popup: true
     },
 
-    parentTemplate() {
+    get parentTemplate() {
 
         let template = parentTemplate;
         let localeContent = content[config.locale.country][config.locale.lang];
@@ -64,11 +55,10 @@ export let PayPalCheckout = xcomponent.create({
             }
         },
 
-        paymentToken: {
-            type: 'string',
-            required: true,
-            getter: true,
-            queryParam: 'token'
+        paymentDetails: {
+            type: 'object',
+            required: false,
+            queryParam: false
         },
 
         onPaymentAuthorize: {
@@ -137,4 +127,59 @@ export let PayPalCheckout = xcomponent.create({
             height: 535
         };
     }
-});
+};
+
+
+
+
+export let PayPalCheckout = xcomponent.create(merge(component, {
+
+    tag: 'paypal-checkout',
+    name: 'ppcheckout',
+
+    envUrls: config.checkoutUrls,
+
+    props: merge(component.props, {
+
+        paymentToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'token',
+
+            def(resolve, reject) {
+                if (!this.props.paymentDetails) {
+                    throw new Error(`Expected paymentToken or paymentDetails`);
+                }
+            }
+        }
+    })
+
+}));
+
+export let Checkout = PayPalCheckout;
+
+
+export let BillingAgreement = xcomponent.create(merge(component, {
+
+    tag: 'paypal-billing-agreement',
+    name: 'ppbillingagreement',
+
+    envUrls: config.billingUrls,
+
+    props: merge(component.props, {
+
+        paymentToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'ba_token',
+
+            def(resolve, reject) {
+                if (!this.props.billingDetails) {
+                    throw new Error(`Expected billingToken or billingDetails`);
+                }
+            }
+        }
+    })
+}));
