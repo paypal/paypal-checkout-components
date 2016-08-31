@@ -3,15 +3,7 @@ import { config } from './config';
 import { request } from './lib';
 
 
-export function createToken(clientID, paymentDetails) {
-
-    paymentDetails = { ...paymentDetails };
-    paymentDetails.intent = paymentDetails.intent || 'sale';
-    paymentDetails.redirect_urls = paymentDetails.redirect_urls || {};
-    paymentDetails.redirect_urls.return_url = paymentDetails.redirect_urls.return_url || `${window.location.protocol}://${window.location.host}`;
-    paymentDetails.redirect_urls.cancel_url = paymentDetails.redirect_urls.cancel_url || `${window.location.protocol}://${window.location.host}`;
-    paymentDetails.payer = paymentDetails.payer || {};
-    paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
+export function createAccessToken(clientID) {
 
     let basicAuth = window.btoa(`${clientID}:`);
 
@@ -31,11 +23,29 @@ export function createToken(clientID, paymentDetails) {
             throw new Error(`Authorization failed: access token not found in auth api response`);
         }
 
+        return res.access_token;
+    });
+}
+
+
+
+export function createCheckoutToken(clientID, paymentDetails) {
+
+    paymentDetails = { ...paymentDetails };
+    paymentDetails.intent = paymentDetails.intent || 'sale';
+    paymentDetails.redirect_urls = paymentDetails.redirect_urls || {};
+    paymentDetails.redirect_urls.return_url = paymentDetails.redirect_urls.return_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.redirect_urls.cancel_url = paymentDetails.redirect_urls.cancel_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.payer = paymentDetails.payer || {};
+    paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
+
+    return createAccessToken(clientID).then(accessToken => {
+
         return request({
             method: 'post',
             url: config.paymentApiUrl,
             headers: {
-                'Authorization': `Bearer ${res.access_token}`
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(paymentDetails)
         });
@@ -57,5 +67,37 @@ export function createToken(clientID, paymentDetails) {
         }
 
         throw new Error(`Payment token not found in payment api response`);
+    });
+}
+
+export function createBillingToken(clientID, paymentDetails) {
+
+    paymentDetails = { ...paymentDetails };
+    paymentDetails.plan = paymentDetails.plan || {};
+    paymentDetails.plan.merchant_preferences = paymentDetails.plan.merchant_preferences || {};
+    paymentDetails.plan.merchant_preferences.return_url = paymentDetails.plan.merchant_preferences.return_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.plan.merchant_preferences.cancel_url = paymentDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.payer = paymentDetails.payer || {};
+    paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
+
+
+    return createAccessToken(clientID).then(accessToken => {
+
+        return request({
+            method: 'post',
+            url: config.billingApiUrl,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(paymentDetails)
+        });
+
+    }).then(res => {
+
+        if (res && res.token_id) {
+            return res.token_id;
+        }
+
+        throw new Error(`Billing Agreement token not found in billing api response`);
     });
 }

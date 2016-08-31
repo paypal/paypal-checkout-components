@@ -84,6 +84,10 @@ export let config = {
         return `${config.apiUrl}/v1/payments/payment`;
     },
 
+    get billingApiUrl() {
+        return `${config.apiUrl}/v1/billing-agreements/agreement-tokens`;
+    },
+
     locales: {
         AD: ['zh', 'es', 'fr', 'en'],
         AE: ['ar', 'zh', 'es', 'fr', 'en'],

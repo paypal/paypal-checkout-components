@@ -5,7 +5,7 @@ import componentTemplate from './componentTemplate.htm';
 
 import { isDevice, merge } from '../../lib';
 import { config } from '../../config';
-import { createToken } from '../../rest';
+import { createCheckoutToken, createBillingToken } from '../../rest';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
@@ -166,7 +166,7 @@ export let PayPalCheckout = xcomponent.create(merge(component, {
                         throw new Error(`Must specify clientID along with paymentDetails`);
                     }
 
-                    return createToken(this.props.clientID, this.props.paymentDetails);
+                    return createCheckoutToken(this.props.clientID, this.props.paymentDetails);
                 };
             }
         }
@@ -193,9 +193,17 @@ export let BillingAgreement = xcomponent.create(merge(component, {
             queryParam: 'ba_token',
 
             def(resolve, reject) {
-                if (!this.props.billingDetails) {
-                    throw new Error(`Expected billingToken or billingDetails`);
-                }
+                return function() {
+                    if (!this.props.paymentDetails) {
+                        throw new Error(`Expected paymentToken or paymentDetails`);
+                    }
+
+                    if (!this.props.clientID) {
+                        throw new Error(`Must specify clientID along with paymentDetails`);
+                    }
+
+                    return createBillingToken(this.props.clientID, this.props.paymentDetails);
+                };
             }
         }
     })
