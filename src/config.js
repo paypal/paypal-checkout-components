@@ -17,11 +17,19 @@ export let config = {
     enableBridge: true,
 
     paypalUrls: {
-        local:      'http://localhost.paypal.com:8000',
-        msmaster:   'https://www.msmaster.qa.paypal.com',
-        msrelease:  'https://www.msrelease.qa.paypal.com',
-        sandbox:    'https://www.sandbox.paypal.com',
-        production: 'https://www.paypal.com'
+        local:      `http://localhost.paypal.com:8000`,
+        msmaster:   `https://www.msmaster.qa.paypal.com`,
+        msrelease:  `https://www.msrelease.qa.paypal.com`,
+        sandbox:    `https://www.sandbox.paypal.com`,
+        production: `https://www.paypal.com`
+    },
+
+    apiUrls: {
+        local:      `https://www.msmaster.qa.paypal.com:11888`,
+        msmaster:   `https://www.msmaster.qa.paypal.com:11888`,
+        msrelease:  `https://www.msrelease.qa.paypal.com:11888`,
+        sandbox:    `https://api.sandbox.paypal.com`,
+        production: `https://api.paypal.com`
     },
 
     get checkoutUrls() {
@@ -48,6 +56,10 @@ export let config = {
         return config.paypalUrls[config.env];
     },
 
+    get apiUrl() {
+        return config.apiUrls[config.env];
+    },
+
     get checkoutUrl() {
         return config.checkoutUrls[config.env];
     },
@@ -62,6 +74,14 @@ export let config = {
 
     get loggerUrl() {
         return `${config.paypalUrl}/webapps/hermes/api/logger`;
+    },
+
+    get authApiUrl() {
+        return `${config.apiUrl}/v1/oauth2/token`;
+    },
+
+    get paymentApiUrl() {
+        return `${config.apiUrl}/v1/payments/payment`;
     },
 
     locales: {

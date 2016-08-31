@@ -5,6 +5,7 @@ import componentTemplate from './componentTemplate.htm';
 
 import { isDevice, merge } from '../../lib';
 import { config } from '../../config';
+import { createToken } from '../../rest';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
@@ -55,9 +56,17 @@ let component = {
             }
         },
 
+        clientID: {
+            type: 'string',
+            required: false,
+            sendToChild: false,
+            queryParam: false
+        },
+
         paymentDetails: {
             type: 'object',
             required: false,
+            sendToChild: false,
             queryParam: false
         },
 
@@ -147,10 +156,18 @@ export let PayPalCheckout = xcomponent.create(merge(component, {
             getter: true,
             queryParam: 'token',
 
-            def(resolve, reject) {
-                if (!this.props.paymentDetails) {
-                    throw new Error(`Expected paymentToken or paymentDetails`);
-                }
+            def() {
+                return function() {
+                    if (!this.props.paymentDetails) {
+                        throw new Error(`Expected paymentToken or paymentDetails`);
+                    }
+
+                    if (!this.props.clientID) {
+                        throw new Error(`Must specify clientID along with paymentDetails`);
+                    }
+
+                    return createToken(this.props.clientID, this.props.paymentDetails);
+                };
             }
         }
     })
