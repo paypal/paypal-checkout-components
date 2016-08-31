@@ -12,7 +12,9 @@ export let PayPalButton = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    defaultEnv: 'production',
+    get defaultEnv() {
+        return config.env;
+    },
 
     envUrls: {
         local: 'http://todo',

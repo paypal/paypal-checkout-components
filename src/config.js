@@ -17,14 +17,18 @@ export let config = {
     enableBridge: true,
 
     paypalUrls: {
-        local: 'http://localhost.paypal.com:8000',
-        sandbox: 'https://www.sandbox.paypal.com',
+        local:      'http://localhost.paypal.com:8000',
+        msmaster:   'https://www.msmaster.qa.paypal.com',
+        msrelease:  'https://www.msrelease.qa.paypal.com',
+        sandbox:    'https://www.sandbox.paypal.com',
         production: 'https://www.paypal.com'
     },
 
     get checkoutUrls() {
         return {
             local:      `${config.paypalUrls.local}/webapps/hermes`,
+            msmaster:   `${config.paypalUrls.msmaster}/webapps/hermes`,
+            msrelease:  `${config.paypalUrls.msrelease}/webapps/hermes`,
             sandbox:    `${config.paypalUrls.sandbox}/checkoutnow`,
             production: `${config.paypalUrls.production}/checkoutnow`
         };
@@ -33,17 +37,23 @@ export let config = {
     get billingUrls() {
         return {
             local:      `${config.paypalUrls.local}/webapps/hermes/agreements`,
+            msmaster:   `${config.paypalUrls.msmaster}/webapps/hermes/agreements`,
+            msrelease:  `${config.paypalUrls.msrelease}/webapps/hermes/agreements`,
             sandbox:    `${config.paypalUrls.sandbox}/agreements/approve`,
             production: `${config.paypalUrls.production}/agreements/approve`
         };
     },
 
     get paypalUrl() {
-        if (!config.paypalUrls[config.env]) {
-            throw new Error(`Invalid env: ${config.env}`);
-        }
-
         return config.paypalUrls[config.env];
+    },
+
+    get checkoutUrl() {
+        return config.checkoutUrls[config.env];
+    },
+
+    get billingUrl() {
+        return config.billingUrls[config.env];
     },
 
     get bridgeUrl() {
@@ -261,14 +271,3 @@ export let config = {
         ZW: ['en']
     }
 };
-
-// Best-guess for current env
-
-let currentDomain = `${window.location.protocol}//${window.location.host}`;
-
-for (let env of Object.keys(config.paypalUrls)) {
-    if (config.paypalUrls[env] === currentDomain) {
-        config.env = env;
-        break;
-    }
-}

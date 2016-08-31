@@ -5,6 +5,25 @@ import { config } from './config';
 import { setupBridge } from './bridge';
 import { initLogger } from './lib';
 
+
+function domainToEnv(domain) {
+    for (let env of Object.keys(config.paypalUrls)) {
+        if (config.paypalUrls[env] === domain) {
+            return env;
+        }
+    }
+}
+
+function setDomainEnv(domain) {
+    let currentDomainEnv = domainToEnv(domain);
+
+    if (currentDomainEnv) {
+        config.env = currentDomainEnv;
+    }
+}
+
+setDomainEnv(`${window.location.protocol}//${window.location.host}`);
+
 export function setup(options = {}) {
 
     if (options.env) {
@@ -14,7 +33,6 @@ export function setup(options = {}) {
 
         delete config.env;
         config.env = options.env;
-
     }
 
     $logger.info(`ppxo_setup_${config.env}`);
@@ -22,6 +40,7 @@ export function setup(options = {}) {
     if (options.paypalUrl) {
         delete config.paypalUrl;
         config.paypalUrl = options.paypalUrl;
+        setDomainEnv(config.paypalUrl);
     }
 
     if (options.state) {
