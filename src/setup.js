@@ -37,6 +37,12 @@ export function setup(options = {}) {
 
     $logger.info(`ppxo_setup_${config.env}`);
 
+    if (options.stage) {
+        delete config.stage;
+        config.stage = options.stage;
+        setDomainEnv(config.paypalUrl);
+    }
+
     if (options.paypalUrl) {
         delete config.paypalUrl;
         config.paypalUrl = options.paypalUrl;
@@ -81,6 +87,7 @@ if (currentScript) {
 
     setup({
         env:       currentScript.getAttribute('data-env'),
+        stage:     currentScript.getAttribute('data-stage'),
         paypalUrl: currentScript.getAttribute('data-paypal-url'),
         noBridge:  currentScript.hasAttribute('data-no-bridge'),
         state:     currentScript.getAttribute('data-state'),

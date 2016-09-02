@@ -20,7 +20,7 @@ export function createAccessToken(clientID) {
     }).then(res => {
 
         if (!res || !res.access_token) {
-            throw new Error(`Authorization failed: access token not found in auth api response`);
+            throw new Error(`Auth Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
         }
 
         return res.access_token;
@@ -66,7 +66,7 @@ export function createCheckoutToken(clientID, paymentDetails) {
             }
         }
 
-        throw new Error(`Payment token not found in payment api response`);
+        throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
     });
 }
 
@@ -98,6 +98,6 @@ export function createBillingToken(clientID, paymentDetails) {
             return res.token_id;
         }
 
-        throw new Error(`Billing Agreement token not found in billing api response`);
+        throw new Error(`Billing Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
     });
 }

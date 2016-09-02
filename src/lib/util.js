@@ -33,24 +33,30 @@ export function loadScript(src, timeout) {
 }
 
 
-export function extend(target, source) {
+export function extend(target) {
 
-    for (let key in source) {
-        if (source.hasOwnProperty(key)) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    for (let i = 1; i < arguments.length; i++) {
+        let source = arguments[i];
+
+        for (let key in source) {
+            if (source.hasOwnProperty(key)) {
+                Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+            }
         }
     }
 
     return target;
 }
 
-export function merge(one, two) {
-    return extend(extend({}, one), two);
+export function merge() {
+    return extend({}, ...arguments);
 }
 
 
 export function request(config, callback) {
     return new Promise((resolve, reject) => {
+
+        config.method = config.method || 'get';
 
         let headers = config.headers || {};
         headers.Accept = headers.Accept || 'application/json';
@@ -63,7 +69,7 @@ export function request(config, callback) {
         }, false);
 
         xhr.addEventListener('error', (evt) => {
-            reject(evt);
+            reject(new Error(`Request to ${config.method.toLowerCase()} ${config.url} failed: ${evt.toString()}`));
         }, false);
 
         xhr.open(config.method, config.url, true);

@@ -288,7 +288,12 @@ function setup(id, options = {}) {
         options: JSON.stringify(options)
     });
 
-    if (!config.paypalUrls[options.environment]) {
+    if (config.paypalUrls[options.environment]) {
+        if (config.env !== options.environment) {
+            config.env = options.environment;
+
+        }
+    } else {
         options.environment = config.env;
     }
 

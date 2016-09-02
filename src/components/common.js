@@ -1,24 +1,8 @@
 
-import xcomponent from 'xcomponent/src';
-import { config } from '../../config';
-import { createCheckoutToken, createBillingToken } from '../../rest';
+import { config } from '../config';
+import { createCheckoutToken, createBillingToken } from '../rest';
 
-export let Button = xcomponent.create({
-
-    tag: 'paypal-button',
-    name: 'ppbutton',
-
-    get url() {
-        return config.buttonUrl;
-    },
-
-    contexts: {
-        iframe: true,
-        lightbox: false,
-        popup: false
-    },
-
-    scrolling: false,
+export let common = {
 
     get version() {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
@@ -69,7 +53,7 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: false,
+            queryParam: 'token',
 
             def(props) {
 
@@ -94,7 +78,7 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: false,
+            queryParam: 'ba_token',
             sendToChild: false,
 
             def(props) {
@@ -120,42 +104,21 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            autoClose: false
+            autoClose: true
         },
 
         onPaymentComplete: {
             type: 'function',
             required: false,
             once: true,
-            autoClose: false
+            autoClose: true
         },
 
         onPaymentCancel: {
             type: 'function',
             required: false,
             once: true,
-            autoClose: false
-        },
-
-        buttonStyle: {
-            type: 'object',
-            required: false,
-            queryParam: false,
-            def() {
-                return {
-                    color: 'gold',
-                    shape: 'pill',
-                    size:  'small',
-                    label: 'checkout'
-                };
-            }
+            autoClose: true
         }
-    },
-
-    autoResize: true,
-
-    dimensions: {
-        width: 146,
-        height: 40
     }
-});
+};

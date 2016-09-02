@@ -3,28 +3,74 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, merge } from '../../lib';
+import { isDevice } from '../../lib';
 import { config } from '../../config';
+
 import { createCheckoutToken, createBillingToken } from '../../rest';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
 
+export let PayPalCheckout = xcomponent.create({
 
-let component = {
+    tag: 'paypal-checkout',
+    name: 'ppcheckout',
 
-    get version() {
-        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
-    },
+    buildUrl(instance) {
+        if (instance.props.paymentToken || instance.props.paymentDetails) {
+            return config.checkoutUrl;
+        }
 
-    get defaultEnv() {
-        return config.env;
+        if (instance.props.billingToken || instance.props.billingDetails) {
+            return config.billingUrl;
+        }
     },
 
     contexts: {
         iframe: false,
         lightbox: false,
         popup: true
+    },
+
+    get version() {
+        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+    },
+
+    validateProps(component, props, required = true) {
+        if (required) {
+
+            let isCheckout = props.paymentToken || props.paymentDetails;
+            let isBilling  = props.billingToken || props.billingDetails;
+
+            if (isCheckout && isBilling) {
+                throw new Error(`Can not provide both payment and billing props`);
+            }
+
+            if (!isCheckout && !isBilling) {
+                throw new Error(`Must provide either payment or billing props`);
+            }
+
+            if (props.paymentToken && props.paymentDetails) {
+                throw new Error(`Can not provide both paymentToken and paymentDetails`);
+            }
+
+            if (props.billingToken && props.billingDetails) {
+                throw new Error(`Can not provide both billingToken and billingDetails`);
+            }
+
+            if (props.paymentDetails && (!props.clientID || !props.clientID[config.env])) {
+                throw new Error(`Must specify clientID for ${config.env} along with paymentDetails`);
+            }
+
+            if (props.billingDetails && (!props.clientID || !props.clientID[config.env])) {
+                throw new Error(`Must specify clientID for ${config.env} along with billingDetails`);
+            }
+        }
+    },
+
+    get componentTemplate() {
+
+        return componentTemplate;
     },
 
     get parentTemplate() {
@@ -38,32 +84,60 @@ let component = {
         return template;
     },
 
-    componentTemplate,
-
-    autoResize: true,
-    closeDelay: 1000,
-
     props: {
 
-        init: {
-            type: 'function',
-            required: false,
-            once: true,
-
-            def(data) {
-                this.paymentToken = data.paymentToken;
-                this.cancelUrl    = data.cancelUrl;
-            }
-        },
-
         clientID: {
-            type: 'string',
+            type: 'object',
             required: false,
             sendToChild: false,
             queryParam: false
         },
 
+        paymentToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'token',
+
+            def(props) {
+
+                if (props.billingToken || props.billingDetails) {
+                    return;
+                }
+
+                return function() {
+                    return createCheckoutToken(this.props.clientID[config.env], this.props.paymentDetails);
+                };
+            }
+        },
+
         paymentDetails: {
+            type: 'object',
+            required: false,
+            sendToChild: false,
+            queryParam: false
+        },
+
+        billingToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'ba_token',
+            sendToChild: false,
+
+            def(props) {
+
+                if (props.paymentToken || props.paymentDetails) {
+                    return;
+                }
+
+                return function() {
+                    return createBillingToken(this.props.clientID[config.env], this.props.billingDetails);
+                };
+            }
+        },
+
+        billingDetails: {
             type: 'object',
             required: false,
             sendToChild: false,
@@ -91,11 +165,16 @@ let component = {
             autoClose: true
         },
 
-        fallback: {
+        init: {
             type: 'function',
             required: false,
             once: true,
-            autoClose: true
+
+            def(data) {
+
+                this.paymentToken = data.paymentToken;
+                this.cancelUrl    = data.cancelUrl;
+            }
         },
 
         onClose: {
@@ -115,8 +194,18 @@ let component = {
                     });
                 }
             }
+        },
+
+        fallback: {
+            type: 'function',
+            required: false,
+            once: true,
+            autoClose: true
         }
     },
+
+    autoResize: true,
+    closeDelay: 1000,
 
     get dimensions() {
 
@@ -136,75 +225,6 @@ let component = {
             height: 535
         };
     }
-};
-
-
-
-
-export let PayPalCheckout = xcomponent.create(merge(component, {
-
-    tag: 'paypal-checkout',
-    name: 'ppcheckout',
-
-    envUrls: config.checkoutUrls,
-
-    props: merge(component.props, {
-
-        paymentToken: {
-            type: 'string',
-            required: false,
-            getter: true,
-            queryParam: 'token',
-
-            def() {
-                return function() {
-                    if (!this.props.paymentDetails) {
-                        throw new Error(`Expected paymentToken or paymentDetails`);
-                    }
-
-                    if (!this.props.clientID) {
-                        throw new Error(`Must specify clientID along with paymentDetails`);
-                    }
-
-                    return createCheckoutToken(this.props.clientID, this.props.paymentDetails);
-                };
-            }
-        }
-    })
-
-}));
+});
 
 export let Checkout = PayPalCheckout;
-
-
-export let BillingAgreement = xcomponent.create(merge(component, {
-
-    tag: 'paypal-billing-agreement',
-    name: 'ppbillingagreement',
-
-    envUrls: config.billingUrls,
-
-    props: merge(component.props, {
-
-        paymentToken: {
-            type: 'string',
-            required: false,
-            getter: true,
-            queryParam: 'ba_token',
-
-            def(resolve, reject) {
-                return function() {
-                    if (!this.props.paymentDetails) {
-                        throw new Error(`Expected paymentToken or paymentDetails`);
-                    }
-
-                    if (!this.props.clientID) {
-                        throw new Error(`Must specify clientID along with paymentDetails`);
-                    }
-
-                    return createBillingToken(this.props.clientID, this.props.paymentDetails);
-                };
-            }
-        }
-    })
-}));

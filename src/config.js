@@ -25,51 +25,59 @@ export let config = {
     },
 
     apiUrls: {
-        local:      `https://www.msmaster.qa.paypal.com:11888`,
-        msmaster:   `https://www.msmaster.qa.paypal.com:11888`,
-        msrelease:  `https://www.msrelease.qa.paypal.com:11888`,
+        local:      `https://msmaster.qa.paypal.com:11888`,
+        msmaster:   `https://msmaster.qa.paypal.com:11888`,
+        msrelease:  `https://msrelease.qa.paypal.com:11888`,
         sandbox:    `https://api.sandbox.paypal.com`,
         production: `https://api.paypal.com`
     },
 
-    get checkoutUrls() {
-        return {
-            local:      `${config.paypalUrls.local}/webapps/hermes`,
-            msmaster:   `${config.paypalUrls.msmaster}/webapps/hermes`,
-            msrelease:  `${config.paypalUrls.msrelease}/webapps/hermes`,
-            sandbox:    `${config.paypalUrls.sandbox}/checkoutnow`,
-            production: `${config.paypalUrls.production}/checkoutnow`
-        };
+    checkoutUris: {
+        local:      `/webapps/hermes?ul=0`,
+        msmaster:   `/webapps/hermes`,
+        msrelease:  `/webapps/hermes`,
+        sandbox:    `/checkoutnow`,
+        production: `/checkoutnow`
     },
 
-    get billingUrls() {
-        return {
-            local:      `${config.paypalUrls.local}/webapps/hermes/agreements`,
-            msmaster:   `${config.paypalUrls.msmaster}/webapps/hermes/agreements`,
-            msrelease:  `${config.paypalUrls.msrelease}/webapps/hermes/agreements`,
-            sandbox:    `${config.paypalUrls.sandbox}/agreements/approve`,
-            production: `${config.paypalUrls.production}/agreements/approve`
-        };
+    billingUris: {
+        local:      `/webapps/hermes/agreements?ul=0`,
+        msmaster:   `/webapps/hermes/agreements`,
+        msrelease:  `/webapps/hermes/agreements`,
+        sandbox:    `/agreements/approve`,
+        production: `/agreements/approve`
+    },
+
+    buttonUris: {
+        local:      `/webapps/hermes/button`,
+        msmaster:   `/webapps/hermes/button`,
+        msrelease:  `/webapps/hermes/button`,
+        sandbox:    `/webapps/hermes/button`,
+        production: `/webapps/hermes/button`
     },
 
     get paypalUrl() {
-        return config.paypalUrls[config.env];
+        return config.stage ? `https://www.${config.stage}.qa.paypal.com` : config.paypalUrls[config.env];
     },
 
     get apiUrl() {
-        return config.apiUrls[config.env];
+        return config.stage ? `https://www.${config.stage}.qa.paypal.com:11888` : config.apiUrls[config.env];
     },
 
     get checkoutUrl() {
-        return config.checkoutUrls[config.env];
+        return `${config.paypalUrl}${config.checkoutUris[config.env]}`;
     },
 
     get billingUrl() {
-        return config.billingUrls[config.env];
+        return `${config.paypalUrl}${config.billingUris[config.env]}`;
+    },
+
+    get buttonUrl() {
+        return `${config.paypalUrl}${config.buttonUris[config.env]}`;
     },
 
     get bridgeUrl() {
-        return `${config.paypalUrl}/webapps/hermes/component-meta`;
+        return `${config.paypalUrl}/webapps/hermes/component-meta?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}&env=${config.env}`;
     },
 
     get loggerUrl() {
