@@ -2,6 +2,7 @@
 import xcomponent from 'xcomponent/src';
 import { config } from '../../config';
 import { createCheckoutToken, createBillingToken } from '../../rest';
+import { Checkout } from '../checkout';
 
 export let Button = xcomponent.create({
 
@@ -119,21 +120,32 @@ export let Button = xcomponent.create({
         onPaymentAuthorize: {
             type: 'function',
             required: false,
-            once: true,
-            autoClose: false
+            autoClose: false,
+
+            decorate(original) {
+                return function() {
+                    Checkout.contexts.lightbox = true;
+                    return original.apply(this, arguments);
+                };
+            }
         },
 
         onPaymentComplete: {
             type: 'function',
             required: false,
-            once: true,
-            autoClose: false
+            autoClose: false,
+
+            decorate(original) {
+                return function() {
+                    Checkout.contexts.lightbox = true;
+                    return original.apply(this, arguments);
+                };
+            }
         },
 
         onPaymentCancel: {
             type: 'function',
             required: false,
-            once: true,
             autoClose: false
         },
 

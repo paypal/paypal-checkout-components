@@ -148,14 +148,28 @@ export let PayPalCheckout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            autoClose: true
+            autoClose: true,
+
+            decorate(original) {
+                return function() {
+                    Checkout.contexts.lightbox = true;
+                    return original.apply(this, arguments);
+                };
+            }
         },
 
         onPaymentComplete: {
             type: 'function',
             required: false,
             once: true,
-            autoClose: true
+            autoClose: true,
+
+            decorate(original) {
+                return function() {
+                    Checkout.contexts.lightbox = true;
+                    return original.apply(this, arguments);
+                };
+            }
         },
 
         onPaymentCancel: {
