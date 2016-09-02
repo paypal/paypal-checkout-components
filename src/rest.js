@@ -55,7 +55,7 @@ export function createCheckoutToken(clientID, paymentDetails) {
         if (res && res.links && res.links.length) {
             let links = res.links;
 
-            for (var i = 0, len = links.length; i < len; i++) {
+            for (let i = 0, len = links.length; i < len; i++) {
                 if (links[i].method === 'REDIRECT') {
                     let match = links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                     if (match) {

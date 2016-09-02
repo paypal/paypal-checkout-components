@@ -154,6 +154,34 @@ export let Button = xcomponent.create({
             required: false
         },
 
+        dimensions: {
+            type: 'object',
+            required: false,
+
+            def(props) {
+                let size = props.buttonStyle && props.buttonStyle.size || 'small';
+
+                return {
+
+                    tiny: {
+                        width: 80,
+                        height: 20
+                    },
+
+                    small: {
+                        width: 148,
+                        height: 40
+                    },
+
+                    medium: {
+                        width: 230,
+                        height: 50
+                    }
+
+                }[size];
+            }
+        },
+
         buttonStyle: {
             type: 'object',
             required: false,
