@@ -149,6 +149,11 @@ export let Button = xcomponent.create({
             autoClose: false
         },
 
+        onClick: {
+            type: 'function',
+            required: false
+        },
+
         buttonStyle: {
             type: 'object',
             required: false,
