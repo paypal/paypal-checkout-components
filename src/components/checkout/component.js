@@ -9,6 +9,8 @@ import { bridge } from '../../bridge';
 import { isDevice } from '../../lib';
 import { config } from '../../config';
 
+import { validateProps } from '../common';
+
 import { createCheckoutToken, createBillingToken } from '../../rest';
 
 import contentJSON from './content';
@@ -41,33 +43,7 @@ export let Checkout = xcomponent.create({
 
     validateProps(component, props, required = true) {
         if (required) {
-
-            let isCheckout = props.paymentToken || props.paymentDetails;
-            let isBilling  = props.billingToken || props.billingDetails;
-
-            if (isCheckout && isBilling) {
-                throw new Error(`Can not provide both payment and billing props`);
-            }
-
-            if (!isCheckout && !isBilling) {
-                throw new Error(`Must provide either payment or billing props`);
-            }
-
-            if (props.paymentToken && props.paymentDetails) {
-                throw new Error(`Can not provide both paymentToken and paymentDetails`);
-            }
-
-            if (props.billingToken && props.billingDetails) {
-                throw new Error(`Can not provide both billingToken and billingDetails`);
-            }
-
-            if (props.paymentDetails && (!props.clientID || !props.clientID[config.env])) {
-                throw new Error(`Must specify clientID for ${config.env} along with paymentDetails`);
-            }
-
-            if (props.billingDetails && (!props.clientID || !props.clientID[config.env])) {
-                throw new Error(`Must specify clientID for ${config.env} along with billingDetails`);
-            }
+            return validateProps(props);
         }
     },
 
@@ -144,6 +120,12 @@ export let Checkout = xcomponent.create({
             required: false,
             sendToChild: false,
             queryParam: false
+        },
+
+        payNow: {
+            type: 'boolean',
+            required: false,
+            def: false
         },
 
         onPaymentAuthorize: {
