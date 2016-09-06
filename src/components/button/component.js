@@ -96,7 +96,6 @@ export let Button = xcomponent.create({
             required: false,
             getter: true,
             queryParam: false,
-            sendToChild: false,
 
             def(props) {
 
