@@ -34,8 +34,8 @@ export function createCheckoutToken(clientID, paymentDetails) {
     paymentDetails = { ...paymentDetails };
     paymentDetails.intent = paymentDetails.intent || 'sale';
     paymentDetails.redirect_urls = paymentDetails.redirect_urls || {};
-    paymentDetails.redirect_urls.return_url = paymentDetails.redirect_urls.return_url || `${window.location.protocol}://${window.location.host}`;
-    paymentDetails.redirect_urls.cancel_url = paymentDetails.redirect_urls.cancel_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.redirect_urls.return_url = paymentDetails.redirect_urls.return_url || `${window.location.protocol}//${window.location.host}`;
+    paymentDetails.redirect_urls.cancel_url = paymentDetails.redirect_urls.cancel_url || `${window.location.protocol}//${window.location.host}`;
     paymentDetails.payer = paymentDetails.payer || {};
     paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
 
@@ -75,8 +75,8 @@ export function createBillingToken(clientID, paymentDetails) {
     paymentDetails = { ...paymentDetails };
     paymentDetails.plan = paymentDetails.plan || {};
     paymentDetails.plan.merchant_preferences = paymentDetails.plan.merchant_preferences || {};
-    paymentDetails.plan.merchant_preferences.return_url = paymentDetails.plan.merchant_preferences.return_url || `${window.location.protocol}://${window.location.host}`;
-    paymentDetails.plan.merchant_preferences.cancel_url = paymentDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}://${window.location.host}`;
+    paymentDetails.plan.merchant_preferences.return_url = paymentDetails.plan.merchant_preferences.return_url || `${window.location.protocol}//${window.location.host}`;
+    paymentDetails.plan.merchant_preferences.cancel_url = paymentDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}//${window.location.host}`;
     paymentDetails.payer = paymentDetails.payer || {};
     paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
 
