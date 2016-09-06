@@ -3,7 +3,9 @@ import postRobot from 'post-robot/src';
 
 function match(str, pattern) {
     let regmatch = str.match(pattern);
-    return regmatch && regmatch[1];
+    if (regmatch) {
+        return regmatch[1];
+    }
 }
 
 function onLegacyFallback(win) {

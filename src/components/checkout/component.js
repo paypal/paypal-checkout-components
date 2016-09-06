@@ -126,7 +126,6 @@ export let Checkout = xcomponent.create({
             required: false,
             getter: true,
             queryParam: 'ba_token',
-            sendToChild: false,
 
             def(props) {
 
