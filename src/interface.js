@@ -5,6 +5,8 @@ import xcomponent from 'xcomponent/src';
 import postRobot from 'post-robot/src';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
+import './fallback';
+
 export * from './components';
 export * from './legacy';
 export * from './setup';

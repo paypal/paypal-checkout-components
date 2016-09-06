@@ -1,7 +1,10 @@
 
 import xcomponent from 'xcomponent/src';
+import postRobot from 'post-robot/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
+
+import { bridge } from '../../bridge';
 
 import { isDevice } from '../../lib';
 import { config } from '../../config';
@@ -11,7 +14,7 @@ import { createCheckoutToken, createBillingToken } from '../../rest';
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
 
-export let PayPalCheckout = xcomponent.create({
+export let Checkout = xcomponent.create({
 
     tag: 'paypal-checkout',
     name: 'ppcheckout',
@@ -214,7 +217,20 @@ export let PayPalCheckout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            autoClose: true
+
+            def(url) {
+                if (window.onLegacyPaymentAuthorize) {
+                    window.onLegacyPaymentAuthorize(this.props.onPaymentAuthorize);
+
+                } else if (bridge) {
+                    bridge.then(win => {
+                        postRobot.send(win, 'onLegacyPaymentAuthorize', { method: this.props.onPaymentAuthorize });
+                    });
+
+                } else {
+                    window.location = url;
+                }
+            }
         }
     },
 
@@ -241,4 +257,4 @@ export let PayPalCheckout = xcomponent.create({
     }
 });
 
-export let Checkout = PayPalCheckout;
+export let PayPalCheckout = Checkout;

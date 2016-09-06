@@ -192,11 +192,6 @@ function initPayPalCheckout(props = {}) {
             return redirect(cancelUrl);
         },
 
-        fallback(url) {
-            logInfo(`fallback`, { url });
-            redirect(url);
-        },
-
         ...props
     });
 }

@@ -26,7 +26,10 @@ export let getMeta = postRobot.once('meta').then(data => {
     }
 });
 
+export let bridge;
+
 export function setupBridge() {
     $logger.debug(`ppxo_setup_bridge`, { env: config.env });
-    postRobot.openBridge(config.bridgeUrl);
+    bridge = postRobot.openBridge(config.bridgeUrl);
+    return bridge;
 }
