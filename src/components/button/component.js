@@ -6,6 +6,8 @@ import { Checkout } from '../checkout';
 
 import { validateProps } from '../common';
 
+import componentTemplate from './componentTemplate.htm';
+
 export let Button = xcomponent.create({
 
     tag: 'paypal-button',
@@ -22,6 +24,7 @@ export let Button = xcomponent.create({
     },
 
     scrolling: false,
+    componentTemplate,
 
     get version() {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
