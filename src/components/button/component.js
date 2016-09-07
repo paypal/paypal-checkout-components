@@ -147,7 +147,7 @@ export let Button = xcomponent.create({
 
                     tiny: {
                         width: 80,
-                        height: 20
+                        height: 22
                     },
 
                     small: {
@@ -157,7 +157,7 @@ export let Button = xcomponent.create({
 
                     medium: {
                         width: 230,
-                        height: 50
+                        height: 48
                     }
 
                 }[size];
