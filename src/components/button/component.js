@@ -101,10 +101,12 @@ export let Button = xcomponent.create({
             autoClose: false,
 
             decorate(original) {
-                return function() {
-                    Checkout.contexts.lightbox = true;
-                    return original.apply(this, arguments);
-                };
+                if (original) {
+                    return function() {
+                        Checkout.contexts.lightbox = true;
+                        return original.apply(this, arguments);
+                    };
+                }
             }
         },
 
@@ -114,10 +116,12 @@ export let Button = xcomponent.create({
             autoClose: false,
 
             decorate(original) {
-                return function() {
-                    Checkout.contexts.lightbox = true;
-                    return original.apply(this, arguments);
-                };
+                if (original) {
+                    return function() {
+                        Checkout.contexts.lightbox = true;
+                        return original.apply(this, arguments);
+                    };
+                }
             }
         },
 

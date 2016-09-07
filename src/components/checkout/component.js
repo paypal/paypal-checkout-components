@@ -135,10 +135,12 @@ export let Checkout = xcomponent.create({
             autoClose: true,
 
             decorate(original) {
-                return function() {
-                    Checkout.contexts.lightbox = true;
-                    return original.apply(this, arguments);
-                };
+                if (original) {
+                    return function() {
+                        Checkout.contexts.lightbox = true;
+                        return original.apply(this, arguments);
+                    };
+                }
             }
         },
 
@@ -149,10 +151,12 @@ export let Checkout = xcomponent.create({
             autoClose: true,
 
             decorate(original) {
-                return function() {
-                    Checkout.contexts.lightbox = true;
-                    return original.apply(this, arguments);
-                };
+                if (original) {
+                    return function() {
+                        Checkout.contexts.lightbox = true;
+                        return original.apply(this, arguments);
+                    };
+                }
             }
         },
 
