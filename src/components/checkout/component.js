@@ -1,4 +1,5 @@
 
+import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 import postRobot from 'post-robot/src';
 import parentTemplate from './parentTemplate.htm';
@@ -176,6 +177,14 @@ export let Checkout = xcomponent.create({
 
                 this.paymentToken = data.paymentToken;
                 this.cancelUrl    = data.cancelUrl;
+
+                let currentDomain = `${window.location.protocol}//${window.location.host}`;
+
+                if (data.cancelUrl.indexOf(currentDomain) === 0) {
+                    $logger.info(`cancel_url_domain_match`);
+                } else {
+                    $logger.info(`cancel_url_domain_match`, { cancelUrl: data.cancelUrl, currentDomain });
+                }
             }
         },
 
