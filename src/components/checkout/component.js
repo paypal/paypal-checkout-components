@@ -66,6 +66,24 @@ export let Checkout = xcomponent.create({
 
     props: {
 
+        env: {
+            type: 'string',
+            required: false,
+
+            def() {
+                return config.env;
+            }
+        },
+
+        stage: {
+            type: 'string',
+            required: false,
+
+            def() {
+                return config.stage;
+            }
+        },
+
         clientID: {
             type: 'object',
             required: false,
