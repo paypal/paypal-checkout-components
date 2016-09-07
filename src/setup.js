@@ -35,12 +35,18 @@ export function setup(options = {}) {
         config.env = options.env;
     }
 
-    $logger.info(`ppxo_setup_${config.env}`);
-
     if (options.stage) {
         delete config.stage;
         config.stage = options.stage;
-        setDomainEnv(config.paypalUrl);
+        if (!options.env) {
+            delete config.env;
+            config.env = 'stage';
+        }
+    }
+
+    if (options.apiStage) {
+        delete config.apiStage;
+        config.apiStage = options.apiStage;
     }
 
     if (options.paypalUrl) {
@@ -62,6 +68,8 @@ export function setup(options = {}) {
     if (options.ppobjects) {
         config.ppobjects = true;
     }
+
+    $logger.info(`ppxo_setup_${config.env}`);
 
     if (config.enableBridge) {
         setupBridge(config.env, config.bridgeUrl);
@@ -88,6 +96,7 @@ if (currentScript) {
     setup({
         env:       currentScript.getAttribute('data-env'),
         stage:     currentScript.getAttribute('data-stage'),
+        apiStage:  currentScript.getAttribute('data-api-stage'),
         paypalUrl: currentScript.getAttribute('data-paypal-url'),
         noBridge:  currentScript.hasAttribute('data-no-bridge'),
         state:     currentScript.getAttribute('data-state'),
