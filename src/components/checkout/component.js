@@ -1,11 +1,8 @@
 
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
-import postRobot from 'post-robot/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
-
-import { bridge } from '../../bridge';
 
 import { isDevice } from '../../lib';
 import { config } from '../../config';
@@ -201,7 +198,13 @@ export let Checkout = xcomponent.create({
                 if (data.cancelUrl.indexOf(currentDomain) === 0) {
                     $logger.info(`cancel_url_domain_match`);
                 } else {
-                    $logger.info(`cancel_url_domain_match`, { cancelUrl: data.cancelUrl, currentDomain });
+                    $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                }
+
+                if (data.cancelUrl.replace(/^https?/, '').indexOf(currentDomain.replace(/^https?/, '')) === 0) {
+                    $logger.info(`cancel_url_host_match`);
+                } else {
+                    $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
                 }
             }
         },
@@ -233,12 +236,6 @@ export let Checkout = xcomponent.create({
             def(url) {
                 if (window.onLegacyPaymentAuthorize) {
                     window.onLegacyPaymentAuthorize(this.props.onPaymentAuthorize);
-
-                } else if (bridge) {
-                    bridge.then(win => {
-                        postRobot.send(win, 'onLegacyPaymentAuthorize', { method: this.props.onPaymentAuthorize });
-                    });
-
                 } else {
                     window.location = url;
                 }

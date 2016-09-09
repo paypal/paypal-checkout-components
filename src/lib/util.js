@@ -83,3 +83,7 @@ export function request(config, callback) {
         xhr.send(config.body);
     });
 }
+
+export function isPayPalDomain() {
+    return Boolean(window.location.hostname.match(/\.paypal\.com$/));
+}

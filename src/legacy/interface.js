@@ -283,6 +283,10 @@ function setup(id, options = {}) {
         options: JSON.stringify(options)
     });
 
+    if (window.I10C) {
+        logInfo(`instart`);
+    }
+
     if (config.paypalUrls[options.environment]) {
         if (config.env !== options.environment) {
             config.env = options.environment;

@@ -1,9 +1,14 @@
 
 import { config } from './config';
-import { request } from './lib';
+import { request, isPayPalDomain } from './lib';
+import { messageBridge } from './bridge';
 
 
 export function createAccessToken(clientID) {
+
+    if (!config.cors && !isPayPalDomain()) {
+        return messageBridge('createAccessToken', { clientID });
+    }
 
     let basicAuth = window.btoa(`${clientID}:`);
 
@@ -30,6 +35,10 @@ export function createAccessToken(clientID) {
 
 
 export function createCheckoutToken(clientID, paymentDetails) {
+
+    if (!config.cors && !isPayPalDomain()) {
+        return messageBridge('createCheckoutToken', { clientID, paymentDetails });
+    }
 
     paymentDetails = { ...paymentDetails };
     paymentDetails.intent = paymentDetails.intent || 'sale';
@@ -70,15 +79,19 @@ export function createCheckoutToken(clientID, paymentDetails) {
     });
 }
 
-export function createBillingToken(clientID, paymentDetails) {
+export function createBillingToken(clientID, billingDetails) {
 
-    paymentDetails = { ...paymentDetails };
-    paymentDetails.plan = paymentDetails.plan || {};
-    paymentDetails.plan.merchant_preferences = paymentDetails.plan.merchant_preferences || {};
-    paymentDetails.plan.merchant_preferences.return_url = paymentDetails.plan.merchant_preferences.return_url || `${window.location.protocol}//${window.location.host}`;
-    paymentDetails.plan.merchant_preferences.cancel_url = paymentDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}//${window.location.host}`;
-    paymentDetails.payer = paymentDetails.payer || {};
-    paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
+    if (!config.cors && !isPayPalDomain()) {
+        return messageBridge('createBillingToken', { clientID, billingDetails });
+    }
+
+    billingDetails = { ...billingDetails };
+    billingDetails.plan = billingDetails.plan || {};
+    billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
+    billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || `${window.location.protocol}//${window.location.host}`;
+    billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}//${window.location.host}`;
+    billingDetails.payer = billingDetails.payer || {};
+    billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
 
     return createAccessToken(clientID).then(accessToken => {
@@ -89,7 +102,7 @@ export function createBillingToken(clientID, paymentDetails) {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify(paymentDetails)
+            body: JSON.stringify(billingDetails)
         });
 
     }).then(res => {

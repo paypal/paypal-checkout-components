@@ -1,6 +1,9 @@
 
 import postRobot from 'post-robot/src';
 
+import { bridge } from './bridge';
+import { isPayPalDomain } from './lib';
+
 function match(str, pattern) {
     let regmatch = str.match(pattern);
     if (regmatch) {
@@ -8,11 +11,17 @@ function match(str, pattern) {
     }
 }
 
+window.onLegacyPaymentAuthorize = (method) => {
+    bridge.then(bridgeWindow => {
+        postRobot.send(bridgeWindow, 'onLegacyPaymentAuthorize', { method });
+    });
+};
+
 function onLegacyFallback(win) {
 
     let onLegacyPaymentAuthorize;
 
-    window.onLegacyPaymentAuthorize = function(method) {
+    window.onLegacyPaymentAuthorize = (method) => {
         onLegacyPaymentAuthorize = method;
     };
 
@@ -127,6 +136,6 @@ function onLegacyFallback(win) {
     }, 1000);
 }
 
-if (window.location.href.indexOf('paypal.com') !== -1) {
+if (isPayPalDomain()) {
     window.onLegacyFallback = onLegacyFallback;
 }

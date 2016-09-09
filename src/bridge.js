@@ -1,4 +1,5 @@
 
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 
 import postRobot from 'post-robot/src';
@@ -26,10 +27,24 @@ export let getMeta = postRobot.once('meta').then(data => {
     }
 });
 
-export let bridge;
+export let bridge = new Promise();
 
 export function setupBridge() {
     $logger.debug(`ppxo_setup_bridge`, { env: config.env });
-    bridge = postRobot.openBridge(config.bridgeUrl);
-    return bridge;
+
+    let openBridge = postRobot.openBridge(config.bridgeUrl);
+
+    openBridge.then(result => {
+        bridge.resolve(result);
+    }, err => {
+        bridge.reject(err);
+    });
+
+    return openBridge;
+}
+
+export function messageBridge(name, data = {}) {
+    return bridge.then(bridgeWindow => {
+        return postRobot.send(bridgeWindow, name, data);
+    });
 }

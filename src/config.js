@@ -5,6 +5,8 @@ export let config = {
 
     ppobjects: false,
 
+    cors: true,
+
     env: 'production',
 
     state: 'ppxo_xcomponent',
@@ -35,8 +37,8 @@ export let config = {
         return {
             local:      `https://${config.apiStage}.qa.paypal.com:11888`,
             stage:      `https://${config.apiStage}.qa.paypal.com:11888`,
-            sandbox:    `https://api.sandbox.paypal.com`,
-            production: `https://api.paypal.com`
+            sandbox:    `https://cors.api.sandbox.paypal.com`,
+            production: `https://cors.api.paypal.com`
         };
     },
 

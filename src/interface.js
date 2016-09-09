@@ -10,6 +10,7 @@ import './fallback';
 export * from './components';
 export * from './legacy';
 export * from './setup';
+export * from './rest';
 
 module.exports.xcomponent = xcomponent;
 module.exports.postRobot = postRobot;
