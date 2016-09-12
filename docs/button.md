@@ -8,12 +8,14 @@
 2. Click 'Create App' under **REST API apps** and create a new app
 3. Make a note of your **Client ID** and **Secret**.
 
-You'll need your **Client ID** for any client side integrations, if you want to do a **Basic Integration**, and both your **Client ID** and
-your **Secret** to make any [PayPal REST API](./paypal-rest-api.md) calls (**Advanced Integration**).
-
 ### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
+
+You'll need:
+
+- Your **Client ID**.
+- Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
 
 1. You call `ppxo.PayPalButton.render` to add the PayPal Button to the page
 2. When the buyer clicks the button and completes the payment on PayPal, we call your `onPaymentComplete` function
@@ -28,9 +30,9 @@ ppxo.PayPalButton.render({
 		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
 	},
 
-	// Pass the payment options for your transaction
+	// Pass the payment details for your transaction
 
-	paymentOptions: {
+	paymentDetails: {
 		transactions: [
 			{
 				amount: {
@@ -60,6 +62,8 @@ server side, rather than specifying the payment details inline on your client si
 
 With this integration, we use `paymentToken` to call our server, then create a payment token using the REST api, and
 we listen for `onPaymentAuthorize` to call our server again, and execute the payment using the REST api.
+
+You'll need your **Client ID** and **Secret** on the server side to make REST api calls.
 
 ```javascript
 ppxo.PayPalButton.render({
@@ -127,7 +131,7 @@ The button will appear exactly where you place them in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			paymentOptions: {
+			paymentDetails: {
 				...
 			}
 		}
@@ -140,14 +144,14 @@ The button will appear exactly where you place them in your HTML.
 ```javascript
 var MyCartComponent = window.React.createClass({
 	render: function() {
-		let paymentOptions = {
+		let paymentDetails = {
 			...
 		};
 
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.PayPalButton.React clientID={clientID} paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />
+			<ppxo.PayPalButton.React clientID={clientID} paymentDetails={paymentDetails} onPaymentComplete={onPaymentComplete} />
 		</div>);
 	}
 });
@@ -158,7 +162,7 @@ var MyCartComponent = window.React.createClass({
 ```javascript
 myapp.controller('cartController', function($scope) {
 
-	$scope.paymentOptions = {
+	$scope.paymentDetails = {
 		...
 	};
 });
@@ -168,7 +172,7 @@ myapp.controller('cartController', function($scope) {
 <div class="shoppingCart" ng-controller="cartController">
 	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-	<paypal-button clientID="clientID" paymentOptions="paymentOptions" onPaymentComplete="onPaymentComplete"></paypal-button>
+	<paypal-button clientID="clientID" paymentDetails="paymentDetails" onPaymentComplete="onPaymentComplete"></paypal-button>
 </div>
 ```
 
@@ -192,7 +196,7 @@ ppxo.PayPalButton.render({
 		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
 	},
 
-	// Pass the payment options for your transaction
+	// Pass the billing details for your transaction
 
 	billingDetails: {
 		"plan": {
