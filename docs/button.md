@@ -2,6 +2,8 @@
 
 ![PayPal Button](./button.png)
 
+### Simple integration
+
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
 
 1. You call `ppxo.PayPalButton.render` to add the PayPal Button to the page
