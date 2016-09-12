@@ -21,10 +21,6 @@ document.getElementById('myButton').addEventListener('click', function() {
 
 	ppxo.PayPalCheckout.render({
 
-		// Pass your preferred locale, used to render the checkout flow (optional)
-
-		locale: 'en_US',
-
 		// Pass a function which will retrieve the payment token for the transaction
 
 		paymentToken: function(resolve, reject) {

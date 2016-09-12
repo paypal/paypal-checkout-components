@@ -16,10 +16,6 @@ This integration uses [PayPal Payments REST API](./paypal-rest-api.md), which is
 ```javascript
 ppxo.PayPalButton.render({
 
-	// Pass your preferred locale, used to render the button (optional)
-
-	locale: 'en_US',
-
 	// Pass a function which will retrieve the payment token for the transaction
 
 	paymentToken: function(resolve, reject) {

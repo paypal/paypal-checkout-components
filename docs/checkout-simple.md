@@ -22,12 +22,24 @@ document.getElementById('myButton').addEventListener('click', function() {
 
 		locale: 'en_US',
 
+		// Pass the client ID to use to create your transaction
+
+		clientID: {
+			sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
+			production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+		},
+
 		// Pass the payment options for your transaction
 
 		paymentOptions: {
-			merchant: 'merchant@my-paypal-enabled-business.com',
-			amount: '24.99',
-			currency: 'USD'
+			transactions: [
+				{
+					amount: {
+						total: '1.00',
+						currency: 'USD'
+					}
+				}
+			]
 		},
 
 		// Pass a function to be called when the customer completes the payment

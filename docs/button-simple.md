@@ -11,16 +11,24 @@ This integration lets you specify all of your payment parameters all at once, to
 ````javascript
 ppxo.PayPalButton.render({
 
-	// Pass your preferred locale, used to render the button (optional)
+	// Pass the client ID to use to create your transaction
 
-	locale: 'en_US',
+	clientID: {
+		sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
+		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+	},
 
 	// Pass the payment options for your transaction
 
 	paymentOptions: {
-		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '24.99',
-		currency: 'USD'
+		transactions: [
+			{
+				amount: {
+					total: '1.00',
+					currency: 'USD'
+				}
+			}
+		]
 	},
 
 	// Pass a function to be called when the customer completes the payment
@@ -48,16 +56,24 @@ will appear exactly where you place them in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			// Pass your preferred locale, used to render the button (optional)
+			// Pass the client ID to use to create your transaction
 
-			locale: 'en_US',
+			clientID: {
+				sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
+				production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+			},
 
 			// Pass the payment options for your transaction
 
 			paymentOptions: {
-				merchant: 'merchant@my-paypal-enabled-business.com',
-				amount: '24.99',
-                currency: 'USD'
+				transactions: [
+					{
+						amount: {
+							total: '1.00',
+							currency: 'USD'
+						}
+					}
+				]
 			},
 
 			// Pass a function to be called when the customer completes the payment
@@ -81,11 +97,25 @@ will appear exactly where you place them in your HTML.
 var MyCartComponent = window.React.createClass({
 	render: function() {
 
+		// Pass the client ID to use to create your transaction
+
+		var clientID = {
+			sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
+			production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+		};
+
+		// Pass the payment options for your transaction
+
 		var paymentOptions = {
-			merchant: 'merchant@my-paypal-enabled-business.com',
-			amount: '24.99',
-			currency: 'USD'
-		}
+			transactions: [
+				{
+					amount: {
+						total: '1.00',
+						currency: 'USD'
+					}
+				}
+			]
+		};
 
 		function onPaymentComplete(data) {
 			console.log('The payment was completed!');
@@ -98,7 +128,7 @@ var MyCartComponent = window.React.createClass({
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.PayPalButton.React locale='en_US' paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />
+			<ppxo.PayPalButton.React clientID={clientID} paymentOptions={paymentOptions} onPaymentComplete={onPaymentComplete} />
 		</div>);
 	}
 });
@@ -109,11 +139,25 @@ var MyCartComponent = window.React.createClass({
 ```javascript
 myapp.controller('cartController', function($scope) {
 
+	// Pass the client ID to use to create your transaction
+
+	$scope.clientID = {
+		sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
+		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+	};
+
+	// Pass the payment options for your transaction
+
 	$scope.paymentOptions = {
-		merchant: 'merchant@my-paypal-enabled-business.com',
-		amount: '24.99',
-		currency: 'USD'
-	}
+		transactions: [
+			{
+				amount: {
+					total: '1.00',
+					currency: 'USD'
+				}
+			}
+		]
+	};
 
 	$scope.onPaymentComplete = function(data) {
 		console.log('The payment was completed!');
@@ -129,7 +173,7 @@ myapp.controller('cartController', function($scope) {
 <div class="shoppingCart" ng-controller="cartController">
 	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-	<paypal-button locale='en_US' paymentOptions="paymentOptions" onPaymentComplete="onPaymentComplete"></paypal-button>
+	<paypal-button clientID="clientID" paymentOptions="paymentOptions" onPaymentComplete="onPaymentComplete"></paypal-button>
 </div>
 ```
 
