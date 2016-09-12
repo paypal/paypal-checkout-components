@@ -39,8 +39,6 @@ ppxo.PayPalButton.render({
 		console.log('The payment was completed!');
 		console.log('Token = ', data.paymentToken);
 		console.log('PayerID = ', data.payerID);
-
-		// Go to your success page
 	}
 
 }, '#myContainerElement');
@@ -62,7 +60,7 @@ ppxo.PayPalButton.render({
 		// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
 		// the PayPal Payment Create api to retrieve the token.
 
-		jQuery.post('https://www.my-paypal-store.com/my-api/create-payment')
+		jQuery.post('/my-api/create-payment')
 
 			.done(function(data) {
 				resolve(data.token);
@@ -73,7 +71,7 @@ ppxo.PayPalButton.render({
 			});
 	},
 
-	// Pass a function to be called when the customer approves the payment, then call execute payment on your server side:
+	// Pass a function to be called when the customer approves the payment, then call execute payment on your server:
 
 	onPaymentAuthorize: function(data) {
 
@@ -84,7 +82,7 @@ ppxo.PayPalButton.render({
 		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
 		// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-		jQuery.post('https://www.my-paypal-store.com/my-api/execute-payment', { token: data.token, payerID: data.payerID });
+		jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
 
 			.done(function(data) {
 				 // Go to a success page
@@ -101,16 +99,16 @@ ppxo.PayPalButton.render({
 You can combine any flavor of payment create and execute:
 
 - Create and execute the payment from the client side using `paymentDetails` and `onPaymentComplete`
-- Create and execute the payment on your server side, using `paymentToken` and `onPaymentAuthorize`
-- Create the payment on the client side using `paymentDetails` and execute on your server side using `onPaymentAuthorize`
-- Create the payment on the server side using `paymentToken` and execute on your server side using `onPaymentComplete`
+- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
+- Create the payment on the client side using `paymentDetails` and execute on your server using `onPaymentAuthorize`
+- Create the payment on the server side using `paymentToken` and execute on your server using `onPaymentComplete`
 
 ### Native bindings
 
-You can also drop PayPal Buttons inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
-will appear exactly where you place them in your HTML.
+You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
+The button will appear exactly where you place them in your HTML.
 
-#### Script Element
+#### Script Tag
 
 ```html
 <div class="myCart">
