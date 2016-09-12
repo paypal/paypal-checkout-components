@@ -2,7 +2,16 @@
 
 ![PayPal Button](./button.png)
 
-### Simple integration
+### Before you start
+
+1. Go to https://developer.paypal.com/developer/applications/ and log in
+2. Click 'Create App' under **REST API apps** and create a new app
+3. Make a note of your **Client ID** and **Secret**.
+
+You'll need your **Client ID** for any client side integrations, if you want to do a **Basic Integration**, and both your **Client ID** and
+your **Secret** to make any [PayPal REST API](./paypal-rest-api.md) calls (**Advanced Integration**).
+
+### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
 
@@ -44,11 +53,13 @@ ppxo.PayPalButton.render({
 }, '#myContainerElement');
 ```
 
-### Server side Payment Create and Execute
+### Advanced Integration
 
-It's also possible to create and execute payments on your server side, using this component.
+It's also possible to create and execute payments by calling the [PayPal REST API](./paypal-rest-api.md) from your
+server side, rather than specifying the payment details inline on your client side.
 
-For payment token and creation, see [PayPal REST API](./paypal-rest-api.md).
+With this integration, we use `paymentToken` to call our server, then create a payment token using the REST api, and
+we listen for `onPaymentAuthorize` to call our server again, and execute the payment using the REST api.
 
 ```javascript
 ppxo.PayPalButton.render({
