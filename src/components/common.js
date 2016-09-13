@@ -10,8 +10,12 @@ export function validateProps(props) {
         throw new Error(`Can not provide both payment and billing props`);
     }
 
-    if (!isCheckout && !isBilling) {
+    if (!isCheckout && !isBilling && !props.submitForm) {
         throw new Error(`Must provide either payment or billing props`);
+    }
+
+    if (props.submitForm && (isCheckout || isBilling)) {
+        throw new Error(`Can not provide payment or billing token or details when using submitForm`);
     }
 
     if (props.paymentToken && props.paymentDetails) {
@@ -38,11 +42,19 @@ export function validateProps(props) {
         throw new Error(`Must specify either onPaymentAuthorize or onPaymentComplete callback - both passed`);
     }
 
+    /*
+
+    if (props.payNow || props.onPaymentComplete) {
+        throw new Error(`Can not use payNow or onPaymentComplete: these features are not currently implemented. Please use onPaymentAuthorize and execute the payment using the REST api`);
+    }
+
+    */
+
     if (props.onPaymentComplete && !props.payNow) {
-        throw new Error(`Must specify payNow in order to use onPaymentComplete callback`);
+        throw new Error(`Must specify payNow as true in order to use onPaymentComplete callback`);
     }
 
     if (props.onPaymentAuthorize && props.payNow) {
-        throw new Error(`Can not specify payNow along with onPaymentAuthorize callback`);
+        throw new Error(`Can not specify payNow as true along with onPaymentAuthorize callback`);
     }
 }

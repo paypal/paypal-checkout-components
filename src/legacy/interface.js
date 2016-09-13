@@ -307,9 +307,13 @@ function setup(id, options = {}) {
                 if (config.locales[country].indexOf(lang) !== -1) {
                     config.locale.lang = lang;
                 } else {
-                    logWarning(`invalid_user_lang`, { lang, def: config.locales[country][0] });
+                    logWarning(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
                     config.locale.lang = config.locales[country][0];
                 }
+
+            } else if (config.locales.US[country]) {
+                config.locale.country = 'US';
+                config.locale.lang = country;
 
             } else {
                 logWarning(`invalid_user_country`, { country });
@@ -317,10 +321,21 @@ function setup(id, options = {}) {
         });
     }
 
-    if (options.buttons && getElements(options.buttons).length) {
-        options.button = options.buttons;
-        delete options.buttons;
+    if (options.buttons) {
+
+        if (getElements(options.buttons).length) {
+            options.button = options.buttons;
+            delete options.buttons;
+        } else {
+            let buttons = options.buttons.map(item => item && item.button);
+            if (getElements(buttons)) {
+                options.button = buttons;
+                delete options.buttons;
+            }
+        }
     }
+
+
 
     renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {

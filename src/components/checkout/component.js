@@ -141,7 +141,7 @@ export let Checkout = xcomponent.create({
         payNow: {
             type: 'boolean',
             required: false,
-            def: false
+            sendToChild: false
         },
 
         onPaymentAuthorize: {
@@ -149,6 +149,19 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
             autoClose: true,
+
+            def(props) {
+                if (props.payNow && props.onPaymentComplete) {
+
+                    let onPaymentComplete = props.onPaymentComplete;
+                    delete props.onPaymentComplete;
+
+                    return function() {
+                        console.warn('Calling onPaymentComplete, but this feature is not yet implemented so do not rely on transaction being executed');
+                        onPaymentComplete.apply(this, arguments);
+                    };
+                }
+            },
 
             decorate(original) {
                 if (original) {
@@ -188,24 +201,30 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
 
-            def(data) {
+            def() {
+                return function(data) {
 
-                this.paymentToken = data.paymentToken;
-                this.cancelUrl    = data.cancelUrl;
+                    this.paymentToken = data.paymentToken;
+                    this.cancelUrl    = data.cancelUrl;
 
-                let currentDomain = `${window.location.protocol}//${window.location.host}`;
+                    let currentDomain = `${window.location.protocol}//${window.location.host}`;
 
-                if (data.cancelUrl.indexOf(currentDomain) === 0) {
-                    $logger.info(`cancel_url_domain_match`);
-                } else {
-                    $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                }
+                    if (currentDomain === 'https://www.paypal.com') {
+                        return;
+                    }
 
-                if (data.cancelUrl.replace(/^https?/, '').indexOf(currentDomain.replace(/^https?/, '')) === 0) {
-                    $logger.info(`cancel_url_host_match`);
-                } else {
-                    $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                }
+                    if (data.cancelUrl.indexOf(currentDomain) === 0) {
+                        $logger.info(`cancel_url_domain_match`);
+                    } else {
+                        $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                    }
+
+                    if (data.cancelUrl.replace(/^https?/, '').indexOf(currentDomain.replace(/^https?/, '')) === 0) {
+                        $logger.info(`cancel_url_host_match`);
+                    } else {
+                        $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                    }
+                };
             }
         },
 
@@ -215,16 +234,17 @@ export let Checkout = xcomponent.create({
             memoize: true,
             promisify: true,
 
-            def(reason) {
+            def() {
+                return function(reason) {
+                    let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-                let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
-
-                if (this.props.onPaymentCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
-                    return this.props.onPaymentCancel({
-                        paymentToken: this.paymentToken,
-                        cancelUrl:    this.cancelUrl
-                    });
-                }
+                    if (this.props.onPaymentCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                        return this.props.onPaymentCancel({
+                            paymentToken: this.paymentToken,
+                            cancelUrl:    this.cancelUrl
+                        });
+                    }
+                };
             }
         },
 
@@ -233,12 +253,14 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
 
-            def(url) {
-                if (window.onLegacyPaymentAuthorize) {
-                    window.onLegacyPaymentAuthorize(this.props.onPaymentAuthorize);
-                } else {
-                    window.location = url;
-                }
+            def() {
+                return function(url) {
+                    if (window.onLegacyPaymentAuthorize) {
+                        window.onLegacyPaymentAuthorize(this.props.onPaymentAuthorize);
+                    } else {
+                        window.location = url;
+                    }
+                };
             }
         }
     },

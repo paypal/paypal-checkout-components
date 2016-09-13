@@ -15,9 +15,10 @@ function loadButtonJS() {
 
     logDebug(`buttonjs_load`);
 
-    buttonJS = loadScript(BUTTON_JS_URL);
-
-    return buttonJS.then(result => {
+    buttonJS = loadScript(BUTTON_JS_URL).catch(err => {
+        logWarning(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
+        return loadScript(BUTTON_JS_URL);
+    }).then(result => {
         logDebug(`buttonjs_load_success`);
         return result;
     }).catch(err => {

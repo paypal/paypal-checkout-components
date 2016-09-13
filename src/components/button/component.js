@@ -113,10 +113,36 @@ export let Button = xcomponent.create({
             queryParam: false
         },
 
+        payNow: {
+            type: 'boolean',
+            required: false,
+            sendToChild: false
+        },
+
+        submitForm: {
+            type: 'boolean',
+            required: false,
+            def: false,
+            sendToChild: false
+        },
+
         onPaymentAuthorize: {
             type: 'function',
             required: false,
             autoClose: false,
+
+            def(props) {
+                if (props.payNow && props.onPaymentComplete) {
+
+                    let onPaymentComplete = props.onPaymentComplete;
+                    delete props.onPaymentComplete;
+
+                    return function() {
+                        console.warn('Calling onPaymentComplete, but this feature is not yet implemented so do not rely on transaction being executed');
+                        onPaymentComplete.apply(this, arguments);
+                    };
+                }
+            },
 
             decorate(original) {
                 if (original) {

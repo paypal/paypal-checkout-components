@@ -16,8 +16,10 @@ export function loadScript(src, timeout) {
             }
         };
 
+        let scriptLoadError = new Error('script_loading_error');
+
         script.onerror = function (event) {
-            return reject(new Error('script_loading_error'));
+            return reject(scriptLoadError);
         };
 
         if (timeout) {
