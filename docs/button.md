@@ -83,15 +83,16 @@ ppxo.PayPalButton.render({
 
 	paymentToken: function(resolve, reject) {
 
-		// Make an ajax call to get the express-checkout token. This should call your back-end, which should invoke
-		// the PayPal Payment Create api to retrieve the token.
+		// Make an ajax call to get the express-checkout token. This should call your back-end,
+		// which should invoke the PayPal Payment Create api to retrieve the token.
 
 		jQuery.post('/my-api/create-payment')
 			.done(function(data) { resolve(data.token); })
 			.fail(function(err)  { reject(err); });
 	},
 
-	// Pass a function to be called when the customer approves the payment, then call execute payment on your server:
+	// Pass a function to be called when the customer approves the payment,
+	// then call execute payment on your server:
 
 	onPaymentAuthorize: function(data) {
 
@@ -147,7 +148,10 @@ var MyCartComponent = window.React.createClass({
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.PayPalButton.React clientID={clientID} paymentDetails={paymentDetails} onPaymentComplete={onPaymentComplete} />
+			<ppxo.PayPalButton.React
+				clientID={clientID}
+				paymentDetails={paymentDetails}
+				onPaymentComplete={onPaymentComplete} />
 		</div>);
 	}
 });
@@ -166,7 +170,11 @@ myapp.controller('cartController', function($scope) {
 <div class="shoppingCart" ng-controller="cartController">
 	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-	<paypal-button clientID="clientID" paymentDetails="paymentDetails" onPaymentComplete="onPaymentComplete"></paypal-button>
+	<paypal-button
+		clientID="clientID"
+		paymentDetails="paymentDetails"
+		onPaymentComplete="onPaymentComplete">
+	</paypal-button>
 </div>
 ```
 
