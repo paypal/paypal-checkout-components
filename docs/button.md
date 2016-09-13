@@ -6,9 +6,9 @@
 
 #### Create a PayPal App
 
-1. Go to https://developer.paypal.com/developer/applications/
+1. Go to https://developer.paypal.com/developer/applications/create
 2. Log in to the site with your PayPal credentials
-3. Click **Create App** under **REST API apps** and create a new app
+3. Follow the instructions to create a new app
 4. Make a note of your **Client ID** and **Secret** for both **Sandbox** and **Live** (Production).
 
 #### Add the PayPal Checkout Integration Script
