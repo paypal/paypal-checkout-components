@@ -47,14 +47,12 @@ ppxo.PayPalButton.render({
 	// Pass a function to be called when the customer completes the payment
 
 	onPaymentComplete: function(data) {
-
 		console.log('The payment was completed!');
 	},
 
 	// Pass a function to be called when the customer cancels the payment
 
 	onPaymentCancel: function(data) {
-
 		console.log('The payment was cancelled!');
 	}
 
@@ -132,7 +130,9 @@ The button will appear exactly where you place them in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			paymentDetails: { ... }
+			payNow: true,
+			paymentDetails: { ... },
+			onPaymentComplete: function() { ... }
 		}
 	</script>
 </div>
@@ -143,7 +143,6 @@ The button will appear exactly where you place them in your HTML.
 ```javascript
 var MyCartComponent = window.React.createClass({
 	render: function() {
-		let paymentDetails = { ... };
 
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
@@ -158,13 +157,6 @@ var MyCartComponent = window.React.createClass({
 ```
 
 #### Angular.js Element
-
-```javascript
-myapp.controller('cartController', function($scope) {
-
-	$scope.paymentDetails = { ... };
-});
-```
 
 ```html
 <div class="shoppingCart" ng-controller="cartController">
