@@ -51,6 +51,8 @@ and you can take your customer to a success page.
 **Important Note:** This component internally uses the PayPal Checkout component. All you need to do is drop the button
 onto your web page, and the PayPal Checkout flow will be launched whenever your customer clicks on the button.
 
+[Integrate the button component](./docs/button.md)
+
 -----
 
 ## [PayPal Checkout](./docs/checkout.md)
@@ -62,6 +64,8 @@ payment is complete, we will notify you using a javascript callback and you can 
 
 **Important Note:** This component should only be used if you **do not** require a PayPal Button on your page. The recommended
 integration is using the PayPal Button, which will invoke PayPal Checkout directly for you when your customer clicks on the PayPal button.
+
+[Integrate the checkout component](./docs/checkout.md)
 
 -----
 
