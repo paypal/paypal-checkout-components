@@ -6,7 +6,7 @@
 
 1. Go to https://developer.paypal.com/developer/applications/ and log in
 2. Click 'Create App' under **REST API apps** and create a new app
-3. Make a note of your **Client ID** and **Secret**.
+3. Make a note of your **Client ID** and **Secret** for both **Sandbox** and **Live** (Production).
 
 ### Basic Integration
 
@@ -23,8 +23,8 @@ ppxo.PayPalButton.render({
 	// Pass the client ID to use to create your transaction
 
 	clientID: {
-		sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
-		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+		sandbox:    'xxxxxxxxx',
+		production: 'xxxxxxxxx'
 	},
 
 	// Pass the payment details for your transaction
@@ -238,8 +238,8 @@ ppxo.PayPalButton.render({
 	// Pass the client ID to use to create your transaction
 
 	clientID: {
-		sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQstf5hyjQNAfS1FLFxkxQuiaqRBj1vV5P3hg_jA_cf1ncL',
-		production: 'Aco35QiB9jk8Q3GdsidqKVCXuPBAVbnqm0agscHCL2-K2Lu25FMxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
+		sandbox:    'xxxxxxxxx',
+		production: 'xxxxxxxxx'
 	},
 
 	// Pass the billing details for your transaction
@@ -263,7 +263,7 @@ ppxo.PayPalButton.render({
 }, '#myContainerElement');
 ```
 
-Or to create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
+Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
 
 ```javascript
 ppxo.PayPalButton.render({
