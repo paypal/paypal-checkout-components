@@ -17,9 +17,6 @@ You'll need:
 - Your **Client ID**.
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
 
-1. You call `ppxo.PayPalButton.render` to add the PayPal Button to the page
-2. When the buyer clicks the button and completes the payment on PayPal, we call your `onPaymentComplete` function
-
 ```javascript
 ppxo.PayPalButton.render({
 
@@ -43,13 +40,22 @@ ppxo.PayPalButton.render({
 		]
 	},
 
+	// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
+
+	payNow: true,
+
 	// Pass a function to be called when the customer completes the payment
 
 	onPaymentComplete: function(data) {
 
 		console.log('The payment was completed!');
-		console.log('Token = ', data.paymentToken);
-		console.log('PayerID = ', data.payerID);
+	},
+
+	// Pass a function to be called when the customer cancels the payment
+
+	onPaymentCancel: function(data) {
+
+		console.log('The payment was cancelled!');
 	}
 
 }, '#myContainerElement');
@@ -60,10 +66,15 @@ ppxo.PayPalButton.render({
 It's also possible to create and execute payments by calling the [PayPal REST API](./paypal-rest-api.md) from your
 server side, rather than specifying the payment details inline on your client side.
 
-With this integration, we use `paymentToken` to call our server, then create a payment token using the REST api, and
-we listen for `onPaymentAuthorize` to call our server again, and execute the payment using the REST api.
+With this integration:
 
-You'll need your **Client ID** and **Secret** on the server side to make REST api calls.
+- We set up `paymentToken` to call our web-server, which then calls the PayPal REST API to **create** a payment Token.
+- We listen for `onPaymentAuthorize`, again call our web-server, which then calls the PayPal REST API to **execute** the payment
+
+You'll need:
+
+- A web-server, with routes set up to do the payment creation and payment execute calls to api.paypal.com
+- Your **Client ID** and **Secret** to make [PayPal REST API](./paypal-rest-api.md) calls on your server side
 
 ```javascript
 ppxo.PayPalButton.render({
@@ -106,17 +117,27 @@ ppxo.PayPalButton.render({
 			.fail(function(err) {
 				// Go to an error page
 			});
+	},
+
+	// Pass a function to be called when the customer cancels the payment
+
+	onPaymentCancel: function(data) {
+
+		console.log('The payment was cancelled!');
+		console.log('Token = ', data.paymentToken);
 	}
 
 }, '#myContainerElement');
 ```
 
+### Hybrid Integrations
+
 You can combine any flavor of payment create and execute:
 
-- Create and execute the payment from the client side using `paymentDetails` and `onPaymentComplete`
+- Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
 - Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
-- Create the payment on the client side using `paymentDetails` and execute on your server using `onPaymentAuthorize`
-- Create the payment on the server side using `paymentToken` and execute on your server using `onPaymentComplete`
+- Create the payment on the client side using `paymentDetails` and `payNow`, then execute on your server using `onPaymentAuthorize`
+- Create the payment on the server side using `paymentToken`, then execute on your server using `onPaymentComplete`
 
 ### Native bindings
 
