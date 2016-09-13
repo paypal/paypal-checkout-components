@@ -68,8 +68,8 @@ server side, rather than specifying the payment details inline on your client si
 
 With this integration:
 
-- We set up `paymentToken` to call our web-server, which then calls the PayPal REST API to **create** a payment Token.
-- We listen for `onPaymentAuthorize`, again call our web-server, which then calls the PayPal REST API to **execute** the payment
+- We set up `paymentToken` to call our web-server, which then calls the PayPal REST API to **create** a Payment Token.
+- We listen for `onPaymentAuthorize`, and call our web-server again, which then calls the PayPal REST API to **execute** the payment
 
 You'll need:
 
@@ -87,14 +87,8 @@ ppxo.PayPalButton.render({
 		// the PayPal Payment Create api to retrieve the token.
 
 		jQuery.post('/my-api/create-payment')
-
-			.done(function(data) {
-				resolve(data.token);
-			})
-
-			.fail(function(err) {
-				reject(err);
-			});
+			.done(function(data) { resolve(data.token); })
+			.fail(function(err)  { reject(err); });
 	},
 
 	// Pass a function to be called when the customer approves the payment, then call execute payment on your server:
@@ -102,21 +96,15 @@ ppxo.PayPalButton.render({
 	onPaymentAuthorize: function(data) {
 
 		console.log('The payment was authorized!');
-		console.log('Token = ', data.paymentToken);
+		console.log('Token = ',   data.paymentToken);
 		console.log('PayerID = ', data.payerID);
 
 		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
 		// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
 		jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
-
-			.done(function(data) {
-				 // Go to a success page
-			})
-
-			.fail(function(err) {
-				// Go to an error page
-			});
+			.done(function(data) { // Go to a success page })
+			.fail(function(err)  { // Go to an error page  });
 	},
 
 	// Pass a function to be called when the customer cancels the payment
@@ -134,12 +122,75 @@ ppxo.PayPalButton.render({
 
 You can combine any flavor of payment create and execute:
 
-- Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
-- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
-- Create the payment on the client side using `paymentDetails` and `payNow`, then execute on your server using `onPaymentAuthorize`
-- Create the payment on the server side using `paymentToken`, then execute on your server using `onPaymentComplete`
+Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
 
-### Native bindings
+```javascript
+ppxo.PayPalButton.render({
+
+	payNow: true,
+
+	paymentDetails:  {
+		...
+	},
+
+	onPaymentComplete: function(data) {
+		...
+	}
+
+}, '#myContainerElement');
+```
+
+- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	paymentToken: function(resolve, reject) {
+		...
+	},
+
+	onPaymentAuthorize: function(data) {
+		...
+	}
+
+}, '#myContainerElement');
+```
+
+- Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	paymentDetails:  {
+		...
+	},
+
+	onPaymentAuthorize: function(data) {
+		...
+	}
+
+}, '#myContainerElement');
+```
+
+- Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and ``onPaymentComplete`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	payNow: true,
+
+	paymentToken: function(resolve, reject) {
+		...
+	},
+
+	onPaymentComplete: function(data) {
+		...
+	}
+
+}, '#myContainerElement');
+```
+
+### Native framework bindings
 
 You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
 The button will appear exactly where you place them in your HTML.
@@ -251,14 +302,8 @@ ppxo.PayPalButton.render({
 		// the PayPal Billing api to retrieve the token.
 
 		jQuery.post('https://www.my-paypal-store.com/my-api/create-billing-agreement')
-
-			.done(function(data) {
-				resolve(data.token_id);
-			})
-
-			.fail(function(err) {
-				reject(err);
-			});
+			.done(function(data) { resolve(data.token_id); })
+			.fail(function(err)  { reject(err); });
 	},
 
 	// Pass a function to be called when the customer authorizes the billing agreement
@@ -267,8 +312,6 @@ ppxo.PayPalButton.render({
 
 		console.log('The payment was authorized!');
 		console.log('Token = ', data.billingToken);
-
-		// Go to your success page
 	}
 
 }, '#myContainerElement');
