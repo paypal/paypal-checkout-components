@@ -87,43 +87,65 @@ You'll need:
 - Your **Client ID** and **Secret** to make [PayPal REST API](./paypal-rest-api.md) calls on your server side
 
 ```javascript
+<script>
+	ppxo.PayPalButton.render({
+
+		// Set up a getter to create a payment token using the payments api, on your server side:
+
+		paymentToken: function(resolve, reject) {
+
+			// Make an ajax call to get the express-checkout token. This should call your back-end,
+			// which should invoke the PayPal Payment Create api to retrieve the token.
+
+			jQuery.post('/my-api/create-payment')
+				.done(function(data) { resolve(data.token); })
+				.fail(function(err)  { reject(err); });
+		},
+
+		// Pass a function to be called when the customer approves the payment,
+		// then call execute payment on your server:
+
+		onPaymentAuthorize: function(data) {
+
+			console.log('The payment was authorized!');
+			console.log('Token = ',   data.paymentToken);
+			console.log('PayerID = ', data.payerID);
+
+			// At this point, the payment has been authorized, and you will need to call your back-end to complete the
+			// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
+
+			jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
+				.done(function(data) { // Go to a success page })
+				.fail(function(err)  { // Go to an error page  });
+		},
+
+		// Pass a function to be called when the customer cancels the payment
+
+		onPaymentCancel: function(data) {
+
+			console.log('The payment was cancelled!');
+			console.log('Token = ', data.paymentToken);
+		}
+
+	}, '#myContainerElement');
+</script>
+```
+
+### Customizing the Button
+
+You can change the look and feel of the button, using the `buttonStyle` parameter:
+
+```javascript
 ppxo.PayPalButton.render({
 
-	// Set up a getter to create a payment token using the payments api, on your server side:
+	...
 
-	paymentToken: function(resolve, reject) {
+	// Specify the style of your button
 
-		// Make an ajax call to get the express-checkout token. This should call your back-end,
-		// which should invoke the PayPal Payment Create api to retrieve the token.
-
-		jQuery.post('/my-api/create-payment')
-			.done(function(data) { resolve(data.token); })
-			.fail(function(err)  { reject(err); });
-	},
-
-	// Pass a function to be called when the customer approves the payment,
-	// then call execute payment on your server:
-
-	onPaymentAuthorize: function(data) {
-
-		console.log('The payment was authorized!');
-		console.log('Token = ',   data.paymentToken);
-		console.log('PayerID = ', data.payerID);
-
-		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
-		// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
-
-		jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
-			.done(function(data) { // Go to a success page })
-			.fail(function(err)  { // Go to an error page  });
-	},
-
-	// Pass a function to be called when the customer cancels the payment
-
-	onPaymentCancel: function(data) {
-
-		console.log('The payment was cancelled!');
-		console.log('Token = ', data.paymentToken);
+	buttonStyle: {
+		size:  'medium', // tiny, small, medium
+		color: 'orange', // orange, blue
+		shape: 'pill'    // pill, rect
 	}
 
 }, '#myContainerElement');
