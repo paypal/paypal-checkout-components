@@ -6,9 +6,10 @@
 
 #### Create a PayPal App
 
-1. Go to https://developer.paypal.com/developer/applications/ and log in
-2. Click 'Create App' under **REST API apps** and create a new app
-3. Make a note of your **Client ID** and **Secret** for both **Sandbox** and **Live** (Production).
+1. Go to https://developer.paypal.com/developer/applications/
+2. Log in to the site with your PayPal credentials
+3. Click **Create App** under **REST API apps** and create a new app
+4. Make a note of your **Client ID** and **Secret** for both **Sandbox** and **Live** (Production).
 
 #### Add the PayPal Checkout Integration Script
 
@@ -265,7 +266,7 @@ ppxo.Button.render({
 
 ### Billing Agreements
 
-You can also set up a billing agreements using the button component. For example:
+You can also set up a billing agreement using the button component. For example:
 
 ```javascript
 ppxo.Button.render({
