@@ -1,6 +1,6 @@
-## PayPal Checkout Button
+## PayPal Checkout
 
-![PayPal Button](./button.png)
+![PayPal Checkout](./checkout.png)
 
 ### Before you start
 
@@ -21,23 +21,22 @@ Add the following to your html page:
 
 ### Basic Integration
 
-This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
+This integration lets you specify all of your payment parameters all at once, to render PayPal Checkout.
 
 You'll need:
 
 - Your **Client ID**.
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
-- An html element to place the button into
 
 ```javascript
 <script>
-	ppxo.Button.render({
+	ppxo.Checkout.render({
 
 		// Pass the client ID to use to create your transaction
 
 		clientID: {
-			sandbox:    'xxxxxxxxx',
-			production: 'xxxxxxxxx'
+			sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
+			production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
 		},
 
 		// Pass the payment details for your transaction
@@ -68,8 +67,7 @@ You'll need:
 		onPaymentCancel: function(data) {
 			console.log('The payment was cancelled!');
 		}
-
-	}, '#myContainerElement');
+	});
 </script>
 ```
 
@@ -90,7 +88,7 @@ You'll need:
 
 ```javascript
 <script>
-	ppxo.Button.render({
+	ppxo.Checkout.render({
 
 		// Set up a getter to create a payment token using the payments api, on your server side:
 
@@ -128,88 +126,8 @@ You'll need:
 			console.log('The payment was cancelled!');
 			console.log('Token = ', data.paymentToken);
 		}
-
-	}, '#myContainerElement');
+	});
 </script>
-```
-
-### Customizing the Button
-
-You can change the look and feel of the button, using the `buttonStyle` parameter:
-
-```javascript
-ppxo.Button.render({
-
-	...
-
-	// Specify the style of your button
-
-	buttonStyle: {
-		size:  'medium', // tiny, small, medium
-		color: 'orange', // orange, blue
-		shape: 'pill'    // pill, rect
-	}
-
-}, '#myContainerElement');
-```
-
-### Native framework bindings
-
-You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
-The button will appear exactly where you place them in your HTML.
-
-#### Script Tag
-
-```html
-<div class="myCart">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-	<script type="application/x-component" data-component="paypal-button">
-		{
-			payNow: true,
-			paymentDetails: { ... },
-			onPaymentComplete: function() { ... }
-		}
-	</script>
-</div>
-```
-
-#### React.js Element
-
-```javascript
-var MyCartComponent = window.React.createClass({
-	render: function() {
-
-		return (<div className='shoppingCart'>
-			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-			<ppxo.Button.React
-				clientID={clientID}
-				paymentDetails={paymentDetails}
-				onPaymentComplete={onPaymentComplete} />
-		</div>);
-	}
-});
-```
-
-#### Angular.js Element
-
-```html
-<div class="shoppingCart" ng-controller="cartController">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-	<paypal-button
-		clientID="clientID"
-		paymentDetails="paymentDetails"
-		onPaymentComplete="onPaymentComplete">
-	</paypal-button>
-</div>
-```
-
-#### Ember.js Element
-
-```javascipt
-// Watch this space
 ```
 
 
@@ -220,56 +138,52 @@ You can combine any flavor of payment create and execute:
 - Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	payNow: true,
 	paymentDetails:  { ... },
 	onPaymentComplete: function(data) { ... }
-
-}, '#myContainerElement');
+});
 ```
 
 - Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	paymentToken: function(resolve, reject) { ... },
 	onPaymentAuthorize: function(data) { ... }
-
-}, '#myContainerElement');
+});
 ```
 
 - Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	paymentDetails:  { ... },
 	onPaymentAuthorize: function(data) { ... }
-
-}, '#myContainerElement');
+});
 ```
 
 - Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and `onPaymentComplete`
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	payNow: true,
 	paymentToken: function(resolve, reject) { ... },
 	onPaymentComplete: function(data) { ... }
-
-}, '#myContainerElement');
+});
 ```
 
 
 ### Billing Agreements
 
-You can also set up a billing agreement using the button component. For example:
+You can also set up a billing agreement using the Checkout component. For example:
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	// Pass the client ID to use to create your transaction
 
@@ -295,14 +209,13 @@ ppxo.Button.render({
 
 		// Go to your success page
 	}
-
-}, '#myContainerElement');
+});
 ```
 
 Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
 
 ```javascript
-ppxo.Button.render({
+ppxo.Checkout.render({
 
 	// Pass a getter to generate a billing token on your server side
 
@@ -323,6 +236,5 @@ ppxo.Button.render({
 		console.log('The payment was authorized!');
 		console.log('Token = ', data.billingToken);
 	}
-
-}, '#myContainerElement');
+});
 ```
