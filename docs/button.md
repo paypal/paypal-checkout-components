@@ -118,78 +118,6 @@ ppxo.PayPalButton.render({
 }, '#myContainerElement');
 ```
 
-### Hybrid Integrations
-
-You can combine any flavor of payment create and execute:
-
-Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
-
-```javascript
-ppxo.PayPalButton.render({
-
-	payNow: true,
-
-	paymentDetails:  {
-		...
-	},
-
-	onPaymentComplete: function(data) {
-		...
-	}
-
-}, '#myContainerElement');
-```
-
-- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
-
-```javascript
-ppxo.PayPalButton.render({
-
-	paymentToken: function(resolve, reject) {
-		...
-	},
-
-	onPaymentAuthorize: function(data) {
-		...
-	}
-
-}, '#myContainerElement');
-```
-
-- Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
-
-```javascript
-ppxo.PayPalButton.render({
-
-	paymentDetails:  {
-		...
-	},
-
-	onPaymentAuthorize: function(data) {
-		...
-	}
-
-}, '#myContainerElement');
-```
-
-- Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and ``onPaymentComplete`
-
-```javascript
-ppxo.PayPalButton.render({
-
-	payNow: true,
-
-	paymentToken: function(resolve, reject) {
-		...
-	},
-
-	onPaymentComplete: function(data) {
-		...
-	}
-
-}, '#myContainerElement');
-```
-
 ### Native framework bindings
 
 You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
@@ -203,9 +131,7 @@ The button will appear exactly where you place them in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			paymentDetails: {
-				...
-			}
+			paymentDetails: { ... }
 		}
 	</script>
 </div>
@@ -216,9 +142,7 @@ The button will appear exactly where you place them in your HTML.
 ```javascript
 var MyCartComponent = window.React.createClass({
 	render: function() {
-		let paymentDetails = {
-			...
-		};
+		let paymentDetails = { ... };
 
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
@@ -234,9 +158,7 @@ var MyCartComponent = window.React.createClass({
 ```javascript
 myapp.controller('cartController', function($scope) {
 
-	$scope.paymentDetails = {
-		...
-	};
+	$scope.paymentDetails = { ... };
 });
 ```
 
@@ -253,6 +175,58 @@ myapp.controller('cartController', function($scope) {
 ```javascipt
 // Watch this space
 ```
+
+
+### Hybrid Integrations
+
+You can combine any flavor of payment create and execute:
+
+- Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	payNow: true,
+	paymentDetails:  { ... },
+	onPaymentComplete: function(data) { ... }
+
+}, '#myContainerElement');
+```
+
+- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	paymentToken: function(resolve, reject) { ... },
+	onPaymentAuthorize: function(data) { ... }
+
+}, '#myContainerElement');
+```
+
+- Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	paymentDetails:  { ... },
+	onPaymentAuthorize: function(data) { ... }
+
+}, '#myContainerElement');
+```
+
+- Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and `onPaymentComplete`
+
+```javascript
+ppxo.PayPalButton.render({
+
+	payNow: true,
+	paymentToken: function(resolve, reject) { ... },
+	onPaymentComplete: function(data) { ... }
+
+}, '#myContainerElement');
+```
+
 
 ### Billing Agreements
 
