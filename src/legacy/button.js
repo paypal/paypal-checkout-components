@@ -25,6 +25,8 @@ function loadButtonJS() {
         logError(`buttonjs_load_error`, { error: err.stack || err.toString() });
         throw err;
     });
+
+    return buttonJS;
 }
 
 function renderButton(id, container, options, label) {

@@ -27,7 +27,7 @@ You'll need:
 
 - Your **Client ID**.
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
-- An html element to place the button into
+- An **HTML Element** to place the button into
 
 ```javascript
 <script>
@@ -36,8 +36,8 @@ You'll need:
 		// Pass the client ID to use to create your transaction
 
 		clientID: {
-			sandbox:    'xxxxxxxxx',
-			production: 'xxxxxxxxx'
+			sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
+			production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
 		},
 
 		// Pass the payment details for your transaction
@@ -117,8 +117,8 @@ You'll need:
 			// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
 			jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
-				.done(function(data) { // Go to a success page })
-				.fail(function(err)  { // Go to an error page  });
+				.done(function(data) { /* Go to a success page */ })
+				.fail(function(err)  { /* Go to an error page  */  });
 		},
 
 		// Pass a function to be called when the customer cancels the payment
