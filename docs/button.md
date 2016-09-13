@@ -4,9 +4,19 @@
 
 ### Before you start
 
+#### Create a PayPal App
+
 1. Go to https://developer.paypal.com/developer/applications/ and log in
 2. Click 'Create App' under **REST API apps** and create a new app
 3. Make a note of your **Client ID** and **Secret** for both **Sandbox** and **Live** (Production).
+
+#### Add the PayPal Checkout Integration Script
+
+Add the following to your html page:
+
+```html
+<script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
+```
 
 ### Basic Integration
 
@@ -18,45 +28,47 @@ You'll need:
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
 
 ```javascript
-ppxo.PayPalButton.render({
+<script>
+	ppxo.PayPalButton.render({
 
-	// Pass the client ID to use to create your transaction
+		// Pass the client ID to use to create your transaction
 
-	clientID: {
-		sandbox:    'xxxxxxxxx',
-		production: 'xxxxxxxxx'
-	},
+		clientID: {
+			sandbox:    'xxxxxxxxx',
+			production: 'xxxxxxxxx'
+		},
 
-	// Pass the payment details for your transaction
+		// Pass the payment details for your transaction
 
-	paymentDetails: {
-		transactions: [
-			{
-				amount: {
-					total: '1.00',
-					currency: 'USD'
+		paymentDetails: {
+			transactions: [
+				{
+					amount: {
+						total: '1.00',
+						currency: 'USD'
+					}
 				}
-			}
-		]
-	},
+			]
+		},
 
-	// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
+		// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
 
-	payNow: true,
+		payNow: true,
 
-	// Pass a function to be called when the customer completes the payment
+		// Pass a function to be called when the customer completes the payment
 
-	onPaymentComplete: function(data) {
-		console.log('The payment was completed!');
-	},
+		onPaymentComplete: function(data) {
+			console.log('The payment was completed!');
+		},
 
-	// Pass a function to be called when the customer cancels the payment
+		// Pass a function to be called when the customer cancels the payment
 
-	onPaymentCancel: function(data) {
-		console.log('The payment was cancelled!');
-	}
+		onPaymentCancel: function(data) {
+			console.log('The payment was cancelled!');
+		}
 
-}, '#myContainerElement');
+	}, '#myContainerElement');
+</script>
 ```
 
 ### Advanced Integration
