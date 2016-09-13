@@ -26,10 +26,11 @@ You'll need:
 
 - Your **Client ID**.
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
+- An html element to place the button into
 
 ```javascript
 <script>
-	ppxo.PayPalButton.render({
+	ppxo.Button.render({
 
 		// Pass the client ID to use to create your transaction
 
@@ -88,7 +89,7 @@ You'll need:
 
 ```javascript
 <script>
-	ppxo.PayPalButton.render({
+	ppxo.Button.render({
 
 		// Set up a getter to create a payment token using the payments api, on your server side:
 
@@ -136,7 +137,7 @@ You'll need:
 You can change the look and feel of the button, using the `buttonStyle` parameter:
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	...
 
@@ -181,7 +182,7 @@ var MyCartComponent = window.React.createClass({
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.PayPalButton.React
+			<ppxo.Button.React
 				clientID={clientID}
 				paymentDetails={paymentDetails}
 				onPaymentComplete={onPaymentComplete} />
@@ -218,7 +219,7 @@ You can combine any flavor of payment create and execute:
 - Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	payNow: true,
 	paymentDetails:  { ... },
@@ -230,7 +231,7 @@ ppxo.PayPalButton.render({
 - Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	paymentToken: function(resolve, reject) { ... },
 	onPaymentAuthorize: function(data) { ... }
@@ -241,7 +242,7 @@ ppxo.PayPalButton.render({
 - Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	paymentDetails:  { ... },
 	onPaymentAuthorize: function(data) { ... }
@@ -252,7 +253,7 @@ ppxo.PayPalButton.render({
 - Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and `onPaymentComplete`
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	payNow: true,
 	paymentToken: function(resolve, reject) { ... },
@@ -267,7 +268,7 @@ ppxo.PayPalButton.render({
 You can also set up a billing agreements using the button component. For example:
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	// Pass the client ID to use to create your transaction
 
@@ -300,7 +301,7 @@ ppxo.PayPalButton.render({
 Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
 
 ```javascript
-ppxo.PayPalButton.render({
+ppxo.Button.render({
 
 	// Pass a getter to generate a billing token on your server side
 
