@@ -56,34 +56,12 @@ export function renderButtons(id, options) {
 
         let buttons = [];
 
-        if (options.container && options.container.length !== 0) {
-
-            let labels;
-
-            if (typeof options.type === 'string') {
-                labels = [options.type];
-            } else if (options.type instanceof Array) {
-                labels = options.type;
-            } else {
-                labels = [];
-            }
-
-            let containerElements = getElements(options.container);
-
-            if (containerElements.length) {
-                containerElements.forEach((container, i) => {
-                    buttons.push({
-                        el: renderButton(id, container, options, labels[i]),
-                        click: options.click,
-                        condition: options.condition
-                    });
-                });
-            } else {
-                logWarning(`button_container_not_found`, { container: JSON.stringify(options.container) });
-            }
-        }
-
         if (options.buttons instanceof Array) {
+
+            if (options.container) {
+                logWarning(`container_and_buttons_passed`);
+            }
+
             options.buttons.forEach(button => {
                 if (button) {
 
@@ -109,6 +87,32 @@ export function renderButtons(id, options) {
                     }
                 }
             });
+
+        } else if (options.container && options.container.length !== 0) {
+
+            let labels;
+
+            if (typeof options.type === 'string') {
+                labels = [options.type];
+            } else if (options.type instanceof Array) {
+                labels = options.type;
+            } else {
+                labels = [];
+            }
+
+            let containerElements = getElements(options.container);
+
+            if (containerElements.length) {
+                containerElements.forEach((container, i) => {
+                    buttons.push({
+                        el: renderButton(id, container, options, labels[i]),
+                        click: options.click,
+                        condition: options.condition
+                    });
+                });
+            } else {
+                logWarning(`button_container_not_found`, { container: JSON.stringify(options.container) });
+            }
         }
 
         return buttons;
