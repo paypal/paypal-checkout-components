@@ -138,7 +138,7 @@ export let Checkout = xcomponent.create({
             queryParam: false
         },
 
-        payNow: {
+        autoExecute: {
             type: 'boolean',
             required: false,
             sendToChild: false
@@ -151,7 +151,7 @@ export let Checkout = xcomponent.create({
             autoClose: true,
 
             def(props) {
-                if (props.payNow && props.onPaymentComplete) {
+                if (props.autoExecute && props.onPaymentComplete) {
 
                     let onPaymentComplete = props.onPaymentComplete;
                     delete props.onPaymentComplete;

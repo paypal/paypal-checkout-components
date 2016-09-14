@@ -44,17 +44,17 @@ export function validateProps(props) {
 
     /*
 
-    if (props.payNow || props.onPaymentComplete) {
-        throw new Error(`Can not use payNow or onPaymentComplete: these features are not currently implemented. Please use onPaymentAuthorize and execute the payment using the REST api`);
+    if (props.autoExecute || props.onPaymentComplete) {
+        throw new Error(`Can not use autoExecute or onPaymentComplete: these features are not currently implemented. Please use onPaymentAuthorize and execute the payment using the REST api`);
     }
 
     */
 
-    if (props.onPaymentComplete && !props.payNow) {
-        throw new Error(`Must specify payNow as true in order to use onPaymentComplete callback`);
+    if (props.onPaymentComplete && !props.autoExecute) {
+        throw new Error(`Must specify autoExecute as true in order to use onPaymentComplete callback`);
     }
 
-    if (props.onPaymentAuthorize && props.payNow) {
-        throw new Error(`Can not specify payNow as true along with onPaymentAuthorize callback`);
+    if (props.onPaymentAuthorize && props.autoExecute) {
+        throw new Error(`Can not specify autoExecute as true along with onPaymentAuthorize callback`);
     }
 }

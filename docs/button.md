@@ -53,9 +53,10 @@ You'll need:
 			]
 		},
 
-		// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
+		// Automatically execute/complete the payment on paypal.com when the buyer clicks 'Pay Now', rather than only
+		// authorizing the payment.
 
-		payNow: true,
+		autoExecute: true,
 
 		// Pass a function to be called when the customer completes the payment
 
@@ -166,7 +167,7 @@ The button will appear exactly where you place them in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			payNow: true,
+			autoExecute: true,
 			paymentDetails: { ... },
 			onPaymentComplete: function() { ... }
 		}
@@ -217,12 +218,12 @@ var MyCartComponent = window.React.createClass({
 
 You can combine any flavor of payment create and execute:
 
-- Create and execute the payment all from the client side using `paymentDetails`, `payNow` and `onPaymentComplete`
+- Create and execute the payment all from the client side using `paymentDetails`, `autoExecute` and `onPaymentComplete`
 
 ```javascript
 ppxo.Button.render({
 
-	payNow: true,
+	autoExecute: true,
 	paymentDetails:  { ... },
 	onPaymentComplete: function(data) { ... }
 
@@ -251,12 +252,12 @@ ppxo.Button.render({
 }, '#myContainerElement');
 ```
 
-- Create the payment on your server using `paymentToken`, then execute on the client side using `payNow` and `onPaymentComplete`
+- Create the payment on your server using `paymentToken`, then execute on the client side using `autoExecute` and `onPaymentComplete`
 
 ```javascript
 ppxo.Button.render({
 
-	payNow: true,
+	autoExecute: true,
 	paymentToken: function(resolve, reject) { ... },
 	onPaymentComplete: function(data) { ... }
 

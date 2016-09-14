@@ -113,7 +113,7 @@ export let Button = xcomponent.create({
             queryParam: false
         },
 
-        payNow: {
+        autoExecute: {
             type: 'boolean',
             required: false,
             sendToChild: false
@@ -132,7 +132,7 @@ export let Button = xcomponent.create({
             autoClose: false,
 
             def(props) {
-                if (props.payNow && props.onPaymentComplete) {
+                if (props.autoExecute && props.onPaymentComplete) {
 
                     let onPaymentComplete = props.onPaymentComplete;
                     delete props.onPaymentComplete;
