@@ -291,6 +291,11 @@ function handleClick(button, env, click, condition) {
                 targetElement = this; // eslint-disable-line
             }
 
+            if (!targetElement) {
+                logError(`no_target_element`);
+                throw new Error(`Can not find element to hijack target for button click`);
+            }
+
             initPayPalCheckout({
                 env,
                 paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
