@@ -5,9 +5,34 @@ import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
 
-import { urlWillRedirectPage, redirect, matchToken, onDocumentReady, getElements } from './util';
+import { urlWillRedirectPage, redirect as redir, matchToken, onDocumentReady, getElements } from './util';
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
+
+let redirected = false;
+
+function redirect(location) {
+
+    if (redirected) {
+        return;
+    }
+
+    redirected = true;
+
+    if (window.ppCheckpoint) {
+        if (location && location.match(/^https:\/\/www\.paypal\.com/)) {
+            window.ppCheckpoint('flow_fullpage_redirect');
+        } else if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
+            window.ppCheckpoint('flow_complete');
+        } else {
+            window.ppCheckpoint('flow_cancel');
+        }
+    }
+
+    setTimeout(function() {
+        redir(location);
+    }, 500);
+}
 
 /*  Parse Token
     -----------
@@ -158,6 +183,10 @@ function initPayPalCheckout(props = {}) {
     logInfo(`init_checkout`);
 
     PayPalCheckout.autocloseParentTemplate = false;
+
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_start');
+    }
 
     // let uid = window.localStorage && window.localStorage.getItem('pp_uid');
 
