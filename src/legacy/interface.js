@@ -5,7 +5,7 @@ import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
 
-import { urlWillRedirectPage, redirect as redir, matchToken, onDocumentReady, getElements } from './util';
+import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements } from './util';
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
@@ -79,7 +79,7 @@ function getFullpageRedirectUrl(token) {
         return token;
     }
 
-    let ecToken = matchToken(token);
+    let ecToken = parseToken(token);
 
     if (!ecToken) {
         throw new Error(`Can not match token in ${token}`);
@@ -268,10 +268,6 @@ function renderPayPalCheckout(props = {}) {
 
 function handleClick(button, env, click, condition) {
 
-    if (!isEligible()) {
-        return;
-    }
-
     button.addEventListener('click', event => {
 
         if (condition instanceof Function && !condition.call()) {
@@ -284,7 +280,9 @@ function handleClick(button, env, click, condition) {
         if (click instanceof Function) {
             logDebug(`button_clickhandler`);
 
-            renderPayPalCheckout({ env });
+            if (isEligible()) {
+                renderPayPalCheckout({ env });
+            }
 
             if (click.toString().match(/^function *\(err(or)?\)\ *\{/)) {
                 logWarning(`click_function_expects_err`);
@@ -294,6 +292,11 @@ function handleClick(button, env, click, condition) {
             }
 
         } else {
+
+            if (!isEligible()) {
+                return;
+            }
+
             logDebug(`button_hijack`);
 
             let targetElement;
@@ -496,10 +499,6 @@ function closeFlow() {
 */
 
 onDocumentReady(() => {
-
-    if (!isEligible()) {
-        return;
-    }
 
     let buttons = Array.prototype.slice.call(document.querySelectorAll('[data-paypal-button]'));
 

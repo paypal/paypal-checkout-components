@@ -21,10 +21,6 @@ export function redirect(url) {
     window.location = url;
 }
 
-export function matchToken(token) {
-    return token && token.match(/^(EC-)?[A-Z0-9]{17}$/);
-}
-
 
 /*  On Document Ready
     -----------------
