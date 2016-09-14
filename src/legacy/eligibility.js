@@ -1,5 +1,5 @@
 
-import { isWebView, getAgent } from '../lib';
+import { isWebView, getAgent, isDevice } from '../lib';
 
 const SUPPORTED_AGENTS = {
     Chrome: 27,
@@ -28,5 +28,5 @@ export function isEligible() {
         }
     }
 
-    return !(isWebView() || isUnsupportedIE());
+    return !(isWebView() || isUnsupportedIE() || isDevice());
 }
