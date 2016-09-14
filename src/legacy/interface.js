@@ -128,10 +128,17 @@ function getPaymentToken(resolve, reject) {
         reset();
 
         let ecToken = parseToken(token);
+        let isUrl   = token && token.match(/^https?:\/\//);
 
-        if (!ecToken) {
-            logWarning(`paymenttoken_startflow_notoken`, { token });
-            ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+        if (isUrl && ecToken) {
+            logDebug(`paymenttoken_startflow_url_with_token`, { token });
+        } else if (isUrl) {
+            logDebug(`paymenttoken_startflow_url_with_no_token`, { token });
+        } else if (ecToken) {
+            logDebug(`paymenttoken_startflow_with_token`, { token });
+        } else {
+            logError(`paymenttoken_startflow_no_url_or_token`, { token });
+            return;
         }
 
         if (!isEligible()) {
@@ -139,13 +146,14 @@ function getPaymentToken(resolve, reject) {
             return redirect(getFullpageRedirectUrl(token));
         }
 
-        if (matchToken(token)) {
-            logDebug(`paymenttoken_startflow_tokenpassed`, { token });
-        } else {
-            logDebug(`paymenttoken_startflow_urlpassed`, { token });
+        if (isUrl) {
             this.updateProps({
                 url: token
             });
+
+            if (!ecToken) {
+                ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+            }
         }
 
         resolve(ecToken);
