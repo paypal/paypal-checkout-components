@@ -88,6 +88,27 @@ function getFullpageRedirectUrl(token) {
     return `${config.checkoutUrl}?token=${ecToken}`;
 }
 
+function getUrlAndPaymentToken(item) {
+
+    let paymentToken = parseToken(item);
+    let url = (item && item.match(/^https?:\/\//)) ? item : null;
+
+    if (url && paymentToken) {
+        logDebug(`startflow_url_with_token`, { item });
+    } else if (url) {
+        logDebug(`startflow_url_with_no_token`, { item });
+        paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+    } else if (paymentToken) {
+        logDebug(`startflow_with_token`, { item });
+        url = getFullpageRedirectUrl(item);
+    } else {
+        logError(`startflow_no_url_or_token`, { item });
+        return {};
+    }
+
+    return { paymentToken, url };
+}
+
 
 /*  Get Token
     ---------
@@ -122,41 +143,27 @@ function getPaymentToken(resolve, reject) {
 
     // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-    window.paypal.checkout.startFlow = (token) => {
-        logDebug(`paymenttoken_startflow`, { token });
+    window.paypal.checkout.startFlow = (item) => {
+        logDebug(`paymenttoken_startflow`, { item });
 
         reset();
 
-        let ecToken = parseToken(token);
-        let isUrl   = token && token.match(/^https?:\/\//);
+        let { paymentToken, url } = getUrlAndPaymentToken(item);
 
-        if (isUrl && ecToken) {
-            logDebug(`paymenttoken_startflow_url_with_token`, { token });
-        } else if (isUrl) {
-            logDebug(`paymenttoken_startflow_url_with_no_token`, { token });
-        } else if (ecToken) {
-            logDebug(`paymenttoken_startflow_with_token`, { token });
-        } else {
-            logError(`paymenttoken_startflow_no_url_or_token`, { token });
+        if (!paymentToken && !url) {
             return;
         }
 
         if (!isEligible()) {
-            logDebug(`paymenttoken_startflow_ineligible`, { token: ecToken });
-            return redirect(getFullpageRedirectUrl(token));
+            logDebug(`paymenttoken_startflow_ineligible`, { url, paymentToken });
+            return redirect(url);
         }
 
-        if (isUrl) {
-            this.updateProps({
-                url: token
-            });
-
-            if (!ecToken) {
-                ecToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
-            }
+        if (url) {
+            this.updateProps({ url });
         }
 
-        resolve(ecToken);
+        resolve(paymentToken);
     };
 
     // closeFlow is our 'error' case - we can call our callback with an error
@@ -442,19 +449,16 @@ function startFlow(token) {
 
     logDebug(`startflow`, { token });
 
-    let paymentToken = parseToken(token);
+    let { paymentToken, url } = getUrlAndPaymentToken(item);
 
-    if (!paymentToken) {
-        logWarning(`startflow_notoken`);
-        paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+    if (!paymentToken && !url) {
+        return;
     }
 
     if (!isEligible()) {
-        logDebug(`startflow_ineligible`);
-        return redirect(getFullpageRedirectUrl(token));
+        logDebug(`paymenttoken_startflow_ineligible`, { url, paymentToken });
+        return redirect(url);
     }
-
-    let url = matchToken(token) ? null : token;
 
     renderPayPalCheckout({
         url,
