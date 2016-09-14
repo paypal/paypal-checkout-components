@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
-import { logDebug, logError, logWarning } from './log';
+import { logDebug, logInfo, logError, logWarning } from './log';
 import { getElements } from './util';
 
 let buttonJS;
@@ -16,7 +16,7 @@ function loadButtonJS() {
     logDebug(`buttonjs_load`);
 
     buttonJS = loadScript(BUTTON_JS_URL).catch(err => {
-        logWarning(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
+        logInfo(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
         return loadScript(BUTTON_JS_URL);
     }).then(result => {
         logDebug(`buttonjs_load_success`);
@@ -59,10 +59,14 @@ export function renderButtons(id, options) {
         if (options.buttons instanceof Array) {
 
             if (options.container) {
-                logWarning(`container_and_buttons_passed`);
+                for (let button of options.buttons) {
+                    if (button.container && button.container !== options.container) {
+                        logWarning(`mismatched_container_and_button_passed`, { options: options.container, button: button.container });
+                    }
+                }
             }
 
-            options.buttons.forEach(button => {
+            for (let button of options.buttons) {
                 if (button) {
 
                     button.click     = button.click || options.click;
@@ -86,7 +90,7 @@ export function renderButtons(id, options) {
                         logWarning(`button_container_not_passed`, { button: JSON.stringify(button) });
                     }
                 }
-            });
+            }
 
         } else if (options.container && options.container.length !== 0) {
 

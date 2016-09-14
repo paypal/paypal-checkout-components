@@ -146,6 +146,10 @@ function getPaymentToken(resolve, reject) {
     window.paypal.checkout.startFlow = (item) => {
         logDebug(`paymenttoken_startflow`, { item });
 
+        if (window.ppCheckpoint) {
+            window.ppCheckpoint('flow_startflow');
+        }
+
         reset();
 
         let { paymentToken, url } = getUrlAndPaymentToken(item);
@@ -155,7 +159,7 @@ function getPaymentToken(resolve, reject) {
         }
 
         if (!isEligible()) {
-            logDebug(`paymenttoken_startflow_ineligible`, { url, paymentToken });
+            logDebug(`startflow_ineligible`, { url, paymentToken });
             return redirect(url);
         }
 
@@ -445,9 +449,12 @@ function initXO() {
     method will have been patched over in getToken.
 */
 
-function startFlow(token) {
+function startFlow(item) {
+    logDebug(`startflow`, { item });
 
-    logDebug(`startflow`, { token });
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_startflow');
+    }
 
     let { paymentToken, url } = getUrlAndPaymentToken(item);
 
