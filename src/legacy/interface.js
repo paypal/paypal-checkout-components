@@ -266,7 +266,13 @@ function handleClick(button, env, click, condition) {
             logDebug(`button_clickhandler`);
 
             renderPayPalCheckout({ env });
-            click.call(null, event);
+
+            if (click.toString().match(/^function *\(err(or)?\)\ *\{/)) {
+                logWarning(`click_function_expects_err`);
+                click.call(null);
+            } else {
+                click.call(null, event);
+            }
 
         } else {
             logDebug(`button_hijack`);
