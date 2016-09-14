@@ -368,7 +368,7 @@ function setup(id, options = {}) {
             delete options.buttons;
         } else {
             let buttons = options.buttons.map(item => item && item.button);
-            if (getElements(buttons)) {
+            if (getElements(buttons).length) {
                 options.button = buttons;
                 delete options.buttons;
             }
