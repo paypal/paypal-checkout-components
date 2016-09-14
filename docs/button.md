@@ -146,9 +146,10 @@ ppxo.Button.render({
 	// Specify the style of your button
 
 	buttonStyle: {
-		size:  'medium', // tiny, small, medium
-		color: 'orange', // orange, blue
-		shape: 'pill'    // pill, rect
+		locale: 'en_US',
+		size:   'medium', // tiny, small, medium
+		color:  'orange', // orange, blue
+		shape:  'pill'    // pill, rect
 	}
 
 }, '#myContainerElement');
