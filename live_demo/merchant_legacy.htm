@@ -7,14 +7,14 @@
 
 <script   src="https://code.jquery.com/jquery-1.12.4.js"   integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="   crossorigin="anonymous"></script>
 
-<script src="../dist/paypal.checkout.v4.js" data-env="local" data-paypal-checkout></script>
+<script src="../dist/paypal.checkout.v4.js" data-env="production" data-paypal-checkout></script>
 
 <script>
 
     window.mockDomain = 'http://www.merchant.com';
 
     function paymentToken(resolve) {
-        $.get('http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0&noredir=1&ts=' + Date.now()).then(function(result) {
+        $.get('http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0&noredir=1&ts=' + Date.now()).then(function(result) {
             resolve(result.trim());
         });
     }
@@ -30,7 +30,7 @@
         var returnUrl = url + '#success';
         var cancelUrl = url + '#cancel';
 
-        $.get('http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0&noredir=1&ts=' + Date.now() + '&returnurl=' + encodeURIComponent(returnUrl) + '&cancelurl=' + encodeURIComponent(cancelUrl)).then(function(result) {
+        $.get('http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0&noredir=1&ts=' + Date.now() + '&returnurl=' + encodeURIComponent(returnUrl) + '&cancelurl=' + encodeURIComponent(cancelUrl)).then(function(result) {
             resolve(result.trim());
         });
     }
@@ -45,7 +45,7 @@
 
 <h2>1. Standard merchant-owned form with target</h2>
 
-<form method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0">
+<form method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0">
     <button data-paypal-button data-env="demo">Checkout</button>
 </form>
 
@@ -55,7 +55,7 @@
 
 <h2>2. Standard merchant-owned link</h2>
 
-<a href="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0" data-paypal-button data-env="demo">Checkout</a>
+<a href="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0" data-paypal-button data-env="demo">Checkout</a>
 
 <hr>
 
@@ -63,7 +63,7 @@
 
 <h2>3. Form container with no button with sandbox</h2>
 
-<form id="myContainer1" method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0"></form>
+<form id="myContainer1" method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0"></form>
 
 <script>
     paypal.checkout.setup('Your-Merchant-ID', {
@@ -77,7 +77,7 @@
 
 <h2>4. Form container with no button</h2>
 
-<form id="myContainer2" method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&local=1&landingpage=login&ul=0"></form>
+<form id="myContainer2" method="post" action="http://xotools/~dbrain/aries.cgi?stage=msmaster&hermes=1&live=1&landingpage=login&ul=0"></form>
 
 <script>
   paypal.checkout.setup('Your-Merchant-ID', {
