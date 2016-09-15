@@ -1,6 +1,8 @@
 
-import { PayPalCheckout } from '../components';
 import xcomponent from 'xcomponent/src';
+import $logger from 'beaver-logger/client';
+
+import { PayPalCheckout } from '../components';
 import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
@@ -32,6 +34,8 @@ function redirect(location) {
     setTimeout(function() {
         redir(location);
     }, 500);
+
+    $logger.flush();
 }
 
 /*  Parse Token
