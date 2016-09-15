@@ -33,11 +33,9 @@ You'll need:
 
 - Your **Client ID**.
 - Your **Payment Details** (see [developer.paypal.com/docs/api/payments](https://developer.paypal.com/docs/api/payments/#payment_create) for the expected json structure)
-- An **HTML Element** to place the button into
+- An **HTML Container Element** to render the button into
 
 ```javascript
-<!-- Container element, which the button will be rendered into -->
-
 <div id="myContainerElement"></div>
 
 <script>
@@ -100,9 +98,12 @@ You'll need:
 
 - A web-server, with routes set up to do the payment creation and payment execute calls to api.paypal.com
 - Your **Client ID** and **Secret** to make [PayPal REST API](./paypal-rest-api.md) calls on your server side
+- An **HTML Container Element** to render the button into
 
 ```javascript
 <script>
+	<div id="myContainerElement"></div>
+
 	ppxo.Button.render({
 
 		// Set up a getter to create a payment token using the payments api, on your server side:
