@@ -36,7 +36,13 @@ You'll need:
 - An **HTML Element** to place the button into
 
 ```javascript
+<!-- Container element, which the button will be rendered into -->
+
+<div id="myContainerElement"></div>
+
 <script>
+	// Render the button into the container element
+
 	ppxo.Button.render({
 
 		// Pass the client ID to use to create your transaction
