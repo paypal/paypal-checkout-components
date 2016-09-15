@@ -75,10 +75,3 @@ If you want to use the advanced javascript integrations, you will need a way to 
 server side. The simplest way to do this is using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/)
 
 ### [Integrating with the PayPal REST API](./docs/paypal-rest-api.md)
-
------
-
-## Legacy Integrations
-
-All of the [legacy integration patterns](https://developer.paypal.com/docs/classic/express-checkout/in-context/integration/)
-for PayPal Checkout will continue to work with this script.
