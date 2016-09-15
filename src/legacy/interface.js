@@ -91,7 +91,7 @@ function getFullpageRedirectUrl(token) {
 function getUrlAndPaymentToken(item) {
 
     let paymentToken = parseToken(item);
-    let url = (item && item.match(/^https?:\/\//)) ? item : null;
+    let url = (item && item.match(/^https?:\/\/|^\//)) ? item : null;
 
     if (url && paymentToken) {
         logDebug(`startflow_url_with_token`, { item });
