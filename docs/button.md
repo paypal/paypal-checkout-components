@@ -19,6 +19,12 @@ Add the following to your html page:
 <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
 ```
 
+Or to test on sandbox:
+
+```html
+<script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js" data-env="sandbox"></script>
+```
+
 ### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
