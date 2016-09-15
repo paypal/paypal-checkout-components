@@ -43,6 +43,7 @@
     "gulp-eslint": "^2.0.0",
     "gulp-karma": "0.0.5",
     "gulp-webpack": "^1.5.0",
+    "gulp-webserver": "^0.9.1",
     "istanbul-instrumenter-loader": "^0.2.0",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
