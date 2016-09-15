@@ -185,7 +185,7 @@ function(module, exports, __webpack_require__) {
         scrolling: false,
         componentTemplate: _componentTemplate2["default"],
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.11";
+            return _config.config.ppobjects ? "4.0.11" : "4.0.11";
         },
         validateProps: function validateProps(component, props) {
             var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
@@ -6766,7 +6766,7 @@ function(module, exports, __webpack_require__) {
         value: true
     });
     var config = exports.config = {
-        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.js",
+        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.0.11.js",
         ppobjects: false,
         cors: true,
         env: "production",
@@ -6830,7 +6830,7 @@ function(module, exports, __webpack_require__) {
             return "" + config.paypalUrl + config.buttonUris[config.env];
         },
         get bridgeUrl() {
-            return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.11") + "&env=" + config.env;
+            return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4.0.11" : "4.0.11") + "&env=" + config.env;
         },
         get loggerUrl() {
             return config.paypalUrl + "/webapps/hermes/api/logger";
@@ -8500,7 +8500,7 @@ function(module, exports, __webpack_require__) {
             popup: true
         },
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.11";
+            return _config.config.ppobjects ? "4.0.11" : "4.0.11";
         },
         validateProps: function validateProps(component, props) {
             var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
