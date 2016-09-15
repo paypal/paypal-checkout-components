@@ -4,6 +4,7 @@ import eslint from 'gulp-eslint';
 import { Server } from 'karma';
 import { argv } from 'yargs';
 import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN } from './webpack.conf';
+import webserver from 'gulp-webserver';
 
 gulp.task('build', ['lint', 'webpack']);
 
@@ -63,4 +64,13 @@ gulp.task('karma', ['lint'], function (done) {
   });
 
   server.start();
+});
+
+gulp.task('start', function() {
+  gulp.src(['./'])
+    .pipe(webserver({
+      livereload: true,
+      directoryListing: true,
+      open: '/live_demo'
+    }));
 });
