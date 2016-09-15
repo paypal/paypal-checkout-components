@@ -51,6 +51,7 @@ You'll need:
 		},
 
 		// Pass the payment details for your transaction
+		// See https://developer.paypal.com/docs/api/payments/#payment_create for the expected json parameters
 
 		paymentDetails: {
 			transactions: [
