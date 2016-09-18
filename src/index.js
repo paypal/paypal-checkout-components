@@ -15,4 +15,5 @@ if (window.ppxo) {
 
 } else {
     module.exports = require('./interface');
+    module.exports.default = module.exports;
 }

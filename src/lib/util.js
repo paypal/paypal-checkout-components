@@ -89,3 +89,4 @@ export function request(config, callback) {
 export function isPayPalDomain() {
     return Boolean(window.location.hostname.match(/\.paypal\.com$/));
 }
+

@@ -63,6 +63,8 @@ export let config = {
         production: `/webapps/hermes/button`
     },
 
+    loggerUri: `/webapps/hermes/api/logger`,
+
     get paypalUrl() {
         return config.paypalUrls[config.env];
     },
@@ -88,7 +90,7 @@ export let config = {
     },
 
     get loggerUrl() {
-        return `${config.paypalUrl}/webapps/hermes/api/logger`;
+        return `${config.paypalUrl}${config.loggerUri}`;
     },
 
     get authApiUrl() {

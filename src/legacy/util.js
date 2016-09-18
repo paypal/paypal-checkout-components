@@ -117,3 +117,14 @@ export function getElements(collection) {
 
     return [];
 }
+
+export function once(method) {
+    let called = false;
+
+    return function () {
+        if (!called) {
+            called = true;
+            return method.apply(this, arguments);
+        }
+    };
+}

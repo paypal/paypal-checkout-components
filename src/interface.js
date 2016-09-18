@@ -12,6 +12,8 @@ export * from './legacy';
 export * from './setup';
 export * from './rest';
 
+export { config } from './config';
+
 module.exports.xcomponent = xcomponent;
 module.exports.postRobot = postRobot;
 

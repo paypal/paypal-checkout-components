@@ -1,13 +1,14 @@
 
 import xcomponent from 'xcomponent/src';
 import $logger from 'beaver-logger/client';
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 import { PayPalCheckout } from '../components';
 import { isEligible } from './eligibility';
 import { config } from '../config';
 import { getMeta } from '../bridge';
 
-import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements } from './util';
+import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
@@ -16,7 +17,7 @@ let redirected = false;
 function redirect(location) {
 
     if (redirected) {
-        return;
+        logWarning(`multiple_redirects`);
     }
 
     redirected = true;
@@ -92,10 +93,14 @@ function getFullpageRedirectUrl(token) {
     return `${config.checkoutUrl}?token=${ecToken}`;
 }
 
-function getUrlAndPaymentToken(item) {
+function splitUrlAndPaymentToken(item) {
 
     let paymentToken = parseToken(item);
-    let url = (item && item.match(/^https?:\/\/|^\//)) ? item : null;
+    let url = (item && !paymentToken) ? item : null;
+
+    if (url && !url.match(/^https?:\/\/|^\//)) {
+        logWarning(`startflow_relative_url`, { url });
+    }
 
     if (url && paymentToken) {
         logDebug(`startflow_url_with_token`, { item });
@@ -128,66 +133,36 @@ function getUrlAndPaymentToken(item) {
     global methods.
 */
 
-function getPaymentToken(resolve, reject) {
+function getPaymentTokenAndUrl() {
+    return new Promise((resolve, reject) => {
 
-    function reset() {
+        // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-        // Once our callback has been called, we can set the global methods to their original values
+        window.paypal.checkout.startFlow = once((item) => {
+            logDebug(`paymenttoken_startflow`, { item });
 
-        window.paypal.checkout.initXO    = initXO;
-        window.paypal.checkout.startFlow = startFlow;
-        window.paypal.checkout.closeFlow = closeFlow;
-    }
+            if (window.ppCheckpoint) {
+                window.ppCheckpoint('flow_startflow');
+            }
 
-    // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
+            let { paymentToken, url } = splitUrlAndPaymentToken(item);
 
-    window.paypal.checkout.initXO = function() {
-        logDebug(`paymenttoken_initxo`);
-    };
+            if (!paymentToken && !url) {
+                return;
+            }
 
-    // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
+            if (!isEligible()) {
+                logDebug(`startflow_ineligible`, { url, paymentToken });
+                return redirect(url);
+            }
 
-    window.paypal.checkout.startFlow = (item) => {
-        logDebug(`paymenttoken_startflow`, { item });
+            if (url && !paymentToken) {
+                return resolve({ url, paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL });
+            }
 
-        if (window.ppCheckpoint) {
-            window.ppCheckpoint('flow_startflow');
-        }
-
-        reset();
-
-        let { paymentToken, url } = getUrlAndPaymentToken(item);
-
-        if (!paymentToken && !url) {
-            return;
-        }
-
-        if (!isEligible()) {
-            logDebug(`startflow_ineligible`, { url, paymentToken });
-            return redirect(url);
-        }
-
-        if (url) {
-            this.updateProps({ url });
-        }
-
-        resolve(paymentToken);
-    };
-
-    // closeFlow is our 'error' case - we can call our callback with an error
-
-    window.paypal.checkout.closeFlow = () => {
-        logWarning(`paymenttoken_closeflow`);
-
-        reset();
-
-        reject(new Error('Close Flow Called'));
-
-        // We also want to close the component at this point, to preserve the original legacy behavior
-
-        this.close();
-        this.closeParentTemplate();
-    };
+            return resolve({ url, paymentToken });
+        });
+    });
 }
 
 
@@ -201,9 +176,17 @@ function getPaymentToken(resolve, reject) {
     - Return to cancel url on cancel
 */
 
+let paypalCheckoutInited = false;
+
 function initPayPalCheckout(props = {}) {
 
     logInfo(`init_checkout`);
+
+    if (paypalCheckoutInited) {
+        logWarning(`multiple_init_paypal_checkout`);
+    }
+
+    paypalCheckoutInited = true;
 
     PayPalCheckout.autocloseParentTemplate = false;
 
@@ -211,17 +194,28 @@ function initPayPalCheckout(props = {}) {
         window.ppCheckpoint('flow_start');
     }
 
-    // let uid = window.localStorage && window.localStorage.getItem('pp_uid');
+    // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
 
-    let uid = window.pp_uid;
+    window.paypal.checkout.initXO = function() {
+        logDebug(`paymenttoken_initxo`);
+    };
 
-    return PayPalCheckout.init({
+    if (!props.paymentToken) {
+        let paymentTokenAndUrl = getPaymentTokenAndUrl();
+        props.paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
 
-        uid,
+        if (!props.url) {
+            props.url = paymentTokenAndUrl.then(result => result.url);
+        }
+    }
 
-        paymentToken: getPaymentToken,
+    let paypalCheckout = PayPalCheckout.init({
+
+        uid: window.pp_uid,
 
         onPaymentAuthorize({ returnUrl }) {
+
+            reset();
 
             logInfo(`payment_authorized`);
 
@@ -234,6 +228,8 @@ function initPayPalCheckout(props = {}) {
 
         onPaymentCancel({ cancelUrl }) {
 
+            reset();
+
             logInfo(`payment_canceled`);
 
             if (!urlWillRedirectPage(cancelUrl)) {
@@ -244,8 +240,32 @@ function initPayPalCheckout(props = {}) {
             return redirect(cancelUrl);
         },
 
+        onError() {
+
+            reset();
+        },
+
         ...props
     });
+
+    window.paypal.checkout.closeFlow = (closeUrl) => {
+        logWarning(`closeflow`);
+
+        reset();
+
+        try {
+            paypalCheckout.destroy(new Error(`closeFlow called`));
+        } catch (err) {
+            console.error(err);
+        }
+
+        if (closeUrl) {
+            logWarning(`closeflow_with_url`, { closeUrl });
+            return redirect(closeUrl);
+        }
+    };
+
+    return paypalCheckout;
 }
 
 
@@ -255,22 +275,33 @@ function renderPayPalCheckout(props = {}) {
 
         logError(`error`, { error: err.stack || err.toString() });
 
-        if (props.url || props.paymentToken) {
-            let url = getFullpageRedirectUrl(props.url || props.paymentToken);
+        Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
 
             if (url) {
-                setTimeout(() => {
-                    redirect(url);
-                }, 500);
+                return redirect(url);
             }
-        }
+
+            if (paymentToken) {
+                return redirect(getFullpageRedirectUrl(paymentToken));
+            }
+        });
 
         throw err;
     });
 }
 
 
-function handleClick(button, env, click, condition) {
+function triggerClickHandler(handler, event) {
+    if (handler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
+        logWarning(`click_function_expects_err`);
+        handler.call(null);
+    } else {
+        handler.call(null, event);
+    }
+}
+
+
+function handleClick(button, env, clickHandler, condition) {
 
     button.addEventListener('click', event => {
 
@@ -281,19 +312,48 @@ function handleClick(button, env, click, condition) {
 
         logInfo(`button_click`);
 
-        if (click instanceof Function) {
+        if (clickHandler instanceof Function) {
             logDebug(`button_clickhandler`);
 
-            if (isEligible()) {
-                renderPayPalCheckout({ env });
+            if (!isEligible()) {
+                return triggerClickHandler(clickHandler, event);
             }
 
-            if (click.toString().match(/^function *\(err(or)?\)\ *\{/)) {
-                logWarning(`click_function_expects_err`);
-                click.call(null);
-            } else {
-                click.call(null, event);
+            let paymentTokenAndUrl = getPaymentTokenAndUrl();
+            let url = paymentTokenAndUrl.then(result => result.url);
+            let paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
+
+            let paymentCancelled = false;
+
+            window.paypal.checkout.initXO = () => {
+                logDebug(`initxo_clickhandler`);
+            };
+
+            let _closeFlow = window.paypal.checkout.closeFlow;
+            window.paypal.checkout.closeFlow = (closeUrl) => {
+                logWarning(`closeflow_clickhandler`);
+
+                if (closeUrl) {
+                    logWarning(`closeflow_with_url`, { closeUrl });
+                    return redirect(closeUrl);
+                }
+
+                paymentCancelled = true;
+
+                reset();
+            };
+
+            triggerClickHandler(clickHandler, event);
+
+            window.paypal.checkout.closeFlow = _closeFlow;
+
+            if (paymentCancelled) {
+                return;
             }
+
+            logInfo(`init_paypal_checkout_click`);
+
+            renderPayPalCheckout({ env, url, paymentToken });
 
         } else {
 
@@ -321,6 +381,8 @@ function handleClick(button, env, click, condition) {
                 logError(`no_target_element`);
                 throw new Error(`Can not find element to hijack target for button click`);
             }
+
+            logInfo(`init_paypal_checkout_hijack`);
 
             initPayPalCheckout({
                 env,
@@ -388,7 +450,6 @@ function setup(id, options = {}) {
     }
 
     if (options.buttons) {
-
         if (getElements(options.buttons).length) {
             options.button = options.buttons;
             delete options.buttons;
@@ -400,15 +461,6 @@ function setup(id, options = {}) {
             }
         }
     }
-
-
-
-    renderButtons(id, options).then(buttons => {
-        buttons.forEach(button => {
-            logInfo(`listen_click_paypal_button`);
-            handleClick(button.el, options.environment, button.click, button.condition);
-        });
-    });
 
     if (options.button && options.button.length !== 0) {
         let buttonElements = getElements(options.button);
@@ -422,6 +474,13 @@ function setup(id, options = {}) {
             logWarning(`button_element_not_found`, { element: JSON.stringify(options.button) });
         }
     }
+
+    return renderButtons(id, options).then(buttons => {
+        buttons.forEach(button => {
+            logInfo(`listen_click_paypal_button`);
+            handleClick(button.el, options.environment, button.click, button.condition);
+        });
+    });
 }
 
 
@@ -441,6 +500,8 @@ function initXO() {
     if (!isEligible()) {
         return;
     }
+
+    logInfo(`init_paypal_checkout_initxo`);
 
     renderPayPalCheckout();
 }
@@ -463,7 +524,7 @@ function startFlow(item) {
         window.ppCheckpoint('flow_startflow');
     }
 
-    let { paymentToken, url } = getUrlAndPaymentToken(item);
+    let { paymentToken, url } = splitUrlAndPaymentToken(item);
 
     if (!paymentToken && !url) {
         return;
@@ -474,9 +535,11 @@ function startFlow(item) {
         return redirect(url);
     }
 
+    logInfo(`init_paypal_checkout_startflow`);
+
     renderPayPalCheckout({
-        url,
-        paymentToken
+        url: Promise.resolve(url),
+        paymentToken: Promise.resolve(paymentToken)
     });
 }
 
@@ -489,10 +552,24 @@ function startFlow(item) {
     Close the component in case of any error on the merchant side.
 */
 
-function closeFlow() {
-    logDebug(`closeflow`);
+function closeFlow(closeUrl) {
+    logWarning(`closeflow`);
+
+    if (closeUrl) {
+        logWarning(`closeflow_with_url`, { closeUrl });
+        return redirect(closeUrl);
+    }
 
     console.warn('Checkout is not open, can not be closed');
+}
+
+function reset() {
+
+    // Once our callback has been called, we can set the global methods to their original values
+
+    window.paypal.checkout.initXO    = initXO;
+    window.paypal.checkout.startFlow = startFlow;
+    window.paypal.checkout.closeFlow = closeFlow;
 }
 
 
