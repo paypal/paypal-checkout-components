@@ -1,7 +1,6 @@
-import { argv } from 'yargs';
-import { WEBPACK_CONFIG } from './webpack.conf';
-
-
+var argv = require('yargs').argv;
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = function(config) {
     config.set({
@@ -18,16 +17,77 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-          { pattern: 'test/unit.js', included: true, served: true },
+            { pattern: 'test/test.js', included: true, served: true },
+            { pattern: 'test/*.js', included: false, served: true },
+            { pattern: 'test/*.htm', included: false, served: true },
+        ],
 
+        plugins: [
+            require('karma-webpack'),
+            require('karma-mocha'),
+            require('karma-phantomjs-launcher'),
+            require('karma-chrome-launcher'),
+            require('karma-safari-launcher'),
+            require('karma-firefox-launcher'),
+            require('karma-ie-launcher'),
+            require('karma-sinon-chai'),
+            require('karma-coverage'),
+            require('karma-spec-reporter'),
+            require('karma-sourcemap-loader')
         ],
 
         webpackMiddleware: {
-            noInfo: false,
-            stats: true
+            noInfo: true,
+            stats: false
         },
 
-        webpack: WEBPACK_CONFIG,
+        webpack: {
+            devtool: 'inline-source-map',
+
+            resolve: {
+                root: [
+                    __dirname
+                ],
+
+                modulesDirectories: [
+                    'node_modules'
+                ]
+            },
+
+            module: {
+                loaders: [
+                    {
+                        test: /\.js$/,
+                        exclude: /(dist)/,
+                        loader: 'babel',
+                        query: {
+                            presets: ['es2015'],
+                            plugins: [
+                                'transform-object-rest-spread',
+                                'syntax-object-rest-spread',
+                                'transform-es3-property-literals',
+                                'transform-es3-member-expression-literals',
+                                ['transform-es2015-for-of', {loose: true}],
+                                [ '__coverage__', { only: `${__dirname}/src` } ]
+                            ]
+                        }
+                    },
+                    {
+                        test: /\.(html?|css|json)$/,
+                        loader: 'raw-loader'
+                    }
+                ]
+            },
+            bail: false,
+            plugins: [
+                new webpack.DefinePlugin({
+                    __FILE_NAME__: '"paypal.checkout.v4.js"',
+                    __FILE_VERSION__: '"4"',
+                    __MAJOR_VERSION__: '"4"',
+                    __MINOR_VERSION__: '"4.0"'
+                })
+            ]
+        },
 
 
         // list of files to exclude
@@ -38,8 +98,9 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-          'test/unit.js': ['webpack'],
-          //'src/**/*.js': ['coverage',  'sourcemap']
+            'test/test.js': ['webpack'],
+            'test/child.js': ['webpack'],
+            'src/**/*.js': ['coverage',  'sourcemap']
         },
 
         // test results reporter to use
@@ -79,7 +140,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_DEBUG,
+        logLevel: config.LOG_WARN,
 
 
         // enable / disable watching file and executing tests whenever any file changes

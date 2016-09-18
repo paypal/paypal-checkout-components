@@ -29,7 +29,8 @@ export let config = {
             local:      `http://localhost.paypal.com:8000`,
             stage:      `https://www.${config.stage}.qa.paypal.com`,
             sandbox:    `https://www.sandbox.paypal.com`,
-            production: `https://www.paypal.com`
+            production: `https://www.paypal.com`,
+            test:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -46,7 +47,8 @@ export let config = {
         local:      `/webapps/hermes?ul=0`,
         stage:      `/webapps/hermes`,
         sandbox:    `/checkoutnow`,
-        production: `/checkoutnow`
+        production: `/checkoutnow`,
+        test:       `/base/test/child.htm`
     },
 
     billingUris: {
