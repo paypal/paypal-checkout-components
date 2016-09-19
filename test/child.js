@@ -1,15 +1,13 @@
 
 import 'src/index';
 
-if (window.xchild.props.run) {
-    eval(`(function() { ${window.xchild.props.run} }).call(this);`); // eslint-disable-line
-}
-
 window.xchild.props.paymentToken().then(paymentToken => {
 
+    let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+
     window.xchild.props.onPaymentAuthorize({
-        paymentToken: paymentToken,
+        paymentToken,
         cancelUrl: `#cancel?token=${paymentToken}`,
-        returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY`
+        returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`
     });
 });

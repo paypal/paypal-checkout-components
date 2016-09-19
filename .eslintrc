@@ -23,6 +23,7 @@
         "document": true,
         "Promise": false,
         "performance": true,
+        "assert": true,
         "__MINOR_VERSION__": true,
         "__MAJOR_VERSION__": true,
         "__FILE_NAME__": true,
