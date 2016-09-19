@@ -93,7 +93,12 @@ function getFullpageRedirectUrl(token) {
     return `${config.checkoutUrl}?token=${ecToken}`;
 }
 
-function splitUrlAndPaymentToken(item) {
+function matchUrlAndPaymentToken(item) {
+
+    if (!item || !item.trim()) {
+        logError(`startflow_no_url_or_token`, { item });
+        throw new Error(`startflow_no_url_or_token`);
+    }
 
     let paymentToken = item && parseToken(item);
     let url = (item && item !== paymentToken) ? item : null;
@@ -110,9 +115,6 @@ function splitUrlAndPaymentToken(item) {
     } else if (paymentToken) {
         logDebug(`startflow_with_token`, { item });
         url = getFullpageRedirectUrl(item);
-    } else {
-        logError(`startflow_no_url_or_token`, { item });
-        return {};
     }
 
     return { paymentToken, url };
@@ -139,28 +141,13 @@ function getPaymentTokenAndUrl() {
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
         window.paypal.checkout.startFlow = once((item) => {
-            logDebug(`paymenttoken_startflow`, { item });
+            logDebug(`gettoken_startflow`, { item });
 
             if (window.ppCheckpoint) {
                 window.ppCheckpoint('flow_startflow');
             }
 
-            let { paymentToken, url } = splitUrlAndPaymentToken(item);
-
-            if (!paymentToken && !url) {
-                return;
-            }
-
-            if (!isEligible()) {
-                logDebug(`startflow_ineligible`, { url, paymentToken });
-                return redirect(url);
-            }
-
-            if (url && !paymentToken) {
-                return resolve({ url, paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL });
-            }
-
-            return resolve({ url, paymentToken });
+            return resolve(matchUrlAndPaymentToken(item));
         });
     });
 }
@@ -202,11 +189,23 @@ function initPayPalCheckout(props = {}) {
 
     if (!props.paymentToken) {
         let paymentTokenAndUrl = getPaymentTokenAndUrl();
+
         props.paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
 
         if (!props.url) {
             props.url = paymentTokenAndUrl.then(result => result.url);
         }
+    }
+
+    if (!isEligible()) {
+
+        props.url.then(url => {
+            logDebug(`startflow_ineligible`, { url });
+
+            return redirect(url);
+        });
+
+        return;
     }
 
     let paypalCheckout = PayPalCheckout.init({
@@ -271,23 +270,27 @@ function initPayPalCheckout(props = {}) {
 
 function renderPayPalCheckout(props = {}) {
 
-    return initPayPalCheckout(props).render().catch(err => {
+    let paypalCheckout = initPayPalCheckout(props);
 
-        logError(`error`, { error: err.stack || err.toString() });
+    if (paypalCheckout) {
+        return paypalCheckout.render().catch(err => {
 
-        Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
+            logError(`error`, { error: err.stack || err.toString() });
 
-            if (url) {
-                return redirect(url);
-            }
+            Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
 
-            if (paymentToken) {
-                return redirect(getFullpageRedirectUrl(paymentToken));
-            }
+                if (url) {
+                    return redirect(url);
+                }
+
+                if (paymentToken) {
+                    return redirect(getFullpageRedirectUrl(paymentToken));
+                }
+            });
+
+            throw err;
         });
-
-        throw err;
-    });
+    }
 }
 
 
@@ -314,10 +317,6 @@ function handleClick(button, env, clickHandler, condition) {
 
         if (clickHandler instanceof Function) {
             logDebug(`button_clickhandler`);
-
-            if (!isEligible()) {
-                return triggerClickHandler(clickHandler, event);
-            }
 
             let paymentTokenAndUrl = getPaymentTokenAndUrl();
             let url = paymentTokenAndUrl.then(result => result.url);
@@ -524,21 +523,12 @@ function startFlow(item) {
         window.ppCheckpoint('flow_startflow');
     }
 
-    let { paymentToken, url } = splitUrlAndPaymentToken(item);
-
-    if (!paymentToken && !url) {
-        return;
-    }
-
-    if (!isEligible()) {
-        logDebug(`paymenttoken_startflow_ineligible`, { url, paymentToken });
-        return redirect(url);
-    }
+    let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
     logInfo(`init_paypal_checkout_startflow`);
 
     renderPayPalCheckout({
-        url: Promise.resolve(url),
+        url:          Promise.resolve(url),
         paymentToken: Promise.resolve(paymentToken)
     });
 }

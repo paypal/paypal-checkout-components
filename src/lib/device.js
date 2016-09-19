@@ -1,6 +1,10 @@
 
+export function getUserAgent() {
+    return window.navigator.mockUserAgent || window.navigator.userAgent;
+}
+
 export function isDevice() {
-    let userAgent = window.navigator.userAgent;
+    let userAgent = getUserAgent();
     if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
         return true;
     }
@@ -9,14 +13,14 @@ export function isDevice() {
 }
 
 export function isWebView() {
-    let userAgent = window.navigator.userAgent;
+    let userAgent = getUserAgent();
     return (/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i).test(userAgent) ||
         (/\bwv\b/).test(userAgent) ||
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
 export function getAgent(agent) {
-    let ua = window.navigator.userAgent;
+    let ua = getUserAgent();
     let tem;
     let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
     if (/trident/i.test(M[1])) {

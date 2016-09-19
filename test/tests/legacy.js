@@ -23,8 +23,10 @@ function generateECToken() {
     return `EC-${uniqueID(17).toUpperCase()}`;
 }
 
-let CHILD_URI = '/base/test/child.htm';
-let CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
+const CHILD_URI = '/base/test/child.htm';
+const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
+
+const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
 describe('ppxo legacy cases', () => {
 
@@ -160,8 +162,6 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call startFlow', (done) => {
 
-
-
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
@@ -176,6 +176,32 @@ describe('ppxo legacy cases', () => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                     done();
                 });
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it.skip('should render a button into a container and click on the button, then call startFlow in an ineligible browser', (done) => {
+
+        window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+        return window.paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+
+                let token = generateECToken();
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    done();
+                });
+
+                window.paypal.checkout.startFlow(token);
             }
 
         }).then(() => {
@@ -209,6 +235,32 @@ describe('ppxo legacy cases', () => {
         });
     });
 
+    it('should render a button into a container and click on the button, then call startFlow with a url in an ineligible browser', (done) => {
+
+        window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+        return window.paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+
+                let token = generateECToken();
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    done();
+                });
+
+                window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
     it('should render a button into a container and click on the button, then call startFlow with a url with no token', (done) => {
 
         return window.paypal.checkout.setup('merchantID', {
@@ -223,6 +275,30 @@ describe('ppxo legacy cases', () => {
                     assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
                     done();
                 });
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a container and click on the button, then call startFlow with a url with no token in an ineligible browser', (done) => {
+
+        window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+        return window.paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl`);
+                    done();
+                });
+
+                window.paypal.checkout.startFlow(`#fullpageRedirectUrl`);
             }
 
         }).then(() => {
@@ -250,6 +326,38 @@ describe('ppxo legacy cases', () => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                         done();
                     });
+
+                }, 100);
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a container and click on the button, then call initXO, then startFlow in an ineligible browser', (done) => {
+
+        window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+        return window.paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+
+                window.paypal.checkout.initXO();
+
+                setTimeout(() => {
+
+                    let token = generateECToken();
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                        done();
+                    });
+
+                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
 
                 }, 100);
             }

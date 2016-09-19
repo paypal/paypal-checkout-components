@@ -1,5 +1,5 @@
 
-import { isWebView, getAgent, isDevice } from '../lib';
+import { isWebView, getAgent, isDevice, getUserAgent } from '../lib';
 
 const SUPPORTED_AGENTS = {
     Chrome: 27,
@@ -11,11 +11,7 @@ const SUPPORTED_AGENTS = {
 };
 
 export function isUnsupportedIE() {
-    return window.navigator.userAgent.match(/MSIE (5|6|7|8)\./i);
-}
-
-export function isOldIE() {
-    return window.navigator.userAgent.match(/MSIE (5|6|7|8|9|10)\./i);
+    return getUserAgent().match(/MSIE (5|6|7|8)\./i);
 }
 
 export function isEligible() {
