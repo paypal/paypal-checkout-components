@@ -184,9 +184,13 @@ describe('ppxo legacy cases', () => {
         });
     });
 
-    it.skip('should render a button into a container and click on the button, then call startFlow in an ineligible browser', (done) => {
+    it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', (done) => {
 
         window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+        let checkoutUrl = Object.getOwnPropertyDescriptor(ppxo.config, 'checkoutUrl');
+        delete ppxo.config.checkoutUrl;
+        ppxo.config.checkoutUrl = '#testCheckoutUrl';
 
         return window.paypal.checkout.setup('merchantID', {
 
@@ -197,7 +201,8 @@ describe('ppxo legacy cases', () => {
                 let token = generateECToken();
 
                 onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+                    Object.defineProperty(ppxo.config, 'checkoutUrl', checkoutUrl);
                     done();
                 });
 
