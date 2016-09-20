@@ -140,11 +140,15 @@ function getPaymentTokenAndUrl() {
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-        window.paypal.checkout.startFlow = once((item) => {
+        window.paypal.checkout.startFlow = once((item, opts) => {
             logDebug(`gettoken_startflow`, { item });
 
             if (window.ppCheckpoint) {
                 window.ppCheckpoint('flow_startflow');
+            }
+
+            if (opts) {
+                logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
             }
 
             return resolve(matchUrlAndPaymentToken(item));
@@ -177,10 +181,6 @@ function initPayPalCheckout(props = {}) {
 
     PayPalCheckout.autocloseParentTemplate = false;
 
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_start');
-    }
-
     // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
 
     window.paypal.checkout.initXO = function() {
@@ -206,6 +206,10 @@ function initPayPalCheckout(props = {}) {
         });
 
         return;
+    }
+
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_start');
     }
 
     let paypalCheckout = PayPalCheckout.init({
@@ -306,6 +310,12 @@ function triggerClickHandler(handler, event) {
 
 function handleClick(button, env, clickHandler, condition) {
 
+    if (button.hasAttribute('data-paypal-click-listener')) {
+        return logWarning(`button_already_has_paypal_click_listener`);
+    }
+
+    button.setAttribute('data-paypal-click-listener', true);
+
     button.addEventListener('click', event => {
 
         if (condition instanceof Function && !condition.call()) {
@@ -403,12 +413,25 @@ function handleClick(button, env, clickHandler, condition) {
     - Render a button to initiate the checkout window
 */
 
+let setupCalled = false;
+
 function setup(id, options = {}) {
 
     logInfo(`setup`, {
         env: options.environment,
-        options: JSON.stringify(options)
+        options: JSON.stringify(options, (key, val) => {
+            if (val instanceof Function) {
+                return '<function>';
+            }
+            return val;
+        })
     });
+
+    if (setupCalled) {
+        console.warn(`setup_called_multiple_times`);
+    }
+
+    setupCalled = true;
 
     if (window.I10C) {
         logInfo(`instart`);
@@ -516,11 +539,15 @@ function initXO() {
     method will have been patched over in getToken.
 */
 
-function startFlow(item) {
+function startFlow(item, opts) {
     logDebug(`startflow`, { item });
 
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_startflow');
+    }
+
+    if (opts) {
+        logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
     }
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
@@ -643,26 +670,46 @@ if (window.paypal.checkout.setup) {
     Call window.paypalCheckoutReady on document ready, if it has been defined by the merchant
 */
 
-if (window.paypalCheckoutReady instanceof Function) {
-    logDebug(`paypal_checkout_ready_passed`);
-    let paypalCheckoutReady = window.paypalCheckoutReady;
+let readyCalled = false;
+
+function invokeReady(method) {
+
+    if (readyCalled) {
+        logWarning(`ready_called_multiple_times`);
+    }
+
+    if (setupCalled) {
+        logWarning(`ready_called_after_setup`);
+    }
+
+    readyCalled = true;
+
     onDocumentReady(() => {
         logDebug(`paypal_checkout_ready`);
-        paypalCheckoutReady();
+        method();
     });
+}
+
+
+if (window.paypalCheckoutReady instanceof Function) {
+    logDebug(`paypal_checkout_ready_preset`);
+    invokeReady(window.paypalCheckoutReady);
 }
 
 try {
     delete window.paypalCheckoutReady;
 
     Object.defineProperty(window, 'paypalCheckoutReady', {
+
         set(method) {
-            onDocumentReady(() => {
-                logDebug(`paypal_checkout_ready_setter`);
-                method.call(window);
-            });
+            logDebug(`paypal_checkout_ready_setter`);
+            invokeReady(method);
+        },
+
+        get() {
+            logWarning(`paypal_checkout_ready_getter`);
         }
     });
 } catch (err) {
-    logError('paypal_checkout_ready_setter_error', { error: err.stack || err.toString() });
+    logWarning('paypal_checkout_ready_setter_error', { error: err.stack || err.toString() });
 }

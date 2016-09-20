@@ -17,7 +17,7 @@ function domainToEnv(domain) {
 function setDomainEnv(domain) {
     let currentDomainEnv = domainToEnv(domain);
 
-    if (currentDomainEnv) {
+    if (currentDomainEnv && currentDomainEnv !== 'test') {
         config.env = currentDomainEnv;
     }
 }

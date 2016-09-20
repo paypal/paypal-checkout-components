@@ -55,7 +55,7 @@ export function merge() {
 }
 
 
-export function request(config, callback) {
+export function request(config) {
     return new Promise((resolve, reject) => {
 
         config.method = config.method || 'get';
