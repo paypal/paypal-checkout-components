@@ -6,7 +6,7 @@ import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { PayPalCheckout } from '../components';
 import { isEligible } from './eligibility';
 import { config } from '../config';
-import { getMeta } from '../bridge';
+import { setupBridge } from '../bridge';
 
 import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
@@ -438,9 +438,9 @@ function setup(id, options = {}) {
     }
 
     if (config.paypalUrls[options.environment]) {
-        if (config.env !== options.environment) {
+        if (options.environment !== config.env) {
             config.env = options.environment;
-
+            setupBridge(config.env, config.bridgeUrl);
         }
     } else {
         options.environment = config.env;
@@ -449,26 +449,25 @@ function setup(id, options = {}) {
     if (options.locale) {
         let [ lang, country ] = options.locale.split('_');
 
-        getMeta.then(() => {
+        config.customCountry = true;
 
-            if (config.locales[country]) {
-                config.locale.country = country;
+        if (config.locales[country]) {
+            config.locale.country = country;
 
-                if (config.locales[country].indexOf(lang) !== -1) {
-                    config.locale.lang = lang;
-                } else {
-                    logWarning(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
-                    config.locale.lang = config.locales[country][0];
-                }
-
-            } else if (config.locales.US[country]) {
-                config.locale.country = 'US';
-                config.locale.lang = country;
-
+            if (config.locales[country].indexOf(lang) !== -1) {
+                config.locale.lang = lang;
             } else {
-                logWarning(`invalid_user_country`, { country });
+                logWarning(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
+                config.locale.lang = config.locales[country][0];
             }
-        });
+
+        } else if (config.locales.US[country]) {
+            config.locale.country = 'US';
+            config.locale.lang = country;
+
+        } else {
+            logWarning(`invalid_user_country`, { country });
+        }
     }
 
     if (options.buttons) {
