@@ -211,6 +211,17 @@ export let Button = xcomponent.create({
                 }[size];
             }
         },
+        
+        locale: {
+            type: 'string',
+            required: false,
+
+            def() {
+                return {
+                    locale: 'en_US'
+                };
+            }
+        },
 
         buttonStyle: {
             type: 'object',
