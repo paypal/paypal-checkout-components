@@ -20,14 +20,18 @@ export let Checkout = xcomponent.create({
     name: 'ppcheckout',
 
     buildUrl(instance) {
+        let env = instance.props.env || config.env;
+
         if (instance.props.paymentToken || instance.props.paymentDetails) {
-            return config.checkoutUrl;
+            return config.checkoutUrls[env];
         }
 
         if (instance.props.billingToken || instance.props.billingDetails) {
-            return config.billingUrl;
+            return config.billingUrls[env];
         }
     },
+
+    bridgeUrls: config.bridgeUrls,
 
     contexts: {
         iframe: false,
@@ -101,7 +105,8 @@ export let Checkout = xcomponent.create({
                 }
 
                 return function() {
-                    return createCheckoutToken(this.props.clientID[config.env], this.props.paymentDetails);
+                    let env = props.env || config.env;
+                    return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
                 };
             }
         },
@@ -126,7 +131,8 @@ export let Checkout = xcomponent.create({
                 }
 
                 return function() {
-                    return createBillingToken(this.props.clientID[config.env], this.props.billingDetails);
+                    let env = props.env || config.env;
+                    return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
                 };
             }
         },

@@ -10,6 +10,26 @@ import { config } from './config';
 
 export let bridge = new Promise();
 
+postRobot.on('meta', (source, data) => {
+
+    if (data.iframeEligible) {
+        Checkout.contexts.lightbox = true;
+    }
+
+    $logger.info(data.iframeEligible ?
+        `ppxo_lightbox_eligible_${data.iframeEligibleReason}` :
+        `ppxo_lightbox_ineligible_${data.iframeEligibleReason}`);
+
+    if (config.locales[data.locale.country] && !config.customCountry) {
+        config.locale.country = data.locale.country;
+
+        if (config.locales[data.locale.country].indexOf(data.locale.lang) !== -1) {
+            config.locale.lang = data.locale.lang;
+        } else {
+            config.locale.lang = config.locales[data.locale.country][0];
+        }
+    }
+});
 
 export function setupBridge(env, bridgeUrl) {
     $logger.debug(`ppxo_setup_bridge`, { env });
@@ -17,28 +37,6 @@ export function setupBridge(env, bridgeUrl) {
     let openBridge = postRobot.openBridge(bridgeUrl);
 
     openBridge.then(win => {
-
-        postRobot.once('meta', { window: win }).then(data => {
-
-            if (data.iframeEligible) {
-                Checkout.contexts.lightbox = true;
-            }
-
-            $logger.info(data.iframeEligible ?
-                `ppxo_lightbox_eligible_${data.iframeEligibleReason}` :
-                `ppxo_lightbox_ineligible_${data.iframeEligibleReason}`);
-
-            if (config.locales[data.locale.country] && !config.customCountry) {
-                config.locale.country = data.locale.country;
-
-                if (config.locales[data.locale.country].indexOf(data.locale.lang) !== -1) {
-                    config.locale.lang = data.locale.lang;
-                } else {
-                    config.locale.lang = config.locales[data.locale.country][0];
-                }
-            }
-        });
-
         bridge.resolve(win);
     }, err => {
         bridge.reject(err);

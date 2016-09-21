@@ -13,8 +13,10 @@ export let Button = xcomponent.create({
     tag: 'paypal-button',
     name: 'ppbutton',
 
-    get url() {
-        return config.buttonUrl;
+    buildUrl(instance) {
+        let env = instance.props.env || config.env;
+
+        return config.buttonUrls[env];
     },
 
     contexts: {
@@ -76,7 +78,8 @@ export let Button = xcomponent.create({
                 }
 
                 return function() {
-                    return createCheckoutToken(this.props.clientID[config.env], this.props.paymentDetails);
+                    let env = props.env || config.env;
+                    return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
                 };
             }
         },
@@ -101,7 +104,8 @@ export let Button = xcomponent.create({
                 }
 
                 return function() {
-                    return createBillingToken(this.props.clientID[config.env], this.props.billingDetails);
+                    let env = props.env || config.env;
+                    return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
                 };
             }
         },

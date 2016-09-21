@@ -55,17 +55,97 @@ export let config = {
         local:      `/webapps/hermes/agreements?ul=0`,
         stage:      `/webapps/hermes/agreements`,
         sandbox:    `/agreements/approve`,
-        production: `/agreements/approve`
+        production: `/agreements/approve`,
+        test:       `/base/test/child.htm`
     },
 
     buttonUris: {
         local:      `/webapps/hermes/button`,
         stage:      `/webapps/hermes/button`,
         sandbox:    `/webapps/hermes/button`,
-        production: `/webapps/hermes/button`
+        production: `/webapps/hermes/button`,
+        test:       `/base/test/child.htm`
     },
 
     loggerUri: `/webapps/hermes/api/logger`,
+
+    get bridgeUri() {
+        return `/webapps/hermes/component-meta?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
+    },
+
+    authApiUri:    `/v1/oauth2/token`,
+    paymentApiUri: `/v1/payments/payment`,
+    billingApiUri: `/v1/billing-agreements/agreement-tokens`,
+
+    get checkoutUrls() {
+        return {
+            local:      `${config.paypalUrls.local}${config.checkoutUris.local}`,
+            stage:      `${config.paypalUrls.stage}${config.checkoutUris.stage}`,
+            sandbox:    `${config.paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
+            production: `${config.paypalUrls.production}${config.checkoutUris.production}`,
+            test:       `${config.paypalUrls.test}${config.checkoutUris.test}`
+        };
+    },
+
+    get billingUrls() {
+        return {
+            local:      `${config.paypalUrls.local}${config.billingUris.local}`,
+            stage:      `${config.paypalUrls.stage}${config.billingUris.stage}`,
+            sandbox:    `${config.paypalUrls.sandbox}${config.billingUris.sandbox}`,
+            production: `${config.paypalUrls.production}${config.billingUris.production}`,
+            test:       `${config.paypalUrls.test}${config.billingUris.test}`
+        };
+    },
+
+    get buttonUrls() {
+        return {
+            local:      `${config.paypalUrls.local}${config.buttonUris.local}`,
+            stage:      `${config.paypalUrls.stage}${config.buttonUris.stage}`,
+            sandbox:    `${config.paypalUrls.sandbox}${config.buttonUris.sandbox}`,
+            production: `${config.paypalUrls.production}${config.buttonUris.production}`,
+            test:       `${config.paypalUrls.test}${config.buttonUris.test}`
+        };
+    },
+
+    get bridgeUrls() {
+        return {
+            local:      `${config.paypalUrls.local}${config.bridgeUri}&env=local`,
+            stage:      `${config.paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
+            sandbox:    `${config.paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
+            production: `${config.paypalUrls.production}${config.bridgeUri}&env=production`,
+            test:       `${config.paypalUrls.test}${config.bridgeUri}&env=test`
+        };
+    },
+
+    get authApiUrls() {
+        return {
+            local:      `${config.apiUrls.local}${config.authApiUri}`,
+            stage:      `${config.apiUrls.stage}${config.authApiUri}`,
+            sandbox:    `${config.apiUrls.sandbox}${config.authApiUri}`,
+            production: `${config.apiUrls.production}${config.authApiUri}`,
+            test:       `${config.apiUrls.test}${config.authApiUri}`
+        };
+    },
+
+    get paymentApiUrls() {
+        return {
+            local:      `${config.apiUrls.local}${config.paymentApiUri}`,
+            stage:      `${config.apiUrls.stage}${config.paymentApiUri}`,
+            sandbox:    `${config.apiUrls.sandbox}${config.paymentApiUri}`,
+            production: `${config.apiUrls.production}${config.paymentApiUri}`,
+            test:       `${config.apiUrls.test}${config.paymentApiUri}`
+        };
+    },
+
+    get billingApiUrls() {
+        return {
+            local:      `${config.apiUrls.local}${config.billingApiUri}`,
+            stage:      `${config.apiUrls.stage}${config.billingApiUri}`,
+            sandbox:    `${config.apiUrls.sandbox}${config.billingApiUri}`,
+            production: `${config.apiUrls.production}${config.billingApiUri}`,
+            test:       `${config.apiUrls.test}${config.billingApiUri}`
+        };
+    },
 
     get paypalUrl() {
         return config.paypalUrls[config.env];

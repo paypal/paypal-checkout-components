@@ -4,7 +4,7 @@ import { request, isPayPalDomain } from './lib';
 import { messageBridge } from './bridge';
 
 
-export function createAccessToken(clientID) {
+export function createAccessToken(env, clientID) {
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createAccessToken', { clientID });
@@ -15,7 +15,7 @@ export function createAccessToken(clientID) {
     return request({
 
         method: 'post',
-        url: config.authApiUrl,
+        url: config.authApiUrls[env],
         headers: {
             'Authorization': `Basic ${basicAuth}`,
             'Content-Type':  `application/x-www-form-urlencoded; charset=utf-8`
@@ -34,7 +34,7 @@ export function createAccessToken(clientID) {
 
 
 
-export function createCheckoutToken(clientID, paymentDetails) {
+export function createCheckoutToken(env, clientID, paymentDetails) {
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createCheckoutToken', { clientID, paymentDetails });
@@ -48,11 +48,11 @@ export function createCheckoutToken(clientID, paymentDetails) {
     paymentDetails.payer = paymentDetails.payer || {};
     paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
 
-    return createAccessToken(clientID).then(accessToken => {
+    return createAccessToken(env, clientID).then(accessToken => {
 
         return request({
             method: 'post',
-            url: config.paymentApiUrl,
+            url: config.paymentApiUrls[env],
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             },
@@ -79,7 +79,7 @@ export function createCheckoutToken(clientID, paymentDetails) {
     });
 }
 
-export function createBillingToken(clientID, billingDetails) {
+export function createBillingToken(env, clientID, billingDetails) {
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createBillingToken', { clientID, billingDetails });
@@ -94,11 +94,11 @@ export function createBillingToken(clientID, billingDetails) {
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
 
-    return createAccessToken(clientID).then(accessToken => {
+    return createAccessToken(env, clientID).then(accessToken => {
 
         return request({
             method: 'post',
-            url: config.billingApiUrl,
+            url: config.billingApiUrls[env],
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             },
