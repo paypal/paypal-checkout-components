@@ -150,17 +150,18 @@ You'll need:
 
 ### Customizing the Button
 
-You can change the look and feel of the button, using the `buttonStyle` parameter:
+You can change the look and feel of the button, using the `buttonStyle` parameter, and language of the button using `locale` parameter:
 
 ```javascript
 ppxo.Button.render({
 
 	...
+	// Specify the language displayed on your button
+	locale: 'en_US',
 
 	// Specify the style of your button
 
 	buttonStyle: {
-		locale: 'en_US',
 		size:   'medium', // tiny, small, medium
 		color:  'orange', // orange, blue
 		shape:  'pill'    // pill, rect
