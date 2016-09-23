@@ -217,9 +217,7 @@ export let Button = xcomponent.create({
             required: false,
 
             def() {
-                return {
-                    locale: 'en_US'
-                };
+                return 'en_US';
             }
         },
 
