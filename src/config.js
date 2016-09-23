@@ -2,6 +2,7 @@
 export let config = {
 
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
+    legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
 
     ppobjects: false,
 

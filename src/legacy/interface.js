@@ -136,7 +136,8 @@ function matchUrlAndPaymentToken(item) {
 */
 
 function getPaymentTokenAndUrl() {
-    return new Promise((resolve, reject) => {
+
+    let paymentTokenAndUrl = new Promise((resolve, reject) => {
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
@@ -154,6 +155,11 @@ function getPaymentTokenAndUrl() {
             return resolve(matchUrlAndPaymentToken(item));
         });
     });
+
+    let url          = paymentTokenAndUrl.then(result => result.url);
+    let paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
+
+    return { url, paymentToken };
 }
 
 
@@ -180,33 +186,6 @@ function initPayPalCheckout(props = {}) {
     paypalCheckoutInited = true;
 
     PayPalCheckout.autocloseParentTemplate = false;
-
-    // We don't want initXO to do anything during this process. We've already opened the window so we're good to go.
-
-    window.paypal.checkout.initXO = function() {
-        logDebug(`paymenttoken_initxo`);
-    };
-
-    if (!props.paymentToken) {
-        let paymentTokenAndUrl = getPaymentTokenAndUrl();
-
-        props.paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
-
-        if (!props.url) {
-            props.url = paymentTokenAndUrl.then(result => result.url);
-        }
-    }
-
-    if (!isEligible()) {
-
-        props.url.then(url => {
-            logDebug(`startflow_ineligible`, { url });
-
-            return redirect(url);
-        });
-
-        return;
-    }
 
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_start');
@@ -276,25 +255,23 @@ function renderPayPalCheckout(props = {}) {
 
     let paypalCheckout = initPayPalCheckout(props);
 
-    if (paypalCheckout) {
-        return paypalCheckout.render().catch(err => {
+    return paypalCheckout.render().catch(err => {
 
-            logError(`error`, { error: err.stack || err.toString() });
+        logError(`error`, { error: err.stack || err.toString() });
 
-            Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
+        Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
 
-                if (url) {
-                    return redirect(url);
-                }
+            if (url) {
+                return redirect(url);
+            }
 
-                if (paymentToken) {
-                    return redirect(getFullpageRedirectUrl(paymentToken));
-                }
-            });
-
-            throw err;
+            if (paymentToken) {
+                return redirect(getFullpageRedirectUrl(paymentToken));
+            }
         });
-    }
+
+        throw err;
+    });
 }
 
 
@@ -308,7 +285,93 @@ function triggerClickHandler(handler, event) {
 }
 
 
-function handleClick(button, env, clickHandler, condition) {
+function handleClick(env, clickHandler, event) {
+    logDebug(`button_click_handler`);
+
+    let { url, paymentToken } = getPaymentTokenAndUrl();
+
+    if (!isEligible()) {
+
+        url.then(redirectUrl => {
+            logDebug(`ineligible_startflow`, { url: redirectUrl });
+            return redirect(redirectUrl);
+        });
+
+        return triggerClickHandler(clickHandler, event);
+    }
+
+    let paymentCancelled = false;
+
+    window.paypal.checkout.initXO = () => {
+        logDebug(`initxo_clickhandler`);
+    };
+
+    window.paypal.checkout.closeFlow = (closeUrl) => {
+        logWarning(`closeflow_clickhandler`);
+
+        if (closeUrl) {
+            logWarning(`closeflow_with_url`, { closeUrl });
+            return redirect(closeUrl);
+        }
+
+        paymentCancelled = true;
+
+        reset();
+    };
+
+    triggerClickHandler(clickHandler, event);
+
+    if (paymentCancelled) {
+        return;
+    }
+
+    logInfo(`init_paypal_checkout_click`);
+
+    renderPayPalCheckout({ env, url, paymentToken });
+}
+
+
+function handleClickHijack(env, button) {
+    logDebug(`button_click_hijack`);
+
+    let targetElement;
+
+    if (button && button.form) {
+        targetElement = button.form;
+    } else if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
+        targetElement = button;
+    } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode.tagName.toLowerCase() === 'a') {
+        targetElement = button.parentNode;
+    } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
+        targetElement = button.parentNode.parentNode;
+    } else if (this && this.hasOwnProperty('target') && typeof this.target !== 'undefined') { // not sure what this use case is
+        targetElement = this; // eslint-disable-line
+    }
+
+    if (!targetElement) {
+        logError(`no_target_element`);
+        return;
+    }
+
+    logInfo(`init_paypal_checkout_hijack`);
+
+    let paypalCheckout = initPayPalCheckout({
+        env,
+        paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
+    });
+
+    paypalCheckout.renderHijack(targetElement);
+}
+
+
+
+function listenClick(env, button, clickHandler, condition) {
+
+    let isClick  = (clickHandler instanceof Function);
+
+    if (!isEligible() && !isClick) {
+        return logDebug(`ineligible_listenclick`);
+    }
 
     if (button.hasAttribute('data-paypal-click-listener')) {
         return logWarning(`button_already_has_paypal_click_listener`);
@@ -318,85 +381,21 @@ function handleClick(button, env, clickHandler, condition) {
 
     button.addEventListener('click', event => {
 
-        if (condition instanceof Function && !condition.call()) {
-            logDebug(`button_click_condition_disabled`);
-            return;
-        }
-
         logInfo(`button_click`);
 
-        if (clickHandler instanceof Function) {
-            logDebug(`button_clickhandler`);
-
-            let paymentTokenAndUrl = getPaymentTokenAndUrl();
-            let url = paymentTokenAndUrl.then(result => result.url);
-            let paymentToken = paymentTokenAndUrl.then(result => result.paymentToken);
-
-            let paymentCancelled = false;
-
-            window.paypal.checkout.initXO = () => {
-                logDebug(`initxo_clickhandler`);
-            };
-
-            let _closeFlow = window.paypal.checkout.closeFlow;
-            window.paypal.checkout.closeFlow = (closeUrl) => {
-                logWarning(`closeflow_clickhandler`);
-
-                if (closeUrl) {
-                    logWarning(`closeflow_with_url`, { closeUrl });
-                    return redirect(closeUrl);
-                }
-
-                paymentCancelled = true;
-
-                reset();
-            };
-
-            triggerClickHandler(clickHandler, event);
-
-            window.paypal.checkout.closeFlow = _closeFlow;
-
-            if (paymentCancelled) {
-                return;
+        if (condition instanceof Function) {
+            if (condition.call()) {
+                logInfo(`button_click_condition_enabled`);
+            } else {
+                return logInfo(`button_click_condition_disabled`);
             }
+        }
 
-            logInfo(`init_paypal_checkout_click`);
-
-            renderPayPalCheckout({ env, url, paymentToken });
+        if (isClick) {
+            return handleClick(env, clickHandler, event);
 
         } else {
-
-            if (!isEligible()) {
-                return;
-            }
-
-            logDebug(`button_hijack`);
-
-            let targetElement;
-
-            if (button && button.form) {
-                targetElement = button.form;
-            } else if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
-                targetElement = button;
-            } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode.tagName.toLowerCase() === 'a') {
-                targetElement = button.parentNode;
-            } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
-                targetElement = button.parentNode.parentNode;
-            } else if (this && this.hasOwnProperty('target') && typeof this.target !== 'undefined') { // not sure what this use case is
-                targetElement = this; // eslint-disable-line
-            }
-
-            if (!targetElement) {
-                logError(`no_target_element`);
-                throw new Error(`Can not find element to hijack target for button click`);
-            }
-
-            logInfo(`init_paypal_checkout_hijack`);
-
-            initPayPalCheckout({
-                env,
-                paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
-            }).renderHijack(targetElement);
+            return handleClickHijack(env, button);
         }
     });
 }
@@ -417,7 +416,10 @@ let setupCalled = false;
 
 function setup(id, options = {}) {
 
+    id = id || 'merchant';
+
     logInfo(`setup`, {
+        id,
         env: options.environment,
         options: JSON.stringify(options, (key, val) => {
             if (val instanceof Function) {
@@ -432,6 +434,8 @@ function setup(id, options = {}) {
     }
 
     setupCalled = true;
+
+    reset();
 
     if (window.I10C) {
         logInfo(`instart`);
@@ -489,7 +493,7 @@ function setup(id, options = {}) {
         if (buttonElements.length) {
             buttonElements.forEach(el => {
                 logInfo(`listen_click_custom_button`);
-                handleClick(el, options.environment, options.click, options.condition);
+                listenClick(options.environment, el, options.click, options.condition);
             });
         } else {
             logWarning(`button_element_not_found`, { element: JSON.stringify(options.button) });
@@ -499,7 +503,7 @@ function setup(id, options = {}) {
     return renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
             logInfo(`listen_click_paypal_button`);
-            handleClick(button.el, options.environment, button.click, button.condition);
+            listenClick(options.environment, button.el, button.click, button.condition);
         });
     });
 }
@@ -519,12 +523,16 @@ function initXO() {
     logDebug(`initxo`);
 
     if (!isEligible()) {
-        return;
+        return logDebug(`ineligible_initxo`);
     }
+
+    reset();
+
+    let { url, paymentToken } = getPaymentTokenAndUrl();
 
     logInfo(`init_paypal_checkout_initxo`);
 
-    renderPayPalCheckout();
+    renderPayPalCheckout({ url, paymentToken });
 }
 
 
@@ -551,12 +559,14 @@ function startFlow(item, opts) {
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
+    if (!isEligible()) {
+        logDebug(`ineligible_startflow_global`, { url });
+        return redirect(url);
+    }
+
     logInfo(`init_paypal_checkout_startflow`);
 
-    renderPayPalCheckout({
-        url:          Promise.resolve(url),
-        paymentToken: Promise.resolve(paymentToken)
-    });
+    renderPayPalCheckout({ url, paymentToken });
 }
 
 
@@ -658,8 +668,10 @@ if (window.paypal.checkout.setup) {
 
     window.PAYPAL = window.PAYPAL || {};
     window.PAYPAL.checkout = window.paypal.checkout;
+
     window.PAYPAL.apps = window.PAYPAL.apps || {};
     window.PAYPAL.apps.checkout = window.paypal.checkout;
+    window.PAYPAL.apps.Checkout = window.paypal.checkout;
 }
 
 
