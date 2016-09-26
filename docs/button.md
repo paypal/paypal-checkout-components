@@ -166,7 +166,7 @@ ppxo.Button.render({
 
 	buttonStyle: {
 		size:   'medium', // tiny, small, medium
-		color:  'orange', // orange, blue
+		color:  'orange', // orange, blue, silver
 		shape:  'pill'    // pill, rect
 	}
 
@@ -235,53 +235,7 @@ var MyCartComponent = window.React.createClass({
 
 ### Hybrid Integrations
 
-You can combine any flavor of payment create and execute:
-
-- Create and execute the payment all from the client side using `paymentDetails`, `autoExecute` and `onPaymentComplete`
-
-```javascript
-ppxo.Button.render({
-
-	autoExecute: true,
-	paymentDetails:  { ... },
-	onPaymentComplete: function(data) { ... }
-
-}, '#myContainerElement');
-```
-
-- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
-
-```javascript
-ppxo.Button.render({
-
-	paymentToken: function(resolve, reject) { ... },
-	onPaymentAuthorize: function(data) { ... }
-
-}, '#myContainerElement');
-```
-
-- Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
-
-```javascript
-ppxo.Button.render({
-
-	paymentDetails:  { ... },
-	onPaymentAuthorize: function(data) { ... }
-
-}, '#myContainerElement');
-```
-
-- Create the payment on your server using `paymentToken`, then execute on the client side using `autoExecute` and `onPaymentComplete`
-
-```javascript
-ppxo.Button.render({
-
-	autoExecute: true,
-	paymentToken: function(resolve, reject) { ... },
-	onPaymentComplete: function(data) { ... }
-
-}, '#myContainerElement');
-```
+You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid).
 
 
 ### Billing Agreements

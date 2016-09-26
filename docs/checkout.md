@@ -25,6 +25,9 @@ Or to test on sandbox:
 <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js" data-env="sandbox"></script>
 ```
 
+**Important:** To work with popup blockers, the `Checkout` component must be invoked during a **click** event. For this
+reason, it is recommended that you use the [Button Component](./button.md);
+
 ### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render PayPal Checkout.
@@ -36,43 +39,48 @@ You'll need:
 
 ```javascript
 <script>
-	ppxo.Checkout.render({
+	// Listen for a click event - ppxo.Checkout *must* be rendered on click
 
-		// Pass the client ID to use to create your transaction
+	document.querySelector('#myButton').addEventListener('click', function() {
 
-		clientID: {
-			sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
-			production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
-		},
+		ppxo.Checkout.render({
 
-		// Pass the payment details for your transaction
+			// Pass the client ID to use to create your transaction
 
-		paymentDetails: {
-			transactions: [
-				{
-					amount: {
-						total: '1.00',
-						currency: 'USD'
+			clientID: {
+				sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
+				production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
+			},
+
+			// Pass the payment details for your transaction
+
+			paymentDetails: {
+				transactions: [
+					{
+						amount: {
+							total: '1.00',
+							currency: 'USD'
+						}
 					}
-				}
-			]
-		},
+				]
+			},
 
-		// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
+			// Automatically execute the payment on paypal.com when the buyer clicks 'Pay Now'
 
-		autoExecute: true,
+			autoExecute: true,
 
-		// Pass a function to be called when the customer completes the payment
+			// Pass a function to be called when the customer completes the payment
 
-		onPaymentComplete: function(data) {
-			console.log('The payment was completed!');
-		},
+			onPaymentComplete: function(data) {
+				console.log('The payment was completed!');
+			},
 
-		// Pass a function to be called when the customer cancels the payment
+			// Pass a function to be called when the customer cancels the payment
 
-		onPaymentCancel: function(data) {
-			console.log('The payment was cancelled!');
-		}
+			onPaymentCancel: function(data) {
+				console.log('The payment was cancelled!');
+			}
+		});
 	});
 </script>
 ```
@@ -94,44 +102,49 @@ You'll need:
 
 ```javascript
 <script>
-	ppxo.Checkout.render({
+	// Listen for a click event - ppxo.Checkout *must* be rendered on click
 
-		// Set up a getter to create a payment token using the payments api, on your server side:
+	document.querySelector('#myButton').addEventListener('click', function() {
 
-		paymentToken: function(resolve, reject) {
+		ppxo.Checkout.render({
 
-			// Make an ajax call to get the express-checkout token. This should call your back-end,
-			// which should invoke the PayPal Payment Create api to retrieve the token.
+			// Set up a getter to create a payment token using the payments api, on your server side:
 
-			jQuery.post('/my-api/create-payment')
-				.done(function(data) { resolve(data.token); })
-				.fail(function(err)  { reject(err); });
-		},
+			paymentToken: function(resolve, reject) {
 
-		// Pass a function to be called when the customer approves the payment,
-		// then call execute payment on your server:
+				// Make an ajax call to get the express-checkout token. This should call your back-end,
+				// which should invoke the PayPal Payment Create api to retrieve the token.
 
-		onPaymentAuthorize: function(data) {
+				jQuery.post('/my-api/create-payment')
+					.done(function(data) { resolve(data.token); })
+					.fail(function(err)  { reject(err); });
+			},
 
-			console.log('The payment was authorized!');
-			console.log('Token = ',   data.paymentToken);
-			console.log('PayerID = ', data.payerID);
+			// Pass a function to be called when the customer approves the payment,
+			// then call execute payment on your server:
 
-			// At this point, the payment has been authorized, and you will need to call your back-end to complete the
-			// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
+			onPaymentAuthorize: function(data) {
 
-			jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
-				.done(function(data) { // Go to a success page })
-				.fail(function(err)  { // Go to an error page  });
-		},
+				console.log('The payment was authorized!');
+				console.log('Token = ',   data.paymentToken);
+				console.log('PayerID = ', data.payerID);
 
-		// Pass a function to be called when the customer cancels the payment
+				// At this point, the payment has been authorized, and you will need to call your back-end to complete the
+				// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-		onPaymentCancel: function(data) {
+				jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
+					.done(function(data) { // Go to a success page })
+					.fail(function(err)  { // Go to an error page  });
+			},
 
-			console.log('The payment was cancelled!');
-			console.log('Token = ', data.paymentToken);
-		}
+			// Pass a function to be called when the customer cancels the payment
+
+			onPaymentCancel: function(data) {
+
+				console.log('The payment was cancelled!');
+				console.log('Token = ', data.paymentToken);
+			}
+		});
 	});
 </script>
 ```
@@ -139,49 +152,7 @@ You'll need:
 
 ### Hybrid Integrations
 
-You can combine any flavor of payment create and execute:
-
-- Create and execute the payment all from the client side using `paymentDetails`, `autoExecute` and `onPaymentComplete`
-
-```javascript
-ppxo.Checkout.render({
-
-	autoExecute: true,
-	paymentDetails:  { ... },
-	onPaymentComplete: function(data) { ... }
-});
-```
-
-- Create and execute the payment on your server, using `paymentToken` and `onPaymentAuthorize`
-
-```javascript
-ppxo.Checkout.render({
-
-	paymentToken: function(resolve, reject) { ... },
-	onPaymentAuthorize: function(data) { ... }
-});
-```
-
-- Create the payment on the client side using `paymentDetails`, then execute on your server using `onPaymentAuthorize`
-
-```javascript
-ppxo.Checkout.render({
-
-	paymentDetails:  { ... },
-	onPaymentAuthorize: function(data) { ... }
-});
-```
-
-- Create the payment on your server using `paymentToken`, then execute on the client side using `autoExecute` and `onPaymentComplete`
-
-```javascript
-ppxo.Checkout.render({
-
-	autoExecute: true,
-	paymentToken: function(resolve, reject) { ... },
-	onPaymentComplete: function(data) { ... }
-});
-```
+You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid).
 
 
 ### Billing Agreements
