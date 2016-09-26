@@ -128,7 +128,7 @@ The way this works is:
 
    Here you can see `token=EC-2003069323602984G`. This is the token we need to use on our front-end.
 
-4. Use the `PayPalButton` or `PayPalCheckout` component to let the buyer authorize the payment
+4. Use the `ppxo.Button` or `ppxo.Checkout` component to let the buyer authorize the payment
 
    You'll need:
 
@@ -137,7 +137,7 @@ The way this works is:
    ---
 
    ```javascript
-   ppxo.PayPalButton.render({
+   ppxo.Button.render({
 
 	   paymentToken: function(resolve) {
 
