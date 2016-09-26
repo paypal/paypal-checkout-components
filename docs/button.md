@@ -114,6 +114,9 @@ You'll need:
 			// Make an ajax call to get the express-checkout token. This should call your back-end,
 			// which should invoke the PayPal Payment Create api to retrieve the token.
 
+			// When you have an EC token, you need to call the `resolve` method, e.g `resolve(data.token)`
+			// Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
+
 			jQuery.post('/my-api/create-payment')
 				.done(function(data) { resolve(data.token); })
 				.fail(function(err)  { reject(err); });

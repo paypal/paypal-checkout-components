@@ -132,7 +132,7 @@ The way this works is:
 
    You'll need:
 
-   - The approval url (`links[i].href` from the response in step 3, where `rel === "approval_url"`)
+   - The EC token (`EC-2003069323602984G` from '`links[1].href` from the response in step 3)
 
    ---
 
@@ -141,11 +141,12 @@ The way this works is:
 
 	   paymentToken: function(resolve) {
 
-	       // Call your server side to get the approval url from step 3, then pass it to the resolve callback
+	       // Call your server side to get the token from step 3, then pass it to the resolve callback
+	       //
 
 		   jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
 		       .done(function(data) {
-			       resolve(data.approval_url);
+			       resolve(data.token);
 		       });
 	   },
 
