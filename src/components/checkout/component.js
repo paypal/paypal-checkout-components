@@ -230,6 +230,10 @@ export let Checkout = xcomponent.create({
                     } else {
                         $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
                     }
+
+                    if (window.ppCheckpoint) {
+                        window.ppCheckpoint('flow_initial_message');
+                    }
                 };
             }
         },

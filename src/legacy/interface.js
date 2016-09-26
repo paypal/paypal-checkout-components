@@ -12,6 +12,12 @@ import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements, o
 import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
+
+if (window.xchild && !window.paypalCheckout) {
+    window.paypalCheckout = window.xchild;
+}
+
+
 let redirected = false;
 
 function redirect(location) {
@@ -304,6 +310,10 @@ function handleClick(env, clickHandler, event) {
 
     window.paypal.checkout.initXO = () => {
         logDebug(`initxo_clickhandler`);
+
+        if (window.ppCheckpoint) {
+            window.ppCheckpoint('flow_initxo');
+        }
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
@@ -521,6 +531,10 @@ function setup(id, options = {}) {
 function initXO() {
 
     logDebug(`initxo`);
+
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_initxo');
+    }
 
     if (!isEligible()) {
         return logDebug(`ineligible_initxo`);
