@@ -178,64 +178,12 @@ ppxo.Button.render({
 You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
 The button will appear exactly where you place them in your HTML.
 
-#### Script Tag
-
-```html
-<div class="myCart">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-	<script type="application/x-component" data-component="paypal-button">
-		{
-			autoExecute: true,
-			paymentDetails: { ... },
-			onPaymentComplete: function() { ... }
-		}
-	</script>
-</div>
-```
-
-#### React.js Element
-
-```javascript
-var MyCartComponent = window.React.createClass({
-	render: function() {
-
-		return (<div className='shoppingCart'>
-			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-			<ppxo.Button.React
-				clientID={clientID}
-				paymentDetails={paymentDetails}
-				onPaymentComplete={onPaymentComplete} />
-		</div>);
-	}
-});
-```
-
-#### Angular.js Element
-
-```html
-<div class="shoppingCart" ng-controller="cartController">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-	<paypal-button
-		clientID="clientID"
-		paymentDetails="paymentDetails"
-		onPaymentComplete="onPaymentComplete">
-	</paypal-button>
-</div>
-```
-
-#### Ember.js Element
-
-```javascipt
-// Watch this space
-```
+See [Native Framework Bindings](./frameworks.md)
 
 
 ### Hybrid Integrations
 
-You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid).
+You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid.md).
 
 
 ### Billing Agreements

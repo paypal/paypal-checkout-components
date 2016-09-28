@@ -25,12 +25,12 @@ Or to test on sandbox:
 <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js" data-env="sandbox"></script>
 ```
 
-**Important:** To work with popup blockers, the `Checkout` component must be invoked during a **click** event. For this
-reason, it is recommended that you use the [Button Component](./button.md);
-
 ### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render PayPal Checkout.
+
+**Important:** To work with popup blockers, the `Checkout` component must be invoked during a **click** event. For this
+reason, it is recommended that you use the [Button Component](./button.md) which will handle the click event for you.
 
 You'll need:
 
@@ -95,6 +95,9 @@ With this integration:
 - We set up `paymentToken` to call our web-server, which then calls the PayPal REST API to **create** a Payment Token.
 - We listen for `onPaymentAuthorize`, and call our web-server again, which then calls the PayPal REST API to **execute** the payment
 
+**Important:** To work with popup blockers, the `Checkout` component must be invoked during a **click** event. For this
+reason, it is recommended that you use the [Button Component](./button.md) which will handle the click event for you.
+
 You'll need:
 
 - A web-server, with routes set up to do the payment creation and payment execute calls to api.paypal.com
@@ -152,7 +155,7 @@ You'll need:
 
 ### Hybrid Integrations
 
-You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid).
+You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid.md).
 
 
 ### Billing Agreements
