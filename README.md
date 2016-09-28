@@ -17,15 +17,14 @@ We also support native React, Angular and Ember components for the PayPal Button
 ### Which Integration is right for me?
 
 - Do you want the **simplest possible PayPal Integration**? If so, you should stick with the [**Basic PayPal Checkout Button**](./docs/button.md#basic-integration)
-  using a [**Script Tag**](./docs/button.md#script-tag) which allows you to just drop a button straight into your page. This will allow your customer
-  to pay with PayPal, and we'll notify you when they're done.
-
-- Do you use **React.js, Angular.js or Ember.js** to render your page? If so, you should use the [**React.js, Angular.js or Ember.js Elements**](./docs/button.md#reactjs-element),
-  which provide native support for each of these frameworks, so you can drop PayPal Buttons in any of your front-end views.
+   which allows you to just drop a button straight into your page. This will allow your customer  to pay with PayPal, and we'll notify you when they're done.
 
 - Do you want a button which gives you **finely grained control** over your transaction; creating and finalizing transactions from your server
   side using PayPal's REST api? If so you should use the [**Advanced Javascript Integration**](./docs/button.md#advanced-integration), which will allow you to create
   and finalize the transaction yourself on your server side using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/).
+
+- Do you use **React.js, Angular.js or Ember.js** to render your page? If so, you should use the [**React.js, Angular.js or Ember.js Elements**](./docs/frameworks.md),
+  which provide native support for each of these frameworks, so you can drop PayPal Buttons in any of your front-end views.
 
 - Do you have your own **standalone checkout button** and you only want to use the PayPal Checkout flow? If so you
   should use the [**PayPal Checkout**](./docs/checkout.md) component, which opens up the PayPal Checkout flow on-demand, when you decide.
