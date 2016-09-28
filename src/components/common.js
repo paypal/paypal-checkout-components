@@ -3,6 +3,12 @@ import { config } from '../config';
 
 export function validateProps(props) {
 
+    if (props.env && !config.paypalUrls[props.env]) {
+        throw new Error(`Invalid env: ${props.env}`);
+    }
+
+    let env = props.env || config.env;
+
     let isCheckout = props.paymentToken || props.paymentDetails;
     let isBilling  = props.billingToken || props.billingDetails;
 
@@ -26,12 +32,12 @@ export function validateProps(props) {
         throw new Error(`Can not provide both billingToken and billingDetails`);
     }
 
-    if (props.paymentDetails && (!props.clientID || !props.clientID[config.env])) {
-        throw new Error(`Must specify clientID for ${config.env} along with paymentDetails`);
+    if (props.paymentDetails && (!props.clientID || !props.clientID[env])) {
+        throw new Error(`Must specify clientID for ${env} along with paymentDetails`);
     }
 
-    if (props.billingDetails && (!props.clientID || !props.clientID[config.env])) {
-        throw new Error(`Must specify clientID for ${config.env} along with billingDetails`);
+    if (props.billingDetails && (!props.clientID || !props.clientID[env])) {
+        throw new Error(`Must specify clientID for ${env} along with billingDetails`);
     }
 
     if (!props.onPaymentAuthorize && !props.onPaymentComplete) {

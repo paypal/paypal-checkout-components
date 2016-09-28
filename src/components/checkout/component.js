@@ -171,8 +171,44 @@ export let Checkout = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function() {
+                    return function(data) {
                         Checkout.contexts.lightbox = true;
+
+                        try {
+                            let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
+                            let returnUrl = data.returnUrl.toLowerCase();
+
+                            if (currentDomain === 'https://www.paypal.com') {
+                                return;
+                            }
+
+                            if (returnUrl.indexOf(currentDomain) === 0) {
+                                $logger.info(`return_url_domain_match`);
+                            } else {
+                                $logger.info(`return_url_domain_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                            }
+
+                            let currentHost = currentDomain.replace(/^https?/, '');
+                            let returnHost = returnUrl.replace(/^https?/, '');
+
+                            if (returnHost.indexOf(currentHost) === 0) {
+                                $logger.info(`return_url_host_match`);
+                            } else {
+                                $logger.info(`return_url_host_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                            }
+
+                            let currentTLD = currentHost.replace(/^www\./, '');
+                            let returnTLD = returnHost.replace(/^www\./, '');
+
+                            if (returnTLD.indexOf(currentTLD) === 0) {
+                                $logger.info(`return_url_tld_match`);
+                            } else {
+                                $logger.info(`return_url_tld_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                            }
+                        } catch (err) {
+                            // pass
+                        }
+
                         return original.apply(this, arguments);
                     };
                 }
@@ -213,22 +249,39 @@ export let Checkout = xcomponent.create({
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
 
-                    let currentDomain = `${window.location.protocol}//${window.location.host}`;
+                    try {
+                        let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
+                        let cancelUrl = data.cancelUrl.toLowerCase();
 
-                    if (currentDomain === 'https://www.paypal.com') {
-                        return;
-                    }
+                        if (currentDomain === 'https://www.paypal.com') {
+                            return;
+                        }
 
-                    if (data.cancelUrl.indexOf(currentDomain) === 0) {
-                        $logger.info(`cancel_url_domain_match`);
-                    } else {
-                        $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                    }
+                        if (cancelUrl.indexOf(currentDomain) === 0) {
+                            $logger.info(`cancel_url_domain_match`);
+                        } else {
+                            $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                        }
 
-                    if (data.cancelUrl.replace(/^https?/, '').indexOf(currentDomain.replace(/^https?/, '')) === 0) {
-                        $logger.info(`cancel_url_host_match`);
-                    } else {
-                        $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                        let currentHost = currentDomain.replace(/^https?/, '');
+                        let cancelHost = cancelUrl.replace(/^https?/, '');
+
+                        if (cancelHost.indexOf(currentHost) === 0) {
+                            $logger.info(`cancel_url_host_match`);
+                        } else {
+                            $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                        }
+
+                        let currentTLD = currentHost.replace(/^www\./, '');
+                        let cancelTLD = cancelHost.replace(/^www\./, '');
+
+                        if (cancelTLD.indexOf(currentTLD) === 0) {
+                            $logger.info(`cancel_url_tld_match`);
+                        } else {
+                            $logger.info(`cancel_url_tld_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
+                        }
+                    } catch (err) {
+                        // pass
                     }
 
                     if (window.ppCheckpoint) {
