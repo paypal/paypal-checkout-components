@@ -69,7 +69,6 @@ If so, you can easily upgrade and drop in the PayPal Button like so:
 
 ```html
 <form method="post" action="/redirect-to-paypal">
-
 	<script data-component="paypal-button" type="application/x-component">
 		{
 			submitForm: true,
@@ -79,6 +78,5 @@ If so, you can easily upgrade and drop in the PayPal Button like so:
 			}
 		}
 	</script>
-
 </div>
 ```
