@@ -26,7 +26,6 @@ You may be making an ajax call to PayPal, then redirecting to the PayPal Checkou
 
 <script>
 	document.querySelector('#paypalButton').addEventListener('click', function(event) {
-
 		jQuery.post('/create-paypal-token', function(data) {
 			window.location = 'https://www.paypal.com/checkoutnow?token=' + data.token;
 		});
@@ -43,7 +42,6 @@ If so, you can easily upgrade to use the Button component like so:
 	ppxo.Button.render({
 
 		paymentToken: function(resolve) {
-
 			jQuery.post('/create-paypal-token', function(data) {
 				resolve(data.token);
 			});
