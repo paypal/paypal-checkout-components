@@ -6,7 +6,7 @@ It's possible to use PayPal Checkout as part of a Mark integration. There are a 
 that we support. We recommend showing the PayPal Button conditionally when the PayPal radio field is selected.
 
 
-#### Showing the PayPal Button conditionally (recommended)
+### Showing the PayPal Button conditionally (recommended)
 
 You may want a mark integration where the PayPal Button is only shown when the PayPal radio field is selected. This is
 our recommended approach.
@@ -19,7 +19,7 @@ In this case you should use the [PayPal Button](./button.md) component.
 4. Use javascript to hide the button container when the user selects any other radio field
 
 
-#### Using a single button with different checkout flows
+### Using a single button with different checkout flows
 
 You may want a mark integration where you have a single button to checkout, and the behavior on click of the button is
 determined by which radio field is selected.
@@ -32,7 +32,7 @@ In this case you should use the [PayPal Checkout](./checkout.md) component.
 4. If the selected radio field is not PayPal, launch the appropriate alternative checkout flow
 
 
-#### Opening PayPal Checkout when the customer clicks on the radio field
+### Opening PayPal Checkout on click of the radio field
 
 You may want a mark integration where the user is directed to PayPal when they click on the radio button for PayPal.
 
