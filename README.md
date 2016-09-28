@@ -30,6 +30,9 @@ We also support native React, Angular and Ember components for the PayPal Button
 - Do you have your own **standalone checkout button** and you only want to use the PayPal Checkout flow? If so you
   should use the [**PayPal Checkout**](./docs/checkout.md) component, which opens up the PayPal Checkout flow on-demand, when you decide.
 
+- Do you have a mark integration? In this case, you should look at the [Mark Integration](./docs/mark.md) docs to decide how best
+  to integrate PayPal Checkout
+
 ## Usage
 
 1. Add `checkout.v4.js` to your page:
