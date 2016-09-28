@@ -1,7 +1,7 @@
 # Native Framework Bindings
 
 You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
-The button will appear exactly where you place them in your HTML.
+The button will appear exactly where you place it in your HTML.
 
 ## Script Tag
 
@@ -50,7 +50,7 @@ var MyCartComponent = window.React.createClass({
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.Button.React
+			<ppxo.Button.react
 				clientID={clientID}
 				paymentDetails={paymentDetails}
 				autoExecute=true
