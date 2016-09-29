@@ -21,6 +21,15 @@ export let config = {
 
     stage: 'msmaster',
 
+    SUPPORTED_AGENTS: {
+        Chrome: 27,
+        IE: 9,
+        MSIE: 9,
+        Firefox: 30,
+        Safari: 5.1,
+        Opera: 23
+    },
+
     get apiStage() {
         return config.stage;
     },
