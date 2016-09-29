@@ -4,7 +4,7 @@ import $logger from 'beaver-logger/client';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 import { PayPalCheckout } from '../components';
-import { isEligible } from './eligibility';
+import { isICEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../bridge';
 
@@ -296,7 +296,7 @@ function handleClick(env, clickHandler, event) {
 
     let { url, paymentToken } = getPaymentTokenAndUrl();
 
-    if (!isEligible()) {
+    if (!isICEligible()) {
 
         url.then(redirectUrl => {
             logDebug(`ineligible_startflow`, { url: redirectUrl });
@@ -379,7 +379,7 @@ function listenClick(env, button, clickHandler, condition) {
 
     let isClick  = (clickHandler instanceof Function);
 
-    if (!isEligible() && !isClick) {
+    if (!isICEligible() && !isClick) {
         return logDebug(`ineligible_listenclick`);
     }
 
@@ -536,7 +536,7 @@ function initXO() {
         window.ppCheckpoint('flow_initxo');
     }
 
-    if (!isEligible()) {
+    if (!isICEligible()) {
         return logDebug(`ineligible_initxo`);
     }
 
@@ -573,7 +573,7 @@ function startFlow(item, opts) {
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
-    if (!isEligible()) {
+    if (!isICEligible()) {
         logDebug(`ineligible_startflow_global`, { url });
         return redirect(url);
     }
