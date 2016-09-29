@@ -178,10 +178,6 @@ export let Checkout = xcomponent.create({
                             let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
                             let returnUrl = data.returnUrl.toLowerCase();
 
-                            if (currentDomain === 'https://www.paypal.com') {
-                                return;
-                            }
-
                             if (returnUrl.indexOf(currentDomain) === 0) {
                                 $logger.info(`return_url_domain_match`);
                             } else {

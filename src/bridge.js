@@ -10,7 +10,7 @@ import { config } from './config';
 
 export let bridge = new Promise();
 
-postRobot.on('meta', (source, data) => {
+postRobot.on('meta', ({ source, data }) => {
 
     if (data.iframeEligible) {
         Checkout.contexts.lightbox = true;
@@ -32,6 +32,11 @@ postRobot.on('meta', (source, data) => {
 });
 
 export function setupBridge(env, bridgeUrl) {
+
+    if (!postRobot.bridgeRequired(bridgeUrl)) {
+        return $logger.debug(`ppxo_bridge_not_required`, { env });
+    }
+
     $logger.debug(`ppxo_setup_bridge`, { env });
 
     let openBridge = postRobot.openBridge(bridgeUrl);

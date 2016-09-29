@@ -25,7 +25,7 @@ function onLegacyFallback(win) {
         onLegacyPaymentAuthorize = method;
     };
 
-    postRobot.once('onLegacyPaymentAuthorize', { window: window.parent }).then(data => {
+    postRobot.once('onLegacyPaymentAuthorize', { window: window.parent }).then(({ data }) => {
         onLegacyPaymentAuthorize = data.method;
     });
 
