@@ -73,7 +73,7 @@
     "beaver-logger": "^1.0.11",
     "es6-promise": "^3.1.2",
     "es6-promise-min": "^2.0.1",
-    "post-robot": "^2.0.0",
+    "post-robot": "^4.0.0",
     "xcomponent": "^1.0.3"
   }
 }
