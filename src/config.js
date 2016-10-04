@@ -83,6 +83,8 @@ export let config = {
         return `/webapps/hermes/component-meta?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
     },
 
+    paymentStandardUri: `/webapps/xorouter?cmd=_s-xclick`,
+
     authApiUri:    `/v1/oauth2/token`,
     paymentApiUri: `/v1/payments/payment`,
     billingApiUri: `/v1/billing-agreements/agreement-tokens`,
@@ -114,6 +116,16 @@ export let config = {
             sandbox:    `${config.paypalUrls.sandbox}${config.buttonUris.sandbox}`,
             production: `${config.paypalUrls.production}${config.buttonUris.production}`,
             test:       `${config.paypalUrls.test}${config.buttonUris.test}`
+        };
+    },
+
+    get paymentsStandardUrls() {
+        return {
+            local:      `${config.paypalUrls.local}${config.paymentStandardUri}`,
+            stage:      `${config.paypalUrls.stage}${config.paymentStandardUri}`,
+            sandbox:    `${config.paypalUrls.sandbox}${config.paymentStandardUri}`,
+            production: `${config.paypalUrls.production}${config.paymentStandardUri}`,
+            test:       `${config.paypalUrls.test}${config.paymentStandardUri}`
         };
     },
 

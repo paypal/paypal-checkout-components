@@ -9,35 +9,34 @@ export function validateProps(props) {
 
     let env = props.env || config.env;
 
-    let isCheckout = props.paymentToken || props.paymentDetails;
+    let isPayment  = props.paymentToken || props.paymentDetails;
     let isBilling  = props.billingToken || props.billingDetails;
+    let isStandard = props.buttonID;
 
-    if (isCheckout && isBilling) {
-        throw new Error(`Can not provide both payment and billing props`);
+    let enabled = [ isPayment, isBilling, isStandard ].filter(Boolean);
+
+    if (enabled.length > 1) {
+        throw new Error(`Must specify only one type of payment: paymentToken, billingToken, or buttonID`);
+    } else if (enabled.length === 0) {
+        throw new Error(`Must specify type of payment: paymentToken, billingToken, or buttonID`);
     }
 
-    if (!isCheckout && !isBilling && !props.submitForm) {
-        throw new Error(`Must provide either payment or billing props`);
+    if (props.paymentDetails) {
+
+        if (!props.clientID || !props.clientID[env]) {
+            throw new Error(`Must specify clientID for ${env} along with paymentDetails`);
+        }
+
+        if (props.autoExecute && props.paymentDetails.intent && props.paymentDetails.intent !== 'sale') {
+            throw new Error(`Can not autoExecute when paymentDetails.intent is ${props.paymentDetails.intent}`);
+        }
     }
 
-    if (props.submitForm && (isCheckout || isBilling)) {
-        throw new Error(`Can not provide payment or billing token or details when using submitForm`);
-    }
+    if (props.billingDetails) {
 
-    if (props.paymentToken && props.paymentDetails) {
-        throw new Error(`Can not provide both paymentToken and paymentDetails`);
-    }
-
-    if (props.billingToken && props.billingDetails) {
-        throw new Error(`Can not provide both billingToken and billingDetails`);
-    }
-
-    if (props.paymentDetails && (!props.clientID || !props.clientID[env])) {
-        throw new Error(`Must specify clientID for ${env} along with paymentDetails`);
-    }
-
-    if (props.billingDetails && (!props.clientID || !props.clientID[env])) {
-        throw new Error(`Must specify clientID for ${env} along with billingDetails`);
+        if (!props.clientID || !props.clientID[env]) {
+            throw new Error(`Must specify clientID for ${env} along with billingDetails`);
+        }
     }
 
     if (!props.onPaymentAuthorize && !props.onPaymentComplete) {
@@ -56,7 +55,7 @@ export function validateProps(props) {
         throw new Error(`Can not specify autoExecute as true along with onPaymentAuthorize callback`);
     }
 
-    if (props.paymentDetails && props.paymentDetails.intent && props.paymentDetails.intent !== 'sale' && props.autoExecute) {
-        throw new Error(`Can not autoExecute when paymentDetails.intent is ${props.paymentDetails.intent}`);
+    if (props.buttonID && !props.autoExecute) {
+        throw new Error(`Must specify autoExecute as true in order to use buttonID callback`);
     }
 }

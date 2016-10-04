@@ -73,7 +73,7 @@ export let Button = xcomponent.create({
 
             def(props) {
 
-                if (props.billingToken || props.billingDetails) {
+                if (props.billingToken || props.billingDetails || props.buttonID) {
                     return;
                 }
 
@@ -99,7 +99,7 @@ export let Button = xcomponent.create({
 
             def(props) {
 
-                if (props.paymentToken || props.paymentDetails) {
+                if (props.paymentToken || props.paymentDetails || props.buttonID) {
                     return;
                 }
 
@@ -117,11 +117,18 @@ export let Button = xcomponent.create({
             queryParam: false
         },
 
+        buttonID: {
+            type: 'string',
+            required: false
+        },
+
         autoExecute: {
             type: 'boolean',
             required: false,
             sendToChild: false
         },
+
+        /*
 
         submitForm: {
             type: 'boolean',
@@ -129,6 +136,8 @@ export let Button = xcomponent.create({
             def: false,
             sendToChild: false
         },
+
+        */
 
         onPaymentAuthorize: {
             type: 'function',

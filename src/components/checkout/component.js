@@ -22,6 +22,10 @@ export let Checkout = xcomponent.create({
     buildUrl(instance) {
         let env = instance.props.env || config.env;
 
+        if (instance.props.buttonID) {
+            return config.paymentsStandardUrls[env];
+        }
+
         if (instance.props.paymentToken || instance.props.paymentDetails) {
             return config.checkoutUrls[env];
         }
@@ -100,7 +104,7 @@ export let Checkout = xcomponent.create({
 
             def(props) {
 
-                if (props.billingToken || props.billingDetails) {
+                if (props.billingToken || props.billingDetails || props.buttonID) {
                     return;
                 }
 
@@ -126,7 +130,7 @@ export let Checkout = xcomponent.create({
 
             def(props) {
 
-                if (props.paymentToken || props.paymentDetails) {
+                if (props.paymentToken || props.paymentDetails || props.buttonID) {
                     return;
                 }
 
@@ -142,6 +146,13 @@ export let Checkout = xcomponent.create({
             required: false,
             sendToChild: false,
             queryParam: false
+        },
+
+        buttonID: {
+            type: 'string',
+            required: false,
+            queryParam: 'hosted_button_id',
+            sendToChild: false
         },
 
         autoExecute: {
