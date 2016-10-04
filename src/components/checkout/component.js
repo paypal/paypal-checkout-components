@@ -147,7 +147,7 @@ export let Checkout = xcomponent.create({
         autoExecute: {
             type: 'boolean',
             required: false,
-            sendToChild: false
+            sendToChild: true
         },
 
         onPaymentAuthorize: {
@@ -155,19 +155,6 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
             autoClose: true,
-
-            def(props) {
-                if (props.autoExecute && props.onPaymentComplete) {
-
-                    let onPaymentComplete = props.onPaymentComplete;
-                    delete props.onPaymentComplete;
-
-                    return function() {
-                        console.warn('Calling onPaymentComplete, but this feature is not yet implemented so do not rely on transaction being executed');
-                        onPaymentComplete.apply(this, arguments);
-                    };
-                }
-            },
 
             decorate(original) {
                 if (original) {
