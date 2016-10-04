@@ -1,7 +1,7 @@
 
 import paypal from 'src/index';
 
-describe('ppxo happy cases', () => {
+describe('paypal happy cases', () => {
 
     it('should work', () => {
 

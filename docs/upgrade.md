@@ -39,7 +39,7 @@ If so, you can easily upgrade to use the Button component like so:
 <div id="paymentMethods"></div>
 
 <script>
-	ppxo.Button.render({
+	paypal.Button.render({
 
 		paymentToken: function(resolve) {
 			jQuery.post('/create-paypal-token', function(data) {

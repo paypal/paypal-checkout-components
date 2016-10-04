@@ -1,5 +1,5 @@
 
-if (window.ppxo) {
+if (window.paypal && window.paypal.Button && window.paypal.Checkout) {
 
     let error = 'PayPal Checkout Integration Script already loaded on page';
 
@@ -11,9 +11,26 @@ if (window.ppxo) {
         }
     }
 
-    module.exports = window.ppxo;
+    module.exports = window.paypal;
 
 } else {
-    module.exports = require('./interface');
+
+    let paypal = require('./interface');
+
+    module.exports = paypal;
     module.exports.default = module.exports;
+
+    if (window.paypal) {
+
+        window.paypal = {
+            ...window.paypal,
+            ...paypal
+        };
+
+    } else {
+        window.paypal = paypal;
+    }
+
+
+    window.PAYPAL = require('./legacy/interface');
 }

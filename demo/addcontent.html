@@ -18,7 +18,7 @@
 <script>
     var ecToken;
 
-    var checkout = ppxo.PayPalCheckout.attach({
+    var checkout = paypal.PayPalCheckout.attach({
         onEnter: function() {
             this.props.paymentToken().then(function(token) {
                 ecToken = token;

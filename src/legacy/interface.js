@@ -13,6 +13,8 @@ import { renderButtons } from './button';
 import { logDebug, logInfo, logWarning, logError } from './log';
 
 
+let urlPrefix = `${config.checkoutUrl}?token=`;
+
 if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
@@ -679,37 +681,8 @@ onDocumentReady(() => {
     Set paypal.checkout global functions to support legacy integrations
 */
 
-if (window.paypal) {
-    logWarning(`window_paypal_exists`);
-}
-
-window.paypal = window.paypal || {};
-window.paypal.checkout = window.paypal.checkout || {};
-
-if (window.paypal.checkout.setup) {
-    console.error('Error: window.paypal.checkout already exists. You may have inserted the checkout.js script more than once. Ignoring further attempts to assign to window.paypal.checkout.');
-} else {
-
-    window.paypal.checkout.setup = setup;
-    window.paypal.checkout.initXO = initXO;
-    window.paypal.checkout.startFlow = startFlow;
-    window.paypal.checkout.closeFlow = closeFlow;
-
-    window.paypal.checkout.urlPrefix = `${config.checkoutUrl}?token=`;
-
-    window.paypal.checkout.events = {
-        on(name) {
-            logError(`eventing_unsupported`, { name });
-        }
-    };
-
-    window.PAYPAL = window.PAYPAL || {};
-    window.PAYPAL.checkout = window.paypal.checkout;
-
-    window.PAYPAL.apps = window.PAYPAL.apps || {};
-    window.PAYPAL.apps.checkout = window.paypal.checkout;
-    window.PAYPAL.apps.Checkout = window.paypal.checkout;
-}
+export let checkout = { setup, initXO, startFlow, closeFlow, urlPrefix };
+export let apps     = { checkout, Checkout: checkout };
 
 
 /*  PayPal Checkout Ready

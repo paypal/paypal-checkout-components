@@ -10,7 +10,7 @@ you want to do on the client or on the server side.
 - Specify `onPaymentComplete` to get a callback after the payment is executed
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	paymentDetails: {
 		transactions: [
@@ -38,7 +38,7 @@ ppxo.Button.render({
 - Specify `onPaymentAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	paymentToken: function(resolve, reject) {
 
@@ -63,7 +63,7 @@ ppxo.Button.render({
 - Specify `onPaymentAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	paymentDetails: {
 		transactions: [
@@ -93,7 +93,7 @@ ppxo.Button.render({
 - Specify `onPaymentComplete` to get a callback after the payment is executed
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	paymentToken: function(resolve, reject) {
 

@@ -20,7 +20,7 @@
 
     window.mockDomain = 'mock://www.merchant.com';
 
-    ppxo.PayPalCheckout.contexts.lightbox = true;
+    paypal.PayPalCheckout.contexts.lightbox = true;
 
     function paymentToken(resolve) {
         $.get('./token.htm?ts=' + Date.now()).then(function(result) {

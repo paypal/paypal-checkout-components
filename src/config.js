@@ -10,7 +10,7 @@ export let config = {
 
     env: 'production',
 
-    state: 'ppxo_xcomponent',
+    state: 'paypal_xcomponent',
 
     locale: {
         country: 'US',

@@ -41,7 +41,7 @@ You'll need:
 <script>
 	// Render the button into the container element
 
-	ppxo.Button.render({
+	paypal.Button.render({
 
 		// Pass the client ID to use to create your transaction
 
@@ -105,7 +105,7 @@ You'll need:
 <script>
 	<div id="myContainerElement"></div>
 
-	ppxo.Button.render({
+	paypal.Button.render({
 
 		// Set up a getter to create a payment token using the payments api, on your server side:
 
@@ -156,7 +156,7 @@ You'll need:
 You can change the look and feel of the button, using the `buttonStyle` parameter, and language of the button using `locale` parameter:
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	...
 	// Specify the language displayed on your button
@@ -191,7 +191,7 @@ You can combine any flavor of payment create and execute -- see [Hybrid Integrat
 You can also set up a billing agreement using the button component. For example:
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	// Pass the client ID to use to create your transaction
 
@@ -224,7 +224,7 @@ ppxo.Button.render({
 Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
 
 ```javascript
-ppxo.Button.render({
+paypal.Button.render({
 
 	// Pass a getter to generate a billing token on your server side
 

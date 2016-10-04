@@ -3,17 +3,16 @@ import './bridge';
 
 import xcomponent from 'xcomponent/src';
 import postRobot from 'post-robot/src';
+
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
 import './fallback';
 
-export * from './components';
-export * from './legacy';
-export * from './setup';
-export * from './rest';
-
+export { Button, Checkout, PayPalCheckout } from './components';
+export { checkout, apps } from './legacy/interface';
+export { setup } from './setup';
 export { config } from './config';
 
 module.exports.xcomponent = xcomponent;

@@ -10,14 +10,14 @@
 
     var checkoutComp;
 
-    var button = ppxo.PayPalButton.attach();
+    var button = paypal.PayPalButton.attach();
 
     if (window.location.href.indexOf('lightbox=true') !== -1) {
-        ppxo.PayPalCheckout.contexts.lightbox = true;
+        paypal.PayPalCheckout.contexts.lightbox = true;
     }
 
     function checkout() {
-        checkoutComp = ppxo.PayPalCheckout.init({
+        checkoutComp = paypal.PayPalCheckout.init({
 
             url: './checkout.htm',
 

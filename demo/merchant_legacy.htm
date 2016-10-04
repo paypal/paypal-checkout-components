@@ -24,7 +24,7 @@
 
     window.mockDomain = 'mock://www.merchant.com';
 
-    ppxo.postRobot.openBridge('./bridge.htm');
+    paypal.postRobot.openBridge('./bridge.htm');
 
     function paymentToken(resolve) {
         $.get('./token.htm?ts=' + Date.now()).then(function(result) {

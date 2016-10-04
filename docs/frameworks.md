@@ -50,7 +50,7 @@ var MyCartComponent = window.React.createClass({
 		return (<div className='shoppingCart'>
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<ppxo.Button.react
+			<paypal.Button.react
 				clientID={clientID}
 				paymentDetails={paymentDetails}
 				autoExecute=true

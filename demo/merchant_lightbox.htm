@@ -82,9 +82,9 @@
 
     window.mockDomain = 'mock://www.merchant.com';
 
-    ppxo.postRobot.openBridge('./bridge.htm');
+    paypal.postRobot.openBridge('./bridge.htm');
 
-    ppxo.PayPalCheckout.contexts.lightbox = true;
+    paypal.PayPalCheckout.contexts.lightbox = true;
 
     function paymentToken(resolve) {
         $.get('./token.htm?ts=' + Date.now()).then(function(result) {
@@ -108,7 +108,7 @@
 
     // 1. Button in iframe
 
-    ppxo.PayPalButton.init({
+    paypal.PayPalButton.init({
 
         url: './button.htm?lightbox=true',
 
@@ -125,7 +125,7 @@
 
     function openPayPalCheckout() {
 
-        var checkout = ppxo.PayPalCheckout.init({
+        var checkout = paypal.PayPalCheckout.init({
 
             url: './checkout.htm',
 
@@ -142,7 +142,7 @@
 
     // 3. Standard merchant-owned link with href
 
-    var checkout = ppxo.PayPalCheckout.init({
+    var checkout = paypal.PayPalCheckout.init({
 
         paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize
@@ -157,7 +157,7 @@
 
     // 4. Standard merchant-owned form with target
 
-    var checkout = ppxo.PayPalCheckout.init({
+    var checkout = paypal.PayPalCheckout.init({
 
         paymentToken: paymentToken,
         onPaymentAuthorize: onPaymentAuthorize
@@ -172,7 +172,7 @@
 
     // 5. Standard merchant-owned form with target, button in iframe
 
-    ppxo.PayPalButton.init({
+    paypal.PayPalButton.init({
 
         url: './button.htm?lightbox=true',
 
@@ -187,7 +187,7 @@
 
     function addcontentCheckout() {
 
-        var checkout = ppxo.PayPalCheckout.init({
+        var checkout = paypal.PayPalCheckout.init({
 
             url: './addcontent.html',
 
@@ -205,7 +205,7 @@
 
     function openPayPalCheckoutError() {
 
-        var checkout = ppxo.PayPalCheckout.init({
+        var checkout = paypal.PayPalCheckout.init({
 
             url: './checkout.htm',
 

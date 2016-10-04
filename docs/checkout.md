@@ -39,11 +39,11 @@ You'll need:
 
 ```javascript
 <script>
-	// Listen for a click event - ppxo.Checkout *must* be rendered on click
+	// Listen for a click event - paypal.Checkout *must* be rendered on click
 
 	document.querySelector('#myButton').addEventListener('click', function() {
 
-		ppxo.Checkout.render({
+		paypal.Checkout.render({
 
 			// Pass the client ID to use to create your transaction
 
@@ -105,11 +105,11 @@ You'll need:
 
 ```javascript
 <script>
-	// Listen for a click event - ppxo.Checkout *must* be rendered on click
+	// Listen for a click event - paypal.Checkout *must* be rendered on click
 
 	document.querySelector('#myButton').addEventListener('click', function() {
 
-		ppxo.Checkout.render({
+		paypal.Checkout.render({
 
 			// Set up a getter to create a payment token using the payments api, on your server side:
 
@@ -163,7 +163,7 @@ You can combine any flavor of payment create and execute -- see [Hybrid Integrat
 You can also set up a billing agreement using the Checkout component. For example:
 
 ```javascript
-ppxo.Checkout.render({
+paypal.Checkout.render({
 
 	// Pass the client ID to use to create your transaction
 
@@ -195,7 +195,7 @@ ppxo.Checkout.render({
 Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
 
 ```javascript
-ppxo.Checkout.render({
+paypal.Checkout.render({
 
 	// Pass a getter to generate a billing token on your server side
 

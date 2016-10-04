@@ -1,5 +1,5 @@
 
-import ppxo from 'src/index';
+import paypal from 'src/index';
 
 function onHashChange(method) {
 
@@ -28,7 +28,7 @@ const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
 const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
-describe('ppxo legacy cases', () => {
+describe('paypal legacy cases', () => {
 
     let testContainer = document.createElement('div');
     testContainer.id = 'testContainer';
@@ -37,12 +37,12 @@ describe('ppxo legacy cases', () => {
     afterEach(() => {
         testContainer.innerHTML = '';
         window.location.hash = '';
-        ppxo.Checkout.contexts.lightbox = false;
+        paypal.Checkout.contexts.lightbox = false;
     });
 
     it('should render a button into a container', () => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer'
 
@@ -54,7 +54,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container using buttons array', () => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -71,7 +71,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and provide a working click handler', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -87,7 +87,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container using buttons array and provide a working click handler', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -107,7 +107,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -126,7 +126,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -144,7 +144,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -162,7 +162,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call startFlow', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -170,7 +170,7 @@ describe('ppxo legacy cases', () => {
 
                 let token = generateECToken();
 
-                window.paypal.checkout.startFlow(token);
+                paypal.checkout.startFlow(token);
 
                 onHashChange(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -188,11 +188,11 @@ describe('ppxo legacy cases', () => {
 
         window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-        let checkoutUrl = Object.getOwnPropertyDescriptor(ppxo.config, 'checkoutUrl');
-        delete ppxo.config.checkoutUrl;
-        ppxo.config.checkoutUrl = '#testCheckoutUrl';
+        let checkoutUrl = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
+        delete paypal.config.checkoutUrl;
+        paypal.config.checkoutUrl = '#testCheckoutUrl';
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -202,11 +202,11 @@ describe('ppxo legacy cases', () => {
 
                 onHashChange(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
-                    Object.defineProperty(ppxo.config, 'checkoutUrl', checkoutUrl);
+                    Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrl);
                     done();
                 });
 
-                window.paypal.checkout.startFlow(token);
+                paypal.checkout.startFlow(token);
             }
 
         }).then(() => {
@@ -217,7 +217,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call startFlow with a url', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -226,7 +226,7 @@ describe('ppxo legacy cases', () => {
                 let token = generateECToken();
                 let hash = uniqueID();
 
-                window.paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
 
                 onHashChange(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -244,7 +244,7 @@ describe('ppxo legacy cases', () => {
 
         window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -257,7 +257,7 @@ describe('ppxo legacy cases', () => {
                     done();
                 });
 
-                window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
             }
 
         }).then(() => {
@@ -268,13 +268,13 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call startFlow with a url with no token', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
                 onHashChange(urlHash => {
                     assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -292,7 +292,7 @@ describe('ppxo legacy cases', () => {
 
         window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -303,7 +303,7 @@ describe('ppxo legacy cases', () => {
                     done();
                 });
 
-                window.paypal.checkout.startFlow(`#fullpageRedirectUrl`);
+                paypal.checkout.startFlow(`#fullpageRedirectUrl`);
             }
 
         }).then(() => {
@@ -314,18 +314,18 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO, then startFlow', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
                     let token = generateECToken();
 
-                    window.paypal.checkout.startFlow(token);
+                    paypal.checkout.startFlow(token);
 
                     onHashChange(urlHash => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -345,13 +345,13 @@ describe('ppxo legacy cases', () => {
 
         window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
 
@@ -362,7 +362,7 @@ describe('ppxo legacy cases', () => {
                         done();
                     });
 
-                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
 
                 }, 100);
             }
@@ -375,17 +375,17 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO, then startFlow with no token', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
 
-                    window.paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                    paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
                     onHashChange(urlHash => {
                         assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -403,20 +403,20 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO, then startFlow with a url', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
 
                     let token = generateECToken();
                     let hash = uniqueID();
 
-                    window.paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
 
                     onHashChange(urlHash => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -434,7 +434,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO and immediately startFlow', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -442,8 +442,8 @@ describe('ppxo legacy cases', () => {
 
                 let token = generateECToken();
 
-                window.paypal.checkout.initXO();
-                window.paypal.checkout.startFlow(token);
+                paypal.checkout.initXO();
+                paypal.checkout.startFlow(token);
 
                 onHashChange(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -459,7 +459,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -481,10 +481,10 @@ describe('ppxo legacy cases', () => {
                     return win;
                 };
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    window.paypal.checkout.closeFlow();
+                    paypal.checkout.closeFlow();
                 }, 100);
             }
 
@@ -498,7 +498,7 @@ describe('ppxo legacy cases', () => {
 
 
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -507,7 +507,7 @@ describe('ppxo legacy cases', () => {
                 setTimeout(() => {
                     let token = generateECToken();
 
-                    window.paypal.checkout.startFlow(token);
+                    paypal.checkout.startFlow(token);
 
                     onHashChange(urlHash => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -525,13 +525,13 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO and then closeFlow with a url', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
             click(event) {
 
-                window.paypal.checkout.initXO();
+                paypal.checkout.initXO();
 
                 setTimeout(() => {
 
@@ -540,7 +540,7 @@ describe('ppxo legacy cases', () => {
                         done();
                     });
 
-                    window.paypal.checkout.closeFlow('#closeFlowUrl');
+                    paypal.checkout.closeFlow('#closeFlowUrl');
 
                 }, 100);
             }
@@ -553,7 +553,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call initXO and then closeFlow immediately', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -564,8 +564,8 @@ describe('ppxo legacy cases', () => {
                     done(new Error(`Expected window.open to not be called`));
                 };
 
-                window.paypal.checkout.initXO();
-                window.paypal.checkout.closeFlow();
+                paypal.checkout.initXO();
+                paypal.checkout.closeFlow();
 
                 setTimeout(() => {
                     window.open = open;
@@ -581,7 +581,7 @@ describe('ppxo legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call closeFlow immediately', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -592,7 +592,7 @@ describe('ppxo legacy cases', () => {
                     done(new Error(`Expected window.open to not be called`));
                 };
 
-                window.paypal.checkout.closeFlow();
+                paypal.checkout.closeFlow();
 
                 setTimeout(() => {
                     window.open = open;
@@ -611,7 +611,7 @@ describe('ppxo legacy cases', () => {
 
         let token = generateECToken();
 
-        window.paypal.checkout.startFlow(token);
+        paypal.checkout.startFlow(token);
 
         onHashChange(urlHash => {
             assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -624,7 +624,7 @@ describe('ppxo legacy cases', () => {
         let token = generateECToken();
         let hash = uniqueID();
 
-        window.paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
 
         onHashChange(urlHash => {
             assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -634,7 +634,7 @@ describe('ppxo legacy cases', () => {
 
     it('should call startFlow with a url with no token', (done) => {
 
-        window.paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
         onHashChange(urlHash => {
             assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -646,10 +646,10 @@ describe('ppxo legacy cases', () => {
 
         let token = generateECToken();
 
-        window.paypal.checkout.initXO();
+        paypal.checkout.initXO();
 
         setTimeout(() => {
-            window.paypal.checkout.startFlow(token);
+            paypal.checkout.startFlow(token);
 
             onHashChange(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -660,14 +660,14 @@ describe('ppxo legacy cases', () => {
 
     it('should call initXO and then startFlow with a url', (done) => {
 
-        window.paypal.checkout.initXO();
+        paypal.checkout.initXO();
 
         setTimeout(() => {
 
             let token = generateECToken();
             let hash = uniqueID();
 
-            window.paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+            paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
 
             onHashChange(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -678,11 +678,11 @@ describe('ppxo legacy cases', () => {
 
     it('should call initXO and then startFlow with a url with no token', (done) => {
 
-        window.paypal.checkout.initXO();
+        paypal.checkout.initXO();
 
         setTimeout(() => {
 
-            window.paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+            paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
             onHashChange(urlHash => {
                 assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -695,8 +695,8 @@ describe('ppxo legacy cases', () => {
 
         let token = generateECToken();
 
-        window.paypal.checkout.initXO();
-        window.paypal.checkout.startFlow(token);
+        paypal.checkout.initXO();
+        paypal.checkout.startFlow(token);
 
         onHashChange(urlHash => {
             assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -722,16 +722,16 @@ describe('ppxo legacy cases', () => {
             return win;
         };
 
-        window.paypal.checkout.initXO();
+        paypal.checkout.initXO();
 
         setTimeout(() => {
-            window.paypal.checkout.closeFlow();
+            paypal.checkout.closeFlow();
         }, 100);
     });
 
     it('should call initXO and then closeFlow with a url', (done) => {
 
-        window.paypal.checkout.initXO();
+        paypal.checkout.initXO();
 
         setTimeout(() => {
 
@@ -740,7 +740,7 @@ describe('ppxo legacy cases', () => {
                 done();
             });
 
-            window.paypal.checkout.closeFlow('#closeFlowUrl');
+            paypal.checkout.closeFlow('#closeFlowUrl');
 
         }, 100);
     });
@@ -758,7 +758,7 @@ describe('ppxo legacy cases', () => {
             };
         };
 
-        window.paypal.checkout.initXO();
-        window.paypal.checkout.closeFlow();
+        paypal.checkout.initXO();
+        paypal.checkout.closeFlow();
     });
 });
