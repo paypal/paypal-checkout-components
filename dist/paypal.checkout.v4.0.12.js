@@ -226,7 +226,7 @@ function(module, exports, __webpack_require__) {
         scrolling: false,
         componentTemplate: _componentTemplate2["default"],
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.12";
+            return _config.config.ppobjects ? "4.0.12" : "4.0.12";
         },
         validateProps: function validateProps(component, props) {
             var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
@@ -7417,7 +7417,7 @@ function(module, exports, __webpack_require__) {
         value: true
     });
     var config = exports.config = {
-        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.js",
+        scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.0.12.js",
         legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
         ppobjects: false,
         cors: true,
@@ -7480,7 +7480,7 @@ function(module, exports, __webpack_require__) {
         },
         loggerUri: "/webapps/hermes/api/logger",
         get bridgeUri() {
-            return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.12");
+            return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4.0.12" : "4.0.12");
         },
         authApiUri: "/v1/oauth2/token",
         paymentApiUri: "/v1/payments/payment",
@@ -7564,7 +7564,7 @@ function(module, exports, __webpack_require__) {
             return "" + config.paypalUrl + config.buttonUris[config.env];
         },
         get bridgeUrl() {
-            return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.12") + "&env=" + config.env;
+            return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4.0.12" : "4.0.12") + "&env=" + config.env;
         },
         get loggerUrl() {
             return "" + config.paypalUrl + config.loggerUri;
@@ -9350,7 +9350,7 @@ function(module, exports, __webpack_require__) {
             popup: true
         },
         get version() {
-            return _config.config.ppobjects ? "4" : "4.0.12";
+            return _config.config.ppobjects ? "4.0.12" : "4.0.12";
         },
         validateProps: function validateProps(component, props) {
             var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
