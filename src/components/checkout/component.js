@@ -176,29 +176,33 @@ export let Checkout = xcomponent.create({
                             let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
                             let returnUrl = data.returnUrl.toLowerCase();
 
-                            if (returnUrl.indexOf(currentDomain) === 0) {
-                                $logger.info(`return_url_domain_match`);
-                            } else {
-                                $logger.info(`return_url_domain_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                            if (currentDomain !== 'https://www.paypal.com') {
+
+                                if (returnUrl.indexOf(currentDomain) === 0) {
+                                    $logger.info(`return_url_domain_match`);
+                                } else {
+                                    $logger.info(`return_url_domain_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                                }
+
+                                let currentHost = currentDomain.replace(/^https?/, '');
+                                let returnHost = returnUrl.replace(/^https?/, '');
+
+                                if (returnHost.indexOf(currentHost) === 0) {
+                                    $logger.info(`return_url_host_match`);
+                                } else {
+                                    $logger.info(`return_url_host_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                                }
+
+                                let currentTLD = currentHost.replace(/^www\./, '');
+                                let returnTLD = returnHost.replace(/^www\./, '');
+
+                                if (returnTLD.indexOf(currentTLD) === 0) {
+                                    $logger.info(`return_url_tld_match`);
+                                } else {
+                                    $logger.info(`return_url_tld_mismatch`, { returnUrl: data.returnUrl, currentDomain });
+                                }
                             }
 
-                            let currentHost = currentDomain.replace(/^https?/, '');
-                            let returnHost = returnUrl.replace(/^https?/, '');
-
-                            if (returnHost.indexOf(currentHost) === 0) {
-                                $logger.info(`return_url_host_match`);
-                            } else {
-                                $logger.info(`return_url_host_mismatch`, { returnUrl: data.returnUrl, currentDomain });
-                            }
-
-                            let currentTLD = currentHost.replace(/^www\./, '');
-                            let returnTLD = returnHost.replace(/^www\./, '');
-
-                            if (returnTLD.indexOf(currentTLD) === 0) {
-                                $logger.info(`return_url_tld_match`);
-                            } else {
-                                $logger.info(`return_url_tld_mismatch`, { returnUrl: data.returnUrl, currentDomain });
-                            }
                         } catch (err) {
                             // pass
                         }

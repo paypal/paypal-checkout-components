@@ -309,9 +309,12 @@ function handleClick(env, clickHandler, event) {
     }
 
     let paymentCancelled = false;
+    let initXOCalled = false;
 
     window.paypal.checkout.initXO = () => {
         logDebug(`initxo_clickhandler`);
+
+        initXOCalled = true;
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_initxo');
@@ -335,6 +338,10 @@ function handleClick(env, clickHandler, event) {
 
     if (paymentCancelled) {
         return;
+    }
+
+    if (!initXOCalled) {
+        logWarning(`button_click_handler_no_initxo`);
     }
 
     logInfo(`init_paypal_checkout_click`);
@@ -367,12 +374,58 @@ function handleClickHijack(env, button) {
 
     logInfo(`init_paypal_checkout_hijack`);
 
+    let token;
+
     let paypalCheckout = initPayPalCheckout({
         env,
-        paymentToken: xcomponent.CONSTANTS.PROP_DEFER_TO_URL
+        paymentToken() {
+            return token || xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+        }
     });
 
     paypalCheckout.renderHijack(targetElement);
+
+    window.paypal.checkout.initXO = () => {
+        logDebug(`initxo_hijackclickhandler`);
+
+        if (window.ppCheckpoint) {
+            window.ppCheckpoint('flow_initxo');
+        }
+    };
+
+    window.paypal.checkout.startFlow = (item, opts) => {
+        logDebug(`startflow_hijackclickhandler`, { item });
+
+        if (window.ppCheckpoint) {
+            window.ppCheckpoint('flow_startflow');
+        }
+
+        if (opts) {
+            logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
+        }
+
+        let { url, paymentToken } = matchUrlAndPaymentToken(item);
+
+        if (!isICEligible()) {
+            logDebug(`ineligible_startflow_hijackclickhandler`, { url });
+            paypalCheckout.destroy();
+            return redirect(url);
+        }
+
+        token = paymentToken;
+        paypalCheckout.window.location = url;
+    };
+
+    window.paypal.checkout.closeFlow = (closeUrl) => {
+        logWarning(`closeflow_hijackclickhandler`);
+
+        if (closeUrl) {
+            logWarning(`closeflow_with_url`, { closeUrl });
+            return redirect(closeUrl);
+        }
+
+        reset();
+    };
 }
 
 
