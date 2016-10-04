@@ -4,6 +4,7 @@ import $logger from 'beaver-logger/client';
 import { config } from './config';
 import { setupBridge } from './bridge';
 import { initLogger } from './lib';
+import { checkForCommonErrors } from './errors';
 
 
 function domainToEnv(domain) {
@@ -77,6 +78,8 @@ export function setup(options = {}) {
 
     initLogger();
 }
+
+checkForCommonErrors();
 
 function getCurrentScript() {
 
