@@ -5,6 +5,8 @@ import xcomponent from 'xcomponent/src';
 import postRobot from 'post-robot/src';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
+postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
+
 import './fallback';
 
 export * from './components';
