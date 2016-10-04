@@ -377,6 +377,10 @@ function handleClickHijack(env, button) {
 
 function listenClick(env, button, clickHandler, condition) {
 
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_listenclick');
+    }
+
     let isClick  = (clickHandler instanceof Function);
 
     if (!isICEligible() && !isClick) {
@@ -389,7 +393,22 @@ function listenClick(env, button, clickHandler, condition) {
 
     button.setAttribute('data-paypal-click-listener', true);
 
+    if (!isEligible() && !isClick) {
+
+        button.addEventListener('click', event => {
+            if (window.ppCheckpoint) {
+                window.ppCheckpoint('flow_buttonclick');
+            }
+        });
+
+        return logDebug(`ineligible_listenclick`);
+    }
+
     button.addEventListener('click', event => {
+
+        if (window.ppCheckpoint) {
+            window.ppCheckpoint('flow_buttonclick');
+        }
 
         logInfo(`button_click`);
 
@@ -425,6 +444,10 @@ function listenClick(env, button, clickHandler, condition) {
 let setupCalled = false;
 
 function setup(id, options = {}) {
+
+    if (window.ppCheckpoint) {
+        window.ppCheckpoint('flow_setup');
+    }
 
     id = id || 'merchant';
 

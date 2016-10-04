@@ -77,6 +77,11 @@ export function renderButtons(id, options) {
 
                         if (buttonContainerElements.length) {
                             buttonContainerElements.forEach(container => {
+
+                                if (container.tagName && container.tagName.toLowerCase() === 'a') {
+                                    logWarning(`container_a_tag`);
+                                }
+
                                 buttons.push({
                                     el: renderButton(id, container, button, button.type),
                                     click: button.click,
@@ -108,6 +113,11 @@ export function renderButtons(id, options) {
 
             if (containerElements.length) {
                 containerElements.forEach((container, i) => {
+
+                    if (container.tagName && container.tagName.toLowerCase() === 'a') {
+                        logWarning(`container_a_tag`);
+                    }
+
                     buttons.push({
                         el: renderButton(id, container, options, labels[i]),
                         click: options.click,
