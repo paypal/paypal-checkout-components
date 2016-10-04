@@ -324,7 +324,7 @@ export let Checkout = xcomponent.create({
         if (this.contexts.lightbox) {
             return {
                 width: 450,
-                height: 200
+                height: 300
             };
         }
 
