@@ -395,7 +395,7 @@ function listenClick(env, button, clickHandler, condition) {
 
     button.setAttribute('data-paypal-click-listener', true);
 
-    if (!isEligible() && !isClick) {
+    if (!isICEligible() && !isClick) {
 
         button.addEventListener('click', event => {
             if (window.ppCheckpoint) {

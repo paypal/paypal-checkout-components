@@ -56,13 +56,20 @@ export function merge() {
 
 
 export function request(config) {
+
     return new Promise((resolve, reject) => {
 
         config.method = config.method || 'get';
 
         let headers = config.headers || {};
+
+        if (config.json) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+        } else if (config.body) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=utf-8';
+        }
+
         headers.Accept = headers.Accept || 'application/json';
-        headers['Content-Type'] = headers['Content-Type'] || 'application/json';
 
         let xhr = new window.XMLHttpRequest();
 
@@ -82,9 +89,29 @@ export function request(config) {
             }
         }
 
+        if (config.json && !config.body) {
+            config.body = JSON.stringify(config.json);
+        }
+
+        if (config.body && typeof config.body === 'object') {
+            config.body = Object.keys(config.body).map(key => {
+                return `${encodeURIComponent(key)}=${encodeURIComponent(config.body[key])}`;
+            }).join('&');
+        }
+
         xhr.send(config.body);
     });
 }
+
+request.get = (url, options = {}) => {
+    let method = 'get';
+    return request({ method, url, ...options });
+};
+
+request.post = (url, body, options = {}) => {
+    let method = 'post';
+    return request({ method, url, body, ...options });
+};
 
 export function isPayPalDomain() {
     return Boolean(window.location.hostname.match(/\.paypal\.com$/));

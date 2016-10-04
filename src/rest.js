@@ -14,13 +14,14 @@ export function createAccessToken(env, clientID) {
 
     return request({
 
-        method: 'post',
+        method: `post`,
         url: config.authApiUrls[env],
         headers: {
-            'Authorization': `Basic ${basicAuth}`,
-            'Content-Type':  `application/x-www-form-urlencoded; charset=utf-8`
+            Authorization: `Basic ${basicAuth}`
         },
-        body: `grant_type=client_credentials`
+        body: {
+            grant_type: `client_credentials`
+        }
 
     }).then(res => {
 
@@ -51,12 +52,12 @@ export function createCheckoutToken(env, clientID, paymentDetails) {
     return createAccessToken(env, clientID).then(accessToken => {
 
         return request({
-            method: 'post',
+            method: `post`,
             url: config.paymentApiUrls[env],
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                Authorization: `Bearer ${accessToken}`
             },
-            body: JSON.stringify(paymentDetails)
+            json: paymentDetails
         });
 
     }).then(res => {
@@ -97,12 +98,12 @@ export function createBillingToken(env, clientID, billingDetails) {
     return createAccessToken(env, clientID).then(accessToken => {
 
         return request({
-            method: 'post',
+            method: `post`,
             url: config.billingApiUrls[env],
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                Authorization: `Bearer ${accessToken}`
             },
-            body: JSON.stringify(billingDetails)
+            json: billingDetails
         });
 
     }).then(res => {

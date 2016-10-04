@@ -14,6 +14,8 @@ export { Button, Checkout, PayPalCheckout } from './components';
 export { checkout, apps } from './legacy/interface';
 export { setup } from './setup';
 export { config } from './config';
+export { isEligible } from './eligibility';
+export { request } from './lib';
 
 module.exports.xcomponent = xcomponent;
 module.exports.postRobot = postRobot;
