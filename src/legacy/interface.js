@@ -26,8 +26,12 @@ function registerClick() {
     });
 }
 
-document.body.addEventListener('click', function() {
-    registerClick();
+onDocumentReady(() => {
+    if (window.document && window.document.body) {
+        window.document.body.addEventListener('click', function() {
+            registerClick();
+        });
+    }
 });
 
 let ifNotClickTimeout;
