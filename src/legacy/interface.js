@@ -308,7 +308,9 @@ function handleClick(env, clickHandler, event) {
     }
 
     let paymentCancelled = false;
-    let initXOCalled = false;
+
+    let initXOCalled    = false;
+    let startFlowCalled = false;
 
     window.paypal.checkout.initXO = () => {
         $logger.debug(`initxo_clickhandler`);
@@ -318,6 +320,12 @@ function handleClick(env, clickHandler, event) {
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_initxo');
         }
+    };
+
+    let _startFlow = window.paypal.checkout.startFlow;
+    window.paypal.checkout.startFlow = function() {
+        startFlowCalled = true;
+        return _startFlow.apply(this, arguments);
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
@@ -339,8 +347,8 @@ function handleClick(env, clickHandler, event) {
         return;
     }
 
-    if (!initXOCalled) {
-        $logger.warn(`button_click_handler_no_initxo`);
+    if (!initXOCalled && !startFlowCalled) {
+        $logger.warn(`button_click_handler_no_initxo_startflow`);
     }
 
     $logger.info(`init_paypal_checkout_click`);
