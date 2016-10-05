@@ -6,7 +6,7 @@ window.console.karma = function() {
     if (karma) {
         karma.log('debug', arguments);
     }
-    console.log.apply(console, arguments);
+    window.console.log.apply(window.console, arguments);
 };
 
 window.xchild.props.paymentToken().then(paymentToken => {

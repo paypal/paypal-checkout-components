@@ -496,8 +496,6 @@ describe('paypal legacy cases', () => {
 
     it('should render a button into a container and click on the button, then call startFlow', (done) => {
 
-
-
         return paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
@@ -609,61 +607,29 @@ describe('paypal legacy cases', () => {
 
     it('should call startFlow', (done) => {
 
-        let token = generateECToken();
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-        paypal.checkout.startFlow(token);
+        testButton.addEventListener('click', event => {
+            let token = generateECToken();
 
-        onHashChange(urlHash => {
-            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-            done();
-        });
-    });
-
-    it('should call startFlow with a url', (done) => {
-
-        let token = generateECToken();
-        let hash = uniqueID();
-
-        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
-
-        onHashChange(urlHash => {
-            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-            done();
-        });
-    });
-
-    it('should call startFlow with a url with no token', (done) => {
-
-        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
-
-        onHashChange(urlHash => {
-            assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
-            done();
-        });
-    });
-
-    it('should call initXO and then startFlow', (done) => {
-
-        let token = generateECToken();
-
-        paypal.checkout.initXO();
-
-        setTimeout(() => {
             paypal.checkout.startFlow(token);
 
             onHashChange(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                 done();
             });
-        }, 100);
+        });
+
+        testButton.click();
     });
 
-    it('should call initXO and then startFlow with a url', (done) => {
+    it('should call startFlow with a url', (done) => {
 
-        paypal.checkout.initXO();
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-        setTimeout(() => {
-
+        testButton.addEventListener('click', event => {
             let token = generateECToken();
             let hash = uniqueID();
 
@@ -673,92 +639,194 @@ describe('paypal legacy cases', () => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
                 done();
             });
-        }, 100);
+        });
+
+        testButton.click();
     });
 
-    it('should call initXO and then startFlow with a url with no token', (done) => {
+    it('should call startFlow with a url with no token', (done) => {
 
-        paypal.checkout.initXO();
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-        setTimeout(() => {
-
+        testButton.addEventListener('click', event => {
             paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
             onHashChange(urlHash => {
                 assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
                 done();
             });
-        }, 100);
+        });
+
+        testButton.click();
+    });
+
+    it('should call initXO and then startFlow', (done) => {
+
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
+
+        testButton.addEventListener('click', event => {
+            let token = generateECToken();
+
+            paypal.checkout.initXO();
+
+            setTimeout(() => {
+                paypal.checkout.startFlow(token);
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    done();
+                });
+            }, 100);
+        });
+
+        testButton.click();
+    });
+
+    it('should call initXO and then startFlow with a url', (done) => {
+
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
+
+        testButton.addEventListener('click', event => {
+            paypal.checkout.initXO();
+
+            setTimeout(() => {
+
+                let token = generateECToken();
+                let hash = uniqueID();
+
+                paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    done();
+                });
+            }, 100);
+        });
+
+        testButton.click();
+    });
+
+    it('should call initXO and then startFlow with a url with no token', (done) => {
+
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
+
+        testButton.addEventListener('click', event => {
+            paypal.checkout.initXO();
+
+            setTimeout(() => {
+
+                paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                    done();
+                });
+            }, 100);
+        });
+
+        testButton.click();
     });
 
     it('should call initXO and immediately startFlow', (done) => {
 
-        let token = generateECToken();
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-        paypal.checkout.initXO();
-        paypal.checkout.startFlow(token);
+        testButton.addEventListener('click', event => {
+            let token = generateECToken();
 
-        onHashChange(urlHash => {
-            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-            done();
+            paypal.checkout.initXO();
+            paypal.checkout.startFlow(token);
+
+            onHashChange(urlHash => {
+                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                done();
+            });
         });
+
+        testButton.click();
     });
 
     it('should call initXO and then closeFlow', (done) => {
 
-        let open = window.open;
-        window.open = function() {
-            window.open = open;
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-            let win = window.open.apply(this, arguments);
+        testButton.addEventListener('click', event => {
+            let open = window.open;
+            window.open = function() {
+                window.open = open;
 
-            let close = win.close;
-            win.close = function() {
-                let result = close.apply(this, arguments);
-                done();
-                return result;
+                let win = window.open.apply(this, arguments);
+
+                let close = win.close;
+                win.close = function() {
+                    let result = close.apply(this, arguments);
+                    done();
+                    return result;
+                };
+
+                return win;
             };
 
-            return win;
-        };
+            paypal.checkout.initXO();
 
-        paypal.checkout.initXO();
+            setTimeout(() => {
+                paypal.checkout.closeFlow();
+            }, 100);
+        });
 
-        setTimeout(() => {
-            paypal.checkout.closeFlow();
-        }, 100);
+        testButton.click();
     });
 
     it('should call initXO and then closeFlow with a url', (done) => {
 
-        paypal.checkout.initXO();
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-        setTimeout(() => {
+        testButton.addEventListener('click', event => {
+            paypal.checkout.initXO();
 
-            onHashChange(urlHash => {
-                assert.equal(urlHash, `#closeFlowUrl`);
-                done();
-            });
+            setTimeout(() => {
 
-            paypal.checkout.closeFlow('#closeFlowUrl');
+                onHashChange(urlHash => {
+                    assert.equal(urlHash, `#closeFlowUrl`);
+                    done();
+                });
 
-        }, 100);
+                paypal.checkout.closeFlow('#closeFlowUrl');
+
+            }, 100);
+        });
+
+        testButton.click();
     });
 
     it('should call initXO and then closeFlow immediately', (done) => {
 
-        let open = window.open;
-        window.open = function() {
-            window.open = open;
+        let testButton = document.createElement('button');
+        testContainer.appendChild(testButton);
 
-            return {
-                close() {
-                    done();
-                }
+        testButton.addEventListener('click', event => {
+            let open = window.open;
+            window.open = function() {
+                window.open = open;
+
+                return {
+                    close() {
+                        done();
+                    }
+                };
             };
-        };
 
-        paypal.checkout.initXO();
-        paypal.checkout.closeFlow();
+            paypal.checkout.initXO();
+            paypal.checkout.closeFlow();
+        });
+
+        testButton.click();
     });
 });

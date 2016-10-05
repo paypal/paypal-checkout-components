@@ -12,6 +12,44 @@ import { renderButtons } from './button';
 import { $logger } from './log';
 
 
+let inClick = false;
+
+let ifNotClickMethods = [];
+
+function registerClick() {
+    inClick = true;
+
+    ifNotClickMethods = [];
+
+    setTimeout(() => {
+        inClick = false;
+    });
+}
+
+document.body.addEventListener('click', function() {
+    registerClick();
+});
+
+let ifNotClickTimeout;
+
+function ifNotClick(method) {
+
+    if (inClick) {
+        return;
+    }
+
+    ifNotClickMethods.push(method);
+
+    ifNotClickTimeout = ifNotClickTimeout || setTimeout(() => {
+        ifNotClickTimeout = null;
+        ifNotClickMethods.forEach(meth => meth());
+        ifNotClickMethods = [];
+    });
+}
+
+
+
+
 let urlPrefix = `${config.checkoutUrl}?token=`;
 
 if (window.xchild && !window.paypalCheckout) {
@@ -262,6 +300,10 @@ function renderPayPalCheckout(props = {}) {
 
     let paypalCheckout = initPayPalCheckout(props);
 
+    ifNotClick(() => {
+        $logger.warn(`render_without_click`);
+    });
+
     return paypalCheckout.render().catch(err => {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
@@ -349,6 +391,7 @@ function handleClick(env, clickHandler, event) {
 
     if (!initXOCalled && !startFlowCalled) {
         $logger.warn(`button_click_handler_no_initxo_startflow`);
+        return reset();
     }
 
     $logger.info(`init_paypal_checkout_click`);
@@ -388,6 +431,10 @@ function handleClickHijack(env, button) {
         paymentToken() {
             return token || xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
         }
+    });
+
+    ifNotClick(() => {
+        $logger.warn(`renderhijack_without_click`);
     });
 
     paypalCheckout.renderHijack(targetElement);
@@ -445,10 +492,6 @@ function listenClick(env, button, clickHandler, condition) {
 
     let isClick  = (clickHandler instanceof Function);
 
-    if (!isICEligible() && !isClick) {
-        return $logger.debug(`ineligible_listenclick`);
-    }
-
     if (button.hasAttribute('data-paypal-click-listener')) {
         return $logger.warn(`button_already_has_paypal_click_listener`);
     }
@@ -456,20 +499,19 @@ function listenClick(env, button, clickHandler, condition) {
     button.setAttribute('data-paypal-click-listener', true);
 
     if (!isICEligible() && !isClick) {
-
-        button.addEventListener('click', event => {
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint('flow_buttonclick');
-            }
-        });
-
-        return $logger.debug(`ineligible_listenclick`);
+        $logger.debug(`ineligible_listenclick`);
     }
 
     button.addEventListener('click', event => {
 
+        registerClick();
+
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_buttonclick');
+        }
+
+        if (!isICEligible() && !isClick) {
+            return;
         }
 
         $logger.info(`button_click`);
