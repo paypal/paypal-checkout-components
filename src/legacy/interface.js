@@ -101,6 +101,8 @@ function parseToken(token) {
         return;
     }
 
+    token = decodeURIComponent(decodeURIComponent(token));
+
     // We may get lucky and be passed a token straight off the bar
 
     if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
