@@ -17,8 +17,8 @@ postRobot.on('meta', ({ source, data }) => {
     }
 
     $logger.info(data.iframeEligible ?
-        `paypal_lightbox_eligible_${data.iframeEligibleReason}` :
-        `paypal_lightbox_ineligible_${data.iframeEligibleReason}`);
+        `lightbox_eligible_${data.iframeEligibleReason}` :
+        `lightbox_ineligible_${data.iframeEligibleReason}`);
 
     if (config.locales[data.locale.country] && !config.customCountry) {
         config.locale.country = data.locale.country;
@@ -34,10 +34,10 @@ postRobot.on('meta', ({ source, data }) => {
 export function setupBridge(env, bridgeUrl) {
 
     if (!postRobot.bridgeRequired(bridgeUrl)) {
-        return $logger.debug(`paypal_bridge_not_required`, { env });
+        return $logger.debug(`bridge_not_required`, { env });
     }
 
-    $logger.debug(`paypal_setup_bridge`, { env });
+    $logger.debug(`setup_bridge`, { env });
 
     let openBridge = postRobot.openBridge(bridgeUrl);
 

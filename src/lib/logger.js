@@ -26,7 +26,8 @@ export function initLogger() {
     $logger.init({
         uri: config.loggerUrl,
         heartbeat: false,
-        logPerformance: false
+        logPerformance: false,
+        prefix: `ppxo`
     });
 }
 

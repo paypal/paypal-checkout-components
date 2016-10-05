@@ -2,7 +2,7 @@
 import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
-import { logDebug, logInfo, logError, logWarning } from './log';
+import { $logger } from './log';
 import { getElements } from './util';
 
 let buttonJS;
@@ -13,16 +13,16 @@ function loadButtonJS() {
         return buttonJS;
     }
 
-    logDebug(`buttonjs_load`);
+    $logger.debug(`buttonjs_load`);
 
     buttonJS = loadScript(BUTTON_JS_URL).catch(err => {
-        logInfo(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
+        $logger.info(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
         return loadScript(BUTTON_JS_URL);
     }).then(result => {
-        logDebug(`buttonjs_load_success`);
+        $logger.debug(`buttonjs_load_success`);
         return result;
     }).catch(err => {
-        logError(`buttonjs_load_error`, { error: err.stack || err.toString() });
+        $logger.error(`buttonjs_load_error`, { error: err.stack || err.toString() });
         throw err;
     });
 
@@ -39,11 +39,11 @@ function renderButton(id, container, options, label) {
     let type = 'button';
     label = label || 'checkout';
 
-    logDebug(`render_button_lc_${lc}`);
-    logDebug(`render_button_color_${color}`);
-    logDebug(`render_button_shape_${shape}`);
-    logDebug(`render_button_size_${size}`);
-    logDebug(`render_button_label_${label}`);
+    $logger.debug(`render_button_lc_${lc}`);
+    $logger.debug(`render_button_color_${color}`);
+    $logger.debug(`render_button_shape_${shape}`);
+    $logger.debug(`render_button_size_${size}`);
+    $logger.debug(`render_button_label_${label}`);
 
     let buttonDom = window.paypal.button.create(id, { lc, color, shape, size }, { type, label });
     container.appendChild(buttonDom.el);
@@ -61,7 +61,7 @@ export function renderButtons(id, options) {
             if (options.container) {
                 for (let button of options.buttons) {
                     if (button.container && button.container !== options.container) {
-                        logWarning(`mismatched_container_and_button_passed`, { options: options.container, button: button.container });
+                        $logger.warn(`mismatched_container_and_button_passed`, { options: options.container, button: button.container });
                     }
                 }
             }
@@ -79,7 +79,7 @@ export function renderButtons(id, options) {
                             buttonContainerElements.forEach(container => {
 
                                 if (container.tagName && container.tagName.toLowerCase() === 'a') {
-                                    logWarning(`container_a_tag`);
+                                    $logger.warn(`container_a_tag`);
                                 }
 
                                 buttons.push({
@@ -89,10 +89,10 @@ export function renderButtons(id, options) {
                                 });
                             });
                         } else {
-                            logWarning(`button_container_not_found`, { container: JSON.stringify(button.container) });
+                            $logger.warn(`button_container_not_found`, { container: JSON.stringify(button.container) });
                         }
                     } else {
-                        logWarning(`button_container_not_passed`, { button: JSON.stringify(button) });
+                        $logger.warn(`button_container_not_passed`, { button: JSON.stringify(button) });
                     }
                 }
             }
@@ -115,7 +115,7 @@ export function renderButtons(id, options) {
                 containerElements.forEach((container, i) => {
 
                     if (container.tagName && container.tagName.toLowerCase() === 'a') {
-                        logWarning(`container_a_tag`);
+                        $logger.warn(`container_a_tag`);
                     }
 
                     buttons.push({
@@ -125,7 +125,7 @@ export function renderButtons(id, options) {
                     });
                 });
             } else {
-                logWarning(`button_container_not_found`, { container: JSON.stringify(options.container) });
+                $logger.warn(`button_container_not_found`, { container: JSON.stringify(options.container) });
             }
         }
 

@@ -25,7 +25,11 @@ function setDomainEnv(domain) {
 
 setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
+initLogger();
+
 export function setup(options = {}) {
+
+    checkForCommonErrors();
 
     if (options.env) {
         if (!config.paypalUrls[options.env]) {
@@ -70,16 +74,12 @@ export function setup(options = {}) {
         config.ppobjects = true;
     }
 
-    $logger.info(`paypal_setup_${config.env}`);
+    $logger.info(`setup_${config.env}`);
 
     if (config.enableBridge) {
         setupBridge(config.env, config.bridgeUrl);
     }
-
-    initLogger();
 }
-
-checkForCommonErrors();
 
 function getCurrentScript() {
 
@@ -107,5 +107,5 @@ if (currentScript) {
     });
 
 } else {
-    $logger.debug(`paypal_no_current_script`);
+    $logger.debug(`no_current_script`);
 }

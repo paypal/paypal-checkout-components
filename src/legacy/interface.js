@@ -1,6 +1,5 @@
 
 import xcomponent from 'xcomponent/src';
-import $logger from 'beaver-logger/client';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 import { PayPalCheckout } from '../components';
@@ -10,7 +9,7 @@ import { setupBridge } from '../bridge';
 
 import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
-import { logDebug, logInfo, logWarning, logError } from './log';
+import { $logger } from './log';
 
 
 let urlPrefix = `${config.checkoutUrl}?token=`;
@@ -25,7 +24,7 @@ let redirected = false;
 function redirect(location) {
 
     if (redirected) {
-        logWarning(`multiple_redirects`);
+        $logger.warn(`multiple_redirects`);
     }
 
     redirected = true;
@@ -104,7 +103,7 @@ function getFullpageRedirectUrl(token) {
 function matchUrlAndPaymentToken(item) {
 
     if (!item || !item.trim()) {
-        logError(`startflow_no_url_or_token`, { item });
+        $logger.error(`startflow_no_url_or_token`, { item });
         throw new Error(`startflow_no_url_or_token`);
     }
 
@@ -112,16 +111,16 @@ function matchUrlAndPaymentToken(item) {
     let url = (item && item !== paymentToken) ? item : null;
 
     if (url && !url.match(/^https?:\/\/|^\//)) {
-        logWarning(`startflow_relative_url`, { url });
+        $logger.warn(`startflow_relative_url`, { url });
     }
 
     if (url && paymentToken) {
-        logDebug(`startflow_url_with_token`, { item });
+        $logger.debug(`startflow_url_with_token`, { item });
     } else if (url) {
-        logDebug(`startflow_url_with_no_token`, { item });
+        $logger.debug(`startflow_url_with_no_token`, { item });
         paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
     } else if (paymentToken) {
-        logDebug(`startflow_with_token`, { item });
+        $logger.debug(`startflow_with_token`, { item });
         url = getFullpageRedirectUrl(item);
     }
 
@@ -150,14 +149,14 @@ function getPaymentTokenAndUrl() {
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
         window.paypal.checkout.startFlow = once((item, opts) => {
-            logDebug(`gettoken_startflow`, { item });
+            $logger.debug(`gettoken_startflow`, { item });
 
             if (window.ppCheckpoint) {
                 window.ppCheckpoint('flow_startflow');
             }
 
             if (opts) {
-                logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
+                $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
             }
 
             return resolve(matchUrlAndPaymentToken(item));
@@ -185,10 +184,10 @@ let paypalCheckoutInited = false;
 
 function initPayPalCheckout(props = {}) {
 
-    logInfo(`init_checkout`);
+    $logger.info(`init_checkout`);
 
     if (paypalCheckoutInited) {
-        logWarning(`multiple_init_paypal_checkout`);
+        $logger.warn(`multiple_init_paypal_checkout`);
     }
 
     paypalCheckoutInited = true;
@@ -207,7 +206,7 @@ function initPayPalCheckout(props = {}) {
 
             reset();
 
-            logInfo(`payment_authorized`);
+            $logger.info(`payment_authorized`);
 
             if (!urlWillRedirectPage(returnUrl)) {
                 this.closeParentTemplate();
@@ -220,10 +219,10 @@ function initPayPalCheckout(props = {}) {
 
             reset();
 
-            logInfo(`payment_canceled`);
+            $logger.info(`payment_canceled`);
 
             if (!urlWillRedirectPage(cancelUrl)) {
-                logInfo(`hash_change_close_overlay`);
+                $logger.info(`hash_change_close_overlay`);
                 this.closeParentTemplate();
             }
 
@@ -239,7 +238,7 @@ function initPayPalCheckout(props = {}) {
     });
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
-        logWarning(`closeflow`);
+        $logger.warn(`closeflow`);
 
         reset();
 
@@ -250,7 +249,7 @@ function initPayPalCheckout(props = {}) {
         }
 
         if (closeUrl) {
-            logWarning(`closeflow_with_url`, { closeUrl });
+            $logger.warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
     };
@@ -265,7 +264,7 @@ function renderPayPalCheckout(props = {}) {
 
     return paypalCheckout.render().catch(err => {
 
-        logError(`error`, { error: err.stack || err.toString() });
+        $logger.error(`error`, { error: err.stack || err.toString() });
 
         Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
 
@@ -285,7 +284,7 @@ function renderPayPalCheckout(props = {}) {
 
 function triggerClickHandler(handler, event) {
     if (handler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
-        logWarning(`click_function_expects_err`);
+        $logger.warn(`click_function_expects_err`);
         handler.call(null);
     } else {
         handler.call(null, event);
@@ -294,14 +293,14 @@ function triggerClickHandler(handler, event) {
 
 
 function handleClick(env, clickHandler, event) {
-    logDebug(`button_click_handler`);
+    $logger.debug(`button_click_handler`);
 
     let { url, paymentToken } = getPaymentTokenAndUrl();
 
     if (!isICEligible()) {
 
         url.then(redirectUrl => {
-            logDebug(`ineligible_startflow`, { url: redirectUrl });
+            $logger.debug(`ineligible_startflow`, { url: redirectUrl });
             return redirect(redirectUrl);
         });
 
@@ -312,7 +311,7 @@ function handleClick(env, clickHandler, event) {
     let initXOCalled = false;
 
     window.paypal.checkout.initXO = () => {
-        logDebug(`initxo_clickhandler`);
+        $logger.debug(`initxo_clickhandler`);
 
         initXOCalled = true;
 
@@ -322,10 +321,10 @@ function handleClick(env, clickHandler, event) {
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
-        logWarning(`closeflow_clickhandler`);
+        $logger.warn(`closeflow_clickhandler`);
 
         if (closeUrl) {
-            logWarning(`closeflow_with_url`, { closeUrl });
+            $logger.warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
 
@@ -341,17 +340,17 @@ function handleClick(env, clickHandler, event) {
     }
 
     if (!initXOCalled) {
-        logWarning(`button_click_handler_no_initxo`);
+        $logger.warn(`button_click_handler_no_initxo`);
     }
 
-    logInfo(`init_paypal_checkout_click`);
+    $logger.info(`init_paypal_checkout_click`);
 
     renderPayPalCheckout({ env, url, paymentToken });
 }
 
 
 function handleClickHijack(env, button) {
-    logDebug(`button_click_hijack`);
+    $logger.debug(`button_click_hijack`);
 
     let targetElement;
 
@@ -368,11 +367,11 @@ function handleClickHijack(env, button) {
     }
 
     if (!targetElement) {
-        logError(`no_target_element`);
+        $logger.error(`no_target_element`);
         return;
     }
 
-    logInfo(`init_paypal_checkout_hijack`);
+    $logger.info(`init_paypal_checkout_hijack`);
 
     let token;
 
@@ -386,7 +385,7 @@ function handleClickHijack(env, button) {
     paypalCheckout.renderHijack(targetElement);
 
     window.paypal.checkout.initXO = () => {
-        logDebug(`initxo_hijackclickhandler`);
+        $logger.debug(`initxo_hijackclickhandler`);
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_initxo');
@@ -394,20 +393,20 @@ function handleClickHijack(env, button) {
     };
 
     window.paypal.checkout.startFlow = (item, opts) => {
-        logDebug(`startflow_hijackclickhandler`, { item });
+        $logger.debug(`startflow_hijackclickhandler`, { item });
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_startflow');
         }
 
         if (opts) {
-            logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
+            $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
         }
 
         let { url, paymentToken } = matchUrlAndPaymentToken(item);
 
         if (!isICEligible()) {
-            logDebug(`ineligible_startflow_hijackclickhandler`, { url });
+            $logger.debug(`ineligible_startflow_hijackclickhandler`, { url });
             paypalCheckout.destroy();
             return redirect(url);
         }
@@ -417,10 +416,10 @@ function handleClickHijack(env, button) {
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
-        logWarning(`closeflow_hijackclickhandler`);
+        $logger.warn(`closeflow_hijackclickhandler`);
 
         if (closeUrl) {
-            logWarning(`closeflow_with_url`, { closeUrl });
+            $logger.warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
 
@@ -439,11 +438,11 @@ function listenClick(env, button, clickHandler, condition) {
     let isClick  = (clickHandler instanceof Function);
 
     if (!isICEligible() && !isClick) {
-        return logDebug(`ineligible_listenclick`);
+        return $logger.debug(`ineligible_listenclick`);
     }
 
     if (button.hasAttribute('data-paypal-click-listener')) {
-        return logWarning(`button_already_has_paypal_click_listener`);
+        return $logger.warn(`button_already_has_paypal_click_listener`);
     }
 
     button.setAttribute('data-paypal-click-listener', true);
@@ -456,7 +455,7 @@ function listenClick(env, button, clickHandler, condition) {
             }
         });
 
-        return logDebug(`ineligible_listenclick`);
+        return $logger.debug(`ineligible_listenclick`);
     }
 
     button.addEventListener('click', event => {
@@ -465,13 +464,13 @@ function listenClick(env, button, clickHandler, condition) {
             window.ppCheckpoint('flow_buttonclick');
         }
 
-        logInfo(`button_click`);
+        $logger.info(`button_click`);
 
         if (condition instanceof Function) {
             if (condition.call()) {
-                logInfo(`button_click_condition_enabled`);
+                $logger.info(`button_click_condition_enabled`);
             } else {
-                return logInfo(`button_click_condition_disabled`);
+                return $logger.info(`button_click_condition_disabled`);
             }
         }
 
@@ -506,7 +505,7 @@ function setup(id, options = {}) {
 
     id = id || 'merchant';
 
-    logInfo(`setup`, {
+    $logger.info(`setup`, {
         id,
         env: options.environment,
         options: JSON.stringify(options, (key, val) => {
@@ -526,7 +525,7 @@ function setup(id, options = {}) {
     reset();
 
     if (window.I10C) {
-        logInfo(`instart`);
+        $logger.info(`instart`);
     }
 
     if (config.paypalUrls[options.environment]) {
@@ -549,7 +548,7 @@ function setup(id, options = {}) {
             if (config.locales[country].indexOf(lang) !== -1) {
                 config.locale.lang = lang;
             } else {
-                logWarning(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
+                $logger.warn(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
                 config.locale.lang = config.locales[country][0];
             }
 
@@ -558,7 +557,7 @@ function setup(id, options = {}) {
             config.locale.lang = country;
 
         } else {
-            logWarning(`invalid_user_country`, { country });
+            $logger.warn(`invalid_user_country`, { country });
         }
     }
 
@@ -580,17 +579,17 @@ function setup(id, options = {}) {
 
         if (buttonElements.length) {
             buttonElements.forEach(el => {
-                logInfo(`listen_click_custom_button`);
+                $logger.info(`listen_click_custom_button`);
                 listenClick(options.environment, el, options.click, options.condition);
             });
         } else {
-            logWarning(`button_element_not_found`, { element: JSON.stringify(options.button) });
+            $logger.warn(`button_element_not_found`, { element: JSON.stringify(options.button) });
         }
     }
 
     return renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
-            logInfo(`listen_click_paypal_button`);
+            $logger.info(`listen_click_paypal_button`);
             listenClick(options.environment, button.el, button.click, button.condition);
         });
     });
@@ -608,21 +607,21 @@ function setup(id, options = {}) {
 
 function initXO() {
 
-    logDebug(`initxo`);
+    $logger.debug(`initxo`);
 
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_initxo');
     }
 
     if (!isICEligible()) {
-        return logDebug(`ineligible_initxo`);
+        return $logger.debug(`ineligible_initxo`);
     }
 
     reset();
 
     let { url, paymentToken } = getPaymentTokenAndUrl();
 
-    logInfo(`init_paypal_checkout_initxo`);
+    $logger.info(`init_paypal_checkout_initxo`);
 
     renderPayPalCheckout({ url, paymentToken });
 }
@@ -639,24 +638,24 @@ function initXO() {
 */
 
 function startFlow(item, opts) {
-    logDebug(`startflow`, { item });
+    $logger.debug(`startflow`, { item });
 
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_startflow');
     }
 
     if (opts) {
-        logWarning(`startflow_with_options`, { opts: JSON.stringify(opts) });
+        $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
     }
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
     if (!isICEligible()) {
-        logDebug(`ineligible_startflow_global`, { url });
+        $logger.debug(`ineligible_startflow_global`, { url });
         return redirect(url);
     }
 
-    logInfo(`init_paypal_checkout_startflow`);
+    $logger.info(`init_paypal_checkout_startflow`);
 
     renderPayPalCheckout({ url, paymentToken });
 }
@@ -671,10 +670,10 @@ function startFlow(item, opts) {
 */
 
 function closeFlow(closeUrl) {
-    logWarning(`closeflow`);
+    $logger.warn(`closeflow`);
 
     if (closeUrl) {
-        logWarning(`closeflow_with_url`, { closeUrl });
+        $logger.warn(`closeflow_with_url`, { closeUrl });
         return redirect(closeUrl);
     }
 
@@ -702,7 +701,7 @@ onDocumentReady(() => {
     let buttons = Array.prototype.slice.call(document.querySelectorAll('[data-paypal-button]'));
 
     if (buttons && buttons.length) {
-        logDebug(`data_paypal_button`, { number: buttons.length });
+        $logger.debug(`data_paypal_button`, { number: buttons.length });
 
         for (let button of buttons) {
 
@@ -749,24 +748,24 @@ let readyCalled = false;
 function invokeReady(method) {
 
     if (readyCalled) {
-        logWarning(`ready_called_multiple_times`);
+        $logger.warn(`ready_called_multiple_times`);
     }
 
     if (setupCalled) {
-        logWarning(`ready_called_after_setup`);
+        $logger.warn(`ready_called_after_setup`);
     }
 
     readyCalled = true;
 
     onDocumentReady(() => {
-        logDebug(`paypal_checkout_ready`);
+        $logger.debug(`paypal_checkout_ready`);
         method();
     });
 }
 
 
 if (window.paypalCheckoutReady instanceof Function) {
-    logDebug(`paypal_checkout_ready_preset`);
+    $logger.debug(`paypal_checkout_ready_preset`);
     invokeReady(window.paypalCheckoutReady);
 }
 
@@ -776,14 +775,14 @@ try {
     Object.defineProperty(window, 'paypalCheckoutReady', {
 
         set(method) {
-            logDebug(`paypal_checkout_ready_setter`);
+            $logger.debug(`paypal_checkout_ready_setter`);
             invokeReady(method);
         },
 
         get() {
-            logWarning(`paypal_checkout_ready_getter`);
+            $logger.warn(`paypal_checkout_ready_getter`);
         }
     });
 } catch (err) {
-    logWarning('paypal_checkout_ready_setter_error', { error: err.stack || err.toString() });
+    $logger.warn(`paypal_checkout_ready_setter_error`, { error: err.stack || err.toString() });
 }

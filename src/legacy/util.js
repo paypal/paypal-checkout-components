@@ -1,5 +1,5 @@
 
-import { logInfo } from './log';
+import { $logger } from './log';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 
@@ -17,7 +17,7 @@ export function urlWillRedirectPage(url) {
 }
 
 export function redirect(url) {
-    logInfo(`redirect`, { url });
+    $logger.info(`redirect`, { url });
     window.location = url;
 }
 
