@@ -23,7 +23,7 @@ function registerClick() {
 
     setTimeout(() => {
         inClick = false;
-    });
+    }, 1);
 }
 
 onDocumentReady(() => {
@@ -48,9 +48,17 @@ function ifNotClick(method) {
         ifNotClickTimeout = null;
         ifNotClickMethods.forEach(meth => meth());
         ifNotClickMethods = [];
-    });
+    }, 1);
 }
 
+
+
+function before(method, wrapper) {
+    return function() {
+        wrapper();
+        return method.apply(this, arguments);
+    };
+}
 
 
 
@@ -370,10 +378,8 @@ function handleClick(env, clickHandler, event) {
         }
     };
 
-    let _startFlow = window.paypal.checkout.startFlow;
-    window.paypal.checkout.startFlow = function() {
+    window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
         startFlowCalled = true;
-        return _startFlow.apply(this, arguments);
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
@@ -396,8 +402,22 @@ function handleClick(env, clickHandler, event) {
     }
 
     if (!initXOCalled && !startFlowCalled) {
-        $logger.warn(`button_click_handler_no_initxo_startflow`);
-        return reset();
+        reset();
+
+        window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
+            initXOCalled = true;
+        };
+
+        window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
+            startFlowCalled = true;
+        };
+
+        setTimeout(() => {
+            if (!initXOCalled && !startFlowCalled) {
+                $logger.warn(`button_click_event_no_initxo_startflow`);
+                return reset();
+            }
+        }, 1);
     }
 
     $logger.info(`init_paypal_checkout_click`);
