@@ -1,4 +1,6 @@
 
+import $logger from 'beaver-logger/client';
+
 function warn(err) {
     if (window.console) {
         if (window.console.warn) {
@@ -11,7 +13,6 @@ function warn(err) {
     }
 }
 
-
 export function checkForCommonErrors() {
 
     if (JSON.stringify([]) !== '[]') {
@@ -20,5 +21,13 @@ export function checkForCommonErrors() {
         } else {
             warn(`JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.`);
         }
+
+        $logger.warn(`json_stringify_array_broken`);
+    }
+
+    if (JSON.stringify({}) !== '{}') {
+        warn(`JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.`);
+
+        $logger.warn(`json_stringify_object_broken`);
     }
 }

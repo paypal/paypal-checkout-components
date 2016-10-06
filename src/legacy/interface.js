@@ -380,7 +380,7 @@ function handleClick(env, clickHandler, event) {
 
     window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
         startFlowCalled = true;
-    };
+    });
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
         $logger.warn(`closeflow_clickhandler`);
@@ -406,11 +406,11 @@ function handleClick(env, clickHandler, event) {
 
         window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
             initXOCalled = true;
-        };
+        });
 
         window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
             startFlowCalled = true;
-        };
+        });
 
         setTimeout(() => {
             if (!initXOCalled && !startFlowCalled) {
