@@ -163,7 +163,7 @@ The way this works is:
    You'll need:
 
    - The access token (`access_token` from the response in step 2)
-   - The payment id (`id` from the response in step 3)
+   - The payment id (`data.paymentID` from the response to `onPaymentAuthorize` from the buyer approval in step 4)
    - The payer id (`data.payerID` from the response to `onPaymentAuthorize` from the buyer approval in step 4)
 
    ---
