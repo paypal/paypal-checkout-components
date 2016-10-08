@@ -24,9 +24,6 @@ We also support native React, Angular and Ember components for the PayPal Button
 - Do you use **React.js, Angular.js or Ember.js** to render your page? If so, you should use the [**React.js, Angular.js or Ember.js Elements**](./docs/frameworks.md),
   which provide native support for each of these frameworks, so you can drop PayPal Buttons in any of your front-end views.
 
-- Do you have your own **standalone checkout button** and you only want to use the PayPal Checkout flow? If so you
-  should use the [**PayPal Checkout**](./docs/checkout.md) component, which opens up the PayPal Checkout flow on-demand, when you decide.
-
 - Do you have a mark integration? In this case, you should look at the [Mark Integration](./docs/mark.md) docs to decide how best
   to integrate PayPal Checkout
 
@@ -38,7 +35,7 @@ We also support native React, Angular and Ember components for the PayPal Button
    <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
    ```
 
-2. Drop one of the following components into your page:
+2. Drop the following component onto your page:
 
 ## [PayPal Checkout Button](./docs/button.md)
 
@@ -48,24 +45,7 @@ This component renders a PayPal button onto your page, which will take care of o
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
 and you can take your customer to a success page.
 
-**Important Note:** This component internally uses the PayPal Checkout component. All you need to do is drop the button
-onto your web page, and the PayPal Checkout flow will be launched whenever your customer clicks on the button.
-
 [Integrate the button component](./docs/button.md)
-
------
-
-## [PayPal Checkout](./docs/checkout.md)
-
-[![PayPal Checkout](./docs/checkout.png)](./docs/checkout.md)
-
-This component immediately opens PayPal on your page, and guides your customer through the payment process. After the
-payment is complete, we will notify you using a javascript callback and you can take your customer to a success page.
-
-**Important Note:** This component should only be used if you **do not** require a PayPal Button on your page. The recommended
-integration is using the PayPal Button, which will invoke PayPal Checkout directly for you when your customer clicks on the PayPal button.
-
-[Integrate the checkout component](./docs/checkout.md)
 
 -----
 
