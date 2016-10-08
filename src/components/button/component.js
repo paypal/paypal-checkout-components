@@ -65,6 +65,13 @@ export let Button = xcomponent.create({
             queryParam: false
         },
 
+        paymentID: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: false
+        },
+
         paymentToken: {
             type: 'string',
             required: false,
@@ -122,10 +129,9 @@ export let Button = xcomponent.create({
             required: false
         },
 
-        autoExecute: {
+        commit: {
             type: 'boolean',
-            required: false,
-            sendToChild: false
+            required: false
         },
 
         /*
@@ -143,19 +149,6 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
             autoClose: false,
-
-            def(props) {
-                if (props.autoExecute && props.onPaymentComplete) {
-
-                    let onPaymentComplete = props.onPaymentComplete;
-                    delete props.onPaymentComplete;
-
-                    return function() {
-                        console.warn('Calling onPaymentComplete, but this feature is not yet implemented so do not rely on transaction being executed');
-                        onPaymentComplete.apply(this, arguments);
-                    };
-                }
-            },
 
             decorate(original) {
                 if (original) {

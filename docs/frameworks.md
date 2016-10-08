@@ -19,7 +19,7 @@ The button will appear exactly where you place it in your HTML.
 				...
 			},
 
-			autoExecute: true,
+			commit: true,
 
 			onPaymentComplete: function(data) {
 				...
@@ -53,7 +53,7 @@ var MyCartComponent = window.React.createClass({
 			<paypal.Button.react
 				clientID={clientID}
 				paymentDetails={paymentDetails}
-				autoExecute=true
+				commit=true
 				onPaymentComplete={onPaymentComplete} />
 		</div>);
 	}
@@ -92,7 +92,7 @@ var MyCartComponent = window.React.createClass({
 	<paypal-button
 		clientID="clientID"
 		paymentDetails="paymentDetails"
-		autoExecute="true"
+		commit="true"
 		onPaymentComplete="onPaymentComplete">
 	</paypal-button>
 </div>

@@ -67,7 +67,7 @@ You'll need:
 		// Automatically execute/complete the payment on paypal.com when the buyer clicks 'Pay Now', rather than only
 		// authorizing the payment.
 
-		autoExecute: true,
+		commit: true,
 
 		// Pass a function to be called when the customer completes the payment
 

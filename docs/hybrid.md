@@ -6,7 +6,7 @@ you want to do on the client or on the server side.
 ### Create and execute the payment entirely from the client side
 
 - Specify `paymentDetails` to create the payment
-- Specify `autoExecute` to execute the payment after the buyer clicks Pay
+- Specify `commit: true` to execute the payment after the buyer clicks Pay
 - Specify `onPaymentComplete` to get a callback after the payment is executed
 
 ```javascript
@@ -23,7 +23,7 @@ paypal.Button.render({
 		]
 	},
 
-	autoExecute: true,
+	commit: true,
 
 	onPaymentComplete: function(data) {
 		console.log('The payment was executed!');
@@ -89,7 +89,7 @@ paypal.Button.render({
 ### Create the payment on your server, then execute on the client side
 
 - Specify `paymentToken` to call your server and create the payment
-- Specify `autoExecute` to execute the payment after the buyer clicks Pay
+- Specify `commit: true` to execute the payment after the buyer clicks Pay
 - Specify `onPaymentComplete` to get a callback after the payment is executed
 
 ```javascript
@@ -102,7 +102,7 @@ paypal.Button.render({
 			.fail(function(err)  { reject(err); });
 	},
 
-	autoExecute: true,
+	commit: true,
 
 	onPaymentComplete: function(data) {
 		console.log('The payment was executed!');

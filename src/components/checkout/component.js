@@ -96,6 +96,13 @@ export let Checkout = xcomponent.create({
             queryParam: false
         },
 
+        paymentID: {
+            type: 'string',
+            required: false,
+            getter: true,
+            queryParam: 'paymentID'
+        },
+
         paymentToken: {
             type: 'string',
             required: false,
@@ -103,15 +110,12 @@ export let Checkout = xcomponent.create({
             queryParam: 'token',
 
             def(props) {
-
-                if (props.billingToken || props.billingDetails || props.buttonID) {
-                    return;
+                if (props.paymentDetails) {
+                    return function() {
+                        let env = props.env || config.env;
+                        return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
+                    };
                 }
-
-                return function() {
-                    let env = props.env || config.env;
-                    return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
-                };
             }
         },
 
@@ -129,15 +133,12 @@ export let Checkout = xcomponent.create({
             queryParam: 'ba_token',
 
             def(props) {
-
-                if (props.paymentToken || props.paymentDetails || props.buttonID) {
-                    return;
+                if (props.billingDetails) {
+                    return function() {
+                        let env = props.env || config.env;
+                        return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
+                    };
                 }
-
-                return function() {
-                    let env = props.env || config.env;
-                    return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
-                };
             }
         },
 
@@ -155,10 +156,9 @@ export let Checkout = xcomponent.create({
             sendToChild: false
         },
 
-        autoExecute: {
+        commit: {
             type: 'boolean',
-            required: false,
-            sendToChild: true
+            required: false
         },
 
         onPaymentAuthorize: {
