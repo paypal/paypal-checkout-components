@@ -8,7 +8,6 @@ These components support various levels of integration, depending on your requir
 
 - A simple PayPal Button which takes your customer through the payment process end-to-end
 - An advanced PayPal Button which allows you to use [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to accept and process payments
-- Stand-alone PayPal Checkout, if you have your own pre-existing checkout button
 
 We also support native React, Angular and Ember components for the PayPal Button.
 
