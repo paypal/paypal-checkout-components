@@ -2,6 +2,8 @@
 
 ![PayPal Button](./button.png)
 
+![PayPal Checkout](./checkout.png)
+
 ### Before you start
 
 #### Create a PayPal App

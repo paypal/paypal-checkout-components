@@ -128,7 +128,7 @@ The way this works is:
 
    Here you can see `token=EC-2003069323602984G`. This is the token we need to use on our front-end.
 
-4. Use the `paypal.Button` or `paypal.Checkout` component to let the buyer authorize the payment
+4. Use the `paypal.Button` component to let the buyer authorize the payment
 
    You'll need:
 
