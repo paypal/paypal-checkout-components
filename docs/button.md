@@ -94,7 +94,7 @@ server side, rather than specifying the payment details inline on your client si
 
 With this integration:
 
-- We set up `paymentToken` to call our web-server, which then calls the PayPal REST API to **create** a Payment Token.
+- We set up `paymentID` to call our web-server, which then calls the PayPal REST API to **create** a Payment ID.
 - We listen for `onPaymentAuthorize`, and call our web-server again, which then calls the PayPal REST API to **execute** the payment
 
 You'll need:

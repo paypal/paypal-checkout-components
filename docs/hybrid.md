@@ -34,22 +34,22 @@ paypal.Button.render({
 
 ### Create and execute the payment on your server side
 
-- Specify `paymentToken` to call your server and create the payment
+- Specify `paymentID` to call your server and create the payment
 - Specify `onPaymentAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
 
 ```javascript
 paypal.Button.render({
 
-	paymentToken: function(resolve, reject) {
+	paymentID: function(resolve, reject) {
 
 		jQuery.post('/my-api/create-payment')
-			.done(function(data) { resolve(data.token); })
+			.done(function(data) { resolve(data.paymentID); })
 			.fail(function(err)  { reject(err); });
 	},
 
 	onPaymentAuthorize: function(data) {
 
-		jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
+		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
 			.done(function(data) { console.log('The payment was executed!'); })
 			.fail(function(err)  { console.log('There was an error!');  });
 	}
@@ -78,7 +78,7 @@ paypal.Button.render({
 
 	onPaymentAuthorize: function(data) {
 
-		jQuery.post('/my-api/execute-payment', { token: data.token, payerID: data.payerID });
+		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
 			.done(function(data) { console.log('The payment was executed!'); })
 			.fail(function(err)  { console.log('There was an error!');  });
 	}
@@ -88,17 +88,17 @@ paypal.Button.render({
 
 ### Create the payment on your server, then execute on the client side
 
-- Specify `paymentToken` to call your server and create the payment
+- Specify `paymentID` to call your server and create the payment
 - Specify `commit: true` to execute the payment after the buyer clicks Pay
 - Specify `onPaymentComplete` to get a callback after the payment is executed
 
 ```javascript
 paypal.Button.render({
 
-	paymentToken: function(resolve, reject) {
+	paymentID: function(resolve, reject) {
 
 		jQuery.post('/my-api/create-payment')
-			.done(function(data) { resolve(data.token); })
+			.done(function(data) { resolve(data.paymentID); })
 			.fail(function(err)  { reject(err); });
 	},
 

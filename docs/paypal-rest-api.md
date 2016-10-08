@@ -5,8 +5,8 @@ server side. The simplest way to do this is using the [PayPal Payments REST API]
 
 The way this works is:
 
-1. You call [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a payment token, with all of your payment details
-2. You invoke the PayPal Button or PayPal Checkout component to get your buyer's approval for the payment, using this token
+1. You call [Payment Create](https://developer.paypal.com/docs/api/payments/#payment_create) to create a Payment ID, with all of your payment details
+2. You invoke the PayPal Button component to get your buyer's approval for the payment, using this Payment ID
 3. You then call [Payment Execute](https://developer.paypal.com/docs/api/payments/#payment_execute) to finalize the transaction
 
 -----
@@ -86,7 +86,7 @@ The way this works is:
      --data "$PAYMENT";
    ```
 
-   The payment token will be returned under `links[].href` for the `approval_url`:
+   The Payment ID will be returned under `id`:
 
    ```json
    {
@@ -126,27 +126,27 @@ The way this works is:
    }
    ```
 
-   Here you can see `token=EC-2003069323602984G`. This is the token we need to use on our front-end.
+   Here you can see that the `id` is `PAY-0J356327TH335450NK56Y2PQ`. This is the id we need to pass back to use on our front-end.
 
 4. Use the `paypal.Button` component to let the buyer authorize the payment
 
    You'll need:
 
-   - The EC token (`EC-2003069323602984G` from '`links[1].href` from the response in step 3)
+   - The Payment ID (`PAY-0J356327TH335450NK56Y2PQ` from `id` from the response in step 3)
 
    ---
 
    ```javascript
    paypal.Button.render({
 
-	   paymentToken: function(resolve) {
+	   paymentID: function(resolve) {
 
-	       // Call your server side to get the token from step 3, then pass it to the resolve callback
+	       // Call your server side to get the Payment ID from step 3, then pass it to the resolve callback
 	       //
 
 		   jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
 		       .done(function(data) {
-			       resolve(data.token);
+			       resolve(data.paymentID);
 		       });
 	   },
 
