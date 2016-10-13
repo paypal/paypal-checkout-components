@@ -1,7 +1,6 @@
 
 import xcomponent from 'xcomponent/src';
 import { config } from '../../config';
-import { createCheckoutToken, createBillingToken } from '../../rest';
 import { Checkout } from '../checkout';
 
 import { validateProps } from '../common';
@@ -49,6 +48,15 @@ export let Button = xcomponent.create({
             }
         },
 
+        client: {
+            type: 'object',
+            required: false,
+            def() {
+                return {};
+            },
+            sendToChild: false
+        },
+
         stage: {
             type: 'string',
             required: false,
@@ -58,127 +66,64 @@ export let Button = xcomponent.create({
             }
         },
 
-        clientID: {
-            type: 'object',
-            required: false,
-            sendToChild: false,
-            queryParam: false
-        },
-
-        paymentID: {
-            type: 'string',
-            required: false,
-            getter: true,
-            queryParam: false
-        },
-
         paymentToken: {
             type: 'string',
             required: false,
             getter: true,
-            queryParam: false,
-
-            def(props) {
-
-                if (props.billingToken || props.billingDetails || props.buttonID) {
-                    return;
-                }
-
-                return function() {
-                    let env = props.env || config.env;
-                    return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
-                };
-            }
+            queryParam: 'token',
+            alias: 'paymentToken'
         },
 
-        paymentDetails: {
-            type: 'object',
+        payment: {
+            type: 'string',
             required: false,
-            sendToChild: false,
-            queryParam: false
+            getter: true,
+            queryParam: 'token',
+            alias: 'paymentToken'
         },
 
-        billingToken: {
+        billingAgreement: {
             type: 'string',
             required: false,
             getter: true,
             queryParam: false,
-
-            def(props) {
-
-                if (props.paymentToken || props.paymentDetails || props.buttonID) {
-                    return;
-                }
-
-                return function() {
-                    let env = props.env || config.env;
-                    return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
-                };
-            }
-        },
-
-        billingDetails: {
-            type: 'object',
-            required: false,
-            sendToChild: false,
-            queryParam: false
-        },
-
-        buttonID: {
-            type: 'string',
-            required: false
+            alias: 'billingToken'
         },
 
         commit: {
             type: 'boolean',
-            required: false
-        },
-
-        /*
-
-        submitForm: {
-            type: 'boolean',
             required: false,
-            def: false,
             sendToChild: false
         },
 
-        */
+        onAuthorize: {
+            type: 'function',
+            required: false,
+            autoClose: false,
+            alias: 'onPaymentAuthorize',
+
+            decorate(original) {
+                if (original) {
+                    return function() {
+                        Checkout.contexts.lightbox = true;
+                        return original.apply(this, arguments);
+                    };
+                }
+            }
+        },
 
         onPaymentAuthorize: {
             type: 'function',
             required: false,
             autoClose: false,
-
-            decorate(original) {
-                if (original) {
-                    return function() {
-                        Checkout.contexts.lightbox = true;
-                        return original.apply(this, arguments);
-                    };
-                }
-            }
+            alias: 'onPaymentAuthorize'
         },
 
-        onPaymentComplete: {
+        onCancel: {
             type: 'function',
             required: false,
             autoClose: false,
-
-            decorate(original) {
-                if (original) {
-                    return function() {
-                        Checkout.contexts.lightbox = true;
-                        return original.apply(this, arguments);
-                    };
-                }
-            }
-        },
-
-        onPaymentCancel: {
-            type: 'function',
-            required: false,
-            autoClose: false
+            alias: 'onPaymentCancel'
         },
 
         onClick: {

@@ -4,6 +4,13 @@ export let config = {
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
     legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
 
+    braintree_version: `3.3.0`,
+
+    urls: {
+        get braintree_client() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/client.js`; },
+        get braintree_paypal() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/paypal.js`; }
+    },
+
     ppobjects: false,
 
     cors: true,
@@ -44,7 +51,16 @@ export let config = {
         };
     },
 
-    get apiUrls() {
+    get wwwApiUrls() {
+        return {
+            local:      `https://www.${config.stage}.qa.paypal.com`,
+            stage:      `https://www.${config.stage}.qa.paypal.com`,
+            sandbox:    `https://wwww.sandbox.paypal.com`,
+            production: `https://www.paypal.com`
+        };
+    },
+
+    get corsApiUrls() {
         return {
             local:      `https://${config.apiStage}.qa.paypal.com:11888`,
             stage:      `https://${config.apiStage}.qa.paypal.com:11888`,
@@ -90,82 +106,109 @@ export let config = {
     billingApiUri: `/v1/billing-agreements/agreement-tokens`,
 
     get checkoutUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
         return {
-            local:      `${config.paypalUrls.local}${config.checkoutUris.local}`,
-            stage:      `${config.paypalUrls.stage}${config.checkoutUris.stage}`,
-            sandbox:    `${config.paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
-            production: `${config.paypalUrls.production}${config.checkoutUris.production}`,
-            test:       `${config.paypalUrls.test}${config.checkoutUris.test}`
+            local:      `${paypalUrls.local}${config.checkoutUris.local}`,
+            stage:      `${paypalUrls.stage}${config.checkoutUris.stage}`,
+            sandbox:    `${paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
+            production: `${paypalUrls.production}${config.checkoutUris.production}`,
+            test:       `${paypalUrls.test}${config.checkoutUris.test}`
         };
     },
 
     get billingUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
         return {
-            local:      `${config.paypalUrls.local}${config.billingUris.local}`,
-            stage:      `${config.paypalUrls.stage}${config.billingUris.stage}`,
-            sandbox:    `${config.paypalUrls.sandbox}${config.billingUris.sandbox}`,
-            production: `${config.paypalUrls.production}${config.billingUris.production}`,
-            test:       `${config.paypalUrls.test}${config.billingUris.test}`
+            local:      `${paypalUrls.local}${config.billingUris.local}`,
+            stage:      `${paypalUrls.stage}${config.billingUris.stage}`,
+            sandbox:    `${paypalUrls.sandbox}${config.billingUris.sandbox}`,
+            production: `${paypalUrls.production}${config.billingUris.production}`,
+            test:       `${paypalUrls.test}${config.billingUris.test}`
         };
     },
 
     get buttonUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
         return {
-            local:      `${config.paypalUrls.local}${config.buttonUris.local}`,
-            stage:      `${config.paypalUrls.stage}${config.buttonUris.stage}`,
-            sandbox:    `${config.paypalUrls.sandbox}${config.buttonUris.sandbox}`,
-            production: `${config.paypalUrls.production}${config.buttonUris.production}`,
-            test:       `${config.paypalUrls.test}${config.buttonUris.test}`
+            local:      `${paypalUrls.local}${config.buttonUris.local}`,
+            stage:      `${paypalUrls.stage}${config.buttonUris.stage}`,
+            sandbox:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
+            production: `${paypalUrls.production}${config.buttonUris.production}`,
+            test:       `${paypalUrls.test}${config.buttonUris.test}`
         };
     },
 
     get paymentsStandardUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
         return {
-            local:      `${config.paypalUrls.local}${config.paymentStandardUri}`,
-            stage:      `${config.paypalUrls.stage}${config.paymentStandardUri}`,
-            sandbox:    `${config.paypalUrls.sandbox}${config.paymentStandardUri}`,
-            production: `${config.paypalUrls.production}${config.paymentStandardUri}`,
-            test:       `${config.paypalUrls.test}${config.paymentStandardUri}`
+            local:      `${paypalUrls.local}${config.paymentStandardUri}`,
+            stage:      `${paypalUrls.stage}${config.paymentStandardUri}`,
+            sandbox:    `${paypalUrls.sandbox}${config.paymentStandardUri}`,
+            production: `${paypalUrls.production}${config.paymentStandardUri}`,
+            test:       `${paypalUrls.test}${config.paymentStandardUri}`
         };
     },
 
     get bridgeUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
         return {
-            local:      `${config.paypalUrls.local}${config.bridgeUri}&env=local`,
-            stage:      `${config.paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
-            sandbox:    `${config.paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
-            production: `${config.paypalUrls.production}${config.bridgeUri}&env=production`,
-            test:       `${config.paypalUrls.test}${config.bridgeUri}&env=test`
+            local:      `${paypalUrls.local}${config.bridgeUri}&env=local`,
+            stage:      `${paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
+            sandbox:    `${paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
+            production: `${paypalUrls.production}${config.bridgeUri}&env=production`,
+            test:       `${paypalUrls.test}${config.bridgeUri}&env=test`
         };
     },
 
     get authApiUrls() {
+
+        let apiUrls    = config.corsApiUrls;
+        let authApiUri = config.authApiUri;
+
         return {
-            local:      `${config.apiUrls.local}${config.authApiUri}`,
-            stage:      `${config.apiUrls.stage}${config.authApiUri}`,
-            sandbox:    `${config.apiUrls.sandbox}${config.authApiUri}`,
-            production: `${config.apiUrls.production}${config.authApiUri}`,
-            test:       `${config.apiUrls.test}${config.authApiUri}`
+            local:      `${apiUrls.local}${authApiUri}`,
+            stage:      `${apiUrls.stage}${authApiUri}`,
+            sandbox:    `${apiUrls.sandbox}${authApiUri}`,
+            production: `${apiUrls.production}${authApiUri}`,
+            test:       `${apiUrls.test}${authApiUri}`
         };
     },
 
     get paymentApiUrls() {
+
+        let apiUrls       = config.corsApiUrls;
+        let paymentApiUri = config.paymentApiUri;
+
         return {
-            local:      `${config.apiUrls.local}${config.paymentApiUri}`,
-            stage:      `${config.apiUrls.stage}${config.paymentApiUri}`,
-            sandbox:    `${config.apiUrls.sandbox}${config.paymentApiUri}`,
-            production: `${config.apiUrls.production}${config.paymentApiUri}`,
-            test:       `${config.apiUrls.test}${config.paymentApiUri}`
+            local:      `${apiUrls.local}${paymentApiUri}`,
+            stage:      `${apiUrls.stage}${paymentApiUri}`,
+            sandbox:    `${apiUrls.sandbox}${paymentApiUri}`,
+            production: `${apiUrls.production}${paymentApiUri}`,
+            test:       `${apiUrls.test}${paymentApiUri}`
         };
     },
 
     get billingApiUrls() {
+
+        let apiUrls       = config.corsApiUrls;
+        let billingApiUri = config.billingApiUri;
+
         return {
-            local:      `${config.apiUrls.local}${config.billingApiUri}`,
-            stage:      `${config.apiUrls.stage}${config.billingApiUri}`,
-            sandbox:    `${config.apiUrls.sandbox}${config.billingApiUri}`,
-            production: `${config.apiUrls.production}${config.billingApiUri}`,
-            test:       `${config.apiUrls.test}${config.billingApiUri}`
+            local:      `${apiUrls.local}${billingApiUri}`,
+            stage:      `${apiUrls.stage}${billingApiUri}`,
+            sandbox:    `${apiUrls.sandbox}${billingApiUri}`,
+            production: `${apiUrls.production}${billingApiUri}`,
+            test:       `${apiUrls.test}${billingApiUri}`
         };
     },
 
@@ -173,8 +216,12 @@ export let config = {
         return config.paypalUrls[config.env];
     },
 
-    get apiUrl() {
-        return config.apiUrls[config.env];
+    get corsApiUrl() {
+        return config.corsApiUrls[config.env];
+    },
+
+    get wwwApiUrl() {
+        return config.wwwApiUrls[config.env];
     },
 
     get checkoutUrl() {

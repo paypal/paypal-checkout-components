@@ -254,7 +254,7 @@ function initPayPalCheckout(props = {}) {
 
         uid: window.pp_uid,
 
-        onPaymentAuthorize({ returnUrl }) {
+        onAuthorize({ returnUrl }) {
 
             reset();
 
@@ -267,7 +267,7 @@ function initPayPalCheckout(props = {}) {
             return redirect(returnUrl);
         },
 
-        onPaymentCancel({ cancelUrl }) {
+        onCancel({ cancelUrl }) {
 
             reset();
 
@@ -322,7 +322,7 @@ function renderPayPalCheckout(props = {}) {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
 
-        Promise.all([ props.url, props.paymentToken ]).then(([ url, paymentToken ]) => {
+        Promise.all([ props.url, props.payment ]).then(([ url, paymentToken ]) => {
 
             if (url) {
                 return redirect(url);
@@ -422,7 +422,9 @@ function handleClick(env, clickHandler, event) {
 
     $logger.info(`init_paypal_checkout_click`);
 
-    renderPayPalCheckout({ env, url, paymentToken });
+    let payment = paymentToken;
+
+    renderPayPalCheckout({ env, url, payment });
 }
 
 
@@ -454,7 +456,7 @@ function handleClickHijack(env, button) {
 
     let paypalCheckout = initPayPalCheckout({
         env,
-        paymentToken() {
+        payment() {
             return token || xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
         }
     });
@@ -699,7 +701,9 @@ function initXO() {
 
     $logger.info(`init_paypal_checkout_initxo`);
 
-    renderPayPalCheckout({ url, paymentToken });
+    let payment = paymentToken;
+
+    renderPayPalCheckout({ url, payment });
 }
 
 
@@ -733,7 +737,9 @@ function startFlow(item, opts) {
 
     $logger.info(`init_paypal_checkout_startflow`);
 
-    renderPayPalCheckout({ url, paymentToken });
+    let payment = paymentToken;
+
+    renderPayPalCheckout({ url, payment });
 }
 
 

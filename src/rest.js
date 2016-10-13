@@ -4,7 +4,11 @@ import { request, isPayPalDomain } from './lib';
 import { messageBridge } from './bridge';
 
 
-export function createAccessToken(env, clientID) {
+export function createAccessToken(env, client) {
+
+    env = env || config.env;
+
+    let clientID = client[env];
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createAccessToken', { clientID });
@@ -35,7 +39,11 @@ export function createAccessToken(env, clientID) {
 
 
 
-export function createCheckoutToken(env, clientID, paymentDetails) {
+export function createCheckoutToken(env, client, paymentDetails) {
+
+    env = env || config.env;
+
+    let clientID = client[env];
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createCheckoutToken', { clientID, paymentDetails });
@@ -49,7 +57,7 @@ export function createCheckoutToken(env, clientID, paymentDetails) {
     paymentDetails.payer = paymentDetails.payer || {};
     paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
 
-    return createAccessToken(env, clientID).then(accessToken => {
+    return createAccessToken(env, client).then(accessToken => {
 
         return request({
             method: `post`,
@@ -66,21 +74,28 @@ export function createCheckoutToken(env, clientID, paymentDetails) {
             let links = res.links;
 
             for (let i = 0, len = links.length; i < len; i++) {
-                if (links[i].method === 'REDIRECT') {
+                if (links[i].method === 'REDIRECT' && links[i].rel === 'approval_url') {
                     let match = links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
                     if (match) {
                         return match[1];
+                    } else {
+                        throw new Error(`Could not find token in approval url: ${links[i].href}`);
                     }
-                    break;
                 }
             }
+
+            throw new Error(`Could not find approval url`);
         }
 
         throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
     });
 }
 
-export function createBillingToken(env, clientID, billingDetails) {
+export function createBillingToken(env, client, billingDetails) {
+
+    env = env || config.env;
+
+    let clientID = client[env];
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createBillingToken', { clientID, billingDetails });
@@ -95,7 +110,7 @@ export function createBillingToken(env, clientID, billingDetails) {
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
 
-    return createAccessToken(env, clientID).then(accessToken => {
+    return createAccessToken(env, client).then(accessToken => {
 
         return request({
             method: `post`,

@@ -9,8 +9,6 @@ import { config } from '../../config';
 
 import { validateProps } from '../common';
 
-import { createCheckoutToken, createBillingToken } from '../../rest';
-
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
 
@@ -26,11 +24,11 @@ export let Checkout = xcomponent.create({
             return config.paymentsStandardUrls[env];
         }
 
-        if (instance.props.paymentToken || instance.props.paymentDetails) {
+        if (instance.props.payment) {
             return config.checkoutUrls[env];
         }
 
-        if (instance.props.billingToken || instance.props.billingDetails) {
+        if (instance.props.billingAgreement) {
             return config.billingUrls[env];
         }
     },
@@ -89,18 +87,13 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        clientID: {
+        client: {
             type: 'object',
             required: false,
-            sendToChild: false,
-            queryParam: false
-        },
-
-        paymentID: {
-            type: 'string',
-            required: false,
-            getter: true,
-            queryParam: 'paymentID'
+            def() {
+                return {};
+            },
+            sendToChild: false
         },
 
         paymentToken: {
@@ -108,64 +101,37 @@ export let Checkout = xcomponent.create({
             required: false,
             getter: true,
             queryParam: 'token',
-
-            def(props) {
-                if (props.paymentDetails) {
-                    return function() {
-                        let env = props.env || config.env;
-                        return createCheckoutToken(env, this.props.clientID[env], this.props.paymentDetails);
-                    };
-                }
-            }
+            alias: 'paymentToken'
         },
 
-        paymentDetails: {
-            type: 'object',
+        payment: {
+            type: 'string',
             required: false,
-            sendToChild: false,
-            queryParam: false
+            getter: true,
+            queryParam: 'token',
+            alias: 'paymentToken'
         },
 
-        billingToken: {
+        billingAgreement: {
             type: 'string',
             required: false,
             getter: true,
             queryParam: 'ba_token',
-
-            def(props) {
-                if (props.billingDetails) {
-                    return function() {
-                        let env = props.env || config.env;
-                        return createBillingToken(env, this.props.clientID[env], this.props.billingDetails);
-                    };
-                }
-            }
-        },
-
-        billingDetails: {
-            type: 'object',
-            required: false,
-            sendToChild: false,
-            queryParam: false
-        },
-
-        buttonID: {
-            type: 'string',
-            required: false,
-            queryParam: 'hosted_button_id',
-            sendToChild: false
+            alias: 'billingToken'
         },
 
         commit: {
             type: 'boolean',
-            required: false
+            required: false,
+            sendToChild: false
         },
 
-        onPaymentAuthorize: {
+        onAuthorize: {
             type: 'function',
             required: false,
             once: true,
             autoClose: true,
+            alias: 'onPaymentAuthorize',
 
             decorate(original) {
                 if (original) {
@@ -213,27 +179,19 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        onPaymentComplete: {
+        onPaymentAuthorize: {
+            type: 'function',
+            required: false,
+            autoClose: false,
+            alias: 'onPaymentAuthorize'
+        },
+
+        onCancel: {
             type: 'function',
             required: false,
             once: true,
             autoClose: true,
-
-            decorate(original) {
-                if (original) {
-                    return function() {
-                        Checkout.contexts.lightbox = true;
-                        return original.apply(this, arguments);
-                    };
-                }
-            }
-        },
-
-        onPaymentCancel: {
-            type: 'function',
-            required: false,
-            once: true,
-            autoClose: true
+            alias: 'onPaymentCancel'
         },
 
         init: {
@@ -299,8 +257,8 @@ export let Checkout = xcomponent.create({
                 return function(reason) {
                     let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-                    if (this.props.onPaymentCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
-                        return this.props.onPaymentCancel({
+                    if (this.props.onCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                        return this.props.onCancel({
                             paymentToken: this.paymentToken,
                             cancelUrl:    this.cancelUrl
                         });
@@ -317,7 +275,7 @@ export let Checkout = xcomponent.create({
             def() {
                 return function(url) {
                     if (window.onLegacyPaymentAuthorize) {
-                        window.onLegacyPaymentAuthorize(this.props.onPaymentAuthorize);
+                        window.onLegacyPaymentAuthorize(this.props.onuthorize);
                     } else {
                         window.location = url;
                     }
