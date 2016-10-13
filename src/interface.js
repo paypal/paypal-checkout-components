@@ -20,13 +20,20 @@ export { config } from './config';
 export { isEligible } from './eligibility';
 export { request } from './lib';
 
-export let api = {
-    braintree: {
+export let braintree = {
+    payment: {
         create:   createBraintreePayment,
         tokenize: tokenizeBraintreePayment
+    }
+};
+
+export let rest = {
+    payment: {
+        create: createCheckoutToken
     },
-    payment:   createCheckoutToken,
-    billing:   createBillingToken
+    billingAgreement: {
+        create: createBillingToken
+    }
 };
 
 module.exports.xcomponent = xcomponent;

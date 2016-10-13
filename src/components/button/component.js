@@ -42,6 +42,7 @@ export let Button = xcomponent.create({
         env: {
             type: 'string',
             required: false,
+            queryParam: true,
 
             def() {
                 return config.env;
@@ -60,6 +61,7 @@ export let Button = xcomponent.create({
         stage: {
             type: 'string',
             required: false,
+            queryParam: true,
 
             def() {
                 return config.stage;
@@ -70,7 +72,6 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: 'token',
             alias: 'paymentToken'
         },
 
@@ -78,7 +79,6 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: 'token',
             alias: 'paymentToken'
         },
 
@@ -86,14 +86,14 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: false,
             alias: 'billingToken'
         },
 
         commit: {
             type: 'boolean',
             required: false,
-            sendToChild: false
+            sendToChild: false,
+            queryParam: true
         },
 
         onAuthorize: {
@@ -162,6 +162,7 @@ export let Button = xcomponent.create({
         locale: {
             type: 'string',
             required: false,
+            queryParam: 'locale.x',
 
             def() {
                 return 'en_US';

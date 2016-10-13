@@ -72,6 +72,7 @@ export let Checkout = xcomponent.create({
         env: {
             type: 'string',
             required: false,
+            queryParam: true,
 
             def() {
                 return config.env;
@@ -81,6 +82,7 @@ export let Checkout = xcomponent.create({
         stage: {
             type: 'string',
             required: false,
+            queryParam: true,
 
             def() {
                 return config.stage;
@@ -123,7 +125,8 @@ export let Checkout = xcomponent.create({
         commit: {
             type: 'boolean',
             required: false,
-            sendToChild: false
+            sendToChild: false,
+            queryParam: true
         },
 
         onAuthorize: {
