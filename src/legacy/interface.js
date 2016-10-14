@@ -178,6 +178,18 @@ function matchUrlAndPaymentToken(item) {
         url = getFullpageRedirectUrl(item);
     }
 
+    let paypalUrls = config.paypalUrls;
+
+    for (let env of Object.keys(paypalUrls)) {
+        let paypalUrl = paypalUrls[env];
+
+        if (env !== config.env) {
+            if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
+                throw new Error(`Expected url for ${config.env}, e.g. ${config.paypalUrl}, got ${env} url: ${url}`);
+            }
+        }
+    }
+
     return { paymentToken, url };
 }
 
@@ -213,7 +225,17 @@ function getPaymentTokenAndUrl() {
                 $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
             }
 
-            return resolve(matchUrlAndPaymentToken(item));
+            let urlAndPaymentToken;
+
+            try {
+                urlAndPaymentToken = matchUrlAndPaymentToken(item);
+            } catch (err) {
+                return reject(err);
+            }
+
+            let { url, paymentToken } = urlAndPaymentToken;
+
+            return resolve({ url, paymentToken });
         });
     });
 
@@ -470,7 +492,7 @@ function handleClickHijack(env, button) {
     paypalCheckout.renderHijack(targetElement);
 
     window.paypal.checkout.initXO = () => {
-        $logger.debug(`initxo_hijackclickhandler`);
+        $logger.warn(`initxo_hijackclickhandler`);
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_initxo');
@@ -478,7 +500,7 @@ function handleClickHijack(env, button) {
     };
 
     window.paypal.checkout.startFlow = (item, opts) => {
-        $logger.debug(`startflow_hijackclickhandler`, { item });
+        $logger.warn(`startflow_hijackclickhandler`, { item });
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_startflow');
@@ -488,7 +510,18 @@ function handleClickHijack(env, button) {
             $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
         }
 
-        let { url, paymentToken } = matchUrlAndPaymentToken(item);
+        let urlAndPaymentToken;
+
+        try {
+            urlAndPaymentToken = matchUrlAndPaymentToken(item);
+        } catch (err) {
+            reset();
+            paypalCheckout.destroy(err);
+            $logger.error(`error`, { error: err.stack || err.toString() });
+            throw err;
+        }
+
+        let { url, paymentToken } = urlAndPaymentToken;
 
         if (!isICEligible()) {
             $logger.debug(`ineligible_startflow_hijackclickhandler`, { url });
@@ -497,18 +530,19 @@ function handleClickHijack(env, button) {
         }
 
         token = paymentToken;
-        paypalCheckout.window.location = url;
+        paypalCheckout.loadUrl(paypalCheckout.context, url);
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
         $logger.warn(`closeflow_hijackclickhandler`);
 
+        reset();
+        paypalCheckout.destroy(new Error(`closeFlow called`));
+
         if (closeUrl) {
             $logger.warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
-
-        reset();
     };
 }
 
