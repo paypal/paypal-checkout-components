@@ -60,9 +60,11 @@ function before(method, wrapper) {
     };
 }
 
+function getUrlPrefix() {
+    return `${config.checkoutUrl}?token=`;
+}
 
 
-let urlPrefix = `${config.checkoutUrl}?token=`;
 
 if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
@@ -606,13 +608,16 @@ function setup(id, options = {}) {
         $logger.info(`instart`);
     }
 
-    if (config.paypalUrls[options.environment]) {
-        if (options.environment !== config.env) {
-            config.env = options.environment;
-            setupBridge(config.env, config.bridgeUrl);
+    if (options.environment) {
+        if (config.paypalUrls[options.environment]) {
+            if (options.environment !== config.env) {
+                config.env = options.environment;
+                setupBridge(config.env, config.bridgeUrl);
+            }
+        } else {
+            options.environment = config.env;
+            $logger.warn('invalid_env', { env: options.environment });
         }
-    } else {
-        options.environment = config.env;
     }
 
     if (options.locale) {
@@ -815,8 +820,20 @@ onDocumentReady(() => {
     Set paypal.checkout global functions to support legacy integrations
 */
 
-export let checkout = { setup, initXO, startFlow, closeFlow, urlPrefix };
-export let apps     = { checkout, Checkout: checkout };
+export let checkout = {
+    setup,
+    initXO,
+    startFlow,
+    closeFlow,
+    get urlPrefix() {
+        return getUrlPrefix();
+    }
+};
+
+export let apps = {
+    checkout,
+    Checkout: checkout
+};
 
 
 /*  PayPal Checkout Ready

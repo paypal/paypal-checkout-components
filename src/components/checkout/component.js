@@ -45,6 +45,10 @@ export let Checkout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
+    get domains() {
+        return config.paypalUrls;
+    },
+
     validateProps(component, props, required = true) {
         if (required) {
             return validateProps(props);
