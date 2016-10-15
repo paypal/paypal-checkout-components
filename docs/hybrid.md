@@ -6,7 +6,7 @@ you want to do on the client or on the server side.
 ### Create and execute the payment entirely from the client side
 
 - Specify `client` and `payment` to create the payment
-- Specify `commit: true` to execute the payment after the buyer clicks Pay
+- Specify `commit: true` to display a "Pay Now" button rather than a "Continue" button
 - Specify `onAuthorize` to get a callback after the payment is authorized, and execute the payment
 
 ```javascript
@@ -105,7 +105,7 @@ paypal.Button.render({
 ### Create the payment on your server, then execute on the client side
 
 - Specify `payment` method to call your server and create the payment
-- Specify `commit: true` to execute the payment after the buyer clicks Pay
+- Specify `commit: true` to display a "Pay Now" button rather than a "Continue" button
 - Specify `onAuthorize` to get a callback after the payment is authorized, and execute the payment
 
 ```javascript

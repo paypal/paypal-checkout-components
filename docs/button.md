@@ -68,8 +68,7 @@ You'll need:
 			});
 		},
 
-		// Automatically execute/complete the payment on paypal.com when the buyer clicks 'Pay Now', rather than only
-		// authorizing the payment.
+		// Display a "Pay Now" button rather than a "Continue" button
 
 		commit: true,
 
