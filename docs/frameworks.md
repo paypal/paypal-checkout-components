@@ -11,17 +11,17 @@ The button will appear exactly where you place it in your HTML.
 
 	<script type="application/x-component" data-component="paypal-button">
 		{
-			clientID: {
+			client: {
 				...
 			},
 
-			paymentDetails: {
+			payment: function() {
 				...
 			},
 
 			commit: true,
 
-			onPaymentComplete: function(data) {
+			onAuthorize: function(data, actions) {
 				...
 			}
 		}
@@ -35,15 +35,15 @@ The button will appear exactly where you place it in your HTML.
 var MyCartComponent = window.React.createClass({
 	render: function() {
 
-		let clientID = {
+		let client = {
 			...
 		};
 
-		let paymentDetails = {
+		let payment = () => {
 			...
 		};
 
-		let onPaymentComplete = (data) => {
+		let onAuthorize = (data, actions) => {
 			...
 		};
 
@@ -51,10 +51,10 @@ var MyCartComponent = window.React.createClass({
 			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
 			<paypal.Button.react
-				clientID={clientID}
-				paymentDetails={paymentDetails}
+				client={client}
+				payment={payment}
 				commit=true
-				onPaymentComplete={onPaymentComplete} />
+				onAuthorize={onAuthorize} />
 		</div>);
 	}
 });
@@ -72,15 +72,15 @@ var MyCartComponent = window.React.createClass({
 
 			// Add the props needed to your $scope
 
-			$scope.clientID = {
+			$scope.client = {
 				...
 			};
 
-			$scope.paymentDetails = {
+			$scope.payment = function() {
 				...
 			};
 
-			$scope.onPaymentComplete = function(data) {
+			$scope.onAuthorize = function(data) {
 				...
 			};
 		});
@@ -90,10 +90,10 @@ var MyCartComponent = window.React.createClass({
 	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
 	<paypal-button
-		clientID="clientID"
-		paymentDetails="paymentDetails"
+		client="client"
+		payment="payment"
 		commit="true"
-		onPaymentComplete="onPaymentComplete">
+		onAuthorize="onAuthorize">
 	</paypal-button>
 </div>
 ```

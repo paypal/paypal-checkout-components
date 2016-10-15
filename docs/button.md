@@ -45,9 +45,9 @@ You'll need:
 
 	paypal.Button.render({
 
-		// Pass the client ID to use to create your transaction
+		// Pass the client ids to use to create your transaction on sandbox and production environments
 
-		clientID: {
+		client: {
 			sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
 			production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
 		},
@@ -55,15 +55,17 @@ You'll need:
 		// Pass the payment details for your transaction
 		// See https://developer.paypal.com/docs/api/payments/#payment_create for the expected json parameters
 
-		paymentDetails: {
-			transactions: [
-				{
-					amount: {
-						total: '1.00',
-						currency: 'USD'
+		payment: function() {
+			return paypal.rest.payment.create(this.props.env, this.props.client, {
+				transactions: [
+					{
+						amount: {
+							total:    '1.00',
+							currency: 'USD'
+						}
 					}
-				}
-			]
+				]
+			});
 		},
 
 		// Automatically execute/complete the payment on paypal.com when the buyer clicks 'Pay Now', rather than only
@@ -73,13 +75,15 @@ You'll need:
 
 		// Pass a function to be called when the customer completes the payment
 
-		onPaymentComplete: function(data) {
-			console.log('The payment was completed!');
+		onAuthorize: function(data, actions) {
+			return actions.payment.execute().then(function() {
+				console.log('The payment was completed!');
+			});
 		},
 
 		// Pass a function to be called when the customer cancels the payment
 
-		onPaymentCancel: function(data) {
+		onCancel: function(data) {
 			console.log('The payment was cancelled!');
 		}
 
@@ -94,8 +98,8 @@ server side, rather than specifying the payment details inline on your client si
 
 With this integration:
 
-- We set up `paymentID` to call our web-server, which then calls the PayPal REST API to **create** a Payment ID.
-- We listen for `onPaymentAuthorize`, and call our web-server again, which then calls the PayPal REST API to **execute** the payment
+- We set up the `payment` method to call our web-server, which then calls the PayPal REST API to **create** a Payment ID.
+- We listen for `onAuthorize`, and call our web-server again, which then calls the PayPal REST API to **execute** the payment
 
 You'll need:
 
@@ -111,7 +115,7 @@ You'll need:
 
 		// Set up a getter to create a Payment ID using the payments api, on your server side:
 
-		paymentID: function(resolve, reject) {
+		payment: function(resolve, reject) {
 
 			// Make an ajax call to get the Payment ID. This should call your back-end,
 			// which should invoke the PayPal Payment Create api to retrieve the Payment ID.
@@ -127,7 +131,7 @@ You'll need:
 		// Pass a function to be called when the customer approves the payment,
 		// then call execute payment on your server:
 
-		onPaymentAuthorize: function(data) {
+		onAuthorize: function(data) {
 
 			console.log('The payment was authorized!');
 			console.log('Payment ID = ',   data.paymentID);
@@ -143,7 +147,7 @@ You'll need:
 
 		// Pass a function to be called when the customer cancels the payment
 
-		onPaymentCancel: function(data) {
+		onCancel: function(data) {
 
 			console.log('The payment was cancelled!');
 			console.log('Payment ID = ', data.paymentID);
@@ -195,9 +199,9 @@ You can also set up a billing agreement using the button component. For example:
 ```javascript
 paypal.Button.render({
 
-	// Pass the client ID to use to create your transaction
+	// Pass the client ids to use to create your transaction on sandbox and production environments
 
-	clientID: {
+	client: {
 		sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
 		production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
 	},
@@ -212,7 +216,7 @@ paypal.Button.render({
 
 	// Pass a function to be called when the customer completes the payment
 
-	onPaymentAuthorize: function(data) {
+	onAuthorize: function(data) {
 
 		console.log('The payment was authorized!');
 		console.log('Token = ', data.billingToken);
@@ -242,7 +246,7 @@ paypal.Button.render({
 
 	// Pass a function to be called when the customer authorizes the billing agreement
 
-	onPaymentAuthorize: function(data) {
+	onAuthorize: function(data) {
 
 		console.log('The payment was authorized!');
 		console.log('Token = ', data.billingToken);

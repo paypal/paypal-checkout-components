@@ -139,7 +139,7 @@ The way this works is:
    ```javascript
    paypal.Button.render({
 
-	   paymentID: function(resolve) {
+	   payment: function(resolve) {
 
 	       // Call your server side to get the Payment ID from step 3, then pass it to the resolve callback
 	       //
@@ -150,7 +150,7 @@ The way this works is:
 		       });
 	   },
 
-	   onPaymentAuthorize: function(data) {
+	   onAuthorize: function(data) {
 
 	       // Call payment execute (see step 5)
 	   }
@@ -163,8 +163,8 @@ The way this works is:
    You'll need:
 
    - The access token (`access_token` from the response in step 2)
-   - The payment id (`data.paymentID` from `onPaymentAuthorize` in step 4)
-   - The payer id (`data.payerID` from `onPaymentAuthorize` in step 4)
+   - The payment id (`data.paymentID` from `onAuthorize` in step 4)
+   - The payer id (`data.payerID` from `onAuthorize` in step 4)
 
    ---
 

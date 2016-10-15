@@ -5,28 +5,37 @@ you want to do on the client or on the server side.
 
 ### Create and execute the payment entirely from the client side
 
-- Specify `paymentDetails` to create the payment
+- Specify `client` and `payment` to create the payment
 - Specify `commit: true` to execute the payment after the buyer clicks Pay
-- Specify `onPaymentComplete` to get a callback after the payment is executed
+- Specify `onAuthorize` to get a callback after the payment is authorized, and execute the payment
 
 ```javascript
 paypal.Button.render({
 
-	paymentDetails: {
-		transactions: [
-			{
-				amount: {
-					total: '1.00',
-					currency: 'USD'
+	client: {
+		sandbox:    'xxxxxxxxx',
+		production: 'xxxxxxxxx'
+	},
+
+	payment: function() {
+		return paypal.rest.payment.create(this.props.env, this.props.client, {
+			transactions: [
+				{
+					amount: {
+						total:    '1.00',
+						currency: 'USD'
+					}
 				}
-			}
-		]
+			]
+		});
 	},
 
 	commit: true,
 
-	onPaymentComplete: function(data) {
-		console.log('The payment was executed!');
+	onAuthorize: function(data) {
+		return actions.payment.execute().then(function() {
+			console.log('The payment was completed!');
+		});
 	}
 
 }, '#myContainerElement');
@@ -34,20 +43,20 @@ paypal.Button.render({
 
 ### Create and execute the payment on your server side
 
-- Specify `paymentID` to call your server and create the payment
-- Specify `onPaymentAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
+- Specify `payment` method to call your server and create the payment
+- Specify `onAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
 
 ```javascript
 paypal.Button.render({
 
-	paymentID: function(resolve, reject) {
+	payment: function(resolve, reject) {
 
 		jQuery.post('/my-api/create-payment')
 			.done(function(data) { resolve(data.paymentID); })
 			.fail(function(err)  { reject(err); });
 	},
 
-	onPaymentAuthorize: function(data) {
+	onAuthorize: function(data) {
 
 		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
 			.done(function(data) { console.log('The payment was executed!'); })
@@ -59,24 +68,31 @@ paypal.Button.render({
 
 ### Create the payment on the client side, and execute it on your server side
 
-- Specify `paymentDetails` to create the payment
-- Specify `onPaymentAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
+- Specify `client` and `payment` to create the payment
+- Specify `onAuthorize` to get a callback after the payment is authorized, and call your server to execute the payment
 
 ```javascript
 paypal.Button.render({
 
-	paymentDetails: {
-		transactions: [
-			{
-				amount: {
-					total: '1.00',
-					currency: 'USD'
-				}
-			}
-		]
+	client: {
+		sandbox:    'xxxxxxxxx',
+		production: 'xxxxxxxxx'
 	},
 
-	onPaymentAuthorize: function(data) {
+	payment: function() {
+		return paypal.rest.payment.create(this.props.env, this.props.client, {
+			transactions: [
+				{
+					amount: {
+						total:    '1.00',
+						currency: 'USD'
+					}
+				}
+			]
+		});
+	},
+
+	onAuthorize: function(data) {
 
 		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
 			.done(function(data) { console.log('The payment was executed!'); })
@@ -88,14 +104,14 @@ paypal.Button.render({
 
 ### Create the payment on your server, then execute on the client side
 
-- Specify `paymentID` to call your server and create the payment
+- Specify `payment` method to call your server and create the payment
 - Specify `commit: true` to execute the payment after the buyer clicks Pay
-- Specify `onPaymentComplete` to get a callback after the payment is executed
+- Specify `onAuthorize` to get a callback after the payment is authorized, and execute the payment
 
 ```javascript
 paypal.Button.render({
 
-	paymentID: function(resolve, reject) {
+	payment: function(resolve, reject) {
 
 		jQuery.post('/my-api/create-payment')
 			.done(function(data) { resolve(data.paymentID); })
@@ -104,8 +120,10 @@ paypal.Button.render({
 
 	commit: true,
 
-	onPaymentComplete: function(data) {
-		console.log('The payment was executed!');
+	onAuthorize: function(data) {
+		return actions.payment.execute().then(function() {
+			console.log('The payment was completed!');
+		});
 	}
 
 }, '#myContainerElement');

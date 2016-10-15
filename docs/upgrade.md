@@ -41,13 +41,13 @@ If so, you can easily upgrade to use the Button component like so:
 <script>
 	paypal.Button.render({
 
-		paymentToken: function(resolve) {
+		payment: function(resolve) {
 			jQuery.post('/create-paypal-token', function(data) {
 				resolve(data.token);
 			});
 		}
 
-		onPaymentAuthorize: function(data) {
+		onAuthorize: function(data) {
 			window.location = data.returnUrl;
 		}
 
@@ -73,7 +73,7 @@ If so, you can easily upgrade and drop in the PayPal Button like so:
 		{
 			submitForm: true,
 
-			onPaymentAuthorize: function(data) {
+			onAuthorize: function(data) {
 				window.location = data.returnUrl;
 			}
 		}
