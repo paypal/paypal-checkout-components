@@ -43,7 +43,7 @@ let documentReady = new Promise(resolve => {
             clearInterval(interval);
             return resolve();
         }
-    }, 50);
+    }, 10);
 });
 
 export function onDocumentReady(method) {

@@ -892,12 +892,19 @@ function invokeReady(method) {
 
     onDocumentReady(() => {
         $logger.debug(`paypal_checkout_ready`);
-        method();
+        setTimeout(function() {
+
+            if (!window.paypal) {
+                $logger.error(`paypal_checkout_ready_no_window_paypal`);
+            }
+
+            method();
+        }, 1);
     });
 }
 
 
-if (window.paypalCheckoutReady instanceof Function) {
+if (typeof window.paypalCheckoutReady === 'function') {
     $logger.debug(`paypal_checkout_ready_preset`);
     invokeReady(window.paypalCheckoutReady);
 }

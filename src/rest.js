@@ -10,6 +10,10 @@ export function createAccessToken(env, client) {
 
     let clientID = client[env];
 
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${env}`);
+    }
+
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createAccessToken', { clientID });
     }
@@ -29,6 +33,10 @@ export function createAccessToken(env, client) {
 
     }).then(res => {
 
+        if (res && res.error === 'invalid_client') {
+            throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, 0, 4)}`);
+        }
+
         if (!res || !res.access_token) {
             throw new Error(`Auth Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
         }
@@ -44,6 +52,10 @@ export function createCheckoutToken(env, client, paymentDetails) {
     env = env || config.env;
 
     let clientID = client[env];
+
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${env}`);
+    }
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createCheckoutToken', { clientID, paymentDetails });
@@ -96,6 +108,10 @@ export function createBillingToken(env, client, billingDetails) {
     env = env || config.env;
 
     let clientID = client[env];
+
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${env}`);
+    }
 
     if (!config.cors && !isPayPalDomain()) {
         return messageBridge('createBillingToken', { clientID, billingDetails });
