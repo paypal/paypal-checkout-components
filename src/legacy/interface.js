@@ -183,6 +183,10 @@ function matchUrlAndPaymentToken(item) {
     for (let env of Object.keys(paypalUrls)) {
         let paypalUrl = paypalUrls[env];
 
+        if (env === 'test') {
+            continue;
+        }
+
         if (env !== config.env) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
                 throw new Error(`Expected url for ${config.env}, e.g. ${config.paypalUrl}, got ${env} url: ${url}`);
@@ -375,6 +379,10 @@ function triggerClickHandler(handler, event) {
 function handleClick(env, clickHandler, event) {
     $logger.debug(`button_click_handler`);
 
+    let initXOCalled = false;
+    let startFlowCalled = false;
+    let closeFlowCalled = false;
+
     let { url, paymentToken } = getPaymentTokenAndUrl();
 
     if (!isICEligible()) {
@@ -386,11 +394,6 @@ function handleClick(env, clickHandler, event) {
 
         return triggerClickHandler(clickHandler, event);
     }
-
-    let paymentCancelled = false;
-
-    let initXOCalled    = false;
-    let startFlowCalled = false;
 
     window.paypal.checkout.initXO = () => {
         $logger.debug(`initxo_clickhandler`);
@@ -409,46 +412,45 @@ function handleClick(env, clickHandler, event) {
     window.paypal.checkout.closeFlow = (closeUrl) => {
         $logger.warn(`closeflow_clickhandler`);
 
+        closeFlowCalled = true;
+        reset();
+
         if (closeUrl) {
             $logger.warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
-
-        paymentCancelled = true;
-
-        reset();
     };
 
     triggerClickHandler(clickHandler, event);
 
-    if (paymentCancelled) {
+    if (closeFlowCalled) {
+        $logger.warn(`button_click_closeflow_called_during_click`);
         return;
     }
 
-    if (!initXOCalled && !startFlowCalled) {
-        reset();
+    if (initXOCalled || startFlowCalled) {
+        $logger.info(`init_paypal_checkout_click`);
 
-        window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
-            initXOCalled = true;
-        });
-
-        window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
-            startFlowCalled = true;
-        });
-
-        setTimeout(() => {
-            if (!initXOCalled && !startFlowCalled) {
-                $logger.warn(`button_click_event_no_initxo_startflow`);
-                return reset();
-            }
-        }, 1);
+        return renderPayPalCheckout({ env, url, payment: paymentToken });
     }
 
-    $logger.info(`init_paypal_checkout_click`);
+    $logger.warn(`button_click_handler_no_initxo_startflow`);
+    reset();
 
-    let payment = paymentToken;
+    window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
+        initXOCalled = true;
+    });
 
-    renderPayPalCheckout({ env, url, payment });
+    window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
+        startFlowCalled = true;
+    });
+
+    setTimeout(() => {
+        if (!initXOCalled && !startFlowCalled) {
+            $logger.warn(`button_click_event_no_initxo_startflow`);
+            return reset();
+        }
+    }, 1);
 }
 
 
