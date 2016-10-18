@@ -317,7 +317,7 @@ export let Checkout = xcomponent.create({
             def() {
                 return function(url) {
                     if (window.onLegacyPaymentAuthorize) {
-                        window.onLegacyPaymentAuthorize(this.props.onuthorize);
+                        window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                     } else {
                         window.location = url;
                     }
