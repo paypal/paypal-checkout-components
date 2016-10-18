@@ -7,7 +7,7 @@ import { isICEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../bridge';
 
-import { urlWillRedirectPage, redirect as redir, onDocumentReady, getElements, once } from './util';
+import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
 import { $logger } from './log';
 
@@ -272,8 +272,6 @@ function initPayPalCheckout(props = {}) {
 
     paypalCheckoutInited = true;
 
-    PayPalCheckout.autocloseParentTemplate = false;
-
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_start');
     }
@@ -282,31 +280,20 @@ function initPayPalCheckout(props = {}) {
 
         uid: window.pp_uid,
 
-        onAuthorize({ returnUrl }) {
-
+        onAuthorize(data, actions) {
             reset();
 
             $logger.info(`payment_authorized`);
 
-            if (!urlWillRedirectPage(returnUrl)) {
-                this.closeParentTemplate();
-            }
-
-            return redirect(returnUrl);
+            return actions.redirect.success();
         },
 
-        onCancel({ cancelUrl }) {
-
+        onCancel(data, actions) {
             reset();
 
             $logger.info(`payment_canceled`);
 
-            if (!urlWillRedirectPage(cancelUrl)) {
-                $logger.info(`hash_change_close_overlay`);
-                this.closeParentTemplate();
-            }
-
-            return redirect(cancelUrl);
+            return actions.redirect.cancel();
         },
 
         onError() {

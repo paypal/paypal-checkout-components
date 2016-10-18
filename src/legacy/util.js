@@ -2,20 +2,6 @@
 import { $logger } from './log';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-
-export function urlWillRedirectPage(url) {
-
-    if (url.indexOf('#') === -1) {
-        return true;
-    }
-
-    if (url.split('#')[0] === window.location.href.split('#')[0]) {
-        return false;
-    }
-
-    return true;
-}
-
 export function redirect(url) {
     $logger.info(`redirect`, { url });
     window.location = url;

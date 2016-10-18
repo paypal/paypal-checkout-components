@@ -9,7 +9,7 @@ import componentTemplate from './componentTemplate.htm';
 import { isDevice } from '../../lib';
 import { config } from '../../config';
 
-import { validateProps } from '../common';
+import { validateProps, urlWillRedirectPage } from '../common';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
@@ -179,7 +179,7 @@ export let Checkout = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function(data) {
+                    return function(data, actions) {
                         Checkout.contexts.lightbox = true;
 
                         try {
@@ -189,8 +189,31 @@ export let Checkout = xcomponent.create({
                             // pass
                         }
 
+                        actions = actions || {};
+
+                        actions.redirect = {
+
+                            success: () => {
+                                window.location = data.returnUrl;
+
+                                if (urlWillRedirectPage(data.returnUrl)) {
+                                    this.closeComponent();
+                                    return new Promise();
+                                }
+                            },
+
+                            cancel: () => {
+                                window.location = data.cancelUrl;
+
+                                if (urlWillRedirectPage(data.cancelUrl)) {
+                                    this.closeComponent();
+                                    return new Promise();
+                                }
+                            }
+                        };
+
                         return Promise.try(() => {
-                            return original.apply(this, arguments);
+                            return original.call(this, data, actions);
                         }).then(() => {
                             return this.close();
                         });
@@ -213,10 +236,33 @@ export let Checkout = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function(data) {
+                    return function(data, actions) {
+
+                        actions = actions || {};
+
+                        actions.redirect = {
+
+                            success: () => {
+                                window.location = data.returnUrl;
+
+                                if (urlWillRedirectPage(data.returnUrl)) {
+                                    this.closeComponent();
+                                    return new Promise();
+                                }
+                            },
+
+                            cancel: () => {
+                                window.location = data.cancelUrl;
+
+                                if (urlWillRedirectPage(data.cancelUrl)) {
+                                    this.closeComponent();
+                                    return new Promise();
+                                }
+                            }
+                        };
 
                         return Promise.try(() => {
-                            return original.apply(this, arguments);
+                            return original.call(this, data, actions);
                         }).then(() => {
                             return this.close();
                         });
