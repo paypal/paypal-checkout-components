@@ -62,7 +62,7 @@
         cursor: pointer;
     }
 
-    #{id}.{CLASS.CLOSING}.{CLASS.AUTOCLOSE} .paypal-checkout-overlay {
+    #{id}.{CLASS.CLOSE_CONTAINER} .paypal-checkout-overlay {
         -webkit-animation-duration: 1s;
         animation-duration: 1s;
         -webkit-animation-name: fadeOut;
@@ -98,7 +98,7 @@
         text-align: center;
     }
 
-    #{id}.{CLASS.CLOSING} .paypal-checkout-message, #{id}.{CLASS.CLOSING} .paypal-checkout-continue {
+    #{id}.{CLASS.LOADING} .paypal-checkout-message, #{id}.{CLASS.LOADING} .paypal-checkout-continue {
         display: none;
     }
 
@@ -106,7 +106,7 @@
         display: none;
     }
 
-    #{id}.{CLASS.CLOSING} .paypal-checkout-loading {
+    #{id}.{CLASS.LOADING} .paypal-checkout-loading {
         display: block;
     }
 
@@ -157,7 +157,7 @@
         opacity: 0.6;
     }
 
-    #{id}.{CLASS.CLOSING} .{CLASS.CLOSE} {
+    #{id}.{CLASS.LOADING} .{CLASS.CLOSE} {
         display: none;
     }
 
@@ -210,7 +210,7 @@
         animation-name: bounceInUp;
     }
 
-    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSING} .paypal-checkout-lightbox-wrapper {
+    #{id}.{CLASS.LIGHTBOX}.{CLASS.CLOSE_COMPONENT} .paypal-checkout-lightbox-wrapper {
 
         -webkit-animation-name: bounceOutDown;
         animation-name: bounceOutDown;

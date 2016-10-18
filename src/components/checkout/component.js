@@ -1,6 +1,8 @@
 
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
+
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
@@ -11,6 +13,40 @@ import { validateProps } from '../common';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
+
+
+function logReturnUrl(returnUrl) {
+
+    let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
+    returnUrl = returnUrl.toLowerCase();
+
+    if (currentDomain !== 'https://www.paypal.com') {
+
+        if (returnUrl.indexOf(currentDomain) === 0) {
+            $logger.info(`return_url_domain_match`);
+        } else {
+            $logger.info(`return_url_domain_mismatch`, { returnUrl, currentDomain });
+        }
+
+        let currentHost = currentDomain.replace(/^https?/, '');
+        let returnHost = returnUrl.replace(/^https?/, '');
+
+        if (returnHost.indexOf(currentHost) === 0) {
+            $logger.info(`return_url_host_match`);
+        } else {
+            $logger.info(`return_url_host_mismatch`, { returnUrl, currentDomain });
+        }
+
+        let currentTLD = currentHost.replace(/^www\./, '');
+        let returnTLD = returnHost.replace(/^www\./, '');
+
+        if (returnTLD.indexOf(currentTLD) === 0) {
+            $logger.info(`return_url_tld_match`);
+        } else {
+            $logger.info(`return_url_tld_mismatch`, { returnUrl, currentDomain });
+        }
+    }
+}
 
 export let Checkout = xcomponent.create({
 
@@ -34,6 +70,8 @@ export let Checkout = xcomponent.create({
     },
 
     bridgeUrls: config.bridgeUrls,
+
+    autocloseParentTemplate: false,
 
     contexts: {
         iframe: false,
@@ -137,7 +175,6 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            autoClose: true,
             alias: 'onPaymentAuthorize',
 
             decorate(original) {
@@ -146,41 +183,17 @@ export let Checkout = xcomponent.create({
                         Checkout.contexts.lightbox = true;
 
                         try {
-                            let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
-                            let returnUrl = data.returnUrl.toLowerCase();
-
-                            if (currentDomain !== 'https://www.paypal.com') {
-
-                                if (returnUrl.indexOf(currentDomain) === 0) {
-                                    $logger.info(`return_url_domain_match`);
-                                } else {
-                                    $logger.info(`return_url_domain_mismatch`, { returnUrl: data.returnUrl, currentDomain });
-                                }
-
-                                let currentHost = currentDomain.replace(/^https?/, '');
-                                let returnHost = returnUrl.replace(/^https?/, '');
-
-                                if (returnHost.indexOf(currentHost) === 0) {
-                                    $logger.info(`return_url_host_match`);
-                                } else {
-                                    $logger.info(`return_url_host_mismatch`, { returnUrl: data.returnUrl, currentDomain });
-                                }
-
-                                let currentTLD = currentHost.replace(/^www\./, '');
-                                let returnTLD = returnHost.replace(/^www\./, '');
-
-                                if (returnTLD.indexOf(currentTLD) === 0) {
-                                    $logger.info(`return_url_tld_match`);
-                                } else {
-                                    $logger.info(`return_url_tld_mismatch`, { returnUrl: data.returnUrl, currentDomain });
-                                }
-                            }
+                            logReturnUrl(data.returnUrl);
 
                         } catch (err) {
                             // pass
                         }
 
-                        return original.apply(this, arguments);
+                        return Promise.try(() => {
+                            return original.apply(this, arguments);
+                        }).then(() => {
+                            return this.close();
+                        });
                     };
                 }
             }
@@ -189,7 +202,6 @@ export let Checkout = xcomponent.create({
         onPaymentAuthorize: {
             type: 'function',
             required: false,
-            autoClose: false,
             alias: 'onPaymentAuthorize'
         },
 
@@ -197,8 +209,20 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            autoClose: true,
-            alias: 'onPaymentCancel'
+            alias: 'onPaymentCancel',
+
+            decorate(original) {
+                if (original) {
+                    return function(data) {
+
+                        return Promise.try(() => {
+                            return original.apply(this, arguments);
+                        }).then(() => {
+                            return this.close();
+                        });
+                    };
+                }
+            }
         },
 
         init: {
@@ -211,41 +235,6 @@ export let Checkout = xcomponent.create({
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
-
-                    try {
-                        let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
-                        let cancelUrl = data.cancelUrl.toLowerCase();
-
-                        if (currentDomain === 'https://www.paypal.com') {
-                            return;
-                        }
-
-                        if (cancelUrl.indexOf(currentDomain) === 0) {
-                            $logger.info(`cancel_url_domain_match`);
-                        } else {
-                            $logger.info(`cancel_url_domain_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                        }
-
-                        let currentHost = currentDomain.replace(/^https?/, '');
-                        let cancelHost = cancelUrl.replace(/^https?/, '');
-
-                        if (cancelHost.indexOf(currentHost) === 0) {
-                            $logger.info(`cancel_url_host_match`);
-                        } else {
-                            $logger.info(`cancel_url_host_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                        }
-
-                        let currentTLD = currentHost.replace(/^www\./, '');
-                        let cancelTLD = cancelHost.replace(/^www\./, '');
-
-                        if (cancelTLD.indexOf(currentTLD) === 0) {
-                            $logger.info(`cancel_url_tld_match`);
-                        } else {
-                            $logger.info(`cancel_url_tld_mismatch`, { cancelUrl: data.cancelUrl, currentDomain });
-                        }
-                    } catch (err) {
-                        // pass
-                    }
 
                     if (window.ppCheckpoint) {
                         window.ppCheckpoint('flow_initial_message');
@@ -292,8 +281,10 @@ export let Checkout = xcomponent.create({
     },
 
     autoResize: true,
-    closeDelay: 1000,
-    resizeDelay: 700,
+
+    closeDelay:          1000,
+    closeComponentDelay: 1000,
+    resizeDelay:         700,
 
     get dimensions() {
 
