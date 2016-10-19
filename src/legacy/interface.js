@@ -11,6 +11,8 @@ import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
 import { $logger } from './log';
 
+const REDIRECT_DELAY = 500;
+
 
 let inClick = false;
 
@@ -73,7 +75,7 @@ if (window.xchild && !window.paypalCheckout) {
 
 let redirected = false;
 
-function redirect(location) {
+function logRedirect(location) {
 
     if (redirected) {
         $logger.warn(`multiple_redirects`);
@@ -91,12 +93,20 @@ function redirect(location) {
         }
     }
 
-    setTimeout(function() {
-        redir(location);
-    }, 500);
-
     $logger.flush();
 }
+
+function redirect(location) {
+
+    logRedirect(location);
+
+    setTimeout(function() {
+        redir(location);
+    }, REDIRECT_DELAY);
+}
+
+
+
 
 /*  Parse Token
     -----------
@@ -281,19 +291,27 @@ function initPayPalCheckout(props = {}) {
         uid: window.pp_uid,
 
         onAuthorize(data, actions) {
+
             reset();
 
             $logger.info(`payment_authorized`);
 
-            return actions.redirect.success();
+            logRedirect(data.returnUrl);
+
+            return Promise.delay(REDIRECT_DELAY).then(() => {
+                return actions.redirect.success();
+            });
         },
 
         onCancel(data, actions) {
+
             reset();
 
             $logger.info(`payment_canceled`);
 
-            return actions.redirect.cancel();
+            return Promise.delay(REDIRECT_DELAY).then(() => {
+                return actions.redirect.cancel();
+            });
         },
 
         onError() {

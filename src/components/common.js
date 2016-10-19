@@ -44,6 +44,10 @@ export function urlWillRedirectPage(url) {
         return true;
     }
 
+    if (url.startsWith('#')) {
+        return false;
+    }
+
     if (url.split('#')[0] === window.location.href.split('#')[0]) {
         return false;
     }

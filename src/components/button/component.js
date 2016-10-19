@@ -76,6 +76,7 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
+            memoize: false,
             alias: 'paymentToken'
         },
 
@@ -83,6 +84,7 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
+            memoize: false,
             alias: 'paymentToken'
         },
 
@@ -90,6 +92,7 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
+            memoize: false,
             alias: 'billingToken'
         },
 
@@ -103,7 +106,6 @@ export let Button = xcomponent.create({
         onAuthorize: {
             type: 'function',
             required: false,
-            autoClose: false,
             alias: 'onPaymentAuthorize',
 
             decorate(original) {
@@ -118,16 +120,12 @@ export let Button = xcomponent.create({
 
         onPaymentAuthorize: {
             type: 'function',
-            required: false,
-            autoClose: false,
-            alias: 'onPaymentAuthorize'
+            required: false
         },
 
         onCancel: {
             type: 'function',
-            required: false,
-            autoClose: false,
-            alias: 'onPaymentCancel'
+            required: false
         },
 
         onClick: {

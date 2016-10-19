@@ -67,6 +67,7 @@ module.exports = function(config) {
                                 'syntax-object-rest-spread',
                                 'transform-es3-property-literals',
                                 'transform-es3-member-expression-literals',
+                                'transform-decorators-legacy',
                                 ['transform-es2015-for-of', {loose: true}],
                                 [ '__coverage__', { only: `${__dirname}/src` } ]
                             ]

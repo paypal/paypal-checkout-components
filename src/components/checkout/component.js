@@ -69,6 +69,8 @@ export let Checkout = xcomponent.create({
         }
     },
 
+    remoteRenderDomain: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+
     bridgeUrls: config.bridgeUrls,
 
     autocloseParentTemplate: false,
@@ -144,22 +146,30 @@ export let Checkout = xcomponent.create({
             type: 'string',
             required: false,
             getter: true,
-            queryParam: 'token',
-            alias: 'paymentToken'
+            memoize: true
         },
 
         payment: {
             type: 'string',
             required: false,
             getter: true,
+            memoize: true,
             queryParam: 'token',
             alias: 'paymentToken'
+        },
+
+        billingToken: {
+            type: 'string',
+            required: false,
+            getter: true,
+            memoize: true
         },
 
         billingAgreement: {
             type: 'string',
             required: false,
             getter: true,
+            memoize: true,
             queryParam: 'ba_token',
             alias: 'billingToken'
         },
@@ -194,6 +204,7 @@ export let Checkout = xcomponent.create({
                         actions.redirect = {
 
                             success: () => {
+
                                 window.location = data.returnUrl;
 
                                 if (urlWillRedirectPage(data.returnUrl)) {
@@ -203,6 +214,7 @@ export let Checkout = xcomponent.create({
                             },
 
                             cancel: () => {
+
                                 window.location = data.cancelUrl;
 
                                 if (urlWillRedirectPage(data.cancelUrl)) {
@@ -214,7 +226,7 @@ export let Checkout = xcomponent.create({
 
                         return Promise.try(() => {
                             return original.call(this, data, actions);
-                        }).then(() => {
+                        }).finally(() => {
                             return this.close();
                         });
                     };
@@ -224,8 +236,7 @@ export let Checkout = xcomponent.create({
 
         onPaymentAuthorize: {
             type: 'function',
-            required: false,
-            alias: 'onPaymentAuthorize'
+            required: false
         },
 
         onCancel: {
@@ -263,7 +274,7 @@ export let Checkout = xcomponent.create({
 
                         return Promise.try(() => {
                             return original.call(this, data, actions);
-                        }).then(() => {
+                        }).finally(() => {
                             return this.close();
                         });
                     };
@@ -292,7 +303,7 @@ export let Checkout = xcomponent.create({
         onClose: {
             type: 'function',
             required: false,
-            memoize: true,
+            once: true,
             promisify: true,
 
             def() {
