@@ -4,12 +4,16 @@ export let config = {
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
     legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
 
+    paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+
     braintree_version: `3.3.0`,
 
     urls: {
         get braintree_client() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/client.js`; },
         get braintree_paypal() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/paypal.js`; }
     },
+
+    test: __TEST__,
 
     ppobjects: false,
 

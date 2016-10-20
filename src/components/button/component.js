@@ -1,9 +1,11 @@
 
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
+
 import { config } from '../../config';
 import { Checkout } from '../checkout';
 
-import { validateProps } from '../common';
+import { validateProps, urlWillRedirectPage } from '../common';
 
 import componentTemplate from './componentTemplate.htm';
 
@@ -110,9 +112,44 @@ export let Button = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function() {
+                    return function(data, actions) {
                         Checkout.contexts.lightbox = true;
-                        return original.apply(this, arguments);
+
+                        actions = actions || {};
+                        let redirect = actions.redirect || {};
+
+                        actions.redirect = {
+
+                            success: () => {
+                                window.location = data.returnUrl;
+
+                                return Promise.try(() => {
+                                    if (redirect.success) {
+                                        return redirect.success();
+                                    }
+                                }).then(() => {
+                                    if (urlWillRedirectPage(data.returnUrl)) {
+                                        return new Promise();
+                                    }
+                                });
+                            },
+
+                            cancel: () => {
+                                window.location = data.cancelUrl;
+
+                                return Promise.try(() => {
+                                    if (redirect.cancel) {
+                                        return redirect.cancel();
+                                    }
+                                }).then(() => {
+                                    if (urlWillRedirectPage(data.cancelUrl)) {
+                                        return new Promise();
+                                    }
+                                });
+                            }
+                        };
+
+                        return original.call(this, data, actions);
                     };
                 }
             }

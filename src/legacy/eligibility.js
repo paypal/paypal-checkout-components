@@ -7,7 +7,7 @@ export function isUnsupportedIE() {
     return getUserAgent().match(/MSIE (5|6|7|8)\./i);
 }
 
-export function isICEligible() {
+export function isLegacyEligible() {
 
     let currentAgent = getAgent();
 

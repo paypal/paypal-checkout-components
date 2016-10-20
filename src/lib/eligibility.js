@@ -1,5 +1,5 @@
-import { isWebView, getAgent} from './lib';
-import { config } from './config';
+import { isWebView, getAgent} from './device';
+import { config } from '../config';
 
 export function isEligible() {
 

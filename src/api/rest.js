@@ -1,7 +1,7 @@
 
-import { config } from './config';
-import { request, isPayPalDomain } from './lib';
-import { messageBridge } from './bridge';
+import { config } from '../config';
+import { request, isPayPalDomain } from '../lib';
+import { messageBridge } from '../compat';
 
 
 export function createAccessToken(env, client) {
@@ -44,8 +44,6 @@ export function createAccessToken(env, client) {
         return res.access_token;
     });
 }
-
-
 
 export function createCheckoutToken(env, client, paymentDetails) {
 
@@ -146,3 +144,12 @@ export function createBillingToken(env, client, billingDetails) {
         throw new Error(`Billing Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
     });
 }
+
+export let rest = {
+    payment: {
+        create: createCheckoutToken
+    },
+    billingAgreement: {
+        create: createBillingToken
+    }
+};

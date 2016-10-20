@@ -1,7 +1,7 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
-import { loadScript, memoize, noop } from './lib/util';
-import { config } from './config';
+import { loadScript, memoize, noop } from '../lib/util';
+import { config } from '../config';
 
 function getTokenFromUrl(url) {
     let match = url.match(/token=((EC-)?[A-Z0-9]{17})/);
@@ -113,3 +113,10 @@ export function tokenizeBraintreePayment(authorization, { paymentToken, payerID,
         });
     });
 }
+
+export let braintree = {
+    payment: {
+        create:   createBraintreePayment,
+        tokenize: tokenizeBraintreePayment
+    }
+};

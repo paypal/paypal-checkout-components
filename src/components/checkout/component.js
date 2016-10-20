@@ -69,7 +69,7 @@ export let Checkout = xcomponent.create({
         }
     },
 
-    remoteRenderDomain: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+    remoteRenderDomain: config.paypal_domain_regex,
 
     bridgeUrls: config.bridgeUrls,
 
@@ -362,5 +362,3 @@ export let Checkout = xcomponent.create({
         };
     }
 });
-
-export let PayPalCheckout = Checkout;

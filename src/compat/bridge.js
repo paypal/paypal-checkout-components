@@ -1,10 +1,10 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
-
 import postRobot from 'post-robot/src';
-import { Checkout } from './components';
-import { config } from './config';
+
+import { Checkout } from '../components';
+import { config } from '../config';
 
 // This needs to die once we disable fallbacks
 

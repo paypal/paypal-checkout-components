@@ -2,7 +2,7 @@
 import postRobot from 'post-robot/src';
 
 import { bridge } from './bridge';
-import { isPayPalDomain } from './lib';
+import { isPayPalDomain } from '../lib';
 
 function match(str, pattern) {
     let regmatch = str.match(pattern);

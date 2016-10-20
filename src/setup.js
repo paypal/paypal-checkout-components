@@ -1,11 +1,12 @@
 
+import postRobot from 'post-robot/src';
 import $logger from 'beaver-logger/client';
 
 import { config } from './config';
-import { setupBridge } from './bridge';
-import { initLogger } from './lib';
-import { checkForCommonErrors } from './errors';
+import { setupBridge } from './compat';
+import { initLogger, checkForCommonErrors } from './lib';
 
+postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
 function domainToEnv(domain) {
     for (let env of Object.keys(config.paypalUrls)) {

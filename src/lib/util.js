@@ -1,5 +1,6 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { config } from '../config';
 
 export function loadScript(src, timeout) {
     return new Promise((resolve, reject) => {
@@ -55,17 +56,17 @@ export function merge() {
 }
 
 
-export function request(config) {
+export function request(options) {
 
     return new Promise((resolve, reject) => {
 
-        config.method = config.method || 'get';
+        options.method = options.method || 'get';
 
-        let headers = config.headers || {};
+        let headers = options.headers || {};
 
-        if (config.json) {
+        if (options.json) {
             headers['Content-Type'] = headers['Content-Type'] || 'application/json';
-        } else if (config.body) {
+        } else if (options.body) {
             headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=utf-8';
         }
 
@@ -78,10 +79,10 @@ export function request(config) {
         }, false);
 
         xhr.addEventListener('error', (evt) => {
-            reject(new Error(`Request to ${config.method.toLowerCase()} ${config.url} failed: ${evt.toString()}`));
+            reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
         }, false);
 
-        xhr.open(config.method, config.url, true);
+        xhr.open(options.method, options.url, true);
 
         if (headers) {
             for (let key in headers) {
@@ -89,17 +90,17 @@ export function request(config) {
             }
         }
 
-        if (config.json && !config.body) {
-            config.body = JSON.stringify(config.json);
+        if (options.json && !options.body) {
+            options.body = JSON.stringify(options.json);
         }
 
-        if (config.body && typeof config.body === 'object') {
-            config.body = Object.keys(config.body).map(key => {
-                return `${encodeURIComponent(key)}=${encodeURIComponent(config.body[key])}`;
+        if (options.body && typeof options.body === 'object') {
+            options.body = Object.keys(options.body).map(key => {
+                return `${encodeURIComponent(key)}=${encodeURIComponent(options.body[key])}`;
             }).join('&');
         }
 
-        xhr.send(config.body);
+        xhr.send(options.body);
     });
 }
 
@@ -114,7 +115,7 @@ request.post = (url, body, options = {}) => {
 };
 
 export function isPayPalDomain() {
-    return Boolean(window.location.hostname.match(/\.paypal\.com$/));
+    return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex));
 }
 
 

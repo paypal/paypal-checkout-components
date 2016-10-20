@@ -24,6 +24,7 @@
         "Promise": false,
         "performance": true,
         "assert": true,
+        "__TEST__": true,
         "__MINOR_VERSION__": true,
         "__MAJOR_VERSION__": true,
         "__FILE_NAME__": true,

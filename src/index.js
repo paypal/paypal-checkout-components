@@ -1,5 +1,11 @@
 
-if (window.paypal && window.paypal.Button && window.paypal.Checkout) {
+import { config } from './config';
+import { isPayPalDomain } from './lib/util';
+
+import publicInterface from './interface/public';
+import paypalInterface from './interface/paypal';
+
+if (window.paypal && window.paypal.version === config.version) {
 
     let error = 'PayPal Checkout Integration Script already loaded on page';
 
@@ -15,7 +21,7 @@ if (window.paypal && window.paypal.Button && window.paypal.Checkout) {
 
 } else {
 
-    let paypal = require('./interface');
+    let paypal = (isPayPalDomain() || config.test) ? paypalInterface : publicInterface;
 
     module.exports = paypal;
     module.exports.default = module.exports;

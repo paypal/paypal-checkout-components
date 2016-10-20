@@ -2,10 +2,10 @@
 import xcomponent from 'xcomponent/src';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-import { PayPalCheckout } from '../components';
-import { isICEligible } from './eligibility';
+import { Checkout } from '../components';
+import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
-import { setupBridge } from '../bridge';
+import { setupBridge } from '../compat';
 
 import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
@@ -263,7 +263,7 @@ function getPaymentTokenAndUrl() {
 /*  Init PayPal Checkout
     --------------------
 
-    Initialize the PayPalCheckout component with some standard props:
+    Initialize the Checkout component with some standard props:
 
     - Pass in env from global state (saved during setup() call)
     - Return to success url on payment authorize
@@ -286,7 +286,7 @@ function initPayPalCheckout(props = {}) {
         window.ppCheckpoint('flow_start');
     }
 
-    let paypalCheckout = PayPalCheckout.init({
+    let paypalCheckout = Checkout.init({
 
         uid: window.pp_uid,
 
@@ -390,7 +390,7 @@ function handleClick(env, clickHandler, event) {
 
     let { url, paymentToken } = getPaymentTokenAndUrl();
 
-    if (!isICEligible()) {
+    if (!isLegacyEligible()) {
 
         url.then(redirectUrl => {
             $logger.debug(`ineligible_startflow`, { url: redirectUrl });
@@ -530,7 +530,7 @@ function handleClickHijack(env, button) {
 
         let { url, paymentToken } = urlAndPaymentToken;
 
-        if (!isICEligible()) {
+        if (!isLegacyEligible()) {
             $logger.debug(`ineligible_startflow_hijackclickhandler`, { url });
             paypalCheckout.destroy();
             return redirect(url);
@@ -569,7 +569,7 @@ function listenClick(env, button, clickHandler, condition) {
 
     button.setAttribute('data-paypal-click-listener', true);
 
-    if (!isICEligible() && !isClick) {
+    if (!isLegacyEligible() && !isClick) {
         $logger.debug(`ineligible_listenclick`);
     }
 
@@ -581,7 +581,7 @@ function listenClick(env, button, clickHandler, condition) {
             window.ppCheckpoint('flow_buttonclick');
         }
 
-        if (!isICEligible() && !isClick) {
+        if (!isLegacyEligible() && !isClick) {
             return;
         }
 
@@ -737,7 +737,7 @@ function initXO() {
         window.ppCheckpoint('flow_initxo');
     }
 
-    if (!isICEligible()) {
+    if (!isLegacyEligible()) {
         return $logger.debug(`ineligible_initxo`);
     }
 
@@ -776,7 +776,7 @@ function startFlow(item, opts) {
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
-    if (!isICEligible()) {
+    if (!isLegacyEligible()) {
         $logger.debug(`ineligible_startflow_global`, { url });
         return redirect(url);
     }
