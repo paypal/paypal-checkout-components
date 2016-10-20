@@ -203,21 +203,11 @@ export let Checkout = xcomponent.create({
 
                         actions.redirect = {
 
-                            success: () => {
-
-                                window.location = data.returnUrl;
+                            success: (win) => {
+                                win = win || window.top;
+                                win.location = data.returnUrl;
 
                                 if (urlWillRedirectPage(data.returnUrl)) {
-                                    this.closeComponent();
-                                    return new Promise();
-                                }
-                            },
-
-                            cancel: () => {
-
-                                window.location = data.cancelUrl;
-
-                                if (urlWillRedirectPage(data.cancelUrl)) {
                                     this.closeComponent();
                                     return new Promise();
                                 }
@@ -253,17 +243,9 @@ export let Checkout = xcomponent.create({
 
                         actions.redirect = {
 
-                            success: () => {
-                                window.location = data.returnUrl;
-
-                                if (urlWillRedirectPage(data.returnUrl)) {
-                                    this.closeComponent();
-                                    return new Promise();
-                                }
-                            },
-
-                            cancel: () => {
-                                window.location = data.cancelUrl;
+                            cancel: (win) => {
+                                win = win || window.top;
+                                win.location = data.cancelUrl;
 
                                 if (urlWillRedirectPage(data.cancelUrl)) {
                                     this.closeComponent();

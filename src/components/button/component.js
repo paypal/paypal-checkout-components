@@ -120,8 +120,9 @@ export let Button = xcomponent.create({
 
                         actions.redirect = {
 
-                            success: () => {
-                                window.location = data.returnUrl;
+                            success: (win) => {
+                                win = win || window.top;
+                                win.location = data.returnUrl;
 
                                 return Promise.try(() => {
                                     if (redirect.success) {
@@ -129,20 +130,6 @@ export let Button = xcomponent.create({
                                     }
                                 }).then(() => {
                                     if (urlWillRedirectPage(data.returnUrl)) {
-                                        return new Promise();
-                                    }
-                                });
-                            },
-
-                            cancel: () => {
-                                window.location = data.cancelUrl;
-
-                                return Promise.try(() => {
-                                    if (redirect.cancel) {
-                                        return redirect.cancel();
-                                    }
-                                }).then(() => {
-                                    if (urlWillRedirectPage(data.cancelUrl)) {
                                         return new Promise();
                                     }
                                 });
@@ -162,7 +149,37 @@ export let Button = xcomponent.create({
 
         onCancel: {
             type: 'function',
-            required: false
+            required: false,
+
+            decorate(original) {
+                if (original) {
+                    return function(data, actions) {
+
+                        actions = actions || {};
+                        let redirect = actions.redirect || {};
+
+                        actions.redirect = {
+
+                            cancel: (win) => {
+                                win = win || window.top;
+                                win.location = data.cancelUrl;
+
+                                return Promise.try(() => {
+                                    if (redirect.cancel) {
+                                        return redirect.cancel();
+                                    }
+                                }).then(() => {
+                                    if (urlWillRedirectPage(data.cancelUrl)) {
+                                        return new Promise();
+                                    }
+                                });
+                            }
+                        };
+
+                        return original.call(this, data, actions);
+                    };
+                }
+            }
         },
 
         onClick: {

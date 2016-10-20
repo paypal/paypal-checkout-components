@@ -64,6 +64,7 @@ function getWebpackConfig(version) {
           mangle: false
         }),
         new webpack.DefinePlugin({
+            __TEST__: false,
             __FILE_NAME__: JSON.stringify(filename),
             __FILE_VERSION__: JSON.stringify(version),
             ...getVersionVars()
