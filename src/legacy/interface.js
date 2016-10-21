@@ -657,13 +657,14 @@ function setup(id, options = {}) {
         if (config.paypalUrls[options.environment]) {
             if (options.environment !== config.env) {
                 config.env = options.environment;
-                setupBridge(config.env, config.bridgeUrl);
             }
         } else {
             options.environment = config.env;
             $logger.warn('invalid_env', { env: options.environment });
         }
     }
+
+    setupBridge(config.env, config.bridgeUrl);
 
     if (options.locale) {
         let [ lang, country ] = options.locale.split('_');

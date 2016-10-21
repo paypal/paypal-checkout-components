@@ -28,8 +28,6 @@ export let config = {
         lang: 'en'
     },
 
-    enableBridge: true,
-
     stage: 'msmaster',
 
     SUPPORTED_AGENTS: {

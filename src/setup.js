@@ -3,7 +3,6 @@ import postRobot from 'post-robot/src';
 import $logger from 'beaver-logger/client';
 
 import { config } from './config';
-import { setupBridge } from './compat';
 import { initLogger, checkForCommonErrors } from './lib';
 
 postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
@@ -66,20 +65,11 @@ export function setup(options = {}) {
         config.state = options.state;
     }
 
-    if (options.noBridge) {
-        delete config.enableBridge;
-        config.enableBridge = false;
-    }
-
     if (options.ppobjects) {
         config.ppobjects = true;
     }
 
     $logger.info(`setup_${config.env}`);
-
-    if (config.enableBridge) {
-        setupBridge(config.env, config.bridgeUrl);
-    }
 }
 
 function getCurrentScript() {
@@ -102,7 +92,6 @@ if (currentScript) {
         stage:     currentScript.getAttribute('data-stage'),
         apiStage:  currentScript.getAttribute('data-api-stage'),
         paypalUrl: currentScript.getAttribute('data-paypal-url'),
-        noBridge:  currentScript.hasAttribute('data-no-bridge'),
         state:     currentScript.getAttribute('data-state'),
         ppobjects: true
     });
