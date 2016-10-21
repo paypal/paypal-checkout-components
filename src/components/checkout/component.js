@@ -183,9 +183,7 @@ export let Checkout = xcomponent.create({
 
         commit: {
             type: 'boolean',
-            required: false,
-            sendToChild: false,
-            queryParam: true
+            required: false
         },
 
         onAuthorize: {
@@ -269,6 +267,11 @@ export let Checkout = xcomponent.create({
                     };
                 }
             }
+        },
+
+        onPaymentCancel: {
+            type: 'function',
+            required: false
         },
 
         init: {

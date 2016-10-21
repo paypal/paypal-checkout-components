@@ -100,9 +100,7 @@ export let Button = xcomponent.create({
 
         commit: {
             type: 'boolean',
-            required: false,
-            sendToChild: false,
-            queryParam: true
+            required: false
         },
 
         onAuthorize: {
