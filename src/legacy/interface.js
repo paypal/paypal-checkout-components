@@ -280,6 +280,10 @@ function initPayPalCheckout(props = {}) {
         $logger.warn(`multiple_init_paypal_checkout`);
     }
 
+    if (!setupCalled) {
+        $logger.warn(`init_without_setup`);
+    }
+
     paypalCheckoutInited = true;
 
     if (window.ppCheckpoint) {
