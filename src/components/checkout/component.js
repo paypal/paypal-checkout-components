@@ -133,6 +133,13 @@ export let Checkout = xcomponent.create({
             }
         },
 
+        locale: {
+            type: 'string',
+            required: false,
+            queryParam: 'locale.x'
+        },
+
+
         client: {
             type: 'object',
             required: false,

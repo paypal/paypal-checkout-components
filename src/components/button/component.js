@@ -218,11 +218,7 @@ export let Button = xcomponent.create({
         locale: {
             type: 'string',
             required: false,
-            queryParam: 'locale.x',
-
-            def() {
-                return 'en_US';
-            }
+            queryParam: 'locale.x'
         },
 
         buttonStyle: {

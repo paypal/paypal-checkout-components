@@ -3,6 +3,7 @@ export { default as xcomponent } from 'xcomponent/src';
 export { default as postRobot } from 'post-robot/src';
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+export { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 export { rest, braintree } from '../api';
 export { Button } from '../components';
