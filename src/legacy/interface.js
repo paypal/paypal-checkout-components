@@ -355,7 +355,7 @@ function renderPayPalCheckout(props = {}) {
         $logger.warn(`render_without_click`);
     });
 
-    return paypalCheckout.render().catch(err => {
+    let render = paypalCheckout.render().catch(err => {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
 
@@ -372,6 +372,10 @@ function renderPayPalCheckout(props = {}) {
 
         throw err;
     });
+
+    checkout.win = paypalCheckout.window;
+
+    return render;
 }
 
 
@@ -501,6 +505,8 @@ function handleClickHijack(env, button) {
     });
 
     paypalCheckout.renderHijack(targetElement);
+
+    checkout.win = paypalCheckout.window;
 
     window.paypal.checkout.initXO = () => {
         $logger.warn(`initxo_hijackclickhandler`);
