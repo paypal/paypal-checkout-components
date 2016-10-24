@@ -74,14 +74,6 @@ export let Button = xcomponent.create({
             }
         },
 
-        paymentToken: {
-            type: 'string',
-            required: false,
-            getter: true,
-            memoize: false,
-            alias: 'paymentToken'
-        },
-
         payment: {
             type: 'string',
             required: false,
@@ -113,68 +105,50 @@ export let Button = xcomponent.create({
                     return function(data, actions) {
                         Checkout.contexts.lightbox = true;
 
-                        actions = actions || {};
-                        let redirect = actions.redirect || {};
+                        let redirect = (win, url) => {
 
-                        actions.redirect = {
+                            win = win || window.top;
+                            url = url || data.returnUrl;
 
-                            success: (win) => {
-                                win = win || window.top;
-                                win.location = data.returnUrl;
+                            win.location = url;
 
-                                return Promise.try(() => {
-                                    if (redirect.success) {
-                                        return redirect.success();
-                                    }
-                                }).then(() => {
-                                    if (urlWillRedirectPage(data.returnUrl)) {
-                                        return new Promise();
-                                    }
-                                });
-                            }
+                            return actions.close().then(() => {
+                                if (urlWillRedirectPage(url)) {
+                                    return new Promise();
+                                }
+                            });
                         };
 
-                        return original.call(this, data, actions);
+                        return original.call(this, data, { ...actions, redirect });
                     };
                 }
             }
         },
 
-        onPaymentAuthorize: {
-            type: 'function',
-            required: false
-        },
-
         onCancel: {
             type: 'function',
             required: false,
+            alias: 'onPaymentCancel',
 
             decorate(original) {
                 if (original) {
                     return function(data, actions) {
 
-                        actions = actions || {};
-                        let redirect = actions.redirect || {};
+                        let redirect = (win, url) => {
 
-                        actions.redirect = {
+                            win = win || window.top;
+                            url = url || data.cancelUrl;
 
-                            cancel: (win) => {
-                                win = win || window.top;
-                                win.location = data.cancelUrl;
+                            win.location = url;
 
-                                return Promise.try(() => {
-                                    if (redirect.cancel) {
-                                        return redirect.cancel();
-                                    }
-                                }).then(() => {
-                                    if (urlWillRedirectPage(data.cancelUrl)) {
-                                        return new Promise();
-                                    }
-                                });
-                            }
+                            return actions.close().then(() => {
+                                if (urlWillRedirectPage(url)) {
+                                    return new Promise();
+                                }
+                            });
                         };
 
-                        return original.call(this, data, actions);
+                        return original.call(this, data, { ...actions, redirect });
                     };
                 }
             }

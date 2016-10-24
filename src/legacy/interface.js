@@ -176,16 +176,26 @@ function matchUrlAndPaymentToken(item) {
 
     if (url && !url.match(/^https?:\/\/|^\//)) {
         $logger.warn(`startflow_relative_url`, { url });
+
+        if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
+            url = `${getUrlPrefix()}${url}`;
+        }
     }
 
     if (url && paymentToken) {
-        $logger.debug(`startflow_url_with_token`, { item });
+
+        if (url.indexOf('.paypal.com') !== -1) {
+            $logger.debug(`startflow_paypalurl_with_token`, { item });
+        } else {
+            $logger.debug(`startflow_url_with_token`, { item });
+        }
+
     } else if (url) {
         $logger.debug(`startflow_url_with_no_token`, { item });
         paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
     } else if (paymentToken) {
         $logger.debug(`startflow_with_token`, { item });
-        url = getFullpageRedirectUrl(item);
+        url = getFullpageRedirectUrl(paymentToken);
     }
 
     let paypalUrls = config.paypalUrls;
@@ -303,7 +313,7 @@ function initPayPalCheckout(props = {}) {
             logRedirect(data.returnUrl);
 
             return Promise.delay(REDIRECT_DELAY).then(() => {
-                return actions.redirect.success();
+                return actions.redirect(window);
             });
         },
 
@@ -314,7 +324,7 @@ function initPayPalCheckout(props = {}) {
             $logger.info(`payment_canceled`);
 
             return Promise.delay(REDIRECT_DELAY).then(() => {
-                return actions.redirect.cancel();
+                return actions.redirect(window);
             });
         },
 
@@ -380,11 +390,15 @@ function renderPayPalCheckout(props = {}) {
 
 
 function triggerClickHandler(handler, event) {
-    if (handler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
-        $logger.warn(`click_function_expects_err`);
-        handler.call(null);
-    } else {
-        handler.call(null, event);
+    try {
+        if (handler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
+            $logger.warn(`click_function_expects_err`);
+            handler.call(null);
+        } else {
+            handler.call(null, event);
+        }
+    } catch (err) {
+        $logger.error('click_handler_error', { error: err.stack || err.toString() });
     }
 }
 

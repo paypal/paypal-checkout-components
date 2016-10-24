@@ -149,13 +149,6 @@ export let Checkout = xcomponent.create({
             sendToChild: false
         },
 
-        paymentToken: {
-            type: 'string',
-            required: false,
-            getter: true,
-            memoize: true
-        },
-
         payment: {
             type: 'string',
             required: false,
@@ -163,13 +156,6 @@ export let Checkout = xcomponent.create({
             memoize: true,
             queryParam: 'token',
             alias: 'paymentToken'
-        },
-
-        billingToken: {
-            type: 'string',
-            required: false,
-            getter: true,
-            memoize: true
         },
 
         billingAgreement: {
@@ -194,33 +180,41 @@ export let Checkout = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function(data, actions) {
+                    return function(data, actions = {}) {
                         Checkout.contexts.lightbox = true;
 
                         try {
                             logReturnUrl(data.returnUrl);
-
                         } catch (err) {
                             // pass
                         }
 
-                        actions = actions || {};
+                        let close = () => {
+                            return Promise.try(() => {
+                                if (actions.close) {
+                                    return actions.close();
+                                }
+                            }).then(() => {
+                                return this.closeComponent();
+                            });
+                        };
 
-                        actions.redirect = {
+                        let redirect = (win, url) => {
 
-                            success: (win) => {
-                                win = win || window.top;
-                                win.location = data.returnUrl;
+                            win = win || window.top;
+                            url = url || data.returnUrl;
 
-                                if (urlWillRedirectPage(data.returnUrl)) {
-                                    this.closeComponent();
+                            win.location = url;
+
+                            return close().then(() => {
+                                if (urlWillRedirectPage(url)) {
                                     return new Promise();
                                 }
-                            }
+                            });
                         };
 
                         return Promise.try(() => {
-                            return original.call(this, data, actions);
+                            return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
                             return this.close();
                         });
@@ -229,9 +223,10 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        onPaymentAuthorize: {
+        onPaymentComplete: {
             type: 'function',
-            required: false
+            required: false,
+            sendToChild: false
         },
 
         onCancel: {
@@ -242,36 +237,40 @@ export let Checkout = xcomponent.create({
 
             decorate(original) {
                 if (original) {
-                    return function(data, actions) {
+                    return function(data, actions = {}) {
 
-                        actions = actions || {};
+                        let close = () => {
+                            return Promise.try(() => {
+                                if (actions.close) {
+                                    return actions.close();
+                                }
+                            }).then(() => {
+                                return this.closeComponent();
+                            });
+                        };
 
-                        actions.redirect = {
+                        let redirect = (win, url) => {
 
-                            cancel: (win) => {
-                                win = win || window.top;
-                                win.location = data.cancelUrl;
+                            win = win || window.top;
+                            url = url || data.cancelUrl;
 
-                                if (urlWillRedirectPage(data.cancelUrl)) {
-                                    this.closeComponent();
+                            win.location = url;
+
+                            return close().then(() => {
+                                if (urlWillRedirectPage(url)) {
                                     return new Promise();
                                 }
-                            }
+                            });
                         };
 
                         return Promise.try(() => {
-                            return original.call(this, data, actions);
+                            return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
                             return this.close();
                         });
                     };
                 }
             }
-        },
-
-        onPaymentCancel: {
-            type: 'function',
-            required: false
         },
 
         init: {
