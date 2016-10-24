@@ -21,7 +21,8 @@
     "applogger": "^1",
     "bluebird": "^2",
     "cal": "^0.5.32",
-    "handlebars": "^4.0.0"
+    "handlebars": "^4.0.0",
+    "underscore": "^1"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",
@@ -55,8 +56,6 @@
     ]
   },
   "pre-commit": [
-    "lint",
-    "suite"
   ],
   "publishConfig": {
     "registry": "http://npm.paypal.com"
