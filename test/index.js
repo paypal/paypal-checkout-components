@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { getButtonConfig } from '../lib';
+import { getButtonConfig } from '../lib/builder';
 import renderer from '../lib';
 import config from '../lib/buttonConfig';
 import Handlebars from 'handlebars';
