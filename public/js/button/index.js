@@ -120,7 +120,7 @@ function renderCheckout(paymentToken) {
     }).renderTo(window.top);
 }
 
-function setup() {
+export default function setup() {
 
     isLightboxEligible().then(eligible => {
         Checkout.contexts.lightbox = eligible;
@@ -141,5 +141,3 @@ function setup() {
         }
     });
 }
-
-setup();

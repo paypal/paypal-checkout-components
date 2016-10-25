@@ -4,7 +4,9 @@ node_modules
 .idea
 .rebooted
 .settings
+.nyc_output
 logs
+log
 *.orig
 *.log
 .DS_Store
