@@ -51,7 +51,7 @@ module.exports = function (grunt) {
                     ignoreLeaks: true,
                     ui: 'bdd',
                     reporter: isFusion() ? 'xunit-file' : 'spec',
-                    require: ['babel-register', 'babel-polyfill', 'module-babel']
+                    require: ['babel-register', 'babel-polyfill']
                 }
             }
         },
