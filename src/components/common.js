@@ -22,6 +22,14 @@ export function validateProps(props) {
     if (!props.onAuthorize) {
         throw new Error(`Must specify onAuthorize callback`);
     }
+    
+    if (props.buttonStyle && props.buttonStyle.size) {
+        var buttonSize = props.buttonStyle.size;
+        
+        if (config.buttonSizes.indexOf(buttonSize) < 0) {
+            props.buttonStyle.size = 'medium';
+        }
+    }
 
     let env = props.env || config.env;
 

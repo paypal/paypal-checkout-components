@@ -30,6 +30,8 @@ export let config = {
 
     stage: 'msmaster',
 
+    buttonSizes: ['tiny', 'small', 'medium'],
+
     SUPPORTED_AGENTS: {
         Chrome: 27,
         IE: 9,

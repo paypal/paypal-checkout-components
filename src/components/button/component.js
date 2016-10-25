@@ -175,7 +175,7 @@ export let Button = xcomponent.create({
 
                     small: {
                         width: 148,
-                        height: 40
+                        height: 48
                     },
 
                     medium: {
@@ -196,7 +196,7 @@ export let Button = xcomponent.create({
         buttonStyle: {
             type: 'object',
             required: false,
-            queryParam: false,
+            queryParam: true,
             def() {
                 return {
                     color: 'gold',
@@ -212,6 +212,6 @@ export let Button = xcomponent.create({
 
     dimensions: {
         width: 146,
-        height: 40
+        height: 48
     }
 });
