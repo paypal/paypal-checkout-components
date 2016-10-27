@@ -1,8 +1,9 @@
 
+import { btoa } from 'Base64';
+
 import { config } from '../config';
 import { request, isPayPalDomain } from '../lib';
 import { messageBridge } from '../compat';
-
 
 export function createAccessToken(env, client) {
 
@@ -18,7 +19,7 @@ export function createAccessToken(env, client) {
         return messageBridge('createAccessToken', { clientID });
     }
 
-    let basicAuth = window.btoa(`${clientID}:`);
+    let basicAuth = btoa(`${clientID}:`);
 
     return request({
 
