@@ -217,7 +217,7 @@ export let Checkout = xcomponent.create({
                         return Promise.try(() => {
                             return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
-                            return this.close();
+                            this.close();
                         });
                     };
                 }
@@ -267,7 +267,7 @@ export let Checkout = xcomponent.create({
                         return Promise.try(() => {
                             return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
-                            return this.close();
+                            this.close();
                         });
                     };
                 }
