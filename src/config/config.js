@@ -6,6 +6,7 @@ export let config = {
 
     paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
+    version: __MINOR_VERSION__,
     braintree_version: `3.3.0`,
 
     urls: {
