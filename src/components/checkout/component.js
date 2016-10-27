@@ -182,6 +182,7 @@ export let Checkout = xcomponent.create({
                 if (original) {
                     return function(data, actions = {}) {
                         Checkout.contexts.lightbox = true;
+                        Checkout.contexts.iframe = true;
 
                         try {
                             logReturnUrl(data.returnUrl);

@@ -14,6 +14,7 @@ postRobot.on('meta', ({ source, data }) => {
 
     if (data.iframeEligible) {
         Checkout.contexts.lightbox = true;
+        Checkout.contexts.iframe = true;
     }
 
     $logger.info(data.iframeEligible ?

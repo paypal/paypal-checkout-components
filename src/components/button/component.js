@@ -104,6 +104,7 @@ export let Button = xcomponent.create({
                 if (original) {
                     return function(data, actions) {
                         Checkout.contexts.lightbox = true;
+                        Checkout.contexts.iframe = true;
 
                         let redirect = (win, url) => {
 
@@ -147,7 +148,7 @@ export let Button = xcomponent.create({
                                 }
                             });
                         };
-
+                        
                         return original.call(this, data, { ...actions, redirect });
                     };
                 }
