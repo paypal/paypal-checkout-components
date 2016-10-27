@@ -4,6 +4,8 @@ import $logger from 'beaver-logger/client';
 
 import { config } from './config';
 import { initLogger, checkForCommonErrors } from './lib';
+import { Checkout } from './components';
+import { setupBridge } from './compat';
 
 postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
@@ -69,6 +71,15 @@ export function setup(options = {}) {
         config.ppobjects = true;
     }
 
+    if (options.lightbox) {
+        Checkout.contexts.lightbox = true;
+        Checkout.contexts.iframe = true;
+    }
+
+    if (options.bridge) {
+        setupBridge(config.env, config.bridgeUrl);
+    }
+
     $logger.info(`setup_${config.env}`);
 }
 
@@ -93,6 +104,8 @@ if (currentScript) {
         apiStage:  currentScript.getAttribute('data-api-stage'),
         paypalUrl: currentScript.getAttribute('data-paypal-url'),
         state:     currentScript.getAttribute('data-state'),
+        lightbox:  currentScript.hasAttribute('data-enable-lightbox'),
+        bridge:    currentScript.hasAttribute('data-enable-bridge'),
         ppobjects: true
     });
 
