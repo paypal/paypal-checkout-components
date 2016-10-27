@@ -13,14 +13,6 @@ import { $logger } from './log';
 
 const REDIRECT_DELAY = 500;
 
-
-// Do this until button code is fixed to not expect window.Promise
-
-if (!window.Promise) {
-    window.Promise = Promise;
-}
-
-
 let inClick = false;
 
 let ifNotClickMethods = [];
