@@ -72,21 +72,46 @@ export function request(options) {
 
         headers.Accept = headers.Accept || 'application/json';
 
-        let xhr = new window.XMLHttpRequest();
+        let isCrossDomain = options.url.indexOf('http') === 0 && options.url.indexOf(`${window.location.protocol}//${window.location.host}`) !== 0;
 
-        xhr.addEventListener('load', function() {
-            resolve(JSON.parse(this.responseText));
-        }, false);
+        let xhr;
 
-        xhr.addEventListener('error', (evt) => {
-            reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
-        }, false);
+        if (window.XDomainRequest && window.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
 
-        xhr.open(options.method, options.url, true);
+            xhr = new window.XDomainRequest();
 
-        if (headers) {
-            for (let key in headers) {
-                xhr.setRequestHeader(key, headers[key]);
+            xhr.onload = function() {
+                resolve(JSON.parse(this.responseText));
+            };
+
+            xhr.onerror = function(evt) {
+                reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
+            };
+
+            xhr.open(options.method, options.url, true);
+
+            if (headers && Object.keys(headers).length) {
+                return reject(new Error(`Headers in a cross-domain IE9- request? Not a chance.`));
+            }
+
+        } else {
+
+            xhr = new window.XMLHttpRequest();
+
+            xhr.addEventListener('load', function() {
+                resolve(JSON.parse(this.responseText));
+            }, false);
+
+            xhr.addEventListener('error', (evt) => {
+                reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
+            }, false);
+
+            xhr.open(options.method, options.url, true);
+
+            if (headers) {
+                for (let key in headers) {
+                    xhr.setRequestHeader(key, headers[key]);
+                }
             }
         }
 
