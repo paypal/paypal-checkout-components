@@ -73,8 +73,6 @@ export let Checkout = xcomponent.create({
 
     bridgeUrls: config.bridgeUrls,
 
-    autocloseParentTemplate: false,
-
     contexts: {
         iframe: false,
         lightbox: false,
@@ -331,8 +329,6 @@ export let Checkout = xcomponent.create({
 
     autoResize: true,
 
-    closeDelay:          1000,
-    closeComponentDelay: 1000,
     resizeDelay:         700,
 
     get dimensions() {
