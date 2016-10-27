@@ -60,7 +60,7 @@ export let config = {
         return {
             local:      `https://www.${config.stage}.qa.paypal.com`,
             stage:      `https://www.${config.stage}.qa.paypal.com`,
-            sandbox:    `https://wwww.sandbox.paypal.com`,
+            sandbox:    `https://www.sandbox.paypal.com`,
             production: `https://www.paypal.com`
         };
     },
