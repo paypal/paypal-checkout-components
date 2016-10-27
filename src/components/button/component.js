@@ -170,18 +170,18 @@ export let Button = xcomponent.create({
                 return {
 
                     tiny: {
-                        width: 80,
-                        height: 22
+                        width: '80px',
+                        height: '22px'
                     },
 
                     small: {
-                        width: 148,
-                        height: 48
+                        width: '148px',
+                        height: '48px'
                     },
 
                     medium: {
-                        width: 230,
-                        height: 48
+                        width: '230px',
+                        height: '48px'
                     }
 
                 }[size];
@@ -212,7 +212,7 @@ export let Button = xcomponent.create({
     autoResize: true,
 
     dimensions: {
-        width: 146,
-        height: 48
+        width: '148px',
+        height: '48px'
     }
 });

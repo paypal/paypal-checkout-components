@@ -338,19 +338,22 @@ export let Checkout = xcomponent.create({
     get dimensions() {
 
         if (isDevice()) {
-            return;
+            return {
+                width: '100%',
+                height: '100%'
+            };
         }
 
         if (this.contexts.lightbox) {
             return {
-                width: 450,
-                height: 300
+                width: '450px',
+                height: '300px'
             };
         }
 
         return {
-            width: 450,
-            height: 535
+            width: '450px',
+            height: '535px'
         };
     }
 });
