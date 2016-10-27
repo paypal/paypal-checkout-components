@@ -74,6 +74,20 @@ export let config = {
         };
     },
 
+    get apiUrls() {
+
+        let domain      = `${window.location.protocol}//${window.location.host}`;
+        let corsApiUrls = config.corsApiUrls;
+        let wwwApiUrls  = config.wwwApiUrls;
+
+        return {
+            local:      wwwApiUrls.local      === domain ? wwwApiUrls.local      : corsApiUrls.local,
+            stage:      wwwApiUrls.stage      === domain ? wwwApiUrls.stage      : corsApiUrls.stage,
+            sandbox:    wwwApiUrls.sandbox    === domain ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
+            production: wwwApiUrls.production === domain ? wwwApiUrls.production : corsApiUrls.production
+        };
+    },
+
     checkoutUris: {
         local:      `/webapps/hermes?ul=0`,
         stage:      `/webapps/hermes`,
@@ -177,7 +191,7 @@ export let config = {
 
     get authApiUrls() {
 
-        let apiUrls    = config.corsApiUrls;
+        let apiUrls    = config.apiUrls;
         let authApiUri = config.authApiUri;
 
         return {
@@ -191,7 +205,7 @@ export let config = {
 
     get paymentApiUrls() {
 
-        let apiUrls       = config.corsApiUrls;
+        let apiUrls       = config.apiUrls;
         let paymentApiUri = config.paymentApiUri;
 
         return {
@@ -205,7 +219,7 @@ export let config = {
 
     get billingApiUrls() {
 
-        let apiUrls       = config.corsApiUrls;
+        let apiUrls       = config.apiUrls;
         let billingApiUri = config.billingApiUri;
 
         return {

@@ -50,9 +50,3 @@ export function setupBridge(env, bridgeUrl) {
 
     return openBridge;
 }
-
-export function messageBridge(name, data = {}) {
-    return bridge.then(bridgeWindow => {
-        return postRobot.send(bridgeWindow, name, data);
-    });
-}

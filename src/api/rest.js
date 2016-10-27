@@ -1,9 +1,11 @@
 
+import postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 
 import { config } from '../config';
 import { request, isPayPalDomain } from '../lib';
-import { messageBridge } from '../compat';
+
+let proxyRest = {};
 
 export function createAccessToken(env, client) {
 
@@ -15,8 +17,8 @@ export function createAccessToken(env, client) {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (!config.cors && !isPayPalDomain()) {
-        return messageBridge('createAccessToken', { clientID });
+    if (proxyRest.createAccessToken) {
+        return proxyRest.createAccessToken(env, client);
     }
 
     let basicAuth = btoa(`${clientID}:`);
@@ -56,8 +58,8 @@ export function createCheckoutToken(env, client, paymentDetails) {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (!config.cors && !isPayPalDomain()) {
-        return messageBridge('createCheckoutToken', { clientID, paymentDetails });
+    if (proxyRest.createCheckoutToken) {
+        return proxyRest.createCheckoutToken(env, client, paymentDetails);
     }
 
     paymentDetails = { ...paymentDetails };
@@ -112,8 +114,8 @@ export function createBillingToken(env, client, billingDetails) {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (!config.cors && !isPayPalDomain()) {
-        return messageBridge('createBillingToken', { clientID, billingDetails });
+    if (proxyRest.createBillingToken) {
+        return proxyRest.createBillingToken(env, client, billingDetails);
     }
 
     billingDetails = { ...billingDetails };
@@ -154,3 +156,17 @@ export let rest = {
         create: createBillingToken
     }
 };
+
+const PROXY_REST = `proxy_rest`;
+
+if (isPayPalDomain() && window.parent !== window) {
+    postRobot.sendToParent(PROXY_REST, { createAccessToken, createCheckoutToken, createBillingToken })
+        .catch(() => {
+            // pass
+        });
+
+} else {
+    postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
+        proxyRest = data;
+    });
+}
