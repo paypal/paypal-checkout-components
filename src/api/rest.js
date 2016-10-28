@@ -3,7 +3,9 @@ import postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 
 import { config } from '../config';
-import { request, isPayPalDomain } from '../lib';
+import { request } from '../lib';
+
+import { Button } from '../components';
 
 let proxyRest = {};
 
@@ -159,7 +161,7 @@ export let rest = {
 
 const PROXY_REST = `proxy_rest`;
 
-if (isPayPalDomain() && window.parent !== window) {
+if (postRobot.isBridge() || Button.isChild()) {
     postRobot.sendToParent(PROXY_REST, { createAccessToken, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
