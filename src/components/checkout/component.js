@@ -327,7 +327,7 @@ export let Checkout = xcomponent.create({
         }
     },
 
-    autoResize: true,
+    autoResize: isDevice() ? false : true,
 
     resizeDelay:         700,
 
