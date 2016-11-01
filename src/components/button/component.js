@@ -215,7 +215,7 @@ export let Button = xcomponent.create({
 
             def() {
                 let meta = document.querySelector('meta[name=viewport]');
-                return isDevice() && !meta && (screen.width < 660);
+                return isDevice() && !meta && ((window.screen && window.screen.width) < 660);
             }
         }
     },
