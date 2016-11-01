@@ -4,6 +4,7 @@ import xcomponent from 'xcomponent/src';
 
 import { config } from '../../config';
 import { Checkout } from '../checkout';
+import { isDevice } from '../../lib';
 
 import { validateProps, urlWillRedirectPage } from '../common';
 
@@ -205,6 +206,16 @@ export let Button = xcomponent.create({
                     size:  'small',
                     label: 'checkout'
                 };
+            }
+        },
+
+        disableLightbox: {
+            type: 'boolean',
+            required: false,
+
+            def() {
+                let meta = document.querySelector('meta[name=viewport]');
+                return isDevice() && !meta && (screen.width < 660);
             }
         }
     },
