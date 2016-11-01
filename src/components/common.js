@@ -24,10 +24,8 @@ export function validateProps(props) {
     }
     
     if (props.buttonStyle && props.buttonStyle.size) {
-        var buttonSize = props.buttonStyle.size;
-        
-        if (config.buttonSizes.indexOf(buttonSize) < 0) {
-            props.buttonStyle.size = 'medium';
+        if (config.buttonSizes.indexOf(props.buttonStyle.size) === -1) {
+            throw new Error(`Invalid button size: ${props.buttonStyle.size}`);
         }
     }
 

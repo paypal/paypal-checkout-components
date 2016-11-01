@@ -6,6 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
+import { supportsPopups } from '../lib';
 
 import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
@@ -602,6 +603,14 @@ function listenClick(env, button, clickHandler, condition) {
 
         if (window.ppCheckpoint) {
             window.ppCheckpoint('flow_buttonclick');
+        }
+
+        if (!supportsPopups()) {
+            $logger.debug(`click_popups_not_supported`);
+
+            if (isLegacyEligible()) {
+                $logger.debug(`click_popups_not_supported_but_eligible`);
+            }
         }
 
         if (!isLegacyEligible() && !isClick) {
