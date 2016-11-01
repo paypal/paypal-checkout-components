@@ -7,12 +7,6 @@ export let config = {
     paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __MINOR_VERSION__,
-    braintree_version: `3.3.0`,
-
-    urls: {
-        get braintree_client() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/client.js`; },
-        get braintree_paypal() { return `https://js.braintreegateway.com/web/${config.braintree_version}/js/paypal.js`; }
-    },
 
     test: __TEST__,
 
