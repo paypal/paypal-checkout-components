@@ -30,12 +30,16 @@ const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Tride
 
 describe('paypal legacy cases', () => {
 
-    let testContainer = document.createElement('div');
-    testContainer.id = 'testContainer';
-    document.body.appendChild(testContainer);
+    beforeEach(() => {
+        let testContainer = document.createElement('div');
+        testContainer.id = 'testContainer';
+        document.body.appendChild(testContainer);
+    });
 
     afterEach(() => {
-        testContainer.innerHTML = '';
+        let testContainer = document.getElementById('testContainer');
+        testContainer.parentNode.removeChild(testContainer);
+
         window.location.hash = '';
         paypal.Checkout.contexts.lightbox = false;
     });
@@ -608,7 +612,7 @@ describe('paypal legacy cases', () => {
     it('should call startFlow', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let token = generateECToken();
@@ -627,7 +631,7 @@ describe('paypal legacy cases', () => {
     it('should call startFlow with a url', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let token = generateECToken();
@@ -647,7 +651,7 @@ describe('paypal legacy cases', () => {
     it('should call startFlow with a url with no token', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             paypal.checkout.startFlow(CHILD_REDIRECT_URI);
@@ -664,7 +668,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then startFlow', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let token = generateECToken();
@@ -687,7 +691,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then startFlow with a url', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             paypal.checkout.initXO();
@@ -712,7 +716,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then startFlow with a url with no token', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             paypal.checkout.initXO();
@@ -734,7 +738,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and immediately startFlow', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let token = generateECToken();
@@ -754,7 +758,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then closeFlow', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let open = window.open;
@@ -786,7 +790,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then closeFlow with a url', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             paypal.checkout.initXO();
@@ -809,7 +813,7 @@ describe('paypal legacy cases', () => {
     it('should call initXO and then closeFlow immediately', (done) => {
 
         let testButton = document.createElement('button');
-        testContainer.appendChild(testButton);
+        document.getElementById('testContainer').appendChild(testButton);
 
         testButton.addEventListener('click', event => {
             let open = window.open;

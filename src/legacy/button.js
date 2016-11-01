@@ -82,8 +82,11 @@ export function renderButtons(id, options) {
                                     $logger.warn(`container_a_tag`);
                                 }
 
+                                let buttonEl = renderButton(id, container, button, button.type);
+
                                 buttons.push({
-                                    el: renderButton(id, container, button, button.type),
+                                    container,
+                                    button: buttonEl,
                                     click: button.click,
                                     condition: button.condition
                                 });
@@ -118,8 +121,11 @@ export function renderButtons(id, options) {
                         $logger.warn(`container_a_tag`);
                     }
 
+                    let buttonEl = renderButton(id, container, options, labels[i]);
+
                     buttons.push({
-                        el: renderButton(id, container, options, labels[i]),
+                        container,
+                        button: buttonEl,
                         click: options.click,
                         condition: options.condition
                     });

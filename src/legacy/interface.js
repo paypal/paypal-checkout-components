@@ -209,7 +209,8 @@ function matchUrlAndPaymentToken(item) {
 
         if (env !== config.env) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
-                throw new Error(`Expected url for ${config.env}, e.g. ${config.paypalUrl}, got ${env} url: ${url}`);
+                $logger.warn(`mismatched_env_startflow_url`, { env: config.env, url });
+                config.env = env;
             }
         }
     }
@@ -488,14 +489,23 @@ function handleClickHijack(env, button) {
 
     if (button && button.form) {
         targetElement = button.form;
+        $logger.debug(`target_element_button_form`);
+
     } else if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
         targetElement = button;
-    } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_link`);
+
+    } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
         targetElement = button.parentNode;
-    } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_parent_link`);
+
+    } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
         targetElement = button.parentNode.parentNode;
+        $logger.debug(`target_element_parent_parent_link`);
+
     } else if (this && this.hasOwnProperty('target') && typeof this.target !== 'undefined') { // not sure what this use case is
         targetElement = this; // eslint-disable-line
+        $logger.debug(`target_element_target_property`);
     }
 
     if (!targetElement) {
@@ -579,7 +589,7 @@ function handleClickHijack(env, button) {
 
 
 
-function listenClick(env, button, clickHandler, condition) {
+function listenClick(env, container, button, clickHandler, condition) {
 
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_listenclick');
@@ -587,17 +597,13 @@ function listenClick(env, button, clickHandler, condition) {
 
     let isClick  = (clickHandler instanceof Function);
 
-    if (button.hasAttribute('data-paypal-click-listener')) {
+    if (container.hasAttribute('data-paypal-click-listener')) {
         return $logger.warn(`button_already_has_paypal_click_listener`);
     }
 
-    button.setAttribute('data-paypal-click-listener', true);
+    container.setAttribute('data-paypal-click-listener', true);
 
-    if (!isLegacyEligible() && !isClick) {
-        $logger.debug(`ineligible_listenclick`);
-    }
-
-    button.addEventListener('click', event => {
+    container.addEventListener('click', event => {
 
         registerClick();
 
@@ -614,7 +620,7 @@ function listenClick(env, button, clickHandler, condition) {
         }
 
         if (!isLegacyEligible() && !isClick) {
-            return;
+            return $logger.debug(`ineligible_listenclick`);
         }
 
         $logger.info(`button_click`);
@@ -737,7 +743,7 @@ function setup(id, options = {}) {
         if (buttonElements.length) {
             buttonElements.forEach(el => {
                 $logger.info(`listen_click_custom_button`);
-                listenClick(options.environment, el, options.click, options.condition);
+                listenClick(options.environment, el, el, options.click, options.condition);
             });
         } else {
             $logger.warn(`button_element_not_found`, { element: JSON.stringify(options.button) });
@@ -747,7 +753,7 @@ function setup(id, options = {}) {
     return renderButtons(id, options).then(buttons => {
         buttons.forEach(button => {
             $logger.info(`listen_click_paypal_button`);
-            listenClick(options.environment, button.el, button.click, button.condition);
+            listenClick(options.environment, button.container, button.button, button.click, button.condition);
         });
     });
 }
