@@ -591,19 +591,21 @@ function handleClickHijack(env, button) {
 
 function listenClick(env, container, button, clickHandler, condition) {
 
+    let element = (container.tagName.toLowerCase() === 'a') ? container : button;
+
     if (window.ppCheckpoint) {
         window.ppCheckpoint('flow_listenclick');
     }
 
     let isClick  = (clickHandler instanceof Function);
 
-    if (container.hasAttribute('data-paypal-click-listener')) {
+    if (element.hasAttribute('data-paypal-click-listener')) {
         return $logger.warn(`button_already_has_paypal_click_listener`);
     }
 
-    container.setAttribute('data-paypal-click-listener', true);
+    element.setAttribute('data-paypal-click-listener', true);
 
-    container.addEventListener('click', event => {
+    element.addEventListener('click', event => {
 
         registerClick();
 
