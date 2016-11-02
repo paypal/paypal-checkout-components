@@ -690,13 +690,18 @@ function setup(id, options = {}) {
     }
 
     if (options.environment) {
+
+        if (options.environment === 'live') {
+            options.environment = 'production';
+        }
+
         if (config.paypalUrls[options.environment]) {
             if (options.environment !== config.env) {
                 config.env = options.environment;
             }
         } else {
             options.environment = config.env;
-            $logger.warn('invalid_env', { env: options.environment });
+            $logger.warn('invalid_env', { badenv: options.environment });
         }
     }
 
