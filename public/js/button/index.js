@@ -5,7 +5,6 @@ import { $promise } from 'squid-core/dist/promise';
 import { $util } from 'squid-core/dist/util';
 
 import { getAuth, getPayment, executePayment, getLocale } from './api';
-import { renderButton } from './button';
 
 let { Promise, config, Checkout } = window.paypal;
 
@@ -51,6 +50,12 @@ function determineLocale() {
 
 function getActions(checkout, data, actions) {
 
+    let restartFlow = () => {
+        return checkout.close().then(() => {
+            return renderCheckout(data.paymentToken);
+        });
+    };
+
     return {
 
         ...actions,
@@ -69,7 +74,7 @@ function getActions(checkout, data, actions) {
 
                 checkout.closeComponent();
 
-                return executePayment(data.paymentToken, data.payerID);
+                return executePayment(data.paymentToken, data.payerID, restartFlow);
             },
 
             executeAndConfirm: () => {
@@ -77,18 +82,14 @@ function getActions(checkout, data, actions) {
             }
         },
 
-        restart: () => {
-            return checkout.close().then(() => {
-                return renderCheckout(data.paymentToken);
-            });
-        }
+        restart: restartFlow
     };
 }
 
 
 function renderCheckout(paymentToken) {
 
-    Checkout.init({
+    Checkout.renderTo(window.top, {
 
         payment: paymentToken || window.xprops.payment,
         billingAgreement: window.xprops.billingAgreement,
@@ -116,14 +117,14 @@ function renderCheckout(paymentToken) {
 
             return window.xprops.onCancel(data, actions);
         }
-
-    }).renderTo(window.top);
+    });
 }
 
-export default function setup() {
+function setup() {
 
     isLightboxEligible().then(eligible => {
-        Checkout.contexts.lightbox = eligible;
+
+        Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
     });
 
     determineLocale().then(locale => {
@@ -131,7 +132,10 @@ export default function setup() {
         config.locale.lang = locale.lang;
     });
 
-    renderButton(event => {
+
+    let button = document.getElementById('buttonContainer').querySelector('button');
+
+    button.addEventListener('click', event => {
         event.preventDefault();
 
         renderCheckout();
@@ -141,3 +145,5 @@ export default function setup() {
         }
     });
 }
+
+setup();
