@@ -22,7 +22,10 @@ describe('Button Configurations before rendering', () => {
         try {
             let req = {
                 query: {
-                    buttonStyle: '{"size":"small","color":"silver","shape":"rect","label":"checkout"}',
+                    'style.size': 'small',
+                    'style.color': 'silver',
+                    'style.shape': 'rect',
+                    'style.label': 'checkout',
                     'locale.x': 'en_US'
                 }
             };
@@ -46,7 +49,10 @@ describe('Button Configurations before rendering', () => {
         try {
             let req = {
                 query: {
-                    buttonStyle: 'asdkfj;asdkfj;aklsdfja;skldfj;askdjf',
+                    'style.size': 'aksdlfj;',
+                    'style.color': 'asldkjfa;',
+                    'style.shape': 'askdjf',
+                    'style.label': 'laskdfj',
                     'locale.x': 'sdl;fja;dskj'
                 }
             };
@@ -131,7 +137,10 @@ describe('Button Configurations before rendering', () => {
         try {
             let req = {
                 query: {
-                    buttonStyle: '{"size":"small","color":"blue","shape":"rect","label":"checkout"}',
+                    'style.size': 'small',
+                    'style.color': 'blue',
+                    'style.shape': 'rect',
+                    'style.label': 'checkout',
                     'locale.x': 'en_US'
                 }
             };
@@ -157,7 +166,10 @@ describe('Button Configurations before rendering', () => {
         try {
             let req = {
                 query: {
-                    buttonStyle: '{"size":"tiny","color":"gold","shape":"rect","label":"checkout"}',
+                    'style.size': 'tiny',
+                    'style.color': 'gold',
+                    'style.shape': 'rect',
+                    'style.label': 'checkout',
                     'locale.x': 'en_US'
                 }
             };
@@ -183,7 +195,10 @@ describe('Button Configurations before rendering', () => {
         try {
             let req = {
                 query: {
-                    buttonStyle: '{"size":"small","color":"silver","shape":"rect","label":"checkout"}',
+                    'style.size': 'small',
+                    'style.color': 'silver',
+                    'style.shape': 'rect',
+                    'style.label': 'checkout',
                     'locale.x': 'en_US'
                 }
             };
