@@ -52,7 +52,7 @@ function getWebpackConfig(version) {
         libraryTarget: 'this',
         umdNamedDefine: true,
         library: MODULE_NAME,
-        pathinfo: true
+        pathinfo: false
       },
       bail: true,
       plugins: [
@@ -68,7 +68,8 @@ function getWebpackConfig(version) {
             __FILE_NAME__: JSON.stringify(filename),
             __FILE_VERSION__: JSON.stringify(version),
             ...getVersionVars()
-        })
+        }),
+        new webpack.NamedModulesPlugin()
       ]
     };
 }
