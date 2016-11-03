@@ -1,6 +1,6 @@
 {
   "name": "xo-buttonjs",
-  "version": "0.0.01",
+  "version": "0.0.1",
   "description": "Serverside rendered ButtonJS",
   "main": "index.js",
   "repository": {
