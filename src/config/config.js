@@ -117,6 +117,7 @@ export let config = {
     authApiUri:    `/v1/oauth2/token`,
     paymentApiUri: `/v1/payments/payment`,
     billingApiUri: `/v1/billing-agreements/agreement-tokens`,
+    experienceApiUri: `/v1/payment-experience/web-profiles`,
 
     get checkoutUrls() {
 
@@ -222,6 +223,20 @@ export let config = {
             sandbox:    `${apiUrls.sandbox}${billingApiUri}`,
             production: `${apiUrls.production}${billingApiUri}`,
             test:       `${apiUrls.test}${billingApiUri}`
+        };
+    },
+
+    get experienceApiUrls() {
+
+        let apiUrls          = config.apiUrls;
+        let experienceApiUri = config.experienceApiUri;
+
+        return {
+            local:      `${apiUrls.local}${experienceApiUri}`,
+            stage:      `${apiUrls.stage}${experienceApiUri}`,
+            sandbox:    `${apiUrls.sandbox}${experienceApiUri}`,
+            production: `${apiUrls.production}${experienceApiUri}`,
+            test:       `${apiUrls.test}${experienceApiUri}`
         };
     },
 

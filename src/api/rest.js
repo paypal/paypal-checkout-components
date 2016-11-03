@@ -1,4 +1,5 @@
 
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 
@@ -9,7 +10,29 @@ import { Button } from '../components';
 
 let proxyRest = {};
 
-export function createAccessToken(env, client) {
+function memoize(method, options = {}) {
+
+    let cache = {};
+
+    return function() {
+
+        let key = JSON.stringify(arguments);
+
+        if (!cache.hasOwnProperty(key)) {
+            cache[key] = method.apply(this, arguments);
+
+            if (options.time) {
+                setTimeout(() => {
+                    delete cache[key];
+                }, options.time);
+            }
+        }
+
+        return cache[key];
+    };
+}
+
+let createAccessToken = memoize(function createAccessToken(env, client) {
 
     env = env || config.env;
 
@@ -48,9 +71,51 @@ export function createAccessToken(env, client) {
 
         return res.access_token;
     });
-}
+}, { time: 10 * 60 * 1000 });
 
-export function createCheckoutToken(env, client, paymentDetails) {
+let createExperienceProfile = memoize(function createExperienceProfile(env, client, experienceDetails = {}) {
+    env = env || config.env;
+
+    let clientID = client[env];
+
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${env}`);
+    }
+
+    if (proxyRest.createExperienceProfile) {
+        return proxyRest.createExperienceProfile(env, client, experienceDetails);
+    }
+
+    experienceDetails.temporary = true;
+    experienceDetails.name = experienceDetails.name ? `${experienceDetails.name}_${Math.random().toString()}` : Math.random().toString();
+
+    return createAccessToken(env, client).then(accessToken => {
+
+        return request({
+            method: `post`,
+            url: config.experienceApiUrls[env],
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+            json: experienceDetails
+        });
+
+    }).then(res => {
+
+        if (res && res.error) {
+            throw new Error(res.error);
+        }
+
+        if (!res.id) {
+            throw new Error(`No id in experience profile response:\n\n${JSON.stringify(res, 0, 4)}`);
+        }
+
+        return res.id;
+    });
+
+}, { time: 10 * 60 * 1000 });
+
+function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
 
     env = env || config.env;
 
@@ -61,7 +126,7 @@ export function createCheckoutToken(env, client, paymentDetails) {
     }
 
     if (proxyRest.createCheckoutToken) {
-        return proxyRest.createCheckoutToken(env, client, paymentDetails);
+        return proxyRest.createCheckoutToken(env, client, paymentDetails, experienceDetails);
     }
 
     paymentDetails = { ...paymentDetails };
@@ -74,13 +139,26 @@ export function createCheckoutToken(env, client, paymentDetails) {
 
     return createAccessToken(env, client).then(accessToken => {
 
-        return request({
-            method: `post`,
-            url: config.paymentApiUrls[env],
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            },
-            json: paymentDetails
+        return Promise.try(() => {
+
+            if (experienceDetails) {
+                return createExperienceProfile(env, client, experienceDetails);
+            }
+
+        }).then(experienceID => {
+
+            if (experienceID) {
+                paymentDetails.experience_profile_id = experienceID;
+            }
+
+            return request({
+                method: `post`,
+                url: config.paymentApiUrls[env],
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                json: paymentDetails
+            });
         });
 
     }).then(res => {
@@ -106,7 +184,7 @@ export function createCheckoutToken(env, client, paymentDetails) {
     });
 }
 
-export function createBillingToken(env, client, billingDetails) {
+export function createBillingToken(env, client, billingDetails, experienceDetails) {
 
     env = env || config.env;
 
@@ -117,7 +195,7 @@ export function createBillingToken(env, client, billingDetails) {
     }
 
     if (proxyRest.createBillingToken) {
-        return proxyRest.createBillingToken(env, client, billingDetails);
+        return proxyRest.createBillingToken(env, client, billingDetails, experienceDetails);
     }
 
     billingDetails = { ...billingDetails };
@@ -131,13 +209,26 @@ export function createBillingToken(env, client, billingDetails) {
 
     return createAccessToken(env, client).then(accessToken => {
 
-        return request({
-            method: `post`,
-            url: config.billingApiUrls[env],
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            },
-            json: billingDetails
+        return Promise.try(() => {
+
+            if (experienceDetails) {
+                return createExperienceProfile(env, client, experienceDetails);
+            }
+
+        }).then(experienceID => {
+
+            if (experienceID) {
+                billingDetails.experience_profile_id = experienceID;
+            }
+
+            return request({
+                method: `post`,
+                url: config.billingApiUrls[env],
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                json: billingDetails
+            });
         });
 
     }).then(res => {
@@ -156,13 +247,16 @@ export let rest = {
     },
     billingAgreement: {
         create: createBillingToken
+    },
+    experience: {
+        create: createExperienceProfile
     }
 };
 
 const PROXY_REST = `proxy_rest`;
 
 if (postRobot.isBridge() || Button.isChild()) {
-    postRobot.sendToParent(PROXY_REST, { createAccessToken, createCheckoutToken, createBillingToken })
+    postRobot.sendToParent(PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
         });
