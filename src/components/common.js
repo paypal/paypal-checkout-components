@@ -23,9 +23,9 @@ export function validateProps(props) {
         throw new Error(`Must specify onAuthorize callback`);
     }
     
-    if (props.buttonStyle && props.buttonStyle.size) {
-        if (config.buttonSizes.indexOf(props.buttonStyle.size) === -1) {
-            throw new Error(`Invalid button size: ${props.buttonStyle.size}`);
+    if (props.style && props.style.size) {
+        if (config.buttonSizes.indexOf(props.style.size) === -1) {
+            throw new Error(`Invalid button size: ${props.style.size}`);
         }
     }
 

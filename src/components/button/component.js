@@ -166,7 +166,7 @@ export let Button = xcomponent.create({
             required: false,
 
             def(props) {
-                let size = props.buttonStyle && props.buttonStyle.size || 'small';
+                let size = props.style && props.style.size || 'small';
 
                 return {
 
@@ -195,10 +195,11 @@ export let Button = xcomponent.create({
             queryParam: 'locale.x'
         },
 
-        buttonStyle: {
+        style: {
             type: 'object',
             required: false,
             queryParam: true,
+            alias: 'buttonStyle',
             def() {
                 return {
                     color: 'gold',
