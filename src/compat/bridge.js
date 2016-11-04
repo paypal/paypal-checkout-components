@@ -3,7 +3,7 @@ import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import postRobot from 'post-robot/src';
 
-import { Checkout } from '../components';
+import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 
 // This needs to die once we disable fallbacks
@@ -13,8 +13,7 @@ export let bridge = new Promise();
 postRobot.on('meta', ({ source, data }) => {
 
     if (data.iframeEligible) {
-        Checkout.contexts.lightbox = true;
-        Checkout.contexts.iframe = true;
+        enableCheckoutIframe();
     }
 
     $logger.info(data.iframeEligible ?

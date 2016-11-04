@@ -3,7 +3,7 @@ import $logger from 'beaver-logger/client';
 
 import { config } from './config';
 import { initLogger, checkForCommonErrors } from './lib';
-import { Checkout } from './components';
+import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
 
 function domainToEnv(domain) {
@@ -69,8 +69,7 @@ export function setup(options = {}) {
     }
 
     if (options.lightbox) {
-        Checkout.contexts.lightbox = true;
-        Checkout.contexts.iframe = true;
+        enableCheckoutIframe();
     }
 
     if (options.bridge) {

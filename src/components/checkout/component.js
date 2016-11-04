@@ -179,8 +179,7 @@ export let Checkout = xcomponent.create({
             decorate(original) {
                 if (original) {
                     return function(data, actions = {}) {
-                        Checkout.contexts.lightbox = true;
-                        Checkout.contexts.iframe = true;
+                        enableCheckoutIframe();
 
                         try {
                             logReturnUrl(data.returnUrl);
@@ -353,3 +352,8 @@ export let Checkout = xcomponent.create({
         };
     }
 });
+
+export function enableCheckoutIframe() {
+    Checkout.contexts.lightbox = true;
+    Checkout.contexts.iframe = true;
+}

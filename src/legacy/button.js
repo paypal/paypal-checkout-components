@@ -3,7 +3,7 @@ import { config } from '../config';
 import { loadScript } from '../lib';
 import { BUTTON_JS_URL } from './constants';
 import { $logger } from './log';
-import { getElements } from './util';
+import { getElements, getElement } from './util';
 
 let buttonJS;
 

@@ -3,7 +3,7 @@ import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
 
 import { config } from '../../config';
-import { Checkout } from '../checkout';
+import { enableCheckoutIframe } from '../checkout';
 import { isDevice } from '../../lib';
 
 import { validateProps, urlWillRedirectPage } from '../common';
@@ -104,8 +104,7 @@ export let Button = xcomponent.create({
             decorate(original) {
                 if (original) {
                     return function(data, actions) {
-                        Checkout.contexts.lightbox = true;
-                        Checkout.contexts.iframe = true;
+                        enableCheckoutIframe();
 
                         let redirect = (win, url) => {
 
