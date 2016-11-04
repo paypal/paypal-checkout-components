@@ -221,7 +221,7 @@ export let Button = xcomponent.create({
         }
     },
 
-    autoResize: true,
+    autoResize: false,
 
     dimensions: {
         width: '148px',

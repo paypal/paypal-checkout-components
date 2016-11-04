@@ -329,7 +329,7 @@ export let Checkout = xcomponent.create({
 
     autoResize: true,
 
-    resizeDelay:         700,
+    resizeDelay: 700,
 
     get dimensions() {
 
