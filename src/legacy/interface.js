@@ -735,12 +735,6 @@ function setup(id, options = {}) {
         if (getElements(options.buttons).length) {
             options.button = options.buttons;
             delete options.buttons;
-        } else {
-            let buttons = options.buttons.map(item => item && item.button);
-            if (getElements(buttons).length) {
-                options.button = buttons;
-                delete options.buttons;
-            }
         }
     }
 

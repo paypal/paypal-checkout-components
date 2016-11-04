@@ -72,7 +72,21 @@ export function renderButtons(id, options) {
                     button.click     = button.click || options.click;
                     button.condition = button.condition || options.condition;
 
-                    if (button.container && button.container.length !== 0) {
+                    if (button.button) {
+                        let buttonEl = getElement(button.button);
+
+                        if (!buttonEl) {
+                            return $logger.warn(`button_custom_element_not_found`, { button: button.button });
+                        }
+
+                        buttons.push({
+                            container: buttonEl,
+                            button:    buttonEl,
+                            click:     button.click,
+                            condition: button.condition
+                        });
+
+                    } else if (button.container && button.container.length !== 0) {
                         let buttonContainerElements = getElements(button.container);
 
                         if (buttonContainerElements.length) {
@@ -86,8 +100,8 @@ export function renderButtons(id, options) {
 
                                 buttons.push({
                                     container,
-                                    button: buttonEl,
-                                    click: button.click,
+                                    button:    buttonEl,
+                                    click:     button.click,
                                     condition: button.condition
                                 });
                             });
