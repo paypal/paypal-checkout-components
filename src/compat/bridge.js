@@ -32,20 +32,21 @@ postRobot.on('meta', ({ source, data }) => {
 });
 
 export function setupBridge(env, bridgeUrl) {
+    return Promise.try(() => {
+        if (!postRobot.bridgeRequired(bridgeUrl)) {
+            return $logger.debug(`bridge_not_required`, { env });
+        }
 
-    if (!postRobot.bridgeRequired(bridgeUrl)) {
-        return $logger.debug(`bridge_not_required`, { env });
-    }
+        $logger.debug(`setup_bridge`, { env });
 
-    $logger.debug(`setup_bridge`, { env });
+        let openBridge = postRobot.openBridge(bridgeUrl);
 
-    let openBridge = postRobot.openBridge(bridgeUrl);
+        openBridge.then(win => {
+            bridge.resolve(win);
+        }, err => {
+            bridge.reject(err);
+        });
 
-    openBridge.then(win => {
-        bridge.resolve(win);
-    }, err => {
-        bridge.reject(err);
+        return openBridge;
     });
-
-    return openBridge;
 }

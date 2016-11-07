@@ -358,13 +358,25 @@ function initPayPalCheckout(props = {}) {
 }
 
 
-function renderPayPalCheckout(props = {}) {
+function renderPayPalCheckout(props = {}, button) {
 
     let paypalCheckout = initPayPalCheckout(props);
 
     ifNotClick(() => {
         $logger.warn(`render_without_click`);
     });
+
+    /*
+
+    if (button) {
+        let targetElement = getHijackTargetElement(button);
+
+        if (targetElement) {
+            paypalCheckout.hijack(targetElement);
+        }
+    }
+
+    */
 
     let render = paypalCheckout.render().catch(err => {
 
@@ -404,7 +416,7 @@ function triggerClickHandler(handler, event) {
 }
 
 
-function handleClick(env, clickHandler, event) {
+function handleClick(env, clickHandler, event, button) {
     $logger.debug(`button_click_handler`);
 
     let initXOCalled = false;
@@ -459,7 +471,7 @@ function handleClick(env, clickHandler, event) {
     if (initXOCalled || startFlowCalled) {
         $logger.info(`init_paypal_checkout_click`);
 
-        return renderPayPalCheckout({ env, url, payment: paymentToken });
+        return renderPayPalCheckout({ env, url, payment: paymentToken }, button);
     }
 
     $logger.warn(`button_click_handler_no_initxo_startflow`);
@@ -481,35 +493,38 @@ function handleClick(env, clickHandler, event) {
     }, 1);
 }
 
+function getHijackTargetElement(button) {
+
+    if (button && button.form) {
+        $logger.debug(`target_element_button_form`);
+        return button.form;
+    }
+
+    if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_link`);
+        return button;
+    }
+
+    if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_parent_link`);
+        return button.parentNode;
+    }
+
+    if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_parent_parent_link`);
+        return button.parentNode.parentNode;
+    }
+
+    $logger.error(`target_element_not_found`);
+}
+
 
 function handleClickHijack(env, button) {
     $logger.debug(`button_click_hijack`);
 
-    let targetElement;
-
-    if (button && button.form) {
-        targetElement = button.form;
-        $logger.debug(`target_element_button_form`);
-
-    } else if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
-        targetElement = button;
-        $logger.debug(`target_element_link`);
-
-    } else if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
-        targetElement = button.parentNode;
-        $logger.debug(`target_element_parent_link`);
-
-    } else if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
-        targetElement = button.parentNode.parentNode;
-        $logger.debug(`target_element_parent_parent_link`);
-
-    } else if (this && this.hasOwnProperty('target') && typeof this.target !== 'undefined') { // not sure what this use case is
-        targetElement = this; // eslint-disable-line
-        $logger.debug(`target_element_target_property`);
-    }
+    let targetElement = getHijackTargetElement(button);
 
     if (!targetElement) {
-        $logger.error(`no_target_element`);
         return;
     }
 
@@ -528,7 +543,11 @@ function handleClickHijack(env, button) {
         $logger.warn(`renderhijack_without_click`);
     });
 
-    paypalCheckout.renderHijack(targetElement);
+    // TODO: Use standard render method, and send unresolved promise as url?
+    // Could backfire though for things like getDomain
+
+    paypalCheckout.hijack(targetElement);
+    paypalCheckout.render(null, false);
 
     checkout.win = paypalCheckout.window;
 
@@ -636,7 +655,7 @@ function listenClick(env, container, button, clickHandler, condition) {
         }
 
         if (isClick) {
-            return handleClick(env, clickHandler, event);
+            return handleClick(env, clickHandler, event, button);
 
         } else {
             return handleClickHijack(env, button);
@@ -670,9 +689,17 @@ function setup(id, options = {}) {
         id,
         env: options.environment,
         options: JSON.stringify(options, (key, val) => {
-            if (val instanceof Function) {
+
+            if (typeof val === 'function') {
                 return '<function>';
             }
+
+            try {
+                JSON.stringify(val);
+            } catch (err) {
+                return '<unserializable>';
+            }
+
             return val;
         })
     });
@@ -956,6 +983,8 @@ if (typeof window.paypalCheckoutReady === 'function') {
     invokeReady(window.paypalCheckoutReady);
 }
 
+let _paypalCheckoutReady = window.paypalCheckoutReady;
+
 try {
     delete window.paypalCheckoutReady;
 
@@ -963,11 +992,13 @@ try {
 
         set(method) {
             $logger.debug(`paypal_checkout_ready_setter`);
+            _paypalCheckoutReady = method;
             invokeReady(method);
         },
 
         get() {
             $logger.warn(`paypal_checkout_ready_getter`);
+            return _paypalCheckoutReady;
         }
     });
 } catch (err) {
