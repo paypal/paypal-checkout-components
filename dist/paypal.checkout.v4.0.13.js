@@ -8229,7 +8229,7 @@ this["ppxo"] = function(modules) {
             value: true
         });
         var config = exports.config = {
-            scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.js",
+            scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.0.13.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
             version: "4.0.13",
@@ -8314,7 +8314,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.13");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4.0.13" : "4.0.13");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -8434,7 +8434,7 @@ this["ppxo"] = function(modules) {
                 return "" + config.paypalUrl + config.buttonUris[config.env];
             },
             get bridgeUrl() {
-                return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.13") + "&env=" + config.env;
+                return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4.0.13" : "4.0.13") + "&env=" + config.env;
             },
             get loggerUrl() {
                 return "" + config.paypalUrl + config.loggerUri;
@@ -10180,7 +10180,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.13";
+                return _config.config.ppobjects ? "4.0.13" : "4.0.13";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10454,7 +10454,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.13";
+                return _config.config.ppobjects ? "4.0.13" : "4.0.13";
             },
             get domains() {
                 return _config.config.paypalUrls;
