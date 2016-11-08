@@ -265,7 +265,7 @@ export let config = {
     },
 
     get bridgeUrl() {
-        return `${config.paypalUrl}/webapps/hermes/component-meta?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}&env=${config.env}`;
+        return `${config.paypalUrl}${config.bridgeUri}&env=${config.env}`;
     },
 
     get loggerUrl() {
