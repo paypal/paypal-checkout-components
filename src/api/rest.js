@@ -163,21 +163,8 @@ function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
 
     }).then(res => {
 
-        if (res && res.links && res.links.length) {
-            let links = res.links;
-
-            for (let i = 0, len = links.length; i < len; i++) {
-                if (links[i].method === 'REDIRECT' && links[i].rel === 'approval_url') {
-                    let match = links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
-                    if (match) {
-                        return match[1];
-                    } else {
-                        throw new Error(`Could not find token in approval url: ${links[i].href}`);
-                    }
-                }
-            }
-
-            throw new Error(`Could not find approval url`);
+        if (res && res.id) {
+            return res.id;
         }
 
         throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
