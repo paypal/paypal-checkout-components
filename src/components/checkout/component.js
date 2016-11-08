@@ -330,8 +330,6 @@ export let Checkout = xcomponent.create({
 
     autoResize: true,
 
-    resizeDelay: 700,
-
     get dimensions() {
 
         if (isDevice()) {
