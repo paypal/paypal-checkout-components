@@ -76,7 +76,8 @@ export function renderButtons(id, options) {
                         let buttonEl = getElement(button.button);
 
                         if (!buttonEl) {
-                            return $logger.warn(`button_custom_element_not_found`, { button: button.button });
+                            $logger.warn(`button_custom_element_not_found`, { button: button.button });
+                            continue;
                         }
 
                         buttons.push({
