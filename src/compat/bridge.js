@@ -33,7 +33,8 @@ postRobot.on('meta', ({ source, data }) => {
 
 export function setupBridge(env, bridgeUrl) {
     return Promise.try(() => {
-        if (!postRobot.bridgeRequired(bridgeUrl)) {
+
+        if (!postRobot.needsBridgeForDomain(bridgeUrl)) {
             return $logger.debug(`bridge_not_required`, { env });
         }
 
@@ -44,9 +45,16 @@ export function setupBridge(env, bridgeUrl) {
         openBridge.then(win => {
             bridge.resolve(win);
         }, err => {
-            bridge.reject(err);
+            bridge.asyncReject(err);
         });
 
-        return openBridge;
+        return openBridge.catch(err => {
+
+            // Bridge is best-effort for everything but IE
+
+            if (postRobot.needsBridge({ domain: bridgeUrl })) {
+                throw err;
+            }
+        });
     });
 }

@@ -358,25 +358,13 @@ function initPayPalCheckout(props = {}) {
 }
 
 
-function renderPayPalCheckout(props = {}, button) {
+function renderPayPalCheckout(props = {}) {
 
     let paypalCheckout = initPayPalCheckout(props);
 
     ifNotClick(() => {
         $logger.warn(`render_without_click`);
     });
-
-    /*
-
-    if (button) {
-        let targetElement = getHijackTargetElement(button);
-
-        if (targetElement) {
-            paypalCheckout.hijack(targetElement);
-        }
-    }
-
-    */
 
     let render = paypalCheckout.render().catch(err => {
 
@@ -416,7 +404,7 @@ function triggerClickHandler(handler, event) {
 }
 
 
-function handleClick(env, clickHandler, event, button) {
+function handleClick(env, clickHandler, event) {
     $logger.debug(`button_click_handler`);
 
     let initXOCalled = false;
@@ -471,7 +459,7 @@ function handleClick(env, clickHandler, event, button) {
     if (initXOCalled || startFlowCalled) {
         $logger.info(`init_paypal_checkout_click`);
 
-        return renderPayPalCheckout({ env, url, payment: paymentToken }, button);
+        return renderPayPalCheckout({ env, url, payment: paymentToken });
     }
 
     $logger.warn(`button_click_handler_no_initxo_startflow`);
@@ -655,7 +643,7 @@ function listenClick(env, container, button, clickHandler, condition) {
         }
 
         if (isClick) {
-            return handleClick(env, clickHandler, event, button);
+            return handleClick(env, clickHandler, event);
 
         } else {
             return handleClickHijack(env, button);
