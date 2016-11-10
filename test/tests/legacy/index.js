@@ -5,3 +5,4 @@ export * from './setup';
 export * from './standalone';
 export * from './hijack';
 export * from './hybrid';
+export * from './customclick';
