@@ -343,7 +343,7 @@ function initPayPalCheckout(props = {}) {
         reset();
 
         try {
-            paypalCheckout.destroy(new Error(`closeFlow called`));
+            paypalCheckout.destroy();
         } catch (err) {
             console.error(err);
         }
@@ -578,7 +578,7 @@ function handleClickHijack(env, button) {
         }
 
         token = paymentToken;
-        paypalCheckout.loadUrl(paypalCheckout.context, url);
+        paypalCheckout.loadUrl(url);
     };
 
     window.paypal.checkout.closeFlow = (closeUrl) => {
