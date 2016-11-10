@@ -981,6 +981,42 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
         });
 
 
+
+        describe('paypal legacy checkout flow with hijack', () => {
+
+            it('should render a button into a form container and click on the button', (done) => {
+
+                let testForm = document.createElement('form');
+                testForm.id = 'testForm';
+                document.getElementById('testContainer').appendChild(testForm);
+
+                testForm.action = CHILD_URI;
+
+                let token = generateECToken();
+
+                let tokenInput = document.createElement('input');
+                tokenInput.name = 'token';
+                tokenInput.value = token;
+
+                testForm.appendChild(tokenInput);
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testForm'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                        done();
+                    });
+
+                    document.querySelector('#testForm button').click();
+                });
+            });
+        });
+
+
         describe('paypal legacy standalone checkout', () => {
 
             it('should call startFlow', (done) => {
