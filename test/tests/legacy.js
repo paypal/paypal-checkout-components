@@ -40,10 +40,10 @@ function destroyTestContainer() {
     testContainer.parentNode.removeChild(testContainer);
 }
 
-function createCustomButton() {
+function createCustomButton(id = 'testButton', container = 'testContainer') {
     let testButton = document.createElement('button');
-    testButton.id = 'testButton';
-    document.getElementById('testContainer').appendChild(testButton);
+    testButton.id = id;
+    document.getElementById(container).appendChild(testButton);
     return testButton;
 }
 
@@ -177,6 +177,43 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
+    it('should render multiple buttons into a container and provide a working click handler', (done) => {
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelectorAll('#testContainer button')[0].click();
+            document.querySelectorAll('#testContainer button')[1].click();
+        });
+    });
+
     it('should use a custom button and provide a working click handler', (done) => {
 
         createCustomButton();
@@ -192,6 +229,32 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             document.querySelector('#testContainer #testButton').click();
+        });
+    });
+
+    it('should use a custom button array with mutiple buttons and provide a working click handler', (done) => {
+
+        createCustomButton('testButton');
+        createCustomButton('testButton2');
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButton', 'testButton2' ],
+
+            click() {
+                clickCount += 1;
+
+                if (clickCount === 2) {
+                    done();
+                }
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
+            document.querySelector('#testContainer #testButton2').click();
         });
     });
 
@@ -213,6 +276,46 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should use a custom buttons array with multiple buttons and provide a working click handler', (done) => {
+
+        createCustomButton('testButton');
+        createCustomButton('testButton2');
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    button: 'testButton',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    button: 'testButton2',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
+            document.querySelector('#testContainer #testButton2').click();
         });
     });
 
@@ -275,6 +378,28 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a link container, click on a custom button, and provide a working click handler', (done) => {
+
+        let customLink = document.createElement('a');
+        customLink.id = 'customLink';
+        document.getElementById('testContainer').appendChild(customLink);
+
+        createCustomButton('testButton', 'customLink');
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'customLink',
+
+            click(event) {
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
         });
     });
 });
