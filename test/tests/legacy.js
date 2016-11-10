@@ -28,23 +28,62 @@ const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
 const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
+function createElement(options) {
+
+    let element = document.createElement(options.tag || 'div');
+
+    if (options.id) {
+        element.setAttribute('id', options.id);
+    }
+
+    if (options.props) {
+        for (let key of Object.keys(options.props)) {
+            element.setAttribute(key, options.props[key]);
+        }
+    }
+
+    if (options.children) {
+        for (let child of options.children) {
+            element.appendChild(createElement(child));
+        }
+    }
+
+    if (options.container) {
+        let container = options.container;
+
+        if (typeof container === 'string') {
+            container = document.getElementById(container) || document.querySelector(container);
+        }
+
+        if (!container) {
+            throw new Error(`Could not find container: ${options.container}`);
+        }
+
+        container.appendChild(element);
+    }
+
+    return element;
+}
+
+function destroyElement(element) {
+
+    if (typeof element === 'string') {
+        element = document.getElementById(element) || document.querySelector(element);
+    }
+
+    element.parentNode.removeChild(element);
+}
+
+
 function createTestContainer() {
-    let testContainer = document.createElement('div');
-    testContainer.id = 'testContainer';
-    document.body.appendChild(testContainer);
-    return testContainer;
+    return createElement({
+        id: 'testContainer',
+        container: document.body
+    });
 }
 
 function destroyTestContainer() {
-    let testContainer = document.getElementById('testContainer');
-    testContainer.parentNode.removeChild(testContainer);
-}
-
-function createCustomButton(id = 'testButton', container = 'testContainer') {
-    let testButton = document.createElement('button');
-    testButton.id = id;
-    document.getElementById(container).appendChild(testButton);
-    return testButton;
+    return destroyElement('testContainer');
 }
 
 describe('paypal legacy checkout ready', () => {
@@ -267,7 +306,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should use a custom button and provide a working click handler', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -279,14 +318,14 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
+            testButton.click();
         });
     });
 
     it('should use a custom button array with multiple buttons and provide a working click handler', (done) => {
 
-        createCustomButton('testButton');
-        createCustomButton('testButton2');
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -304,15 +343,15 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
-            document.querySelector('#testContainer #testButton2').click();
+            testButton.click();
+            testButton2.click();
         });
     });
 
     it('should use a custom button array with mutiple buttons called button and provide a working click handler', (done) => {
 
-        createCustomButton('testButton');
-        createCustomButton('testButton2');
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -330,14 +369,14 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
-            document.querySelector('#testContainer #testButton2').click();
+            testButton.click();
+            testButton2.click();
         });
     });
 
     it('should use a custom buttons array and provide a working click handler', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -352,14 +391,14 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            testButton.click();
         });
     });
 
     it('should use a custom buttons array with multiple buttons and provide a working click handler', (done) => {
 
-        createCustomButton('testButton');
-        createCustomButton('testButton2');
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
 
         let clickCount = 0;
 
@@ -391,15 +430,15 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
-            document.querySelector('#testContainer #testButton2').click();
+            testButton.click();
+            testButton2.click();
         });
     });
 
 
     it('should use a custom button and provide a working click handler which is passed an event', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -414,13 +453,13 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            testButton.click();
         });
     });
 
     it('should use a custom button and provide a working click handler which is not passed an err', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -434,13 +473,13 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            testButton.click();
         });
     });
 
     it('should use a custom button and provide a working click handler which is not passed an error', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -454,17 +493,24 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            testButton.click();
         });
     });
 
     it('should render a button into a link container, click on a custom button, and provide a working click handler', (done) => {
 
-        let customLink = document.createElement('a');
-        customLink.id = 'customLink';
-        document.getElementById('testContainer').appendChild(customLink);
+        let customLink = createElement({
+            tag: 'a',
+            id: 'customLink',
+            container: 'testContainer',
 
-        createCustomButton('testButton', 'customLink');
+            children: [
+                {
+                    tag: 'button',
+                    id: 'testButton'
+                }
+            ]
+        });
 
         return paypal.checkout.setup('merchantID', {
 
@@ -476,13 +522,13 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
+            customLink.querySelector('#testButton').click();
         });
     });
 
     it('should render a button into a non-link container, click on a custom button, and provide a working click handler', (done) => {
 
-        createCustomButton();
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
         let clicked = false;
 
@@ -497,11 +543,13 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer #testButton').click();
+            testButton.click();
 
             setTimeout(() => {
                 if (!clicked) {
                     done();
+                } else {
+                    done(new Error('Expected button to not be clicked'));
                 }
             }, 20);
         });
@@ -986,19 +1034,26 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should render a button into a form container and click on the button', (done) => {
 
-                let testForm = document.createElement('form');
-                testForm.id = 'testForm';
-                document.getElementById('testContainer').appendChild(testForm);
-
-                testForm.action = CHILD_URI;
-
                 let token = generateECToken();
 
-                let tokenInput = document.createElement('input');
-                tokenInput.name = 'token';
-                tokenInput.value = token;
+                let testForm = createElement({
+                    tag: 'form',
+                    container: 'testContainer',
+                    id: 'testForm',
+                    props: {
+                        action: CHILD_URI
+                    },
 
-                testForm.appendChild(tokenInput);
+                    children: [
+                        {
+                            tag: 'input',
+                            props: {
+                                name: 'token',
+                                value: token
+                            }
+                        }
+                    ]
+                });
 
                 return paypal.checkout.setup('merchantID', {
 
@@ -1011,7 +1066,184 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
                         done();
                     });
 
-                    document.querySelector('#testForm button').click();
+                    testForm.querySelector('button').click();
+                });
+            });
+
+            it('should render a button into a link and click on the button', (done) => {
+
+                let token = generateECToken();
+                let hash = uniqueID();
+
+                let testLink = createElement({
+                    tag: 'a',
+                    id: 'testLink',
+                    container: 'testContainer',
+                    props: {
+                        href: `${CHILD_URI}?token=${token}#${hash}`
+                    }
+                });
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testLink'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                        done();
+                    });
+
+                    testLink.querySelector('button').click();
+                });
+            });
+
+            it('should render a custom button into a form container and click on the button', (done) => {
+
+                let token = generateECToken();
+
+                let testForm = createElement({
+                    tag: 'form',
+                    container: 'testContainer',
+                    id: 'testForm',
+                    props: {
+                        action: CHILD_URI
+                    },
+
+                    children: [
+                        {
+                            tag: 'input',
+                            props: {
+                                name: 'token',
+                                value: token
+                            }
+                        },
+
+                        {
+                            tag: 'button',
+                            id: 'testButton'
+                        }
+                    ]
+                });
+
+                return paypal.checkout.setup('merchantID', {
+
+                    button: 'testButton'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                        done();
+                    });
+
+                    testForm.querySelector('button').click();
+                });
+            });
+
+            it('should render a custom link and click on the link', (done) => {
+
+                let token = generateECToken();
+                let hash = uniqueID();
+
+                let testLink = createElement({
+                    tag: 'a',
+                    id: 'testLink',
+                    container: 'testContainer',
+                    props: {
+                        href: `${CHILD_URI}?token=${token}#${hash}`
+                    }
+                });
+
+                return paypal.checkout.setup('merchantID', {
+
+                    button: 'testLink'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                        done();
+                    });
+
+                    testLink.click();
+                });
+            });
+
+            it('should render a custom button into a link and click on the button', (done) => {
+
+                let token = generateECToken();
+                let hash = uniqueID();
+
+                let testLink = createElement({
+                    tag: 'a',
+                    id: 'testLink',
+                    container: 'testContainer',
+                    props: {
+                        href: `${CHILD_URI}?token=${token}#${hash}`
+                    },
+
+                    children: [
+                        {
+                            tag: 'button',
+                            id: 'testButton'
+                        }
+                    ]
+                });
+
+                return paypal.checkout.setup('merchantID', {
+
+                    button: 'testButton'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                        done();
+                    });
+
+                    testLink.querySelector('#testButton').click();
+                });
+            });
+
+            it('should render a custom button into a div into a link and click on the button', (done) => {
+
+                let token = generateECToken();
+                let hash = uniqueID();
+
+                let testLink = createElement({
+                    tag: 'a',
+                    id: 'testLink',
+                    container: 'testContainer',
+                    props: {
+                        href: `${CHILD_URI}?token=${token}#${hash}`
+                    },
+
+                    children: [
+                        {
+                            children: [
+                                {
+                                    tag: 'button',
+                                    id: 'testButton'
+                                }
+                            ]
+                        }
+                    ]
+                });
+
+                return paypal.checkout.setup('merchantID', {
+
+                    button: 'testButton'
+
+                }).then(() => {
+
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                        done();
+                    });
+
+                    testLink.querySelector('#testButton').click();
                 });
             });
         });
@@ -1021,7 +1253,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -1039,7 +1271,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow with a url', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -1058,7 +1290,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow with a url with no token', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.startFlow(CHILD_REDIRECT_URI);
@@ -1074,7 +1306,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -1096,7 +1328,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow with a url', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -1120,7 +1352,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow with a url with no token', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -1141,7 +1373,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and immediately startFlow', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -1160,7 +1392,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
 
@@ -1202,7 +1434,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow with a url', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -1224,7 +1456,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow immediately', (done) => {
 
-                let testButton = createCustomButton();
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', event => {
 
