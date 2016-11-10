@@ -28,148 +28,162 @@ const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
 const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
-function tests(name = 'test', options = {}) {
+function createTestContainer() {
+    let testContainer = document.createElement('div');
+    testContainer.id = 'testContainer';
+    document.body.appendChild(testContainer);
+}
+
+function destroyTestContainer() {
+    let testContainer = document.getElementById('testContainer');
+    testContainer.parentNode.removeChild(testContainer);
+}
+
+describe('paypal legacy button rendering', () => {
+
+    beforeEach(() => {
+        createTestContainer();
+    });
+
+    afterEach(() => {
+        destroyTestContainer();
+    });
+
+    it('should render a button into a container', () => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer'
+
+        }).then(() => {
+
+            assert.ok(document.querySelector('#testContainer button'));
+        });
+    });
+
+    it('should render a button into a container using buttons array', () => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'testContainer'
+                }
+            ]
+
+        }).then(() => {
+
+            assert.ok(document.querySelector('#testContainer button'));
+        });
+    });
+
+
+    it('should render a button into a container and provide a working click handler', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a container using buttons array and provide a working click handler', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        done();
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+
+    it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(event) {
+                assert.ok(event, 'Expected an event to be passed to click function');
+                assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(err) {
+                assert.ifError(err, 'Expected err to not be passed to click function');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'testContainer',
+
+            click(error) {
+                assert.ifError(error, 'Expected error to not be passed to click function');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+});
+
+for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
 
     describe(`paypal legacy ${name}`, () => {
 
         beforeEach(() => {
-            let testContainer = document.createElement('div');
-            testContainer.id = 'testContainer';
-            document.body.appendChild(testContainer);
-
+            createTestContainer();
             paypal.Checkout.contexts.lightbox = options.lightbox;
         });
 
         afterEach(() => {
-            let testContainer = document.getElementById('testContainer');
-            testContainer.parentNode.removeChild(testContainer);
-
+            destroyTestContainer();
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
-        });
-
-        describe('paypal legacy button rendering', () => {
-
-            it('should render a button into a container', () => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer'
-
-                }).then(() => {
-
-                    assert.ok(document.querySelector('#testContainer button'));
-                });
-            });
-
-            it('should render a button into a container using buttons array', () => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    buttons: [
-                        {
-                            container: 'testContainer'
-                        }
-                    ]
-
-                }).then(() => {
-
-                    assert.ok(document.querySelector('#testContainer button'));
-                });
-            });
-
-
-            it('should render a button into a container and provide a working click handler', (done) => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer',
-
-                    click(event) {
-                        done();
-                    }
-
-                }).then(() => {
-
-                    document.querySelector('#testContainer button').click();
-                });
-            });
-
-            it('should render a button into a container using buttons array and provide a working click handler', (done) => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    buttons: [
-                        {
-                            container: 'testContainer',
-                            click(event) {
-                                done();
-                            }
-                        }
-                    ]
-
-                }).then(() => {
-
-                    document.querySelector('#testContainer button').click();
-                });
-            });
-
-
-            it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer',
-
-                    click(event) {
-                        assert.ok(event, 'Expected an event to be passed to click function');
-                        assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
-
-                        done();
-                    }
-
-                }).then(() => {
-
-                    document.querySelector('#testContainer button').click();
-                });
-            });
-
-            it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer',
-
-                    click(err) {
-                        assert.ifError(err, 'Expected err to not be passed to click function');
-
-                        done();
-                    }
-
-                }).then(() => {
-
-                    document.querySelector('#testContainer button').click();
-                });
-            });
-
-            it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer',
-
-                    click(error) {
-                        assert.ifError(error, 'Expected error to not be passed to click function');
-
-                        done();
-                    }
-
-                }).then(() => {
-
-                    document.querySelector('#testContainer button').click();
-                });
-            });
-
         });
 
         describe('paypal legacy checkout flow', () => {
@@ -883,7 +897,3 @@ function tests(name = 'test', options = {}) {
         });
     });
 }
-
-tests('popup', { lightbox: false });
-tests('lightbox', { lightbox: true });
-
