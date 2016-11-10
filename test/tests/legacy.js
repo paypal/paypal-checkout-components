@@ -32,11 +32,19 @@ function createTestContainer() {
     let testContainer = document.createElement('div');
     testContainer.id = 'testContainer';
     document.body.appendChild(testContainer);
+    return testContainer;
 }
 
 function destroyTestContainer() {
     let testContainer = document.getElementById('testContainer');
     testContainer.parentNode.removeChild(testContainer);
+}
+
+function createCustomButton() {
+    let testButton = document.createElement('button');
+    testButton.id = 'testButton';
+    document.getElementById('testContainer').appendChild(testButton);
+    return testButton;
 }
 
 describe('paypal legacy button rendering', () => {
@@ -169,6 +177,106 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
+    it('should use a custom button and provide a working click handler', (done) => {
+
+        createCustomButton();
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+
+            click(event) {
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
+        });
+    });
+
+    it('should use a custom buttons array and provide a working click handler', (done) => {
+
+        createCustomButton();
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    button: 'testButton',
+                    click(event) {
+                        done();
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+
+    it('should use a custom button and provide a working click handler which is passed an event', (done) => {
+
+        createCustomButton();
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+
+            click(event) {
+                assert.ok(event, 'Expected an event to be passed to click function');
+                assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should use a custom button and provide a working click handler which is not passed an err', (done) => {
+
+        createCustomButton();
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+
+            click(err) {
+                assert.ifError(err, 'Expected err to not be passed to click function');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
+
+    it('should use a custom button and provide a working click handler which is not passed an error', (done) => {
+
+        createCustomButton();
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+
+            click(error) {
+                assert.ifError(error, 'Expected error to not be passed to click function');
+
+                done();
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer button').click();
+        });
+    });
 });
 
 for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
@@ -648,8 +756,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -667,8 +774,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow with a url', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -687,8 +793,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call startFlow with a url with no token', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.startFlow(CHILD_REDIRECT_URI);
@@ -704,8 +809,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -727,8 +831,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow with a url', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -752,8 +855,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then startFlow with a url with no token', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -774,8 +876,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and immediately startFlow', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     let token = generateECToken();
@@ -794,8 +895,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
 
@@ -837,8 +937,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow with a url', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
                     paypal.checkout.initXO();
@@ -860,8 +959,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             it('should call initXO and then closeFlow immediately', (done) => {
 
-                let testButton = document.createElement('button');
-                document.getElementById('testContainer').appendChild(testButton);
+                let testButton = createCustomButton();
 
                 testButton.addEventListener('click', event => {
 
