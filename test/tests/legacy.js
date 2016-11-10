@@ -232,7 +232,7 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
-    it('should use a custom button array with mutiple buttons and provide a working click handler', (done) => {
+    it('should use a custom button array with multiple buttons and provide a working click handler', (done) => {
 
         createCustomButton('testButton');
         createCustomButton('testButton2');
@@ -242,6 +242,32 @@ describe('paypal legacy button rendering', () => {
         return paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton', 'testButton2' ],
+
+            click() {
+                clickCount += 1;
+
+                if (clickCount === 2) {
+                    done();
+                }
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
+            document.querySelector('#testContainer #testButton2').click();
+        });
+    });
+
+    it('should use a custom button array with mutiple buttons called button and provide a working click handler', (done) => {
+
+        createCustomButton('testButton');
+        createCustomButton('testButton2');
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [ 'testButton', 'testButton2' ],
 
             click() {
                 clickCount += 1;
@@ -400,6 +426,33 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             document.querySelector('#testContainer #testButton').click();
+        });
+    });
+
+    it('should render a button into a non-link container, click on a custom button, and provide a working click handler', (done) => {
+
+        createCustomButton();
+
+        let clicked = false;
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'customLink',
+
+            click(event) {
+                clicked = true;
+                done(new Error(`Expected click not to be called`));
+            }
+
+        }).then(() => {
+
+            document.querySelector('#testContainer #testButton').click();
+
+            setTimeout(() => {
+                if (!clicked) {
+                    done();
+                }
+            }, 20);
         });
     });
 });
