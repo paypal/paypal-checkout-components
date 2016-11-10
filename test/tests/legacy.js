@@ -28,305 +28,616 @@ const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
 const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
-describe('paypal legacy cases', () => {
+function tests(name = 'test', options = {}) {
 
-    beforeEach(() => {
-        let testContainer = document.createElement('div');
-        testContainer.id = 'testContainer';
-        document.body.appendChild(testContainer);
-    });
+    describe(`paypal legacy ${name}`, () => {
 
-    afterEach(() => {
-        let testContainer = document.getElementById('testContainer');
-        testContainer.parentNode.removeChild(testContainer);
+        beforeEach(() => {
+            let testContainer = document.createElement('div');
+            testContainer.id = 'testContainer';
+            document.body.appendChild(testContainer);
 
-        window.location.hash = '';
-        paypal.Checkout.contexts.lightbox = false;
-    });
-
-    it('should render a button into a container', () => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer'
-
-        }).then(() => {
-
-            assert.ok(document.querySelector('#testContainer button'));
+            paypal.Checkout.contexts.lightbox = options.lightbox;
         });
-    });
 
-    it('should render a button into a container using buttons array', () => {
+        afterEach(() => {
+            let testContainer = document.getElementById('testContainer');
+            testContainer.parentNode.removeChild(testContainer);
 
-        return paypal.checkout.setup('merchantID', {
+            window.location.hash = '';
+            paypal.Checkout.contexts.lightbox = false;
+        });
 
-            buttons: [
-                {
+        describe('paypal legacy button rendering', () => {
+
+            it('should render a button into a container', () => {
+
+                return paypal.checkout.setup('merchantID', {
+
                     container: 'testContainer'
-                }
-            ]
 
-        }).then(() => {
+                }).then(() => {
 
-            assert.ok(document.querySelector('#testContainer button'));
-        });
-    });
+                    assert.ok(document.querySelector('#testContainer button'));
+                });
+            });
+
+            it('should render a button into a container using buttons array', () => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    buttons: [
+                        {
+                            container: 'testContainer'
+                        }
+                    ]
+
+                }).then(() => {
+
+                    assert.ok(document.querySelector('#testContainer button'));
+                });
+            });
 
 
-    it('should render a button into a container and provide a working click handler', (done) => {
+            it('should render a button into a container and provide a working click handler', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+                return paypal.checkout.setup('merchantID', {
 
-            container: 'testContainer',
-
-            click(event) {
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container using buttons array and provide a working click handler', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            buttons: [
-                {
                     container: 'testContainer',
+
                     click(event) {
                         done();
                     }
-                }
-            ]
 
-        }).then(() => {
+                }).then(() => {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-
-    it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-                assert.ok(event, 'Expected an event to be passed to click function');
-                assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
-
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(err) {
-                assert.ifError(err, 'Expected err to not be passed to click function');
-
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(error) {
-                assert.ifError(error, 'Expected error to not be passed to click function');
-
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call startFlow', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                let token = generateECToken();
-
-                paypal.checkout.startFlow(token);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                    done();
+                    document.querySelector('#testContainer button').click();
                 });
-            }
+            });
 
-        }).then(() => {
+            it('should render a button into a container using buttons array and provide a working click handler', (done) => {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+                return paypal.checkout.setup('merchantID', {
 
-    it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', (done) => {
+                    buttons: [
+                        {
+                            container: 'testContainer',
+                            click(event) {
+                                done();
+                            }
+                        }
+                    ]
 
-        window.navigator.mockUserAgent = IE8_USER_AGENT;
+                }).then(() => {
 
-        let checkoutUrl = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
-        delete paypal.config.checkoutUrl;
-        paypal.config.checkoutUrl = '#testCheckoutUrl';
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                let token = generateECToken();
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
-                    Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrl);
-                    done();
+                    document.querySelector('#testContainer button').click();
                 });
+            });
 
-                paypal.checkout.startFlow(token);
-            }
 
-        }).then(() => {
+            it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+                return paypal.checkout.setup('merchantID', {
 
-    it('should render a button into a container and click on the button, then call startFlow with a url', (done) => {
+                    container: 'testContainer',
 
-        return paypal.checkout.setup('merchantID', {
+                    click(event) {
+                        assert.ok(event, 'Expected an event to be passed to click function');
+                        assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
 
-            container: 'testContainer',
+                        done();
+                    }
 
-            click(event) {
+                }).then(() => {
 
-                let token = generateECToken();
-                let hash = uniqueID();
-
-                paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-                    done();
+                    document.querySelector('#testContainer button').click();
                 });
-            }
+            });
 
-        }).then(() => {
+            it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+                return paypal.checkout.setup('merchantID', {
 
-    it('should render a button into a container and click on the button, then call startFlow with a url in an ineligible browser', (done) => {
+                    container: 'testContainer',
 
-        window.navigator.mockUserAgent = IE8_USER_AGENT;
+                    click(err) {
+                        assert.ifError(err, 'Expected err to not be passed to click function');
 
-        return paypal.checkout.setup('merchantID', {
+                        done();
+                    }
 
-            container: 'testContainer',
+                }).then(() => {
 
-            click(event) {
-
-                let token = generateECToken();
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
-                    done();
+                    document.querySelector('#testContainer button').click();
                 });
+            });
 
-                paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
-            }
+            it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
 
-        }).then(() => {
+                return paypal.checkout.setup('merchantID', {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+                    container: 'testContainer',
 
-    it('should render a button into a container and click on the button, then call startFlow with a url with no token', (done) => {
+                    click(error) {
+                        assert.ifError(error, 'Expected error to not be passed to click function');
 
-        return paypal.checkout.setup('merchantID', {
+                        done();
+                    }
 
-            container: 'testContainer',
+                }).then(() => {
 
-            click(event) {
-
-                paypal.checkout.startFlow(CHILD_REDIRECT_URI);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
-                    done();
+                    document.querySelector('#testContainer button').click();
                 });
-            }
+            });
 
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
         });
-    });
 
-    it('should render a button into a container and click on the button, then call startFlow with a url with no token in an ineligible browser', (done) => {
+        describe('paypal legacy checkout flow', () => {
 
-        window.navigator.mockUserAgent = IE8_USER_AGENT;
+            it('should render a button into a container and click on the button, then call startFlow', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+                return paypal.checkout.setup('merchantID', {
 
-            container: 'testContainer',
+                    container: 'testContainer',
 
-            click(event) {
+                    click(event) {
 
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl`);
-                    done();
+                        let token = generateECToken();
+
+                        paypal.checkout.startFlow(token);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                            done();
+                        });
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
                 });
+            });
 
-                paypal.checkout.startFlow(`#fullpageRedirectUrl`);
-            }
+            it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', (done) => {
 
-        }).then(() => {
+                window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-            document.querySelector('#testContainer button').click();
+                let checkoutUrl = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
+                delete paypal.config.checkoutUrl;
+                paypal.config.checkoutUrl = '#testCheckoutUrl';
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let token = generateECToken();
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+                            Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrl);
+                            done();
+                        });
+
+                        paypal.checkout.startFlow(token);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call startFlow with a url', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let token = generateECToken();
+                        let hash = uniqueID();
+
+                        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                            done();
+                        });
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call startFlow with a url in an ineligible browser', (done) => {
+
+                window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let token = generateECToken();
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                            done();
+                        });
+
+                        paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call startFlow with a url with no token', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                            done();
+                        });
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call startFlow with a url with no token in an ineligible browser', (done) => {
+
+                window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#fullpageRedirectUrl`);
+                            done();
+                        });
+
+                        paypal.checkout.startFlow(`#fullpageRedirectUrl`);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO, then startFlow', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+                            let token = generateECToken();
+
+                            paypal.checkout.startFlow(token);
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                                done();
+                            });
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO, then startFlow in an ineligible browser', (done) => {
+
+                window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+
+                            let token = generateECToken();
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                                done();
+                            });
+
+                            paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO, then startFlow with no token', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+
+                            paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                                done();
+                            });
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO, then startFlow with a url', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+
+                            let token = generateECToken();
+                            let hash = uniqueID();
+
+                            paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                                done();
+                            });
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO and immediately startFlow', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let token = generateECToken();
+
+                        paypal.checkout.initXO();
+                        paypal.checkout.startFlow(token);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                            done();
+                        });
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        if (!options.lightbox) {
+                            let open = window.open;
+                            window.open = function() {
+                                window.open = open;
+
+                                let win = window.open.apply(this, arguments);
+
+                                let close = win.close;
+                                win.close = function() {
+                                    let result = close.apply(this, arguments);
+                                    done();
+                                    return result;
+                                };
+
+                                return win;
+                            };
+                        }
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+                            paypal.checkout.closeFlow();
+
+                            if (options.lightbox) {
+                                if (paypal.checkout.win.closed) {
+                                    return done();
+                                } else {
+                                    return done(new Error('Expected lightbox to be closed'));
+                                }
+                            }
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call startFlow', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        setTimeout(() => {
+                            let token = generateECToken();
+
+                            paypal.checkout.startFlow(token);
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                                done();
+                            });
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO and then closeFlow with a url', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        paypal.checkout.initXO();
+
+                        setTimeout(() => {
+
+                            onHashChange(urlHash => {
+                                assert.equal(urlHash, `#closeFlowUrl`);
+                                done();
+                            });
+
+                            paypal.checkout.closeFlow('#closeFlowUrl');
+
+                        }, 100);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call initXO and then closeFlow immediately', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let open = window.open;
+                        window.open = function() {
+                            done(new Error(`Expected window.open to not be called`));
+                        };
+
+                        paypal.checkout.initXO();
+                        paypal.checkout.closeFlow();
+
+                        setTimeout(() => {
+                            window.open = open;
+                            done();
+                        }, 10);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, then call closeFlow immediately', (done) => {
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+
+                        let open = window.open;
+                        window.open = function() {
+                            done(new Error(`Expected window.open to not be called`));
+                        };
+
+                        paypal.checkout.closeFlow();
+
+                        setTimeout(() => {
+                            window.open = open;
+                            done();
+                        }, 10);
+                    }
+
+                }).then(() => {
+
+                    document.querySelector('#testContainer button').click();
+                });
+            });
         });
-    });
 
-    it('should render a button into a container and click on the button, then call initXO, then startFlow', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+        describe('paypal legacy standalone checkout', () => {
 
-            container: 'testContainer',
+            it('should call startFlow', (done) => {
 
-            click(event) {
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
 
-                paypal.checkout.initXO();
-
-                setTimeout(() => {
+                testButton.addEventListener('click', event => {
                     let token = generateECToken();
 
                     paypal.checkout.startFlow(token);
@@ -335,88 +646,17 @@ describe('paypal legacy cases', () => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                         done();
                     });
+                });
 
-                }, 100);
-            }
+                testButton.click();
+            });
 
-        }).then(() => {
+            it('should call startFlow with a url', (done) => {
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
 
-    it('should render a button into a container and click on the button, then call initXO, then startFlow in an ineligible browser', (done) => {
-
-        window.navigator.mockUserAgent = IE8_USER_AGENT;
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                paypal.checkout.initXO();
-
-                setTimeout(() => {
-
-                    let token = generateECToken();
-
-                    onHashChange(urlHash => {
-                        assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
-                        done();
-                    });
-
-                    paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
-
-                }, 100);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call initXO, then startFlow with no token', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                paypal.checkout.initXO();
-
-                setTimeout(() => {
-
-                    paypal.checkout.startFlow(CHILD_REDIRECT_URI);
-
-                    onHashChange(urlHash => {
-                        assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
-                        done();
-                    });
-
-                }, 100);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call initXO, then startFlow with a url', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                paypal.checkout.initXO();
-
-                setTimeout(() => {
-
+                testButton.addEventListener('click', event => {
                     let token = generateECToken();
                     let hash = uniqueID();
 
@@ -426,411 +666,224 @@ describe('paypal legacy cases', () => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
                         done();
                     });
-
-                }, 100);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call initXO and immediately startFlow', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                let token = generateECToken();
-
-                paypal.checkout.initXO();
-                paypal.checkout.startFlow(token);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                    done();
                 });
-            }
 
-        }).then(() => {
+                testButton.click();
+            });
 
-            document.querySelector('#testContainer button').click();
-        });
-    });
+            it('should call startFlow with a url with no token', (done) => {
 
-    it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
 
-        return paypal.checkout.setup('merchantID', {
+                testButton.addEventListener('click', event => {
+                    paypal.checkout.startFlow(CHILD_REDIRECT_URI);
 
-            container: 'testContainer',
-
-            click(event) {
-
-                let open = window.open;
-                window.open = function() {
-                    window.open = open;
-
-                    let win = window.open.apply(this, arguments);
-
-                    let close = win.close;
-                    win.close = function() {
-                        let result = close.apply(this, arguments);
+                    onHashChange(urlHash => {
+                        assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
                         done();
-                        return result;
-                    };
+                    });
+                });
 
-                    return win;
-                };
+                testButton.click();
+            });
 
-                paypal.checkout.initXO();
+            it('should call initXO and then startFlow', (done) => {
 
-                setTimeout(() => {
-                    paypal.checkout.closeFlow();
-                }, 100);
-            }
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
 
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call startFlow', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                setTimeout(() => {
+                testButton.addEventListener('click', event => {
                     let token = generateECToken();
 
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(token);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                            done();
+                        });
+                    }, 100);
+                });
+
+                testButton.click();
+            });
+
+            it('should call initXO and then startFlow with a url', (done) => {
+
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
+
+                testButton.addEventListener('click', event => {
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+
+                        let token = generateECToken();
+                        let hash = uniqueID();
+
+                        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                            done();
+                        });
+                    }, 100);
+                });
+
+                testButton.click();
+            });
+
+            it('should call initXO and then startFlow with a url with no token', (done) => {
+
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
+
+                testButton.addEventListener('click', event => {
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+
+                        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                            done();
+                        });
+                    }, 100);
+                });
+
+                testButton.click();
+            });
+
+            it('should call initXO and immediately startFlow', (done) => {
+
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
+
+                testButton.addEventListener('click', event => {
+                    let token = generateECToken();
+
+                    paypal.checkout.initXO();
                     paypal.checkout.startFlow(token);
 
                     onHashChange(urlHash => {
                         assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                         done();
                     });
-
-                }, 100);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call initXO and then closeFlow with a url', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                paypal.checkout.initXO();
-
-                setTimeout(() => {
-
-                    onHashChange(urlHash => {
-                        assert.equal(urlHash, `#closeFlowUrl`);
-                        done();
-                    });
-
-                    paypal.checkout.closeFlow('#closeFlowUrl');
-
-                }, 100);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call initXO and then closeFlow immediately', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                let open = window.open;
-                window.open = function() {
-                    done(new Error(`Expected window.open to not be called`));
-                };
-
-                paypal.checkout.initXO();
-                paypal.checkout.closeFlow();
-
-                setTimeout(() => {
-                    window.open = open;
-                    done();
-                }, 10);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and click on the button, then call closeFlow immediately', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(event) {
-
-                let open = window.open;
-                window.open = function() {
-                    done(new Error(`Expected window.open to not be called`));
-                };
-
-                paypal.checkout.closeFlow();
-
-                setTimeout(() => {
-                    window.open = open;
-                    done();
-                }, 10);
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-
-    it('should call startFlow', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            let token = generateECToken();
-
-            paypal.checkout.startFlow(token);
-
-            onHashChange(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                done();
-            });
-        });
-
-        testButton.click();
-    });
-
-    it('should call startFlow with a url', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            let token = generateECToken();
-            let hash = uniqueID();
-
-            paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
-
-            onHashChange(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-                done();
-            });
-        });
-
-        testButton.click();
-    });
-
-    it('should call startFlow with a url with no token', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            paypal.checkout.startFlow(CHILD_REDIRECT_URI);
-
-            onHashChange(urlHash => {
-                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
-                done();
-            });
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and then startFlow', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            let token = generateECToken();
-
-            paypal.checkout.initXO();
-
-            setTimeout(() => {
-                paypal.checkout.startFlow(token);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                    done();
-                });
-            }, 100);
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and then startFlow with a url', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            paypal.checkout.initXO();
-
-            setTimeout(() => {
-
-                let token = generateECToken();
-                let hash = uniqueID();
-
-                paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-                    done();
-                });
-            }, 100);
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and then startFlow with a url with no token', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            paypal.checkout.initXO();
-
-            setTimeout(() => {
-
-                paypal.checkout.startFlow(CHILD_REDIRECT_URI);
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
-                    done();
-                });
-            }, 100);
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and immediately startFlow', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            let token = generateECToken();
-
-            paypal.checkout.initXO();
-            paypal.checkout.startFlow(token);
-
-            onHashChange(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                done();
-            });
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and then closeFlow', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            let open = window.open;
-            window.open = function() {
-                window.open = open;
-
-                let win = window.open.apply(this, arguments);
-
-                let close = win.close;
-                win.close = function() {
-                    let result = close.apply(this, arguments);
-                    done();
-                    return result;
-                };
-
-                return win;
-            };
-
-            paypal.checkout.initXO();
-
-            setTimeout(() => {
-                paypal.checkout.closeFlow();
-            }, 100);
-        });
-
-        testButton.click();
-    });
-
-    it('should call initXO and then closeFlow with a url', (done) => {
-
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
-
-        testButton.addEventListener('click', event => {
-            paypal.checkout.initXO();
-
-            setTimeout(() => {
-
-                onHashChange(urlHash => {
-                    assert.equal(urlHash, `#closeFlowUrl`);
-                    done();
                 });
 
-                paypal.checkout.closeFlow('#closeFlowUrl');
+                testButton.click();
+            });
 
-            }, 100);
-        });
+            it('should call initXO and then closeFlow', (done) => {
 
-        testButton.click();
-    });
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
 
-    it('should call initXO and then closeFlow immediately', (done) => {
+                testButton.addEventListener('click', event => {
 
-        let testButton = document.createElement('button');
-        document.getElementById('testContainer').appendChild(testButton);
+                    if (!options.lightbox) {
+                        let open = window.open;
+                        window.open = function() {
+                            window.open = open;
 
-        testButton.addEventListener('click', event => {
-            let open = window.open;
-            window.open = function() {
-                window.open = open;
+                            let win = window.open.apply(this, arguments);
 
-                return {
-                    close() {
-                        done();
+                            let close = win.close;
+                            win.close = function() {
+                                let result = close.apply(this, arguments);
+                                done();
+                                return result;
+                            };
+
+                            return win;
+                        };
                     }
-                };
-            };
 
-            paypal.checkout.initXO();
-            paypal.checkout.closeFlow();
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.closeFlow();
+
+                        if (options.lightbox) {
+                            if (paypal.checkout.win.closed) {
+                                return done();
+                            } else {
+                                return done(new Error('Expected lightbox to be closed'));
+                            }
+                        }
+                    }, 100);
+                });
+
+                testButton.click();
+            });
+
+            it('should call initXO and then closeFlow with a url', (done) => {
+
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
+
+                testButton.addEventListener('click', event => {
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+
+                        onHashChange(urlHash => {
+                            assert.equal(urlHash, `#closeFlowUrl`);
+                            done();
+                        });
+
+                        paypal.checkout.closeFlow('#closeFlowUrl');
+
+                    }, 100);
+                });
+
+                testButton.click();
+            });
+
+            it('should call initXO and then closeFlow immediately', (done) => {
+
+                let testButton = document.createElement('button');
+                document.getElementById('testContainer').appendChild(testButton);
+
+                testButton.addEventListener('click', event => {
+
+                    if (options.lightbox) {
+                        setTimeout(function() {
+                            if (paypal.checkout.win.closed) {
+                                return done();
+                            } else {
+                                return done(new Error('Expected lightbox to be closed'));
+                            }
+                        });
+
+                    } else {
+
+                        let open = window.open;
+                        window.open = function() {
+                            window.open = open;
+
+                            return {
+                                close() {
+                                    done();
+                                }
+                            };
+                        };
+                    }
+
+                    paypal.checkout.initXO();
+                    paypal.checkout.closeFlow();
+                });
+
+                testButton.click();
+            });
         });
-
-        testButton.click();
     });
-});
+}
+
+tests('popup', { lightbox: false });
+tests('lightbox', { lightbox: true });
+
