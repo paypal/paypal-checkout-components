@@ -1,1 +1,996 @@
 
+
+import paypal from 'src/index';
+
+import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer } from './common';
+
+for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
+
+    describe(`paypal legacy checkout flow with hybrid hijack/startFlow on ${name}`, () => {
+
+        beforeEach(() => {
+            createTestContainer();
+            paypal.Checkout.contexts.lightbox = options.lightbox;
+        });
+
+        afterEach(() => {
+            destroyTestContainer();
+            window.location.hash = '';
+            paypal.Checkout.contexts.lightbox = false;
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a link and click on the button, with a custom listener and immediate startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testLink = createElement({
+                tag: 'a',
+                id: 'testLink',
+                container: 'testContainer',
+                props: {
+                    href: `${CHILD_URI}?token=${token}#${hash}`
+                }
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testLink'
+
+            }).then(() => {
+
+                testLink.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                testLink.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a custom button into a form container and click on the button', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    },
+
+                    {
+                        tag: 'button',
+                        id: 'testButton'
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                button: 'testButton'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a custom link and click on the link', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testLink = createElement({
+                tag: 'a',
+                id: 'testLink',
+                container: 'testContainer',
+                props: {
+                    href: `${CHILD_URI}?token=${token}#${hash}`
+                }
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                button: 'testLink'
+
+            }).then(() => {
+
+                testLink.addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                testLink.click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow with a url', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow with a url in an ineligible browser', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and immediate startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    paypal.checkout.startFlow(token);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and immediate startFlow with a url', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and immediate startFlow with a url in an ineligible browser', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(token);
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url in an ineligible browser', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url with no token', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url with no token in an ineligible browser', () => {
+
+            window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    delete window.navigator.mockUserAgent;
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, and call closeFlow', (done) => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    setTimeout(() => {
+                        paypal.checkout.closeFlow();
+
+                        if (options.lightbox) {
+                            if (paypal.checkout.win.closed) {
+                                return done();
+                            } else {
+                                return done(new Error('Expected lightbox to be closed'));
+                            }
+                        }
+                    }, 200);
+                });
+
+                if (!options.lightbox) {
+                    let open = window.open;
+                    window.open = function() {
+                        window.open = open;
+
+                        let win = window.open.apply(this, arguments);
+
+                        let close = win.close;
+                        win.close = function() {
+                            let result = close.apply(this, arguments);
+                            done();
+                            return result;
+                        };
+
+                        return win;
+                    };
+                }
+
+                testForm.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, and call closeFlow with a url', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    setTimeout(() => {
+                        paypal.checkout.closeFlow('#closeFlowUrl');
+                    }, 200);
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#closeFlowUrl`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, and call closeFlow immediately with a url', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    paypal.checkout.closeFlow('#closeFlowUrl');
+                });
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#closeFlowUrl`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, and call closeFlow immediately', (done) => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    paypal.checkout.closeFlow();
+
+                    if (options.lightbox) {
+                        if (paypal.checkout.win.closed) {
+                            return done();
+                        } else {
+                            return done(new Error('Expected lightbox to be closed'));
+                        }
+                    }
+                });
+
+                if (!options.lightbox) {
+                    let open = window.open;
+                    window.open = function() {
+                        window.open = open;
+
+                        let win = window.open.apply(this, arguments);
+
+                        let close = win.close;
+                        win.close = function() {
+                            let result = close.apply(this, arguments);
+                            done();
+                            return result;
+                        };
+
+                        return win;
+                    };
+                }
+
+                testForm.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and closeFlow', (done) => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    paypal.checkout.initXO();
+                    setTimeout(() => {
+                        paypal.checkout.closeFlow();
+
+                        if (options.lightbox) {
+                            if (paypal.checkout.win.closed) {
+                                return done();
+                            } else {
+                                return done(new Error('Expected lightbox to be closed'));
+                            }
+                        }
+                    }, 200);
+                });
+
+                if (!options.lightbox) {
+                    let open = window.open;
+                    window.open = function() {
+                        window.open = open;
+
+                        let win = window.open.apply(this, arguments);
+
+                        let close = win.close;
+                        win.close = function() {
+                            let result = close.apply(this, arguments);
+                            done();
+                            return result;
+                        };
+
+                        return win;
+                    };
+                }
+
+                testForm.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and closeFlow immediately', (done) => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${CHILD_URI}?token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+
+                    paypal.checkout.initXO();
+                    paypal.checkout.closeFlow();
+
+                    if (options.lightbox) {
+                        if (paypal.checkout.win.closed) {
+                            return done();
+                        } else {
+                            return done(new Error('Expected lightbox to be closed'));
+                        }
+                    }
+                });
+
+                if (!options.lightbox) {
+                    let open = window.open;
+                    window.open = function() {
+                        window.open = open;
+
+                        let win = window.open.apply(this, arguments);
+
+                        let close = win.close;
+                        win.close = function() {
+                            let result = close.apply(this, arguments);
+                            done();
+                            return result;
+                        };
+
+                        return win;
+                    };
+                }
+
+                testForm.querySelector('button').click();
+            });
+        });
+    });
+}
