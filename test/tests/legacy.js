@@ -47,6 +47,57 @@ function createCustomButton(id = 'testButton', container = 'testContainer') {
     return testButton;
 }
 
+describe('paypal legacy checkout ready', () => {
+
+    it('should invoke window.paypalCheckoutReady when it is set and the page is ready', (done) => {
+
+        window.paypalCheckoutReady = done;
+    });
+
+    it('should not invoke window.paypalCheckoutReady multiple times', (done) => {
+
+        let count = 0;
+
+        function ready() {
+            count += 1;
+        }
+
+        window.paypalCheckoutReady = ready;
+        window.paypalCheckoutReady = ready;
+        window.paypalCheckoutReady = ready;
+        window.paypalCheckoutReady = ready;
+
+        setTimeout(() => {
+            if (count === 1) {
+                return done();
+            }
+
+            return done(new Error(`Expected ready to only be called once, actually called ${count} times`));
+        }, 20);
+    });
+
+    it('should not invoke window.paypalCheckoutReady multiple times, even if called by setter', (done) => {
+
+        let count = 0;
+
+        function ready() {
+            count += 1;
+        }
+
+        window.paypalCheckoutReady = ready;
+
+        window.paypalCheckoutReady();
+
+        setTimeout(() => {
+            if (count === 1) {
+                return done();
+            }
+
+            return done(new Error(`Expected ready to only be called once, actually called ${count} times`));
+        }, 20);
+    });
+});
+
 describe('paypal legacy button rendering', () => {
 
     beforeEach(() => {

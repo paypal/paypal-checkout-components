@@ -6,7 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, noop } from '../lib';
+import { supportsPopups } from '../lib';
 
 import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
@@ -938,19 +938,17 @@ export let apps = {
     Call window.paypalCheckoutReady on document ready, if it has been defined by the merchant
 */
 
-let readyCalled = false;
-
 function invokeReady(method) {
 
-    if (readyCalled) {
-        $logger.warn(`ready_called_multiple_times`);
+    if (method.called) {
+        return $logger.warn(`ready_called_multiple_times`);
     }
+
+    method.called = true;
 
     if (setupCalled) {
         $logger.warn(`ready_called_after_setup`);
     }
-
-    readyCalled = true;
 
     onDocumentReady(() => {
         $logger.debug(`paypal_checkout_ready`);
@@ -971,7 +969,7 @@ if (typeof window.paypalCheckoutReady === 'function') {
     invokeReady(window.paypalCheckoutReady);
 }
 
-let _paypalCheckoutReady = noop;
+let _paypalCheckoutReady = window.paypalCheckoutReady;
 
 try {
     delete window.paypalCheckoutReady;
@@ -979,10 +977,16 @@ try {
     Object.defineProperty(window, 'paypalCheckoutReady', {
 
         set(method) {
-            method = once(method);
             $logger.debug(`paypal_checkout_ready_setter`);
-            _paypalCheckoutReady = method;
-            invokeReady(method);
+
+            _paypalCheckoutReady = function() {
+                if (!method.called) {
+                    method.called = true;
+                    return method.apply(this, arguments);
+                }
+            };
+
+            invokeReady(_paypalCheckoutReady);
         },
 
         get() {
