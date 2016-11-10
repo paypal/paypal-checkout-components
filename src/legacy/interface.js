@@ -6,7 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups } from '../lib';
+import { supportsPopups, noop } from '../lib';
 
 import { redirect as redir, onDocumentReady, getElements, once } from './util';
 import { renderButtons } from './button';
@@ -971,7 +971,7 @@ if (typeof window.paypalCheckoutReady === 'function') {
     invokeReady(window.paypalCheckoutReady);
 }
 
-let _paypalCheckoutReady = window.paypalCheckoutReady;
+let _paypalCheckoutReady = noop;
 
 try {
     delete window.paypalCheckoutReady;
@@ -979,6 +979,7 @@ try {
     Object.defineProperty(window, 'paypalCheckoutReady', {
 
         set(method) {
+            method = once(method);
             $logger.debug(`paypal_checkout_ready_setter`);
             _paypalCheckoutReady = method;
             invokeReady(method);
