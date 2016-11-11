@@ -1,16 +1,17 @@
 
 import xcomponent from 'xcomponent/src';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import logger from 'beaver-logger/client';
 
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups } from '../lib';
-
-import { redirect as redir, onDocumentReady, getElements, once } from './util';
+import { supportsPopups, getElements, onDocumentReady, once } from '../lib';
+import { LOG_PREFIX } from './constants';
 import { renderButtons } from './button';
-import { $logger } from './log';
+
+let $logger = logger.prefix(LOG_PREFIX);
 
 const REDIRECT_DELAY = 500;
 
@@ -96,14 +97,15 @@ function logRedirect(location) {
     $logger.flush();
 }
 
-function redirect(location) {
+function redirect(url) {
 
-    logRedirect(location);
+    logRedirect(url);
 
     reset();
 
     setTimeout(function() {
-        redir(location);
+        $logger.info(`redirect`, { url });
+        window.location = url;
     }, REDIRECT_DELAY);
 }
 
@@ -370,8 +372,6 @@ function renderPayPalCheckout(props = {}) {
     let render = paypalCheckout.render().catch(err => {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
-
-        debugger; // eslint-disable-line
 
         Promise.all([ props.url, props.payment ]).then(([ url, paymentToken ]) => {
 
@@ -835,69 +835,3 @@ export let apps = {
     Checkout: checkout
 };
 
-
-/*  PayPal Checkout Ready
-    ---------------------
-
-    Call window.paypalCheckoutReady on document ready, if it has been defined by the merchant
-*/
-
-function invokeReady(method) {
-
-    if (method.called) {
-        return $logger.warn(`ready_called_multiple_times`);
-    }
-
-    method.called = true;
-
-    if (setupCalled) {
-        $logger.warn(`ready_called_after_setup`);
-    }
-
-    onDocumentReady(() => {
-        $logger.debug(`paypal_checkout_ready`);
-        setTimeout(function() {
-
-            if (!window.paypal) {
-                $logger.error(`paypal_checkout_ready_no_window_paypal`);
-            }
-
-            method();
-        }, 1);
-    });
-}
-
-
-if (typeof window.paypalCheckoutReady === 'function') {
-    $logger.debug(`paypal_checkout_ready_preset`);
-    invokeReady(window.paypalCheckoutReady);
-}
-
-let _paypalCheckoutReady = window.paypalCheckoutReady;
-
-try {
-    delete window.paypalCheckoutReady;
-
-    Object.defineProperty(window, 'paypalCheckoutReady', {
-
-        set(method) {
-            $logger.debug(`paypal_checkout_ready_setter`);
-
-            _paypalCheckoutReady = function() {
-                if (!method.called) {
-                    method.called = true;
-                    return method.apply(this, arguments);
-                }
-            };
-
-            invokeReady(_paypalCheckoutReady);
-        },
-
-        get() {
-            $logger.warn(`paypal_checkout_ready_getter`);
-            return _paypalCheckoutReady;
-        }
-    });
-} catch (err) {
-    $logger.warn(`paypal_checkout_ready_setter_error`, { error: err.stack || err.toString() });
-}

@@ -1,9 +1,11 @@
 
+import logger from 'beaver-logger/client';
+
 import { config } from '../config';
-import { loadScript } from '../lib';
-import { BUTTON_JS_URL } from './constants';
-import { $logger } from './log';
-import { getElements, getElement } from './util';
+import { loadScript, getElements, getElement } from '../lib';
+import { BUTTON_JS_URL, LOG_PREFIX } from './constants';
+
+let $logger = logger.prefix(LOG_PREFIX);
 
 let buttonJS;
 
