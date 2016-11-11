@@ -4,6 +4,7 @@ import logger from 'beaver-logger/client';
 import { config } from '../config';
 import { loadScript, getElements, getElement } from '../lib';
 import { BUTTON_JS_URL, LOG_PREFIX } from './constants';
+import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -32,6 +33,11 @@ function loadButtonJS() {
 }
 
 function renderButton(id, container, options, label) {
+
+    if (options.locale) {
+        let { country, lang } = normalizeLocale(options.locale);
+        options.locale = `${lang}_${country}`;
+    }
 
     let lc    = options.locale || `${config.locale.lang}_${config.locale.country}`;
     let color = options.color  || 'gold';

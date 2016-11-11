@@ -459,15 +459,42 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText;
-            let content2 = container2.querySelector('.paypal-button-content span').innerText;
-            let content3 = container3.querySelector('.paypal-button-content span').innerText;
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content3 = container3.querySelector('.paypal-button-content span').innerText.trim();
 
             assert.equal(content1, content2, 'en_US should match en_US');
             assert.notEqual(content1, content3, 'en_US should not match en_FR');
         });
     });
 
+
+    it('should render a button with no locale and verify it defaults to en_US', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'container1',
+                    locale: 'en_US'
+                },
+
+                {
+                    container: 'container2'
+                }
+            ]
+
+        }).then(() => {
+
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+
+            assert.equal(content1, content2, 'en_US should match no locale');
+        });
+    });
 
     it('should render a button with an unknown locale and verify it defaults to en_US', () => {
 
@@ -490,11 +517,96 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText;
-            let content2 = container2.querySelector('.paypal-button-content span').innerText;
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
 
             assert.equal(content1, content2, 'en_US should match xx_XX');
         });
     });
+
+    it('should render a button with locale=fr and verify it defaults to fr_US', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'container1',
+                    locale: 'fr_US'
+                },
+
+                {
+                    container: 'container2',
+                    locale: 'fr'
+                }
+            ]
+
+        }).then(() => {
+
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+
+            assert.equal(content1, content2, 'fr_US should match fr');
+        });
+    });
+
+    it('should render a button with locale=US and verify it defaults to en_US', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'container1',
+                    locale: 'en_US'
+                },
+
+                {
+                    container: 'container2',
+                    locale: 'US'
+                }
+            ]
+
+        }).then(() => {
+
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+
+            assert.equal(content1, content2, 'en_US should match US');
+        });
+    });
+
+    it('should render a button with locale=FR and verify it defaults to fr_FR', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'container1',
+                    locale: 'en_FR'
+                },
+
+                {
+                    container: 'container2',
+                    locale: 'FR'
+                }
+            ]
+
+        }).then(() => {
+
+            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
+            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+
+            assert.equal(content1, content2, 'en_FR should match FR');
+        });
+    });
+
 
 });

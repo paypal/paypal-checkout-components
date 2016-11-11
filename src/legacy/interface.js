@@ -10,6 +10,7 @@ import { setupBridge } from '../compat';
 import { supportsPopups, getElements, onDocumentReady, once } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons } from './button';
+import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -593,10 +594,6 @@ function setup(id, options = {}) {
 
     reset();
 
-    if (window.I10C) {
-        $logger.info(`instart`);
-    }
-
     if (options.environment) {
 
         if (options.environment === 'live') {
@@ -616,27 +613,8 @@ function setup(id, options = {}) {
     setupBridge(config.env, config.bridgeUrl);
 
     if (options.locale) {
-        let [ lang, country ] = options.locale.split('_');
-
+        config.locale = normalizeLocale(options.locale);
         config.customCountry = true;
-
-        if (config.locales[country]) {
-            config.locale.country = country;
-
-            if (config.locales[country].indexOf(lang) !== -1) {
-                config.locale.lang = lang;
-            } else {
-                $logger.warn(`invalid_user_lang`, { country, lang, def: config.locales[country][0] });
-                config.locale.lang = config.locales[country][0];
-            }
-
-        } else if (config.locales.US[country]) {
-            config.locale.country = 'US';
-            config.locale.lang = country;
-
-        } else {
-            $logger.warn(`invalid_user_country`, { country });
-        }
     }
 
     if (options.buttons) {
