@@ -392,45 +392,34 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
                 click(event) {
 
-                    let open = window.open;
-                    window.open = function() {
-                        done(new Error(`Expected window.open to not be called`));
-                    };
+                    if (!options.lightbox) {
+                        let open = window.open;
+                        window.open = function() {
+                            window.open = open;
+
+                            let win = window.open.apply(this, arguments);
+
+                            let close = win.close;
+                            win.close = function() {
+                                let result = close.apply(this, arguments);
+                                done();
+                                return result;
+                            };
+
+                            return win;
+                        };
+                    }
 
                     paypal.checkout.initXO();
                     paypal.checkout.closeFlow();
 
-                    setTimeout(() => {
-                        window.open = open;
-                        done();
-                    }, 10);
-                }
-
-            }).then(() => {
-
-                document.querySelector('#testContainer button').click();
-            });
-        });
-
-        it('should render a button into a container and click on the button, then call closeFlow immediately', (done) => {
-
-            return paypal.checkout.setup('merchantID', {
-
-                container: 'testContainer',
-
-                click(event) {
-
-                    let open = window.open;
-                    window.open = function() {
-                        done(new Error(`Expected window.open to not be called`));
-                    };
-
-                    paypal.checkout.closeFlow();
-
-                    setTimeout(() => {
-                        window.open = open;
-                        done();
-                    }, 10);
+                    if (options.lightbox) {
+                        if (paypal.checkout.win.closed) {
+                            return done();
+                        } else {
+                            return done(new Error('Expected lightbox to be closed'));
+                        }
+                    }
                 }
 
             }).then(() => {

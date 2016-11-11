@@ -100,6 +100,8 @@ function redirect(location) {
 
     logRedirect(location);
 
+    reset();
+
     setTimeout(function() {
         redir(location);
     }, REDIRECT_DELAY);
@@ -237,6 +239,14 @@ function getPaymentTokenAndUrl() {
 
     let paymentTokenAndUrl = new Promise((resolve, reject) => {
 
+        window.paypal.checkout.initXO = () => {
+            $logger.warn(`gettoken_initxo`);
+
+            if (window.ppCheckpoint) {
+                window.ppCheckpoint('flow_initxo');
+            }
+        };
+
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
         window.paypal.checkout.startFlow = once((item, opts) => {
@@ -307,8 +317,6 @@ function initPayPalCheckout(props = {}) {
 
         onAuthorize(data, actions) {
 
-            reset();
-
             $logger.info(`payment_authorized`);
 
             logRedirect(data.returnUrl);
@@ -320,18 +328,11 @@ function initPayPalCheckout(props = {}) {
 
         onCancel(data, actions) {
 
-            reset();
-
             $logger.info(`payment_canceled`);
 
             return Promise.delay(REDIRECT_DELAY).then(() => {
                 return actions.redirect(window);
             });
-        },
-
-        onError() {
-
-            reset();
         },
 
         ...props
@@ -369,6 +370,8 @@ function renderPayPalCheckout(props = {}) {
     let render = paypalCheckout.render().catch(err => {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
+
+        debugger; // eslint-disable-line
 
         Promise.all([ props.url, props.payment ]).then(([ url, paymentToken ]) => {
 
@@ -409,61 +412,6 @@ function handleClick(env, clickHandler, event) {
 
     let initXOCalled = false;
     let startFlowCalled = false;
-    let closeFlowCalled = false;
-
-    let { url, paymentToken } = getPaymentTokenAndUrl();
-
-    if (!isLegacyEligible()) {
-
-        url.then(redirectUrl => {
-            $logger.debug(`ineligible_startflow`, { url: redirectUrl });
-            return redirect(redirectUrl);
-        });
-
-        return triggerClickHandler(clickHandler, event);
-    }
-
-    window.paypal.checkout.initXO = () => {
-        $logger.debug(`initxo_clickhandler`);
-
-        initXOCalled = true;
-
-        if (window.ppCheckpoint) {
-            window.ppCheckpoint('flow_initxo');
-        }
-    };
-
-    window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
-        startFlowCalled = true;
-    });
-
-    window.paypal.checkout.closeFlow = (closeUrl) => {
-        $logger.warn(`closeflow_clickhandler`);
-
-        closeFlowCalled = true;
-        reset();
-
-        if (closeUrl) {
-            $logger.warn(`closeflow_with_url`, { closeUrl });
-            return redirect(closeUrl);
-        }
-    };
-
-    triggerClickHandler(clickHandler, event);
-
-    if (closeFlowCalled) {
-        $logger.warn(`button_click_closeflow_called_during_click`);
-        return;
-    }
-
-    if (initXOCalled || startFlowCalled) {
-        $logger.info(`init_paypal_checkout_click`);
-
-        return renderPayPalCheckout({ env, url, payment: paymentToken });
-    }
-
-    $logger.warn(`button_click_handler_no_initxo_startflow`);
-    reset();
 
     window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
         initXOCalled = true;
@@ -473,12 +421,17 @@ function handleClick(env, clickHandler, event) {
         startFlowCalled = true;
     });
 
-    setTimeout(() => {
-        if (!initXOCalled && !startFlowCalled) {
-            $logger.warn(`button_click_event_no_initxo_startflow`);
-            return reset();
-        }
-    }, 1);
+    triggerClickHandler(clickHandler, event);
+
+    if (!initXOCalled && !startFlowCalled) {
+        $logger.debug(`button_click_handler_no_initxo_startflow`);
+
+        setTimeout(() => {
+            if (!initXOCalled && !startFlowCalled) {
+                $logger.error(`button_click_event_no_initxo_startflow`);
+            }
+        }, 1);
+    }
 }
 
 function getHijackTargetElement(button) {
@@ -531,67 +484,15 @@ function handleClickHijack(env, button) {
         $logger.warn(`renderhijack_without_click`);
     });
 
-    // TODO: Use standard render method, and send unresolved promise as url?
-    // Could backfire though for things like getDomain
-
     paypalCheckout.hijack(targetElement);
     paypalCheckout.render(null, false);
 
     checkout.win = paypalCheckout.window;
 
-    window.paypal.checkout.initXO = () => {
-        $logger.warn(`initxo_hijackclickhandler`);
-
-        if (window.ppCheckpoint) {
-            window.ppCheckpoint('flow_initxo');
-        }
-    };
-
-    window.paypal.checkout.startFlow = (item, opts) => {
-        $logger.warn(`startflow_hijackclickhandler`, { item });
-
-        if (window.ppCheckpoint) {
-            window.ppCheckpoint('flow_startflow');
-        }
-
-        if (opts) {
-            $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
-        }
-
-        let urlAndPaymentToken;
-
-        try {
-            urlAndPaymentToken = matchUrlAndPaymentToken(item);
-        } catch (err) {
-            reset();
-            paypalCheckout.destroy(err);
-            $logger.error(`error`, { error: err.stack || err.toString() });
-            throw err;
-        }
-
-        let { url, paymentToken } = urlAndPaymentToken;
-
-        if (!isLegacyEligible()) {
-            $logger.debug(`ineligible_startflow_hijackclickhandler`, { url });
-            paypalCheckout.destroy();
-            return redirect(url);
-        }
-
+    Promise.hash(getPaymentTokenAndUrl()).then(({ url, paymentToken }) => {
         token = paymentToken;
         paypalCheckout.loadUrl(url);
-    };
-
-    window.paypal.checkout.closeFlow = (closeUrl) => {
-        $logger.warn(`closeflow_hijackclickhandler`);
-
-        reset();
-        paypalCheckout.destroy(new Error(`closeFlow called`));
-
-        if (closeUrl) {
-            $logger.warn(`closeflow_with_url`, { closeUrl });
-            return redirect(closeUrl);
-        }
-    };
+    });
 }
 
 
@@ -863,7 +764,9 @@ function closeFlow(closeUrl) {
     console.warn('Checkout is not open, can not be closed');
 }
 
-function reset() {
+export function reset() {
+
+    $logger.debug('reset');
 
     // Once our callback has been called, we can set the global methods to their original values
 
@@ -921,6 +824,7 @@ export let checkout = {
     initXO,
     startFlow,
     closeFlow,
+    reset,
     get urlPrefix() {
         return getUrlPrefix();
     }

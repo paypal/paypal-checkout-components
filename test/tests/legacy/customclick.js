@@ -192,7 +192,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
             });
         });
 
-        it.skip('should render a custom button into a form container and click on the button, with an advance click listener', () => {
+        it('should render a custom button into a form container and click on the button, with an advance click listener', () => {
 
             let token = generateECToken();
             let hash = uniqueID();
@@ -264,7 +264,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
             });
         });
 
-        it.skip('should render a custom link and click on the link, with an advance click listener', () => {
+        it('should render a custom link and click on the link, with an advance click listener', () => {
 
             let token = generateECToken();
             let hash = uniqueID();
