@@ -54,6 +54,8 @@ export function setupBridge(env, bridgeUrl) {
 
             if (postRobot.needsBridge({ domain: bridgeUrl })) {
                 throw err;
+            } else {
+                $logger.debug(`open_bridge_transient_failure`);
             }
         });
     });

@@ -1,24 +1,7 @@
 
 import { delay } from './common';
 
-let paypalCheckoutReadyCalled = false;
-
-window.paypalCheckoutReady = () => {
-    paypalCheckoutReadyCalled = true;
-};
-
 describe('paypal legacy checkout ready', () => {
-
-    it('should invoke window.paypalCheckoutReady on first page load', (done) => {
-
-        setTimeout(() => {
-            if (paypalCheckoutReadyCalled) {
-                return done();
-            }
-
-            return done(new Error('Expected window.paypalCheckoutReady to have been called on first page load'));
-        }, 200);
-    });
 
     it('should invoke window.paypalCheckoutReady when it is set and the page is ready', () => {
 

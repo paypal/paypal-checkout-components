@@ -27,13 +27,10 @@ function invokeReady(method) {
     });
 }
 
-setTimeout(() => {
-    if (typeof window.paypalCheckoutReady === 'function') {
-        $logger.debug(`paypal_checkout_ready_preset`);
-        invokeReady(window.paypalCheckoutReady);
-    }
-}, 1);
-
+if (typeof window.paypalCheckoutReady === 'function') {
+    $logger.debug(`paypal_checkout_ready_preset`);
+    invokeReady(window.paypalCheckoutReady);
+}
 
 let _paypalCheckoutReady = window.paypalCheckoutReady;
 
