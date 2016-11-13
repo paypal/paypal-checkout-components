@@ -91,5 +91,51 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
                 });
             });
         }
+
+        it('should call startFlow with no token and trigger an error', (done) => {
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    try {
+                        paypal.checkout.startFlow();
+                    } catch (err) {
+                        return done();
+                    }
+
+                    return done(new Error('Expected startFlow to throw an error'));
+                }
+
+            }).then(() => {
+
+                document.querySelector('#testContainer button').click();
+            });
+        });
+
+        it('should call startFlow with an invalid url for the env and trigger an error', (done) => {
+
+            let token = generateECToken();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    try {
+                        paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                    } catch (err) {
+                        return done();
+                    }
+
+                    return done(new Error('Expected startFlow to throw an error'));
+                }
+
+            }).then(() => {
+
+                document.querySelector('#testContainer button').click();
+            });
+        });
     });
 }

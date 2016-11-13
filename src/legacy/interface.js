@@ -514,7 +514,13 @@ function listenClick(container, button, clickHandler, condition) {
             window.ppCheckpoint('flow_buttonclick');
         }
 
-        if (!supportsPopups()) {
+        if (supportsPopups()) {
+            $logger.debug(`click_popups_supported`);
+
+            if (!isLegacyEligible()) {
+                $logger.debug(`click_popups_supported_but_ineligible`);
+            }
+        } else {
             $logger.debug(`click_popups_not_supported`);
 
             if (isLegacyEligible()) {
@@ -601,9 +607,7 @@ function setup(id, options = {}) {
         }
 
         if (config.paypalUrls[options.environment]) {
-            if (options.environment !== config.env) {
-                config.env = options.environment;
-            }
+            config.env = options.environment;
         } else {
             options.environment = config.env;
             $logger.warn('invalid_env', { badenv: options.environment });

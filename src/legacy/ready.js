@@ -14,12 +14,6 @@ let $logger = logger.prefix(LOG_PREFIX);
 
 function invokeReady(method) {
 
-    if (method.called) {
-        return $logger.warn(`ready_called_multiple_times`);
-    }
-
-    method.called = true;
-
     onDocumentReady(() => {
         $logger.debug(`paypal_checkout_ready`);
         setTimeout(function() {
@@ -33,11 +27,13 @@ function invokeReady(method) {
     });
 }
 
+setTimeout(() => {
+    if (typeof window.paypalCheckoutReady === 'function') {
+        $logger.debug(`paypal_checkout_ready_preset`);
+        invokeReady(window.paypalCheckoutReady);
+    }
+}, 1);
 
-if (typeof window.paypalCheckoutReady === 'function') {
-    $logger.debug(`paypal_checkout_ready_preset`);
-    invokeReady(window.paypalCheckoutReady);
-}
 
 let _paypalCheckoutReady = window.paypalCheckoutReady;
 

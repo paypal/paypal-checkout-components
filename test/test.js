@@ -17,8 +17,8 @@ paypal.setup({
 });
 
 afterEach(() => {
-    paypal.xcomponent.destroyAll();
     delete window.navigator.mockUserAgent;
+    return paypal.xcomponent.destroyAll();
 });
 
 patchXmlHttpRequest();

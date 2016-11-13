@@ -170,6 +170,168 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
+    it('should work with a link container', (done) => {
+
+        let link = createElement({
+            tag: 'link',
+            id: 'linkContainer',
+            container: 'testContainer'
+        });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'linkContainer',
+                    click(event) {
+                        done();
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            link.querySelector('button').click();
+        });
+    });
+
+    it('should work with a link container when the container is clicked', (done) => {
+
+        let link = createElement({
+            tag: 'a',
+            id: 'linkContainer',
+            container: 'testContainer'
+        });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'linkContainer',
+                    click(event) {
+                        done();
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            link.click();
+        });
+    });
+
+    it('should not work with a non-link container when the container is clicked', (done) => {
+
+        let paraContainer = createElement({
+            tag: 'p',
+            id: 'paraContainer',
+            container: 'testContainer'
+        });
+
+        let clicked = false;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'paraContainer',
+                    click(event) {
+                        clicked = true;
+                        done(new Error('Expected click handler to not be called'));
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            paraContainer.click();
+            setTimeout(() => {
+                if (!clicked) {
+                    done();
+                }
+            }, 200);
+        });
+    });
+
+    it('should prioritize buttons[i].container over options.container', (done) => {
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'fooContainer',
+
+            buttons: [
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        done();
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelectorAll('#testContainer button')[0].click();
+        });
+    });
+
+    it('should render multiple buttons into a container and provide a working click handler with some invalid buttons', (done) => {
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'DOESNOTEXIST1',
+                    click(event) {
+                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    }
+                },
+
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    container: 'DOESNOTEXIST2',
+                    click(event) {
+                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    }
+                },
+
+                {
+                    container: 'testContainer',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    container: 'DOESNOTEXIST3',
+                    click(event) {
+                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            document.querySelectorAll('#testContainer button')[0].click();
+            document.querySelectorAll('#testContainer button')[1].click();
+        });
+    });
+
     it('should use a custom button and provide a working click handler', (done) => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
@@ -198,6 +360,32 @@ describe('paypal legacy button rendering', () => {
         return paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton', 'testButton2' ],
+
+            click() {
+                clickCount += 1;
+
+                if (clickCount === 2) {
+                    done();
+                }
+            }
+
+        }).then(() => {
+
+            testButton.click();
+            testButton2.click();
+        });
+    });
+
+    it('should use a custom button array with multiple buttons, some non-existant and provide a working click handler', (done) => {
+
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButtonDOESNOTEXIST1', 'testButton', 'testButtonDOESNOTEXIST2', 'testButton2', 'testButtonDOESNOTEXIST3' ],
 
             click() {
                 clickCount += 1;
@@ -301,6 +489,67 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
+    it('should use a custom buttons array with multiple buttons, some non-existant, and provide a working click handler', (done) => {
+
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let testButton2 = createElement({ tag: 'button', id: 'testButton2', container: 'testContainer' });
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    button: 'DOESNOTEXIST1',
+                    click(event) {
+                        return done(new Error('Expected click handler for non-existant button to not be called'));
+                    }
+                },
+
+                {
+                    button: 'testButton',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    button: 'DOESNOTEXIST2',
+                    click(event) {
+                        return done(new Error('Expected click handler for non-existant button to not be called'));
+                    }
+                },
+
+                {
+                    button: 'testButton2',
+                    click(event) {
+                        clickCount += 1;
+
+                        if (clickCount === 2) {
+                            done();
+                        }
+                    }
+                },
+
+                {
+                    button: 'DOESNOTEXIST3',
+                    click(event) {
+                        return done(new Error('Expected click handler for non-existant button to not be called'));
+                    }
+                }
+            ]
+
+        }).then(() => {
+
+            testButton.click();
+            testButton2.click();
+        });
+    });
+
 
     it('should use a custom button and provide a working click handler which is passed an event', (done) => {
 
@@ -389,6 +638,58 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             customLink.querySelector('#testButton').click();
+        });
+    });
+
+    it('should use a containers array and provide a working click handler', (done) => {
+
+        let buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
+        let buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: [ 'buttonContainer1', 'buttonContainer2' ],
+
+            click() {
+                clickCount += 1;
+
+                if (clickCount === 2) {
+                    done();
+                }
+            }
+
+        }).then(() => {
+
+            buttonContainer1.querySelector('button').click();
+            buttonContainer2.querySelector('button').click();
+        });
+    });
+
+    it('should use a containers array, some nonexistent, and provide a working click handler', (done) => {
+
+        let buttonContainer1 = createElement({ id: 'buttonContainer1', container: 'testContainer' });
+        let buttonContainer2 = createElement({ id: 'buttonContainer2', container: 'testContainer' });
+
+        let clickCount = 0;
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: [ 'DOESNOTEXIST1', 'buttonContainer1', 'DOESNOTEXIST2', 'buttonContainer2', 'DOESNOTEXIST3' ],
+
+            click() {
+                clickCount += 1;
+
+                if (clickCount === 2) {
+                    done();
+                }
+            }
+
+        }).then(() => {
+
+            buttonContainer1.querySelector('button').click();
+            buttonContainer2.querySelector('button').click();
         });
     });
 
@@ -608,5 +909,209 @@ describe('paypal legacy button options', () => {
         });
     });
 
+    it('should render a button and ensure the correct class is added by default', () => {
 
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1'
+
+        }).then(() => {
+            assert.ok(container1.querySelector('button').classList.contains('paypal-style-checkout'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-size-small'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-pill'));
+            assert.ok(container1.querySelector('button').classList.contains('en_US'));
+        });
+    });
+
+    it('should render a button with size=tiny and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            size: 'tiny'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-size-tiny'));
+        });
+    });
+
+    it('should render a button with size=small and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            size: 'small'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-size-small'));
+        });
+    });
+
+    it('should render a button with size=medium and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            size: 'medium'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-size-medium'));
+        });
+    });
+
+    it('should render a button with shape=pill and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            shape: 'pill'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-pill'));
+        });
+    });
+
+    it('should render a button with shape=rect and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            shape: 'rect'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-rect'));
+        });
+    });
+
+    it('should render a button with color=gold and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            color: 'gold'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
+        });
+    });
+
+    it('should render a button with color=blue and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            color: 'blue'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-color-blue'));
+        });
+    });
+
+    it('should render a button with color=silver and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            color: 'silver'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-color-silver'));
+        });
+    });
+
+    it('should render a button with locale=fr_FR and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            container: 'container1',
+            locale: 'fr_FR'
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('fr_FR'));
+        });
+    });
+
+    it('should render multiple buttons with different styles and ensure the correct class is added', () => {
+
+        let container1 = createElement({ id: 'container1', container: 'testContainer' });
+        let container2 = createElement({ id: 'container2', container: 'testContainer' });
+        let container3 = createElement({ id: 'container3', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            buttons: [
+                {
+                    container: 'container1',
+                    color: 'gold',
+                    size: 'tiny',
+                    shape: 'rect',
+                    locale: 'de_DE'
+                },
+                {
+                    container: 'container2',
+                    color: 'silver',
+                    size: 'medium',
+                    shape: 'pill',
+                    locale: 'en_GB'
+                },
+                {
+                    container: 'container3',
+                    color: 'blue',
+                    size: 'small',
+                    shape: 'rect',
+                    locale: 'es_ES'
+                }
+            ]
+
+        }).then(() => {
+
+            assert.ok(container1.querySelector('button').classList.contains('paypal-style-checkout'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-size-tiny'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
+            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-rect'));
+            assert.ok(container1.querySelector('button').classList.contains('de_DE'));
+
+            assert.ok(container2.querySelector('button').classList.contains('paypal-style-checkout'));
+            assert.ok(container2.querySelector('button').classList.contains('paypal-size-medium'));
+            assert.ok(container2.querySelector('button').classList.contains('paypal-color-silver'));
+            assert.ok(container2.querySelector('button').classList.contains('paypal-shape-pill'));
+            assert.ok(container2.querySelector('button').classList.contains('en_GB'));
+
+            assert.ok(container3.querySelector('button').classList.contains('paypal-style-checkout'));
+            assert.ok(container3.querySelector('button').classList.contains('paypal-size-small'));
+            assert.ok(container3.querySelector('button').classList.contains('paypal-color-blue'));
+            assert.ok(container3.querySelector('button').classList.contains('paypal-shape-rect'));
+            assert.ok(container3.querySelector('button').classList.contains('es_ES'));
+        });
+    });
 });
