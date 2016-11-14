@@ -1,4 +1,4 @@
-# Contributing to xcomponent
+# Contributing to paypal-checkout
 
 We are always looking for ways to make our modules better. Adding features and fixing bugs allows everyone who depends
 on this code to create better, more stable applications.
@@ -9,13 +9,13 @@ your changes into our code. Ideas and other comments are also welcome.
 1. Create your own [fork](https://help.github.com/articles/fork-a-repo) of this [repository](../../fork).
 ```bash
 # Clone it
-$ git clone git@github.com:me/xcomponent.git
+$ git clone git@github.com:me/paypal-checkout.git
 
 # Change directory
-$ cd xcomponent
+$ cd paypal-checkout
 
 # Add the upstream repo
-$ git remote add upstream git://github.com/krakenjs/xcomponent.git
+$ git remote add upstream git://github.com/krakenjs/paypal-checkout.git
 
 # Get the latest upstream changes
 $ git pull upstream
