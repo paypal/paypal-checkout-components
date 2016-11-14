@@ -31,7 +31,7 @@ We also support native React, Angular and Ember components for the PayPal Button
 1. Add `checkout.v4.js` to your page:
 
    ```html
-   <script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
+   <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
    ```
 
 2. Drop the following component onto your page:

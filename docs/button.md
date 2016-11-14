@@ -18,15 +18,8 @@
 Add the following to your html page:
 
 ```html
-<script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
 ```
-
-Or to test on sandbox:
-
-```html
-<script src="https://www.paypalobjects.com/api/paypal.checkout.v4.js" data-env="sandbox"></script>
-```
-
 ### Basic Integration
 
 This integration lets you specify all of your payment parameters all at once, to render a button onto the page.
@@ -158,7 +151,7 @@ You'll need:
 
 ### Customizing the Button
 
-You can change the look and feel of the button, using the `buttonStyle` parameter, and language of the button using `locale` parameter:
+You can change the look and feel of the button, using the `style` parameter, and language of the button using `locale` parameter:
 
 ```javascript
 paypal.Button.render({
@@ -169,7 +162,7 @@ paypal.Button.render({
 
 	// Specify the style of your button
 
-	buttonStyle: {
+	style: {
 		size:   'medium', // tiny, small, medium
 		color:  'orange', // orange, blue, silver
 		shape:  'pill'    // pill, rect
@@ -189,67 +182,3 @@ See [Native Framework Bindings](./frameworks.md)
 ### Hybrid Integrations
 
 You can combine any flavor of payment create and execute -- see [Hybrid Integrations](./hybrid.md).
-
-
-### Billing Agreements
-
-You can also set up a billing agreement using the button component. For example:
-
-```javascript
-paypal.Button.render({
-
-	// Pass the client ids to use to create your transaction on sandbox and production environments
-
-	client: {
-		sandbox:    'xxxxxxxxx', // from https://developer.paypal.com/developer/applications/
-		production: 'xxxxxxxxx'  // from https://developer.paypal.com/developer/applications/
-	},
-
-	// Pass the billing details for your transaction
-
-	billingDetails: {
-		"plan": {
-			"type": "MERCHANT_INITIATED_BILLING"
-		}
-	},
-
-	// Pass a function to be called when the customer completes the payment
-
-	onAuthorize: function(data) {
-
-		console.log('The payment was authorized!');
-		console.log('Token = ', data.billingToken);
-
-		// Go to your success page
-	}
-
-}, '#myContainerElement');
-```
-
-Or create a billing token on the server side, using the [PayPal REST API](./paypal-rest-api.md):
-
-```javascript
-paypal.Button.render({
-
-	// Pass a getter to generate a billing token on your server side
-
-	billingToken: function(resolve, reject) {
-
-		// Make an ajax call to get the billing token. This should call your back-end, which should invoke
-		// the PayPal Billing api to retrieve the token.
-
-		jQuery.post('https://www.my-paypal-store.com/my-api/create-billing-agreement')
-			.done(function(data) { resolve(data.token_id); })
-			.fail(function(err)  { reject(err); });
-	},
-
-	// Pass a function to be called when the customer authorizes the billing agreement
-
-	onAuthorize: function(data) {
-
-		console.log('The payment was authorized!');
-		console.log('Token = ', data.billingToken);
-	}
-
-}, '#myContainerElement');
-```
