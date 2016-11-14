@@ -409,6 +409,7 @@ function handleClick(clickHandler, event) {
 
     let initXOCalled = false;
     let startFlowCalled = false;
+    let closeFlowCalled = false;
 
     window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
         initXOCalled = true;
@@ -416,6 +417,10 @@ function handleClick(clickHandler, event) {
 
     window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
         startFlowCalled = true;
+    });
+
+    window.paypal.checkout.closeFlow = before(window.paypal.checkout.closeFlow, () => {
+        closeFlowCalled = true;
     });
 
     try {
@@ -429,12 +434,12 @@ function handleClick(clickHandler, event) {
         $logger.error('click_handler_error', { error: err.stack || err.toString() });
     }
 
-    if (!initXOCalled && !startFlowCalled) {
+    if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
         $logger.debug(`button_click_handler_no_initxo_startflow`);
 
         setTimeout(() => {
-            if (!initXOCalled && !startFlowCalled) {
-                $logger.error(`button_click_event_no_initxo_startflow`);
+            if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
+                $logger.debug(`button_click_event_no_initxo_startflow`);
             }
         }, 1);
     }
