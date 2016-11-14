@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.13") {
+        if (window.paypal && window.paypal.version === "4.0.14") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -142,7 +142,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.13";
+        var version = exports.version = "4.0.14";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -379,7 +379,6 @@ this["ppxo"] = function(modules) {
                     var context = _ref;
                     _this.contexts[context] = _this.contexts[context] === undefined ? true : Boolean(_this.contexts[context]);
                 }
-                _this.addProp(options, "resizeDelay");
                 _this.addProp(options, "defaultContext");
                 _this.addProp(options, "singleton");
                 _this.addProp(options, "autoResize", false);
@@ -646,7 +645,7 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.winutil = exports.util = exports.isBridge = exports.linkUrl = exports.bridgeRequired = exports.openBridge = exports.reset = exports.parent = undefined;
+        exports.winutil = exports.util = exports.openTunnelToOpener = exports.needsBridgeForDomain = exports.needsBridgeForWin = exports.needsBridgeForBrowser = exports.needsBridge = exports.isBridge = exports.linkUrl = exports.openBridge = exports.reset = exports.parent = undefined;
         var _client = __webpack_require__("./node_modules/post-robot/src/interface/client.js");
         Object.keys(_client).forEach(function(key) {
             if (key === "default" || key === "__esModule") return;
@@ -691,12 +690,6 @@ this["ppxo"] = function(modules) {
                 return _bridge.openBridge;
             }
         });
-        Object.defineProperty(exports, "bridgeRequired", {
-            enumerable: true,
-            get: function get() {
-                return _bridge.bridgeRequired;
-            }
-        });
         Object.defineProperty(exports, "linkUrl", {
             enumerable: true,
             get: function get() {
@@ -707,6 +700,36 @@ this["ppxo"] = function(modules) {
             enumerable: true,
             get: function get() {
                 return _bridge.isBridge;
+            }
+        });
+        Object.defineProperty(exports, "needsBridge", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.needsBridge;
+            }
+        });
+        Object.defineProperty(exports, "needsBridgeForBrowser", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.needsBridgeForBrowser;
+            }
+        });
+        Object.defineProperty(exports, "needsBridgeForWin", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.needsBridgeForWin;
+            }
+        });
+        Object.defineProperty(exports, "needsBridgeForDomain", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.needsBridgeForDomain;
+            }
+        });
+        Object.defineProperty(exports, "openTunnelToOpener", {
+            enumerable: true,
+            get: function get() {
+                return _bridge.openTunnelToOpener;
             }
         });
         var _util = __webpack_require__("./node_modules/post-robot/src/lib/util.js");
@@ -1259,7 +1282,7 @@ this["ppxo"] = function(modules) {
             var isCalled = false;
             var isSuccess = false;
             var isError = false;
-            var err, res;
+            var err = void 0, res = void 0;
             function flush() {
                 if (isCalled) {
                     if (isError) {
@@ -1287,7 +1310,7 @@ this["ppxo"] = function(modules) {
         }
         var possiblyUnhandledPromiseHandlers = [];
         var possiblyUnhandledPromises = [];
-        var possiblyUnhandledPromiseTimeout;
+        var possiblyUnhandledPromiseTimeout = void 0;
         function addPossiblyUnhandledPromise(promise) {
             possiblyUnhandledPromises.push(promise);
             possiblyUnhandledPromiseTimeout = possiblyUnhandledPromiseTimeout || setTimeout(flushPossiblyUnhandledPromises, 1);
@@ -1296,32 +1319,38 @@ this["ppxo"] = function(modules) {
             possiblyUnhandledPromiseTimeout = null;
             var promises = possiblyUnhandledPromises;
             possiblyUnhandledPromises = [];
-            for (var i = 0; i < promises.length; i++) {
+            var _loop = function _loop(i) {
                 var promise = promises[i];
-                if (!promise.hasHandlers) {
-                    promise.handlers.push({
-                        onError: function onError(err) {
-                            if (!promise.hasHandlers) {
-                                logError(err);
-                                for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
-                                    possiblyUnhandledPromiseHandlers[j](promise.value);
-                                }
-                            }
-                        }
-                    });
-                    promise.dispatch();
+                if (promise.silentReject) {
+                    return "continue";
                 }
+                promise.handlers.push({
+                    onError: function onError(err) {
+                        if (promise.silentReject) {
+                            return;
+                        }
+                        dispatchError(err);
+                    }
+                });
+                promise.dispatch();
+            };
+            for (var i = 0; i < promises.length; i++) {
+                var _ret = _loop(i);
+                if (_ret === "continue") continue;
             }
         }
-        var loggedErrors = [];
-        function logError(err) {
-            if (loggedErrors.indexOf(err) !== -1) {
+        var dispatchedErrors = [];
+        function dispatchError(err) {
+            if (dispatchedErrors.indexOf(err) !== -1) {
                 return;
             }
-            loggedErrors.push(err);
+            dispatchedErrors.push(err);
             setTimeout(function() {
                 throw err;
             }, 1);
+            for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
+                possiblyUnhandledPromiseHandlers[j](promise.value);
+            }
         }
         var toString = {}.toString;
         function isPromise(item) {
@@ -1352,7 +1381,7 @@ this["ppxo"] = function(modules) {
         var SyncPromise = exports.SyncPromise = function SyncPromise(handler) {
             this.resolved = false;
             this.rejected = false;
-            this.hasHandlers = false;
+            this.silentReject = false;
             this.handlers = [];
             addPossiblyUnhandledPromise(this);
             if (!handler) {
@@ -1398,13 +1427,18 @@ this["ppxo"] = function(modules) {
             this.dispatch();
             return this;
         };
+        SyncPromise.prototype.asyncReject = function(error) {
+            this.silentReject = true;
+            return this.reject(error);
+        };
         SyncPromise.prototype.dispatch = function() {
             var _this = this;
             if (!this.resolved && !this.rejected) {
                 return;
             }
-            var _loop = function _loop() {
+            var _loop2 = function _loop2() {
                 var handler = _this.handlers.shift();
+                var result = void 0, error = void 0;
                 try {
                     if (_this.resolved) {
                         result = handler.onSuccess ? handler.onSuccess(_this.value) : _this.value;
@@ -1412,6 +1446,9 @@ this["ppxo"] = function(modules) {
                         if (handler.onError) {
                             result = handler.onError(_this.value);
                         } else {
+                            if (handler.promise && _this.silentReject) {
+                                handler.promise.silentReject = true;
+                            }
                             error = _this.value;
                         }
                     }
@@ -1437,9 +1474,8 @@ this["ppxo"] = function(modules) {
                 }
             };
             while (this.handlers.length) {
-                var result, error;
-                var _ret = _loop();
-                if (_ret === "continue") continue;
+                var _ret2 = _loop2();
+                if (_ret2 === "continue") continue;
             }
         };
         SyncPromise.prototype.then = function(onSuccess, onError) {
@@ -1455,7 +1491,7 @@ this["ppxo"] = function(modules) {
                 onSuccess: onSuccess,
                 onError: onError
             });
-            this.hasHandlers = true;
+            this.silentReject = true;
             this.dispatch();
             return promise;
         };
@@ -1477,7 +1513,7 @@ this["ppxo"] = function(modules) {
             var promise = new SyncPromise();
             var count = promises.length;
             var results = [];
-            var _loop2 = function _loop2(i) {
+            var _loop3 = function _loop3(i) {
                 var prom = isPromise(promises[i]) ? promises[i] : SyncPromise.resolve(promises[i]);
                 prom.then(function(result) {
                     results[i] = result;
@@ -1486,11 +1522,14 @@ this["ppxo"] = function(modules) {
                         promise.resolve(results);
                     }
                 }, function(err) {
+                    if (prom.silentReject) {
+                        promise.silentReject = true;
+                    }
                     promise.reject(err);
                 });
             };
             for (var i = 0; i < promises.length; i++) {
-                _loop2(i);
+                _loop3(i);
             }
             if (!count) {
                 promise.resolve(results);
@@ -1511,12 +1550,15 @@ this["ppxo"] = function(modules) {
         SyncPromise.hash = function(obj) {
             var results = {};
             var promises = [];
-            for (var key in obj) {
+            var _loop4 = function _loop4(key) {
                 if (obj.hasOwnProperty(key)) {
                     promises.push(SyncPromise.resolve(obj[key]).then(function(result) {
                         results[key] = result;
                     }));
                 }
+            };
+            for (var key in obj) {
+                _loop4(key);
             }
             return SyncPromise.all(promises).then(function() {
                 return results;
@@ -1910,6 +1952,7 @@ this["ppxo"] = function(modules) {
         exports.getAllFramesInWindow = getAllFramesInWindow;
         exports.getTop = getTop;
         exports.isWindowClosed = isWindowClosed;
+        exports.getUserAgent = getUserAgent;
         exports.getFrameByName = getFrameByName;
         exports.findChildFrameByName = findChildFrameByName;
         exports.findFrameByName = findFrameByName;
@@ -2186,6 +2229,10 @@ this["ppxo"] = function(modules) {
                 return true;
             }
             return false;
+        }
+        function getUserAgent(win) {
+            win = win || window;
+            return win.navigator.mockUserAgent || win.navigator.userAgent;
         }
         function getFrameByName(win, name) {
             var winFrames = getFrames(win);
@@ -2989,17 +3036,47 @@ this["ppxo"] = function(modules) {
                 }
             };
         }();
+        exports.needsBridgeForBrowser = needsBridgeForBrowser;
+        exports.needsBridgeForWin = needsBridgeForWin;
+        exports.needsBridgeForDomain = needsBridgeForDomain;
+        exports.needsBridge = needsBridge;
         exports.sendBridgeMessage = sendBridgeMessage;
         exports.linkUrl = linkUrl;
         exports.openTunnelToOpener = openTunnelToOpener;
-        exports.bridgeRequired = bridgeRequired;
         exports.openBridge = openBridge;
         exports.isBridge = isBridge;
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
         var _lib = __webpack_require__("./node_modules/post-robot/src/lib/index.js");
         var _global = __webpack_require__("./node_modules/post-robot/src/global.js");
         var _interface = __webpack_require__("./node_modules/post-robot/src/interface/index.js");
         var _drivers = __webpack_require__("./node_modules/post-robot/src/drivers/index.js");
+        function needsBridgeForBrowser() {
+            if ((0, _lib.getUserAgent)(window).match(/MSIE|trident|edge/i)) {
+                return true;
+            }
+            return false;
+        }
+        function needsBridgeForWin(win) {
+            if (win && (0, _lib.isSameTopWindow)(window, win)) {
+                return false;
+            }
+            if (win && (0, _lib.isSameDomain)(win)) {
+                return false;
+            }
+            return true;
+        }
+        function needsBridgeForDomain(domain) {
+            if (domain && _lib.util.getDomain() === _lib.util.getDomainFromUrl(domain)) {
+                return false;
+            }
+            return true;
+        }
+        function needsBridge(_ref) {
+            var win = _ref.win;
+            var domain = _ref.domain;
+            return needsBridgeForBrowser() && needsBridgeForWin(win) && needsBridgeForDomain(domain);
+        }
         function getBridgeName(domain) {
             domain = domain || _lib.util.getDomainFromUrl(domain);
             var sanitizedDomain = domain.replace(/[^a-zA-Z0-9]+/g, "_");
@@ -3046,16 +3123,16 @@ this["ppxo"] = function(modules) {
         }
         function registerRemoteSendMessage(win, domain, sendMessage) {
             for (var _iterator = _global.global.remoteWindows, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
+                var _ref2;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
+                    _ref2 = _iterator[_i++];
                 } else {
                     _i = _iterator.next();
                     if (_i.done) break;
-                    _ref = _i.value;
+                    _ref2 = _i.value;
                 }
-                var remoteWindow = _ref;
+                var remoteWindow = _ref2;
                 if (remoteWindow.win === win) {
                     var sendMessageWrapper = function sendMessageWrapper(remoteWin, message, remoteDomain) {
                         if (remoteWin !== win) {
@@ -3075,18 +3152,18 @@ this["ppxo"] = function(modules) {
         }
         function rejectRemoteSendMessage(win, err) {
             for (var _iterator2 = _global.global.remoteWindows, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
+                var _ref3;
                 if (_isArray2) {
                     if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
+                    _ref3 = _iterator2[_i2++];
                 } else {
                     _i2 = _iterator2.next();
                     if (_i2.done) break;
-                    _ref2 = _i2.value;
+                    _ref3 = _i2.value;
                 }
-                var remoteWindow = _ref2;
+                var remoteWindow = _ref3;
                 if (remoteWindow.win === win) {
-                    return remoteWindow.sendMessagePromise.reject(err);
+                    return remoteWindow.sendMessagePromise.asyncReject(err);
                 }
             }
             throw new Error("Window not found on which to reject sendMessage");
@@ -3098,16 +3175,16 @@ this["ppxo"] = function(modules) {
                 throw new Error("Can only send messages to and from parent and popup windows");
             }
             for (var _iterator3 = _global.global.remoteWindows, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
+                var _ref4;
                 if (_isArray3) {
                     if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
+                    _ref4 = _iterator3[_i3++];
                 } else {
                     _i3 = _iterator3.next();
                     if (_i3.done) break;
-                    _ref3 = _i3.value;
+                    _ref4 = _i3.value;
                 }
-                var remoteWindow = _ref3;
+                var remoteWindow = _ref4;
                 if (remoteWindow.win === win) {
                     return remoteWindow.sendMessagePromise.then(function(sendMessage) {
                         return sendMessage(win, message, domain);
@@ -3143,16 +3220,16 @@ this["ppxo"] = function(modules) {
         };
         function linkUrl(win, url) {
             for (var _iterator4 = Object.keys(_global.global.popupWindows), _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
+                var _ref5;
                 if (_isArray4) {
                     if (_i4 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i4++];
+                    _ref5 = _iterator4[_i4++];
                 } else {
                     _i4 = _iterator4.next();
                     if (_i4.done) break;
-                    _ref4 = _i4.value;
+                    _ref5 = _i4.value;
                 }
-                var name = _ref4;
+                var name = _ref5;
                 var winOptions = _global.global.popupWindows[name];
                 if (winOptions.win === win) {
                     winOptions.domain = _lib.util.getDomainFromUrl(url);
@@ -3165,9 +3242,9 @@ this["ppxo"] = function(modules) {
             (0, _interface.on)(_conf.CONSTANTS.POST_MESSAGE_NAMES.OPEN_TUNNEL, {
                 source: source,
                 domain: domain
-            }, function(_ref5) {
-                var origin = _ref5.origin;
-                var data = _ref5.data;
+            }, function(_ref6) {
+                var origin = _ref6.origin;
+                var data = _ref6.data;
                 if (origin !== domain) {
                     throw new Error("Domain " + domain + " does not match origin " + origin);
                 }
@@ -3202,11 +3279,11 @@ this["ppxo"] = function(modules) {
                 };
             });
         }
-        _global.global.openTunnelToParent = function openTunnelToParent(_ref6) {
-            var name = _ref6.name;
-            var source = _ref6.source;
-            var canary = _ref6.canary;
-            var _sendMessage = _ref6.sendMessage;
+        _global.global.openTunnelToParent = function openTunnelToParent(_ref7) {
+            var name = _ref7.name;
+            var source = _ref7.source;
+            var canary = _ref7.canary;
+            var _sendMessage = _ref7.sendMessage;
             var remoteWindow = (0, _lib.getParent)(window);
             if (!remoteWindow) {
                 throw new Error("No parent window found to open tunnel to");
@@ -3229,46 +3306,50 @@ this["ppxo"] = function(modules) {
             });
         };
         function openTunnelToOpener() {
-            var opener = (0, _lib.getOpener)(window);
-            if (!opener) {
-                return;
-            }
-            if ((0, _lib.isSameDomain)(opener)) {
-                return;
-            }
-            registerRemoteWindow(opener);
-            var bridge = getRemoteBridgeForWindow(opener);
-            if (!bridge) {
-                return rejectRemoteSendMessage(opener, new Error("Can not register with opener: no bridge found in opener"));
-            }
-            if (!window.name) {
-                return rejectRemoteSendMessage(opener, new Error("Can not register with opener: window does not have a name"));
-            }
-            return bridge[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].openTunnelToParent({
-                name: window.name,
-                source: window,
-                canary: function canary() {},
-                sendMessage: function sendMessage(message) {
-                    if (!window || window.closed) {
-                        return;
+            return _promise.SyncPromise["try"](function() {
+                var opener = (0, _lib.getOpener)(window);
+                if (!opener) {
+                    return;
+                }
+                if (!needsBridge({
+                    win: opener
+                })) {
+                    return;
+                }
+                registerRemoteWindow(opener);
+                var bridge = getRemoteBridgeForWindow(opener);
+                if (!bridge) {
+                    return rejectRemoteSendMessage(opener, new Error("Can not register with opener: no bridge found in opener"));
+                }
+                if (!window.name) {
+                    return rejectRemoteSendMessage(opener, new Error("Can not register with opener: window does not have a name"));
+                }
+                return bridge[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT].openTunnelToParent({
+                    name: window.name,
+                    source: window,
+                    canary: function canary() {},
+                    sendMessage: function sendMessage(message) {
+                        if (!window || window.closed) {
+                            return;
+                        }
+                        (0, _drivers.receiveMessage)({
+                            data: message,
+                            origin: this.origin,
+                            source: this.source
+                        });
                     }
-                    (0, _drivers.receiveMessage)({
-                        data: message,
-                        origin: this.origin,
-                        source: this.source
-                    });
-                }
-            }).then(function(_ref7) {
-                var source = _ref7.source;
-                var origin = _ref7.origin;
-                var data = _ref7.data;
-                if (source !== opener) {
-                    throw new Error("Source does not match opener");
-                }
-                registerRemoteSendMessage(source, origin, data.sendMessage);
-            })["catch"](function(err) {
-                rejectRemoteSendMessage(opener, err);
-                throw err;
+                }).then(function(_ref8) {
+                    var source = _ref8.source;
+                    var origin = _ref8.origin;
+                    var data = _ref8.data;
+                    if (source !== opener) {
+                        throw new Error("Source does not match opener");
+                    }
+                    registerRemoteSendMessage(source, origin, data.sendMessage);
+                })["catch"](function(err) {
+                    rejectRemoteSendMessage(opener, err);
+                    throw err;
+                });
             });
         }
         _global.global.receiveMessage = function(event) {
@@ -3290,13 +3371,6 @@ this["ppxo"] = function(modules) {
             iframe.setAttribute("role", "presentation");
             iframe.src = url;
             return iframe;
-        }
-        function bridgeRequired(url, domain) {
-            domain = domain || _lib.util.getDomainFromUrl(url);
-            if (_lib.util.getDomain() === domain) {
-                return false;
-            }
-            return true;
         }
         _global.global.bridges = _global.global.bridges || {};
         function openBridge(url, domain) {
@@ -3915,6 +3989,7 @@ this["ppxo"] = function(modules) {
         exports.formatQuery = formatQuery;
         exports.extendQuery = extendQuery;
         exports.extendUrl = extendUrl;
+        exports.elementStoppedMoving = elementStoppedMoving;
         exports.getOpener = getOpener;
         exports.getParent = getParent;
         exports.getCurrentDimensions = getCurrentDimensions;
@@ -4234,6 +4309,28 @@ this["ppxo"] = function(modules) {
             }
             return originalUrl;
         }
+        function elementStoppedMoving(element) {
+            var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
+            return new _promise.SyncPromise(function(resolve, reject) {
+                element = getElement(element);
+                var start = element.getBoundingClientRect();
+                var interval = void 0;
+                var timer = void 0;
+                interval = setInterval(function() {
+                    var end = element.getBoundingClientRect();
+                    if (start.top === end.top && start.bottom === end.bottom && start.left === end.left && start.right === end.right && start.width === end.width && start.height === end.height) {
+                        clearTimeout(timer);
+                        clearInterval(interval);
+                        return resolve();
+                    }
+                    start = end;
+                }, 50);
+                timer = setTimeout(function() {
+                    clearInterval(interval);
+                    reject(new Error("Timed out waiting for element to stop animating after " + timeout + "ms"));
+                }, timeout);
+            });
+        }
         function getOpener(win) {
             if (!win) {
                 return;
@@ -4308,14 +4405,36 @@ this["ppxo"] = function(modules) {
                         changed: dimensionsDiff(currentDimensions, newDimensions, threshold),
                         dimensions: newDimensions
                     };
+                },
+                reset: function reset() {
+                    currentDimensions = getCurrentDimensions(el);
                 }
             };
         }
-        var activeWatchers = [];
         function onDimensionsChange(el) {
-            var delay = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
+            var delay = arguments.length <= 1 || arguments[1] === undefined ? 50 : arguments[1];
             var threshold = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-            for (var _iterator7 = activeWatchers, _isArray7 = Array.isArray(_iterator7), _i7 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+            return new _promise.SyncPromise(function(resolve) {
+                var tracker = trackDimensions(el, threshold);
+                var interval = void 0;
+                var resolver = (0, _fn.debounce)(function(dimensions) {
+                    clearInterval(interval);
+                    return resolve(dimensions);
+                }, delay * 4);
+                interval = setInterval(function() {
+                    var _tracker$check = tracker.check();
+                    var changed = _tracker$check.changed;
+                    var dimensions = _tracker$check.dimensions;
+                    if (changed) {
+                        tracker.reset();
+                        return resolver(dimensions);
+                    }
+                }, delay);
+            });
+        }
+        function bindEvents(element, eventNames, handler) {
+            handler = (0, _fn.once)(handler);
+            for (var _iterator7 = eventNames, _isArray7 = Array.isArray(_iterator7), _i7 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
                 var _ref8;
                 if (_isArray7) {
                     if (_i7 >= _iterator7.length) break;
@@ -4325,61 +4444,22 @@ this["ppxo"] = function(modules) {
                     if (_i7.done) break;
                     _ref8 = _i7.value;
                 }
-                var watcher = _ref8;
-                if (watcher.el === el) {
-                    return watcher.promise;
-                }
-            }
-            var promise = new _promise.SyncPromise(function(resolve) {
-                var tracker = trackDimensions(el, threshold);
-                var interval = setInterval(function() {
-                    var _tracker$check = tracker.check();
-                    var changed = _tracker$check.changed;
-                    var dimensions = _tracker$check.dimensions;
-                    if (changed) {
-                        clearInterval(interval);
-                        return resolve(dimensions);
-                    }
-                }, delay);
-            });
-            var obj = {
-                el: el,
-                promise: promise
-            };
-            activeWatchers.push(obj);
-            promise.then(function() {
-                activeWatchers.splice(activeWatchers.indexOf(obj), 1);
-            });
-            return promise;
-        }
-        function bindEvents(element, eventNames, handler) {
-            handler = (0, _fn.once)(handler);
-            for (var _iterator8 = eventNames, _isArray8 = Array.isArray(_iterator8), _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
-                var _ref9;
-                if (_isArray8) {
-                    if (_i8 >= _iterator8.length) break;
-                    _ref9 = _iterator8[_i8++];
-                } else {
-                    _i8 = _iterator8.next();
-                    if (_i8.done) break;
-                    _ref9 = _i8.value;
-                }
-                var eventName = _ref9;
+                var eventName = _ref8;
                 element.addEventListener(eventName, handler);
             }
             return {
                 cancel: (0, _fn.once)(function() {
-                    for (var _iterator9 = eventNames, _isArray9 = Array.isArray(_iterator9), _i9 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                        var _ref10;
-                        if (_isArray9) {
-                            if (_i9 >= _iterator9.length) break;
-                            _ref10 = _iterator9[_i9++];
+                    for (var _iterator8 = eventNames, _isArray8 = Array.isArray(_iterator8), _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
+                        var _ref9;
+                        if (_isArray8) {
+                            if (_i8 >= _iterator8.length) break;
+                            _ref9 = _iterator8[_i8++];
                         } else {
-                            _i9 = _iterator9.next();
-                            if (_i9.done) break;
-                            _ref10 = _i9.value;
+                            _i8 = _iterator8.next();
+                            if (_i8.done) break;
+                            _ref9 = _i8.value;
                         }
-                        var eventName = _ref10;
+                        var eventName = _ref9;
                         element.removeEventListener(eventName, handler);
                     }
                 })
@@ -4389,17 +4469,17 @@ this["ppxo"] = function(modules) {
         function setVendorCSS(element, name, value) {
             element.style[name] = value;
             var capitalizedName = (0, _util.capitalizeFirstLetter)(name);
-            for (var _iterator10 = VENDOR_PREFIXES, _isArray10 = Array.isArray(_iterator10), _i10 = 0, _iterator10 = _isArray10 ? _iterator10 : _iterator10[Symbol.iterator](); ;) {
-                var _ref11;
-                if (_isArray10) {
-                    if (_i10 >= _iterator10.length) break;
-                    _ref11 = _iterator10[_i10++];
+            for (var _iterator9 = VENDOR_PREFIXES, _isArray9 = Array.isArray(_iterator9), _i9 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
+                var _ref10;
+                if (_isArray9) {
+                    if (_i9 >= _iterator9.length) break;
+                    _ref10 = _iterator9[_i9++];
                 } else {
-                    _i10 = _iterator10.next();
-                    if (_i10.done) break;
-                    _ref11 = _i10.value;
+                    _i9 = _iterator9.next();
+                    if (_i9.done) break;
+                    _ref10 = _i9.value;
                 }
-                var prefix = _ref11;
+                var prefix = _ref10;
                 element.style["" + prefix + capitalizedName] = value;
             }
         }
@@ -4431,12 +4511,14 @@ this["ppxo"] = function(modules) {
         var ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ];
         var ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
         function animate(element, name) {
+            var timeout = arguments.length <= 2 || arguments[2] === undefined ? 1e3 : arguments[2];
             return new _promise.SyncPromise(function(resolve, reject) {
                 element = getElement(element);
                 if (!element || !isValidAnimation(element, name)) {
                     return resolve();
                 }
                 var hasStarted = false;
+                var timer = void 0;
                 var startEvent = bindEvents(element, ANIMATION_START_EVENTS, function(event) {
                     if (event.target !== element || event.animationName !== name) {
                         return;
@@ -4444,6 +4526,9 @@ this["ppxo"] = function(modules) {
                     event.stopPropagation();
                     startEvent.cancel();
                     hasStarted = true;
+                    timer = setTimeout(function() {
+                        resolve();
+                    }, timeout);
                 });
                 var endEvent = bindEvents(element, ANIMATION_END_EVENTS, function(event) {
                     if (event.target !== element || event.animationName !== name) {
@@ -4455,6 +4540,7 @@ this["ppxo"] = function(modules) {
                     if (event.animationName !== name) {
                         return reject("Expected animation name to be " + name + ", found " + event.animationName);
                     }
+                    clearTimeout(timer);
                     setVendorCSS(element, "animationName", "none");
                     return resolve();
                 });
@@ -5042,14 +5128,36 @@ this["ppxo"] = function(modules) {
                         el = document.body;
                     }
                     var resize = function resize(width, height) {
-                        var tracker = (0, _lib.trackDimensions)(el);
-                        return _this4.resize(width, height).then(function() {
-                            var _tracker$check = tracker.check();
-                            var changed = _tracker$check.changed;
-                            var dimensions = _tracker$check.dimensions;
-                            if (changed) {
-                                return resize(dimensions.width, dimensions.height);
+                        var history = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+                        return _promise.SyncPromise["try"](function() {
+                            for (var _iterator2 = history, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                                var _ref3;
+                                if (_isArray2) {
+                                    if (_i2 >= _iterator2.length) break;
+                                    _ref3 = _iterator2[_i2++];
+                                } else {
+                                    _i2 = _iterator2.next();
+                                    if (_i2.done) break;
+                                    _ref3 = _i2.value;
+                                }
+                                var size = _ref3;
+                                if (size.width === width && size.height === height) {
+                                    return;
+                                }
                             }
+                            history.push({
+                                width: width,
+                                height: height
+                            });
+                            var tracker = (0, _lib.trackDimensions)(el);
+                            return _this4.resize(width, height).then(function() {
+                                var _tracker$check = tracker.check();
+                                var changed = _tracker$check.changed;
+                                var dimensions = _tracker$check.dimensions;
+                                if (changed) {
+                                    return resize(dimensions.width, dimensions.height, history);
+                                }
+                            });
                         });
                     };
                     var watcher = function watcher() {
@@ -6032,27 +6140,26 @@ this["ppxo"] = function(modules) {
                 key: "buildUrl",
                 value: function buildUrl() {
                     var _this4 = this;
-                    return (0, _props.propsToQuery)(this.component.props, this.props).then(function(queryProps) {
-                        queryProps[_constants.XCOMPONENT] = "1";
-                        return _promise.SyncPromise["try"](function() {
-                            if (_this4.props.url) {
-                                return _this4.props.url;
+                    return _promise.SyncPromise.hash({
+                        url: this.props.url,
+                        query: (0, _props.propsToQuery)(this.component.props, this.props)
+                    }).then(function(_ref) {
+                        var url = _ref.url;
+                        var query = _ref.query;
+                        if (!url) {
+                            if (_this4.props.env && _this4.component.envUrls) {
+                                url = _this4.component.envUrls[_this4.props.env];
+                            } else if (_this4.component.defaultEnv && _this4.component.envUrls) {
+                                url = _this4.component.envUrls[_this4.component.defaultEnv];
+                            } else if (_this4.component.buildUrl) {
+                                url = _this4.component.buildUrl(_this4);
+                            } else {
+                                url = _this4.component.url;
                             }
-                        }).then(function(url) {
-                            if (!url) {
-                                if (_this4.props.env && _this4.component.envUrls) {
-                                    url = _this4.component.envUrls[_this4.props.env];
-                                } else if (_this4.component.defaultEnv && _this4.component.envUrls) {
-                                    url = _this4.component.envUrls[_this4.component.defaultEnv];
-                                } else if (_this4.component.buildUrl) {
-                                    url = _this4.component.buildUrl(_this4);
-                                } else {
-                                    url = _this4.component.url;
-                                }
-                            }
-                            return (0, _lib.extendUrl)(url, {
-                                query: queryProps
-                            });
+                        }
+                        query[_constants.XCOMPONENT] = "1";
+                        return (0, _lib.extendUrl)(url, {
+                            query: query
                         });
                     });
                 }
@@ -6093,16 +6200,16 @@ this["ppxo"] = function(modules) {
                     props = props || this.props;
                     var result = {};
                     for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
+                        var _ref2;
                         if (_isArray) {
                             if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
+                            _ref2 = _iterator[_i++];
                         } else {
                             _i = _iterator.next();
                             if (_i.done) break;
-                            _ref = _i.value;
+                            _ref2 = _i.value;
                         }
-                        var key = _ref;
+                        var key = _ref2;
                         if (this.component.props[key].sendToChild !== false) {
                             result[key] = props[key];
                         }
@@ -6116,16 +6223,16 @@ this["ppxo"] = function(modules) {
                     var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
                     var changed = false;
                     for (var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref2;
+                        var _ref3;
                         if (_isArray2) {
                             if (_i2 >= _iterator2.length) break;
-                            _ref2 = _iterator2[_i2++];
+                            _ref3 = _iterator2[_i2++];
                         } else {
                             _i2 = _iterator2.next();
                             if (_i2.done) break;
-                            _ref2 = _i2.value;
+                            _ref3 = _i2.value;
                         }
-                        var key = _ref2;
+                        var key = _ref3;
                         if (props[key] !== this.props[key]) {
                             changed = true;
                             break;
@@ -6142,7 +6249,19 @@ this["ppxo"] = function(modules) {
             }, {
                 key: "openBridge",
                 value: function openBridge() {
-                    return this.driver.openBridge.call(this);
+                    var bridgeUrl = this.component.bridgeUrl;
+                    if (!bridgeUrl && this.component.bridgeUrls && this.props.env) {
+                        bridgeUrl = this.component.bridgeUrls[this.props.env];
+                    }
+                    if (!bridgeUrl) {
+                        return;
+                    }
+                    if (_src2["default"].needsBridge({
+                        window: this.window,
+                        domain: (0, _lib.getDomainFromUrl)(bridgeUrl)
+                    })) {
+                        return _src2["default"].openBridge(bridgeUrl);
+                    }
                 }
             }, {
                 key: "open",
@@ -6156,7 +6275,7 @@ this["ppxo"] = function(modules) {
             }, {
                 key: "elementReady",
                 value: function elementReady(element) {
-                    return (0, _lib.elementReady)(element);
+                    return (0, _lib.elementReady)(element).then(_lib.noop);
                 }
             }, {
                 key: "render",
@@ -6171,8 +6290,7 @@ this["ppxo"] = function(modules) {
                         });
                         var tasks = {
                             openContainer: _this7.openContainer(_this7.context),
-                            getDomain: _this7.getDomain(),
-                            openBridge: _this7.openBridge(_this7.context)
+                            getDomain: _this7.getDomain()
                         };
                         tasks.elementReady = _promise.SyncPromise["try"](function() {
                             if (element) {
@@ -6188,6 +6306,9 @@ this["ppxo"] = function(modules) {
                                 return _this7.open(element, _this7.context);
                             });
                         }
+                        tasks.openBridge = tasks.open.then(function() {
+                            return _this7.openBridge(_this7.context);
+                        });
                         tasks.showContainer = tasks.openContainer.then(function() {
                             return _this7.showContainer();
                         });
@@ -6197,14 +6318,14 @@ this["ppxo"] = function(modules) {
                         tasks.showComponent = tasks.createComponentTemplate.then(function() {
                             return _this7.showComponent();
                         });
-                        tasks.linkUrl = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref3) {
-                            var _ref4 = _slicedToArray(_ref3, 1);
-                            var domain = _ref4[0];
+                        tasks.linkUrl = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref4) {
+                            var _ref5 = _slicedToArray(_ref4, 1);
+                            var domain = _ref5[0];
                             return _src2["default"].linkUrl(_this7.window, domain);
                         });
-                        tasks.listen = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref5) {
-                            var _ref6 = _slicedToArray(_ref5, 1);
-                            var domain = _ref6[0];
+                        tasks.listen = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref6) {
+                            var _ref7 = _slicedToArray(_ref6, 1);
+                            var domain = _ref7[0];
                             return _this7.listen(_this7.window, domain);
                         });
                         tasks.watchForClose = tasks.open.then(function() {
@@ -6212,16 +6333,12 @@ this["ppxo"] = function(modules) {
                         });
                         if (loadUrl) {
                             tasks.buildUrl = _this7.buildUrl();
-                            tasks.loadUrl = _promise.SyncPromise.all([ tasks.buildUrl, tasks.createComponentTemplate ]).then(function(_ref7) {
-                                var _ref8 = _slicedToArray(_ref7, 1);
-                                var url = _ref8[0];
+                            tasks.loadUrl = _promise.SyncPromise.all([ tasks.buildUrl, tasks.openBridge, tasks.createComponentTemplate ]).then(function(_ref8) {
+                                var _ref9 = _slicedToArray(_ref8, 1);
+                                var url = _ref9[0];
                                 return _this7.loadUrl(url);
                             });
                             tasks.runTimeout = tasks.loadUrl.then(function() {
-                                return _this7.runTimeout();
-                            });
-                        } else {
-                            tasks.runTimeout = _promise.SyncPromise["try"](function() {
                                 return _this7.runTimeout();
                             });
                         }
@@ -6273,8 +6390,8 @@ this["ppxo"] = function(modules) {
                                 }
                             }
                         }
-                    }).then(function(_ref9) {
-                        var data = _ref9.data;
+                    }).then(function(_ref10) {
+                        var data = _ref10.data;
                         _this8.clean.register(data.destroy);
                         return data;
                     })["catch"](function(err) {
@@ -6284,13 +6401,13 @@ this["ppxo"] = function(modules) {
                     var _loop = function _loop() {
                         if (_isArray3) {
                             if (_i3 >= _iterator3.length) return "break";
-                            _ref10 = _iterator3[_i3++];
+                            _ref11 = _iterator3[_i3++];
                         } else {
                             _i3 = _iterator3.next();
                             if (_i3.done) return "break";
-                            _ref10 = _i3.value;
+                            _ref11 = _i3.value;
                         }
-                        var key = _ref10;
+                        var key = _ref11;
                         var val = overrides[key];
                         if (val === _constants.DELEGATE.CALL_ORIGINAL) {
                             return "continue";
@@ -6311,7 +6428,7 @@ this["ppxo"] = function(modules) {
                         };
                     };
                     _loop2: for (var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref10;
+                        var _ref11;
                         var _ret = _loop();
                         switch (_ret) {
                           case "break":
@@ -6397,8 +6514,8 @@ this["ppxo"] = function(modules) {
             }, {
                 key: "listeners",
                 value: function listeners() {
-                    var _ref11;
-                    return _ref11 = {}, _defineProperty(_ref11, _constants.POST_MESSAGE.INIT, function(source, data) {
+                    var _ref12;
+                    return _ref12 = {}, _defineProperty(_ref12, _constants.POST_MESSAGE.INIT, function(source, data) {
                         var _this13 = this;
                         this.childExports = data.exports;
                         this.onInit.resolve(this);
@@ -6409,17 +6526,17 @@ this["ppxo"] = function(modules) {
                                 context: _this13.context
                             };
                         });
-                    }), _defineProperty(_ref11, _constants.POST_MESSAGE.CLOSE, function(source, data) {
+                    }), _defineProperty(_ref12, _constants.POST_MESSAGE.CLOSE, function(source, data) {
                         this.close(data.reason);
-                    }), _defineProperty(_ref11, _constants.POST_MESSAGE.RESIZE, function(source, data) {
+                    }), _defineProperty(_ref12, _constants.POST_MESSAGE.RESIZE, function(source, data) {
                         if (this.driver.allowResize && this.component.autoResize) {
                             return this.resize(data.width, data.height);
                         }
-                    }), _defineProperty(_ref11, _constants.POST_MESSAGE.HIDE, function(source, data) {
+                    }), _defineProperty(_ref12, _constants.POST_MESSAGE.HIDE, function(source, data) {
                         this.hide();
-                    }), _defineProperty(_ref11, _constants.POST_MESSAGE.ERROR, function(source, data) {
+                    }), _defineProperty(_ref12, _constants.POST_MESSAGE.ERROR, function(source, data) {
                         this.error(new Error(data.error));
-                    }), _ref11;
+                    }), _ref12;
                 }
             }, {
                 key: "resize",
@@ -6430,14 +6547,14 @@ this["ppxo"] = function(modules) {
                         width: width
                     });
                     this.driver.resize.call(this, width, height);
-                    if (this.component.resizeDelay) {
+                    if (this.elementTemplate || this.iframe) {
                         var _ret2 = function() {
                             var overflow = void 0;
                             if (_this14.elementTemplate) {
-                                (0, _lib.setOverflow)(_this14.elementTemplate, "hidden");
+                                overflow = (0, _lib.setOverflow)(_this14.elementTemplate, "hidden");
                             }
                             return {
-                                v: (0, _lib.delay)(_this14.component.resizeDelay).then(function() {
+                                v: (0, _lib.elementStoppedMoving)(_this14.elementTemplate || _this14.iframe).then(function() {
                                     if (overflow) {
                                         overflow.reset();
                                     }
@@ -6661,16 +6778,16 @@ this["ppxo"] = function(modules) {
                         }));
                         _this18.clean.register("destroyContainerEvents", function() {
                             for (var _iterator4 = eventHandlers, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                                var _ref12;
+                                var _ref13;
                                 if (_isArray4) {
                                     if (_i4 >= _iterator4.length) break;
-                                    _ref12 = _iterator4[_i4++];
+                                    _ref13 = _iterator4[_i4++];
                                 } else {
                                     _i4 = _iterator4.next();
                                     if (_i4.done) break;
-                                    _ref12 = _i4.value;
+                                    _ref13 = _i4.value;
                                 }
-                                var eventHandler = _ref12;
+                                var eventHandler = _ref13;
                                 eventHandler.cancel();
                             }
                         });
@@ -6741,6 +6858,7 @@ this["ppxo"] = function(modules) {
             return ParentComponent;
         }(_base.BaseComponent), _applyDecoratedDescriptor(_class.prototype, "getDomain", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "getDomain"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "updateProps", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "updateProps"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openBridge", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "openBridge"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "open", [ memoize, promise ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "render", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "loadUrl", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "loadUrl"), _class.prototype), 
@@ -6830,7 +6948,6 @@ this["ppxo"] = function(modules) {
                     }
                 });
             },
-            openBridge: function openBridge() {},
             renderToParentOverrides: {
                 openContainer: _constants.DELEGATE.CALL_DELEGATE,
                 destroyComponent: _constants.DELEGATE.CALL_DELEGATE,
@@ -6922,18 +7039,6 @@ this["ppxo"] = function(modules) {
                 }
                 this.resize(width, height);
             },
-            openBridge: function openBridge() {
-                var bridgeUrl = this.component.bridgeUrl;
-                if (!bridgeUrl && this.component.bridgeUrls && this.props.env) {
-                    bridgeUrl = this.component.bridgeUrls[this.props.env];
-                }
-                if (bridgeUrl) {
-                    if ((0, _lib.getDomainFromUrl)(bridgeUrl) === (0, _lib.getDomain)(window)) {
-                        return;
-                    }
-                    return _src2["default"].openBridge(bridgeUrl);
-                }
-            },
             resize: function resize(width, height) {
                 if (width && height) {}
             },
@@ -6999,7 +7104,6 @@ this["ppxo"] = function(modules) {
                 var element = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || document.body;
                 return RENDER_DRIVERS[_constants.CONTEXT_TYPES.IFRAME].open.call(this, element);
             },
-            openBridge: function openBridge() {},
             resize: function resize(width, height) {
                 var container = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || this.iframe;
                 container.style.width = (0, _lib.toCSS)(width);
@@ -8086,19 +8190,8 @@ this["ppxo"] = function(modules) {
                     });
                 });
             }).then(function(res) {
-                if (res && res.links && res.links.length) {
-                    var links = res.links;
-                    for (var i = 0, len = links.length; i < len; i++) {
-                        if (links[i].method === "REDIRECT" && links[i].rel === "approval_url") {
-                            var match = links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
-                            if (match) {
-                                return match[1];
-                            } else {
-                                throw new Error("Could not find token in approval url: " + links[i].href);
-                            }
-                        }
-                    }
-                    throw new Error("Could not find approval url");
+                if (res && res.id) {
+                    return res.id;
                 }
                 throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, 0, 4));
             });
@@ -8231,12 +8324,11 @@ this["ppxo"] = function(modules) {
         var config = exports.config = {
             scriptUrl: "//www.paypalobjects.com/api/" + "paypal.checkout.v4.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
-            paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.13",
-            test: false,
+            paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+            version: "4.0.14",
             ppobjects: false,
             cors: true,
-            env: "production",
+            env: false ? "test" : "production",
             state: "paypal_xcomponent",
             locale: {
                 country: "US",
@@ -8269,7 +8361,8 @@ this["ppxo"] = function(modules) {
                     local: "https://www." + config.stage + ".qa.paypal.com",
                     stage: "https://www." + config.stage + ".qa.paypal.com",
                     sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com"
+                    production: "https://www.paypal.com",
+                    test: window.location.protocol + "//" + window.location.host
                 };
             },
             get corsApiUrls() {
@@ -8277,7 +8370,8 @@ this["ppxo"] = function(modules) {
                     local: "https://" + config.apiStage + ".qa.paypal.com:11888",
                     stage: "https://" + config.apiStage + ".qa.paypal.com:11888",
                     sandbox: "https://cors.api.sandbox.paypal.com",
-                    production: "https://cors.api.paypal.com"
+                    production: "https://cors.api.paypal.com",
+                    test: window.location.protocol + "//" + window.location.host
                 };
             },
             get apiUrls() {
@@ -8285,10 +8379,11 @@ this["ppxo"] = function(modules) {
                 var corsApiUrls = config.corsApiUrls;
                 var wwwApiUrls = config.wwwApiUrls;
                 return {
-                    local: wwwApiUrls.local === domain ? wwwApiUrls.local : corsApiUrls.local,
-                    stage: wwwApiUrls.stage === domain ? wwwApiUrls.stage : corsApiUrls.stage,
-                    sandbox: wwwApiUrls.sandbox === domain ? wwwApiUrls.sandbox : corsApiUrls.sandbox,
-                    production: wwwApiUrls.production === domain ? wwwApiUrls.production : corsApiUrls.production
+                    local: domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local,
+                    stage: domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage,
+                    sandbox: domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox,
+                    production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
+                    test: domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test
                 };
             },
             checkoutUris: {
@@ -8296,25 +8391,25 @@ this["ppxo"] = function(modules) {
                 stage: "/webapps/hermes",
                 sandbox: "/checkoutnow",
                 production: "/checkoutnow",
-                test: "/base/test/child.htm"
+                test: "/base/test/checkout.htm"
             },
             billingUris: {
                 local: "/webapps/hermes/agreements?ul=0",
                 stage: "/webapps/hermes/agreements",
                 sandbox: "/agreements/approve",
                 production: "/agreements/approve",
-                test: "/base/test/child.htm"
+                test: "/base/test/checkout.htm"
             },
             buttonUris: {
                 local: "/webapps/hermes/button",
                 stage: "/webapps/hermes/button",
                 sandbox: "/webapps/hermes/button",
                 production: "/webapps/hermes/button",
-                test: "/base/test/child.htm"
+                test: "/base/test/button.htm"
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.13");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.14");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -8424,6 +8519,12 @@ this["ppxo"] = function(modules) {
             get wwwApiUrl() {
                 return config.wwwApiUrls[config.env];
             },
+            get apiUrl() {
+                var domain = window.location.protocol + "//" + window.location.host;
+                var corsApiUrl = config.corsApiUrl;
+                var wwwApiUrl = config.wwwApiUrl;
+                return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
+            },
             get checkoutUrl() {
                 return "" + config.paypalUrl + config.checkoutUris[config.env];
             },
@@ -8434,19 +8535,22 @@ this["ppxo"] = function(modules) {
                 return "" + config.paypalUrl + config.buttonUris[config.env];
             },
             get bridgeUrl() {
-                return config.paypalUrl + "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.13") + "&env=" + config.env;
+                return "" + config.paypalUrl + config.bridgeUri + "&env=" + config.env;
             },
             get loggerUrl() {
                 return "" + config.paypalUrl + config.loggerUri;
             },
             get authApiUrl() {
-                return config.apiUrl + "/v1/oauth2/token";
+                return "" + config.apiUrl + config.authApiUri;
             },
             get paymentApiUrl() {
-                return config.apiUrl + "/v1/payments/payment";
+                return "" + config.apiUrl + config.paymentApiUri;
             },
             get billingApiUrl() {
-                return config.apiUrl + "/v1/billing-agreements/agreement-tokens";
+                return "" + config.apiUrl + config.billingApiUri;
+            },
+            get experienceApiUrl() {
+                return "" + config.apiUrl + config.experienceApiUri;
             },
             locales: {
                 AD: [ "zh", "es", "fr", "en" ],
@@ -8711,6 +8815,26 @@ this["ppxo"] = function(modules) {
                 }
             });
         });
+        var _dom = __webpack_require__("./src/lib/dom.js");
+        Object.keys(_dom).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _dom[key];
+                }
+            });
+        });
+        var _http = __webpack_require__("./src/lib/http.js");
+        Object.keys(_http).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _http[key];
+                }
+            });
+        });
     },
     "./src/lib/device.js": function(module, exports) {
         (function(global) {
@@ -8813,6 +8937,61 @@ this["ppxo"] = function(modules) {
             return this;
         }());
     },
+    "./src/lib/util.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.extend = extend;
+        exports.merge = merge;
+        exports.isPayPalDomain = isPayPalDomain;
+        exports.memoize = memoize;
+        exports.noop = noop;
+        exports.once = once;
+        var _config = __webpack_require__("./src/config/index.js");
+        function extend(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (source.hasOwnProperty(key)) {
+                        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+                    }
+                }
+            }
+            return target;
+        }
+        function merge() {
+            return extend.apply(undefined, [ {} ].concat(Array.prototype.slice.call(arguments)));
+        }
+        function isPayPalDomain() {
+            return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex));
+        }
+        function memoize(method) {
+            var results = {};
+            return function() {
+                var args = void 0;
+                try {
+                    args = JSON.stringify(Array.prototype.slice.call(arguments));
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                if (!results.hasOwnProperty(args)) {
+                    results[args] = method.apply(this, arguments);
+                }
+                return results[args];
+            };
+        }
+        function noop() {}
+        function once(method) {
+            var called = false;
+            return function() {
+                if (!called) {
+                    called = true;
+                    return method.apply(this, arguments);
+                }
+            };
+        }
+    },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -8912,48 +9091,8 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.13";
+        var version = exports.version = "4.0.14";
         module.exports["default"] = module.exports;
-    },
-    "./src/lib/logger.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.initLogger = initLogger;
-        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
-        var _client2 = _interopRequireDefault(_client);
-        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
-        var _src2 = _interopRequireDefault(_src);
-        var _config = __webpack_require__("./src/config/index.js");
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {
-                "default": obj
-            };
-        }
-        function initLogger() {
-            _src2["default"].registerLogger(_client2["default"]);
-            _client2["default"].addPayloadBuilder(function() {
-                return {
-                    host: window.location.host,
-                    path: window.location.pathname,
-                    env: _config.config.env,
-                    country: _config.config.locale.country,
-                    lang: _config.config.locale.lang
-                };
-            });
-            _client2["default"].addMetaBuilder(function() {
-                return {
-                    state: _config.config.state
-                };
-            });
-            _client2["default"].init({
-                uri: _config.config.loggerUrl,
-                heartbeat: false,
-                logPerformance: false,
-                prefix: "ppxo"
-            });
-        }
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -10092,6 +10231,195 @@ this["ppxo"] = function(modules) {
             }
         }
     },
+    "./src/lib/dom.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.loadScript = loadScript;
+        exports.isNodeList = isNodeList;
+        exports.getElement = getElement;
+        exports.getElements = getElements;
+        exports.onDocumentReady = onDocumentReady;
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        function loadScript(src, timeout) {
+            return new _promise.SyncPromise(function(resolve, reject) {
+                var script = document.createElement("script");
+                script.onload = function() {
+                    resolve();
+                };
+                script.onreadystatechange = function() {
+                    if (this.readyState === "complete" || this.readyState === "loaded") {
+                        resolve();
+                    }
+                };
+                var scriptLoadError = new Error("script_loading_error");
+                script.onerror = function(event) {
+                    return reject(scriptLoadError);
+                };
+                if (timeout) {
+                    setTimeout(function() {
+                        return reject(new Error("script_loading_timed_out"));
+                    }, timeout);
+                }
+                script.setAttribute("src", src);
+                document.body.appendChild(script);
+            });
+        }
+        function isNodeList(nodes) {
+            var result = Object.prototype.toString.call(nodes);
+            if (result === "[object HTMLCollection]" || result === "[object NodeList]") {
+                return true;
+            }
+            return false;
+        }
+        function isElement(item) {
+            return item instanceof window.HTMLElement;
+        }
+        function getElement(item) {
+            if (!item) {
+                return;
+            }
+            if (isElement(item)) {
+                return item;
+            }
+            if (typeof item === "string") {
+                var result = document.querySelector && document.querySelector(item);
+                if (result) {
+                    return result;
+                }
+                return document.getElementById(item);
+            }
+        }
+        function getElements(collection) {
+            if (!collection) {
+                return [];
+            }
+            var result = [];
+            if (Array.isArray(collection) || isNodeList(collection)) {
+                for (var i = 0; i < collection.length; i++) {
+                    var _el = getElement(collection[i]);
+                    if (_el) {
+                        result.push(_el);
+                    }
+                }
+                return result;
+            }
+            var el = getElement(collection);
+            if (el) {
+                return [ el ];
+            }
+            return [];
+        }
+        function isDocumentReady() {
+            return document.readyState === "complete";
+        }
+        var documentReady = new _promise.SyncPromise(function(resolve) {
+            if (isDocumentReady()) {
+                return resolve();
+            }
+            var interval = setInterval(function() {
+                if (isDocumentReady()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }, 10);
+        });
+        function onDocumentReady(method) {
+            return documentReady.then(method);
+        }
+    },
+    "./src/lib/http.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
+        exports.request = request;
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        function request(options) {
+            return new _promise.SyncPromise(function(resolve, reject) {
+                options.method = options.method || "get";
+                var headers = options.headers || {};
+                if (options.json) {
+                    headers["Content-Type"] = headers["Content-Type"] || "application/json";
+                } else if (options.body) {
+                    headers["Content-Type"] = headers["Content-Type"] || "application/x-www-form-urlencoded; charset=utf-8";
+                }
+                headers.Accept = headers.Accept || "application/json";
+                var isCrossDomain = options.url.indexOf("http") === 0 && options.url.indexOf(window.location.protocol + "//" + window.location.host) !== 0;
+                var xhr = void 0;
+                if (window.XDomainRequest && window.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
+                    xhr = new window.XDomainRequest();
+                    xhr.onload = function() {
+                        resolve(JSON.parse(this.responseText));
+                    };
+                    xhr.onerror = function(evt) {
+                        reject(new Error("Request to " + options.method.toLowerCase() + " " + options.url + " failed: " + evt.toString()));
+                    };
+                    xhr.open(options.method, options.url, true);
+                    if (headers && Object.keys(headers).length) {
+                        return reject(new Error("Headers in a cross-domain IE9- request? Not a chance."));
+                    }
+                } else {
+                    xhr = new window.XMLHttpRequest();
+                    xhr.addEventListener("load", function() {
+                        resolve(JSON.parse(this.responseText));
+                    }, false);
+                    xhr.addEventListener("error", function(evt) {
+                        reject(new Error("Request to " + options.method.toLowerCase() + " " + options.url + " failed: " + evt.toString()));
+                    }, false);
+                    xhr.open(options.method, options.url, true);
+                    if (headers) {
+                        for (var key in headers) {
+                            xhr.setRequestHeader(key, headers[key]);
+                        }
+                    }
+                }
+                if (options.json && !options.body) {
+                    options.body = JSON.stringify(options.json);
+                }
+                if (options.body && _typeof(options.body) === "object") {
+                    options.body = Object.keys(options.body).map(function(key) {
+                        return encodeURIComponent(key) + "=" + encodeURIComponent(options.body[key]);
+                    }).join("&");
+                }
+                xhr.send(options.body);
+            });
+        }
+        request.get = function(url) {
+            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            var method = "get";
+            return request(_extends({
+                method: method,
+                url: url
+            }, options));
+        };
+        request.post = function(url, body) {
+            var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+            var method = "post";
+            return request(_extends({
+                method: method,
+                url: url,
+                body: body
+            }, options));
+        };
+    },
     "./src/components/index.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -10180,7 +10508,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.13";
+                return _config.config.ppobjects ? "4" : "4.0.14";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10334,6 +10662,13 @@ this["ppxo"] = function(modules) {
                         var meta = document.querySelector("meta[name=viewport]");
                         return (0, _lib.isDevice)() && !meta && (window.screen && window.screen.width) < 660;
                     }
+                },
+                testAction: {
+                    type: "string",
+                    required: false,
+                    def: function def() {
+                        return "checkout";
+                    }
                 }
             },
             autoResize: false,
@@ -10447,14 +10782,16 @@ this["ppxo"] = function(modules) {
                 }
             },
             remoteRenderDomain: _config.config.paypal_domain_regex,
-            bridgeUrls: _config.config.bridgeUrls,
+            get bridgeUrls() {
+                return _config.config.bridgeUrls;
+            },
             contexts: {
                 iframe: false,
                 lightbox: false,
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.13";
+                return _config.config.ppobjects ? "4" : "4.0.14";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10660,10 +10997,16 @@ this["ppxo"] = function(modules) {
                             }
                         };
                     }
+                },
+                testAction: {
+                    type: "string",
+                    required: false,
+                    def: function def() {
+                        return "checkout";
+                    }
                 }
             },
             autoResize: true,
-            resizeDelay: 700,
             get dimensions() {
                 if ((0, _lib.isDevice)()) {
                     return {
@@ -10788,23 +11131,13 @@ this["ppxo"] = function(modules) {
                 }
             });
         });
-        var _log = __webpack_require__("./src/legacy/log.js");
-        Object.keys(_log).forEach(function(key) {
+        var _ready = __webpack_require__("./src/legacy/ready.js");
+        Object.keys(_ready).forEach(function(key) {
             if (key === "default" || key === "__esModule") return;
             Object.defineProperty(exports, key, {
                 enumerable: true,
                 get: function get() {
-                    return _log[key];
-                }
-            });
-        });
-        var _util = __webpack_require__("./src/legacy/util.js");
-        Object.keys(_util).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _util[key];
+                    return _ready[key];
                 }
             });
         });
@@ -10814,33 +11147,35 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-        };
         exports.renderButtons = renderButtons;
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
         var _config = __webpack_require__("./src/config/index.js");
         var _lib = __webpack_require__("./src/lib/index.js");
         var _constants = __webpack_require__("./src/legacy/constants.js");
-        var _log = __webpack_require__("./src/legacy/log.js");
-        var _util = __webpack_require__("./src/legacy/util.js");
+        var _common = __webpack_require__("./src/legacy/common.js");
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
         var buttonJS = void 0;
         function loadButtonJS() {
             if (buttonJS) {
                 return buttonJS;
             }
-            _log.$logger.debug("buttonjs_load");
+            $logger.debug("buttonjs_load");
             buttonJS = (0, _lib.loadScript)(_constants.BUTTON_JS_URL)["catch"](function(err) {
-                _log.$logger.info("buttonjs_load_error_retry", {
+                $logger.info("buttonjs_load_error_retry", {
                     error: err.stack || err.toString()
                 });
                 return (0, _lib.loadScript)(_constants.BUTTON_JS_URL);
             }).then(function(result) {
-                _log.$logger.debug("buttonjs_load_success");
+                $logger.debug("buttonjs_load_success");
                 return result;
             })["catch"](function(err) {
-                _log.$logger.error("buttonjs_load_error", {
+                $logger.error("buttonjs_load_error", {
                     error: err.stack || err.toString()
                 });
                 throw err;
@@ -10848,17 +11183,23 @@ this["ppxo"] = function(modules) {
             return buttonJS;
         }
         function renderButton(id, container, options, label) {
+            if (options.locale) {
+                var _normalizeLocale = (0, _common.normalizeLocale)(options.locale);
+                var country = _normalizeLocale.country;
+                var lang = _normalizeLocale.lang;
+                options.locale = lang + "_" + country;
+            }
             var lc = options.locale || _config.config.locale.lang + "_" + _config.config.locale.country;
             var color = options.color || "gold";
             var shape = options.shape || "pill";
             var size = options.size || "small";
             var type = "button";
             label = label || "checkout";
-            _log.$logger.debug("render_button_lc_" + lc);
-            _log.$logger.debug("render_button_color_" + color);
-            _log.$logger.debug("render_button_shape_" + shape);
-            _log.$logger.debug("render_button_size_" + size);
-            _log.$logger.debug("render_button_label_" + label);
+            $logger.debug("render_button_lc_" + lc);
+            $logger.debug("render_button_color_" + color);
+            $logger.debug("render_button_shape_" + shape);
+            $logger.debug("render_button_size_" + size);
+            $logger.debug("render_button_label_" + label);
             var buttonDom = window.paypal.button.create(id, {
                 lc: lc,
                 color: color,
@@ -10888,7 +11229,7 @@ this["ppxo"] = function(modules) {
                             }
                             var button = _ref;
                             if (button.container && button.container !== options.container) {
-                                _log.$logger.warn("mismatched_container_and_button_passed", {
+                                $logger.warn("mismatched_container_and_button_passed", {
                                     options: options.container,
                                     button: button.container
                                 });
@@ -10909,13 +11250,12 @@ this["ppxo"] = function(modules) {
                             button.click = button.click || options.click;
                             button.condition = button.condition || options.condition;
                             if (button.button) {
-                                var buttonEl = (0, _util.getElement)(button.button);
+                                var buttonEl = (0, _lib.getElement)(button.button);
                                 if (!buttonEl) {
-                                    return {
-                                        v: _log.$logger.warn("button_custom_element_not_found", {
-                                            button: button.button
-                                        })
-                                    };
+                                    $logger.warn("button_custom_element_not_found", {
+                                        button: button.button
+                                    });
+                                    return "continue";
                                 }
                                 buttons.push({
                                     container: buttonEl,
@@ -10924,11 +11264,11 @@ this["ppxo"] = function(modules) {
                                     condition: button.condition
                                 });
                             } else if (button.container && button.container.length !== 0) {
-                                var buttonContainerElements = (0, _util.getElements)(button.container);
+                                var buttonContainerElements = (0, _lib.getElements)(button.container);
                                 if (buttonContainerElements.length) {
                                     buttonContainerElements.forEach(function(container) {
                                         if (container.tagName && container.tagName.toLowerCase() === "a") {
-                                            _log.$logger.warn("container_a_tag");
+                                            $logger.warn("container_a_tag");
                                         }
                                         var buttonEl = renderButton(id, container, button, button.type);
                                         buttons.push({
@@ -10939,12 +11279,12 @@ this["ppxo"] = function(modules) {
                                         });
                                     });
                                 } else {
-                                    _log.$logger.warn("button_container_not_found", {
+                                    $logger.warn("button_container_not_found", {
                                         container: JSON.stringify(button.container)
                                     });
                                 }
                             } else {
-                                _log.$logger.warn("button_container_not_passed", {
+                                $logger.warn("button_container_not_passed", {
                                     button: JSON.stringify(button)
                                 });
                             }
@@ -10957,8 +11297,8 @@ this["ppxo"] = function(modules) {
                           case "break":
                             break _loop2;
 
-                          default:
-                            if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+                          case "continue":
+                            continue;
                         }
                     }
                 } else if (options.container && options.container.length !== 0) {
@@ -10971,11 +11311,11 @@ this["ppxo"] = function(modules) {
                         } else {
                             labels = [];
                         }
-                        var containerElements = (0, _util.getElements)(options.container);
+                        var containerElements = (0, _lib.getElements)(options.container);
                         if (containerElements.length) {
                             containerElements.forEach(function(container, i) {
                                 if (container.tagName && container.tagName.toLowerCase() === "a") {
-                                    _log.$logger.warn("container_a_tag");
+                                    $logger.warn("container_a_tag");
                                 }
                                 var buttonEl = renderButton(id, container, options, labels[i]);
                                 buttons.push({
@@ -10986,7 +11326,7 @@ this["ppxo"] = function(modules) {
                                 });
                             });
                         } else {
-                            _log.$logger.warn("button_container_not_found", {
+                            $logger.warn("button_container_not_found", {
                                 container: JSON.stringify(options.container)
                             });
                         }
@@ -11002,117 +11342,94 @@ this["ppxo"] = function(modules) {
             value: true
         });
         var LOG_PREFIX = exports.LOG_PREFIX = "paypal_legacy";
-        var BUTTON_JS_URL = exports.BUTTON_JS_URL = "//www.paypalobjects.com/api/button.js";
+        var BUTTON_JS_URL = exports.BUTTON_JS_URL = "https://www.paypalobjects.com/api/button.js";
     },
-    "./src/legacy/log.js": function(module, exports, __webpack_require__) {
+    "./src/legacy/common.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.$logger = undefined;
-        var _constants = __webpack_require__("./src/legacy/constants.js");
+        var _slicedToArray = function() {
+            function sliceIterator(arr, i) {
+                var _arr = [];
+                var _n = true;
+                var _d = false;
+                var _e = undefined;
+                try {
+                    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+                        _arr.push(_s.value);
+                        if (i && _arr.length === i) break;
+                    }
+                } catch (err) {
+                    _d = true;
+                    _e = err;
+                } finally {
+                    try {
+                        if (!_n && _i["return"]) _i["return"]();
+                    } finally {
+                        if (_d) throw _e;
+                    }
+                }
+                return _arr;
+            }
+            return function(arr, i) {
+                if (Array.isArray(arr)) {
+                    return arr;
+                } else if (Symbol.iterator in Object(arr)) {
+                    return sliceIterator(arr, i);
+                } else {
+                    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+                }
+            };
+        }();
+        exports.normalizeLocale = normalizeLocale;
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
+        var _config = __webpack_require__("./src/config/index.js");
+        var _constants = __webpack_require__("./src/legacy/constants.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
-        var $logger = exports.$logger = _client2["default"].prefix(_constants.LOG_PREFIX);
-    },
-    "./src/legacy/util.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.redirect = redirect;
-        exports.onDocumentReady = onDocumentReady;
-        exports.isNodeList = isNodeList;
-        exports.isArray = isArray;
-        exports.isElement = isElement;
-        exports.getElement = getElement;
-        exports.getElements = getElements;
-        exports.once = once;
-        var _log = __webpack_require__("./src/legacy/log.js");
-        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
-        function redirect(url) {
-            _log.$logger.info("redirect", {
-                url: url
-            });
-            window.location = url;
-        }
-        function isDocumentReady() {
-            return document.readyState === "complete";
-        }
-        var documentReady = new _promise.SyncPromise(function(resolve) {
-            if (isDocumentReady()) {
-                return resolve();
-            }
-            var interval = setInterval(function() {
-                if (isDocumentReady()) {
-                    clearInterval(interval);
-                    return resolve();
+        var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
+        var DEFAULT_COUNTRY = "US";
+        var DEFAULT_LANG = "en";
+        function normalizeLocale(locale) {
+            var _locale$split = locale.split("_");
+            var _locale$split2 = _slicedToArray(_locale$split, 2);
+            var lang = _locale$split2[0];
+            var country = _locale$split2[1];
+            if (!country) {
+                if (_config.config.locales[lang]) {
+                    country = lang;
+                    lang = null;
+                } else {
+                    country = DEFAULT_COUNTRY;
                 }
-            }, 10);
-        });
-        function onDocumentReady(method) {
-            return documentReady.then(method);
-        }
-        function isNodeList(nodes) {
-            var result = Object.prototype.toString.call(nodes);
-            if (result === "[object HTMLCollection]" || result === "[object NodeList]") {
-                return true;
             }
-            return false;
-        }
-        function isArray(item) {
-            return item instanceof Array;
-        }
-        function isElement(item) {
-            return item instanceof window.HTMLElement;
-        }
-        function getElement(item) {
-            if (!item) {
-                return;
+            if (!_config.config.locales[country]) {
+                $logger.warn("invalid_user_country", {
+                    country: country
+                });
+                country = DEFAULT_COUNTRY;
             }
-            if (isElement(item)) {
-                return item;
+            if (!lang) {
+                lang = DEFAULT_LANG;
             }
-            if (typeof item === "string") {
-                var result = document.querySelector && document.querySelector(item);
-                if (result) {
-                    return result;
+            if (_config.config.locales[country].indexOf(lang) === -1) {
+                $logger.warn("invalid_user_lang", {
+                    lang: lang
+                });
+                if (_config.config.locales[country].indexOf(DEFAULT_LANG) !== -1) {
+                    lang = DEFAULT_LANG;
+                } else {
+                    lang = _config.config.locales[country][0];
                 }
-                return document.getElementById(item);
             }
-        }
-        function getElements(collection) {
-            if (!collection) {
-                return [];
-            }
-            var result = [];
-            if (isArray(collection) || isNodeList(collection)) {
-                for (var i = 0; i < collection.length; i++) {
-                    var _el = getElement(collection[i]);
-                    if (_el) {
-                        result.push(_el);
-                    }
-                }
-                return result;
-            }
-            var el = getElement(collection);
-            if (el) {
-                return [ el ];
-            }
-            return [];
-        }
-        function once(method) {
-            var called = false;
-            return function() {
-                if (!called) {
-                    called = true;
-                    return method.apply(this, arguments);
-                }
+            return {
+                country: country,
+                lang: lang
             };
         }
     },
@@ -11166,22 +11483,26 @@ this["ppxo"] = function(modules) {
             }
             return target;
         };
+        exports.reset = reset;
         var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
         var _src2 = _interopRequireDefault(_src);
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
         var _components = __webpack_require__("./src/components/index.js");
         var _eligibility = __webpack_require__("./src/legacy/eligibility.js");
         var _config = __webpack_require__("./src/config/index.js");
         var _compat = __webpack_require__("./src/compat/index.js");
         var _lib = __webpack_require__("./src/lib/index.js");
-        var _util = __webpack_require__("./src/legacy/util.js");
+        var _constants = __webpack_require__("./src/legacy/constants.js");
         var _button = __webpack_require__("./src/legacy/button.js");
-        var _log = __webpack_require__("./src/legacy/log.js");
+        var _common = __webpack_require__("./src/legacy/common.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
+        var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
         var REDIRECT_DELAY = 500;
         var inClick = false;
         var ifNotClickMethods = [];
@@ -11192,7 +11513,7 @@ this["ppxo"] = function(modules) {
                 inClick = false;
             }, 1);
         }
-        (0, _util.onDocumentReady)(function() {
+        (0, _lib.onDocumentReady)(function() {
             if (window.document && window.document.body) {
                 window.document.body.addEventListener("click", function() {
                     registerClick();
@@ -11228,7 +11549,7 @@ this["ppxo"] = function(modules) {
         var redirected = false;
         function logRedirect(location) {
             if (redirected) {
-                _log.$logger.warn("multiple_redirects");
+                $logger.warn("multiple_redirects");
             }
             redirected = true;
             if (window.ppCheckpoint) {
@@ -11240,12 +11561,16 @@ this["ppxo"] = function(modules) {
                     window.ppCheckpoint("flow_cancel");
                 }
             }
-            _log.$logger.flush();
+            $logger.flush();
         }
-        function redirect(location) {
-            logRedirect(location);
+        function redirect(url) {
+            logRedirect(url);
+            reset();
             setTimeout(function() {
-                (0, _util.redirect)(location);
+                $logger.info("redirect", {
+                    url: url
+                });
+                window.location = url;
             }, REDIRECT_DELAY);
         }
         function parseToken(token) {
@@ -11280,7 +11605,7 @@ this["ppxo"] = function(modules) {
         }
         function matchUrlAndPaymentToken(item) {
             if (!item || !item.trim()) {
-                _log.$logger.error("startflow_no_url_or_token", {
+                $logger.error("startflow_no_url_or_token", {
                     item: item
                 });
                 throw new Error("startflow_no_url_or_token");
@@ -11288,7 +11613,7 @@ this["ppxo"] = function(modules) {
             var paymentToken = item && parseToken(item);
             var url = item && item !== paymentToken ? item : null;
             if (url && !url.match(/^https?:\/\/|^\//)) {
-                _log.$logger.warn("startflow_relative_url", {
+                $logger.warn("startflow_relative_url", {
                     url: url
                 });
                 if (url.toLowerCase().indexOf("ec-") === 0 && paymentToken) {
@@ -11297,21 +11622,21 @@ this["ppxo"] = function(modules) {
             }
             if (url && paymentToken) {
                 if (url.indexOf(".paypal.com") !== -1) {
-                    _log.$logger.debug("startflow_paypalurl_with_token", {
+                    $logger.debug("startflow_paypalurl_with_token", {
                         item: item
                     });
                 } else {
-                    _log.$logger.debug("startflow_url_with_token", {
+                    $logger.debug("startflow_url_with_token", {
                         item: item
                     });
                 }
             } else if (url) {
-                _log.$logger.debug("startflow_url_with_no_token", {
+                $logger.debug("startflow_url_with_no_token", {
                     item: item
                 });
                 paymentToken = _src2["default"].CONSTANTS.PROP_DEFER_TO_URL;
             } else if (paymentToken) {
-                _log.$logger.debug("startflow_with_token", {
+                $logger.debug("startflow_with_token", {
                     item: item
                 });
                 url = getFullpageRedirectUrl(paymentToken);
@@ -11334,11 +11659,11 @@ this["ppxo"] = function(modules) {
                 }
                 if (env !== _config.config.env) {
                     if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace("//www.", "//")) === 0) {
-                        _log.$logger.warn("mismatched_env_startflow_url", {
+                        $logger.warn("mismatched_env_startflow_url", {
                             env: _config.config.env,
                             url: url
                         });
-                        _config.config.env = env;
+                        throw new Error('Env "' + env + '" does not match url ' + url);
                     }
                 }
             }
@@ -11349,15 +11674,21 @@ this["ppxo"] = function(modules) {
         }
         function getPaymentTokenAndUrl() {
             var paymentTokenAndUrl = new _promise.SyncPromise(function(resolve, reject) {
-                window.paypal.checkout.startFlow = (0, _util.once)(function(item, opts) {
-                    _log.$logger.debug("gettoken_startflow", {
+                window.paypal.checkout.initXO = function() {
+                    $logger.warn("gettoken_initxo");
+                    if (window.ppCheckpoint) {
+                        window.ppCheckpoint("flow_initxo");
+                    }
+                };
+                window.paypal.checkout.startFlow = (0, _lib.once)(function(item, opts) {
+                    $logger.debug("gettoken_startflow", {
                         item: item
                     });
                     if (window.ppCheckpoint) {
                         window.ppCheckpoint("flow_startflow");
                     }
                     if (opts) {
-                        _log.$logger.warn("startflow_with_options", {
+                        $logger.warn("startflow_with_options", {
                             opts: JSON.stringify(opts)
                         });
                     }
@@ -11390,12 +11721,12 @@ this["ppxo"] = function(modules) {
         var paypalCheckoutInited = false;
         function initPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-            _log.$logger.info("init_checkout");
+            $logger.info("init_checkout");
             if (paypalCheckoutInited) {
-                _log.$logger.warn("multiple_init_paypal_checkout");
+                $logger.warn("multiple_init_paypal_checkout");
             }
             if (!setupCalled) {
-                _log.$logger.warn("init_without_setup");
+                $logger.warn("init_without_setup");
             }
             paypalCheckoutInited = true;
             if (window.ppCheckpoint) {
@@ -11404,34 +11735,29 @@ this["ppxo"] = function(modules) {
             var paypalCheckout = _components.Checkout.init(_extends({
                 uid: window.pp_uid,
                 onAuthorize: function onAuthorize(data, actions) {
-                    reset();
-                    _log.$logger.info("payment_authorized");
+                    $logger.info("payment_authorized");
                     logRedirect(data.returnUrl);
                     return _promise.SyncPromise.delay(REDIRECT_DELAY).then(function() {
                         return actions.redirect(window);
                     });
                 },
                 onCancel: function onCancel(data, actions) {
-                    reset();
-                    _log.$logger.info("payment_canceled");
+                    $logger.info("payment_canceled");
                     return _promise.SyncPromise.delay(REDIRECT_DELAY).then(function() {
                         return actions.redirect(window);
                     });
-                },
-                onError: function onError() {
-                    reset();
                 }
             }, props));
             window.paypal.checkout.closeFlow = function(closeUrl) {
-                _log.$logger.warn("closeflow");
+                $logger.warn("closeflow");
                 reset();
                 try {
-                    paypalCheckout.destroy(new Error("closeFlow called"));
+                    paypalCheckout.destroy();
                 } catch (err) {
                     console.error(err);
                 }
                 if (closeUrl) {
-                    _log.$logger.warn("closeflow_with_url", {
+                    $logger.warn("closeflow_with_url", {
                         closeUrl: closeUrl
                     });
                     return redirect(closeUrl);
@@ -11441,13 +11767,20 @@ this["ppxo"] = function(modules) {
         }
         function renderPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-            var button = arguments[1];
-            var paypalCheckout = initPayPalCheckout(props);
+            var hijackTarget = arguments[1];
             ifNotClick(function() {
-                _log.$logger.warn("render_without_click");
+                $logger.warn("render_without_click");
             });
-            var render = paypalCheckout.render()["catch"](function(err) {
-                _log.$logger.error("error", {
+            var paypalCheckout = initPayPalCheckout(props);
+            if (hijackTarget) {
+                paypalCheckout.hijack(hijackTarget);
+                paypalCheckout.runTimeout();
+                props.url.then(function(url) {
+                    paypalCheckout.loadUrl(url);
+                });
+            }
+            var render = paypalCheckout.render(null, !hijackTarget)["catch"](function(err) {
+                $logger.error("error", {
                     error: err.stack || err.toString()
                 });
                 _promise.SyncPromise.all([ props.url, props.payment ]).then(function(_ref2) {
@@ -11466,187 +11799,89 @@ this["ppxo"] = function(modules) {
             checkout.win = paypalCheckout.window;
             return render;
         }
-        function triggerClickHandler(handler, event) {
-            try {
-                if (handler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
-                    _log.$logger.warn("click_function_expects_err");
-                    handler.call(null);
-                } else {
-                    handler.call(null, event);
-                }
-            } catch (err) {
-                _log.$logger.error("click_handler_error", {
-                    error: err.stack || err.toString()
-                });
-            }
-        }
-        function handleClick(env, clickHandler, event, button) {
-            _log.$logger.debug("button_click_handler");
+        function handleClick(clickHandler, event) {
+            $logger.debug("button_click_handler");
             var initXOCalled = false;
             var startFlowCalled = false;
             var closeFlowCalled = false;
-            var _getPaymentTokenAndUr = getPaymentTokenAndUrl();
-            var url = _getPaymentTokenAndUr.url;
-            var paymentToken = _getPaymentTokenAndUr.paymentToken;
-            if (!(0, _eligibility.isLegacyEligible)()) {
-                url.then(function(redirectUrl) {
-                    _log.$logger.debug("ineligible_startflow", {
-                        url: redirectUrl
-                    });
-                    return redirect(redirectUrl);
-                });
-                return triggerClickHandler(clickHandler, event);
-            }
-            window.paypal.checkout.initXO = function() {
-                _log.$logger.debug("initxo_clickhandler");
-                initXOCalled = true;
-                if (window.ppCheckpoint) {
-                    window.ppCheckpoint("flow_initxo");
-                }
-            };
-            window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, function() {
-                startFlowCalled = true;
-            });
-            window.paypal.checkout.closeFlow = function(closeUrl) {
-                _log.$logger.warn("closeflow_clickhandler");
-                closeFlowCalled = true;
-                reset();
-                if (closeUrl) {
-                    _log.$logger.warn("closeflow_with_url", {
-                        closeUrl: closeUrl
-                    });
-                    return redirect(closeUrl);
-                }
-            };
-            triggerClickHandler(clickHandler, event);
-            if (closeFlowCalled) {
-                _log.$logger.warn("button_click_closeflow_called_during_click");
-                return;
-            }
-            if (initXOCalled || startFlowCalled) {
-                _log.$logger.info("init_paypal_checkout_click");
-                return renderPayPalCheckout({
-                    env: env,
-                    url: url,
-                    payment: paymentToken
-                }, button);
-            }
-            _log.$logger.warn("button_click_handler_no_initxo_startflow");
-            reset();
             window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, function() {
                 initXOCalled = true;
             });
             window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, function() {
                 startFlowCalled = true;
             });
-            setTimeout(function() {
-                if (!initXOCalled && !startFlowCalled) {
-                    _log.$logger.warn("button_click_event_no_initxo_startflow");
-                    return reset();
+            window.paypal.checkout.closeFlow = before(window.paypal.checkout.closeFlow, function() {
+                closeFlowCalled = true;
+            });
+            try {
+                if (clickHandler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
+                    $logger.warn("click_function_expects_err");
+                    clickHandler.call(null);
+                } else {
+                    clickHandler.call(null, event);
                 }
-            }, 1);
+            } catch (err) {
+                $logger.error("click_handler_error", {
+                    error: err.stack || err.toString()
+                });
+            }
+            if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
+                $logger.debug("button_click_handler_no_initxo_startflow");
+                setTimeout(function() {
+                    if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
+                        $logger.debug("button_click_event_no_initxo_startflow");
+                    }
+                }, 1);
+            }
         }
         function getHijackTargetElement(button) {
             if (button && button.form) {
-                _log.$logger.debug("target_element_button_form");
+                $logger.debug("target_element_button_form");
                 return button.form;
             }
             if (button && button.tagName && button.tagName.toLowerCase() === "a") {
-                _log.$logger.debug("target_element_link");
+                $logger.debug("target_element_link");
                 return button;
             }
             if (button && button.tagName && (button.tagName.toLowerCase() === "img" || button.tagName.toLowerCase() === "button") && button.parentNode && button.parentNode.tagName.toLowerCase() === "a") {
-                _log.$logger.debug("target_element_parent_link");
+                $logger.debug("target_element_parent_link");
                 return button.parentNode;
             }
             if (button && button.tagName && button.tagName.toLowerCase() === "button" && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === "a") {
-                _log.$logger.debug("target_element_parent_parent_link");
+                $logger.debug("target_element_parent_parent_link");
                 return button.parentNode.parentNode;
             }
-            _log.$logger.error("target_element_not_found");
+            $logger.error("target_element_not_found");
         }
-        function handleClickHijack(env, button) {
-            _log.$logger.debug("button_click_hijack");
+        function handleClickHijack(button) {
             var targetElement = getHijackTargetElement(button);
             if (!targetElement) {
                 return;
             }
-            _log.$logger.info("init_paypal_checkout_hijack");
-            var token = void 0;
-            var paypalCheckout = initPayPalCheckout({
-                env: env,
-                payment: function payment() {
-                    return token || _src2["default"].CONSTANTS.PROP_DEFER_TO_URL;
-                }
+            $logger.info("init_paypal_checkout_hijack");
+            var _getPaymentTokenAndUr = getPaymentTokenAndUrl();
+            var url = _getPaymentTokenAndUr.url;
+            var paymentToken = _getPaymentTokenAndUr.paymentToken;
+            var token = _src2["default"].CONSTANTS.PROP_DEFER_TO_URL;
+            paymentToken.then(function(result) {
+                token = result;
             });
-            ifNotClick(function() {
-                _log.$logger.warn("renderhijack_without_click");
-            });
-            paypalCheckout.hijack(targetElement);
-            paypalCheckout.render(null, false);
-            checkout.win = paypalCheckout.window;
-            window.paypal.checkout.initXO = function() {
-                _log.$logger.warn("initxo_hijackclickhandler");
-                if (window.ppCheckpoint) {
-                    window.ppCheckpoint("flow_initxo");
-                }
+            var payment = function payment() {
+                return token;
             };
-            window.paypal.checkout.startFlow = function(item, opts) {
-                _log.$logger.warn("startflow_hijackclickhandler", {
-                    item: item
-                });
-                if (window.ppCheckpoint) {
-                    window.ppCheckpoint("flow_startflow");
-                }
-                if (opts) {
-                    _log.$logger.warn("startflow_with_options", {
-                        opts: JSON.stringify(opts)
-                    });
-                }
-                var urlAndPaymentToken = void 0;
-                try {
-                    urlAndPaymentToken = matchUrlAndPaymentToken(item);
-                } catch (err) {
-                    reset();
-                    paypalCheckout.destroy(err);
-                    _log.$logger.error("error", {
-                        error: err.stack || err.toString()
-                    });
-                    throw err;
-                }
-                var _urlAndPaymentToken2 = urlAndPaymentToken;
-                var url = _urlAndPaymentToken2.url;
-                var paymentToken = _urlAndPaymentToken2.paymentToken;
-                if (!(0, _eligibility.isLegacyEligible)()) {
-                    _log.$logger.debug("ineligible_startflow_hijackclickhandler", {
-                        url: url
-                    });
-                    paypalCheckout.destroy();
-                    return redirect(url);
-                }
-                token = paymentToken;
-                paypalCheckout.loadUrl(paypalCheckout.context, url);
-            };
-            window.paypal.checkout.closeFlow = function(closeUrl) {
-                _log.$logger.warn("closeflow_hijackclickhandler");
-                reset();
-                paypalCheckout.destroy(new Error("closeFlow called"));
-                if (closeUrl) {
-                    _log.$logger.warn("closeflow_with_url", {
-                        closeUrl: closeUrl
-                    });
-                    return redirect(closeUrl);
-                }
-            };
+            renderPayPalCheckout({
+                url: url,
+                payment: payment
+            }, targetElement);
         }
-        function listenClick(env, container, button, clickHandler, condition) {
+        function listenClick(container, button, clickHandler, condition) {
             var element = container.tagName.toLowerCase() === "a" ? container : button;
             if (window.ppCheckpoint) {
                 window.ppCheckpoint("flow_listenclick");
             }
             var isClick = clickHandler instanceof Function;
             if (element.hasAttribute("data-paypal-click-listener")) {
-                return _log.$logger.warn("button_already_has_paypal_click_listener");
+                return $logger.warn("button_already_has_paypal_click_listener");
             }
             element.setAttribute("data-paypal-click-listener", true);
             element.addEventListener("click", function(event) {
@@ -11654,27 +11889,32 @@ this["ppxo"] = function(modules) {
                 if (window.ppCheckpoint) {
                     window.ppCheckpoint("flow_buttonclick");
                 }
-                if (!(0, _lib.supportsPopups)()) {
-                    _log.$logger.debug("click_popups_not_supported");
+                if ((0, _lib.supportsPopups)()) {
+                    $logger.debug("click_popups_supported");
+                    if (!(0, _eligibility.isLegacyEligible)()) {
+                        $logger.debug("click_popups_supported_but_ineligible");
+                    }
+                } else {
+                    $logger.debug("click_popups_not_supported");
                     if ((0, _eligibility.isLegacyEligible)()) {
-                        _log.$logger.debug("click_popups_not_supported_but_eligible");
+                        $logger.debug("click_popups_not_supported_but_eligible");
                     }
                 }
                 if (!(0, _eligibility.isLegacyEligible)() && !isClick) {
-                    return _log.$logger.debug("ineligible_listenclick");
+                    return $logger.debug("ineligible_listenclick");
                 }
-                _log.$logger.info("button_click");
+                $logger.info("button_click");
                 if (condition instanceof Function) {
                     if (condition.call()) {
-                        _log.$logger.info("button_click_condition_enabled");
+                        $logger.info("button_click_condition_enabled");
                     } else {
-                        return _log.$logger.info("button_click_condition_disabled");
+                        return $logger.info("button_click_condition_disabled");
                     }
                 }
                 if (isClick) {
-                    return handleClick(env, clickHandler, event, button);
+                    return handleClick(clickHandler, event);
                 } else {
-                    return handleClickHijack(env, button);
+                    return handleClickHijack(button);
                 }
             });
         }
@@ -11685,7 +11925,7 @@ this["ppxo"] = function(modules) {
                 window.ppCheckpoint("flow_setup");
             }
             id = id || "merchant";
-            _log.$logger.info("setup", {
+            $logger.info("setup", {
                 id: id,
                 env: options.environment,
                 options: JSON.stringify(options, function(key, val) {
@@ -11705,106 +11945,77 @@ this["ppxo"] = function(modules) {
             }
             setupCalled = true;
             reset();
-            if (window.I10C) {
-                _log.$logger.info("instart");
-            }
             if (options.environment) {
                 if (options.environment === "live") {
                     options.environment = "production";
                 }
                 if (_config.config.paypalUrls[options.environment]) {
-                    if (options.environment !== _config.config.env) {
-                        _config.config.env = options.environment;
-                    }
+                    _config.config.env = options.environment;
                 } else {
                     options.environment = _config.config.env;
-                    _log.$logger.warn("invalid_env", {
+                    $logger.warn("invalid_env", {
                         badenv: options.environment
                     });
                 }
             }
             (0, _compat.setupBridge)(_config.config.env, _config.config.bridgeUrl);
             if (options.locale) {
-                var _options$locale$split = options.locale.split("_");
-                var _options$locale$split2 = _slicedToArray(_options$locale$split, 2);
-                var lang = _options$locale$split2[0];
-                var country = _options$locale$split2[1];
+                _config.config.locale = (0, _common.normalizeLocale)(options.locale);
                 _config.config.customCountry = true;
-                if (_config.config.locales[country]) {
-                    _config.config.locale.country = country;
-                    if (_config.config.locales[country].indexOf(lang) !== -1) {
-                        _config.config.locale.lang = lang;
-                    } else {
-                        _log.$logger.warn("invalid_user_lang", {
-                            country: country,
-                            lang: lang,
-                            def: _config.config.locales[country][0]
-                        });
-                        _config.config.locale.lang = _config.config.locales[country][0];
-                    }
-                } else if (_config.config.locales.US[country]) {
-                    _config.config.locale.country = "US";
-                    _config.config.locale.lang = country;
-                } else {
-                    _log.$logger.warn("invalid_user_country", {
-                        country: country
-                    });
-                }
             }
             if (options.buttons) {
-                if ((0, _util.getElements)(options.buttons).length) {
+                if ((0, _lib.getElements)(options.buttons).length) {
                     options.button = options.buttons;
                     delete options.buttons;
                 }
             }
             if (options.button && options.button.length !== 0) {
-                var buttonElements = (0, _util.getElements)(options.button);
+                var buttonElements = (0, _lib.getElements)(options.button);
                 if (buttonElements.length) {
                     buttonElements.forEach(function(el) {
-                        _log.$logger.info("listen_click_custom_button");
-                        listenClick(options.environment, el, el, options.click, options.condition);
+                        $logger.info("listen_click_custom_button");
+                        listenClick(el, el, options.click, options.condition);
                     });
                 } else {
-                    _log.$logger.warn("button_element_not_found", {
+                    $logger.warn("button_element_not_found", {
                         element: JSON.stringify(options.button)
                     });
                 }
             }
             return (0, _button.renderButtons)(id, options).then(function(buttons) {
                 buttons.forEach(function(button) {
-                    _log.$logger.info("listen_click_paypal_button");
-                    listenClick(options.environment, button.container, button.button, button.click, button.condition);
+                    $logger.info("listen_click_paypal_button");
+                    listenClick(button.container, button.button, button.click, button.condition);
                 });
             });
         }
         function initXO() {
-            _log.$logger.debug("initxo");
+            $logger.debug("initxo");
             if (window.ppCheckpoint) {
                 window.ppCheckpoint("flow_initxo");
             }
             if (!(0, _eligibility.isLegacyEligible)()) {
-                return _log.$logger.debug("ineligible_initxo");
+                return $logger.debug("ineligible_initxo");
             }
             reset();
             var _getPaymentTokenAndUr2 = getPaymentTokenAndUrl();
             var url = _getPaymentTokenAndUr2.url;
             var paymentToken = _getPaymentTokenAndUr2.paymentToken;
-            _log.$logger.info("init_paypal_checkout_initxo");
-            var payment = paymentToken;
+            $logger.info("init_paypal_checkout_initxo");
             renderPayPalCheckout({
                 url: url,
-                payment: payment
+                payment: paymentToken
             });
         }
         function startFlow(item, opts) {
-            _log.$logger.debug("startflow", {
+            $logger.debug("startflow", {
                 item: item
             });
             if (window.ppCheckpoint) {
                 window.ppCheckpoint("flow_startflow");
             }
             if (opts) {
-                _log.$logger.warn("startflow_with_options", {
+                $logger.warn("startflow_with_options", {
                     opts: JSON.stringify(opts)
                 });
             }
@@ -11812,22 +12023,21 @@ this["ppxo"] = function(modules) {
             var paymentToken = _matchUrlAndPaymentTo.paymentToken;
             var url = _matchUrlAndPaymentTo.url;
             if (!(0, _eligibility.isLegacyEligible)()) {
-                _log.$logger.debug("ineligible_startflow_global", {
+                $logger.debug("ineligible_startflow_global", {
                     url: url
                 });
                 return redirect(url);
             }
-            _log.$logger.info("init_paypal_checkout_startflow");
-            var payment = paymentToken;
+            $logger.info("init_paypal_checkout_startflow");
             renderPayPalCheckout({
                 url: url,
-                payment: payment
+                payment: paymentToken
             });
         }
         function closeFlow(closeUrl) {
-            _log.$logger.warn("closeflow");
+            $logger.warn("closeflow");
             if (closeUrl) {
-                _log.$logger.warn("closeflow_with_url", {
+                $logger.warn("closeflow_with_url", {
                     closeUrl: closeUrl
                 });
                 return redirect(closeUrl);
@@ -11835,14 +12045,15 @@ this["ppxo"] = function(modules) {
             console.warn("Checkout is not open, can not be closed");
         }
         function reset() {
+            $logger.debug("reset");
             window.paypal.checkout.initXO = initXO;
             window.paypal.checkout.startFlow = startFlow;
             window.paypal.checkout.closeFlow = closeFlow;
         }
-        (0, _util.onDocumentReady)(function() {
+        (0, _lib.onDocumentReady)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[data-paypal-button]"));
             if (buttons && buttons.length) {
-                _log.$logger.debug("data_paypal_button", {
+                $logger.debug("data_paypal_button", {
                     number: buttons.length
                 });
                 for (var _iterator2 = buttons, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
@@ -11878,6 +12089,7 @@ this["ppxo"] = function(modules) {
             initXO: initXO,
             startFlow: startFlow,
             closeFlow: closeFlow,
+            reset: reset,
             get urlPrefix() {
                 return getUrlPrefix();
             }
@@ -11886,48 +12098,6 @@ this["ppxo"] = function(modules) {
             checkout: checkout,
             Checkout: checkout
         };
-        var readyCalled = false;
-        function invokeReady(method) {
-            if (readyCalled) {
-                _log.$logger.warn("ready_called_multiple_times");
-            }
-            if (setupCalled) {
-                _log.$logger.warn("ready_called_after_setup");
-            }
-            readyCalled = true;
-            (0, _util.onDocumentReady)(function() {
-                _log.$logger.debug("paypal_checkout_ready");
-                setTimeout(function() {
-                    if (!window.paypal) {
-                        _log.$logger.error("paypal_checkout_ready_no_window_paypal");
-                    }
-                    method();
-                }, 1);
-            });
-        }
-        if (typeof window.paypalCheckoutReady === "function") {
-            _log.$logger.debug("paypal_checkout_ready_preset");
-            invokeReady(window.paypalCheckoutReady);
-        }
-        var _paypalCheckoutReady = window.paypalCheckoutReady;
-        try {
-            delete window.paypalCheckoutReady;
-            Object.defineProperty(window, "paypalCheckoutReady", {
-                set: function set(method) {
-                    _log.$logger.debug("paypal_checkout_ready_setter");
-                    _paypalCheckoutReady = method;
-                    invokeReady(method);
-                },
-                get: function get() {
-                    _log.$logger.warn("paypal_checkout_ready_getter");
-                    return _paypalCheckoutReady;
-                }
-            });
-        } catch (err) {
-            _log.$logger.warn("paypal_checkout_ready_setter_error", {
-                error: err.stack || err.toString()
-            });
-        }
     },
     "./src/legacy/eligibility.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -12030,7 +12200,7 @@ this["ppxo"] = function(modules) {
         });
         function setupBridge(env, bridgeUrl) {
             return _promise.SyncPromise["try"](function() {
-                if (!_src2["default"].bridgeRequired(bridgeUrl)) {
+                if (!_src2["default"].needsBridgeForDomain(bridgeUrl)) {
                     return _client2["default"].debug("bridge_not_required", {
                         env: env
                     });
@@ -12042,9 +12212,17 @@ this["ppxo"] = function(modules) {
                 openBridge.then(function(win) {
                     bridge.resolve(win);
                 }, function(err) {
-                    bridge.reject(err);
+                    bridge.asyncReject(err);
                 });
-                return openBridge;
+                return openBridge["catch"](function(err) {
+                    if (_src2["default"].needsBridge({
+                        domain: bridgeUrl
+                    })) {
+                        throw err;
+                    } else {
+                        _client2["default"].debug("open_bridge_transient_failure");
+                    }
+                });
             });
         }
     },
@@ -12858,6 +13036,58 @@ this["ppxo"] = function(modules) {
             return true;
         };
     },
+    "./src/legacy/ready.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
+        var _lib = __webpack_require__("./src/lib/index.js");
+        var _constants = __webpack_require__("./src/legacy/constants.js");
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
+        function invokeReady(method) {
+            (0, _lib.onDocumentReady)(function() {
+                $logger.debug("paypal_checkout_ready");
+                setTimeout(function() {
+                    if (!window.paypal) {
+                        $logger.error("paypal_checkout_ready_no_window_paypal");
+                    }
+                    method();
+                }, 1);
+            });
+        }
+        if (typeof window.paypalCheckoutReady === "function") {
+            $logger.debug("paypal_checkout_ready_preset");
+            invokeReady(window.paypalCheckoutReady);
+        }
+        var _paypalCheckoutReady = window.paypalCheckoutReady;
+        try {
+            delete window.paypalCheckoutReady;
+            Object.defineProperty(window, "paypalCheckoutReady", {
+                set: function set(method) {
+                    $logger.debug("paypal_checkout_ready_setter");
+                    _paypalCheckoutReady = function _paypalCheckoutReady() {
+                        if (!method.called) {
+                            method.called = true;
+                            return method.apply(this, arguments);
+                        }
+                    };
+                    invokeReady(_paypalCheckoutReady);
+                },
+                get: function get() {
+                    $logger.warn("paypal_checkout_ready_getter");
+                    return _paypalCheckoutReady;
+                }
+            });
+        } catch (err) {
+            $logger.warn("paypal_checkout_ready_setter_error", {
+                error: err.stack || err.toString()
+            });
+        }
+    },
     "./src/setup.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -12976,159 +13206,44 @@ this["ppxo"] = function(modules) {
             _client2["default"].debug("no_current_script");
         }
     },
-    "./src/lib/util.js": function(module, exports, __webpack_require__) {
+    "./src/lib/logger.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
-                    if (Object.prototype.hasOwnProperty.call(source, key)) {
-                        target[key] = source[key];
-                    }
-                }
-            }
-            return target;
-        };
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-        };
-        exports.loadScript = loadScript;
-        exports.extend = extend;
-        exports.merge = merge;
-        exports.request = request;
-        exports.isPayPalDomain = isPayPalDomain;
-        exports.memoize = memoize;
-        exports.noop = noop;
-        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        exports.initLogger = initLogger;
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
+        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
+        var _src2 = _interopRequireDefault(_src);
         var _config = __webpack_require__("./src/config/index.js");
-        function loadScript(src, timeout) {
-            return new _promise.SyncPromise(function(resolve, reject) {
-                var script = document.createElement("script");
-                script.onload = function() {
-                    resolve();
-                };
-                script.onreadystatechange = function() {
-                    if (this.readyState === "complete" || this.readyState === "loaded") {
-                        resolve();
-                    }
-                };
-                var scriptLoadError = new Error("script_loading_error");
-                script.onerror = function(event) {
-                    return reject(scriptLoadError);
-                };
-                if (timeout) {
-                    setTimeout(function() {
-                        return reject(new Error("script_loading_timed_out"));
-                    }, timeout);
-                }
-                script.setAttribute("src", src);
-                document.body.appendChild(script);
-            });
-        }
-        function extend(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
-                    if (source.hasOwnProperty(key)) {
-                        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-                    }
-                }
-            }
-            return target;
-        }
-        function merge() {
-            return extend.apply(undefined, [ {} ].concat(Array.prototype.slice.call(arguments)));
-        }
-        function request(options) {
-            return new _promise.SyncPromise(function(resolve, reject) {
-                options.method = options.method || "get";
-                var headers = options.headers || {};
-                if (options.json) {
-                    headers["Content-Type"] = headers["Content-Type"] || "application/json";
-                } else if (options.body) {
-                    headers["Content-Type"] = headers["Content-Type"] || "application/x-www-form-urlencoded; charset=utf-8";
-                }
-                headers.Accept = headers.Accept || "application/json";
-                var isCrossDomain = options.url.indexOf("http") === 0 && options.url.indexOf(window.location.protocol + "//" + window.location.host) !== 0;
-                var xhr = void 0;
-                if (window.XDomainRequest && window.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
-                    xhr = new window.XDomainRequest();
-                    xhr.onload = function() {
-                        resolve(JSON.parse(this.responseText));
-                    };
-                    xhr.onerror = function(evt) {
-                        reject(new Error("Request to " + options.method.toLowerCase() + " " + options.url + " failed: " + evt.toString()));
-                    };
-                    xhr.open(options.method, options.url, true);
-                    if (headers && Object.keys(headers).length) {
-                        return reject(new Error("Headers in a cross-domain IE9- request? Not a chance."));
-                    }
-                } else {
-                    xhr = new window.XMLHttpRequest();
-                    xhr.addEventListener("load", function() {
-                        resolve(JSON.parse(this.responseText));
-                    }, false);
-                    xhr.addEventListener("error", function(evt) {
-                        reject(new Error("Request to " + options.method.toLowerCase() + " " + options.url + " failed: " + evt.toString()));
-                    }, false);
-                    xhr.open(options.method, options.url, true);
-                    if (headers) {
-                        for (var key in headers) {
-                            xhr.setRequestHeader(key, headers[key]);
-                        }
-                    }
-                }
-                if (options.json && !options.body) {
-                    options.body = JSON.stringify(options.json);
-                }
-                if (options.body && _typeof(options.body) === "object") {
-                    options.body = Object.keys(options.body).map(function(key) {
-                        return encodeURIComponent(key) + "=" + encodeURIComponent(options.body[key]);
-                    }).join("&");
-                }
-                xhr.send(options.body);
-            });
-        }
-        request.get = function(url) {
-            var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-            var method = "get";
-            return request(_extends({
-                method: method,
-                url: url
-            }, options));
-        };
-        request.post = function(url, body) {
-            var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-            var method = "post";
-            return request(_extends({
-                method: method,
-                url: url,
-                body: body
-            }, options));
-        };
-        function isPayPalDomain() {
-            return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex));
-        }
-        function memoize(method) {
-            var results = {};
-            return function() {
-                var args = void 0;
-                try {
-                    args = JSON.stringify(Array.prototype.slice.call(arguments));
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-                if (!results.hasOwnProperty(args)) {
-                    results[args] = method.apply(this, arguments);
-                }
-                return results[args];
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
             };
         }
-        function noop() {}
+        function initLogger() {
+            _src2["default"].registerLogger(_client2["default"]);
+            _client2["default"].addPayloadBuilder(function() {
+                return {
+                    host: window.location.host,
+                    path: window.location.pathname,
+                    env: _config.config.env,
+                    country: _config.config.locale.country,
+                    lang: _config.config.locale.lang
+                };
+            });
+            _client2["default"].addMetaBuilder(function() {
+                return {
+                    state: _config.config.state
+                };
+            });
+            _client2["default"].init({
+                uri: _config.config.loggerUrl,
+                heartbeat: false,
+                logPerformance: false,
+                prefix: "ppxo"
+            });
+        }
     }
 });
