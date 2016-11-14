@@ -325,6 +325,14 @@ export let Checkout = xcomponent.create({
                     }
                 };
             }
+        },
+
+        testAction: {
+            type: 'string',
+            required: false,
+            def() {
+                return 'checkout';
+            }
         }
     },
 

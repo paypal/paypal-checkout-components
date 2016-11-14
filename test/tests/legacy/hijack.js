@@ -1,15 +1,15 @@
 
 import paypal from 'src/index';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_URI, createElement, createTestContainer, destroyTestContainer } from './common';
+import { onHashChange, uniqueID, generateECToken, CHILD_URI, createElement, createTestContainer, destroyTestContainer } from '../common';
 
-for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
+for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy checkout flow with hijack on ${name}`, () => {
+    describe(`paypal legacy hijack on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = options.lightbox;
+            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {

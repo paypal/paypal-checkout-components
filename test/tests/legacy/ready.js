@@ -1,5 +1,5 @@
 
-import { delay } from './common';
+import { delay } from '../common';
 
 describe('paypal legacy checkout ready', () => {
 

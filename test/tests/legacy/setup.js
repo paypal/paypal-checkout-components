@@ -1,15 +1,15 @@
 
 import paypal from 'src/index';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from './common';
+import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
 
-for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
+for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy checkout setup flow with ${name}`, () => {
+    describe(`paypal legacy checkout setup/startflow on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = options.lightbox;
+            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
@@ -427,7 +427,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
                 click(event) {
 
-                    if (!options.lightbox) {
+                    if (flow === 'popup') {
                         let open = window.open;
                         window.open = function() {
                             window.open = open;
@@ -450,7 +450,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
                     setTimeout(() => {
                         paypal.checkout.closeFlow();
 
-                        if (options.lightbox) {
+                        if (flow === 'lightbox') {
                             if (paypal.checkout.win.closed) {
                                 return done();
                             } else {
@@ -524,7 +524,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
                 click(event) {
 
-                    if (!options.lightbox) {
+                    if (flow === 'popup') {
                         let open = window.open;
                         window.open = function() {
                             window.open = open;
@@ -545,7 +545,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
                     paypal.checkout.initXO();
                     paypal.checkout.closeFlow();
 
-                    if (options.lightbox) {
+                    if (flow === 'lightbox') {
                         if (paypal.checkout.win.closed) {
                             return done();
                         } else {

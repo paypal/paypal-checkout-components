@@ -2,16 +2,16 @@
 import paypal from 'src/index';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, createElement,
-         createTestContainer, destroyTestContainer } from './common';
+         createTestContainer, destroyTestContainer } from '../common';
 
 
-for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
+for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy standalone checkout with ${name}`, () => {
+    describe(`paypal legacy standalone checkout on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = options.lightbox;
+            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
@@ -154,7 +154,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             testButton.addEventListener('click', event => {
 
-                if (!options.lightbox) {
+                if (flow === 'popup') {
                     let open = window.open;
                     window.open = function() {
                         window.open = open;
@@ -177,7 +177,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
                 setTimeout(() => {
                     paypal.checkout.closeFlow();
 
-                    if (options.lightbox) {
+                    if (flow === 'lightbox') {
                         if (paypal.checkout.win.closed) {
                             return done();
                         } else {
@@ -215,7 +215,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
 
             testButton.addEventListener('click', event => {
 
-                if (options.lightbox) {
+                if (flow === 'lightbox') {
                     setTimeout(function() {
                         if (paypal.checkout.win.closed) {
                             return done();

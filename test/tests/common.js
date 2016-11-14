@@ -1,5 +1,8 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
+
+import paypal from 'src/index';
 
 export function onHashChange() {
     return new Promise((resolve, reject) => {
@@ -39,7 +42,7 @@ export function generateECToken() {
     return `EC-${uniqueID(17).toUpperCase()}`;
 }
 
-export const CHILD_URI = '/base/test/child.htm';
+export const CHILD_URI = '/base/test/checkout.htm';
 export const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
@@ -101,3 +104,52 @@ export function createTestContainer() {
 export function destroyTestContainer() {
     return destroyElement('testContainer');
 }
+
+patchXmlHttpRequest();
+
+$mockEndpoint.register({
+    method: 'POST',
+    uri: paypal.config.loggerUrl,
+    data: {}
+}).listen();
+
+$mockEndpoint.register({
+    method: 'POST',
+    uri: paypal.config.authApiUrl,
+    data: {
+        access_token: 'ABCDEFGH'
+    }
+}).listen();
+
+$mockEndpoint.register({
+    method: 'POST',
+    uri: paypal.config.paymentApiUrl,
+    data: {
+        id: 'PAY-XXXXXXXXXXX'
+    }
+}).listen();
+
+$mockEndpoint.register({
+    method: 'POST',
+    uri: paypal.config.billingApiUrl,
+    data: {
+        token_id: 'BA-XXXXXXXXXXX'
+    }
+}).listen();
+
+$mockEndpoint.register({
+    method: 'POST',
+    uri: paypal.config.experienceApiUrl,
+    data: {
+        id: 'EXP-XXXXXXXXXXX'
+    }
+}).listen();
+
+
+window.console.karma = function() {
+    let karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);
+    if (karma) {
+        karma.log('debug', arguments);
+    }
+    console.log.apply(console, arguments);
+};

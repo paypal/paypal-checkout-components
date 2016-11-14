@@ -1,7 +1,7 @@
 
 import paypal from 'src/index';
 
-import { createElement, createTestContainer, destroyTestContainer } from './common';
+import { createElement, createTestContainer, destroyTestContainer } from '../common';
 
 describe('paypal legacy button rendering', () => {
 

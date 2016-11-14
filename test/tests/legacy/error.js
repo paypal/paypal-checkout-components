@@ -1,15 +1,15 @@
 
 import paypal from 'src/index';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer } from './common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
-for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } }, { name: 'popup', options: { lightbox: false } } ]) {
+for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy checkout error cases with ${name}`, () => {
+    describe(`paypal legacy legacy error cases on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = options.lightbox;
+            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
             window.onerror = () => {};
         });
 
@@ -19,7 +19,7 @@ for (let { name, options } of [ { name: 'lightbox', options: { lightbox: true } 
             paypal.Checkout.contexts.lightbox = false;
         });
 
-        if (!options.lightbox) {
+        if (flow === 'popup') {
 
             it('should call startFlow and redirect to full-page if the window.open fails with immediate startFlow', () => {
 

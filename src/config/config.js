@@ -4,17 +4,15 @@ export let config = {
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
     legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
 
-    paypal_domain_regex: /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+    paypal_domain_regex: __TEST__ ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __MINOR_VERSION__,
-
-    test: __TEST__,
 
     ppobjects: false,
 
     cors: true,
 
-    env: 'production',
+    env: __TEST__ ? 'test' : 'production',
 
     state: 'paypal_xcomponent',
 
@@ -55,7 +53,8 @@ export let config = {
             local:      `https://www.${config.stage}.qa.paypal.com`,
             stage:      `https://www.${config.stage}.qa.paypal.com`,
             sandbox:    `https://www.sandbox.paypal.com`,
-            production: `https://www.paypal.com`
+            production: `https://www.paypal.com`,
+            test:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -64,7 +63,8 @@ export let config = {
             local:      `https://${config.apiStage}.qa.paypal.com:11888`,
             stage:      `https://${config.apiStage}.qa.paypal.com:11888`,
             sandbox:    `https://cors.api.sandbox.paypal.com`,
-            production: `https://cors.api.paypal.com`
+            production: `https://cors.api.paypal.com`,
+            test:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -75,10 +75,11 @@ export let config = {
         let wwwApiUrls  = config.wwwApiUrls;
 
         return {
-            local:      wwwApiUrls.local      === domain ? wwwApiUrls.local      : corsApiUrls.local,
-            stage:      wwwApiUrls.stage      === domain ? wwwApiUrls.stage      : corsApiUrls.stage,
-            sandbox:    wwwApiUrls.sandbox    === domain ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
-            production: wwwApiUrls.production === domain ? wwwApiUrls.production : corsApiUrls.production
+            local:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
+            stage:      domain === wwwApiUrls.stage      ? wwwApiUrls.stage      : corsApiUrls.stage,
+            sandbox:    domain === wwwApiUrls.sandbox    ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
+            production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
+            test:       domain === wwwApiUrls.test       ? wwwApiUrls.test       : corsApiUrls.test
         };
     },
 
@@ -87,7 +88,7 @@ export let config = {
         stage:      `/webapps/hermes`,
         sandbox:    `/checkoutnow`,
         production: `/checkoutnow`,
-        test:       `/base/test/child.htm`
+        test:       `/base/test/checkout.htm`
     },
 
     billingUris: {
@@ -95,7 +96,7 @@ export let config = {
         stage:      `/webapps/hermes/agreements`,
         sandbox:    `/agreements/approve`,
         production: `/agreements/approve`,
-        test:       `/base/test/child.htm`
+        test:       `/base/test/checkout.htm`
     },
 
     buttonUris: {
@@ -103,7 +104,7 @@ export let config = {
         stage:      `/webapps/hermes/button`,
         sandbox:    `/webapps/hermes/button`,
         production: `/webapps/hermes/button`,
-        test:       `/base/test/child.htm`
+        test:       `/base/test/button.htm`
     },
 
     loggerUri: `/webapps/hermes/api/logger`,
@@ -252,6 +253,15 @@ export let config = {
         return config.wwwApiUrls[config.env];
     },
 
+    get apiUrl() {
+
+        let domain     = `${window.location.protocol}//${window.location.host}`;
+        let corsApiUrl = config.corsApiUrl;
+        let wwwApiUrl  = config.wwwApiUrl;
+
+        return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
+    },
+
     get checkoutUrl() {
         return `${config.paypalUrl}${config.checkoutUris[config.env]}`;
     },
@@ -273,15 +283,19 @@ export let config = {
     },
 
     get authApiUrl() {
-        return `${config.apiUrl}/v1/oauth2/token`;
+        return `${config.apiUrl}${config.authApiUri}`;
     },
 
     get paymentApiUrl() {
-        return `${config.apiUrl}/v1/payments/payment`;
+        return `${config.apiUrl}${config.paymentApiUri}`;
     },
 
     get billingApiUrl() {
-        return `${config.apiUrl}/v1/billing-agreements/agreement-tokens`;
+        return `${config.apiUrl}${config.billingApiUri}`;
+    },
+
+    get experienceApiUrl() {
+        return `${config.apiUrl}${config.experienceApiUri}`;
     },
 
     locales: {

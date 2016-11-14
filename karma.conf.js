@@ -101,7 +101,8 @@ module.exports = function(config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'test/test.js': ['webpack'],
-            'test/child.js': ['webpack'],
+            'test/checkout.js': ['webpack'],
+            'test/button.js': ['webpack'],
             'src/**/*.js': ['coverage',  'sourcemap']
         },
 
