@@ -114,7 +114,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        it('should call startFlow with an invalid url for the env and trigger an error', (done) => {
+        it.skip('should call startFlow with an invalid url for the env and trigger an error', (done) => {
 
             let token = generateECToken();
 

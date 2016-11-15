@@ -215,7 +215,7 @@ function matchUrlAndPaymentToken(item) {
         if (env !== config.env) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
                 $logger.warn(`mismatched_env_startflow_url`, { env: config.env, url });
-                throw new Error(`Env "${env}" does not match url ${url}`);
+                // throw new Error(`${url} is not a ${config.env} url`);
             }
         }
     }
@@ -368,16 +368,26 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         $logger.warn(`render_without_click`);
     });
 
-    let paypalCheckout = initPayPalCheckout(props);
+    let paypalCheckout;
 
     if (hijackTarget) {
+
+        let propUrl = props.url;
+        delete props.url;
+
+        paypalCheckout = initPayPalCheckout(props);
 
         paypalCheckout.hijack(hijackTarget);
         paypalCheckout.runTimeout();
 
-        props.url.then(url => {
+        propUrl.then(url => {
+            $logger.warn(`hijack_then_url_passed`);
             paypalCheckout.loadUrl(url);
         });
+
+    } else {
+
+        paypalCheckout = initPayPalCheckout(props);
     }
 
     let render = paypalCheckout.render(null, !hijackTarget).catch(err => {
