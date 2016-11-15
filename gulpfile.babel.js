@@ -65,12 +65,3 @@ gulp.task('karma', ['lint'], function (done) {
 
   server.start();
 });
-
-gulp.task('start', function() {
-  gulp.src(['./'])
-    .pipe(webserver({
-      livereload: true,
-      directoryListing: true,
-      open: '/live_demo'
-    }));
-});

@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 
-export let FILE_NAME = 'paypal.checkout';
+export let FILE_NAME = 'checkout';
 export let MODULE_NAME = 'ppxo';
 
 function getNextVersion() {
@@ -26,8 +26,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig(version) {
-    let filename = `${FILE_NAME}.v${version}.js`;
+function getWebpackConfig(version, filename) {
 
     return {
       module: {
@@ -74,10 +73,9 @@ function getWebpackConfig(version) {
     };
 }
 
-function getWebpackConfigMin(version) {
+function getWebpackConfigMin(version, filename) {
 
-    let config = getWebpackConfig(`${version}.min`);
-    let filename = `${FILE_NAME}.v${version}.js`;
+    let config = getWebpackConfig(version, filename);
 
     config.plugins = [
         new webpack.optimize.UglifyJsPlugin({
@@ -94,8 +92,11 @@ function getWebpackConfigMin(version) {
     return config;
 }
 
-export let WEBPACK_CONFIG_MAJOR = getWebpackConfig(getNextMajorVersion());
-export let WEBPACK_CONFIG_MINOR = getWebpackConfig(getNextMinorVersion());
+let nextMajorVersion = getNextMajorVersion();
+let nextMinorVersion = getNextMinorVersion();
 
-export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfigMin(getNextMajorVersion());
-export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfigMin(getNextMinorVersion());
+export let WEBPACK_CONFIG_MAJOR = getWebpackConfig(nextMajorVersion, `${FILE_NAME}.js`);
+export let WEBPACK_CONFIG_MINOR = getWebpackConfig(nextMinorVersion, `${FILE_NAME}.${nextMinorVersion}.js`);
+
+export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfigMin(nextMajorVersion, `${FILE_NAME}.min.js`);
+export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfigMin(nextMinorVersion, `${FILE_NAME}.${nextMinorVersion}.min.js`);
