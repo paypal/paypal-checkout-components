@@ -14,7 +14,7 @@ import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
-const REDIRECT_DELAY = 500;
+const REDIRECT_DELAY = 1;
 
 let inClick = false;
 
