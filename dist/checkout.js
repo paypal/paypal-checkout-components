@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.18") {
+        if (window.paypal && window.paypal.version === "4.0.19") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -142,7 +142,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.18";
+        var version = exports.version = "4.0.19";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -8359,7 +8359,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.18",
+            version: "4.0.19",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8443,7 +8443,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.18");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.19");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9125,7 +9125,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.18";
+        var version = exports.version = "4.0.19";
         module.exports["default"] = module.exports;
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
@@ -10542,7 +10542,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.18";
+                return _config.config.ppobjects ? "4" : "4.0.19";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10825,7 +10825,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.18";
+                return _config.config.ppobjects ? "4" : "4.0.19";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -13132,7 +13132,7 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.setup = setup;
+        exports.setup = undefined;
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
         var _config = __webpack_require__("./src/config/index.js");
@@ -13169,7 +13169,7 @@ this["ppxo"] = function(modules) {
         }
         setDomainEnv(window.location.protocol + "//" + window.location.host);
         (0, _lib.initLogger)();
-        function setup() {
+        var setup = exports.setup = (0, _lib.once)(function setup() {
             var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             (0, _lib.checkForCommonErrors)();
             if (options.env) {
@@ -13210,7 +13210,7 @@ this["ppxo"] = function(modules) {
                 (0, _compat.setupBridge)(_config.config.env, _config.config.bridgeUrl);
             }
             _client2["default"].info("setup_" + _config.config.env);
-        }
+        });
         function getCurrentScript() {
             var scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
             for (var _iterator2 = scripts, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
