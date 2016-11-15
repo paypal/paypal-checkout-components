@@ -10,5 +10,5 @@ git commit -m "Dist" || echo "Nothing to distribute";
 mversion patch -m '%s';
 
 git push;
-# git push --tags;
-# npm publish;
+git push --tags;
+npm publish;
