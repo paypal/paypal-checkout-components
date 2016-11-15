@@ -84,7 +84,7 @@ function getCurrentScript() {
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src && script.src.replace(/^https?:/, '') === config.scriptUrl || script.hasAttribute('data-paypal-checkout')) {
+        if (script.src && script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout')) {
             return script;
         }
     }

@@ -29,4 +29,4 @@ node_modules
 #IDE
 .idea/*
 
-dist/paypal.checkout.v4.0.*
+dist/checkout.4.0.*
