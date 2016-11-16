@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.20") {
+        if (window.paypal && window.paypal.version === "4.0.21") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -142,7 +142,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.20";
+        var version = exports.version = "4.0.21";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -3826,6 +3826,7 @@ this["ppxo"] = function(modules) {
                             _ref2 = _i2.value;
                         }
                         var listenerName = _ref2;
+                        var name = listenerName.replace(/^xcomponent_/, "");
                         var listener = _src2["default"].on(listenerName, {
                             window: win,
                             domain: domain,
@@ -3835,11 +3836,26 @@ this["ppxo"] = function(modules) {
                         }, function(_ref3) {
                             var source = _ref3.source;
                             var data = _ref3.data;
-                            _this.component.log("listener_" + listenerName.replace(/^xcomponent_/, ""));
+                            _this.component.log("listener_" + name);
                             return listeners[listenerName].call(_this, source, data);
+                        });
+                        var errorListener = _src2["default"].on(listenerName, {
+                            window: win,
+                            errorHandler: function errorHandler(err) {
+                                return _this.error(err);
+                            }
+                        }, function(_ref4) {
+                            var origin = _ref4.origin;
+                            var data = _ref4.data;
+                            _this.component.logError("unexpected_listener_" + name, {
+                                origin: origin,
+                                domain: domain
+                            });
+                            _this.error(new Error("Unexpected " + name + " message from domain " + origin + " -- expected message from " + domain));
                         });
                         _this.clean.register(function() {
                             listener.cancel();
+                            errorListener.cancel();
                         });
                     };
                     for (var _iterator2 = Object.keys(listeners), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
@@ -6363,7 +6379,7 @@ this["ppxo"] = function(modules) {
                         tasks.listen = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref7) {
                             var _ref8 = _slicedToArray(_ref7, 1);
                             var domain = _ref8[0];
-                            return _this7.listen(_this7.window, domain);
+                            _this7.listen(_this7.window, domain);
                         });
                         tasks.watchForClose = tasks.open.then(function() {
                             return _this7.watchForClose();
@@ -6867,6 +6883,11 @@ this["ppxo"] = function(modules) {
                 key: "error",
                 value: function error(err) {
                     var _this21 = this;
+                    this.handledErrors = this.handledErrors || [];
+                    if (this.handledErrors.indexOf(err) !== -1) {
+                        return;
+                    }
+                    this.handledErrors.push(err);
                     return _promise.SyncPromise["try"](function() {
                         _this21.component.logError("error", {
                             error: err.stack || err.toString()
@@ -6911,6 +6932,7 @@ this["ppxo"] = function(modules) {
         _applyDecoratedDescriptor(_class.prototype, "createComponentTemplate", [ memoize ], Object.getOwnPropertyDescriptor(_class.prototype, "createComponentTemplate"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "getParentTemplate", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "getParentTemplate"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "openContainer", [ memoize, promise ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "error", [ promise ], Object.getOwnPropertyDescriptor(_class.prototype, "error"), _class.prototype), 
         _class);
         function destroyAll() {
             var results = [];
@@ -8362,7 +8384,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.20",
+            version: "4.0.21",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8446,7 +8468,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.20");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.21");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9128,7 +9150,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.20";
+        var version = exports.version = "4.0.21";
         module.exports["default"] = module.exports;
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
@@ -10545,7 +10567,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.20";
+                return _config.config.ppobjects ? "4" : "4.0.21";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10828,7 +10850,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.20";
+                return _config.config.ppobjects ? "4" : "4.0.21";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -11781,6 +11803,11 @@ this["ppxo"] = function(modules) {
                     $logger.info("payment_canceled");
                     return _promise.SyncPromise.delay(REDIRECT_DELAY).then(function() {
                         return actions.redirect(window);
+                    });
+                },
+                onError: function onError(err) {
+                    $logger.error("error_handler", {
+                        error: err.stack || err.toString()
                     });
                 }
             }, props));
