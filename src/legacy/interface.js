@@ -653,7 +653,7 @@ function setup(id, options = {}) {
         if (options.container) {
             $logger.warn(`button_and_container_passed`, { button: options.button, container: options.container });
 
-            if (typeof options.button === 'array') {
+            if (Array.isArray(options.button)) {
                 options.button = options.button.concat(options.container);
             } else {
                 options.button = options.container;
