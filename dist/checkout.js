@@ -11049,6 +11049,9 @@ this["ppxo"] = function(modules) {
                     once: true,
                     def: function def() {
                         return function(url) {
+                            _client2["default"].warn("fallback", {
+                                url: url
+                            });
                             if (window.onLegacyPaymentAuthorize) {
                                 window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                             } else {
@@ -13257,6 +13260,12 @@ this["ppxo"] = function(modules) {
                 if (script.src && script.src.replace(/^https?:/, "").split("?")[0] === _config.config.scriptUrl || script.hasAttribute("data-paypal-checkout")) {
                     return script;
                 }
+                if (script.src && script.src.indexOf("paypal.checkout.v4.js") !== -1) {
+                    return script;
+                }
+            }
+            if (document.currentScript) {
+                _client2["default"].debug("current_script_not_recognized");
             }
         }
         var currentScript = getCurrentScript();
