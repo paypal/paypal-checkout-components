@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.24") {
+        if (window.paypal && window.paypal.version === "4.0.25") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -146,7 +146,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.24";
+        var version = exports.version = "4.0.25";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -8388,7 +8388,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.24",
+            version: "4.0.25",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8472,7 +8472,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.24");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.25");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9154,7 +9154,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.24";
+        var version = exports.version = "4.0.25";
         module.exports["default"] = module.exports;
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
@@ -10571,7 +10571,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.24";
+                return _config.config.ppobjects ? "4" : "4.0.25";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10763,6 +10763,11 @@ this["ppxo"] = function(modules) {
             value: true
         });
         exports.Checkout = undefined;
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
         var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -10854,7 +10859,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.24";
+                return _config.config.ppobjects ? "4" : "4.0.25";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -11026,6 +11031,31 @@ this["ppxo"] = function(modules) {
                             this.cancelUrl = data.cancelUrl;
                             if (window.ppCheckpoint) {
                                 window.ppCheckpoint("flow_initial_message");
+                            }
+                            if (window.location.href.indexOf("/webapps/hermes/button") !== -1) {
+                                this.window.addEventListener("message", function(event) {
+                                    try {
+                                        var _ret = function() {
+                                            if (event.origin !== window.location.protocol + "//" + window.location.host) {
+                                                return {
+                                                    v: void 0
+                                                };
+                                            }
+                                            var payload = JSON.parse(event.data);
+                                            if (payload && payload.data && payload.data.event === "loginSuccess") {
+                                                (function() {
+                                                    var getHeaders = window.$Api.prototype.getHeaders;
+                                                    window.$Api.prototype.getHeaders = function() {
+                                                        var headers = getHeaders.apply(this, arguments) || {};
+                                                        headers["x-paypal-internal-euat"] = payload.data.accessToken;
+                                                        return headers;
+                                                    };
+                                                })();
+                                            }
+                                        }();
+                                        if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+                                    } catch (err) {}
+                                });
                             }
                         };
                     }
