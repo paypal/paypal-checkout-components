@@ -87,6 +87,14 @@ function getCurrentScript() {
         if (script.src && script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout')) {
             return script;
         }
+
+        if (script.src && script.src.indexOf('paypal.checkout.v4.js') !== -1) {
+            return script;
+        }
+    }
+
+    if (document.currentScript) {
+        $logger.debug(`current_script_not_recognized`);
     }
 }
 
