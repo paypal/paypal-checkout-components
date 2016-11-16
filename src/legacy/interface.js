@@ -659,6 +659,11 @@ function setup(id, options = {}) {
         } else {
             $logger.warn(`button_element_not_found`, { element: JSON.stringify(options.button) });
         }
+
+        if (options.container) {
+            $logger.warn(`button_and_container_passed`, { button: options.button, container: options.container });
+            delete options.container;
+        }
     }
 
     return renderButtons(id, options).then(buttons => {
