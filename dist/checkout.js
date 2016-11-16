@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.23") {
+        if (window.paypal && window.paypal.version === "4.0.24") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -52,7 +52,11 @@ this["ppxo"] = function(modules) {
             } else {
                 window.paypal = paypal;
             }
-            window.PAYPAL = __webpack_require__("./src/legacy/interface.js");
+            if (window.PAYPAL) {
+                window.PAYPAL = _extends({}, window.PAYPAL, paypal);
+            } else {
+                window.PAYPAL = paypal;
+            }
         }
     },
     "./src/interface/public.js": function(module, exports, __webpack_require__) {
@@ -142,7 +146,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.23";
+        var version = exports.version = "4.0.24";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -8384,7 +8388,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.23",
+            version: "4.0.24",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8468,7 +8472,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.23");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.24");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9150,7 +9154,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.23";
+        var version = exports.version = "4.0.24";
         module.exports["default"] = module.exports;
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
@@ -10567,7 +10571,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.23";
+                return _config.config.ppobjects ? "4" : "4.0.24";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10850,7 +10854,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.23";
+                return _config.config.ppobjects ? "4" : "4.0.24";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -12178,10 +12182,11 @@ this["ppxo"] = function(modules) {
                 return getUrlPrefix();
             }
         };
-        var apps = exports.apps = {
+        var ppApps = window.paypal && window.paypal.apps || window.PAYPAL && window.PAYPAL.apps || {};
+        var apps = exports.apps = _extends({}, ppApps, {
             checkout: checkout,
             Checkout: checkout
-        };
+        });
     },
     "./src/legacy/eligibility.js": function(module, exports, __webpack_require__) {
         "use strict";
