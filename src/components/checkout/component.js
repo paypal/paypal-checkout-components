@@ -318,6 +318,8 @@ export let Checkout = xcomponent.create({
 
             def() {
                 return function(url) {
+                    $logger.warn('fallback', { url });
+
                     if (window.onLegacyPaymentAuthorize) {
                         window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                     } else {
