@@ -1,6 +1,6 @@
 {
   "name": "ppxo",
-  "version": "4.0.23",
+  "version": "4.0.24",
   "description": "Checkout components, for integratng checkout products.",
   "main": "index.js",
   "scripts": {
