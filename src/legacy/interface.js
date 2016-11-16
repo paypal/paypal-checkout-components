@@ -338,6 +338,11 @@ function initPayPalCheckout(props = {}) {
             });
         },
 
+        onError(err) {
+
+            $logger.error(`error_handler`, { error: err.stack || err.toString() });
+        },
+
         ...props
     });
 
