@@ -36,6 +36,14 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
         window.paypal = paypal;
     }
 
+    if (window.PAYPAL) {
 
-    window.PAYPAL = require('./legacy/interface');
+        window.PAYPAL = {
+            ...window.PAYPAL,
+            ...paypal
+        };
+
+    } else {
+        window.PAYPAL = paypal;
+    }
 }

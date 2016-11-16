@@ -833,7 +833,10 @@ export let checkout = {
     }
 };
 
+let ppApps = (window.paypal && window.paypal.apps) || (window.PAYPAL && window.PAYPAL.apps) || {};
+
 export let apps = {
+    ...ppApps,
     checkout,
     Checkout: checkout
 };
