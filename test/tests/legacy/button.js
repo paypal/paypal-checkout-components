@@ -721,6 +721,170 @@ describe('paypal legacy button rendering', () => {
             }, 20);
         });
     });
+
+    it('should listen for click on button when passed both button and container', (done) => {
+
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+            container: 'randomContainer',
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            testButton.click();
+        });
+    });
+
+    it('should listen for click on button when passed both button array and container', (done) => {
+
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButton' ],
+            container: 'randomContainer',
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            testButton.click();
+        });
+    });
+
+    it('should listen for click on button when passed both button array and container array', (done) => {
+
+        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButton' ],
+            container: [ 'randomContainer' ],
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            testButton.click();
+        });
+    });
+
+    it('should not render button to container when passed both button and container', (done) => {
+
+        createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+            container: 'randomContainer',
+
+            click() {
+                done(new Error(`Expected click handler not to be called`));
+            }
+
+        }).then(() => {
+
+            if (randomContainer.querySelector('button')) {
+                return done(new Error(`Expected container to not contain a button`));
+            }
+
+            done();
+        });
+    });
+
+    it('should register clicks on container when passed both button and container', (done) => {
+
+        createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+            container: 'randomContainer',
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            randomContainer.click();
+        });
+    });
+
+    it('should register clicks on container when passed both button and container array', (done) => {
+
+        createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: 'testButton',
+            container: [ 'randomContainer' ],
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            randomContainer.click();
+        });
+    });
+
+    it('should register clicks on container when passed both button array and container', (done) => {
+
+        createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButton' ],
+            container: 'randomContainer',
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            randomContainer.click();
+        });
+    });
+
+    it('should register clicks on container when passed both button array and container array', (done) => {
+
+        createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+        let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
+
+        return paypal.checkout.setup('merchantID', {
+
+            button: [ 'testButton' ],
+            container: [ 'randomContainer' ],
+
+            click() {
+                done();
+            }
+
+        }).then(() => {
+
+            randomContainer.click();
+        });
+    });
 });
 
 describe('paypal legacy button options', () => {

@@ -656,7 +656,7 @@ function setup(id, options = {}) {
             if (Array.isArray(options.button)) {
                 options.button = options.button.concat(options.container);
             } else {
-                options.button = options.container;
+                options.button = [ options.button ].concat(options.container);
             }
 
             delete options.container;
