@@ -287,6 +287,31 @@ export let Checkout = xcomponent.create({
                     if (window.ppCheckpoint) {
                         window.ppCheckpoint('flow_initial_message');
                     }
+
+                    if (window.location.href.indexOf('/webapps/hermes/button') !== -1) {
+                        this.window.addEventListener('message', event => {
+                            try {
+                                if (event.origin !== `${window.location.protocol}//${window.location.host}`) {
+                                    return;
+                                }
+
+                                let payload = JSON.parse(event.data);
+                                if (payload && payload.data && payload.data.event === 'loginSuccess') {
+
+                                    let getHeaders = window.$Api.prototype.getHeaders;
+
+                                    window.$Api.prototype.getHeaders = function() {
+                                        let headers = getHeaders.apply(this, arguments) || {};
+                                        headers['x-paypal-internal-euat'] = payload.data.accessToken;
+                                        return headers;
+                                    };
+                                }
+
+                            } catch (err) {
+                                // pass
+                            }
+                        });
+                    }
                 };
             }
         },

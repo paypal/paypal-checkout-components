@@ -6,4 +6,6 @@ cp -r ~/nfra/xcomponent/src/* node_modules/xcomponent/src/ &&
 cp -r ~/nfra/beaver-logger/client/* node_modules/beaver-logger/client/ &&
 gulp webpack-major && 
 scp -r dist/checkout.js root@bluesuncorp.co.uk:/var/www/html/icv4/dist &&
+scp -r dist/checkout.js root@bluesuncorp.co.uk:/var/www/html/icv4/dist/paypal.checkout.v4.js &&
 git checkout dist
+
