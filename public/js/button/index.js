@@ -77,6 +77,15 @@ function getActions(checkout, data, actions) {
                 return executePayment(data.paymentToken, data.payerID, restartFlow);
             },
 
+            get: () => {
+
+                if (!data.paymentID) {
+                    throw new Error('Client side get is only available for REST based transactions');
+                }
+
+                return getPayment(data.paymentID);
+            },
+
             executeAndConfirm: () => {
                 throw new Error('Not implemented');
             }
@@ -99,23 +108,36 @@ function renderCheckout(paymentToken) {
 
         onAuthorize(data, actions) {
 
-            return Promise.try(() => {
+            data = data || {};
 
-                if (data.paymentID) {
-                    return getPayment(data.paymentID).then(payment => {
-                        data.payment = payment;
-                    });
+            Object.defineProperty(data, 'payment', {
+                get() {
+                    throw new Error(`Please call actions.payment.get() to get payment details`);
                 }
-
-            }).then(() => {
-
-                return window.xprops.onAuthorize(data, getActions(this, data, actions));
             });
+
+            return window.xprops.onAuthorize(data, getActions(this, data, actions))
+                .catch(err => {
+
+                    if (window.console && window.console.error) {
+                        window.console.error(err.stack);
+                    }
+
+                    throw err;
+                });
         },
 
         onCancel(data, actions) {
 
-            return window.xprops.onCancel(data, actions);
+            return window.xprops.onCancel(data, actions)
+                .catch(err => {
+
+                    if (window.console && window.console.error) {
+                        window.console.error(err.stack);
+                    }
+
+                    throw err;
+                });
         }
     });
 }
