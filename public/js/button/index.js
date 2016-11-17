@@ -1,6 +1,7 @@
 
 // TODO: need to shim in a promise library for squid etc.
 
+import { $Api } from 'squid-core/dist/api';
 import { $promise } from 'squid-core/dist/promise';
 import { $util } from 'squid-core/dist/util';
 
@@ -136,6 +137,10 @@ function renderCheckout(paymentToken) {
 
                     throw err;
                 });
+        },
+
+        onAuth(data) {
+            $Api.addHeader('x-paypal-internal-euat', data.accessToken);
         }
     });
 }
