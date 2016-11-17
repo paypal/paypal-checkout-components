@@ -17,7 +17,7 @@
 </head>
 
 <body>
-<script src="{{config.urls.incontextScript}}/paypal.checkout.v{{meta.version}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
+<script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
 
 <div id="buttonContainer">
     <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
