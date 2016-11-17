@@ -49,7 +49,31 @@ function determineLocale() {
     });
 }
 
-function getActions(checkout, data, actions) {
+function memoize(method) {
+
+    let called = false;
+    let result;
+
+    function memoizeWrapper() {
+
+        if (called) {
+            return result;
+        }
+
+        called = true;
+        result = method.apply(this, arguments);
+
+        return result;
+    }
+
+    memoizeWrapper.reset = () => {
+        called = false;
+    };
+
+    return memoizeWrapper;
+}
+
+function getActions(checkout, data, actions, intent) {
 
     let restartFlow = () => {
         return checkout.close().then(() => {
@@ -57,35 +81,51 @@ function getActions(checkout, data, actions) {
         });
     };
 
-    return {
+    actions = {
 
         ...actions,
 
         payment: {
 
-            execute: () => {
+            execute: memoize(() => {
+
+                checkout.closeComponent();
 
                 if (!data.paymentID) {
                     throw new Error('Client side execute is only available for REST based transactions');
                 }
 
-                if (!data.payment || !data.payment.intent === 'sale') {
-                    throw new Error('Client side execute is only available for SALE transactions');
+                if (data.intent) {
+
+                    if (data.intent !== 'sale') {
+                        throw new Error('Client side execute is only available for sale transactions');
+                    }
+
+                    return executePayment(data.paymentToken, data.payerID, restartFlow).finally(() => {
+                        actions.payment.get.reset();
+                    });
                 }
 
-                checkout.closeComponent();
+                return actions.payment.get().then(payment => {
 
-                return executePayment(data.paymentToken, data.payerID, restartFlow);
-            },
+                    if (!payment || payment.intent !== 'sale') {
+                        throw new Error('Client side execute is only available for sale transactions');
+                    }
 
-            get: () => {
+                    return executePayment(data.paymentToken, data.payerID, restartFlow).finally(() => {
+                        actions.payment.get.reset();
+                    });
+                });
+            }),
+
+            get: memoize(() => {
 
                 if (!data.paymentID) {
                     throw new Error('Client side get is only available for REST based transactions');
                 }
 
                 return getPayment(data.paymentID);
-            },
+            }),
 
             executeAndConfirm: () => {
                 throw new Error('Not implemented');
@@ -94,6 +134,8 @@ function getActions(checkout, data, actions) {
 
         restart: restartFlow
     };
+
+    return actions;
 }
 
 
