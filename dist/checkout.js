@@ -32,7 +32,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.25") {
+        if (window.paypal && window.paypal.version === "4.0.26") {
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -146,7 +146,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.25";
+        var version = exports.version = "4.0.26";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -5017,16 +5017,17 @@ this["ppxo"] = function(modules) {
                 _this.component = component;
                 _this.component.log("construct_child");
                 _this.onPropHandlers = [];
-                _this.setProps(_this.getInitialProps());
+                _this.setProps(_this.getInitialProps(), (0, _window.getParentDomain)());
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.onInit = _this.sendToParent(_constants.POST_MESSAGE.INIT, {
                     exports: _this.exports()
                 }).then(function(_ref) {
+                    var origin = _ref.origin;
                     var data = _ref.data;
                     _this.context = data.context;
                     window.xprops = _this.props = {};
-                    _this.setProps(data.props);
+                    _this.setProps(data.props, origin);
                     if (_this.component.autoResize) {
                         _this.watchForResize();
                     }
@@ -5078,8 +5079,9 @@ this["ppxo"] = function(modules) {
                 key: "setProps",
                 value: function setProps() {
                     var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                    var origin = arguments[1];
                     window.xprops = this.props = this.props || {};
-                    (0, _lib.extend)(this.props, (0, _props.normalizeChildProps)(this.component, props));
+                    (0, _lib.extend)(this.props, (0, _props.normalizeChildProps)(this.component, props, origin));
                     for (var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                         var _ref2;
                         if (_isArray) {
@@ -5192,29 +5194,29 @@ this["ppxo"] = function(modules) {
             }, {
                 key: "exports",
                 value: function exports() {
-                    var _this5 = this;
+                    var self = this;
                     return {
                         updateProps: function updateProps(props) {
-                            return _this5.setProps(props);
+                            return self.setProps(props, this.origin);
                         },
                         close: function close() {
-                            return _this5.destroy();
+                            return self.destroy();
                         }
                     };
                 }
             }, {
                 key: "resize",
                 value: function resize(width, height) {
-                    var _this6 = this;
+                    var _this5 = this;
                     return _promise.SyncPromise.resolve().then(function() {
-                        _this6.component.log("resize", {
+                        _this5.component.log("resize", {
                             width: width,
                             height: height
                         });
-                        if (_this6.context === _constants.CONTEXT_TYPES.POPUP) {
+                        if (_this5.context === _constants.CONTEXT_TYPES.POPUP) {
                             return;
                         }
-                        return _this6.sendToParent(_constants.POST_MESSAGE.RESIZE, {
+                        return _this5.sendToParent(_constants.POST_MESSAGE.RESIZE, {
                             width: width,
                             height: height
                         });
@@ -5842,7 +5844,7 @@ this["ppxo"] = function(modules) {
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
-        function normalizeChildProps(component, props) {
+        function normalizeChildProps(component, props, origin) {
             var result = {};
             var _loop = function _loop() {
                 if (_isArray) {
@@ -5883,6 +5885,9 @@ this["ppxo"] = function(modules) {
                             });
                         };
                     })();
+                }
+                if (value && prop.sameDomain && origin !== window.location.protocol + "//" + window.location.host) {
+                    value = null;
                 }
                 result[key] = value;
                 if (prop.alias && !result[prop.alias]) {
@@ -8388,7 +8393,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.25",
+            version: "4.0.26",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8472,7 +8477,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.25");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.26");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9154,7 +9159,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.25";
+        var version = exports.version = "4.0.26";
         module.exports["default"] = module.exports;
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
@@ -10571,7 +10576,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.25";
+                return _config.config.ppobjects ? "4" : "4.0.26";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10859,7 +10864,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.25";
+                return _config.config.ppobjects ? "4" : "4.0.26";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10979,6 +10984,11 @@ this["ppxo"] = function(modules) {
                     type: "function",
                     required: false,
                     sendToChild: false
+                },
+                onAuth: {
+                    type: "function",
+                    required: false,
+                    sameDomain: true
                 },
                 onCancel: {
                     type: "function",
