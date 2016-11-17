@@ -229,6 +229,12 @@ export let Checkout = xcomponent.create({
             sendToChild: false
         },
 
+        onAuth: {
+            type: 'function',
+            required: false,
+            sameDomain: true
+        },
+
         onCancel: {
             type: 'function',
             required: false,
