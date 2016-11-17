@@ -111,12 +111,10 @@ function renderCheckout(paymentToken) {
             data = data || {};
 
             Object.defineProperty(data, 'payment', {
-                get() {
-                    throw new Error(`Please call actions.payment.get() to get payment details`);
-                }
+                __warning__: `Please call actions.payment.get() to get payment details`
             });
 
-            return window.xprops.onAuthorize(data, getActions(this, data, actions))
+            return Promise.try(() => window.xprops.onAuthorize(data, getActions(this, data, actions)))
                 .catch(err => {
 
                     if (window.console && window.console.error) {
@@ -129,7 +127,7 @@ function renderCheckout(paymentToken) {
 
         onCancel(data, actions) {
 
-            return window.xprops.onCancel(data, actions)
+            return Promise.try(() => window.xprops.onCancel(data, actions))
                 .catch(err => {
 
                     if (window.console && window.console.error) {
