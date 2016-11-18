@@ -105,38 +105,16 @@ export let Button = xcomponent.create({
                 if (original) {
                     return function(data, actions) {
 
-                        /*
-                        let payment = data.payment;
-
-                        if (payment && !actions.payment.get) {
-                            actions.payment.get = () => {
-                                return Promise.resolve(payment);
-                            };
-                        }
-                        */
-
-                        actions.payment.get = () => {
-                            $logger.warn(`actions_payment_get_called`);
-
-                            throw new Error(`Not yet implemented. Please make a server-side get-payment call. See` +
-                                `https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/`);
-                        };
-
                         Object.defineProperty(data, 'payment', {
                             get() {
                                 $logger.warn(`data_payment_referenced`);
 
-                                throw new Error(`Not yet implemented. Please make a server-side get-payment call. See` +
-                                    `https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/`);
-
-                                /*
                                 throw new Error(`Please call actions.payment.get() to get payment details:\n\n` +
                                      `    onAuthorize: function(data, actions) {\n` +
                                      `        return actions.payment.get().then(function(payment) {\n` +
                                      `            console.log(payment);\n` +
                                      `        });\n` +
                                      `    }\n\n`);
-                                */
                             }
                         });
 
