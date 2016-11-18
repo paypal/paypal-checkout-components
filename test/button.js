@@ -15,7 +15,25 @@ document.querySelector('#button').addEventListener('click', event => {
     paypal.Checkout.renderTo(window.parent, {
 
         payment: window.xprops.payment,
-        onAuthorize: window.xprops.onAuthorize,
+        onAuthorize(data, actions) {
+
+            return window.xprops.onAuthorize({
+                ...data,
+
+                payment: {}
+
+            }, {
+                payment: {
+                    execute() {
+
+                    },
+
+                    get() {
+                        return {};
+                    }
+                }
+            });
+        },
         onCancel: window.xprops.onCancel,
         commit: window.xprops.commit,
         locale: window.xprops.locale,
