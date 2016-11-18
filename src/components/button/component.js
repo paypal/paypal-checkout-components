@@ -1,9 +1,9 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
 import { config } from '../../config';
-import { enableCheckoutIframe } from '../checkout';
 import { isDevice } from '../../lib';
 
 import { validateProps, urlWillRedirectPage } from '../common';
@@ -104,7 +104,41 @@ export let Button = xcomponent.create({
             decorate(original) {
                 if (original) {
                     return function(data, actions) {
-                        enableCheckoutIframe();
+
+                        /*
+                        let payment = data.payment;
+
+                        if (payment && !actions.payment.get) {
+                            actions.payment.get = () => {
+                                return Promise.resolve(payment);
+                            };
+                        }
+                        */
+
+                        actions.payment.get = () => {
+                            $logger.warn(`actions_payment_get_called`);
+
+                            throw new Error(`Not yet implemented. Please make a server-side get-payment call. See` +
+                                `https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/`);
+                        };
+
+                        Object.defineProperty(data, 'payment', {
+                            get() {
+                                $logger.warn(`data_payment_referenced`);
+
+                                throw new Error(`Not yet implemented. Please make a server-side get-payment call. See` +
+                                    `https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/`);
+
+                                /*
+                                throw new Error(`Please call actions.payment.get() to get payment details:\n\n` +
+                                     `    onAuthorize: function(data, actions) {\n` +
+                                     `        return actions.payment.get().then(function(payment) {\n` +
+                                     `            console.log(payment);\n` +
+                                     `        });\n` +
+                                     `    }\n\n`);
+                                */
+                            }
+                        });
 
                         let redirect = (win, url) => {
 

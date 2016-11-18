@@ -94,11 +94,14 @@ function getCurrentScript() {
     }
 
     if (document.currentScript) {
-        $logger.debug(`current_script_not_recognized`);
+        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
     }
 }
 
 let currentScript = getCurrentScript();
+let currentProtocol = window.location.protocol;
+
+$logger.debug(`current_protocol_${currentProtocol}`);
 
 if (currentScript) {
 
@@ -113,6 +116,15 @@ if (currentScript) {
         ppobjects: true
     });
 
+    let scriptProtocol = currentScript.src.split(':')[0];
+
+    $logger.debug(`current_script_protocol_${scriptProtocol}`);
+    $logger.debug(`current_script_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }_protocol`);
+
 } else {
     $logger.debug(`no_current_script`);
+
+    if (document.currentScript) {
+        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+    }
 }

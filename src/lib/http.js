@@ -21,9 +21,11 @@ export function request(options) {
 
         let xhr;
 
-        if (window.XDomainRequest && window.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
+        let win = options.win || window;
 
-            xhr = new window.XDomainRequest();
+        if (win.XDomainRequest && win.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
+
+            xhr = new win.XDomainRequest();
 
             xhr.onload = function() {
                 resolve(JSON.parse(this.responseText));
@@ -41,7 +43,7 @@ export function request(options) {
 
         } else {
 
-            xhr = new window.XMLHttpRequest();
+            xhr = new win.XMLHttpRequest();
 
             xhr.addEventListener('load', function() {
                 resolve(JSON.parse(this.responseText));

@@ -6,13 +6,32 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice } from '../../lib';
+import { isDevice, request } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps, urlWillRedirectPage } from '../common';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
+
+
+function addHeader(name, value) {
+
+    if (!window.$Api) {
+        return;
+    }
+
+    if (window.$Api.addHeader) {
+        return window.$Api.addHeader(name, value);
+    }
+
+    let getHeaders = window.$Api.prototype.getHeaders;
+    window.$Api.prototype.getHeaders = function() {
+        let headers = getHeaders.apply(this, arguments) || {};
+        headers[name] = value;
+        return headers;
+    };
+}
 
 
 function logReturnUrl(returnUrl) {
@@ -181,7 +200,6 @@ export let Checkout = xcomponent.create({
             decorate(original) {
                 if (original) {
                     return function(data, actions = {}) {
-                        enableCheckoutIframe();
 
                         try {
                             logReturnUrl(data.returnUrl);
@@ -214,6 +232,30 @@ export let Checkout = xcomponent.create({
                         };
 
                         return Promise.try(() => {
+
+                            try {
+                                let isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
+                                let isGuest  = this.window.location.href.indexOf('/webapps/xoonboarding') !== -1;
+
+                                if (isButton && isGuest) {
+                                    return request({
+                                        win: this.window,
+                                        method: 'get',
+                                        url: '/webapps/hermes/api/auth'
+                                    }).then(result => {
+                                        if (result && result.data && result.data.access_token) {
+                                            addHeader('x-paypal-internal-euat', result.data.access_token);
+                                        }
+                                    }).catch(err2 => {
+                                        // pass
+                                    });
+                                }
+
+                            } catch (err) {
+                                // pass
+                            }
+
+                        }).then(() => {
                             return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
                             return this.close();
@@ -294,29 +336,29 @@ export let Checkout = xcomponent.create({
                         window.ppCheckpoint('flow_initial_message');
                     }
 
-                    if (window.location.href.indexOf('/webapps/hermes/button') !== -1) {
-                        this.window.addEventListener('message', event => {
-                            try {
-                                if (event.origin !== `${window.location.protocol}//${window.location.host}`) {
-                                    return;
+                    try {
+                        let isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
+
+                        if (isButton) {
+                            this.window.addEventListener('message', event => {
+                                try {
+                                    if (event.origin !== `${window.location.protocol}//${window.location.host}`) {
+                                        return;
+                                    }
+
+                                    let payload = JSON.parse(event.data);
+                                    if (payload && payload.data && payload.data.accessToken) {
+                                        addHeader('x-paypal-internal-euat', payload.data.accessToken);
+                                    }
+
+                                } catch (err2) {
+                                    // pass
                                 }
+                            });
+                        }
 
-                                let payload = JSON.parse(event.data);
-                                if (payload && payload.data && payload.data.event === 'loginSuccess') {
-
-                                    let getHeaders = window.$Api.prototype.getHeaders;
-
-                                    window.$Api.prototype.getHeaders = function() {
-                                        let headers = getHeaders.apply(this, arguments) || {};
-                                        headers['x-paypal-internal-euat'] = payload.data.accessToken;
-                                        return headers;
-                                    };
-                                }
-
-                            } catch (err) {
-                                // pass
-                            }
-                        });
+                    } catch (err) {
+                        // pass
                     }
                 };
             }
