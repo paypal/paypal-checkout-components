@@ -1,5 +1,5 @@
 {
-  "name": "ppxo",
+  "name": "paypal-checkout",
   "version": "4.0.28",
   "description": "Checkout components, for integratng checkout products.",
   "main": "index.js",
