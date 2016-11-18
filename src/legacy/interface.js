@@ -7,7 +7,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, onDocumentReady, once } from '../lib';
+import { supportsPopups, getElements, onDocumentReady, once, checkpoint } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons } from './button';
 import { normalizeLocale } from './common';
@@ -85,14 +85,8 @@ function logRedirect(location) {
 
     redirected = true;
 
-    if (window.ppCheckpoint) {
-        if (location && location.match(/^https:\/\/www\.paypal\.com/)) {
-            window.ppCheckpoint('flow_fullpage_redirect');
-        } else if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
-            window.ppCheckpoint('flow_complete');
-        } else {
-            window.ppCheckpoint('flow_cancel');
-        }
+    if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
+        checkpoint('flow_complete');
     }
 
     $logger.flush();
@@ -244,20 +238,12 @@ function getPaymentTokenAndUrl() {
 
         window.paypal.checkout.initXO = () => {
             $logger.warn(`gettoken_initxo`);
-
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint('flow_initxo');
-            }
         };
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
         window.paypal.checkout.startFlow = once((item, opts) => {
             $logger.debug(`gettoken_startflow`, { item });
-
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint('flow_startflow');
-            }
 
             if (opts) {
                 $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
@@ -310,9 +296,7 @@ function initPayPalCheckout(props = {}) {
 
     paypalCheckoutInited = true;
 
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_start');
-    }
+    checkpoint('flow_start');
 
     let paypalCheckout = Checkout.init({
 
@@ -514,9 +498,7 @@ function listenClick(container, button, clickHandler, condition) {
 
     let element = (container.tagName.toLowerCase() === 'a') ? container : button;
 
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_listenclick');
-    }
+    checkpoint('flow_listenclick');
 
     let isClick  = (clickHandler instanceof Function);
 
@@ -530,9 +512,7 @@ function listenClick(container, button, clickHandler, condition) {
 
         registerClick();
 
-        if (window.ppCheckpoint) {
-            window.ppCheckpoint('flow_buttonclick');
-        }
+        checkpoint('flow_buttonclick');
 
         if (supportsPopups()) {
             $logger.debug(`click_popups_supported`);
@@ -587,9 +567,7 @@ let setupCalled = false;
 
 function setup(id, options = {}) {
 
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_setup');
-    }
+    checkpoint('flow_setup');
 
     id = id || 'merchant';
 
@@ -696,10 +674,6 @@ function initXO() {
 
     $logger.debug(`initxo`);
 
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_initxo');
-    }
-
     if (!isLegacyEligible()) {
         return $logger.debug(`ineligible_initxo`);
     }
@@ -726,10 +700,6 @@ function initXO() {
 
 function startFlow(item, opts) {
     $logger.debug(`startflow`, { item });
-
-    if (window.ppCheckpoint) {
-        window.ppCheckpoint('flow_startflow');
-    }
 
     if (opts) {
         $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });

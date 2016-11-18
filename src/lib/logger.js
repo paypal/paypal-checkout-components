@@ -13,7 +13,9 @@ export function initLogger() {
             path: window.location.pathname,
             env: config.env,
             country: config.locale.country,
-            lang: config.locale.lang
+            lang: config.locale.lang,
+            uid: window.pp_uid,
+            ver: __MINOR_VERSION__
         };
     });
 

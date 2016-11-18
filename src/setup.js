@@ -2,9 +2,11 @@
 import $logger from 'beaver-logger/client';
 
 import { config } from './config';
-import { initLogger, checkForCommonErrors, once } from './lib';
+import { initLogger, checkForCommonErrors, once, beacon } from './lib';
 import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
+
+import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
 function domainToEnv(domain) {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -25,6 +27,15 @@ function setDomainEnv(domain) {
 setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
 initLogger();
+
+Promise.onPossiblyUnhandledException(err => {
+
+    beacon(`unhandled_error`, {
+        message: err ? err.toString() : 'undefined',
+        stack: err.stack || err.toString(),
+        errtype: ({}).toString.call(err)
+    });
+});
 
 export let setup = once(function setup(options = {}) {
 

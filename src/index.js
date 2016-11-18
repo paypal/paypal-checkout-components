@@ -1,9 +1,13 @@
 
+import { beacon, checkpoint, uniqueID } from './lib/beacon';
+
 function isPayPalDomain() {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
 }
 
 if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
+
+    checkpoint('load_again');
 
     let error = 'PayPal Checkout Integration Script already loaded on page';
 
@@ -20,30 +24,47 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
 } else {
 
-    let paypal = (isPayPalDomain() || __TEST__) ? require('./interface/paypal') : require('./interface/public');
+    window.pp_uid = window.pp_uid || uniqueID();
 
-    module.exports = paypal;
-    module.exports.default = module.exports;
+    checkpoint('load');
 
-    if (window.paypal) {
+    try {
 
-        window.paypal = {
-            ...window.paypal,
-            ...paypal
-        };
+        let paypal = (isPayPalDomain() || __TEST__) ? require('./interface/paypal') : require('./interface/public');
 
-    } else {
-        window.paypal = paypal;
-    }
+        module.exports = paypal;
+        module.exports.default = module.exports;
 
-    if (window.PAYPAL) {
+        if (window.paypal) {
 
-        window.PAYPAL = {
-            ...window.PAYPAL,
-            ...paypal
-        };
+            window.paypal = {
+                ...window.paypal,
+                ...paypal
+            };
 
-    } else {
-        window.PAYPAL = paypal;
+        } else {
+            window.paypal = paypal;
+        }
+
+        if (window.PAYPAL) {
+
+            window.PAYPAL = {
+                ...window.PAYPAL,
+                ...paypal
+            };
+
+        } else {
+            window.PAYPAL = paypal;
+        }
+
+    } catch (err) {
+
+        beacon('bootstrap_error', {
+            message: err ? err.toString() : 'undefined',
+            stack: err.stack || err.toString(),
+            errtype: ({}).toString.call(err)
+        });
+
+        throw err;
     }
 }

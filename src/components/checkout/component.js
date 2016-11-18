@@ -324,10 +324,6 @@ export let Checkout = xcomponent.create({
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
-
-                    if (window.ppCheckpoint) {
-                        window.ppCheckpoint('flow_initial_message');
-                    }
                 };
             }
         },
