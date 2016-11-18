@@ -29,10 +29,12 @@ this["ppxo"] = function(modules) {
             }
             return target;
         };
+        var _beacon = __webpack_require__("./src/lib/beacon.js");
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.27") {
+        if (window.paypal && window.paypal.version === "4.0.28") {
+            (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
                 if (window.console.warn) {
@@ -44,18 +46,29 @@ this["ppxo"] = function(modules) {
             module.exports = window.paypal;
             module.exports["default"] = module.exports;
         } else {
-            var paypal = isPayPalDomain() || false ? __webpack_require__("./src/interface/paypal.js") : __webpack_require__("./src/interface/public.js");
-            module.exports = paypal;
-            module.exports["default"] = module.exports;
-            if (window.paypal) {
-                window.paypal = _extends({}, window.paypal, paypal);
-            } else {
-                window.paypal = paypal;
-            }
-            if (window.PAYPAL) {
-                window.PAYPAL = _extends({}, window.PAYPAL, paypal);
-            } else {
-                window.PAYPAL = paypal;
+            window.pp_uid = window.pp_uid || (0, _beacon.uniqueID)();
+            (0, _beacon.checkpoint)("load");
+            try {
+                var paypal = isPayPalDomain() || false ? __webpack_require__("./src/interface/paypal.js") : __webpack_require__("./src/interface/public.js");
+                module.exports = paypal;
+                module.exports["default"] = module.exports;
+                if (window.paypal) {
+                    window.paypal = _extends({}, window.paypal, paypal);
+                } else {
+                    window.paypal = paypal;
+                }
+                if (window.PAYPAL) {
+                    window.PAYPAL = _extends({}, window.PAYPAL, paypal);
+                } else {
+                    window.PAYPAL = paypal;
+                }
+            } catch (err) {
+                (0, _beacon.beacon)("bootstrap_error", {
+                    message: err ? err.toString() : "undefined",
+                    stack: err.stack || err.toString(),
+                    errtype: {}.toString.call(err)
+                });
+                throw err;
             }
         }
     },
@@ -146,7 +159,109 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.27";
+        var version = exports.version = "4.0.28";
+        module.exports["default"] = module.exports;
+    },
+    "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.config = exports.setup = exports.apps = exports.checkout = exports.PayPalCheckout = exports.Checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = exports.xcomponent = undefined;
+        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
+        Object.defineProperty(exports, "xcomponent", {
+            enumerable: true,
+            get: function get() {
+                return _interopRequireDefault(_src)["default"];
+            }
+        });
+        var _src2 = __webpack_require__("./node_modules/post-robot/src/index.js");
+        Object.defineProperty(exports, "postRobot", {
+            enumerable: true,
+            get: function get() {
+                return _interopRequireDefault(_src2)["default"];
+            }
+        });
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        Object.defineProperty(exports, "Promise", {
+            enumerable: true,
+            get: function get() {
+                return _promise.SyncPromise;
+            }
+        });
+        var _api = __webpack_require__("./src/api/index.js");
+        Object.defineProperty(exports, "rest", {
+            enumerable: true,
+            get: function get() {
+                return _api.rest;
+            }
+        });
+        var _components = __webpack_require__("./src/components/index.js");
+        Object.defineProperty(exports, "Button", {
+            enumerable: true,
+            get: function get() {
+                return _components.Button;
+            }
+        });
+        Object.defineProperty(exports, "Checkout", {
+            enumerable: true,
+            get: function get() {
+                return _components.Checkout;
+            }
+        });
+        Object.defineProperty(exports, "PayPalCheckout", {
+            enumerable: true,
+            get: function get() {
+                return _components.Checkout;
+            }
+        });
+        var _legacy = __webpack_require__("./src/legacy/index.js");
+        Object.defineProperty(exports, "checkout", {
+            enumerable: true,
+            get: function get() {
+                return _legacy.checkout;
+            }
+        });
+        Object.defineProperty(exports, "apps", {
+            enumerable: true,
+            get: function get() {
+                return _legacy.apps;
+            }
+        });
+        var _setup = __webpack_require__("./src/setup.js");
+        Object.defineProperty(exports, "setup", {
+            enumerable: true,
+            get: function get() {
+                return _setup.setup;
+            }
+        });
+        var _config = __webpack_require__("./src/config/index.js");
+        Object.defineProperty(exports, "config", {
+            enumerable: true,
+            get: function get() {
+                return _config.config;
+            }
+        });
+        var _lib = __webpack_require__("./src/lib/index.js");
+        Object.defineProperty(exports, "request", {
+            enumerable: true,
+            get: function get() {
+                return _lib.request;
+            }
+        });
+        Object.defineProperty(exports, "isEligible", {
+            enumerable: true,
+            get: function get() {
+                return _lib.isEligible;
+            }
+        });
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
+        var version = exports.version = "4.0.28";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -1353,7 +1468,7 @@ this["ppxo"] = function(modules) {
                 throw err;
             }, 1);
             for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
-                possiblyUnhandledPromiseHandlers[j](promise.value);
+                possiblyUnhandledPromiseHandlers[j](err);
             }
         }
         var toString = {}.toString;
@@ -8391,7 +8506,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.27",
+            version: "4.0.28",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8475,7 +8590,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.27");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.28");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -8901,6 +9016,16 @@ this["ppxo"] = function(modules) {
                 }
             });
         });
+        var _beacon = __webpack_require__("./src/lib/beacon.js");
+        Object.keys(_beacon).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _beacon[key];
+                }
+            });
+        });
     },
     "./src/lib/device.js": function(module, exports) {
         (function(global) {
@@ -9058,107 +9183,54 @@ this["ppxo"] = function(modules) {
             };
         }
     },
-    "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
+    "./src/lib/beacon.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.config = exports.setup = exports.apps = exports.checkout = exports.PayPalCheckout = exports.Checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = exports.xcomponent = undefined;
-        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
-        Object.defineProperty(exports, "xcomponent", {
-            enumerable: true,
-            get: function get() {
-                return _interopRequireDefault(_src)["default"];
-            }
-        });
-        var _src2 = __webpack_require__("./node_modules/post-robot/src/index.js");
-        Object.defineProperty(exports, "postRobot", {
-            enumerable: true,
-            get: function get() {
-                return _interopRequireDefault(_src2)["default"];
-            }
-        });
-        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
-        Object.defineProperty(exports, "Promise", {
-            enumerable: true,
-            get: function get() {
-                return _promise.SyncPromise;
-            }
-        });
-        var _api = __webpack_require__("./src/api/index.js");
-        Object.defineProperty(exports, "rest", {
-            enumerable: true,
-            get: function get() {
-                return _api.rest;
-            }
-        });
-        var _components = __webpack_require__("./src/components/index.js");
-        Object.defineProperty(exports, "Button", {
-            enumerable: true,
-            get: function get() {
-                return _components.Button;
-            }
-        });
-        Object.defineProperty(exports, "Checkout", {
-            enumerable: true,
-            get: function get() {
-                return _components.Checkout;
-            }
-        });
-        Object.defineProperty(exports, "PayPalCheckout", {
-            enumerable: true,
-            get: function get() {
-                return _components.Checkout;
-            }
-        });
-        var _legacy = __webpack_require__("./src/legacy/index.js");
-        Object.defineProperty(exports, "checkout", {
-            enumerable: true,
-            get: function get() {
-                return _legacy.checkout;
-            }
-        });
-        Object.defineProperty(exports, "apps", {
-            enumerable: true,
-            get: function get() {
-                return _legacy.apps;
-            }
-        });
-        var _setup = __webpack_require__("./src/setup.js");
-        Object.defineProperty(exports, "setup", {
-            enumerable: true,
-            get: function get() {
-                return _setup.setup;
-            }
-        });
-        var _config = __webpack_require__("./src/config/index.js");
-        Object.defineProperty(exports, "config", {
-            enumerable: true,
-            get: function get() {
-                return _config.config;
-            }
-        });
-        var _lib = __webpack_require__("./src/lib/index.js");
-        Object.defineProperty(exports, "request", {
-            enumerable: true,
-            get: function get() {
-                return _lib.request;
-            }
-        });
-        Object.defineProperty(exports, "isEligible", {
-            enumerable: true,
-            get: function get() {
-                return _lib.isEligible;
-            }
-        });
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {
-                "default": obj
-            };
+        exports.uniqueID = uniqueID;
+        exports.beacon = beacon;
+        exports.checkpoint = checkpoint;
+        var BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger";
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            });
         }
-        var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.27";
-        module.exports["default"] = module.exports;
+        function beacon(event) {
+            var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            try {
+                payload.event = "ppxo_" + event;
+                payload.version = "4.0.28";
+                payload.host = window.location.host;
+                payload.uid = window.pp_uid;
+                var query = [];
+                for (var key in payload) {
+                    if (payload.hasOwnProperty(key)) {
+                        query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
+                    }
+                }
+                query = query.join("&");
+                if (true) {
+                    var beaconImage = new window.Image();
+                    beaconImage.src = BEACON_URL + "?" + query;
+                }
+            } catch (err) {}
+        }
+        var loggedCheckpoints = [];
+        function checkpoint(name) {
+            try {
+                var version = "4.0.28".replace(/[^0-9]+/g, "_");
+                var checkpointName = version + "_" + name;
+                var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
+                loggedCheckpoints.push(checkpointName);
+                if (logged) {
+                    checkpointName = checkpointName + "_dupe";
+                }
+                return beacon(checkpointName);
+            } catch (err) {}
+        }
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -10576,7 +10648,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.27";
+                return _config.config.ppobjects ? "4" : "4.0.28";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10637,14 +10709,10 @@ this["ppxo"] = function(modules) {
                     decorate: function decorate(original) {
                         if (original) {
                             return function(data, actions) {
-                                actions.payment.get = function() {
-                                    _client2["default"].warn("actions_payment_get_called");
-                                    throw new Error("Not yet implemented. Please make a server-side get-payment call. See" + "https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/");
-                                };
                                 Object.defineProperty(data, "payment", {
                                     get: function get() {
                                         _client2["default"].warn("data_payment_referenced");
-                                        throw new Error("Not yet implemented. Please make a server-side get-payment call. See" + "https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/advanced-payments-api/show-payment-details/");
+                                        throw new Error("Please call actions.payment.get() to get payment details:\n\n" + "    onAuthorize: function(data, actions) {\n" + "        return actions.payment.get().then(function(payment) {\n" + "            console.log(payment);\n" + "        });\n" + "    }\n\n");
                                     }
                                 });
                                 var redirect = function redirect(win, url) {
@@ -10872,12 +10940,6 @@ this["ppxo"] = function(modules) {
             if (window.$Api.addHeader) {
                 return window.$Api.addHeader(name, value);
             }
-            var getHeaders = window.$Api.prototype.getHeaders;
-            window.$Api.prototype.getHeaders = function() {
-                var headers = getHeaders.apply(this, arguments) || {};
-                headers[name] = value;
-                return headers;
-            };
         }
         function logReturnUrl(returnUrl) {
             var currentDomain = (window.location.protocol + "//" + window.location.host).toLowerCase();
@@ -10938,7 +11000,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.27";
+                return _config.config.ppobjects ? "4" : "4.0.28";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -11128,25 +11190,6 @@ this["ppxo"] = function(modules) {
                         return function(data) {
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
-                            if (window.ppCheckpoint) {
-                                window.ppCheckpoint("flow_initial_message");
-                            }
-                            try {
-                                var isButton = window.location.href.indexOf("/webapps/hermes/button") !== -1;
-                                if (isButton) {
-                                    this.window.addEventListener("message", function(event) {
-                                        try {
-                                            if (event.origin !== window.location.protocol + "//" + window.location.host) {
-                                                return;
-                                            }
-                                            var payload = JSON.parse(event.data);
-                                            if (payload && payload.data && payload.data.accessToken) {
-                                                addHeader("x-paypal-internal-euat", payload.data.accessToken);
-                                            }
-                                        } catch (err2) {}
-                                    });
-                                }
-                            } catch (err) {}
                         };
                     }
                 },
@@ -11682,14 +11725,8 @@ this["ppxo"] = function(modules) {
                 $logger.warn("multiple_redirects");
             }
             redirected = true;
-            if (window.ppCheckpoint) {
-                if (location && location.match(/^https:\/\/www\.paypal\.com/)) {
-                    window.ppCheckpoint("flow_fullpage_redirect");
-                } else if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
-                    window.ppCheckpoint("flow_complete");
-                } else {
-                    window.ppCheckpoint("flow_cancel");
-                }
+            if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
+                (0, _lib.checkpoint)("flow_complete");
             }
             $logger.flush();
         }
@@ -11805,17 +11842,11 @@ this["ppxo"] = function(modules) {
             var paymentTokenAndUrl = new _promise.SyncPromise(function(resolve, reject) {
                 window.paypal.checkout.initXO = function() {
                     $logger.warn("gettoken_initxo");
-                    if (window.ppCheckpoint) {
-                        window.ppCheckpoint("flow_initxo");
-                    }
                 };
                 window.paypal.checkout.startFlow = (0, _lib.once)(function(item, opts) {
                     $logger.debug("gettoken_startflow", {
                         item: item
                     });
-                    if (window.ppCheckpoint) {
-                        window.ppCheckpoint("flow_startflow");
-                    }
                     if (opts) {
                         $logger.warn("startflow_with_options", {
                             opts: JSON.stringify(opts)
@@ -11858,9 +11889,7 @@ this["ppxo"] = function(modules) {
                 $logger.warn("init_without_setup");
             }
             paypalCheckoutInited = true;
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint("flow_start");
-            }
+            (0, _lib.checkpoint)("flow_start");
             var paypalCheckout = _components.Checkout.init(_extends({
                 uid: window.pp_uid,
                 onAuthorize: function onAuthorize(data, actions) {
@@ -12016,9 +12045,7 @@ this["ppxo"] = function(modules) {
         }
         function listenClick(container, button, clickHandler, condition) {
             var element = container.tagName.toLowerCase() === "a" ? container : button;
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint("flow_listenclick");
-            }
+            (0, _lib.checkpoint)("flow_listenclick");
             var isClick = clickHandler instanceof Function;
             if (element.hasAttribute("data-paypal-click-listener")) {
                 return $logger.warn("button_already_has_paypal_click_listener");
@@ -12026,9 +12053,7 @@ this["ppxo"] = function(modules) {
             element.setAttribute("data-paypal-click-listener", true);
             element.addEventListener("click", function(event) {
                 registerClick();
-                if (window.ppCheckpoint) {
-                    window.ppCheckpoint("flow_buttonclick");
-                }
+                (0, _lib.checkpoint)("flow_buttonclick");
                 if ((0, _lib.supportsPopups)()) {
                     $logger.debug("click_popups_supported");
                     if (!(0, _eligibility.isLegacyEligible)()) {
@@ -12061,9 +12086,7 @@ this["ppxo"] = function(modules) {
         var setupCalled = false;
         function setup(id) {
             var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint("flow_setup");
-            }
+            (0, _lib.checkpoint)("flow_setup");
             id = id || "merchant";
             $logger.info("setup", {
                 id: id,
@@ -12143,9 +12166,6 @@ this["ppxo"] = function(modules) {
         }
         function initXO() {
             $logger.debug("initxo");
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint("flow_initxo");
-            }
             if (!(0, _eligibility.isLegacyEligible)()) {
                 return $logger.debug("ineligible_initxo");
             }
@@ -12163,9 +12183,6 @@ this["ppxo"] = function(modules) {
             $logger.debug("startflow", {
                 item: item
             });
-            if (window.ppCheckpoint) {
-                window.ppCheckpoint("flow_startflow");
-            }
             if (opts) {
                 $logger.warn("startflow_with_options", {
                     opts: JSON.stringify(opts)
@@ -13253,6 +13270,7 @@ this["ppxo"] = function(modules) {
         var _lib = __webpack_require__("./src/lib/index.js");
         var _components = __webpack_require__("./src/components/index.js");
         var _compat = __webpack_require__("./src/compat/index.js");
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -13283,6 +13301,13 @@ this["ppxo"] = function(modules) {
         }
         setDomainEnv(window.location.protocol + "//" + window.location.host);
         (0, _lib.initLogger)();
+        _promise.SyncPromise.onPossiblyUnhandledException(function(err) {
+            (0, _lib.beacon)("unhandled_error", {
+                message: err ? err.toString() : "undefined",
+                stack: err.stack || err.toString(),
+                errtype: {}.toString.call(err)
+            });
+        });
         var setup = exports.setup = (0, _lib.once)(function setup() {
             var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             (0, _lib.checkForCommonErrors)();
@@ -13401,7 +13426,9 @@ this["ppxo"] = function(modules) {
                     path: window.location.pathname,
                     env: _config.config.env,
                     country: _config.config.locale.country,
-                    lang: _config.config.locale.lang
+                    lang: _config.config.locale.lang,
+                    uid: window.pp_uid,
+                    ver: "4.0.28"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
