@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.paypal.com/krakenjs/checkout-components.git"
+    "url": "git://github.paypal.com/paypal/paypal-checkout.git"
   },
   "keywords": [
     "cross-domain",
