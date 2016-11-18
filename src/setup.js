@@ -110,7 +110,7 @@ function getCurrentScript() {
 }
 
 let currentScript = getCurrentScript();
-let currentProtocol = window.location.protocol;
+let currentProtocol = window.location.protocol.split(':')[0];
 
 $logger.debug(`current_protocol_${currentProtocol}`);
 
