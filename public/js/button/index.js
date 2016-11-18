@@ -13,15 +13,17 @@ $promise.use(Promise);
 
 function isLightboxEligible() {
 
-    return getAuth().then(auth => {
+    return Promise.resolve().then(() => {
 
         if (!$util.cookiesEnabled()) {
             return false;
         }
 
-        if (auth.logged_in || auth.remembered || auth.refresh_token) {
-            return true;
-        }
+        return getAuth().then(auth => {
+            if (auth.logged_in || auth.remembered || auth.refresh_token) {
+                return true;
+            }
+        });
     });
 }
 
@@ -183,6 +185,11 @@ function renderCheckout(paymentToken) {
 
         onAuth(data) {
             $Api.addHeader('x-paypal-internal-euat', data.accessToken);
+
+            isLightboxEligible().then(eligible => {
+                Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
+                Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
+            });
         }
     });
 }
@@ -190,8 +197,8 @@ function renderCheckout(paymentToken) {
 function setup() {
 
     isLightboxEligible().then(eligible => {
-
         Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
+        Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
     });
 
     determineLocale().then(locale => {
