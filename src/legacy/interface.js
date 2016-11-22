@@ -1,5 +1,4 @@
 
-import xcomponent from 'xcomponent/src';
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
 
@@ -7,7 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, onDocumentReady, once, checkpoint } from '../lib';
+import { supportsPopups, getElements, onDocumentReady, once, checkpoint, noop } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons } from './button';
 import { normalizeLocale } from './common';
@@ -191,7 +190,7 @@ function matchUrlAndPaymentToken(item) {
 
     } else if (url) {
         $logger.debug(`startflow_url_with_no_token`, { item });
-        paymentToken = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+        paymentToken = '';
     } else if (paymentToken) {
         $logger.debug(`startflow_with_token`, { item });
         url = getFullpageRedirectUrl(paymentToken);
@@ -232,7 +231,7 @@ function matchUrlAndPaymentToken(item) {
     global methods.
 */
 
-function getPaymentTokenAndUrl() {
+function awaitPaymentTokenAndUrl() {
 
     let paymentTokenAndUrl = new Promise((resolve, reject) => {
 
@@ -297,6 +296,8 @@ function initPayPalCheckout(props = {}) {
     paypalCheckoutInited = true;
 
     checkpoint('flow_start');
+
+    props.payment = props.payment || noop;
 
     let paypalCheckout = Checkout.init({
 
@@ -383,15 +384,8 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
 
         $logger.error(`error`, { error: err.stack || err.toString() });
 
-        Promise.all([ props.url, props.payment ]).then(([ url, paymentToken ]) => {
-
-            if (url) {
-                return redirect(url);
-            }
-
-            if (paymentToken) {
-                return redirect(getFullpageRedirectUrl(paymentToken));
-            }
+        Promise.resolve(props.url).then(url => {
+            return redirect(url);
         });
 
         throw err;
@@ -479,9 +473,9 @@ function handleClickHijack(button) {
 
     $logger.info(`init_paypal_checkout_hijack`);
 
-    let { url, paymentToken } = getPaymentTokenAndUrl();
+    let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
-    let token = xcomponent.CONSTANTS.PROP_DEFER_TO_URL;
+    let token;
 
     paymentToken.then(result => {
         token = result;
@@ -680,7 +674,7 @@ function initXO() {
 
     reset();
 
-    let { url, paymentToken } = getPaymentTokenAndUrl();
+    let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
     $logger.info(`init_paypal_checkout_initxo`);
 

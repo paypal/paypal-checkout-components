@@ -6,7 +6,7 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, request } from '../../lib';
+import { isDevice, request, getQueryParam } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps, urlWillRedirectPage } from '../common';
@@ -65,20 +65,33 @@ export let Checkout = xcomponent.create({
     tag: 'paypal-checkout',
     name: 'ppcheckout',
 
-    buildUrl(instance) {
+    buildUrl(instance, props) {
         let env = instance.props.env || config.env;
-
-        if (instance.props.buttonID) {
-            return config.paymentsStandardUrls[env];
-        }
-
-        if (instance.props.payment) {
-            return config.checkoutUrls[env];
-        }
 
         if (instance.props.billingAgreement) {
             return config.billingUrls[env];
         }
+
+        return props.payment().then(token => {
+
+            if (token.indexOf('BA-') === 0) {
+                $logger.info(`url_billing`);
+                return config.billingUrls[env];
+            }
+
+            if (token.indexOf('PAY-') === 0) {
+                $logger.info(`url_payment`);
+                return config.checkoutUrls[env];
+            }
+
+            if (token.indexOf('EC-') === 0) {
+                $logger.info(`url_checkout`);
+                return config.checkoutUrls[env];
+            }
+
+            $logger.info(`url_default`);
+            return config.checkoutUrls[env];
+        });
     },
 
     remoteRenderDomain: config.paypal_domain_regex,
@@ -166,7 +179,12 @@ export let Checkout = xcomponent.create({
             required: false,
             getter: true,
             memoize: true,
-            queryParam: 'token',
+            queryParam(value = '') {
+                return value.indexOf('BA-') === 0 ? 'ba_token' : 'token';
+            },
+            childDef() {
+                return getQueryParam('token');
+            },
             alias: 'paymentToken'
         },
 
@@ -215,7 +233,9 @@ export let Checkout = xcomponent.create({
                             win = win || window.top;
                             url = url || data.returnUrl;
 
-                            win.location = url;
+                            setTimeout(() => {
+                                win.location = url;
+                            }, 1);
 
                             return close().then(() => {
                                 if (urlWillRedirectPage(url)) {
@@ -295,7 +315,9 @@ export let Checkout = xcomponent.create({
                             win = win || window.top;
                             url = url || data.cancelUrl;
 
-                            win.location = url;
+                            setTimeout(() => {
+                                win.location = url;
+                            }, 1);
 
                             return close().then(() => {
                                 if (urlWillRedirectPage(url)) {

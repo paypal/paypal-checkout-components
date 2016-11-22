@@ -1,5 +1,6 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { memoize } from './util';
 
 export function loadScript(src, timeout) {
     return new Promise((resolve, reject) => {
@@ -118,4 +119,32 @@ let documentReady = new Promise(resolve => {
 
 export function onDocumentReady(method) {
     return documentReady.then(method);
+}
+
+export let parseQuery = memoize(queryString => {
+
+    let params = {};
+
+    if (!queryString) {
+        return params;
+    }
+
+    if (queryString.indexOf('=') === -1) {
+        throw new Error(`Can not parse query string params: ${queryString}`);
+    }
+
+    for (let pair of queryString.split('&')) {
+        pair = pair.split('=');
+
+        if (pair[0] && pair[1]) {
+            params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        }
+    }
+
+    return params;
+});
+
+
+export function getQueryParam(name) {
+    return parseQuery(window.location.search.slice(1))[name];
 }
