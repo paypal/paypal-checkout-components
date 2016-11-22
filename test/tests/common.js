@@ -42,6 +42,18 @@ export function generateECToken() {
     return `EC-${uniqueID(17).toUpperCase()}`;
 }
 
+export function generatePaymentID() {
+    return `PAY-${uniqueID(20).toUpperCase()}`;
+}
+
+export function generateBillingToken() {
+    return `BA-${uniqueID(17).toUpperCase()}`;
+}
+
+export function generateExperienceToken() {
+    return uniqueID(17).toUpperCase();
+}
+
 export const CHILD_URI = '/base/test/checkout.htm';
 export const CHILD_REDIRECT_URI = '/base/test/childRedirect.htm';
 
@@ -124,25 +136,25 @@ $mockEndpoint.register({
 $mockEndpoint.register({
     method: 'POST',
     uri: paypal.config.paymentApiUrl,
-    data: {
-        id: 'PAY-XXXXXXXXXXX'
-    }
+    handler: () => ({
+        id: generatePaymentID()
+    })
 }).listen();
 
 $mockEndpoint.register({
     method: 'POST',
     uri: paypal.config.billingApiUrl,
-    data: {
-        token_id: 'BA-XXXXXXXXXXX'
-    }
+    handler: () => ({
+        token_id: generateBillingToken()
+    })
 }).listen();
 
 $mockEndpoint.register({
     method: 'POST',
     uri: paypal.config.experienceApiUrl,
-    data: {
-        id: 'EXP-XXXXXXXXXXX'
-    }
+    handler: () => ({
+        id: generateExperienceToken()
+    })
 }).listen();
 
 

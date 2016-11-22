@@ -123,7 +123,9 @@ export let Button = xcomponent.create({
                             win = win || window.top;
                             url = url || data.returnUrl;
 
-                            win.location = url;
+                            setTimeout(() => {
+                                win.location = url;
+                            }, 1);
 
                             return actions.close().then(() => {
                                 if (urlWillRedirectPage(url)) {
@@ -152,7 +154,9 @@ export let Button = xcomponent.create({
                             win = win || window.top;
                             url = url || data.cancelUrl;
 
-                            win.location = url;
+                            setTimeout(() => {
+                                win.location = url;
+                            }, 1);
 
                             return actions.close().then(() => {
                                 if (urlWillRedirectPage(url)) {

@@ -90,6 +90,44 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
             });
+
+            it('should call startFlow with a token and redirect to full-page if the window.open fails with immediate startFlow', () => {
+
+                let token = generateECToken();
+
+                let windowOpen = window.open;
+                window.open = function() {
+                    window.open = windowOpen;
+                    return {
+                        closed: true,
+                        close() {
+                            // pass
+                        }
+                    };
+                };
+
+                return paypal.checkout.setup('merchantID', {
+
+                    container: 'testContainer',
+
+                    click(event) {
+                        paypal.checkout.startFlow(token);
+                    }
+
+                }).then(() => {
+
+                    let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
+                    delete paypal.config.checkoutUrl;
+                    paypal.config.checkoutUrl = '#errorRedirectUrl';
+
+                    document.querySelector('#testContainer button').click();
+
+                    return onHashChange().then(urlHash => {
+                        Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrlDescriptor);
+                        assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                    });
+                });
+            });
         }
 
         it('should call startFlow with no token and trigger an error', (done) => {

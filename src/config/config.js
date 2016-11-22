@@ -88,7 +88,7 @@ export let config = {
         stage:      `/webapps/hermes`,
         sandbox:    `/checkoutnow`,
         production: `/checkoutnow`,
-        test:       `/base/test/checkout.htm`
+        test:       `/base/test/checkout.htm?checkouturl=true`
     },
 
     billingUris: {
@@ -96,7 +96,7 @@ export let config = {
         stage:      `/webapps/hermes/agreements`,
         sandbox:    `/agreements/approve`,
         production: `/agreements/approve`,
-        test:       `/base/test/checkout.htm`
+        test:       `/base/test/checkout.htm?billingurl=true`
     },
 
     buttonUris: {

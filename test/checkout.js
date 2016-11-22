@@ -19,7 +19,8 @@ if (window.xprops.testAction === 'checkout') {
         window.xprops.onAuthorize({
             paymentToken,
             cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
-            returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`
+            returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
+            currentUrl: window.location.href
         });
     });
 
