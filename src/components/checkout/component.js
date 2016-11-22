@@ -287,7 +287,15 @@ export let Checkout = xcomponent.create({
         onAuth: {
             type: 'function',
             required: false,
-            sameDomain: true
+            sameDomain: true,
+            decorate(original) {
+                return function() {
+                    enableCheckoutIframe();
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
+            }
         },
 
         onCancel: {
@@ -422,7 +430,19 @@ export let Checkout = xcomponent.create({
     }
 });
 
+let enableCheckoutIframeTimeout;
+
 export function enableCheckoutIframe() {
+
     Checkout.contexts.lightbox = true;
     Checkout.contexts.iframe = true;
+
+    if (enableCheckoutIframeTimeout) {
+        clearTimeout(enableCheckoutIframeTimeout);
+    }
+
+    enableCheckoutIframeTimeout = setTimeout(() => {
+        Checkout.contexts.lightbox = false;
+        Checkout.contexts.iframe = false;
+    }, 5 * 60 * 1000);
 }
