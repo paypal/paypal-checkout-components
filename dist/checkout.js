@@ -33,7 +33,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.28") {
+        if (window.paypal && window.paypal.version === "4.0.29") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -159,7 +159,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.28";
+        var version = exports.version = "4.0.29";
         module.exports["default"] = module.exports;
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -261,7 +261,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.28";
+        var version = exports.version = "4.0.29";
         module.exports["default"] = module.exports;
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
@@ -4796,6 +4796,7 @@ this["ppxo"] = function(modules) {
         exports.each = each;
         exports.replaceObject = replaceObject;
         exports.copyProp = copyProp;
+        exports.dotify = dotify;
         function urlEncode(str) {
             return str.replace(/\?/g, "%3F").replace(/\&/g, "%26").replace(/#/g, "%23");
         }
@@ -4930,6 +4931,19 @@ this["ppxo"] = function(modules) {
             } else {
                 target[name] = def;
             }
+        }
+        function dotify(obj) {
+            var prefix = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
+            var newobj = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+            prefix = prefix ? prefix + "." : prefix;
+            for (var key in obj) {
+                if (obj[key] && _typeof(obj[key]) === "object") {
+                    newobj = dotify(obj[key], "" + prefix + key, newobj);
+                } else {
+                    newobj["" + prefix + key] = obj[key];
+                }
+            }
+            return newobj;
         }
     },
     "./node_modules/xcomponent/src/lib/promise.js": function(module, exports, __webpack_require__) {
@@ -5876,7 +5890,7 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.DELEGATE = exports.PROP_DEFER_TO_URL = exports.CONTEXT_TYPES_LIST = exports.CLOSE_REASONS = exports.EVENT_NAMES = exports.ANIMATION_NAMES = exports.CLASS_NAMES = exports.CONTEXT_TYPES = exports.PROP_TYPES_LIST = exports.WINDOW_REFERENCES = exports.INITIAL_PROPS = exports.PROP_TYPES = exports.POST_MESSAGE = exports.XCOMPONENT = undefined;
+        exports.DELEGATE = exports.CONTEXT_TYPES_LIST = exports.CLOSE_REASONS = exports.EVENT_NAMES = exports.ANIMATION_NAMES = exports.CLASS_NAMES = exports.CONTEXT_TYPES = exports.PROP_TYPES_LIST = exports.WINDOW_REFERENCES = exports.INITIAL_PROPS = exports.PROP_TYPES = exports.POST_MESSAGE = exports.XCOMPONENT = undefined;
         var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         var XCOMPONENT = exports.XCOMPONENT = "xcomponent";
         var POST_MESSAGE = exports.POST_MESSAGE = {
@@ -5938,27 +5952,22 @@ this["ppxo"] = function(modules) {
         var CLOSE_REASONS = exports.CLOSE_REASONS = {
             PARENT_CALL: "parent_call",
             CHILD_CALL: "child_call",
-            AUTOCLOSE: "autoclose",
             CLOSE_DETECTED: "close_detected",
             USER_CLOSED: "user_closed",
             PARENT_CLOSE_DETECTED: "parent_close_detected"
         };
         var CONTEXT_TYPES_LIST = exports.CONTEXT_TYPES_LIST = (0, _lib.values)(CONTEXT_TYPES);
-        var PROP_DEFER_TO_URL = exports.PROP_DEFER_TO_URL = "xcomponent_prop_defer_to_url";
         var DELEGATE = exports.DELEGATE = {
             CALL_ORIGINAL: "call_original",
             CALL_DELEGATE: "call_delegate"
         };
     },
-    "./node_modules/xcomponent/src/component/child/props.js": function(module, exports, __webpack_require__) {
+    "./node_modules/xcomponent/src/component/child/props.js": function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
         exports.normalizeChildProps = normalizeChildProps;
-        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
-        var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
-        var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function normalizeChildProps(component, props, origin) {
             var result = {};
             var _loop = function _loop() {
@@ -5973,33 +5982,25 @@ this["ppxo"] = function(modules) {
                 var key = _ref;
                 var prop = component.props[key];
                 var value = props[key];
-                if (!prop) {
-                    return "continue";
-                }
-                var queryParam = typeof prop.queryParam === "string" ? prop.queryParam : key;
-                if (value === _constants.PROP_DEFER_TO_URL) {
-                    (function() {
-                        var actualValue = (0, _lib.getQueryParam)(queryParam);
+                if (typeof prop.childDef === "function") {
+                    if (!value) {
                         if (prop.getter) {
                             value = function value() {
-                                return _promise.SyncPromise.resolve(actualValue);
+                                return Promise.resolve(prop.childDef.call());
                             };
                         } else {
-                            value = actualValue;
+                            value = prop.childDef.call();
                         }
-                    })();
-                } else if (prop.getter && value) {
-                    (function() {
-                        var val = value;
-                        value = function value() {
-                            return val().then(function(res) {
-                                if (res === _constants.PROP_DEFER_TO_URL) {
-                                    return (0, _lib.getQueryParam)(queryParam);
-                                }
-                                return res;
-                            });
-                        };
-                    })();
+                    } else if (prop.getter) {
+                        (function() {
+                            var val = value;
+                            value = function value() {
+                                return val.apply(this, arguments).then(function(res) {
+                                    return res ? res : prop.childDef.call();
+                                });
+                            };
+                        })();
+                    }
                 }
                 if (value && prop.sameDomain && origin !== window.location.protocol + "//" + window.location.host) {
                     value = null;
@@ -6009,16 +6010,10 @@ this["ppxo"] = function(modules) {
                     result[prop.alias] = value;
                 }
             };
-            _loop2: for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 var _ret = _loop();
-                switch (_ret) {
-                  case "break":
-                    break _loop2;
-
-                  case "continue":
-                    continue;
-                }
+                if (_ret === "break") break;
             }
             return result;
         }
@@ -6274,7 +6269,7 @@ this["ppxo"] = function(modules) {
                     if (this.component.validateProps) {
                         this.component.validateProps(this.component, props, required);
                     }
-                    (0, _lib.extend)(this.props, (0, _props.normalizeParentProps)(this.component, this, props, required));
+                    (0, _lib.extend)(this.props, (0, _props.normalizeProps)(this.component, this, props, required));
                 }
             }, {
                 key: "buildUrl",
@@ -6289,20 +6284,23 @@ this["ppxo"] = function(modules) {
                         if (url && !_this4.getValidDomain(url)) {
                             return url;
                         }
-                        if (!url) {
-                            if (_this4.props.env && _this4.component.envUrls) {
-                                url = _this4.component.envUrls[_this4.props.env];
+                        return _promise.SyncPromise["try"](function() {
+                            if (url) {
+                                return url;
+                            } else if (_this4.props.env && _this4.component.envUrls) {
+                                return _this4.component.envUrls[_this4.props.env];
                             } else if (_this4.component.defaultEnv && _this4.component.envUrls) {
-                                url = _this4.component.envUrls[_this4.component.defaultEnv];
+                                return _this4.component.envUrls[_this4.component.defaultEnv];
                             } else if (_this4.component.buildUrl) {
-                                url = _this4.component.buildUrl(_this4);
+                                return _this4.component.buildUrl(_this4, _this4.props);
                             } else {
-                                url = _this4.component.url;
+                                return _this4.component.url;
                             }
-                        }
-                        query[_constants.XCOMPONENT] = "1";
-                        return (0, _lib.extendUrl)(url, {
-                            query: query
+                        }).then(function(finalUrl) {
+                            query[_constants.XCOMPONENT] = "1";
+                            return (0, _lib.extendUrl)(finalUrl, {
+                                query: query
+                            });
                         });
                     });
                 }
@@ -7315,7 +7313,7 @@ this["ppxo"] = function(modules) {
         }
         IntegrationError.prototype = Object.create(Error.prototype);
     },
-    "./node_modules/xcomponent/src/component/parent/validate.js": function(module, exports, __webpack_require__) {
+    "./node_modules/xcomponent/src/component/parent/validate.js": function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
@@ -7323,7 +7321,6 @@ this["ppxo"] = function(modules) {
         exports.validateProp = validateProp;
         exports.validateProps = validateProps;
         exports.validate = validate;
-        var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function validateProp(prop, key, value) {
             var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
             var hasProp = value !== null && value !== undefined && value !== "";
@@ -7331,9 +7328,6 @@ this["ppxo"] = function(modules) {
                 if (required && prop.required !== false && !prop.hasOwnProperty("def")) {
                     throw new Error("Prop is required: " + key);
                 }
-                return;
-            }
-            if (value === _constants.PROP_DEFER_TO_URL) {
                 return;
             }
             if (value.then && prop.promise) {
@@ -7432,127 +7426,12 @@ this["ppxo"] = function(modules) {
         } : function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
         };
-        exports.propsToQuery = propsToQuery;
-        exports.normalizeParentProps = normalizeParentProps;
-        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
-        var _validate = __webpack_require__("./node_modules/xcomponent/src/component/parent/validate.js");
-        var _props = __webpack_require__("./node_modules/xcomponent/src/component/props.js");
-        var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
-        function dotify(obj) {
-            var prefix = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
-            var newobj = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-            prefix = prefix ? prefix + "." : prefix;
-            for (var key in obj) {
-                if (obj[key] && _typeof(obj[key]) === "object") {
-                    newobj = dotify(obj[key], "" + prefix + key, newobj);
-                } else {
-                    newobj["" + prefix + key] = obj[key];
-                }
-            }
-            return newobj;
-        }
-        function propsToQuery(propsDef, props) {
-            var params = {};
-            return _promise.SyncPromise.all(Object.keys(props).map(function(key) {
-                var prop = propsDef[key];
-                var queryParam = key;
-                if (typeof prop.queryParam === "string") {
-                    queryParam = prop.queryParam;
-                }
-                return _promise.SyncPromise.resolve().then(function() {
-                    var value = props[key];
-                    if (!value) {
-                        return;
-                    }
-                    if (!prop.queryParam) {
-                        return;
-                    }
-                    if (value === _constants.PROP_DEFER_TO_URL) {
-                        return;
-                    }
-                    if (prop.getter) {
-                        return value.call().then(function(result) {
-                            (0, _validate.validateProp)(prop, key, result);
-                            return result;
-                        });
-                    }
-                    return value;
-                }).then(function(value) {
-                    if (!value) {
-                        return;
-                    }
-                    var result = void 0;
-                    if (typeof value === "boolean") {
-                        result = "1";
-                    } else if (typeof value === "string") {
-                        result = value.toString();
-                    } else if (typeof value === "function") {
-                        return;
-                    } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
-                        if (prop.serialization === "json") {
-                            result = JSON.stringify(value);
-                        } else {
-                            result = dotify(value, key);
-                            for (var dotkey in result) {
-                                params[dotkey] = result[dotkey];
-                            }
-                            return;
-                        }
-                    } else if (typeof value === "number") {
-                        result = value.toString();
-                    }
-                    params[queryParam] = result;
-                });
-            })).then(function() {
-                return params;
-            });
-        }
-        function normalizeParentProps(component, instance, props) {
-            var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
-            props = (0, _props.normalizeProps)(component, instance, props, required);
-            var _loop = function _loop() {
-                if (_isArray) {
-                    if (_i >= _iterator.length) return "break";
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) return "break";
-                    _ref = _i.value;
-                }
-                var key = _ref;
-                var value = props[key];
-                if (value) {
-                    var prop = component.props[key];
-                    if (prop.autoClose) {
-                        props[key] = function() {
-                            instance.component.log("autoclose", {
-                                prop: key
-                            });
-                            var result = _promise.SyncPromise.resolve(value.apply(this, arguments));
-                            return _promise.SyncPromise.all([ result, instance.close(_constants.CLOSE_REASONS.AUTOCLOSE) ]).then(function() {
-                                return result;
-                            });
-                        };
-                    }
-                }
-            };
-            for (var _iterator = Object.keys(props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                var _ret = _loop();
-                if (_ret === "break") break;
-            }
-            return props;
-        }
-    },
-    "./node_modules/xcomponent/src/component/props.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
         exports.normalizeProp = normalizeProp;
         exports.normalizeProps = normalizeProps;
+        exports.propsToQuery = propsToQuery;
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        var _validate = __webpack_require__("./node_modules/xcomponent/src/component/parent/validate.js");
         var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
-        var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
         function normalizeProp(component, instance, props, key, value) {
             var prop = component.props[key];
             var hasProp = props.hasOwnProperty(key) && value !== null && value !== undefined && value !== "";
@@ -7564,9 +7443,6 @@ this["ppxo"] = function(modules) {
             }
             if (prop.decorate) {
                 value = prop.decorate(value);
-            }
-            if (value === _constants.PROP_DEFER_TO_URL) {
-                return value;
             }
             if (prop.getter) {
                 if (!value) {
@@ -7642,6 +7518,62 @@ this["ppxo"] = function(modules) {
                 }
             }
             return result;
+        }
+        function propsToQuery(propsDef, props) {
+            var params = {};
+            return _promise.SyncPromise.all(Object.keys(props).map(function(key) {
+                var prop = propsDef[key];
+                var queryParam = key;
+                if (typeof prop.queryParam === "string") {
+                    queryParam = prop.queryParam;
+                }
+                return _promise.SyncPromise.resolve().then(function() {
+                    var value = props[key];
+                    if (!value) {
+                        return;
+                    }
+                    if (!prop.queryParam) {
+                        return;
+                    }
+                    if (prop.getter) {
+                        return value.call().then(function(result) {
+                            (0, _validate.validateProp)(prop, key, result);
+                            return result;
+                        });
+                    }
+                    return value;
+                }).then(function(value) {
+                    if (!value) {
+                        return;
+                    }
+                    if (typeof prop.queryParam === "function") {
+                        queryParam = prop.queryParam(value);
+                    }
+                    var result = void 0;
+                    if (typeof value === "boolean") {
+                        result = "1";
+                    } else if (typeof value === "string") {
+                        result = value.toString();
+                    } else if (typeof value === "function") {
+                        return;
+                    } else if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
+                        if (prop.serialization === "json") {
+                            result = JSON.stringify(value);
+                        } else {
+                            result = (0, _lib.dotify)(value, key);
+                            for (var dotkey in result) {
+                                params[dotkey] = result[dotkey];
+                            }
+                            return;
+                        }
+                    } else if (typeof value === "number") {
+                        result = value.toString();
+                    }
+                    params[queryParam] = result;
+                });
+            })).then(function() {
+                return params;
+            });
         }
     },
     "./node_modules/xcomponent/src/component/delegate/index.js": function(module, exports, __webpack_require__) {
@@ -7845,7 +7777,6 @@ this["ppxo"] = function(modules) {
                 type: "function",
                 required: false,
                 memoize: true,
-                autoClose: true,
                 promisify: true,
                 def: function def() {
                     return function(err) {
@@ -8506,7 +8437,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: false ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.28",
+            version: "4.0.29",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -8572,14 +8503,14 @@ this["ppxo"] = function(modules) {
                 stage: "/webapps/hermes",
                 sandbox: "/checkoutnow",
                 production: "/checkoutnow",
-                test: "/base/test/checkout.htm"
+                test: "/base/test/checkout.htm?checkouturl=true"
             },
             billingUris: {
                 local: "/webapps/hermes/agreements?ul=0",
                 stage: "/webapps/hermes/agreements",
                 sandbox: "/agreements/approve",
                 production: "/agreements/approve",
-                test: "/base/test/checkout.htm"
+                test: "/base/test/checkout.htm?billingurl=true"
             },
             buttonUris: {
                 local: "/webapps/hermes/button",
@@ -8590,7 +8521,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.28");
+                return "/webapps/hermes/component-meta?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.29");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9202,7 +9133,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.28";
+                payload.version = "4.0.29";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9221,7 +9152,7 @@ this["ppxo"] = function(modules) {
         var loggedCheckpoints = [];
         function checkpoint(name) {
             try {
-                var version = "4.0.28".replace(/[^0-9]+/g, "_");
+                var version = "4.0.29".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10374,12 +10305,15 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
+        exports.parseQuery = undefined;
         exports.loadScript = loadScript;
         exports.isNodeList = isNodeList;
         exports.getElement = getElement;
         exports.getElements = getElements;
         exports.onDocumentReady = onDocumentReady;
+        exports.getQueryParam = getQueryParam;
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+        var _util = __webpack_require__("./src/lib/util.js");
         function loadScript(src, timeout) {
             return new _promise.SyncPromise(function(resolve, reject) {
                 var script = document.createElement("script");
@@ -10465,6 +10399,35 @@ this["ppxo"] = function(modules) {
         });
         function onDocumentReady(method) {
             return documentReady.then(method);
+        }
+        var parseQuery = exports.parseQuery = (0, _util.memoize)(function(queryString) {
+            var params = {};
+            if (!queryString) {
+                return params;
+            }
+            if (queryString.indexOf("=") === -1) {
+                throw new Error("Can not parse query string params: " + queryString);
+            }
+            for (var _iterator = queryString.split("&"), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var pair = _ref;
+                pair = pair.split("=");
+                if (pair[0] && pair[1]) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            }
+            return params;
+        });
+        function getQueryParam(name) {
+            return parseQuery(window.location.search.slice(1))[name];
         }
     },
     "./src/lib/http.js": function(module, exports, __webpack_require__) {
@@ -10648,7 +10611,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.28";
+                return _config.config.ppobjects ? "4" : "4.0.29";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -10718,7 +10681,9 @@ this["ppxo"] = function(modules) {
                                 var redirect = function redirect(win, url) {
                                     win = win || window.top;
                                     url = url || data.returnUrl;
-                                    win.location = url;
+                                    setTimeout(function() {
+                                        win.location = url;
+                                    }, 1);
                                     return actions.close().then(function() {
                                         if ((0, _common.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
@@ -10742,7 +10707,9 @@ this["ppxo"] = function(modules) {
                                 var redirect = function redirect(win, url) {
                                     win = win || window.top;
                                     url = url || data.cancelUrl;
-                                    win.location = url;
+                                    setTimeout(function() {
+                                        win.location = url;
+                                    }, 1);
                                     return actions.close().then(function() {
                                         if ((0, _common.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
@@ -10978,17 +10945,27 @@ this["ppxo"] = function(modules) {
         var Checkout = exports.Checkout = _src2["default"].create({
             tag: "paypal-checkout",
             name: "ppcheckout",
-            buildUrl: function buildUrl(instance) {
+            buildUrl: function buildUrl(instance, props) {
                 var env = instance.props.env || _config.config.env;
-                if (instance.props.buttonID) {
-                    return _config.config.paymentsStandardUrls[env];
-                }
-                if (instance.props.payment) {
-                    return _config.config.checkoutUrls[env];
-                }
                 if (instance.props.billingAgreement) {
                     return _config.config.billingUrls[env];
                 }
+                return props.payment().then(function(token) {
+                    if (token.indexOf("BA-") === 0) {
+                        _client2["default"].info("url_billing");
+                        return _config.config.billingUrls[env];
+                    }
+                    if (token.indexOf("PAY-") === 0) {
+                        _client2["default"].info("url_payment");
+                        return _config.config.checkoutUrls[env];
+                    }
+                    if (token.indexOf("EC-") === 0) {
+                        _client2["default"].info("url_checkout");
+                        return _config.config.checkoutUrls[env];
+                    }
+                    _client2["default"].info("url_default");
+                    return _config.config.checkoutUrls[env];
+                });
             },
             remoteRenderDomain: _config.config.paypal_domain_regex,
             get bridgeUrls() {
@@ -11000,7 +10977,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.28";
+                return _config.config.ppobjects ? "4" : "4.0.29";
             },
             get domains() {
                 return _config.config.paypalUrls;
@@ -11056,7 +11033,13 @@ this["ppxo"] = function(modules) {
                     required: false,
                     getter: true,
                     memoize: true,
-                    queryParam: "token",
+                    queryParam: function queryParam() {
+                        var value = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+                        return value.indexOf("BA-") === 0 ? "ba_token" : "token";
+                    },
+                    childDef: function childDef() {
+                        return (0, _lib.getQueryParam)("token");
+                    },
                     alias: "paymentToken"
                 },
                 billingAgreement: {
@@ -11096,7 +11079,9 @@ this["ppxo"] = function(modules) {
                                 var redirect = function redirect(win, url) {
                                     win = win || window.top;
                                     url = url || data.returnUrl;
-                                    win.location = url;
+                                    setTimeout(function() {
+                                        win.location = url;
+                                    }, 1);
                                     return close().then(function() {
                                         if ((0, _common.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
@@ -11163,7 +11148,9 @@ this["ppxo"] = function(modules) {
                                 var redirect = function redirect(win, url) {
                                     win = win || window.top;
                                     url = url || data.cancelUrl;
-                                    win.location = url;
+                                    setTimeout(function() {
+                                        win.location = url;
+                                    }, 1);
                                     return close().then(function() {
                                         if ((0, _common.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
@@ -11612,39 +11599,6 @@ this["ppxo"] = function(modules) {
             value: true
         });
         exports.apps = exports.checkout = undefined;
-        var _slicedToArray = function() {
-            function sliceIterator(arr, i) {
-                var _arr = [];
-                var _n = true;
-                var _d = false;
-                var _e = undefined;
-                try {
-                    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-                        _arr.push(_s.value);
-                        if (i && _arr.length === i) break;
-                    }
-                } catch (err) {
-                    _d = true;
-                    _e = err;
-                } finally {
-                    try {
-                        if (!_n && _i["return"]) _i["return"]();
-                    } finally {
-                        if (_d) throw _e;
-                    }
-                }
-                return _arr;
-            }
-            return function(arr, i) {
-                if (Array.isArray(arr)) {
-                    return arr;
-                } else if (Symbol.iterator in Object(arr)) {
-                    return sliceIterator(arr, i);
-                } else {
-                    throw new TypeError("Invalid attempt to destructure non-iterable instance");
-                }
-            };
-        }();
         var _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -11657,8 +11611,6 @@ this["ppxo"] = function(modules) {
             return target;
         };
         exports.reset = reset;
-        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
-        var _src2 = _interopRequireDefault(_src);
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
@@ -11801,7 +11753,7 @@ this["ppxo"] = function(modules) {
                 $logger.debug("startflow_url_with_no_token", {
                     item: item
                 });
-                paymentToken = _src2["default"].CONSTANTS.PROP_DEFER_TO_URL;
+                paymentToken = "";
             } else if (paymentToken) {
                 $logger.debug("startflow_with_token", {
                     item: item
@@ -11838,7 +11790,7 @@ this["ppxo"] = function(modules) {
                 url: url
             };
         }
-        function getPaymentTokenAndUrl() {
+        function awaitPaymentTokenAndUrl() {
             var paymentTokenAndUrl = new _promise.SyncPromise(function(resolve, reject) {
                 window.paypal.checkout.initXO = function() {
                     $logger.warn("gettoken_initxo");
@@ -11890,6 +11842,7 @@ this["ppxo"] = function(modules) {
             }
             paypalCheckoutInited = true;
             (0, _lib.checkpoint)("flow_start");
+            props.payment = props.payment || _lib.noop;
             var paypalCheckout = _components.Checkout.init(_extends({
                 uid: window.pp_uid,
                 onAuthorize: function onAuthorize(data, actions) {
@@ -11952,16 +11905,8 @@ this["ppxo"] = function(modules) {
                 $logger.error("error", {
                     error: err.stack || err.toString()
                 });
-                _promise.SyncPromise.all([ props.url, props.payment ]).then(function(_ref2) {
-                    var _ref3 = _slicedToArray(_ref2, 2);
-                    var url = _ref3[0];
-                    var paymentToken = _ref3[1];
-                    if (url) {
-                        return redirect(url);
-                    }
-                    if (paymentToken) {
-                        return redirect(getFullpageRedirectUrl(paymentToken));
-                    }
+                _promise.SyncPromise.resolve(props.url).then(function(url) {
+                    return redirect(url);
                 });
                 throw err;
             });
@@ -12028,10 +11973,10 @@ this["ppxo"] = function(modules) {
                 return;
             }
             $logger.info("init_paypal_checkout_hijack");
-            var _getPaymentTokenAndUr = getPaymentTokenAndUrl();
-            var url = _getPaymentTokenAndUr.url;
-            var paymentToken = _getPaymentTokenAndUr.paymentToken;
-            var token = _src2["default"].CONSTANTS.PROP_DEFER_TO_URL;
+            var _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl();
+            var url = _awaitPaymentTokenAnd.url;
+            var paymentToken = _awaitPaymentTokenAnd.paymentToken;
+            var token = void 0;
             paymentToken.then(function(result) {
                 token = result;
             });
@@ -12170,9 +12115,9 @@ this["ppxo"] = function(modules) {
                 return $logger.debug("ineligible_initxo");
             }
             reset();
-            var _getPaymentTokenAndUr2 = getPaymentTokenAndUrl();
-            var url = _getPaymentTokenAndUr2.url;
-            var paymentToken = _getPaymentTokenAndUr2.paymentToken;
+            var _awaitPaymentTokenAnd2 = awaitPaymentTokenAndUrl();
+            var url = _awaitPaymentTokenAnd2.url;
+            var paymentToken = _awaitPaymentTokenAnd2.paymentToken;
             $logger.info("init_paypal_checkout_initxo");
             renderPayPalCheckout({
                 url: url,
@@ -12226,16 +12171,16 @@ this["ppxo"] = function(modules) {
                     number: buttons.length
                 });
                 for (var _iterator2 = buttons, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref4;
+                    var _ref2;
                     if (_isArray2) {
                         if (_i2 >= _iterator2.length) break;
-                        _ref4 = _iterator2[_i2++];
+                        _ref2 = _iterator2[_i2++];
                     } else {
                         _i2 = _iterator2.next();
                         if (_i2.done) break;
-                        _ref4 = _i2.value;
+                        _ref2 = _i2.value;
                     }
-                    var button = _ref4;
+                    var button = _ref2;
                     var id = button.getAttribute("data-paypal-id");
                     var environment = void 0;
                     if (button.hasAttribute("data-env")) {
@@ -13377,7 +13322,7 @@ this["ppxo"] = function(modules) {
             }
         }
         var currentScript = getCurrentScript();
-        var currentProtocol = window.location.protocol;
+        var currentProtocol = window.location.protocol.split(":")[0];
         _client2["default"].debug("current_protocol_" + currentProtocol);
         if (currentScript) {
             setup({
@@ -13428,7 +13373,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.28"
+                    ver: "4.0.29"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
