@@ -27,6 +27,25 @@ function isLightboxEligible() {
     });
 }
 
+let lightboxEligibilityTimeout;
+
+function detectLightboxEligibility() {
+
+    if (lightboxEligibilityTimeout) {
+        clearTimeout(lightboxEligibilityTimeout);
+    }
+
+    lightboxEligibilityTimeout = setTimeout(() => {
+        Checkout.contexts.lightbox = false;
+        Checkout.contexts.iframe = false;
+    }, 5 * 60 * 1000);
+
+    return isLightboxEligible().then(eligible => {
+        Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
+        Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
+    });
+}
+
 function determineLocale() {
 
     return Promise.try(() => {
@@ -185,21 +204,14 @@ function renderCheckout(paymentToken) {
 
         onAuth(data) {
             $Api.addHeader('x-paypal-internal-euat', data.accessToken);
-
-            isLightboxEligible().then(eligible => {
-                Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
-                Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
-            });
+            detectLightboxEligibility();
         }
     });
 }
 
 function setup() {
 
-    isLightboxEligible().then(eligible => {
-        Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
-        Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
-    });
+    detectLightboxEligibility();
 
     determineLocale().then(locale => {
         config.locale.country = locale.country;
