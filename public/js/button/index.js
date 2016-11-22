@@ -170,6 +170,8 @@ function renderCheckout(paymentToken) {
         locale: window.xprops.locale,
         commit: window.xprops.commit,
 
+        onError: window.xprops.onError,
+
         onAuthorize(data, actions) {
 
             data = data || {};
@@ -180,12 +182,7 @@ function renderCheckout(paymentToken) {
 
             return Promise.try(() => window.xprops.onAuthorize(data, getActions(this, data, actions)))
                 .catch(err => {
-
-                    if (window.console && window.console.error) {
-                        window.console.error(err.stack);
-                    }
-
-                    throw err;
+                    return window.xchild.error(err);
                 });
         },
 
@@ -193,12 +190,7 @@ function renderCheckout(paymentToken) {
 
             return Promise.try(() => window.xprops.onCancel(data, actions))
                 .catch(err => {
-
-                    if (window.console && window.console.error) {
-                        window.console.error(err.stack);
-                    }
-
-                    throw err;
+                    return window.xchild.error(err);
                 });
         },
 
