@@ -378,6 +378,16 @@ export let Checkout = xcomponent.create({
             }
         },
 
+        onError: {
+            type: 'function',
+            required: false,
+            promisify: true,
+            def() {
+                return window.xprops && window.xprops.onError;
+            },
+            once: true
+        },
+
         fallback: {
             type: 'function',
             required: false,
