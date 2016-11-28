@@ -2,7 +2,7 @@
 import $logger from 'beaver-logger/client';
 
 import { config } from './config';
-import { initLogger, checkForCommonErrors, once, beacon } from './lib';
+import { initLogger, checkForCommonErrors, beacon } from './lib';
 import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
 
@@ -37,7 +37,7 @@ Promise.onPossiblyUnhandledException(err => {
     });
 });
 
-export let setup = once(function setup(options = {}) {
+export function setup(options = {}) {
 
     checkForCommonErrors();
 
@@ -88,7 +88,7 @@ export let setup = once(function setup(options = {}) {
     }
 
     $logger.info(`setup_${config.env}`);
-});
+}
 
 function getCurrentScript() {
 

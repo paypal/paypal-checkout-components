@@ -25,7 +25,7 @@ document.querySelector('#button').addEventListener('click', event => {
             }, {
                 payment: {
                     execute() {
-
+                        // pass
                     },
 
                     get() {

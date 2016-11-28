@@ -290,7 +290,7 @@ export let Checkout = xcomponent.create({
             sameDomain: true,
             decorate(original) {
                 return function() {
-                    enableCheckoutIframe();
+                    enableCheckoutIframe(); // eslint-disable-line
                     if (original) {
                         return original.apply(this, arguments);
                     }

@@ -15,6 +15,7 @@ let $logger = logger.prefix(LOG_PREFIX);
 
 const REDIRECT_DELAY = 1;
 
+let setupCalled = false;
 let inClick = false;
 
 let ifNotClickMethods = [];
@@ -31,7 +32,7 @@ function registerClick() {
 
 onDocumentReady(() => {
     if (window.document && window.document.body) {
-        window.document.body.addEventListener('click', function() {
+        window.document.body.addEventListener('click', () => {
             registerClick();
         });
     }
@@ -54,6 +55,16 @@ function ifNotClick(method) {
     }, 1);
 }
 
+export function reset() {
+
+    $logger.debug('reset');
+
+    // Once our callback has been called, we can set the global methods to their original values
+
+    window.paypal.checkout.initXO    = initXO;    // eslint-disable-line
+    window.paypal.checkout.startFlow = startFlow; // eslint-disable-line
+    window.paypal.checkout.closeFlow = closeFlow; // eslint-disable-line
+}
 
 
 function before(method, wrapper) {
@@ -97,7 +108,7 @@ function redirect(url) {
 
     reset();
 
-    setTimeout(function() {
+    setTimeout(() => {
         $logger.info(`redirect`, { url });
         window.location = url;
     }, REDIRECT_DELAY);
@@ -391,7 +402,7 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         throw err;
     });
 
-    checkout.win = paypalCheckout.window;
+    window.paypal.checkout.win = paypalCheckout.window;
 
     return render;
 }
@@ -556,8 +567,6 @@ function listenClick(container, button, clickHandler, condition) {
     - Set up configuration for the incontext flow
     - Render a button to initiate the checkout window
 */
-
-let setupCalled = false;
 
 function setup(id, options = {}) {
 
@@ -729,17 +738,6 @@ function closeFlow(closeUrl) {
     }
 
     console.warn('Checkout is not open, can not be closed');
-}
-
-export function reset() {
-
-    $logger.debug('reset');
-
-    // Once our callback has been called, we can set the global methods to their original values
-
-    window.paypal.checkout.initXO    = initXO;
-    window.paypal.checkout.startFlow = startFlow;
-    window.paypal.checkout.closeFlow = closeFlow;
 }
 
 

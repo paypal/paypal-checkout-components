@@ -137,8 +137,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 payment() {
 
-                    var env    = this.props.env;
-                    var client = this.props.client;
+                    let env    = this.props.env;
+                    let client = this.props.client;
 
                     return paypal.rest.payment.create(env, client, {
                         transactions: [
@@ -174,8 +174,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 payment() {
 
-                    var env    = this.props.env;
-                    var client = this.props.client;
+                    let env    = this.props.env;
+                    let client = this.props.client;
 
                     return paypal.rest.payment.create(env, client, {
                         transactions: [
@@ -214,8 +214,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 payment() {
 
-                    var env    = this.props.env;
-                    var client = this.props.client;
+                    let env    = this.props.env;
+                    let client = this.props.client;
 
                     return paypal.rest.billingAgreement.create(env, client, {
                         plan: {

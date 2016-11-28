@@ -32,7 +32,7 @@ function memoize(method, options = {}) {
     };
 }
 
-let createAccessToken = memoize(function createAccessToken(env, client) {
+let createAccessToken = memoize((env, client) => {
 
     env = env || config.env;
 
@@ -73,7 +73,7 @@ let createAccessToken = memoize(function createAccessToken(env, client) {
     });
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize(function createExperienceProfile(env, client, experienceDetails = {}) {
+let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
     env = env || config.env;
 
     let clientID = client[env];

@@ -216,7 +216,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
 
                 if (flow === 'lightbox') {
-                    setTimeout(function() {
+                    setTimeout(() => {
                         if (paypal.checkout.win.closed) {
                             return done();
                         } else {

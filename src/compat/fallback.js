@@ -2,7 +2,7 @@
 import postRobot from 'post-robot/src';
 
 import { bridge } from './bridge';
-import { isPayPalDomain } from '../lib';
+import { isPayPalDomain, noop } from '../lib';
 
 function match(str, pattern) {
     let regmatch = str.match(pattern);
@@ -82,7 +82,7 @@ function onLegacyFallback(win) {
                                 }
 
                                 if (win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady) {
-                                    win.mob.Xhr.prototype._xhrOnReady = function() {};
+                                    win.mob.Xhr.prototype._xhrOnReady = noop;
                                 }
 
                                 setTimeout(() => {

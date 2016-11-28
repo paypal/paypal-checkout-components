@@ -10,7 +10,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-            window.onerror = () => {};
+            window.onerror = () => {
+                // pass
+            };
         });
 
         afterEach(() => {
