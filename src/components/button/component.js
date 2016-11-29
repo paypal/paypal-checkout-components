@@ -35,7 +35,7 @@ export let Button = xcomponent.create({
     },
 
     get domains() {
-        return config.paypalUrls;
+        return config.paypalDomains;
     },
 
     validateProps(component, props, required = true) {

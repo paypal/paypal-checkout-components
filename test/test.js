@@ -1,5 +1,5 @@
 
-// window.mockDomain = 'mock://www.merchant-site.com';
+window.mockDomain = 'mock://www.merchant-site.com';
 
 import paypal from 'src/index';
 import './tests';

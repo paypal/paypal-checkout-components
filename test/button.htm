@@ -5,6 +5,7 @@
     <button id="button">Click me</button>
 
     <script>
+        window.mockDomain = 'mock://www.paypal.com';
         var parentWindow = (window.opener || window.parent);
         window.__coverage__ = parentWindow.__coverage__;
     </script>

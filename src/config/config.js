@@ -48,6 +48,16 @@ export let config = {
         };
     },
 
+    get paypalDomains() {
+        return {
+            local:      `http://localhost.paypal.com:8000`,
+            stage:      `https://www.${config.stage}.qa.paypal.com`,
+            sandbox:    `https://www.sandbox.paypal.com`,
+            production: `https://www.paypal.com`,
+            test:       `mock://www.paypal.com`
+        };
+    },
+
     get wwwApiUrls() {
         return {
             local:      `https://www.${config.stage}.qa.paypal.com`,

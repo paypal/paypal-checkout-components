@@ -3,6 +3,7 @@
     <h1>Bridge</h1>
 
     <script>
+        window.mockDomain = 'mock://www.paypal.com';
         var parentWindow = (window.opener || window.parent);
         window.__coverage__ = parentWindow.__coverage__;
     </script>
