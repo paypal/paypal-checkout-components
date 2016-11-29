@@ -2,7 +2,8 @@
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
-import paypal from 'src/index';
+import { config } from 'src/config';
+
 // import postRobot from 'post-robot/src/index';
 
 // postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
@@ -124,13 +125,13 @@ patchXmlHttpRequest();
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: paypal.config.loggerUrl,
+    uri: config.loggerUrl,
     data: {}
 }).listen();
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: paypal.config.authApiUrl,
+    uri: config.authApiUrl,
     data: {
         access_token: 'ABCDEFGH'
     }
@@ -138,7 +139,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: paypal.config.paymentApiUrl,
+    uri: config.paymentApiUrl,
     handler: () => ({
         id: generatePaymentID()
     })
@@ -146,7 +147,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: paypal.config.billingApiUrl,
+    uri: config.billingApiUrl,
     handler: () => ({
         token_id: generateBillingToken()
     })
@@ -154,7 +155,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: paypal.config.experienceApiUrl,
+    uri: config.experienceApiUrl,
     handler: () => ({
         id: generateExperienceToken()
     })

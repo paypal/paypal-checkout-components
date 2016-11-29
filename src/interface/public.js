@@ -8,7 +8,6 @@ export { rest } from '../api';
 export { Button } from '../components';
 export { checkout, apps } from '../legacy';
 export { setup } from '../setup';
-export { config } from '../config';
 export { request, isEligible } from '../lib';
 
 export let onPossiblyUnhandledException = Promise.onPossiblyUnhandledException;

@@ -1,5 +1,6 @@
 
 import paypal from 'src/index';
+import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
 
@@ -44,9 +45,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-            let checkoutUrl = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
-            delete paypal.config.checkoutUrl;
-            paypal.config.checkoutUrl = '#testCheckoutUrl';
+            let checkoutUrl = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+            delete config.checkoutUrl;
+            config.checkoutUrl = '#testCheckoutUrl';
 
             let token = generateECToken();
 
@@ -64,7 +65,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
-                    Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrl);
+                    Object.defineProperty(config, 'checkoutUrl', checkoutUrl);
                 });
             });
         });

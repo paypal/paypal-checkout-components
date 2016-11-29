@@ -1,5 +1,6 @@
 
 import paypal from 'src/index';
+import { config } from 'src/config';
 
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
@@ -118,14 +119,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 }).then(() => {
 
-                    let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(paypal.config, 'checkoutUrl');
-                    delete paypal.config.checkoutUrl;
-                    paypal.config.checkoutUrl = '#errorRedirectUrl';
+                    let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                    delete config.checkoutUrl;
+                    config.checkoutUrl = '#errorRedirectUrl';
 
                     document.querySelector('#testContainer button').click();
 
                     return onHashChange().then(urlHash => {
-                        Object.defineProperty(paypal.config, 'checkoutUrl', checkoutUrlDescriptor);
+                        Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
                         assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                     });
                 });
