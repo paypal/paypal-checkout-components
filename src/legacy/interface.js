@@ -615,7 +615,7 @@ function setup(id, options = {}) {
         }
     }
 
-    setupBridge(config.env, config.bridgeUrl);
+    setupBridge(config.env);
 
     if (options.locale) {
         config.locale = normalizeLocale(options.locale);

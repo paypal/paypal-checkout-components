@@ -3,6 +3,9 @@ import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import paypal from 'src/index';
+// import postRobot from 'post-robot/src/index';
+
+// postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
 
 export function onHashChange() {
     return new Promise((resolve, reject) => {

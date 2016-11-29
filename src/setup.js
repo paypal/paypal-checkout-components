@@ -84,7 +84,7 @@ export function setup(options = {}) {
     }
 
     if (options.bridge) {
-        setupBridge(config.env, config.bridgeUrl);
+        setupBridge(config.env);
     }
 
     $logger.info(`setup_${config.env}`);

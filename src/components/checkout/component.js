@@ -100,6 +100,10 @@ export let Checkout = xcomponent.create({
         return config.bridgeUrls;
     },
 
+    get bridgeDomains() {
+        return config.paypalDomains;
+    },
+
     contexts: {
         iframe: false,
         lightbox: false,

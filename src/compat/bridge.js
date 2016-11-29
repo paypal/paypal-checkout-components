@@ -31,16 +31,19 @@ postRobot.on('meta', ({ source, data }) => {
     }
 });
 
-export function setupBridge(env, bridgeUrl) {
+export function setupBridge(env) {
     return Promise.try(() => {
 
-        if (!postRobot.needsBridgeForDomain(bridgeUrl)) {
+        let bridgeUrl = config.bridgeUrls[env];
+        let bridgeDomain = config.paypalDomains[env];
+
+        if (!postRobot.needsBridgeForDomain(bridgeDomain)) {
             return $logger.debug(`bridge_not_required`, { env });
         }
 
         $logger.debug(`setup_bridge`, { env });
 
-        let openBridge = postRobot.openBridge(bridgeUrl);
+        let openBridge = postRobot.openBridge(bridgeUrl, bridgeDomain);
 
         openBridge.then(win => {
             bridge.resolve(win);
@@ -52,7 +55,7 @@ export function setupBridge(env, bridgeUrl) {
 
             // Bridge is best-effort for everything but IE
 
-            if (postRobot.needsBridge({ domain: bridgeUrl })) {
+            if (postRobot.needsBridge({ domain: bridgeDomain })) {
                 throw err;
             } else {
                 $logger.debug(`open_bridge_transient_failure`);
