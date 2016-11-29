@@ -1,4 +1,6 @@
 
+// window.mockDomain = 'mock://www.paypal.com';
+
 import paypal from 'src/index';
 import './tests/common';
 

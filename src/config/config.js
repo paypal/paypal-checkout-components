@@ -107,10 +107,18 @@ export let config = {
         test:       `/base/test/button.htm`
     },
 
+    bridgeUris: {
+        local:      `/webapps/hermes/component-meta`,
+        stage:      `/webapps/hermes/component-meta`,
+        sandbox:    `/webapps/hermes/component-meta`,
+        production: `/webapps/hermes/component-meta`,
+        test:       `/base/test/bridge.htm`
+    },
+
     loggerUri: `/webapps/hermes/api/logger`,
 
     get bridgeUri() {
-        return `/webapps/hermes/component-meta?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
+        return `${config.bridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
     },
 
     paymentStandardUri: `/webapps/xorouter?cmd=_s-xclick`,
