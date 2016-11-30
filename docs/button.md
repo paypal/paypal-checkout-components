@@ -100,8 +100,10 @@ You'll need:
 - An **HTML Container Element** to render the button into
 
 ```javascript
+
+<div id="myContainerElement"></div>
+
 <script>
-	<div id="myContainerElement"></div>
 
 	paypal.Button.render({
 
