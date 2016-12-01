@@ -50,7 +50,7 @@ export function urlWillRedirectPage(url) {
         return true;
     }
 
-    if (url.startsWith('#')) {
+    if (url.indexOf('#') === 0) {
         return false;
     }
 

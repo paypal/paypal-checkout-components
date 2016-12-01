@@ -96,6 +96,62 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should render a button into a container and click on the button then redirect on authorize and await the promise', (done) => {
+
+            let token = generateECToken();
+
+            return paypal.Button.render({
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window).then(() => {
+                        return done();
+                    }).catch(done);
+                },
+
+                onCancel(data, actions) {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
+
+            let token = generateECToken();
+
+            return paypal.Button.render({
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window, '#successUrl');
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window, '#cancelUrl');
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#successUrl`);
+                });
+            });
+        });
+
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
             let token = generateECToken();
@@ -123,6 +179,66 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancel?token=${token}`);
+                });
+            });
+        });
+
+        it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
+
+            let token = generateECToken();
+
+            return paypal.Button.render({
+
+                testAction: 'cancel',
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window).then(() => {
+                        return done();
+                    }).catch(done);
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
+
+            let token = generateECToken();
+
+            return paypal.Button.render({
+
+                testAction: 'cancel',
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window, '#successUrl');
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window, '#cancelUrl');
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#cancelUrl`);
                 });
             });
         });

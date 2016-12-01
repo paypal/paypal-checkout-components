@@ -84,6 +84,54 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should render checkout then redirect on authorize and await the promise', (done) => {
+
+            let token = generateECToken();
+
+            return paypal.Checkout.render({
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window).then(() => {
+                        return done();
+                    }).catch(done);
+                },
+
+                onCancel(data, actions) {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            });
+        });
+
+        it('should render checkout then redirect on authorize with a custom url', () => {
+
+            let token = generateECToken();
+
+            paypal.Checkout.render({
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window, '#successUrl');
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window, '#cancelUrl');
+                }
+
+            });
+
+            return onHashChange().then(urlHash => {
+                assert.equal(urlHash, `#successUrl`);
+            });
+        });
+
         it('should render checkout then redirect on cancel', () => {
 
             let token = generateECToken();
@@ -108,6 +156,58 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#cancel?token=${token}`);
+            });
+        });
+
+        it('should render checkout then redirect on cancel and await the promise', (done) => {
+
+            let token = generateECToken();
+
+            return paypal.Checkout.render({
+
+                testAction: 'cancel',
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window).then(() => {
+                        return done();
+                    }).catch(done);
+                }
+
+            });
+        });
+
+        it('should render checkout then redirect on cancel with a custom url', () => {
+
+            let token = generateECToken();
+
+            paypal.Checkout.render({
+
+                testAction: 'cancel',
+
+                payment() {
+                    return token;
+                },
+
+                onAuthorize(data, actions) {
+                    return actions.redirect(window, '#successUrl');
+                },
+
+                onCancel(data, actions) {
+                    return actions.redirect(window, '#cancelUrl');
+                }
+
+            });
+
+            return onHashChange().then(urlHash => {
+                assert.equal(urlHash, `#cancelUrl`);
             });
         });
 
