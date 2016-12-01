@@ -1,25 +1,6 @@
 
 import { config } from '../config';
 
-export function extend(target) {
-
-    for (let i = 1; i < arguments.length; i++) {
-        let source = arguments[i];
-
-        for (let key in source) {
-            if (source.hasOwnProperty(key)) {
-                Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-            }
-        }
-    }
-
-    return target;
-}
-
-export function merge() {
-    return extend({}, ...arguments);
-}
-
 export function isPayPalDomain() {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex));
 }

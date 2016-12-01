@@ -17,11 +17,13 @@ export function request(options) {
 
         headers.Accept = headers.Accept || 'application/json';
 
-        let isCrossDomain = options.url.indexOf('http') === 0 && options.url.indexOf(`${window.location.protocol}//${window.location.host}`) !== 0;
-
         let xhr;
 
         let win = options.win || window;
+
+        /*
+
+        let isCrossDomain = options.url.indexOf('http') === 0 && options.url.indexOf(`${window.location.protocol}//${window.location.host}`) !== 0;
 
         if (win.XDomainRequest && win.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
 
@@ -43,22 +45,24 @@ export function request(options) {
 
         } else {
 
-            xhr = new win.XMLHttpRequest();
+        }
+        */
 
-            xhr.addEventListener('load', function() {
-                resolve(JSON.parse(this.responseText));
-            }, false);
+        xhr = new win.XMLHttpRequest();
 
-            xhr.addEventListener('error', (evt) => {
-                reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
-            }, false);
+        xhr.addEventListener('load', function() {
+            resolve(JSON.parse(this.responseText));
+        }, false);
 
-            xhr.open(options.method, options.url, true);
+        xhr.addEventListener('error', (evt) => {
+            reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
+        }, false);
 
-            if (headers) {
-                for (let key in headers) {
-                    xhr.setRequestHeader(key, headers[key]);
-                }
+        xhr.open(options.method, options.url, true);
+
+        if (headers) {
+            for (let key in headers) {
+                xhr.setRequestHeader(key, headers[key]);
             }
         }
 

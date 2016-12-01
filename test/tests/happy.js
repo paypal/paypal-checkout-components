@@ -8,4 +8,9 @@ describe('paypal happy cases', () => {
         assert.ok(paypal.Checkout);
         assert.ok(paypal.Button);
     });
+
+    it('should export isEligible method', () => {
+
+        assert.ok(paypal.isEligible());
+    });
 });
