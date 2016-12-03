@@ -103,6 +103,7 @@ module.exports = function(config) {
             'test/test.js': ['webpack'],
             'test/checkout.js': ['webpack'],
             'test/button.js': ['webpack'],
+            'test/fallback.js': ['webpack'],
             'test/bridge.js': ['webpack'],
             'src/**/*.js': ['coverage',  'sourcemap']
         },

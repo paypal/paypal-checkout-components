@@ -6,7 +6,7 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, request, getQueryParam } from '../../lib';
+import { isDevice, request, getQueryParam, noop } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps, urlWillRedirectPage } from '../common';
@@ -387,7 +387,7 @@ export let Checkout = xcomponent.create({
             required: false,
             promisify: true,
             def() {
-                return window.xprops && window.xprops.onError;
+                return window.xprops && window.xprops.onError || noop;
             },
             once: true
         },
@@ -400,12 +400,7 @@ export let Checkout = xcomponent.create({
             def() {
                 return function(url) {
                     $logger.warn('fallback', { url });
-
-                    if (window.onLegacyPaymentAuthorize) {
-                        window.onLegacyPaymentAuthorize(this.props.onAuthorize);
-                    } else {
-                        window.location = url;
-                    }
+                    return window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
             }
         },

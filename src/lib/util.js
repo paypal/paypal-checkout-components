@@ -2,7 +2,7 @@
 import { config } from '../config';
 
 export function isPayPalDomain() {
-    return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex));
+    return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
 

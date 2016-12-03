@@ -1,8 +1,8 @@
 
 import postRobot from 'post-robot/src';
 
-import { bridge } from './bridge';
 import { isPayPalDomain, noop } from '../lib';
+import { config } from '../config';
 
 function match(str, pattern) {
     let regmatch = str.match(pattern);
@@ -11,35 +11,42 @@ function match(str, pattern) {
     }
 }
 
-window.onLegacyPaymentAuthorize = (method) => {
-    bridge.then(bridgeWindow => {
-        postRobot.send(bridgeWindow, 'onLegacyPaymentAuthorize', { method });
+let onAuthorize;
+
+// Bridge
+
+if (isPayPalDomain()) {
+    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data }) => {
+        onAuthorize = data.method;
     });
+}
+
+// Button / Merchant
+
+window.onLegacyPaymentAuthorize = (method) => {
+    onAuthorize = method;
+
+    if (!isPayPalDomain()) {
+        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then(bridge => {
+            return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
+                .then(noop);
+        });
+    }
 };
 
-function onLegacyFallback(win) {
+// Bridge / Button
 
-    let onLegacyPaymentAuthorize;
-
-    window.onLegacyPaymentAuthorize = (method) => {
-        onLegacyPaymentAuthorize = method;
-    };
-
-    postRobot.once('onLegacyPaymentAuthorize', { window: window.parent }).then(({ data }) => {
-        onLegacyPaymentAuthorize = data.method;
-    });
-
+window.watchForLegacyFallback = (win) => {
     let interval = setInterval(() => {
         try {
-
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||
                             win.document.body.innerHTML.indexOf('wapapp') !== -1);
 
-            if (!isLegacy) {
+            if (!isLegacy || win.ppxoMatching || win.closed) {
                 return;
             }
 
-            clearInterval(interval);
+            win.ppxoWatching = true;
 
             let send = win.XMLHttpRequest.prototype.send;
 
@@ -61,17 +68,21 @@ function onLegacyFallback(win) {
                         try {
                             let response = JSON.parse(self.responseText.replace('while (1);', ''));
 
-                            if (response.type === 'redirect' && response.url && onLegacyPaymentAuthorize) {
+                            if (response.type === 'redirect' && response.url && onAuthorize) {
+
+                                clearInterval(interval);
 
                                 let url = response.url;
 
-                                onLegacyPaymentAuthorize({
+                                onAuthorize({
                                     returnUrl:    url,
                                     paymentToken: match(url, /token=((EC-)?[A-Z0-9]+)/),
                                     billingToken: match(url, /ba_token=((BA-)?[A-Z0-9]+)/),
                                     payerID:      match(url, /PayerID=([A-Z0-9]+)/),
                                     paymentID:    match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
                                 });
+
+                                onAuthorize = null;
 
                                 if (win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES) {
                                     Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, 'Redirect', {
@@ -89,7 +100,7 @@ function onLegacyFallback(win) {
                                     if (!win.closed) {
                                         win.close();
                                     }
-                                }, 500);
+                                }, 100);
 
                                 return;
                             }
@@ -133,9 +144,8 @@ function onLegacyFallback(win) {
         } catch (err) {
             // pass
         }
-    }, 1000);
-}
+    }, 100);
+};
 
-if (isPayPalDomain()) {
-    window.onLegacyFallback = onLegacyFallback;
-}
+
+window.onLegacyFallback = window.watchForLegacyFallback;

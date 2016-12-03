@@ -1,0 +1,14 @@
+
+<body>
+    <h1>Fallback</h1>
+
+    <script>
+        window.mockDomain = 'mock://www.paypal.com';
+        var parentWindow = (window.opener || window.parent);
+        window.__coverage__ = parentWindow.__coverage__;
+    </script>
+
+    <script src="/base/test/fallback.js"></script>
+
+    <p>merchantpaymentweb</p>
+</body>

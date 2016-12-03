@@ -3,6 +3,7 @@ window.mockDomain = 'mock://www.merchant-site.com';
 
 import paypal from 'src/index';
 import xcomponent from 'xcomponent/src/index';
+import postRobot from 'post-robot/src/index';
 import './tests';
 
 paypal.setup({
@@ -11,7 +12,9 @@ paypal.setup({
 
 afterEach(() => {
     delete window.navigator.mockUserAgent;
-    return xcomponent.destroyAll();
+    return xcomponent.destroyAll().then(() => {
+        return postRobot.destroyBridges();
+    });
 });
 
 window.console.karma = function() {

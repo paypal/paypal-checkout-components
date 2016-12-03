@@ -2,13 +2,7 @@
 import 'src/index';
 import './tests/common';
 
-window.console.karma = function() {
-    let karma = window.karma || (window.top && window.top.karma) || (window.opener && window.opener.karma);
-    if (karma) {
-        karma.log('debug', arguments);
-    }
-    window.console.log.apply(window.console, arguments);
-};
+import postRobot from 'post-robot/src/index';
 
 if (window.xprops.testAction === 'checkout') {
 
@@ -36,6 +30,33 @@ if (window.xprops.testAction === 'checkout') {
         });
     });
 
+} else if (window.xprops.testAction === 'fallback') {
+
+    let win;
+
+    if (window.opener) {
+        win = window;
+    } else {
+        win = window.open('', `fallbackWindow${Math.random()}`);
+    }
+
+    let parent = window.xchild.getParentComponentWindow();
+
+    window.xprops.fallback('#noop').then(() => {
+        win.location = '/base/test/fallback.htm';
+
+        if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+            return parent.watchForLegacyFallback(win);
+        }
+
+        for (let frame of postRobot.winutil.getFrames(parent)) {
+            if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                return frame.watchForLegacyFallback(win);
+            }
+        }
+
+        throw new Error('Can not find frame to watch for fallback');
+    });
 }
 
 

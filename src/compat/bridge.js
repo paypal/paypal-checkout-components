@@ -6,10 +6,6 @@ import postRobot from 'post-robot/src';
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 
-// This needs to die once we disable fallbacks
-
-export let bridge = new Promise();
-
 postRobot.on('meta', ({ source, data }) => {
 
     if (data.iframeEligible) {
@@ -42,16 +38,8 @@ export function setupBridge(env) {
         }
 
         $logger.debug(`setup_bridge`, { env });
-
-        let openBridge = postRobot.openBridge(bridgeUrl, bridgeDomain);
-
-        openBridge.then(win => {
-            bridge.resolve(win);
-        }, err => {
-            bridge.asyncReject(err);
-        });
-
-        return openBridge.catch(err => {
+        
+        return postRobot.openBridge(bridgeUrl, bridgeDomain).catch(err => {
 
             // Bridge is best-effort for everything but IE
 

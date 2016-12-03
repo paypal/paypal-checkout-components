@@ -169,3 +169,7 @@ window.console.karma = function() {
     }
     console.log.apply(console, arguments);
 };
+
+window.debug = () => {
+    debugger; // eslint-disable-line
+};

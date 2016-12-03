@@ -4,7 +4,7 @@ export let config = {
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
     legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
 
-    paypal_domain_regex: __TEST__ ? /.*/ : /^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+    paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __MINOR_VERSION__,
 
@@ -263,6 +263,10 @@ export let config = {
         return config.paypalUrls[config.env];
     },
 
+    get paypalDomain() {
+        return config.paypalDomains[config.env];
+    },
+
     get corsApiUrl() {
         return config.corsApiUrls[config.env];
     },
@@ -294,6 +298,10 @@ export let config = {
 
     get bridgeUrl() {
         return `${config.paypalUrl}${config.bridgeUri}&env=${config.env}`;
+    },
+
+    get bridgeDomain() {
+        return `${config.paypalDomain}`;
     },
 
     get loggerUrl() {
