@@ -42,7 +42,7 @@ let createAccessToken = memoize((env, client) => {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (proxyRest.createAccessToken) {
+    if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
         return proxyRest.createAccessToken(env, client);
     }
 
@@ -82,7 +82,7 @@ let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (proxyRest.createExperienceProfile) {
+    if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) {
         return proxyRest.createExperienceProfile(env, client, experienceDetails);
     }
 
@@ -125,7 +125,7 @@ function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (proxyRest.createCheckoutToken) {
+    if (proxyRest.createCheckoutToken && !proxyRest.createCheckoutToken.source.closed) {
         return proxyRest.createCheckoutToken(env, client, paymentDetails, experienceDetails);
     }
 
@@ -181,7 +181,7 @@ export function createBillingToken(env, client, billingDetails, experienceDetail
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (proxyRest.createBillingToken) {
+    if (proxyRest.createBillingToken && !proxyRest.createBillingToken.source.closed) {
         return proxyRest.createBillingToken(env, client, billingDetails, experienceDetails);
     }
 
