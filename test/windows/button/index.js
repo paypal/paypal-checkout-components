@@ -1,6 +1,6 @@
 
 import paypal from 'src/index';
-import './tests/common';
+import '../../tests/common';
 
 window.console.karma = function() {
     let karma = window.karma || (window.top && window.top.karma) || (window.opener && window.opener.karma);

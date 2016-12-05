@@ -98,7 +98,7 @@ export let config = {
         stage:      `/webapps/hermes`,
         sandbox:    `/checkoutnow`,
         production: `/checkoutnow`,
-        test:       `/base/test/checkout.htm?checkouturl=true`
+        test:       `/base/test/windows/checkout/index.htm?checkouturl=true`
     },
 
     billingUris: {
@@ -106,7 +106,7 @@ export let config = {
         stage:      `/webapps/hermes/agreements`,
         sandbox:    `/agreements/approve`,
         production: `/agreements/approve`,
-        test:       `/base/test/checkout.htm?billingurl=true`
+        test:       `/base/test/windows/checkout/index.htm?billingurl=true`
     },
 
     buttonUris: {
@@ -114,7 +114,7 @@ export let config = {
         stage:      `/webapps/hermes/button`,
         sandbox:    `/webapps/hermes/button`,
         production: `/webapps/hermes/button`,
-        test:       `/base/test/button.htm`
+        test:       `/base/test/windows/button/index.htm`
     },
 
     bridgeUris: {
@@ -122,7 +122,7 @@ export let config = {
         stage:      `/webapps/hermes/component-meta`,
         sandbox:    `/webapps/hermes/component-meta`,
         production: `/webapps/hermes/component-meta`,
-        test:       `/base/test/bridge.htm`
+        test:       `/base/test/windows/bridge/index.htm`
     },
 
     loggerUri: `/webapps/hermes/api/logger`,

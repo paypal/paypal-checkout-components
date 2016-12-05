@@ -1,6 +1,6 @@
 
 import 'src/index';
-import './tests/common';
+import '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
 
@@ -43,7 +43,7 @@ if (window.xprops.testAction === 'checkout') {
     let parent = window.xchild.getParentComponentWindow();
 
     window.xprops.fallback('#noop').then(() => {
-        win.location = '/base/test/fallback.htm';
+        win.location = '/base/test/windows/fallback/index.htm';
 
         if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
             return parent.watchForLegacyFallback(win);

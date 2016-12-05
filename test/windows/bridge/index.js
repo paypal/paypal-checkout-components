@@ -1,6 +1,6 @@
 
 import 'src/index';
-import './tests/common';
+import '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
 

@@ -1,6 +1,6 @@
 
 import 'src/index';
-import './tests/common';
+import '../../tests/common';
 
 window.opener.console.warn('loaded fallback page');
 
