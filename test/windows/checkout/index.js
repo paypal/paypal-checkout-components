@@ -1,5 +1,5 @@
 
-import 'src/index';
+import paypal from 'src/index';
 import '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
@@ -28,6 +28,21 @@ if (window.xprops.testAction === 'checkout') {
             paymentToken,
             cancelUrl: `#cancel?token=${paymentToken}${ hash }`
         });
+    });
+
+} else if (window.xprops.testAction === 'popout') {
+
+    window.xchild.hide();
+
+    paypal.Checkout.renderPopupTo(window.parent, {
+
+        url:              window.location.href,
+        payment:          window.xprops.payment,
+        billingAgreement: window.xprops.billingAgreement,
+        onAuthorize:      window.xprops.onAuthorize,
+        onCancel:         window.xprops.onCancel,
+        onError:          window.xprops.onError
+
     });
 
 } else if (window.xprops.testAction === 'fallback') {

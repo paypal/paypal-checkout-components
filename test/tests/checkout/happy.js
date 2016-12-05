@@ -449,5 +449,28 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        if (flow === 'lightbox') {
+
+            it('should render checkout, popout, then complete the payment', (done) => {
+
+                return paypal.Checkout.render({
+
+                    testAction: 'popout',
+
+                    payment() {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() {
+                        return done();
+                    },
+
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+        }
     });
 }
