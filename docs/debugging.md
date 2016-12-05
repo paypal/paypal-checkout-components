@@ -6,6 +6,6 @@ The following guide explains common ways to debug PayPal Checkout integrations
 
 #### Chrome
 
-![Chrome - Open Dev Tools](./img/chrome-open-dev-tools)
+![Chrome - Open Dev Tools](./img/chrome-open-dev-tools.png)
 
-![Chrome - Dev Tools](./img/chrome-dev-tools)
+![Chrome - Dev Tools](./img/chrome-dev-tools.png)
