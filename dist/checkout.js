@@ -33,7 +33,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.31") {
+        if (window.paypal && window.paypal.version === "4.0.32") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -77,7 +77,7 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.setup = exports.apps = exports.checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = undefined;
+        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.config = exports.setup = exports.apps = exports.checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = undefined;
         var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
         Object.defineProperty(exports, "postRobot", {
             enumerable: true,
@@ -126,6 +126,13 @@ this["ppxo"] = function(modules) {
                 return _setup.setup;
             }
         });
+        var _config = __webpack_require__("./src/config/index.js");
+        Object.defineProperty(exports, "config", {
+            enumerable: true,
+            get: function get() {
+                return _config.config;
+            }
+        });
         var _lib = __webpack_require__("./src/lib/index.js");
         Object.defineProperty(exports, "request", {
             enumerable: true,
@@ -145,7 +152,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.31";
+        var version = exports.version = "4.0.32";
         module.exports["default"] = module.exports;
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -153,7 +160,7 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.setup = exports.apps = exports.checkout = exports.PayPalCheckout = exports.Checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = undefined;
+        exports.version = exports.onPossiblyUnhandledException = exports.isEligible = exports.request = exports.config = exports.setup = exports.apps = exports.checkout = exports.PayPalCheckout = exports.Checkout = exports.Button = exports.rest = exports.Promise = exports.postRobot = undefined;
         var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
         Object.defineProperty(exports, "postRobot", {
             enumerable: true,
@@ -214,6 +221,13 @@ this["ppxo"] = function(modules) {
                 return _setup.setup;
             }
         });
+        var _config = __webpack_require__("./src/config/index.js");
+        Object.defineProperty(exports, "config", {
+            enumerable: true,
+            get: function get() {
+                return _config.config;
+            }
+        });
         var _lib = __webpack_require__("./src/lib/index.js");
         Object.defineProperty(exports, "request", {
             enumerable: true,
@@ -233,7 +247,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.31";
+        var version = exports.version = "4.0.32";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -3850,7 +3864,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.31",
+            version: "4.0.32",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -3925,32 +3939,32 @@ this["ppxo"] = function(modules) {
                 stage: "/webapps/hermes",
                 sandbox: "/checkoutnow",
                 production: "/checkoutnow",
-                test: "/base/test/checkout.htm?checkouturl=true"
+                test: "/base/test/windows/checkout/index.htm?checkouturl=true"
             },
             billingUris: {
                 local: "/webapps/hermes/agreements?ul=0",
                 stage: "/webapps/hermes/agreements",
                 sandbox: "/agreements/approve",
                 production: "/agreements/approve",
-                test: "/base/test/checkout.htm?billingurl=true"
+                test: "/base/test/windows/checkout/index.htm?billingurl=true"
             },
             buttonUris: {
                 local: "/webapps/hermes/button",
                 stage: "/webapps/hermes/button",
                 sandbox: "/webapps/hermes/button",
                 production: "/webapps/hermes/button",
-                test: "/base/test/button.htm"
+                test: "/base/test/windows/button/index.htm"
             },
             bridgeUris: {
                 local: "/webapps/hermes/component-meta",
                 stage: "/webapps/hermes/component-meta",
                 sandbox: "/webapps/hermes/component-meta",
                 production: "/webapps/hermes/component-meta",
-                test: "/base/test/bridge.htm"
+                test: "/base/test/windows/bridge/index.htm"
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.31");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.32");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -4549,7 +4563,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.31"
+                    ver: "4.0.32"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -9722,7 +9736,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.31";
+                payload.version = "4.0.32";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9741,7 +9755,7 @@ this["ppxo"] = function(modules) {
         var loggedCheckpoints = [];
         function checkpoint(name) {
             try {
-                var version = "4.0.31".replace(/[^0-9]+/g, "_");
+                var version = "4.0.32".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10936,7 +10950,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.31";
+                return _config.config.ppobjects ? "4" : "4.0.32";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11305,7 +11319,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.31";
+                return _config.config.ppobjects ? "4" : "4.0.32";
             },
             get domains() {
                 return _config.config.paypalDomains;
