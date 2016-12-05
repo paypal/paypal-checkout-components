@@ -315,28 +315,24 @@ function initPayPalCheckout(props = {}) {
         uid: window.pp_uid,
 
         onAuthorize(data, actions) {
-
             $logger.info(`payment_authorized`);
-
             logRedirect(data.returnUrl);
-
-            return Promise.delay(REDIRECT_DELAY).then(() => {
-                return actions.redirect(window);
-            });
+            return actions.redirect(window);
         },
 
         onCancel(data, actions) {
-
             $logger.info(`payment_canceled`);
-
-            return Promise.delay(REDIRECT_DELAY).then(() => {
-                return actions.redirect(window);
-            });
+            return actions.redirect(window);
         },
 
         onError(err) {
-
             $logger.error(`error_handler`, { error: err.stack || err.toString() });
+            // TODO: fallback
+        },
+
+        fallback(url) {
+            $logger.error(`fallback_handler`);
+            redirect(url);
         },
 
         ...props
@@ -350,6 +346,7 @@ function initPayPalCheckout(props = {}) {
         try {
             paypalCheckout.destroy();
         } catch (err) {
+            $logger.warn(`destroy_error`, { error: err.stack || err.toString() });
             console.error(err);
         }
 
