@@ -4,10 +4,6 @@ import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import { config } from 'src/config';
 
-// import postRobot from 'post-robot/src/index';
-
-// postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
-
 export function onHashChange() {
     return new Promise((resolve, reject) => {
         let currentHash = window.location.hash;
