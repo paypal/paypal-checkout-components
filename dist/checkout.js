@@ -33,7 +33,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.30") {
+        if (window.paypal && window.paypal.version === "4.0.31") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -145,7 +145,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.30";
+        var version = exports.version = "4.0.31";
         module.exports["default"] = module.exports;
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -233,7 +233,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.30";
+        var version = exports.version = "4.0.31";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -574,7 +574,7 @@ this["ppxo"] = function(modules) {
             return obj;
         }
         var CONFIG = exports.CONFIG = {
-            ALLOW_POSTMESSAGE_POPUP: false,
+            ALLOW_POSTMESSAGE_POPUP: false ? false : true,
             LOG_LEVEL: "info",
             BRIDGE_TIMEOUT: 5e3,
             ACK_TIMEOUT: 1e3,
@@ -3850,7 +3850,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.30",
+            version: "4.0.31",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -3950,7 +3950,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.30");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.31");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -4549,7 +4549,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.30"
+                    ver: "4.0.31"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -9722,7 +9722,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.30";
+                payload.version = "4.0.31";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9741,7 +9741,7 @@ this["ppxo"] = function(modules) {
         var loggedCheckpoints = [];
         function checkpoint(name) {
             try {
-                var version = "4.0.30".replace(/[^0-9]+/g, "_");
+                var version = "4.0.31".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10936,7 +10936,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.30";
+                return _config.config.ppobjects ? "4" : "4.0.31";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11305,7 +11305,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.30";
+                return _config.config.ppobjects ? "4" : "4.0.31";
             },
             get domains() {
                 return _config.config.paypalDomains;
