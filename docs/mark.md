@@ -1,6 +1,6 @@
 ## PayPal Checkout Mark Integrations
 
-![PayPal Mark](./mark.png)
+![PayPal Mark](./img/mark.png)
 
 It's possible to use PayPal Checkout as part of a Mark integration.
 We recommend showing the PayPal Button conditionally when the PayPal radio field is selected.

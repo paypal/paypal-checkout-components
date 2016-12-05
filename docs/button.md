@@ -1,8 +1,8 @@
 ## PayPal Checkout Button
 
-![PayPal Button](./button.png)
+![PayPal Button](./img/button.png)
 
-![PayPal Checkout](./checkout.png)
+![PayPal Checkout](./img/checkout.png)
 
 ### Before you start
 
