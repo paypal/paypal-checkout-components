@@ -1,7 +1,8 @@
 
 import paypal from 'src/index';
+import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, createElement,
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
          createTestContainer, destroyTestContainer } from '../common';
 
 
@@ -43,7 +44,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let hash = uniqueID();
 
             testButton.addEventListener('click', event => {
-                paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
             });
 
             testButton.click();
@@ -100,7 +101,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 setTimeout(() => {
 
-                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }, 100);
             });
 

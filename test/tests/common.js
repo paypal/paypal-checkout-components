@@ -54,7 +54,6 @@ export function generateExperienceToken() {
     return uniqueID(17).toUpperCase();
 }
 
-export const CHILD_URI = '/base/test/windows/checkout/index.htm';
 export const CHILD_REDIRECT_URI = '/base/test/windows/redirect/index.htm';
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';

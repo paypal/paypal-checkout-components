@@ -1,7 +1,8 @@
 
 import paypal from 'src/index';
+import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_URI, createElement, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, uniqueID, generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -27,7 +28,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: CHILD_URI
+                    action: config.checkoutUrl
                 },
 
                 children: [
@@ -65,7 +66,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${CHILD_URI}?token=${token}#${hash}`
+                    href: `${config.checkoutUrl}&token=${token}#${hash}`
                 }
             });
 
@@ -92,7 +93,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: CHILD_URI
+                    action: config.checkoutUrl
                 },
 
                 children: [
@@ -135,7 +136,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${CHILD_URI}?token=${token}#${hash}`
+                    href: `${config.checkoutUrl}&token=${token}#${hash}`
                 }
             });
 
@@ -163,7 +164,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${CHILD_URI}?token=${token}#${hash}`
+                    href: `${config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -198,7 +199,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${CHILD_URI}?token=${token}#${hash}`
+                    href: `${config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [

@@ -2,7 +2,7 @@
 import paypal from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_URI, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -80,7 +80,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -104,7 +104,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -128,7 +128,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -155,7 +155,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 click(event) {
-                    paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -383,7 +383,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        paypal.checkout.startFlow(`${CHILD_URI}?token=${token}#${hash}`);
+                        paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                     }, 100);
                 }
 
