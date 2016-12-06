@@ -1,0 +1,49 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.js"></script>
+<script src="http://bluesuncorp.co.uk/icv4/dist/checkout.js" data-paypal-checkout></script>
+
+<script>
+    angular.module('app', ['paypal-button']).controller('appController', function($scope) {
+
+        $scope.opts = {
+
+            env: 'production',
+
+            client: {
+                sandbox:    'AWi18rxt26-hrueMoPZ0tpGEOJnNT4QkiMQst9pYgaQNAfS1FLFxkxQuiaqRBj1vV5PmgHX_jA_c1ncL',
+                production: 'AVZhosFzrnZ5Mf3tiOxAD0M6NHv8pcB2IFNHAfp_h69mmbd-LElFYkJUSII3Y0FPbm7S7lxBuqWImLbl'
+            },
+
+            payment: function() {
+
+                var env    = this.props.env;
+                var client = this.props.client;
+
+                return paypal.rest.payment.create(env, client, {
+                    transactions: [
+                        {
+                            amount: { total: '1.00', currency: 'USD' }
+                        }
+                    ]
+                });
+            },
+
+            commit: true, // Optional: show a 'Pay Now' button in the checkout flow
+
+            onAuthorize: function(data, actions) {
+
+                // Optional: display a confirmation page here
+
+                return actions.payment.execute().then(function() {
+                    // Show a success page to the buyer
+                });
+            }
+        };
+
+    });
+</script>
+
+<body ng-app="app" ng-controller="appController">
+
+    <paypal-button env="opts.env" client="opts.client" payment="opts.payment" commit="opts.commit" on-authorize="opts.onAuthorize"></paypal-button>
+
+</body>
