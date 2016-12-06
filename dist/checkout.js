@@ -33,7 +33,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.32") {
+        if (window.paypal && window.paypal.version === "4.0.33") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -152,7 +152,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.32";
+        var version = exports.version = "4.0.33";
         module.exports["default"] = module.exports;
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -247,7 +247,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.32";
+        var version = exports.version = "4.0.33";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -1102,7 +1102,7 @@ this["ppxo"] = function(modules) {
         };
         SyncPromise.prototype.asyncReject = function(error) {
             this.silentReject = true;
-            return this.reject(error);
+            this.reject(error);
         };
         SyncPromise.prototype.dispatch = function() {
             var _this = this;
@@ -1115,13 +1115,10 @@ this["ppxo"] = function(modules) {
                 try {
                     if (_this.resolved) {
                         result = handler.onSuccess ? handler.onSuccess(_this.value) : _this.value;
-                    } else {
+                    } else if (_this.rejected) {
                         if (handler.onError) {
                             result = handler.onError(_this.value);
                         } else {
-                            if (handler.promise && _this.silentReject) {
-                                handler.promise.silentReject = true;
-                            }
                             error = _this.value;
                         }
                     }
@@ -1195,9 +1192,6 @@ this["ppxo"] = function(modules) {
                         promise.resolve(results);
                     }
                 }, function(err) {
-                    if (prom.silentReject) {
-                        promise.silentReject = true;
-                    }
                     promise.reject(err);
                 });
             };
@@ -3095,7 +3089,7 @@ this["ppxo"] = function(modules) {
             if (!remoteWindow) {
                 throw new Error("Window not found on which to reject sendMessage");
             }
-            return remoteWindow.sendMessagePromise.asyncReject(err);
+            remoteWindow.sendMessagePromise.asyncReject(err);
         }
         function sendBridgeMessage(win, message, domain) {
             var messagingChild = (0, _lib.isOpener)(window, win);
@@ -3864,7 +3858,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.32",
+            version: "4.0.33",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -3964,7 +3958,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.32");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.33");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -4563,7 +4557,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.32"
+                    ver: "4.0.33"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -9736,7 +9730,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.32";
+                payload.version = "4.0.33";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9755,7 +9749,7 @@ this["ppxo"] = function(modules) {
         var loggedCheckpoints = [];
         function checkpoint(name) {
             try {
-                var version = "4.0.32".replace(/[^0-9]+/g, "_");
+                var version = "4.0.33".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10950,7 +10944,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.32";
+                return _config.config.ppobjects ? "4" : "4.0.33";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11319,7 +11313,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.32";
+                return _config.config.ppobjects ? "4" : "4.0.33";
             },
             get domains() {
                 return _config.config.paypalDomains;
