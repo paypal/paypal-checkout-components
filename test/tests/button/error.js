@@ -73,5 +73,35 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 button.window.document.querySelector('button').click();
             });
         });
+
+        it('should render button, render checkout, then error out', (done) => {
+
+            return paypal.Button.render({
+
+                testAction: 'error',
+
+                payment() {
+                    return generateECToken();
+                },
+
+                onError() {
+                    // assert.ok(err instanceof Error);
+                    return done();
+                },
+
+                onAuthorize() {
+                    return done(new Error('Expected onCancel to not be called'));
+                },
+
+                onCancel() {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+            });
+        });
     });
 }

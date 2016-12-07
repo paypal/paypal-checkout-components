@@ -71,6 +71,10 @@ if (window.xprops.testAction === 'checkout') {
 
         throw new Error('Can not find frame to watch for fallback');
     });
+
+} else if (window.xprops.testAction === 'error') {
+
+    window.xprops.onError(new Error('something went wrong'));
 }
 
 

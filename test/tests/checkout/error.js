@@ -36,5 +36,31 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             });
         });
+
+        it('should render checkout, then error out', (done) => {
+
+            return paypal.Checkout.render({
+
+                testAction: 'error',
+
+                payment() {
+                    return generateECToken();
+                },
+
+                onError() {
+                    // assert.ok(err instanceof Error);
+                    return done();
+                },
+
+                onAuthorize() {
+                    return done(new Error('Expected onCancel to not be called'));
+                },
+
+                onCancel() {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            });
+        });
     });
 }
