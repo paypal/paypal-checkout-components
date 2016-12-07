@@ -612,8 +612,6 @@ function setup(id, options = {}) {
         }
     }
 
-    setupBridge(config.env);
-
     if (options.locale) {
         config.locale = normalizeLocale(options.locale);
         config.customCountry = true;
@@ -652,12 +650,17 @@ function setup(id, options = {}) {
         }
     }
 
-    return renderButtons(id, options).then(buttons => {
-        buttons.forEach(button => {
-            $logger.info(`listen_click_paypal_button`);
-            listenClick(button.container, button.button, button.click, button.condition);
-        });
-    });
+    return Promise.all([
+
+        setupBridge(config.env),
+
+        renderButtons(id, options).then(buttons => {
+            buttons.forEach(button => {
+                $logger.info(`listen_click_paypal_button`);
+                listenClick(button.container, button.button, button.click, button.condition);
+            });
+        })
+    ]);
 }
 
 
