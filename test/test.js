@@ -2,8 +2,17 @@
 window.mockDomain = 'mock://www.merchant-site.com';
 
 import paypal from 'src/index';
+import { Checkout, Button } from 'src/index';
 import xcomponent from 'xcomponent/src/index';
 import './tests';
+
+Checkout.props.timeout = Button.props.timeout = {
+    type: 'number',
+    required: false,
+    def() {
+        return 500;
+    }
+};
 
 paypal.setup({
     env: 'test'
