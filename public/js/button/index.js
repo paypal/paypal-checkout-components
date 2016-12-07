@@ -29,7 +29,7 @@ function isLightboxEligible() {
 
 let lightboxEligibilityTimeout;
 
-function detectLightboxEligibility() {
+function enableLightbox() {
 
     if (lightboxEligibilityTimeout) {
         clearTimeout(lightboxEligibilityTimeout);
@@ -40,9 +40,14 @@ function detectLightboxEligibility() {
         Checkout.contexts.iframe = false;
     }, 5 * 60 * 1000);
 
+    Checkout.contexts.lightbox = true;
+    Checkout.contexts.iframe = true;
+}
+
+function detectLightboxEligibility() {
+
     return isLightboxEligible().then(eligible => {
-        Checkout.contexts.lightbox = !window.xprops.disableLightbox && eligible;
-        Checkout.contexts.iframe = !window.xprops.disableLightbox && eligible;
+        enableLightbox();
     });
 }
 
@@ -98,6 +103,7 @@ function getActions(checkout, data, actions, intent) {
 
     let restartFlow = () => {
         return checkout.close().then(() => {
+            enableLightbox();
             return renderCheckout(data.paymentToken);
         });
     };
