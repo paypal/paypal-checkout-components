@@ -84,8 +84,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onError() {
-                    // assert.ok(err instanceof Error);
+                onError(err) {
+                    assert.ok(err instanceof Error);
                     return done();
                 },
 
