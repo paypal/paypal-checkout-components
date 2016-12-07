@@ -544,6 +544,62 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     button.window.document.querySelector('button').click();
                 });
             });
+
+            it('should render checkout, popout, then redirect', () => {
+
+                let token = generateECToken();
+
+                paypal.Button.render({
+
+                    testAction: 'popout',
+
+                    payment() {
+                        return token;
+                    },
+
+                    onAuthorize(data, actions) {
+                        return actions.redirect(window);
+                    }
+
+                }, '#testContainer').then(button => {
+
+                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                    button.window.document.querySelector('button').click();
+                });
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+
+            it('should render checkout, popout, then redirect and await the promise', (done) => {
+
+                let token = generateECToken();
+
+                paypal.Button.render({
+
+                    testAction: 'popout',
+
+                    payment() {
+                        return token;
+                    },
+
+                    onAuthorize(data, actions) {
+                        return actions.redirect(window).then(() => {
+                            done();
+                        });
+                    },
+
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                }, '#testContainer').then(button => {
+
+                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                    button.window.document.querySelector('button').click();
+                });
+            });
         }
     });
 }
