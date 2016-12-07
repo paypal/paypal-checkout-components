@@ -471,6 +471,53 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 });
             });
+
+            it('should render checkout, popout, then redirect', () => {
+
+                let token = generateECToken();
+
+                paypal.Checkout.render({
+
+                    testAction: 'popout',
+
+                    payment() {
+                        return token;
+                    },
+
+                    onAuthorize(data, actions) {
+                        return actions.redirect(window);
+                    }
+                });
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+
+            it('should render checkout, popout, then redirect and await the promise', (done) => {
+
+                let token = generateECToken();
+
+                paypal.Checkout.render({
+
+                    testAction: 'popout',
+
+                    payment() {
+                        return token;
+                    },
+
+                    onAuthorize(data, actions) {
+                        return actions.redirect(window).then(() => {
+                            done();
+                        });
+                    },
+
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
         }
     });
 }

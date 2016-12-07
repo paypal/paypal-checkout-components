@@ -34,7 +34,7 @@ if (window.xprops.testAction === 'checkout') {
 
     window.xchild.hide();
 
-    paypal.Checkout.renderPopupTo(window.parent, {
+    paypal.Checkout.renderPopupTo(window.xchild.getParentComponentWindow(), {
 
         url:              window.location.href,
         payment:          window.xprops.payment,
@@ -42,7 +42,6 @@ if (window.xprops.testAction === 'checkout') {
         onAuthorize:      window.xprops.onAuthorize,
         onCancel:         window.xprops.onCancel,
         onError:          window.xprops.onError
-
     });
 
 } else if (window.xprops.testAction === 'fallback') {
