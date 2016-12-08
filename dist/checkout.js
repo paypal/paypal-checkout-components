@@ -33,7 +33,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.34") {
+        if (window.paypal && window.paypal.version === "4.0.35") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -152,7 +152,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.34";
+        var version = exports.version = "4.0.35";
         module.exports["default"] = module.exports;
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -247,7 +247,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.34";
+        var version = exports.version = "4.0.35";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -3875,7 +3875,7 @@ this["ppxo"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.34",
+            version: "4.0.35",
             ppobjects: false,
             cors: true,
             env: false ? "test" : "production",
@@ -3975,7 +3975,7 @@ this["ppxo"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.34");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.35");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -4574,7 +4574,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.34"
+                    ver: "4.0.35"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -8484,6 +8484,17 @@ this["ppxo"] = function(modules) {
                 }
             };
         }();
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
         var _createClass = function() {
             function defineProperties(target, props) {
                 for (var i = 0; i < props.length; i++) {
@@ -8605,6 +8616,7 @@ this["ppxo"] = function(modules) {
                 _classCallCheck(this, ParentComponent);
                 var _this2 = _possibleConstructorReturn(this, (ParentComponent.__proto__ || Object.getPrototypeOf(ParentComponent)).call(this, component, options));
                 (0, _validate.validate)(component, options);
+                _this2.rawProps = _extends({}, options.props || {});
                 _this2.component = component;
                 _this2.context = context;
                 _this2.setProps(options.props || {});
@@ -8810,10 +8822,9 @@ this["ppxo"] = function(modules) {
                 }
             }, {
                 key: "getPropsForChild",
-                value: function getPropsForChild(props) {
-                    props = props || this.props;
+                value: function getPropsForChild() {
                     var result = {};
-                    for (var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    for (var _iterator2 = Object.keys(this.props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                         var _ref3;
                         if (_isArray2) {
                             if (_i2 >= _iterator2.length) break;
@@ -8825,7 +8836,7 @@ this["ppxo"] = function(modules) {
                         }
                         var key = _ref3;
                         if (this.component.props[key].sendToChild !== false) {
-                            result[key] = props[key];
+                            result[key] = this.props[key];
                         }
                     }
                     return result;
@@ -8847,7 +8858,7 @@ this["ppxo"] = function(modules) {
                             _ref4 = _i3.value;
                         }
                         var key = _ref4;
-                        if (props[key] !== this.props[key]) {
+                        if (props[key] !== this.rawProps[key]) {
                             changed = true;
                             break;
                         }
@@ -8855,10 +8866,16 @@ this["ppxo"] = function(modules) {
                     if (!changed) {
                         return;
                     }
+                    this.rawProps = _extends({}, this.rawProps, props);
                     this.setProps(props, false);
-                    return this.onInit.then(function() {
-                        return _this7.childExports.updateProps(_this7.getPropsForChild(props));
+                    if (this.propUpdater) {
+                        return this.propUpdater;
+                    }
+                    this.propUpdater = this.onInit.then(function() {
+                        delete _this7.propUpdater;
+                        return _this7.childExports.updateProps(_this7.getPropsForChild());
                     });
+                    return this.propUpdater;
                 }
             }, {
                 key: "openBridge",
@@ -9078,6 +9095,7 @@ this["ppxo"] = function(modules) {
                     var _this13 = this;
                     var closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
                         _this13.component.log("detect_close_child");
+                        _this13.onInit.reject(new Error("Detected close during init"));
                         return _promise.SyncPromise["try"](function() {
                             return _this13.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED);
                         })["finally"](function() {
@@ -9764,7 +9782,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.34";
+                payload.version = "4.0.35";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9783,7 +9801,7 @@ this["ppxo"] = function(modules) {
         var loggedCheckpoints = [];
         function checkpoint(name) {
             try {
-                var version = "4.0.34".replace(/[^0-9]+/g, "_");
+                var version = "4.0.35".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10566,8 +10584,8 @@ this["ppxo"] = function(modules) {
                             if (_i.done) break;
                             _ref = _i.value;
                         }
-                        var _key = _ref;
-                        scope[_key] = "=";
+                        var key = _ref;
+                        scope[key] = "=";
                     }
                     return {
                         scope: scope,
@@ -10576,28 +10594,18 @@ this["ppxo"] = function(modules) {
                             component.log("instantiate_angular_component");
                             function getProps() {
                                 var instanceProps = {};
-                                var _loop = function _loop() {
+                                for (var _iterator2 = Object.keys(scope), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                                    var _ref2;
                                     if (_isArray2) {
-                                        if (_i2 >= _iterator2.length) return "break";
+                                        if (_i2 >= _iterator2.length) break;
                                         _ref2 = _iterator2[_i2++];
                                     } else {
                                         _i2 = _iterator2.next();
-                                        if (_i2.done) return "break";
+                                        if (_i2.done) break;
                                         _ref2 = _i2.value;
                                     }
                                     var key = _ref2;
-                                    var prop = component.props[key];
-                                    var value = prop.type === "function" ? $scope[key] && function() {
-                                        var result = $scope[key].apply(this, arguments);
-                                        $scope.$apply();
-                                        return result;
-                                    } : $scope[key];
-                                    instanceProps[key] = value;
-                                };
-                                for (var _iterator2 = Object.keys(scope), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                                    var _ref2;
-                                    var _ret = _loop();
-                                    if (_ret === "break") break;
+                                    instanceProps[key] = $scope[key];
                                 }
                                 return instanceProps;
                             }
@@ -10973,7 +10981,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.34";
+                return _config.config.ppobjects ? "4" : "4.0.35";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11365,7 +11373,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.34";
+                return _config.config.ppobjects ? "4" : "4.0.35";
             },
             get domains() {
                 return _config.config.paypalDomains;
