@@ -36,6 +36,11 @@ document.querySelector('#button').addEventListener('click', event => {
                 }
             });
         },
+
+        onAuth() {
+            // pass
+        },
+
         onCancel: window.xprops.onCancel,
         commit: window.xprops.commit,
         locale: window.xprops.locale,

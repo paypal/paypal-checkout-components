@@ -8,13 +8,22 @@ if (window.xprops.testAction === 'checkout') {
 
     window.xprops.paymentToken().then(paymentToken => {
 
-        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+        return paypal.Promise.try(() => {
 
-        window.xprops.onAuthorize({
-            paymentToken,
-            cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
-            returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
-            currentUrl: window.location.href
+            if (window.xprops.onAuth) {
+                return window.xprops.onAuth('xxxyyy');
+            }
+
+        }).then(() => {
+
+            let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+
+            window.xprops.onAuthorize({
+                paymentToken,
+                cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
+                returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
+                currentUrl: window.location.href
+            });
         });
     });
 
