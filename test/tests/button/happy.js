@@ -518,6 +518,37 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should render a button into a container and click on the button, restart the payment, then complete the payment', (done) => {
+
+            let isRestarted = false;
+
+            return paypal.Button.render({
+
+                payment() {
+                    return generateECToken();
+                },
+
+                onAuthorize(data, actions) {
+
+                    if (isRestarted) {
+                        return done();
+                    }
+
+                    isRestarted = true;
+                    return actions.restart();
+                },
+
+                onCancel() {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer').then(button => {
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                button.window.document.querySelector('button').click();
+            });
+        });
+
         if (flow === 'lightbox') {
         
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
@@ -587,6 +618,43 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     onAuthorize(data, actions) {
                         return actions.redirect(window).then(() => {
                             done();
+                        });
+                    },
+
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                }, '#testContainer').then(button => {
+
+                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                    button.window.document.querySelector('button').click();
+                });
+            });
+
+            it('should render a button into a container and click on the button, restart the payment, popout, then complete the payment', (done) => {
+
+                let isRestarted = false;
+
+                return paypal.Button.render({
+
+                    payment() {
+                        return generateECToken();
+                    },
+
+                    onAuthorize(data, actions) {
+
+                        if (isRestarted) {
+                            return done();
+                        }
+
+                        isRestarted = true;
+
+                        return this.updateProps({
+                            testAction: 'popout'
+
+                        }).then(() => {
+                            return actions.restart();
                         });
                     },
 

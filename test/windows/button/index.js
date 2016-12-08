@@ -10,8 +10,7 @@ window.console.karma = function() {
     window.console.log.apply(window.console, arguments);
 };
 
-document.querySelector('#button').addEventListener('click', event => {
-
+function renderCheckout() {
     paypal.Checkout.renderTo(window.parent, {
 
         payment: window.xprops.payment,
@@ -33,6 +32,10 @@ document.querySelector('#button').addEventListener('click', event => {
                     get() {
                         return {};
                     }
+                },
+
+                restart() {
+                    renderCheckout();
                 }
             });
         },
@@ -46,6 +49,10 @@ document.querySelector('#button').addEventListener('click', event => {
         locale: window.xprops.locale,
         testAction: window.xprops.testAction
     });
+}
+
+document.querySelector('#button').addEventListener('click', event => {
+    renderCheckout();
 });
 
 

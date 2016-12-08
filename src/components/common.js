@@ -1,7 +1,11 @@
 
 import { config } from '../config';
 
-export function validateProps(props) {
+export function validateProps(props, required = true) {
+
+    if (!required) {
+        return;
+    }
 
     if (props.env && !config.paypalUrls[props.env]) {
         throw new Error(`Invalid env: ${props.env}`);
