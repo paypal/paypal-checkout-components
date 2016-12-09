@@ -76,5 +76,30 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.click();
         });
+
+        if (flow === 'popup') {
+            it('should render checkout without a click event and error out', (done) => {
+
+                return paypal.Checkout.render({
+                    payment() {
+                        return generateECToken();
+                    },
+
+                    onError(err) {
+                        assert.ok(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+        }
     });
 }
