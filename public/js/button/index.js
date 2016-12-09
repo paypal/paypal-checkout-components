@@ -47,7 +47,9 @@ function enableLightbox() {
 function detectLightboxEligibility() {
 
     return isLightboxEligible().then(eligible => {
-        enableLightbox();
+        if (eligible) {
+            enableLightbox();
+        }
     });
 }
 
