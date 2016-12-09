@@ -467,7 +467,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        it('should render a button into a container and click on the button, then call startFlow', () => {
+        it('should render a button into a container and click on the button, then call startFlow immediately', () => {
 
             let token = generateECToken();
 
@@ -476,10 +476,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-
-                    setTimeout(() => {
-                        paypal.checkout.startFlow(token);
-                    }, 100);
+                    paypal.checkout.startFlow(token);
                 }
 
             }).then(() => {

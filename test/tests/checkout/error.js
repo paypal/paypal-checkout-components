@@ -2,65 +2,79 @@
 
 import paypal from 'src/index';
 
-import { generateECToken } from '../common';
+import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
     describe(`paypal checkout component error cases on ${flow}`, () => {
 
         beforeEach(() => {
+            createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
+            destroyTestContainer();
             paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render checkout, then fall back and complete the payment', (done) => {
 
-            return paypal.Checkout.render({
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-                testAction: 'fallback',
+            testButton.addEventListener('click', event => {
+                return paypal.Checkout.render({
 
-                payment() {
-                    return generateECToken();
-                },
+                    testAction: 'fallback',
 
-                onAuthorize() {
-                    return done();
-                },
+                    payment() {
+                        return generateECToken();
+                    },
 
-                onCancel() {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
+                    onAuthorize() {
+                        return done();
+                    },
 
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
             });
+
+            testButton.click();
         });
 
         it('should render checkout, then error out', (done) => {
 
-            return paypal.Checkout.render({
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-                testAction: 'error',
+            testButton.addEventListener('click', event => {
+                return paypal.Checkout.render({
 
-                payment() {
-                    return generateECToken();
-                },
+                    testAction: 'error',
 
-                onError(err) {
-                    assert.ok(err instanceof Error);
-                    return done();
-                },
+                    payment() {
+                        return generateECToken();
+                    },
 
-                onAuthorize() {
-                    return done(new Error('Expected onCancel to not be called'));
-                },
+                    onError(err) {
+                        assert.ok(err instanceof Error);
+                        return done();
+                    },
 
-                onCancel() {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
+                    onAuthorize() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
 
+                    onCancel() {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
             });
+
+            testButton.click();
         });
     });
 }

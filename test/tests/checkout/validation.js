@@ -47,19 +47,6 @@ describe(`paypal checkout component validation`, () => {
         });
     });
 
-    it('should attempt to render checkout with payment and commit, and not error out', () => {
-
-        return paypal.Checkout.render({
-            commit: true,
-            payment() {
-                return generateECToken();
-            },
-            onAuthorize() {
-                // pass
-            }
-        });
-    });
-
     it('should attempt to render checkout with payment and no onAuthorize, and error out', () => {
 
         return paypal.Checkout.render({

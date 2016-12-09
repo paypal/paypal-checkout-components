@@ -1,6 +1,6 @@
 
 import paypal from 'src/index';
-import '../../tests/common';
+import { createTestContainer, createElement } from '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
 
@@ -41,45 +41,61 @@ if (window.xprops.testAction === 'checkout') {
 
 } else if (window.xprops.testAction === 'popout') {
 
-    window.xchild.hide();
+    createTestContainer();
 
-    paypal.Checkout.renderPopupTo(window.xchild.getParentComponentWindow(), {
+    let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        url:              window.location.href,
-        payment:          window.xprops.payment,
-        billingAgreement: window.xprops.billingAgreement,
-        onAuthorize:      window.xprops.onAuthorize,
-        onCancel:         window.xprops.onCancel,
-        onError:          window.xprops.onError
+    testButton.addEventListener('click', event => {
+        window.xchild.hide();
+
+        paypal.Checkout.renderPopupTo(window.xchild.getParentComponentWindow(), {
+
+            url:              window.location.href,
+            payment:          window.xprops.payment,
+            billingAgreement: window.xprops.billingAgreement,
+            onAuthorize:      window.xprops.onAuthorize,
+            onCancel:         window.xprops.onCancel,
+            onError:          window.xprops.onError
+        });
     });
+
+    testButton.click();
 
 } else if (window.xprops.testAction === 'fallback') {
 
-    let win;
+    createTestContainer();
 
-    if (window.opener) {
-        win = window;
-    } else {
-        win = window.open('', `fallbackWindow${Math.random()}`);
-    }
+    let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-    let parent = window.xchild.getParentComponentWindow();
+    testButton.addEventListener('click', event => {
+        let win;
 
-    window.xprops.fallback('#noop').then(() => {
-        win.location = '/base/test/windows/fallback/index.htm';
-
-        if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
-            return parent.watchForLegacyFallback(win);
+        if (window.opener) {
+            win = window;
+        } else {
+            win = window.open('', `fallbackWindow${Math.random()}`);
         }
 
-        for (let frame of postRobot.winutil.getFrames(parent)) {
-            if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
-                return frame.watchForLegacyFallback(win);
+        let parent = window.xchild.getParentComponentWindow();
+
+        window.xprops.fallback('#noop').then(() => {
+            win.location = '/base/test/windows/fallback/index.htm';
+
+            if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+                return parent.watchForLegacyFallback(win);
             }
-        }
 
-        throw new Error('Can not find frame to watch for fallback');
+            for (let frame of postRobot.winutil.getFrames(parent)) {
+                if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                    return frame.watchForLegacyFallback(win);
+                }
+            }
+
+            throw new Error('Can not find frame to watch for fallback');
+        });
     });
+
+    testButton.click();
 
 } else if (window.xprops.testAction === 'error') {
 

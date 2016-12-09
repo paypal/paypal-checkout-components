@@ -168,3 +168,44 @@ window.console.karma = function() {
 window.debug = () => {
     debugger; // eslint-disable-line
 };
+
+let isClick = false;
+let clickTimeout;
+
+function doClick() {
+    isClick = true;
+
+    clearTimeout(clickTimeout);
+    clickTimeout = setTimeout(() => {
+        isClick = false;
+    }, 1);
+}
+
+
+let HTMLElementClick = window.HTMLElement.prototype.click;
+window.HTMLElement.prototype.click = function() {
+    doClick();
+    return HTMLElementClick.apply(this, arguments);
+};
+
+let windowOpen = window.open;
+window.open = function() {
+    if (!isClick) {
+        console.error('zoiks');
+        return {
+            closed: true,
+            close() {
+                // pass
+            },
+            location: {
+                href: '',
+                pathname: '',
+                protocol: '',
+                host: '',
+                hostname: ''
+            }
+        };
+    }
+
+    return windowOpen.apply(this, arguments);
+};
