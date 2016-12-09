@@ -10,6 +10,7 @@ import { supportsPopups, getElements, onDocumentReady, once, checkpoint, noop } 
 import { LOG_PREFIX } from './constants';
 import { renderButtons } from './button';
 import { normalizeLocale } from './common';
+import { checkThrottle } from './throttle';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -268,6 +269,10 @@ function awaitPaymentTokenAndUrl() {
             }
 
             let { url, paymentToken } = urlAndPaymentToken;
+
+            if (!checkThrottle(paymentToken, true)) {
+                return redirect(url);
+            }
 
             return resolve({ url, paymentToken });
         });
@@ -530,8 +535,15 @@ function listenClick(container, button, clickHandler, condition) {
             }
         }
 
-        if (!isLegacyEligible() && !isClick) {
-            return $logger.debug(`ineligible_listenclick`);
+        if (!isClick) {
+
+            if (!isLegacyEligible()) {
+                return $logger.debug(`ineligible_listenclick`);
+            }
+
+            if (!checkThrottle(null, true)) {
+                return;
+            }
         }
 
         $logger.info(`button_click`);
@@ -681,6 +693,10 @@ function initXO() {
         return $logger.debug(`ineligible_initxo`);
     }
 
+    if (!checkThrottle()) {
+        return;
+    }
+
     reset();
 
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
@@ -710,8 +726,12 @@ function startFlow(item, opts) {
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
-    if (!isLegacyEligible()) {
+    if (!isLegacyEligible(paymentToken)) {
         $logger.debug(`ineligible_startflow_global`, { url });
+        return redirect(url);
+    }
+
+    if (!checkThrottle(paymentToken, true)) {
         return redirect(url);
     }
 

@@ -7,3 +7,4 @@ export * from './errors';
 export * from './dom';
 export * from './http';
 export * from './beacon';
+export * from './throttle';

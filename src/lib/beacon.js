@@ -1,15 +1,6 @@
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
-export function uniqueID() {
-
-    let chars = '0123456789abcdef';
-
-    return 'xxxxxxxxxx'.replace(/./g, () => {
-        return chars.charAt(Math.floor(Math.random() * chars.length));
-    });
-}
-
 export function beacon(event, payload = {}) {
     try {
 
@@ -40,7 +31,7 @@ export function beacon(event, payload = {}) {
 
 let loggedCheckpoints = [];
 
-export function checkpoint(name) {
+export function checkpoint(name, payload = {}) {
     try {
 
         let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
@@ -53,10 +44,50 @@ export function checkpoint(name) {
             checkpointName = `${checkpointName}_dupe`;
         }
 
-        return beacon(checkpointName);
+        return beacon(checkpointName, payload);
 
     } catch (err) {
 
+        // pass
+    }
+}
+
+
+const FPTI_URL = 'https://t.paypal.com/ts';
+
+function buildPayload() {
+    return {
+        v:     `checkout.js.${__MINOR_VERSION__}`,
+        t:     Date.now(),
+        g:     new Date().getTimezoneOffset(),
+        flnm: 'ec:hermes:',
+        shir: 'main_ec_hermes_',
+        pgrp: 'main:ec:hermes::incontext-merchant',
+        page: 'main:ec:hermes::incontext-merchant',
+        vers: 'member:hermes:',
+        qual: 'incontext',
+        tmpl: 'merchant:incontext'
+    };
+}
+
+export function fpti(payload = {}) {
+
+    let query = [];
+
+    payload = { ...buildPayload(), ...payload };
+
+    for (let key in payload) {
+        if (payload.hasOwnProperty(key)) {
+            query.push(`${encodeURIComponent(key)}=${encodeURIComponent(payload[key])}`);
+        }
+    }
+
+    query = query.join('&');
+
+    try {
+        let beaconImage = new window.Image();
+        beaconImage.src = `${FPTI_URL}?${query}`;
+    } catch (err) {
         // pass
     }
 }

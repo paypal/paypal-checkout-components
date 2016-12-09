@@ -17,5 +17,12 @@ export function isLegacyEligible() {
         }
     }
 
-    return !(isWebView() || isUnsupportedIE() || isDevice());
+    if (isWebView() || isUnsupportedIE() || isDevice()) {
+        return false;
+    }
+
+    return true;
 }
+
+
+

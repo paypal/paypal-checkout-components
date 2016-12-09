@@ -42,3 +42,35 @@ export function once(method) {
         }
     };
 }
+
+export function uniqueID() {
+
+    let chars = '0123456789abcdef';
+
+    return 'xxxxxxxxxx'.replace(/./g, () => {
+        return chars.charAt(Math.floor(Math.random() * chars.length));
+    });
+}
+
+export function hashStr(str) {
+    let hash = 0;
+
+    if (str.length === 0) {
+        return hash;
+    }
+
+    for (let i = 0; i < str.length; i++) {
+        let chr = str.charCodeAt(i);
+        hash = (hash << 5) - hash + chr; // eslint-disable-line
+        hash |= 0; // eslint-disable-line
+    }
+
+    return Math.abs(hash);
+}
+
+export function match(str, pattern) {
+    let regmatch = str.match(pattern);
+    if (regmatch) {
+        return regmatch[1];
+    }
+}

@@ -25,6 +25,10 @@ export let config = {
 
     buttonSizes: ['tiny', 'small', 'medium'],
 
+    legacy_throttles: {
+        'http://www.bluesuncorp.co.uk': 5000
+    },
+
     SUPPORTED_AGENTS: {
         Chrome: 27,
         IE: 9,
