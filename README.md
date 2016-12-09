@@ -38,7 +38,7 @@ We also support native React, Angular and Ember components for the PayPal Button
 
 ## [PayPal Checkout Button](./docs/button.md)
 
-[![PayPal Button](./docs/button.png)](./docs/button.md)
+[![PayPal Button](./docs/img/button.png)](./docs/button.md)
 
 This component renders a PayPal button onto your page, which will take care of opening up PayPal for you and guiding
 your customer through the payment process. After the payment is complete, we will notify you using a javascript callback,
