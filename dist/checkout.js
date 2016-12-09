@@ -30,10 +30,11 @@ this["ppxo"] = function(modules) {
             return target;
         };
         var _beacon = __webpack_require__("./src/lib/beacon.js");
+        var _util = __webpack_require__("./src/lib/util.js");
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.35") {
+        if (window.paypal && window.paypal.version === "4.0.36") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -46,7 +47,7 @@ this["ppxo"] = function(modules) {
             module.exports = window.paypal;
             module.exports["default"] = module.exports;
         } else {
-            window.pp_uid = window.pp_uid || (0, _beacon.uniqueID)();
+            window.pp_uid = window.pp_uid || (0, _util.uniqueID)();
             (0, _beacon.checkpoint)("load");
             try {
                 var paypal = isPayPalDomain() || false ? __webpack_require__("./src/interface/paypal.js") : __webpack_require__("./src/interface/public.js");
@@ -152,8 +153,559 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.35";
+        var version = exports.version = "4.0.36";
         module.exports["default"] = module.exports;
+    },
+    "./src/lib/util.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.isPayPalDomain = isPayPalDomain;
+        exports.memoize = memoize;
+        exports.noop = noop;
+        exports.once = once;
+        exports.uniqueID = uniqueID;
+        exports.hashStr = hashStr;
+        exports.match = match;
+        var _config = __webpack_require__("./src/config/index.js");
+        function isPayPalDomain() {
+            return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex)) || window.mockDomain === "mock://www.paypal.com";
+        }
+        function memoize(method) {
+            var results = {};
+            return function() {
+                var args = void 0;
+                try {
+                    args = JSON.stringify(Array.prototype.slice.call(arguments));
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                if (!results.hasOwnProperty(args)) {
+                    results[args] = method.apply(this, arguments);
+                }
+                return results[args];
+            };
+        }
+        function noop() {}
+        function once(method) {
+            var called = false;
+            return function() {
+                if (!called) {
+                    called = true;
+                    return method.apply(this, arguments);
+                }
+            };
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }
+        function hashStr(str) {
+            var hash = 0;
+            if (str.length === 0) {
+                return hash;
+            }
+            for (var i = 0; i < str.length; i++) {
+                var chr = str.charCodeAt(i);
+                hash = (hash << 5) - hash + chr;
+                hash |= 0;
+            }
+            return Math.abs(hash);
+        }
+        function match(str, pattern) {
+            var regmatch = str.match(pattern);
+            if (regmatch) {
+                return regmatch[1];
+            }
+        }
+    },
+    "./src/config/index.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _config = __webpack_require__("./src/config/config.js");
+        Object.keys(_config).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _config[key];
+                }
+            });
+        });
+    },
+    "./src/config/config.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var config = exports.config = {
+            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
+            legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
+            paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+            version: "4.0.36",
+            ppobjects: false,
+            cors: true,
+            env: false ? "test" : "production",
+            state: "paypal_xcomponent",
+            locale: {
+                country: "US",
+                lang: "en"
+            },
+            stage: "msmaster",
+            buttonSizes: [ "tiny", "small", "medium" ],
+            legacy_throttles: {
+                "http://www.bluesuncorp.co.uk": 5e3
+            },
+            SUPPORTED_AGENTS: {
+                Chrome: 27,
+                IE: 9,
+                MSIE: 9,
+                Firefox: 30,
+                Safari: 5.1,
+                Opera: 23
+            },
+            get apiStage() {
+                return config.stage;
+            },
+            get paypalUrls() {
+                return {
+                    local: "http://localhost.paypal.com:8000",
+                    stage: "https://www." + config.stage + ".qa.paypal.com",
+                    sandbox: "https://www.sandbox.paypal.com",
+                    production: "https://www.paypal.com",
+                    test: window.location.protocol + "//" + window.location.host
+                };
+            },
+            get paypalDomains() {
+                return {
+                    local: "http://localhost.paypal.com:8000",
+                    stage: "https://www." + config.stage + ".qa.paypal.com",
+                    sandbox: "https://www.sandbox.paypal.com",
+                    production: "https://www.paypal.com",
+                    test: "mock://www.paypal.com"
+                };
+            },
+            get wwwApiUrls() {
+                return {
+                    local: "https://www." + config.stage + ".qa.paypal.com",
+                    stage: "https://www." + config.stage + ".qa.paypal.com",
+                    sandbox: "https://www.sandbox.paypal.com",
+                    production: "https://www.paypal.com",
+                    test: window.location.protocol + "//" + window.location.host
+                };
+            },
+            get corsApiUrls() {
+                return {
+                    local: "https://" + config.apiStage + ".qa.paypal.com:11888",
+                    stage: "https://" + config.apiStage + ".qa.paypal.com:11888",
+                    sandbox: "https://cors.api.sandbox.paypal.com",
+                    production: "https://cors.api.paypal.com",
+                    test: window.location.protocol + "//" + window.location.host
+                };
+            },
+            get apiUrls() {
+                var domain = window.location.protocol + "//" + window.location.host;
+                var corsApiUrls = config.corsApiUrls;
+                var wwwApiUrls = config.wwwApiUrls;
+                return {
+                    local: domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local,
+                    stage: domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage,
+                    sandbox: domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox,
+                    production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
+                    test: domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test
+                };
+            },
+            checkoutUris: {
+                local: "/webapps/hermes?ul=0",
+                stage: "/webapps/hermes",
+                sandbox: "/checkoutnow",
+                production: "/checkoutnow",
+                test: "/base/test/windows/checkout/index.htm?checkouturl=true"
+            },
+            billingUris: {
+                local: "/webapps/hermes/agreements?ul=0",
+                stage: "/webapps/hermes/agreements",
+                sandbox: "/agreements/approve",
+                production: "/agreements/approve",
+                test: "/base/test/windows/checkout/index.htm?billingurl=true"
+            },
+            buttonUris: {
+                local: "/webapps/hermes/button",
+                stage: "/webapps/hermes/button",
+                sandbox: "/webapps/hermes/button",
+                production: "/webapps/hermes/button",
+                test: "/base/test/windows/button/index.htm"
+            },
+            bridgeUris: {
+                local: "/webapps/hermes/component-meta",
+                stage: "/webapps/hermes/component-meta",
+                sandbox: "/webapps/hermes/component-meta",
+                production: "/webapps/hermes/component-meta",
+                test: "/base/test/windows/bridge/index.htm"
+            },
+            loggerUri: "/webapps/hermes/api/logger",
+            get bridgeUri() {
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.36");
+            },
+            paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
+            authApiUri: "/v1/oauth2/token",
+            paymentApiUri: "/v1/payments/payment",
+            billingApiUri: "/v1/billing-agreements/agreement-tokens",
+            experienceApiUri: "/v1/payment-experience/web-profiles",
+            get checkoutUrls() {
+                var paypalUrls = config.paypalUrls;
+                return {
+                    local: "" + paypalUrls.local + config.checkoutUris.local,
+                    stage: "" + paypalUrls.stage + config.checkoutUris.stage,
+                    sandbox: "" + paypalUrls.sandbox + config.checkoutUris.sandbox,
+                    production: "" + paypalUrls.production + config.checkoutUris.production,
+                    test: "" + paypalUrls.test + config.checkoutUris.test
+                };
+            },
+            get billingUrls() {
+                var paypalUrls = config.paypalUrls;
+                return {
+                    local: "" + paypalUrls.local + config.billingUris.local,
+                    stage: "" + paypalUrls.stage + config.billingUris.stage,
+                    sandbox: "" + paypalUrls.sandbox + config.billingUris.sandbox,
+                    production: "" + paypalUrls.production + config.billingUris.production,
+                    test: "" + paypalUrls.test + config.billingUris.test
+                };
+            },
+            get buttonUrls() {
+                var paypalUrls = config.paypalUrls;
+                return {
+                    local: "" + paypalUrls.local + config.buttonUris.local,
+                    stage: "" + paypalUrls.stage + config.buttonUris.stage,
+                    sandbox: "" + paypalUrls.sandbox + config.buttonUris.sandbox,
+                    production: "" + paypalUrls.production + config.buttonUris.production,
+                    test: "" + paypalUrls.test + config.buttonUris.test
+                };
+            },
+            get paymentsStandardUrls() {
+                var paypalUrls = config.paypalUrls;
+                return {
+                    local: "" + paypalUrls.local + config.paymentStandardUri,
+                    stage: "" + paypalUrls.stage + config.paymentStandardUri,
+                    sandbox: "" + paypalUrls.sandbox + config.paymentStandardUri,
+                    production: "" + paypalUrls.production + config.paymentStandardUri,
+                    test: "" + paypalUrls.test + config.paymentStandardUri
+                };
+            },
+            get bridgeUrls() {
+                var paypalUrls = config.paypalUrls;
+                return {
+                    local: "" + paypalUrls.local + config.bridgeUri + "&env=local",
+                    stage: "" + paypalUrls.stage + config.bridgeUri + "&env=stage&stage=" + config.stage,
+                    sandbox: "" + paypalUrls.sandbox + config.bridgeUri + "&env=sandbox",
+                    production: "" + paypalUrls.production + config.bridgeUri + "&env=production",
+                    test: "" + paypalUrls.test + config.bridgeUri + "&env=test"
+                };
+            },
+            get authApiUrls() {
+                var apiUrls = config.apiUrls;
+                var authApiUri = config.authApiUri;
+                return {
+                    local: "" + apiUrls.local + authApiUri,
+                    stage: "" + apiUrls.stage + authApiUri,
+                    sandbox: "" + apiUrls.sandbox + authApiUri,
+                    production: "" + apiUrls.production + authApiUri,
+                    test: "" + apiUrls.test + authApiUri
+                };
+            },
+            get paymentApiUrls() {
+                var apiUrls = config.apiUrls;
+                var paymentApiUri = config.paymentApiUri;
+                return {
+                    local: "" + apiUrls.local + paymentApiUri,
+                    stage: "" + apiUrls.stage + paymentApiUri,
+                    sandbox: "" + apiUrls.sandbox + paymentApiUri,
+                    production: "" + apiUrls.production + paymentApiUri,
+                    test: "" + apiUrls.test + paymentApiUri
+                };
+            },
+            get billingApiUrls() {
+                var apiUrls = config.apiUrls;
+                var billingApiUri = config.billingApiUri;
+                return {
+                    local: "" + apiUrls.local + billingApiUri,
+                    stage: "" + apiUrls.stage + billingApiUri,
+                    sandbox: "" + apiUrls.sandbox + billingApiUri,
+                    production: "" + apiUrls.production + billingApiUri,
+                    test: "" + apiUrls.test + billingApiUri
+                };
+            },
+            get experienceApiUrls() {
+                var apiUrls = config.apiUrls;
+                var experienceApiUri = config.experienceApiUri;
+                return {
+                    local: "" + apiUrls.local + experienceApiUri,
+                    stage: "" + apiUrls.stage + experienceApiUri,
+                    sandbox: "" + apiUrls.sandbox + experienceApiUri,
+                    production: "" + apiUrls.production + experienceApiUri,
+                    test: "" + apiUrls.test + experienceApiUri
+                };
+            },
+            get paypalUrl() {
+                return config.paypalUrls[config.env];
+            },
+            get paypalDomain() {
+                return config.paypalDomains[config.env];
+            },
+            get corsApiUrl() {
+                return config.corsApiUrls[config.env];
+            },
+            get wwwApiUrl() {
+                return config.wwwApiUrls[config.env];
+            },
+            get apiUrl() {
+                var domain = window.location.protocol + "//" + window.location.host;
+                var corsApiUrl = config.corsApiUrl;
+                var wwwApiUrl = config.wwwApiUrl;
+                return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
+            },
+            get checkoutUrl() {
+                return "" + config.paypalUrl + config.checkoutUris[config.env];
+            },
+            get billingUrl() {
+                return "" + config.paypalUrl + config.billingUris[config.env];
+            },
+            get buttonUrl() {
+                return "" + config.paypalUrl + config.buttonUris[config.env];
+            },
+            get bridgeUrl() {
+                return "" + config.paypalUrl + config.bridgeUri + "&env=" + config.env;
+            },
+            get bridgeDomain() {
+                return "" + config.paypalDomain;
+            },
+            get loggerUrl() {
+                return "" + config.paypalUrl + config.loggerUri;
+            },
+            get authApiUrl() {
+                return "" + config.apiUrl + config.authApiUri;
+            },
+            get paymentApiUrl() {
+                return "" + config.apiUrl + config.paymentApiUri;
+            },
+            get billingApiUrl() {
+                return "" + config.apiUrl + config.billingApiUri;
+            },
+            get experienceApiUrl() {
+                return "" + config.apiUrl + config.experienceApiUri;
+            },
+            locales: {
+                AD: [ "zh", "es", "fr", "en" ],
+                AE: [ "ar", "zh", "es", "fr", "en" ],
+                AG: [ "zh", "es", "fr", "en" ],
+                AI: [ "zh", "es", "fr", "en" ],
+                AL: [ "en" ],
+                AM: [ "zh", "es", "fr", "en" ],
+                AN: [ "zh", "es", "fr", "en" ],
+                AO: [ "zh", "es", "fr", "en" ],
+                AR: [ "en", "es" ],
+                AT: [ "de", "en" ],
+                AU: [ "en" ],
+                AW: [ "zh", "es", "fr", "en" ],
+                AZ: [ "zh", "es", "fr", "en" ],
+                BA: [ "en" ],
+                BB: [ "zh", "es", "fr", "en" ],
+                BE: [ "nl", "fr", "en" ],
+                BF: [ "zh", "es", "en", "fr" ],
+                BG: [ "en" ],
+                BH: [ "zh", "es", "fr", "en", "ar" ],
+                BI: [ "zh", "es", "en", "fr" ],
+                BJ: [ "zh", "es", "en", "fr" ],
+                BM: [ "zh", "es", "fr", "en" ],
+                BN: [ "en" ],
+                BO: [ "zh", "fr", "en", "es" ],
+                BR: [ "pt", "en" ],
+                BS: [ "zh", "es", "fr", "en" ],
+                BT: [ "en" ],
+                BW: [ "zh", "es", "fr", "en" ],
+                BY: [ "en" ],
+                BZ: [ "zh", "fr", "en", "es" ],
+                C2: [ "zh", "en" ],
+                CA: [ "fr", "en" ],
+                CD: [ "zh", "es", "en", "fr" ],
+                CG: [ "zh", "es", "fr", "en" ],
+                CH: [ "fr", "en", "de" ],
+                CI: [ "en", "fr" ],
+                CK: [ "zh", "es", "fr", "en" ],
+                CL: [ "zh", "fr", "en", "es" ],
+                CM: [ "en", "fr" ],
+                CN: [ "zh" ],
+                CO: [ "zh", "fr", "en", "es" ],
+                CR: [ "zh", "fr", "en", "es" ],
+                CV: [ "zh", "es", "fr", "en" ],
+                CY: [ "en" ],
+                CZ: [ "zh", "fr", "es", "en" ],
+                DE: [ "en", "de" ],
+                DJ: [ "zh", "es", "en", "fr" ],
+                DK: [ "en", "da" ],
+                DM: [ "zh", "es", "fr", "en" ],
+                DO: [ "zh", "fr", "en", "es" ],
+                DZ: [ "zh", "es", "fr", "en", "ar" ],
+                EC: [ "zh", "fr", "en", "es" ],
+                EE: [ "zh", "ru", "fr", "es", "en" ],
+                EG: [ "zh", "es", "fr", "en", "ar" ],
+                ER: [ "zh", "es", "fr", "en" ],
+                ES: [ "es", "en" ],
+                ET: [ "zh", "es", "fr", "en" ],
+                FI: [ "zh", "fr", "es", "en" ],
+                FJ: [ "zh", "es", "fr", "en" ],
+                FK: [ "zh", "es", "fr", "en" ],
+                FM: [ "en" ],
+                FO: [ "zh", "es", "fr", "en", "da" ],
+                FR: [ "fr", "en" ],
+                GA: [ "zh", "es", "en", "fr" ],
+                GB: [ "fr", "en" ],
+                GD: [ "zh", "es", "fr", "en" ],
+                GE: [ "zh", "es", "fr", "en" ],
+                GF: [ "zh", "es", "fr", "en" ],
+                GI: [ "zh", "es", "fr", "en" ],
+                GL: [ "zh", "es", "fr", "en", "da" ],
+                GM: [ "zh", "es", "fr", "en" ],
+                GN: [ "zh", "es", "en", "fr" ],
+                GP: [ "zh", "es", "fr", "en" ],
+                GR: [ "zh", "fr", "es", "en" ],
+                GT: [ "zh", "fr", "en", "es" ],
+                GW: [ "zh", "es", "fr", "en" ],
+                GY: [ "zh", "es", "fr", "en" ],
+                HK: [ "zh", "en" ],
+                HN: [ "zh", "fr", "en", "es" ],
+                HR: [ "en" ],
+                HU: [ "zh", "fr", "es", "en" ],
+                ID: [ "id", "en" ],
+                IE: [ "zh", "fr", "es", "en" ],
+                IL: [ "he", "en" ],
+                IN: [ "en" ],
+                IS: [ "en" ],
+                IT: [ "it", "en" ],
+                JM: [ "zh", "fr", "en", "es" ],
+                JO: [ "zh", "es", "fr", "en", "ar" ],
+                JP: [ "ja", "en" ],
+                KE: [ "zh", "es", "fr", "en" ],
+                KG: [ "zh", "es", "fr", "en" ],
+                KH: [ "en" ],
+                KI: [ "zh", "es", "fr", "en" ],
+                KM: [ "zh", "es", "en", "fr" ],
+                KN: [ "zh", "es", "fr", "en" ],
+                KR: [ "ko", "en" ],
+                KW: [ "zh", "es", "fr", "en", "ar" ],
+                KY: [ "zh", "es", "fr", "en" ],
+                KZ: [ "zh", "es", "fr", "en" ],
+                LA: [ "en" ],
+                LC: [ "zh", "es", "fr", "en" ],
+                LI: [ "zh", "es", "fr", "en" ],
+                LK: [ "en" ],
+                LS: [ "zh", "es", "fr", "en" ],
+                LT: [ "zh", "ru", "fr", "es", "en" ],
+                LU: [ "zh", "fr", "es", "en", "de" ],
+                LV: [ "zh", "ru", "fr", "es", "en" ],
+                MA: [ "zh", "es", "fr", "en", "ar" ],
+                MC: [ "en", "fr" ],
+                MD: [ "en" ],
+                ME: [ "en" ],
+                MG: [ "zh", "es", "fr", "en" ],
+                MH: [ "zh", "es", "fr", "en" ],
+                MK: [ "en" ],
+                ML: [ "zh", "es", "en", "fr" ],
+                MN: [ "en" ],
+                MQ: [ "zh", "es", "fr", "en" ],
+                MR: [ "zh", "es", "fr", "en" ],
+                MS: [ "zh", "es", "fr", "en" ],
+                MT: [ "en" ],
+                MU: [ "zh", "es", "fr", "en" ],
+                MV: [ "en" ],
+                MW: [ "zh", "es", "fr", "en" ],
+                MX: [ "es", "en" ],
+                MY: [ "en" ],
+                MZ: [ "zh", "es", "fr", "en" ],
+                NA: [ "zh", "es", "fr", "en" ],
+                NC: [ "zh", "es", "fr", "en" ],
+                NE: [ "zh", "es", "en", "fr" ],
+                NF: [ "zh", "es", "fr", "en" ],
+                NG: [ "en" ],
+                NI: [ "zh", "fr", "en", "es" ],
+                NL: [ "nl", "en" ],
+                NO: [ "no", "en" ],
+                NP: [ "en" ],
+                NR: [ "zh", "es", "fr", "en" ],
+                NU: [ "zh", "es", "fr", "en" ],
+                NZ: [ "zh", "fr", "es", "en" ],
+                OM: [ "zh", "es", "fr", "en", "ar" ],
+                PA: [ "zh", "fr", "en", "es" ],
+                PE: [ "zh", "fr", "en", "es" ],
+                PF: [ "zh", "es", "fr", "en" ],
+                PG: [ "zh", "es", "fr", "en" ],
+                PH: [ "en" ],
+                PL: [ "pl", "en" ],
+                PM: [ "zh", "es", "fr", "en" ],
+                PN: [ "zh", "es", "fr", "en" ],
+                PT: [ "pt", "en" ],
+                PW: [ "zh", "es", "fr", "en" ],
+                PY: [ "en", "es" ],
+                QA: [ "ar", "zh", "es", "fr", "en" ],
+                RE: [ "zh", "es", "fr", "en" ],
+                RO: [ "zh", "fr", "es", "en" ],
+                RS: [ "zh", "es", "fr", "en" ],
+                RU: [ "ru", "en" ],
+                RW: [ "zh", "es", "en", "fr" ],
+                SA: [ "zh", "es", "fr", "en", "ar" ],
+                SB: [ "zh", "es", "fr", "en" ],
+                SC: [ "zh", "es", "en", "fr" ],
+                SE: [ "sv", "en" ],
+                SG: [ "en" ],
+                SH: [ "zh", "es", "fr", "en" ],
+                SI: [ "zh", "fr", "es", "en" ],
+                SJ: [ "zh", "es", "fr", "en" ],
+                SK: [ "zh", "fr", "es", "en" ],
+                SL: [ "zh", "es", "fr", "en" ],
+                SM: [ "zh", "es", "fr", "en" ],
+                SN: [ "zh", "es", "en", "fr" ],
+                SO: [ "zh", "es", "fr", "en" ],
+                SR: [ "zh", "es", "fr", "en" ],
+                ST: [ "zh", "es", "fr", "en" ],
+                SV: [ "zh", "fr", "en", "es" ],
+                SZ: [ "zh", "es", "fr", "en" ],
+                TC: [ "zh", "es", "fr", "en" ],
+                TD: [ "zh", "es", "en", "fr" ],
+                TG: [ "zh", "es", "en", "fr" ],
+                TH: [ "th", "en" ],
+                TJ: [ "zh", "es", "fr", "en" ],
+                TM: [ "zh", "es", "fr", "en" ],
+                TN: [ "zh", "es", "fr", "en", "ar" ],
+                TO: [ "en" ],
+                TR: [ "tr", "en" ],
+                TT: [ "zh", "es", "fr", "en" ],
+                TV: [ "zh", "es", "fr", "en" ],
+                TW: [ "zh", "en" ],
+                TZ: [ "zh", "es", "fr", "en" ],
+                UA: [ "zh", "ru", "fr", "es", "en" ],
+                UG: [ "zh", "es", "fr", "en" ],
+                US: [ "zh", "fr", "es", "en" ],
+                UY: [ "zh", "fr", "en", "es" ],
+                VA: [ "zh", "es", "fr", "en" ],
+                VC: [ "zh", "es", "fr", "en" ],
+                VE: [ "zh", "fr", "en", "es" ],
+                VG: [ "zh", "es", "fr", "en" ],
+                VN: [ "en" ],
+                VU: [ "zh", "es", "fr", "en" ],
+                WF: [ "zh", "es", "fr", "en" ],
+                WS: [ "en" ],
+                YE: [ "zh", "es", "fr", "en", "ar" ],
+                YT: [ "zh", "es", "fr", "en" ],
+                ZA: [ "zh", "es", "fr", "en" ],
+                ZM: [ "zh", "es", "fr", "en" ],
+                ZW: [ "en" ]
+            }
+        };
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -247,7 +799,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.35";
+        var version = exports.version = "4.0.36";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -3850,488 +4402,6 @@ this["ppxo"] = function(modules) {
             });
         })();
     },
-    "./src/config/index.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _config = __webpack_require__("./src/config/config.js");
-        Object.keys(_config).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _config[key];
-                }
-            });
-        });
-    },
-    "./src/config/config.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var config = exports.config = {
-            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
-            legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
-            paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.35",
-            ppobjects: false,
-            cors: true,
-            env: false ? "test" : "production",
-            state: "paypal_xcomponent",
-            locale: {
-                country: "US",
-                lang: "en"
-            },
-            stage: "msmaster",
-            buttonSizes: [ "tiny", "small", "medium" ],
-            SUPPORTED_AGENTS: {
-                Chrome: 27,
-                IE: 9,
-                MSIE: 9,
-                Firefox: 30,
-                Safari: 5.1,
-                Opera: 23
-            },
-            get apiStage() {
-                return config.stage;
-            },
-            get paypalUrls() {
-                return {
-                    local: "http://localhost.paypal.com:8000",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
-            },
-            get paypalDomains() {
-                return {
-                    local: "http://localhost.paypal.com:8000",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: "mock://www.paypal.com"
-                };
-            },
-            get wwwApiUrls() {
-                return {
-                    local: "https://www." + config.stage + ".qa.paypal.com",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
-            },
-            get corsApiUrls() {
-                return {
-                    local: "https://" + config.apiStage + ".qa.paypal.com:11888",
-                    stage: "https://" + config.apiStage + ".qa.paypal.com:11888",
-                    sandbox: "https://cors.api.sandbox.paypal.com",
-                    production: "https://cors.api.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
-            },
-            get apiUrls() {
-                var domain = window.location.protocol + "//" + window.location.host;
-                var corsApiUrls = config.corsApiUrls;
-                var wwwApiUrls = config.wwwApiUrls;
-                return {
-                    local: domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local,
-                    stage: domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage,
-                    sandbox: domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox,
-                    production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
-                    test: domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test
-                };
-            },
-            checkoutUris: {
-                local: "/webapps/hermes?ul=0",
-                stage: "/webapps/hermes",
-                sandbox: "/checkoutnow",
-                production: "/checkoutnow",
-                test: "/base/test/windows/checkout/index.htm?checkouturl=true"
-            },
-            billingUris: {
-                local: "/webapps/hermes/agreements?ul=0",
-                stage: "/webapps/hermes/agreements",
-                sandbox: "/agreements/approve",
-                production: "/agreements/approve",
-                test: "/base/test/windows/checkout/index.htm?billingurl=true"
-            },
-            buttonUris: {
-                local: "/webapps/hermes/button",
-                stage: "/webapps/hermes/button",
-                sandbox: "/webapps/hermes/button",
-                production: "/webapps/hermes/button",
-                test: "/base/test/windows/button/index.htm"
-            },
-            bridgeUris: {
-                local: "/webapps/hermes/component-meta",
-                stage: "/webapps/hermes/component-meta",
-                sandbox: "/webapps/hermes/component-meta",
-                production: "/webapps/hermes/component-meta",
-                test: "/base/test/windows/bridge/index.htm"
-            },
-            loggerUri: "/webapps/hermes/api/logger",
-            get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.35");
-            },
-            paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
-            authApiUri: "/v1/oauth2/token",
-            paymentApiUri: "/v1/payments/payment",
-            billingApiUri: "/v1/billing-agreements/agreement-tokens",
-            experienceApiUri: "/v1/payment-experience/web-profiles",
-            get checkoutUrls() {
-                var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.checkoutUris.local,
-                    stage: "" + paypalUrls.stage + config.checkoutUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.checkoutUris.sandbox,
-                    production: "" + paypalUrls.production + config.checkoutUris.production,
-                    test: "" + paypalUrls.test + config.checkoutUris.test
-                };
-            },
-            get billingUrls() {
-                var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.billingUris.local,
-                    stage: "" + paypalUrls.stage + config.billingUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.billingUris.sandbox,
-                    production: "" + paypalUrls.production + config.billingUris.production,
-                    test: "" + paypalUrls.test + config.billingUris.test
-                };
-            },
-            get buttonUrls() {
-                var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.buttonUris.local,
-                    stage: "" + paypalUrls.stage + config.buttonUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.buttonUris.sandbox,
-                    production: "" + paypalUrls.production + config.buttonUris.production,
-                    test: "" + paypalUrls.test + config.buttonUris.test
-                };
-            },
-            get paymentsStandardUrls() {
-                var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.paymentStandardUri,
-                    stage: "" + paypalUrls.stage + config.paymentStandardUri,
-                    sandbox: "" + paypalUrls.sandbox + config.paymentStandardUri,
-                    production: "" + paypalUrls.production + config.paymentStandardUri,
-                    test: "" + paypalUrls.test + config.paymentStandardUri
-                };
-            },
-            get bridgeUrls() {
-                var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.bridgeUri + "&env=local",
-                    stage: "" + paypalUrls.stage + config.bridgeUri + "&env=stage&stage=" + config.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.bridgeUri + "&env=sandbox",
-                    production: "" + paypalUrls.production + config.bridgeUri + "&env=production",
-                    test: "" + paypalUrls.test + config.bridgeUri + "&env=test"
-                };
-            },
-            get authApiUrls() {
-                var apiUrls = config.apiUrls;
-                var authApiUri = config.authApiUri;
-                return {
-                    local: "" + apiUrls.local + authApiUri,
-                    stage: "" + apiUrls.stage + authApiUri,
-                    sandbox: "" + apiUrls.sandbox + authApiUri,
-                    production: "" + apiUrls.production + authApiUri,
-                    test: "" + apiUrls.test + authApiUri
-                };
-            },
-            get paymentApiUrls() {
-                var apiUrls = config.apiUrls;
-                var paymentApiUri = config.paymentApiUri;
-                return {
-                    local: "" + apiUrls.local + paymentApiUri,
-                    stage: "" + apiUrls.stage + paymentApiUri,
-                    sandbox: "" + apiUrls.sandbox + paymentApiUri,
-                    production: "" + apiUrls.production + paymentApiUri,
-                    test: "" + apiUrls.test + paymentApiUri
-                };
-            },
-            get billingApiUrls() {
-                var apiUrls = config.apiUrls;
-                var billingApiUri = config.billingApiUri;
-                return {
-                    local: "" + apiUrls.local + billingApiUri,
-                    stage: "" + apiUrls.stage + billingApiUri,
-                    sandbox: "" + apiUrls.sandbox + billingApiUri,
-                    production: "" + apiUrls.production + billingApiUri,
-                    test: "" + apiUrls.test + billingApiUri
-                };
-            },
-            get experienceApiUrls() {
-                var apiUrls = config.apiUrls;
-                var experienceApiUri = config.experienceApiUri;
-                return {
-                    local: "" + apiUrls.local + experienceApiUri,
-                    stage: "" + apiUrls.stage + experienceApiUri,
-                    sandbox: "" + apiUrls.sandbox + experienceApiUri,
-                    production: "" + apiUrls.production + experienceApiUri,
-                    test: "" + apiUrls.test + experienceApiUri
-                };
-            },
-            get paypalUrl() {
-                return config.paypalUrls[config.env];
-            },
-            get paypalDomain() {
-                return config.paypalDomains[config.env];
-            },
-            get corsApiUrl() {
-                return config.corsApiUrls[config.env];
-            },
-            get wwwApiUrl() {
-                return config.wwwApiUrls[config.env];
-            },
-            get apiUrl() {
-                var domain = window.location.protocol + "//" + window.location.host;
-                var corsApiUrl = config.corsApiUrl;
-                var wwwApiUrl = config.wwwApiUrl;
-                return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
-            },
-            get checkoutUrl() {
-                return "" + config.paypalUrl + config.checkoutUris[config.env];
-            },
-            get billingUrl() {
-                return "" + config.paypalUrl + config.billingUris[config.env];
-            },
-            get buttonUrl() {
-                return "" + config.paypalUrl + config.buttonUris[config.env];
-            },
-            get bridgeUrl() {
-                return "" + config.paypalUrl + config.bridgeUri + "&env=" + config.env;
-            },
-            get bridgeDomain() {
-                return "" + config.paypalDomain;
-            },
-            get loggerUrl() {
-                return "" + config.paypalUrl + config.loggerUri;
-            },
-            get authApiUrl() {
-                return "" + config.apiUrl + config.authApiUri;
-            },
-            get paymentApiUrl() {
-                return "" + config.apiUrl + config.paymentApiUri;
-            },
-            get billingApiUrl() {
-                return "" + config.apiUrl + config.billingApiUri;
-            },
-            get experienceApiUrl() {
-                return "" + config.apiUrl + config.experienceApiUri;
-            },
-            locales: {
-                AD: [ "zh", "es", "fr", "en" ],
-                AE: [ "ar", "zh", "es", "fr", "en" ],
-                AG: [ "zh", "es", "fr", "en" ],
-                AI: [ "zh", "es", "fr", "en" ],
-                AL: [ "en" ],
-                AM: [ "zh", "es", "fr", "en" ],
-                AN: [ "zh", "es", "fr", "en" ],
-                AO: [ "zh", "es", "fr", "en" ],
-                AR: [ "en", "es" ],
-                AT: [ "de", "en" ],
-                AU: [ "en" ],
-                AW: [ "zh", "es", "fr", "en" ],
-                AZ: [ "zh", "es", "fr", "en" ],
-                BA: [ "en" ],
-                BB: [ "zh", "es", "fr", "en" ],
-                BE: [ "nl", "fr", "en" ],
-                BF: [ "zh", "es", "en", "fr" ],
-                BG: [ "en" ],
-                BH: [ "zh", "es", "fr", "en", "ar" ],
-                BI: [ "zh", "es", "en", "fr" ],
-                BJ: [ "zh", "es", "en", "fr" ],
-                BM: [ "zh", "es", "fr", "en" ],
-                BN: [ "en" ],
-                BO: [ "zh", "fr", "en", "es" ],
-                BR: [ "pt", "en" ],
-                BS: [ "zh", "es", "fr", "en" ],
-                BT: [ "en" ],
-                BW: [ "zh", "es", "fr", "en" ],
-                BY: [ "en" ],
-                BZ: [ "zh", "fr", "en", "es" ],
-                C2: [ "zh", "en" ],
-                CA: [ "fr", "en" ],
-                CD: [ "zh", "es", "en", "fr" ],
-                CG: [ "zh", "es", "fr", "en" ],
-                CH: [ "fr", "en", "de" ],
-                CI: [ "en", "fr" ],
-                CK: [ "zh", "es", "fr", "en" ],
-                CL: [ "zh", "fr", "en", "es" ],
-                CM: [ "en", "fr" ],
-                CN: [ "zh" ],
-                CO: [ "zh", "fr", "en", "es" ],
-                CR: [ "zh", "fr", "en", "es" ],
-                CV: [ "zh", "es", "fr", "en" ],
-                CY: [ "en" ],
-                CZ: [ "zh", "fr", "es", "en" ],
-                DE: [ "en", "de" ],
-                DJ: [ "zh", "es", "en", "fr" ],
-                DK: [ "en", "da" ],
-                DM: [ "zh", "es", "fr", "en" ],
-                DO: [ "zh", "fr", "en", "es" ],
-                DZ: [ "zh", "es", "fr", "en", "ar" ],
-                EC: [ "zh", "fr", "en", "es" ],
-                EE: [ "zh", "ru", "fr", "es", "en" ],
-                EG: [ "zh", "es", "fr", "en", "ar" ],
-                ER: [ "zh", "es", "fr", "en" ],
-                ES: [ "es", "en" ],
-                ET: [ "zh", "es", "fr", "en" ],
-                FI: [ "zh", "fr", "es", "en" ],
-                FJ: [ "zh", "es", "fr", "en" ],
-                FK: [ "zh", "es", "fr", "en" ],
-                FM: [ "en" ],
-                FO: [ "zh", "es", "fr", "en", "da" ],
-                FR: [ "fr", "en" ],
-                GA: [ "zh", "es", "en", "fr" ],
-                GB: [ "fr", "en" ],
-                GD: [ "zh", "es", "fr", "en" ],
-                GE: [ "zh", "es", "fr", "en" ],
-                GF: [ "zh", "es", "fr", "en" ],
-                GI: [ "zh", "es", "fr", "en" ],
-                GL: [ "zh", "es", "fr", "en", "da" ],
-                GM: [ "zh", "es", "fr", "en" ],
-                GN: [ "zh", "es", "en", "fr" ],
-                GP: [ "zh", "es", "fr", "en" ],
-                GR: [ "zh", "fr", "es", "en" ],
-                GT: [ "zh", "fr", "en", "es" ],
-                GW: [ "zh", "es", "fr", "en" ],
-                GY: [ "zh", "es", "fr", "en" ],
-                HK: [ "zh", "en" ],
-                HN: [ "zh", "fr", "en", "es" ],
-                HR: [ "en" ],
-                HU: [ "zh", "fr", "es", "en" ],
-                ID: [ "id", "en" ],
-                IE: [ "zh", "fr", "es", "en" ],
-                IL: [ "he", "en" ],
-                IN: [ "en" ],
-                IS: [ "en" ],
-                IT: [ "it", "en" ],
-                JM: [ "zh", "fr", "en", "es" ],
-                JO: [ "zh", "es", "fr", "en", "ar" ],
-                JP: [ "ja", "en" ],
-                KE: [ "zh", "es", "fr", "en" ],
-                KG: [ "zh", "es", "fr", "en" ],
-                KH: [ "en" ],
-                KI: [ "zh", "es", "fr", "en" ],
-                KM: [ "zh", "es", "en", "fr" ],
-                KN: [ "zh", "es", "fr", "en" ],
-                KR: [ "ko", "en" ],
-                KW: [ "zh", "es", "fr", "en", "ar" ],
-                KY: [ "zh", "es", "fr", "en" ],
-                KZ: [ "zh", "es", "fr", "en" ],
-                LA: [ "en" ],
-                LC: [ "zh", "es", "fr", "en" ],
-                LI: [ "zh", "es", "fr", "en" ],
-                LK: [ "en" ],
-                LS: [ "zh", "es", "fr", "en" ],
-                LT: [ "zh", "ru", "fr", "es", "en" ],
-                LU: [ "zh", "fr", "es", "en", "de" ],
-                LV: [ "zh", "ru", "fr", "es", "en" ],
-                MA: [ "zh", "es", "fr", "en", "ar" ],
-                MC: [ "en", "fr" ],
-                MD: [ "en" ],
-                ME: [ "en" ],
-                MG: [ "zh", "es", "fr", "en" ],
-                MH: [ "zh", "es", "fr", "en" ],
-                MK: [ "en" ],
-                ML: [ "zh", "es", "en", "fr" ],
-                MN: [ "en" ],
-                MQ: [ "zh", "es", "fr", "en" ],
-                MR: [ "zh", "es", "fr", "en" ],
-                MS: [ "zh", "es", "fr", "en" ],
-                MT: [ "en" ],
-                MU: [ "zh", "es", "fr", "en" ],
-                MV: [ "en" ],
-                MW: [ "zh", "es", "fr", "en" ],
-                MX: [ "es", "en" ],
-                MY: [ "en" ],
-                MZ: [ "zh", "es", "fr", "en" ],
-                NA: [ "zh", "es", "fr", "en" ],
-                NC: [ "zh", "es", "fr", "en" ],
-                NE: [ "zh", "es", "en", "fr" ],
-                NF: [ "zh", "es", "fr", "en" ],
-                NG: [ "en" ],
-                NI: [ "zh", "fr", "en", "es" ],
-                NL: [ "nl", "en" ],
-                NO: [ "no", "en" ],
-                NP: [ "en" ],
-                NR: [ "zh", "es", "fr", "en" ],
-                NU: [ "zh", "es", "fr", "en" ],
-                NZ: [ "zh", "fr", "es", "en" ],
-                OM: [ "zh", "es", "fr", "en", "ar" ],
-                PA: [ "zh", "fr", "en", "es" ],
-                PE: [ "zh", "fr", "en", "es" ],
-                PF: [ "zh", "es", "fr", "en" ],
-                PG: [ "zh", "es", "fr", "en" ],
-                PH: [ "en" ],
-                PL: [ "pl", "en" ],
-                PM: [ "zh", "es", "fr", "en" ],
-                PN: [ "zh", "es", "fr", "en" ],
-                PT: [ "pt", "en" ],
-                PW: [ "zh", "es", "fr", "en" ],
-                PY: [ "en", "es" ],
-                QA: [ "ar", "zh", "es", "fr", "en" ],
-                RE: [ "zh", "es", "fr", "en" ],
-                RO: [ "zh", "fr", "es", "en" ],
-                RS: [ "zh", "es", "fr", "en" ],
-                RU: [ "ru", "en" ],
-                RW: [ "zh", "es", "en", "fr" ],
-                SA: [ "zh", "es", "fr", "en", "ar" ],
-                SB: [ "zh", "es", "fr", "en" ],
-                SC: [ "zh", "es", "en", "fr" ],
-                SE: [ "sv", "en" ],
-                SG: [ "en" ],
-                SH: [ "zh", "es", "fr", "en" ],
-                SI: [ "zh", "fr", "es", "en" ],
-                SJ: [ "zh", "es", "fr", "en" ],
-                SK: [ "zh", "fr", "es", "en" ],
-                SL: [ "zh", "es", "fr", "en" ],
-                SM: [ "zh", "es", "fr", "en" ],
-                SN: [ "zh", "es", "en", "fr" ],
-                SO: [ "zh", "es", "fr", "en" ],
-                SR: [ "zh", "es", "fr", "en" ],
-                ST: [ "zh", "es", "fr", "en" ],
-                SV: [ "zh", "fr", "en", "es" ],
-                SZ: [ "zh", "es", "fr", "en" ],
-                TC: [ "zh", "es", "fr", "en" ],
-                TD: [ "zh", "es", "en", "fr" ],
-                TG: [ "zh", "es", "en", "fr" ],
-                TH: [ "th", "en" ],
-                TJ: [ "zh", "es", "fr", "en" ],
-                TM: [ "zh", "es", "fr", "en" ],
-                TN: [ "zh", "es", "fr", "en", "ar" ],
-                TO: [ "en" ],
-                TR: [ "tr", "en" ],
-                TT: [ "zh", "es", "fr", "en" ],
-                TV: [ "zh", "es", "fr", "en" ],
-                TW: [ "zh", "en" ],
-                TZ: [ "zh", "es", "fr", "en" ],
-                UA: [ "zh", "ru", "fr", "es", "en" ],
-                UG: [ "zh", "es", "fr", "en" ],
-                US: [ "zh", "fr", "es", "en" ],
-                UY: [ "zh", "fr", "en", "es" ],
-                VA: [ "zh", "es", "fr", "en" ],
-                VC: [ "zh", "es", "fr", "en" ],
-                VE: [ "zh", "fr", "en", "es" ],
-                VG: [ "zh", "es", "fr", "en" ],
-                VN: [ "en" ],
-                VU: [ "zh", "es", "fr", "en" ],
-                WF: [ "zh", "es", "fr", "en" ],
-                WS: [ "en" ],
-                YE: [ "zh", "es", "fr", "en", "ar" ],
-                YT: [ "zh", "es", "fr", "en" ],
-                ZA: [ "zh", "es", "fr", "en" ],
-                ZM: [ "zh", "es", "fr", "en" ],
-                ZW: [ "en" ]
-            }
-        };
-    },
     "./src/lib/index.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -4414,6 +4484,16 @@ this["ppxo"] = function(modules) {
                 enumerable: true,
                 get: function get() {
                     return _beacon[key];
+                }
+            });
+        });
+        var _throttle = __webpack_require__("./src/lib/throttle.js");
+        Object.keys(_throttle).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _throttle[key];
                 }
             });
         });
@@ -4509,45 +4589,6 @@ this["ppxo"] = function(modules) {
             return this;
         }());
     },
-    "./src/lib/util.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.isPayPalDomain = isPayPalDomain;
-        exports.memoize = memoize;
-        exports.noop = noop;
-        exports.once = once;
-        var _config = __webpack_require__("./src/config/index.js");
-        function isPayPalDomain() {
-            return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex)) || window.mockDomain === "mock://www.paypal.com";
-        }
-        function memoize(method) {
-            var results = {};
-            return function() {
-                var args = void 0;
-                try {
-                    args = JSON.stringify(Array.prototype.slice.call(arguments));
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
-                }
-                if (!results.hasOwnProperty(args)) {
-                    results[args] = method.apply(this, arguments);
-                }
-                return results[args];
-            };
-        }
-        function noop() {}
-        function once(method) {
-            var called = false;
-            return function() {
-                if (!called) {
-                    called = true;
-                    return method.apply(this, arguments);
-                }
-            };
-        }
-    },
     "./src/lib/logger.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -4574,7 +4615,7 @@ this["ppxo"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.35"
+                    ver: "4.0.36"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -9763,26 +9804,47 @@ this["ppxo"] = function(modules) {
             }
         }), _RENDER_DRIVERS);
     },
+    "./node_modules/xcomponent/src/error.js": function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.PopupOpenError = PopupOpenError;
+        exports.IntegrationError = IntegrationError;
+        function PopupOpenError(message) {
+            this.message = message;
+        }
+        PopupOpenError.prototype = Object.create(Error.prototype);
+        function IntegrationError(message) {
+            this.message = message;
+        }
+        IntegrationError.prototype = Object.create(Error.prototype);
+    },
     "./src/lib/beacon.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.uniqueID = uniqueID;
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
         exports.beacon = beacon;
         exports.checkpoint = checkpoint;
+        exports.fpti = fpti;
         var BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger";
-        function uniqueID() {
-            var chars = "0123456789abcdef";
-            return "xxxxxxxxxx".replace(/./g, function() {
-                return chars.charAt(Math.floor(Math.random() * chars.length));
-            });
-        }
         function beacon(event) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.35";
+                payload.version = "4.0.36";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9800,119 +9862,47 @@ this["ppxo"] = function(modules) {
         }
         var loggedCheckpoints = [];
         function checkpoint(name) {
+            var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
-                var version = "4.0.35".replace(/[^0-9]+/g, "_");
+                var version = "4.0.36".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
                 if (logged) {
                     checkpointName = checkpointName + "_dupe";
                 }
-                return beacon(checkpointName);
+                return beacon(checkpointName, payload);
             } catch (err) {}
         }
-    },
-    "./node_modules/xcomponent/src/component/parent/validate.js": function(module, exports) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.validateProp = validateProp;
-        exports.validateProps = validateProps;
-        exports.validate = validate;
-        function validateProp(prop, key, value) {
-            var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
-            var hasProp = value !== null && value !== undefined && value !== "";
-            if (!hasProp) {
-                if (required && prop.required !== false && !prop.hasOwnProperty("def")) {
-                    throw new Error("Prop is required: " + key);
-                }
-                return;
-            }
-            if (value.then && prop.promise) {
-                return;
-            }
-            if (prop.type === "function") {
-                if (!(value instanceof Function)) {
-                    throw new Error("Prop is not of type function: " + key);
-                }
-            } else if (prop.type === "string") {
-                if (typeof value !== "string") {
-                    if (!(prop.getter && (value instanceof Function || value && value.then))) {
-                        throw new Error("Prop is not of type string: " + key);
-                    }
-                }
-            } else if (prop.type === "object") {
-                try {
-                    JSON.stringify(value);
-                } catch (err) {
-                    throw new Error("Unable to serialize prop: " + key);
-                }
-            } else if (prop.type === "number") {
-                if (isNaN(parseInt(value, 10))) {
-                    throw new Error("Prop is not a number: " + key);
-                }
-            }
+        var FPTI_URL = "https://t.paypal.com/ts";
+        function buildPayload() {
+            return {
+                v: "checkout.js." + "4.0.36",
+                t: Date.now(),
+                g: new Date().getTimezoneOffset(),
+                flnm: "ec:hermes:",
+                shir: "main_ec_hermes_",
+                pgrp: "main:ec:hermes::incontext-merchant",
+                page: "main:ec:hermes::incontext-merchant",
+                vers: "member:hermes:",
+                qual: "incontext",
+                tmpl: "merchant:incontext"
+            };
         }
-        function validateProps(component, props) {
-            var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
-            props = props || {};
-            for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                var _ref;
-                if (_isArray) {
-                    if (_i >= _iterator.length) break;
-                    _ref = _iterator[_i++];
-                } else {
-                    _i = _iterator.next();
-                    if (_i.done) break;
-                    _ref = _i.value;
-                }
-                var key = _ref;
-                var prop = component.props[key];
-                if (prop.alias && props.hasOwnProperty(prop.alias)) {
-                    var value = props[prop.alias];
-                    delete props[prop.alias];
-                    if (!props[key]) {
-                        props[key] = value;
-                    }
+        function fpti() {
+            var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            var query = [];
+            payload = _extends({}, buildPayload(), payload);
+            for (var key in payload) {
+                if (payload.hasOwnProperty(key)) {
+                    query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
                 }
             }
-            for (var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
-                }
-                var _key = _ref2;
-                if (!component.props.hasOwnProperty(_key)) {
-                    throw new Error("[" + component.tag + "] Invalid prop: " + _key);
-                }
-            }
-            for (var _iterator3 = Object.keys(component.props), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
-                }
-                var _key2 = _ref3;
-                var _prop = component.props[_key2];
-                var _value = props[_key2];
-                validateProp(_prop, _key2, _value, required);
-            }
-        }
-        function validate(component, options) {
-            var props = options.props || {};
-            if (props.env && component.envUrls && !component.envUrls[props.env]) {
-                throw new Error("Invalid env: " + props.env);
-            }
+            query = query.join("&");
+            try {
+                var beaconImage = new window.Image();
+                beaconImage.src = FPTI_URL + "?" + query;
+            } catch (err) {}
         }
     },
     "./node_modules/xcomponent/src/component/parent/props.js": function(module, exports, __webpack_require__) {
@@ -10891,6 +10881,118 @@ this["ppxo"] = function(modules) {
             }, options));
         };
     },
+    "./src/lib/throttle.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
+        exports.getThrottle = getThrottle;
+        var _beacon = __webpack_require__("./src/lib/beacon.js");
+        var _util = __webpack_require__("./src/lib/util.js");
+        var uids = {};
+        function getUID(name, uid) {
+            if (!uid) {
+                if (uids[name]) {
+                    uid = uids[name];
+                } else {
+                    try {
+                        if (window.sessionStorage) {
+                            uid = window.sessionStorage.getItem("__throttle_uid_" + name + "__");
+                        }
+                    } catch (err) {}
+                }
+            }
+            var isNew = void 0;
+            if (uid) {
+                isNew = false;
+            } else {
+                isNew = true;
+                uid = (0, _util.uniqueID)();
+            }
+            uids[name] = uid;
+            try {
+                if (window.sessionStorage) {
+                    window.sessionStorage.setItem("__throttle_uid_" + name + "__", uid);
+                }
+            } catch (err) {}
+            return {
+                uid: uid,
+                isNew: isNew
+            };
+        }
+        function getThrottle(name, sample, id) {
+            var _getUID = getUID(name, id);
+            var uid = _getUID.uid;
+            var isNew = _getUID.isNew;
+            var throttle = (0, _util.hashStr)(name + "_" + uid) % 1e4;
+            var group = void 0;
+            if (throttle < sample) {
+                group = "test";
+            } else if (sample >= 5e3 || sample <= throttle && throttle < sample * 2) {
+                group = "control";
+            } else {
+                group = "throttle";
+            }
+            var treatment = name + "_" + group;
+            var loggedStart = false;
+            var loggedComplete = false;
+            return {
+                isEnabled: function isEnabled() {
+                    return group === "test";
+                },
+                isDisabled: function isDisabled() {
+                    return group !== "test";
+                },
+                getTreatment: function getTreatment() {
+                    return treatment;
+                },
+                logStart: function logStart() {
+                    var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                    var event = treatment + "_start";
+                    if (!loggedStart) {
+                        (0, _beacon.checkpoint)(event, _extends({}, payload, {
+                            expuid: uid
+                        }));
+                        (0, _beacon.fpti)(_extends({}, payload, {
+                            expuid: uid,
+                            eligibility_reason: event
+                        }));
+                        loggedStart = true;
+                    }
+                    return this;
+                },
+                logComplete: function logComplete() {
+                    var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                    if (!loggedStart && isNew) {
+                        return;
+                    }
+                    var event = treatment + "_complete";
+                    if (!loggedComplete) {
+                        (0, _beacon.checkpoint)(event, _extends({}, payload, {
+                            expuid: uid
+                        }));
+                        (0, _beacon.fpti)(_extends({}, payload, {
+                            expuid: uid,
+                            eligibility_reason: event
+                        }));
+                        loggedComplete = true;
+                    }
+                    return this;
+                }
+            };
+        }
+    },
     "./src/components/index.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -10981,7 +11083,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.35";
+                return _config.config.ppobjects ? "4" : "4.0.36";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11373,7 +11475,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.35";
+                return _config.config.ppobjects ? "4" : "4.0.36";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -12042,6 +12144,7 @@ this["ppxo"] = function(modules) {
         var _constants = __webpack_require__("./src/legacy/constants.js");
         var _button = __webpack_require__("./src/legacy/button.js");
         var _common = __webpack_require__("./src/legacy/common.js");
+        var _throttle = __webpack_require__("./src/legacy/throttle.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -12240,6 +12343,9 @@ this["ppxo"] = function(modules) {
                     var _urlAndPaymentToken = urlAndPaymentToken;
                     var url = _urlAndPaymentToken.url;
                     var paymentToken = _urlAndPaymentToken.paymentToken;
+                    if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
+                        return redirect(url);
+                    }
                     return resolve({
                         url: url,
                         paymentToken: paymentToken
@@ -12440,8 +12546,13 @@ this["ppxo"] = function(modules) {
                         $logger.debug("click_popups_not_supported_but_eligible");
                     }
                 }
-                if (!(0, _eligibility.isLegacyEligible)() && !isClick) {
-                    return $logger.debug("ineligible_listenclick");
+                if (!isClick) {
+                    if (!(0, _eligibility.isLegacyEligible)()) {
+                        return $logger.debug("ineligible_listenclick");
+                    }
+                    if (!(0, _throttle.checkThrottle)(null, true)) {
+                        return;
+                    }
                 }
                 $logger.info("button_click");
                 if (condition instanceof Function) {
@@ -12543,6 +12654,9 @@ this["ppxo"] = function(modules) {
             if (!(0, _eligibility.isLegacyEligible)()) {
                 return $logger.debug("ineligible_initxo");
             }
+            if (!(0, _throttle.checkThrottle)()) {
+                return;
+            }
             reset();
             var _awaitPaymentTokenAnd2 = awaitPaymentTokenAndUrl();
             var url = _awaitPaymentTokenAnd2.url;
@@ -12565,10 +12679,13 @@ this["ppxo"] = function(modules) {
             var _matchUrlAndPaymentTo = matchUrlAndPaymentToken(item);
             var paymentToken = _matchUrlAndPaymentTo.paymentToken;
             var url = _matchUrlAndPaymentTo.url;
-            if (!(0, _eligibility.isLegacyEligible)()) {
+            if (!(0, _eligibility.isLegacyEligible)(paymentToken)) {
                 $logger.debug("ineligible_startflow_global", {
                     url: url
                 });
+                return redirect(url);
+            }
+            if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
                 return redirect(url);
             }
             $logger.info("init_paypal_checkout_startflow");
@@ -12661,7 +12778,10 @@ this["ppxo"] = function(modules) {
                     return false;
                 }
             }
-            return !((0, _lib.isWebView)() || isUnsupportedIE() || (0, _lib.isDevice)());
+            if ((0, _lib.isWebView)() || isUnsupportedIE() || (0, _lib.isDevice)()) {
+                return false;
+            }
+            return true;
         }
     },
     "./src/compat/index.js": function(module, exports, __webpack_require__) {
@@ -13572,6 +13692,52 @@ this["ppxo"] = function(modules) {
             return true;
         };
     },
+    "./src/legacy/throttle.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.checkThrottle = checkThrottle;
+        var _lib = __webpack_require__("./src/lib/index.js");
+        var _config = __webpack_require__("./src/config/index.js");
+        var domain = window.location.protocol + "//" + window.location.host;
+        var domainStr = domain.replace(/[^a-z0-9A-Z]+/g, "_");
+        var throttle = void 0;
+        if (_config.config.legacy_throttles.hasOwnProperty(domain)) {
+            throttle = (0, _lib.getThrottle)("incontext_" + domainStr, _config.config.legacy_throttles[domain]);
+        }
+        function checkThrottle(token) {
+            var forceLog = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+            if (throttle) {
+                if (token || forceLog) {
+                    throttle.logStart({
+                        fltk: token
+                    });
+                }
+                if (window.sessionStorage) {
+                    try {
+                        window.sessionStorage.setItem("__pp_incontext_treatment__", throttle.getTreatment());
+                    } catch (err) {}
+                }
+                return throttle.isEnabled();
+            }
+            return true;
+        }
+        function logReturn() {
+            if (!throttle) {
+                return;
+            }
+            var token = (0, _lib.match)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+            var payer = (0, _lib.match)(window.location.href, /PayerID=([A-Z0-9]+)/);
+            if (!token || !payer) {
+                return;
+            }
+            throttle.logComplete({
+                fltk: token
+            });
+        }
+        logReturn();
+    },
     "./src/legacy/ready.js": function(module, exports, __webpack_require__) {
         "use strict";
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
@@ -13768,20 +13934,107 @@ this["ppxo"] = function(modules) {
             }
         }
     },
-    "./node_modules/xcomponent/src/error.js": function(module, exports) {
+    "./node_modules/xcomponent/src/component/parent/validate.js": function(module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.PopupOpenError = PopupOpenError;
-        exports.IntegrationError = IntegrationError;
-        function PopupOpenError(message) {
-            this.message = message;
+        exports.validateProp = validateProp;
+        exports.validateProps = validateProps;
+        exports.validate = validate;
+        function validateProp(prop, key, value) {
+            var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+            var hasProp = value !== null && value !== undefined && value !== "";
+            if (!hasProp) {
+                if (required && prop.required !== false && !prop.hasOwnProperty("def")) {
+                    throw new Error("Prop is required: " + key);
+                }
+                return;
+            }
+            if (value.then && prop.promise) {
+                return;
+            }
+            if (prop.type === "function") {
+                if (!(value instanceof Function)) {
+                    throw new Error("Prop is not of type function: " + key);
+                }
+            } else if (prop.type === "string") {
+                if (typeof value !== "string") {
+                    if (!(prop.getter && (value instanceof Function || value && value.then))) {
+                        throw new Error("Prop is not of type string: " + key);
+                    }
+                }
+            } else if (prop.type === "object") {
+                try {
+                    JSON.stringify(value);
+                } catch (err) {
+                    throw new Error("Unable to serialize prop: " + key);
+                }
+            } else if (prop.type === "number") {
+                if (isNaN(parseInt(value, 10))) {
+                    throw new Error("Prop is not a number: " + key);
+                }
+            }
         }
-        PopupOpenError.prototype = Object.create(Error.prototype);
-        function IntegrationError(message) {
-            this.message = message;
+        function validateProps(component, props) {
+            var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+            props = props || {};
+            for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var key = _ref;
+                var prop = component.props[key];
+                if (prop.alias && props.hasOwnProperty(prop.alias)) {
+                    var value = props[prop.alias];
+                    delete props[prop.alias];
+                    if (!props[key]) {
+                        props[key] = value;
+                    }
+                }
+            }
+            for (var _iterator2 = Object.keys(props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                }
+                var _key = _ref2;
+                if (!component.props.hasOwnProperty(_key)) {
+                    throw new Error("[" + component.tag + "] Invalid prop: " + _key);
+                }
+            }
+            for (var _iterator3 = Object.keys(component.props), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref3 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref3 = _i3.value;
+                }
+                var _key2 = _ref3;
+                var _prop = component.props[_key2];
+                var _value = props[_key2];
+                validateProp(_prop, _key2, _value, required);
+            }
         }
-        IntegrationError.prototype = Object.create(Error.prototype);
+        function validate(component, options) {
+            var props = options.props || {};
+            if (props.env && component.envUrls && !component.envUrls[props.env]) {
+                throw new Error("Invalid env: " + props.env);
+            }
+        }
     }
 });
