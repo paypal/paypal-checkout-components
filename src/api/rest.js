@@ -2,6 +2,7 @@
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
+import $logger from 'beaver-logger/client';
 
 import { config } from '../config';
 import { request } from '../lib';
@@ -33,6 +34,8 @@ function memoize(method, options = {}) {
 }
 
 let createAccessToken = memoize((env, client) => {
+
+    $logger.info(`rest_api_create_access_token`);
 
     env = env || config.env;
 
@@ -74,6 +77,9 @@ let createAccessToken = memoize((env, client) => {
 }, { time: 10 * 60 * 1000 });
 
 let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
+
+    $logger.info(`rest_api_create_experience_profile`);
+
     env = env || config.env;
 
     let clientID = client[env];
@@ -116,6 +122,8 @@ let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
 }, { time: 10 * 60 * 1000 });
 
 function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
+
+    $logger.info(`rest_api_create_checkout_token`);
 
     env = env || config.env;
 
@@ -172,6 +180,8 @@ function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
 }
 
 export function createBillingToken(env, client, billingDetails, experienceDetails) {
+
+    $logger.info(`rest_api_create_billing_token`);
 
     env = env || config.env;
 
