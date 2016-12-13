@@ -1,4 +1,6 @@
 
+import { ENV } from './constants';
+
 export let config = {
 
     scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
@@ -12,7 +14,7 @@ export let config = {
 
     cors: true,
 
-    env: __TEST__ ? 'test' : 'production',
+    env: __TEST__ ? ENV.TEST : ENV.PRODUCTION,
 
     state: 'paypal_xcomponent',
 
@@ -44,41 +46,41 @@ export let config = {
 
     get paypalUrls() {
         return {
-            local:      `http://localhost.paypal.com:8000`,
-            stage:      `https://www.${config.stage}.qa.paypal.com`,
-            sandbox:    `https://www.sandbox.paypal.com`,
-            production: `https://www.paypal.com`,
-            test:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
+            [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
+            [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
+            [ ENV.PRODUCTION ]: `https://www.paypal.com`,
+            [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
     get paypalDomains() {
         return {
-            local:      `http://localhost.paypal.com:8000`,
-            stage:      `https://www.${config.stage}.qa.paypal.com`,
-            sandbox:    `https://www.sandbox.paypal.com`,
-            production: `https://www.paypal.com`,
-            test:       `mock://www.paypal.com`
+            [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
+            [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
+            [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
+            [ ENV.PRODUCTION ]: `https://www.paypal.com`,
+            [ ENV.TEST ]:       `mock://www.paypal.com`
         };
     },
 
     get wwwApiUrls() {
         return {
-            local:      `https://www.${config.stage}.qa.paypal.com`,
-            stage:      `https://www.${config.stage}.qa.paypal.com`,
-            sandbox:    `https://www.sandbox.paypal.com`,
-            production: `https://www.paypal.com`,
-            test:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.LOCAL ]:      `https://www.${config.stage}.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
+            [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
+            [ ENV.PRODUCTION ]: `https://www.paypal.com`,
+            [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
     get corsApiUrls() {
         return {
-            local:      `https://${config.apiStage}.qa.paypal.com:11888`,
-            stage:      `https://${config.apiStage}.qa.paypal.com:11888`,
-            sandbox:    `https://cors.api.sandbox.paypal.com`,
-            production: `https://cors.api.paypal.com`,
-            test:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.LOCAL ]:      `https://${config.apiStage}.qa.paypal.com:11888`,
+            [ ENV.STAGE ]:      `https://${config.apiStage}.qa.paypal.com:11888`,
+            [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
+            [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
+            [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -89,44 +91,44 @@ export let config = {
         let wwwApiUrls  = config.wwwApiUrls;
 
         return {
-            local:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
-            stage:      domain === wwwApiUrls.stage      ? wwwApiUrls.stage      : corsApiUrls.stage,
-            sandbox:    domain === wwwApiUrls.sandbox    ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
-            production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
-            test:       domain === wwwApiUrls.test       ? wwwApiUrls.test       : corsApiUrls.test
+            [ ENV.LOCAL ]:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
+            [ ENV.STAGE ]:      domain === wwwApiUrls.stage      ? wwwApiUrls.stage      : corsApiUrls.stage,
+            [ ENV.SANDBOX ]:    domain === wwwApiUrls.sandbox    ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
+            [ ENV.PRODUCTION ]: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
+            [ ENV.TEST ]:       domain === wwwApiUrls.test       ? wwwApiUrls.test       : corsApiUrls.test
         };
     },
 
     checkoutUris: {
-        local:      `/webapps/hermes?ul=0`,
-        stage:      `/webapps/hermes`,
-        sandbox:    `/checkoutnow`,
-        production: `/checkoutnow`,
-        test:       `/base/test/windows/checkout/index.htm?checkouturl=true`
+        [ ENV.LOCAL ]:      `/webapps/hermes?ul=0`,
+        [ ENV.STAGE ]:      `/webapps/hermes`,
+        [ ENV.SANDBOX ]:    `/checkoutnow`,
+        [ ENV.PRODUCTION ]: `/checkoutnow`,
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`
     },
 
     billingUris: {
-        local:      `/webapps/hermes/agreements?ul=0`,
-        stage:      `/webapps/hermes/agreements`,
-        sandbox:    `/agreements/approve`,
-        production: `/agreements/approve`,
-        test:       `/base/test/windows/checkout/index.htm?billingurl=true`
+        [ ENV.LOCAL ]:      `/webapps/hermes/agreements?ul=0`,
+        [ ENV.STAGE ]:      `/webapps/hermes/agreements`,
+        [ ENV.SANDBOX ]:    `/agreements/approve`,
+        [ ENV.PRODUCTION ]: `/agreements/approve`,
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?billingurl=true`
     },
 
     buttonUris: {
-        local:      `/webapps/hermes/button`,
-        stage:      `/webapps/hermes/button`,
-        sandbox:    `/webapps/hermes/button`,
-        production: `/webapps/hermes/button`,
-        test:       `/base/test/windows/button/index.htm`
+        [ ENV.LOCAL ]:      `/webapps/hermes/button`,
+        [ ENV.STAGE ]:      `/webapps/hermes/button`,
+        [ ENV.SANDBOX ]:    `/webapps/hermes/button`,
+        [ ENV.PRODUCTION ]: `/webapps/hermes/button`,
+        [ ENV.TEST ]:       `/base/test/windows/button/index.htm`
     },
 
     bridgeUris: {
-        local:      `/webapps/hermes/component-meta`,
-        stage:      `/webapps/hermes/component-meta`,
-        sandbox:    `/webapps/hermes/component-meta`,
-        production: `/webapps/hermes/component-meta`,
-        test:       `/base/test/windows/bridge/index.htm`
+        [ ENV.LOCAL ]:      `/webapps/hermes/component-meta`,
+        [ ENV.STAGE ]:      `/webapps/hermes/component-meta`,
+        [ ENV.SANDBOX ]:    `/webapps/hermes/component-meta`,
+        [ ENV.PRODUCTION ]: `/webapps/hermes/component-meta`,
+        [ ENV.TEST ]:       `/base/test/windows/bridge/index.htm`
     },
 
     loggerUri: `/webapps/hermes/api/logger`,
@@ -147,11 +149,11 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            local:      `${paypalUrls.local}${config.checkoutUris.local}`,
-            stage:      `${paypalUrls.stage}${config.checkoutUris.stage}`,
-            sandbox:    `${paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
-            production: `${paypalUrls.production}${config.checkoutUris.production}`,
-            test:       `${paypalUrls.test}${config.checkoutUris.test}`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.checkoutUris.local}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.checkoutUris.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.checkoutUris.production}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.checkoutUris.test}`
         };
     },
 
@@ -160,11 +162,11 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            local:      `${paypalUrls.local}${config.billingUris.local}`,
-            stage:      `${paypalUrls.stage}${config.billingUris.stage}`,
-            sandbox:    `${paypalUrls.sandbox}${config.billingUris.sandbox}`,
-            production: `${paypalUrls.production}${config.billingUris.production}`,
-            test:       `${paypalUrls.test}${config.billingUris.test}`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.billingUris.local}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.billingUris.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.billingUris.sandbox}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.billingUris.production}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.billingUris.test}`
         };
     },
 
@@ -173,11 +175,11 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            local:      `${paypalUrls.local}${config.buttonUris.local}`,
-            stage:      `${paypalUrls.stage}${config.buttonUris.stage}`,
-            sandbox:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
-            production: `${paypalUrls.production}${config.buttonUris.production}`,
-            test:       `${paypalUrls.test}${config.buttonUris.test}`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.buttonUris.local}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.buttonUris.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.buttonUris.production}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.buttonUris.test}`
         };
     },
 
@@ -186,11 +188,11 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            local:      `${paypalUrls.local}${config.paymentStandardUri}`,
-            stage:      `${paypalUrls.stage}${config.paymentStandardUri}`,
-            sandbox:    `${paypalUrls.sandbox}${config.paymentStandardUri}`,
-            production: `${paypalUrls.production}${config.paymentStandardUri}`,
-            test:       `${paypalUrls.test}${config.paymentStandardUri}`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.paymentStandardUri}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.paymentStandardUri}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.paymentStandardUri}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.paymentStandardUri}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.paymentStandardUri}`
         };
     },
 
@@ -199,11 +201,11 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            local:      `${paypalUrls.local}${config.bridgeUri}&env=local`,
-            stage:      `${paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
-            sandbox:    `${paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
-            production: `${paypalUrls.production}${config.bridgeUri}&env=production`,
-            test:       `${paypalUrls.test}${config.bridgeUri}&env=test`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.bridgeUri}&env=local`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.bridgeUri}&env=production`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.bridgeUri}&env=test`
         };
     },
 
@@ -213,11 +215,11 @@ export let config = {
         let authApiUri = config.authApiUri;
 
         return {
-            local:      `${apiUrls.local}${authApiUri}`,
-            stage:      `${apiUrls.stage}${authApiUri}`,
-            sandbox:    `${apiUrls.sandbox}${authApiUri}`,
-            production: `${apiUrls.production}${authApiUri}`,
-            test:       `${apiUrls.test}${authApiUri}`
+            [ ENV.LOCAL ]:      `${apiUrls.local}${authApiUri}`,
+            [ ENV.STAGE ]:      `${apiUrls.stage}${authApiUri}`,
+            [ ENV.SANDBOX ]:    `${apiUrls.sandbox}${authApiUri}`,
+            [ ENV.PRODUCTION ]: `${apiUrls.production}${authApiUri}`,
+            [ ENV.TEST ]:       `${apiUrls.test}${authApiUri}`
         };
     },
 
@@ -227,11 +229,11 @@ export let config = {
         let paymentApiUri = config.paymentApiUri;
 
         return {
-            local:      `${apiUrls.local}${paymentApiUri}`,
-            stage:      `${apiUrls.stage}${paymentApiUri}`,
-            sandbox:    `${apiUrls.sandbox}${paymentApiUri}`,
-            production: `${apiUrls.production}${paymentApiUri}`,
-            test:       `${apiUrls.test}${paymentApiUri}`
+            [ ENV.LOCAL ]:      `${apiUrls.local}${paymentApiUri}`,
+            [ ENV.STAGE ]:      `${apiUrls.stage}${paymentApiUri}`,
+            [ ENV.SANDBOX ]:    `${apiUrls.sandbox}${paymentApiUri}`,
+            [ ENV.PRODUCTION ]: `${apiUrls.production}${paymentApiUri}`,
+            [ ENV.TEST ]:       `${apiUrls.test}${paymentApiUri}`
         };
     },
 
@@ -241,11 +243,11 @@ export let config = {
         let billingApiUri = config.billingApiUri;
 
         return {
-            local:      `${apiUrls.local}${billingApiUri}`,
-            stage:      `${apiUrls.stage}${billingApiUri}`,
-            sandbox:    `${apiUrls.sandbox}${billingApiUri}`,
-            production: `${apiUrls.production}${billingApiUri}`,
-            test:       `${apiUrls.test}${billingApiUri}`
+            [ ENV.LOCAL ]:      `${apiUrls.local}${billingApiUri}`,
+            [ ENV.STAGE ]:      `${apiUrls.stage}${billingApiUri}`,
+            [ ENV.SANDBOX ]:    `${apiUrls.sandbox}${billingApiUri}`,
+            [ ENV.PRODUCTION ]: `${apiUrls.production}${billingApiUri}`,
+            [ ENV.TEST ]:       `${apiUrls.test}${billingApiUri}`
         };
     },
 
@@ -255,11 +257,11 @@ export let config = {
         let experienceApiUri = config.experienceApiUri;
 
         return {
-            local:      `${apiUrls.local}${experienceApiUri}`,
-            stage:      `${apiUrls.stage}${experienceApiUri}`,
-            sandbox:    `${apiUrls.sandbox}${experienceApiUri}`,
-            production: `${apiUrls.production}${experienceApiUri}`,
-            test:       `${apiUrls.test}${experienceApiUri}`
+            [ ENV.LOCAL ]:      `${apiUrls.local}${experienceApiUri}`,
+            [ ENV.STAGE ]:      `${apiUrls.stage}${experienceApiUri}`,
+            [ ENV.SANDBOX ]:    `${apiUrls.sandbox}${experienceApiUri}`,
+            [ ENV.PRODUCTION ]: `${apiUrls.production}${experienceApiUri}`,
+            [ ENV.TEST ]:       `${apiUrls.test}${experienceApiUri}`
         };
     },
 

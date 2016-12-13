@@ -74,3 +74,28 @@ export function match(str, pattern) {
         return regmatch[1];
     }
 }
+
+
+export function before(method, wrapper) {
+    return function() {
+        wrapper();
+        return method.apply(this, arguments);
+    };
+}
+
+export function safeJSON(item) {
+    return JSON.stringify(item, (key, val) => {
+
+        if (typeof val === 'function') {
+            return `<${typeof val}>`;
+        }
+
+        try {
+            JSON.stringify(val);
+        } catch (err) {
+            return `<${typeof val}>`;
+        }
+
+        return val;
+    });
+}

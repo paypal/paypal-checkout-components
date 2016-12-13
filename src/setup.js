@@ -1,7 +1,7 @@
 
 import $logger from 'beaver-logger/client';
 
-import { config } from './config';
+import { config, ENV } from './config';
 import { initLogger, checkForCommonErrors, beacon } from './lib';
 import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
@@ -55,7 +55,7 @@ export function setup(options = {}) {
         config.stage = options.stage;
         if (!options.env) {
             delete config.env;
-            config.env = 'stage';
+            config.env = ENV.STAGE;
         }
     }
 

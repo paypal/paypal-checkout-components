@@ -161,3 +161,28 @@ export function renderButtons(id, options) {
         return buttons;
     });
 }
+
+export function getHijackTargetElement(button) {
+
+    if (button && button.form) {
+        $logger.debug(`target_element_button_form`);
+        return button.form;
+    }
+
+    if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_link`);
+        return button;
+    }
+
+    if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_parent_link`);
+        return button.parentNode;
+    }
+
+    if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
+        $logger.debug(`target_element_parent_parent_link`);
+        return button.parentNode.parentNode;
+    }
+
+    $logger.error(`target_element_not_found`);
+}

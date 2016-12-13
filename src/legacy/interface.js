@@ -4,57 +4,26 @@ import logger from 'beaver-logger/client';
 
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
-import { config } from '../config';
+import { config, ENV } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, onDocumentReady, once, checkpoint, noop } from '../lib';
+import { supportsPopups, getElements, once, checkpoint, noop, before, safeJSON } from '../lib';
 import { LOG_PREFIX } from './constants';
-import { renderButtons } from './button';
+import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
 import { checkThrottle } from './throttle';
+import { redirect, logRedirect, parseToken } from './util';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
-const REDIRECT_DELAY = 1;
+export let checkout = {};
 
-let setupCalled = false;
-let inClick = false;
+let ppApps = (window.paypal && window.paypal.apps) || (window.PAYPAL && window.PAYPAL.apps) || {};
 
-let ifNotClickMethods = [];
-
-function registerClick() {
-    inClick = true;
-
-    ifNotClickMethods = [];
-
-    setTimeout(() => {
-        inClick = false;
-    }, 1);
-}
-
-onDocumentReady(() => {
-    if (window.document && window.document.body) {
-        window.document.body.addEventListener('click', () => {
-            registerClick();
-        });
-    }
-});
-
-let ifNotClickTimeout;
-
-function ifNotClick(method) {
-
-    if (inClick) {
-        return;
-    }
-
-    ifNotClickMethods.push(method);
-
-    ifNotClickTimeout = ifNotClickTimeout || setTimeout(() => {
-        ifNotClickTimeout = null;
-        ifNotClickMethods.forEach(meth => meth());
-        ifNotClickMethods = [];
-    }, 1);
-}
+export let apps = {
+    ...ppApps,
+    checkout,
+    Checkout: checkout
+};
 
 export function reset() {
 
@@ -62,97 +31,30 @@ export function reset() {
 
     // Once our callback has been called, we can set the global methods to their original values
 
-    window.paypal.checkout.initXO    = initXO;    // eslint-disable-line
-    window.paypal.checkout.startFlow = startFlow; // eslint-disable-line
-    window.paypal.checkout.closeFlow = closeFlow; // eslint-disable-line
+    checkout.initXO    = initXO;    // eslint-disable-line
+    checkout.startFlow = startFlow; // eslint-disable-line
+    checkout.closeFlow = closeFlow; // eslint-disable-line
 }
 
+checkout.reset = reset;
 
-function before(method, wrapper) {
-    return function() {
-        wrapper();
-        return method.apply(this, arguments);
-    };
-}
-
-function getUrlPrefix() {
-    return `${config.checkoutUrl}?token=`;
-}
-
-
+Object.defineProperty(checkout, 'urlPrefix', {
+    get() {
+        return `${config.checkoutUrl}?token=`;
+    }
+});
 
 if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
 
 
-let redirected = false;
-
-function logRedirect(location) {
-
-    if (redirected) {
-        $logger.warn(`multiple_redirects`);
-    }
-
-    redirected = true;
-
-    if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
-        checkpoint('flow_complete');
-    }
-
-    $logger.flush();
-}
-
-function redirect(url) {
-
-    logRedirect(url);
-
-    reset();
-
-    setTimeout(() => {
-        $logger.info(`redirect`, { url });
-        window.location = url;
-    }, REDIRECT_DELAY);
-}
 
 
 
 
-/*  Parse Token
-    -----------
 
-    We are passed either a token, or a url containing the token. In order to run the new checkout component we need to
-    strip out the token from the url in order to pass it down as a prop
-*/
 
-function parseToken(token) {
-
-    if (!token) {
-        return;
-    }
-
-    token = decodeURIComponent(decodeURIComponent(token));
-
-    // We may get lucky and be passed a token straight off the bar
-
-    if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
-        return token;
-    }
-
-    // Otherwise strip the token from the url we're sent
-
-    let match = token.match(/token=((EC-)?[A-Z0-9]{17})/);
-
-    if (match) {
-        return match[1];
-    }
-
-    match = token.match(/(EC-[A-Z0-9]{17})/);
-
-    if (match) {
-        return match[1];
-    }
-}
 
 
 function getFullpageRedirectUrl(token) {
@@ -188,7 +90,7 @@ function matchUrlAndPaymentToken(item) {
         $logger.warn(`startflow_relative_url`, { url });
 
         if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
-            url = `${getUrlPrefix()}${url}`;
+            url = `${config.checkoutUrl}${url}`;
         }
     }
 
@@ -213,7 +115,7 @@ function matchUrlAndPaymentToken(item) {
     for (let env of Object.keys(paypalUrls)) {
         let paypalUrl = paypalUrls[env];
 
-        if (env === 'test') {
+        if (env === ENV.TEST) {
             continue;
         }
 
@@ -247,13 +149,13 @@ function awaitPaymentTokenAndUrl() {
 
     let paymentTokenAndUrl = new Promise((resolve, reject) => {
 
-        window.paypal.checkout.initXO = () => {
+        checkout.initXO = () => {
             $logger.warn(`gettoken_initxo`);
         };
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-        window.paypal.checkout.startFlow = once((item, opts) => {
+        checkout.startFlow = once((item, opts) => {
             $logger.debug(`gettoken_startflow`, { item });
 
             if (opts) {
@@ -305,10 +207,6 @@ function initPayPalCheckout(props = {}) {
         $logger.warn(`multiple_init_paypal_checkout`);
     }
 
-    if (!setupCalled) {
-        $logger.warn(`init_without_setup`);
-    }
-
     paypalCheckoutInited = true;
 
     checkpoint('flow_start');
@@ -343,7 +241,7 @@ function initPayPalCheckout(props = {}) {
         ...props
     });
 
-    window.paypal.checkout.closeFlow = (closeUrl) => {
+    checkout.closeFlow = (closeUrl) => {
         $logger.warn(`closeflow`);
 
         reset();
@@ -366,10 +264,6 @@ function initPayPalCheckout(props = {}) {
 
 
 function renderPayPalCheckout(props = {}, hijackTarget) {
-
-    ifNotClick(() => {
-        $logger.warn(`render_without_click`);
-    });
 
     let paypalCheckout;
 
@@ -404,7 +298,7 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         throw err;
     });
 
-    window.paypal.checkout.win = paypalCheckout.window;
+    checkout.win = paypalCheckout.window;
 
     return render;
 }
@@ -417,15 +311,15 @@ function handleClick(clickHandler, event) {
     let startFlowCalled = false;
     let closeFlowCalled = false;
 
-    window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, () => {
+    checkout.initXO = before(window.paypal.checkout.initXO, () => {
         initXOCalled = true;
     });
 
-    window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
+    checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
         startFlowCalled = true;
     });
 
-    window.paypal.checkout.closeFlow = before(window.paypal.checkout.closeFlow, () => {
+    checkout.closeFlow = before(window.paypal.checkout.closeFlow, () => {
         closeFlowCalled = true;
     });
 
@@ -449,31 +343,6 @@ function handleClick(clickHandler, event) {
             }
         }, 1);
     }
-}
-
-function getHijackTargetElement(button) {
-
-    if (button && button.form) {
-        $logger.debug(`target_element_button_form`);
-        return button.form;
-    }
-
-    if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
-        $logger.debug(`target_element_link`);
-        return button;
-    }
-
-    if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
-        $logger.debug(`target_element_parent_link`);
-        return button.parentNode;
-    }
-
-    if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
-        $logger.debug(`target_element_parent_parent_link`);
-        return button.parentNode.parentNode;
-    }
-
-    $logger.error(`target_element_not_found`);
 }
 
 function handleClickHijack(button) {
@@ -516,8 +385,6 @@ function listenClick(container, button, clickHandler, condition) {
     element.setAttribute('data-paypal-click-listener', true);
 
     element.addEventListener('click', event => {
-
-        registerClick();
 
         checkpoint('flow_buttonclick');
 
@@ -577,6 +444,8 @@ function listenClick(container, button, clickHandler, condition) {
     - Render a button to initiate the checkout window
 */
 
+let setupCalled = false;
+
 function setup(id, options = {}) {
 
     checkpoint('flow_setup');
@@ -586,24 +455,11 @@ function setup(id, options = {}) {
     $logger.info(`setup`, {
         id,
         env: options.environment,
-        options: JSON.stringify(options, (key, val) => {
-
-            if (typeof val === 'function') {
-                return '<function>';
-            }
-
-            try {
-                JSON.stringify(val);
-            } catch (err) {
-                return '<unserializable>';
-            }
-
-            return val;
-        })
+        options: safeJSON(options)
     });
 
     if (setupCalled) {
-        console.warn(`setup_called_multiple_times`);
+        $logger.debug(`setup_called_multiple_times`);
     }
 
     setupCalled = true;
@@ -613,7 +469,7 @@ function setup(id, options = {}) {
     if (options.environment) {
 
         if (options.environment === 'live') {
-            options.environment = 'production';
+            options.environment = ENV.PRODUCTION;
         }
 
         if (config.paypalUrls[options.environment]) {
@@ -675,6 +531,7 @@ function setup(id, options = {}) {
     ]);
 }
 
+checkout.setup = setup;
 
 /*  Init XO
     -------
@@ -705,6 +562,8 @@ function initXO() {
 
     renderPayPalCheckout({ url, payment: paymentToken });
 }
+
+checkout.initXO = initXO;
 
 
 /*  Start Flow
@@ -740,6 +599,8 @@ function startFlow(item, opts) {
     renderPayPalCheckout({ url, payment: paymentToken });
 }
 
+checkout.startFlow = startFlow;
+
 
 /*  Close Flow
     ----------
@@ -760,66 +621,4 @@ function closeFlow(closeUrl) {
     console.warn('Checkout is not open, can not be closed');
 }
 
-
-/*  Scan for buttons
-    ----------------
-
-    Scan for any buttons on the page with a data-paypal-button attribute and auto-attach the PaypalCheckout component to them
-*/
-
-onDocumentReady(() => {
-
-    let buttons = Array.prototype.slice.call(document.querySelectorAll('[data-paypal-button]'));
-
-    if (buttons && buttons.length) {
-        $logger.debug(`data_paypal_button`, { number: buttons.length });
-
-        for (let button of buttons) {
-
-            let id = button.getAttribute('data-paypal-id');
-
-            let environment;
-
-            if (button.hasAttribute('data-env')) {
-                environment = button.getAttribute('data-env');
-            } else if (button.hasAttribute('data-sandbox')) {
-                environment = 'sandbox';
-            }
-
-            setup(id, { environment, button });
-        }
-    }
-
-    // Show hidden buttons
-
-    Array.prototype.slice.call(document.getElementsByClassName('paypal-button-hidden')).forEach(el => {
-        el.className = el.className.replace('paypal-button-hidden', '');
-    });
-});
-
-
-/*  paypal.checkout
-    ---------------
-
-    Set paypal.checkout global functions to support legacy integrations
-*/
-
-export let checkout = {
-    setup,
-    initXO,
-    startFlow,
-    closeFlow,
-    reset,
-    get urlPrefix() {
-        return getUrlPrefix();
-    }
-};
-
-let ppApps = (window.paypal && window.paypal.apps) || (window.PAYPAL && window.PAYPAL.apps) || {};
-
-export let apps = {
-    ...ppApps,
-    checkout,
-    Checkout: checkout
-};
-
+checkout.closeFlow = closeFlow;

@@ -2,7 +2,10 @@
 import logger from 'beaver-logger/client';
 
 import { onDocumentReady } from '../lib';
-import { LOG_PREFIX } from './constants';
+import { ENV } from '../config';
+
+import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
+import { setup } from './interface';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -60,3 +63,40 @@ try {
 } catch (err) {
     $logger.warn(`paypal_checkout_ready_setter_error`, { error: err.stack || err.toString() });
 }
+
+
+/*  Scan for buttons
+    ----------------
+
+    Scan for any buttons on the page with a data-paypal-button attribute and auto-attach the PaypalCheckout component to them
+*/
+
+onDocumentReady(() => {
+
+    let buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ATTRIBUTES.BUTTON}]`));
+
+    if (buttons && buttons.length) {
+        $logger.debug(`data_paypal_button`, { number: buttons.length });
+
+        for (let button of buttons) {
+
+            let id = button.getAttribute(ATTRIBUTES.MERCHANT_ID);
+
+            let environment;
+
+            if (button.hasAttribute(ATTRIBUTES.ENV)) {
+                environment = button.getAttribute(ATTRIBUTES.ENV);
+            } else if (button.hasAttribute(ATTRIBUTES.SANDBOX)) {
+                environment = ENV.SANDBOX;
+            }
+
+            setup(id, { environment, button });
+        }
+    }
+
+    // Show hidden buttons
+
+    Array.prototype.slice.call(document.getElementsByClassName(CLASSES.HIDDEN_BUTTON)).forEach(el => {
+        el.className = el.className.replace(CLASSES.HIDDEN_BUTTON, '');
+    });
+});
