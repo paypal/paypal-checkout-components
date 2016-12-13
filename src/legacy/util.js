@@ -1,7 +1,8 @@
 
 import logger from 'beaver-logger/client';
 
-import { checkpoint } from '../lib';
+import { config, ENV } from '../config';
+import { checkpoint, urlWillRedirectPage } from '../lib';
 
 import { REDIRECT_DELAY } from './config';
 import { LOG_PREFIX } from './constants';
@@ -26,6 +27,10 @@ export function logRedirect(location) {
 }
 
 export function redirect(url) {
+
+    if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
+        throw new Error(`Can not redirect to ${url} in test mode`);
+    }
 
     logRedirect(url);
 

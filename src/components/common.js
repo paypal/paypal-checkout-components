@@ -47,20 +47,3 @@ export function validateProps(props, required = true) {
         }
     }
 }
-
-export function urlWillRedirectPage(url) {
-
-    if (url.indexOf('#') === -1) {
-        return true;
-    }
-
-    if (url.indexOf('#') === 0) {
-        return false;
-    }
-
-    if (url.split('#')[0] === window.location.href.split('#')[0]) {
-        return false;
-    }
-
-    return true;
-}

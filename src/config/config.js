@@ -131,6 +131,14 @@ export let config = {
         [ ENV.TEST ]:       `/base/test/windows/bridge/index.htm`
     },
 
+    legacyCheckoutUris: {
+        [ ENV.LOCAL ]:      `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
+        [ ENV.STAGE ]:      `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
+        [ ENV.SANDBOX ]:    `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
+        [ ENV.PRODUCTION ]: `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
+        [ ENV.TEST ]:       `#fallback`
+    },
+
     loggerUri: `/webapps/hermes/api/logger`,
 
     get bridgeUri() {
@@ -206,6 +214,19 @@ export let config = {
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.bridgeUri}&env=production`,
             [ ENV.TEST ]:       `${paypalUrls.test}${config.bridgeUri}&env=test`
+        };
+    },
+
+    get legacyCheckoutUrls() {
+
+        let paypalUrls = config.paypalUrls;
+
+        return {
+            [ ENV.LOCAL ]:      `${paypalUrls.stage}${config.legacyCheckoutUris.local}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.legacyCheckoutUris.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.legacyCheckoutUris.sandbox}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.legacyCheckoutUris.production}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.legacyCheckoutUris.test}`
         };
     },
 
@@ -300,6 +321,10 @@ export let config = {
 
     get buttonUrl() {
         return `${config.paypalUrl}${config.buttonUris[config.env]}`;
+    },
+
+    get legacyCheckoutUrl() {
+        return config.legacyCheckoutUrls[config.env];
     },
 
     get bridgeUrl() {

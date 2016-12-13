@@ -4,9 +4,9 @@ import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
 import { config } from '../../config';
-import { isDevice } from '../../lib';
+import { isDevice, urlWillRedirectPage } from '../../lib';
 
-import { validateProps, urlWillRedirectPage } from '../common';
+import { validateProps } from '../common';
 import { enableCheckoutIframe } from '../checkout';
 
 import componentTemplate from './componentTemplate.htm';

@@ -6,10 +6,10 @@ import xcomponent from 'xcomponent/src';
 import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, request, getQueryParam, noop } from '../../lib';
+import { isDevice, request, getQueryParam, noop, urlWillRedirectPage } from '../../lib';
 import { config } from '../../config';
 
-import { validateProps, urlWillRedirectPage } from '../common';
+import { validateProps } from '../common';
 
 import contentJSON from './content';
 let content = JSON.parse(contentJSON);
@@ -353,11 +353,15 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
 
-            def() {
+            decorate(original) {
                 return function(data) {
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
+
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
                 };
             }
         },
@@ -372,11 +376,21 @@ export let Checkout = xcomponent.create({
                 return function(reason) {
                     let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-                    if (this.props.onCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
-                        return this.props.onCancel({
-                            paymentToken: this.paymentToken,
-                            cancelUrl:    this.cancelUrl
-                        });
+                    if (this.props.onCancel && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+
+                        if (this.paymentToken && this.cancelUrl) {
+
+                            $logger.info(`close_trigger_cancel`);
+
+                            return this.props.onCancel({
+                                paymentToken: this.paymentToken,
+                                cancelUrl:    this.cancelUrl
+                            });
+
+                        } else {
+
+                            $logger.warn(`close_no_token_cancelurl`);
+                        }
                     }
                 };
             }

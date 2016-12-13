@@ -6,7 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, once, checkpoint, noop, safeJSON } from '../lib';
+import { supportsPopups, getElements, once, checkpoint, safeJSON } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
@@ -47,11 +47,6 @@ Object.defineProperty(checkout, 'urlPrefix', {
 if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
-
-
-
-
-
 
 
 
@@ -217,11 +212,15 @@ function initPayPalCheckout(props = {}) {
 
     checkpoint('flow_start');
 
-    props.payment = props.payment || noop;
+    let paymentToken;
 
     let paypalCheckout = Checkout.init({
 
         uid: window.pp_uid,
+
+        init(data) {
+            paymentToken = data.paymentToken;
+        },
 
         onAuthorize(data, actions) {
             $logger.info(`payment_authorized`);
@@ -236,7 +235,29 @@ function initPayPalCheckout(props = {}) {
 
         onError(err) {
             $logger.error(`error_handler`, { error: err.stack || err.toString() });
-            // TODO: fallback
+
+            if (props.url) {
+                $logger.debug(`error_handler_redir_url_prop`);
+                return Promise.resolve(props.url).then(url => {
+                    $logger.debug(`error_handler_redir_url_prop_success`, { url });
+                    return redirect(url);
+                });
+            }
+
+            if (paymentToken) {
+                $logger.debug(`error_handler_redir_init_token`, { paymentToken });
+                return redirect(getFullpageRedirectUrl(paymentToken));
+            }
+
+            if (props.payment) {
+                $logger.debug(`error_handler_redir_token_prop`);
+                return props.payment().then(payToken => {
+                    $logger.debug(`error_handler_redir_token_prop_success`, { payToken });
+                    redirect(getFullpageRedirectUrl(payToken));
+                });
+            }
+
+            $logger.error(`error_handler_no_redirect_url`);
         },
 
         fallback(url) {
@@ -295,16 +316,7 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         paypalCheckout = initPayPalCheckout(props);
     }
 
-    let render = paypalCheckout.render(null, !hijackTarget).catch(err => {
-
-        $logger.error(`error`, { error: err.stack || err.toString() });
-
-        Promise.resolve(props.url).then(url => {
-            return redirect(url);
-        });
-
-        throw err;
-    });
+    let render = paypalCheckout.render(null, !hijackTarget);
 
     checkout.win = paypalCheckout.window;
 
@@ -340,9 +352,7 @@ function handleClickHijack(button) {
         token = result;
     });
 
-    let payment = () => token;
-
-    renderPayPalCheckout({ url, payment }, targetElement);
+    renderPayPalCheckout({ url, payment: () => Promise.resolve(token) }, targetElement);
 }
 
 
@@ -533,7 +543,7 @@ function initXO() {
 
     $logger.info(`init_paypal_checkout_initxo`);
 
-    renderPayPalCheckout({ url, payment: paymentToken });
+    renderPayPalCheckout({ url, payment: () => paymentToken });
 }
 
 checkout.initXO = initXO;
@@ -569,7 +579,7 @@ function startFlow(item, opts) {
 
     $logger.info(`init_paypal_checkout_startflow`);
 
-    renderPayPalCheckout({ url, payment: paymentToken });
+    renderPayPalCheckout({ url, payment: () => paymentToken });
 }
 
 checkout.startFlow = startFlow;

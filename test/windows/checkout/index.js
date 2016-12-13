@@ -8,15 +8,24 @@ if (window.xprops.testAction === 'checkout') {
 
     window.xprops.paymentToken().then(paymentToken => {
 
+        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+
         return paypal.Promise.try(() => {
+
+            if (window.xprops.init) {
+                return window.xprops.init({
+                    paymentToken,
+                    cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+                });
+            }
+
+        }).then(() => {
 
             if (window.xprops.onAuth) {
                 return window.xprops.onAuth('xxxyyy');
             }
 
         }).then(() => {
-
-            let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
             window.xprops.onAuthorize({
                 paymentToken,
@@ -99,7 +108,24 @@ if (window.xprops.testAction === 'checkout') {
 
 } else if (window.xprops.testAction === 'error') {
 
-    window.xprops.onError(new Error('something went wrong'));
+    window.xprops.paymentToken().then(paymentToken => {
+
+        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+
+        return paypal.Promise.try(() => {
+
+            if (window.xprops.init) {
+                return window.xprops.init({
+                    paymentToken,
+                    cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+                });
+            }
+
+        }).then(() => {
+
+            window.xprops.onError(new Error('something went wrong'));
+        });
+    });
 }
 
 

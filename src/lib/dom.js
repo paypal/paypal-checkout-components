@@ -148,3 +148,20 @@ export let parseQuery = memoize(queryString => {
 export function getQueryParam(name) {
     return parseQuery(window.location.search.slice(1))[name];
 }
+
+export function urlWillRedirectPage(url) {
+
+    if (url.indexOf('#') === -1) {
+        return true;
+    }
+
+    if (url.indexOf('#') === 0) {
+        return false;
+    }
+
+    if (url.split('#')[0] === window.location.href.split('#')[0]) {
+        return false;
+    }
+
+    return true;
+}

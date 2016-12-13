@@ -191,7 +191,6 @@ window.HTMLElement.prototype.click = function() {
 let windowOpen = window.open;
 window.open = function() {
     if (!isClick) {
-        console.error('zoiks');
         return {
             closed: true,
             close() {
