@@ -97,42 +97,6 @@ describe('paypal legacy button rendering', () => {
         });
     });
 
-    it('should render a button into a container and provide a working click handler which is not passed an err', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(err) {
-                assert.ifError(err, 'Expected err to not be passed to click function');
-
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
-    it('should render a button into a container and provide a working click handler which is not passed an error', (done) => {
-
-        return paypal.checkout.setup('merchantID', {
-
-            container: 'testContainer',
-
-            click(error) {
-                assert.ifError(error, 'Expected error to not be passed to click function');
-
-                done();
-            }
-
-        }).then(() => {
-
-            document.querySelector('#testContainer button').click();
-        });
-    });
-
     it('should render multiple buttons into a container and provide a working click handler', (done) => {
 
         let clickCount = 0;
@@ -562,46 +526,6 @@ describe('paypal legacy button rendering', () => {
             click(event) {
                 assert.ok(event, 'Expected an event to be passed to click function');
                 assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
-
-                done();
-            }
-
-        }).then(() => {
-
-            testButton.click();
-        });
-    });
-
-    it('should use a custom button and provide a working click handler which is not passed an err', (done) => {
-
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-        return paypal.checkout.setup('merchantID', {
-
-            button: 'testButton',
-
-            click(err) {
-                assert.ifError(err, 'Expected err to not be passed to click function');
-
-                done();
-            }
-
-        }).then(() => {
-
-            testButton.click();
-        });
-    });
-
-    it('should use a custom button and provide a working click handler which is not passed an error', (done) => {
-
-        let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-        return paypal.checkout.setup('merchantID', {
-
-            button: 'testButton',
-
-            click(error) {
-                assert.ifError(error, 'Expected error to not be passed to click function');
 
                 done();
             }

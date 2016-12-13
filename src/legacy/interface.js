@@ -6,7 +6,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, once, checkpoint, noop, before, safeJSON } from '../lib';
+import { supportsPopups, getElements, once, checkpoint, noop, safeJSON } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
@@ -173,6 +173,7 @@ function awaitPaymentTokenAndUrl() {
             let { url, paymentToken } = urlAndPaymentToken;
 
             if (!checkThrottle(paymentToken, true)) {
+                $logger.warn(`throttle_failed_on_startflow`);
                 return redirect(url);
             }
 
@@ -198,6 +199,7 @@ function awaitPaymentTokenAndUrl() {
 */
 
 let paypalCheckoutInited = false;
+let closeFlowCalled = false;
 
 function initPayPalCheckout(props = {}) {
 
@@ -205,6 +207,10 @@ function initPayPalCheckout(props = {}) {
 
     if (paypalCheckoutInited) {
         $logger.warn(`multiple_init_paypal_checkout`);
+    }
+
+    if (closeFlowCalled) {
+        $logger.debug(`init_after_closeflow`);
     }
 
     paypalCheckoutInited = true;
@@ -243,6 +249,8 @@ function initPayPalCheckout(props = {}) {
 
     checkout.closeFlow = (closeUrl) => {
         $logger.warn(`closeflow`);
+
+        closeFlowCalled = true;
 
         reset();
 
@@ -307,41 +315,10 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
 function handleClick(clickHandler, event) {
     $logger.debug(`button_click_handler`);
 
-    let initXOCalled = false;
-    let startFlowCalled = false;
-    let closeFlowCalled = false;
-
-    checkout.initXO = before(window.paypal.checkout.initXO, () => {
-        initXOCalled = true;
-    });
-
-    checkout.startFlow = before(window.paypal.checkout.startFlow, () => {
-        startFlowCalled = true;
-    });
-
-    checkout.closeFlow = before(window.paypal.checkout.closeFlow, () => {
-        closeFlowCalled = true;
-    });
-
     try {
-        if (clickHandler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
-            $logger.warn(`click_function_expects_err`);
-            clickHandler.call(null);
-        } else {
-            clickHandler.call(null, event);
-        }
+        clickHandler.call(null, event);
     } catch (err) {
-        $logger.error('click_handler_error', { error: err.stack || err.toString() });
-    }
-
-    if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
-        $logger.debug(`button_click_handler_no_initxo_startflow`);
-
-        setTimeout(() => {
-            if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
-                $logger.debug(`button_click_event_no_initxo_startflow`);
-            }
-        }, 1);
+        $logger.error(`click_handler_error`, { error: err.stack || err.toString() });
     }
 }
 
@@ -464,8 +441,6 @@ function setup(id, options = {}) {
 
     setupCalled = true;
 
-    reset();
-
     if (options.environment) {
 
         if (options.environment === 'live') {
@@ -554,8 +529,6 @@ function initXO() {
         return;
     }
 
-    reset();
-
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
     $logger.info(`init_paypal_checkout_initxo`);
@@ -611,7 +584,7 @@ checkout.startFlow = startFlow;
 */
 
 function closeFlow(closeUrl) {
-    $logger.warn(`closeflow`);
+    $logger.warn(`closeflow_not_opened`);
 
     if (closeUrl) {
         $logger.warn(`closeflow_with_url`, { closeUrl });

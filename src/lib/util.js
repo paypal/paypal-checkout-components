@@ -75,14 +75,6 @@ export function match(str, pattern) {
     }
 }
 
-
-export function before(method, wrapper) {
-    return function() {
-        wrapper();
-        return method.apply(this, arguments);
-    };
-}
-
 export function safeJSON(item) {
     return JSON.stringify(item, (key, val) => {
 
