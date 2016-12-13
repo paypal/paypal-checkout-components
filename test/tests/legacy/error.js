@@ -2,7 +2,7 @@
 import paypal from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -22,116 +22,86 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             paypal.Checkout.contexts.lightbox = false;
         });
 
-        if (flow === 'popup') {
+        it('should call startFlow and redirect to full-page if the window.open fails with immediate startFlow', () => {
 
-            it('should call startFlow and redirect to full-page if the window.open fails with immediate startFlow', () => {
+            let token = generateECToken();
 
-                let token = generateECToken();
+            return paypal.checkout.setup('merchantID', {
 
-                let windowOpen = window.open;
-                window.open = function() {
-                    window.open = windowOpen;
-                    return {
-                        closed: true,
-                        close() {
-                            // pass
-                        }
-                    };
-                };
+                container: 'testContainer',
 
-                return paypal.checkout.setup('merchantID', {
+                click(event) {
+                    paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
+                }
 
-                    container: 'testContainer',
+            }).then(() => {
 
-                    click(event) {
+                preventOpenWindow(flow);
+
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#redirectUrl?token=${token}`);
+                });
+            });
+        });
+
+        it('should call startFlow and redirect to full-page if the window.open fails with initXO and startFlow', () => {
+
+            let token = generateECToken();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
                         paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
-                    }
+                    }, 200);
+                }
 
-                }).then(() => {
+            }).then(() => {
 
-                    document.querySelector('#testContainer button').click();
+                preventOpenWindow(flow);
 
-                    return onHashChange().then(urlHash => {
-                        assert.equal(urlHash, `#redirectUrl?token=${token}`);
-                    });
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#redirectUrl?token=${token}`);
                 });
             });
+        });
 
-            it('should call startFlow and redirect to full-page if the window.open fails with initXO and startFlow', () => {
+        it('should call startFlow with a token and redirect to full-page if the window.open fails with immediate startFlow', () => {
 
-                let token = generateECToken();
+            let token = generateECToken();
 
-                let windowOpen = window.open;
-                window.open = function() {
-                    window.open = windowOpen;
-                    return {
-                        closed: true,
-                        close() {
-                            // pass
-                        }
-                    };
-                };
+            return paypal.checkout.setup('merchantID', {
 
-                return paypal.checkout.setup('merchantID', {
+                container: 'testContainer',
 
-                    container: 'testContainer',
+                click(event) {
+                    paypal.checkout.startFlow(token);
+                }
 
-                    click(event) {
-                        paypal.checkout.initXO();
+            }).then(() => {
 
-                        setTimeout(() => {
-                            paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
-                        }, 200);
-                    }
+                let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                delete config.checkoutUrl;
+                config.checkoutUrl = '#errorRedirectUrl';
 
-                }).then(() => {
+                preventOpenWindow(flow);
 
-                    document.querySelector('#testContainer button').click();
+                document.querySelector('#testContainer button').click();
 
-                    return onHashChange().then(urlHash => {
-                        assert.equal(urlHash, `#redirectUrl?token=${token}`);
-                    });
+                return onHashChange().then(urlHash => {
+                    Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
-
-            it('should call startFlow with a token and redirect to full-page if the window.open fails with immediate startFlow', () => {
-
-                let token = generateECToken();
-
-                let windowOpen = window.open;
-                window.open = function() {
-                    window.open = windowOpen;
-                    return {
-                        closed: true,
-                        close() {
-                            // pass
-                        }
-                    };
-                };
-
-                return paypal.checkout.setup('merchantID', {
-
-                    container: 'testContainer',
-
-                    click(event) {
-                        paypal.checkout.startFlow(token);
-                    }
-
-                }).then(() => {
-
-                    let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
-                    delete config.checkoutUrl;
-                    config.checkoutUrl = '#errorRedirectUrl';
-
-                    document.querySelector('#testContainer button').click();
-
-                    return onHashChange().then(urlHash => {
-                        Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
-                        assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
-                    });
-                });
-            });
-        }
+        });
 
         it('should call startFlow with no token and trigger an error', (done) => {
 
@@ -155,7 +125,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        it.skip('should call startFlow with an invalid url for the env and trigger an error', (done) => {
+        it('should call startFlow with an invalid url for the env and trigger an error', (done) => {
 
             let token = generateECToken();
 

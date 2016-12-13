@@ -117,7 +117,8 @@ function matchUrlAndPaymentToken(item) {
         if (env !== config.env) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
                 $logger.warn(`mismatched_env_startflow_url`, { env: config.env, url });
-                // throw new Error(`${url} is not a ${config.env} url`);
+                redirect(url);
+                throw new Error(`${url} is not a ${config.env} url`);
             }
         }
     }

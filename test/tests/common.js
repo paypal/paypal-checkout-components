@@ -208,3 +208,30 @@ window.open = function() {
 
     return windowOpen.apply(this, arguments);
 };
+
+export function preventOpenWindow(flow) {
+
+    if (flow === 'popup') {
+        let winOpen = window.open;
+        window.open = function() {
+            window.open = winOpen;
+            return {
+                closed: true,
+                close() {
+                    // pass
+                }
+            };
+        };
+    } else if (flow === 'lightbox') {
+
+        let documentCreateElement = document.createElement;
+        document.createElement = () => {
+            document.createElement = documentCreateElement;
+            throw new Error('Can not create element');
+        };
+
+    } else {
+
+        throw new Error(`Flow not recognized: ${flow}`);
+    }
+}
