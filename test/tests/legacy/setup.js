@@ -1,5 +1,6 @@
 
 import paypal from 'src/index';
+import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
@@ -37,6 +38,31 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a container and click on the button, then call startFlow with a cancel', () => {
+
+            let token = generateECToken();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    paypal.checkout.startFlow(token);
+                }
+
+            }).then(() => {
+
+                Checkout.props.testAction.def = () => 'cancel';
+
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    Checkout.props.testAction.def = () => 'checkout';
+                    assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
         });

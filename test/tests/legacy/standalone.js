@@ -1,5 +1,6 @@
 
 import paypal from 'src/index';
+import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
@@ -34,6 +35,25 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+            });
+        });
+
+        it('should call startFlow, with a cancel', () => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            let token = generateECToken();
+
+            testButton.addEventListener('click', event => {
+                paypal.checkout.startFlow(token);
+            });
+
+            Checkout.props.testAction.def = () => 'cancel';
+
+            testButton.click();
+
+            return onHashChange().then(urlHash => {
+                Checkout.props.testAction.def = () => 'checkout';
+                assert.equal(urlHash, `#cancel?token=${token}`);
             });
         });
 

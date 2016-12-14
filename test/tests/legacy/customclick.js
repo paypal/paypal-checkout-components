@@ -1,6 +1,7 @@
 
 
 import paypal from 'src/index';
+import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer } from '../common';
@@ -63,6 +64,56 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow, and a cancel', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                click() {
+                    // pass
+                }
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                Checkout.props.testAction.def = () => 'cancel';
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
+                    Checkout.props.testAction.def = () => 'checkout';
+                    assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
         });
