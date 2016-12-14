@@ -27,7 +27,9 @@ export function logRedirect(location) {
 export function redirect(url) {
 
     if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
-        throw new Error(`Can not redirect to ${url} in test mode`);
+        return setTimeout(() => {
+            window.location = `#fullpageRedirect?url=${url}`;
+        }, REDIRECT_DELAY);
     }
 
     logRedirect(url);

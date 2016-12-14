@@ -432,7 +432,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        it('should call startFlow with an invalid url for the env and trigger an error', (done) => {
+        it('should call startFlow with an invalid url for the env and trigger a full page redirect', () => {
 
             let token = generateECToken();
 
@@ -441,22 +441,46 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    try {
-                        paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
-                    } catch (err) {
-                        return done();
-                    }
-
-                    return done(new Error('Expected startFlow to throw an error'));
+                    paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
                 }
 
             }).then(() => {
 
                 document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                });
             });
         });
 
-        it('should render a button into a container and click on the button, then call startFlow, then fall back', () => {
+        it('should call initXO and startFlow with an invalid url for the env and trigger a full page redirect', () => {
+
+            let token = generateECToken();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                    }, 200);
+                }
+
+            }).then(() => {
+
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                });
+            });
+        });
+
+        it('should render a button into a container and click on the button, then call startFlow, then fallback', () => {
 
             let token = generateECToken();
 
