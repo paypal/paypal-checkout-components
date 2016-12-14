@@ -1,8 +1,9 @@
 
 import paypal from 'src/index';
+import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -103,6 +104,99 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should run hijack case and redirect to full page if the window.open fails', () => {
+
+            let token = generateECToken();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `#errorRedirectUrl?token=${token}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            testForm.addEventListener('submit', event => {
+                if (!testForm.target) {
+                    event.preventDefault();
+                    window.location = testForm.action;
+                }
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                preventOpenWindow(flow);
+
+                let result = onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                });
+
+                testForm.querySelector('button').click();
+
+                return result;
+            });
+        });
+
+        it('should run hijack case and redirect to full page if there is an error from the page', () => {
+
+            let token = generateECToken();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: config.checkoutUrl
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                Checkout.props.testAction.def = () => 'error';
+
+                testForm.querySelector('button').click();
+
+                let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                delete config.checkoutUrl;
+                config.checkoutUrl = '#errorRedirectUrl';
+
+                return onHashChange().then(urlHash => {
+                    Checkout.props.testAction.def = () => 'checkout';
+                    Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                });
+            });
+        });
+
         it('should call startFlow with no token and trigger an error', (done) => {
 
             return paypal.checkout.setup('merchantID', {
@@ -148,5 +242,31 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 document.querySelector('#testContainer button').click();
             });
         });
+
+        it('should render a button into a container and click on the button, then call startFlow, then fall back', () => {
+
+            let token = generateECToken();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    paypal.checkout.startFlow(token);
+                }
+
+            }).then(() => {
+
+                Checkout.props.testAction.def = () => 'fallback';
+
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    Checkout.props.testAction.def = () => 'checkout';
+                    assert.equal(urlHash, `#fallbackUrl?token=${token}`);
+                });
+            });
+        });
+
     });
 }

@@ -250,14 +250,6 @@ function initPayPalCheckout(props = {}) {
                 return redirect(getFullpageRedirectUrl(paymentToken));
             }
 
-            if (props.payment) {
-                $logger.debug(`error_handler_redir_token_prop`);
-                return props.payment().then(payToken => {
-                    $logger.debug(`error_handler_redir_token_prop_success`, { payToken });
-                    redirect(getFullpageRedirectUrl(payToken));
-                });
-            }
-
             $logger.error(`error_handler_no_redirect_url`);
         },
 
@@ -317,7 +309,15 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         paypalCheckout = initPayPalCheckout(props);
     }
 
-    let render = paypalCheckout.render(null, !hijackTarget);
+    let render = paypalCheckout.render(null, !hijackTarget).catch(err => {
+
+        if (hijackTarget) {
+            $logger.warn(`hijack_with_error`, { error: err.stack || err.toString() });
+            hijackTarget.removeAttribute('target');
+        }
+
+        throw err;
+    });
 
     checkout.win = paypalCheckout.window;
 

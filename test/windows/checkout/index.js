@@ -87,20 +87,23 @@ if (window.xprops.testAction === 'checkout') {
 
         let parent = window.xchild.getParentComponentWindow();
 
-        window.xprops.fallback('#noop').then(() => {
-            win.location = '/base/test/windows/fallback/index.htm';
+        window.xprops.paymentToken().then(paymentToken => {
 
-            if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
-                return parent.watchForLegacyFallback(win);
-            }
+            window.xprops.fallback(`#fallbackUrl?token=${paymentToken}`).then(() => {
+                win.location = '/base/test/windows/fallback/index.htm';
 
-            for (let frame of postRobot.winutil.getFrames(parent)) {
-                if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
-                    return frame.watchForLegacyFallback(win);
+                if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+                    return parent.watchForLegacyFallback(win);
                 }
-            }
 
-            throw new Error('Can not find frame to watch for fallback');
+                for (let frame of postRobot.winutil.getFrames(parent)) {
+                    if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                        return frame.watchForLegacyFallback(win);
+                    }
+                }
+
+                throw new Error('Can not find frame to watch for fallback');
+            });
         });
     });
 
