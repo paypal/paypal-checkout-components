@@ -213,15 +213,9 @@ function initPayPalCheckout(props = {}) {
 
     checkpoint('flow_start');
 
-    let paymentToken;
-
     let paypalCheckout = Checkout.init({
 
         uid: window.pp_uid,
-
-        init(data) {
-            paymentToken = data.paymentToken;
-        },
 
         onAuthorize(data, actions) {
             $logger.info(`payment_authorized`);
@@ -231,26 +225,8 @@ function initPayPalCheckout(props = {}) {
 
         onCancel(data, actions) {
             $logger.info(`payment_canceled`);
+            logRedirect(data.cancelUrl);
             return actions.redirect(window);
-        },
-
-        onError(err) {
-            $logger.error(`error_handler`, { error: err.stack || err.toString() });
-
-            if (props.url) {
-                $logger.debug(`error_handler_redir_url_prop`);
-                return Promise.resolve(props.url).then(url => {
-                    $logger.debug(`error_handler_redir_url_prop_success`, { url });
-                    return redirect(url);
-                });
-            }
-
-            if (paymentToken) {
-                $logger.debug(`error_handler_redir_init_token`, { paymentToken });
-                return redirect(getFullpageRedirectUrl(paymentToken));
-            }
-
-            $logger.error(`error_handler_no_redirect_url`);
         },
 
         fallback(url) {
@@ -284,14 +260,42 @@ function initPayPalCheckout(props = {}) {
     return paypalCheckout;
 }
 
-
 function renderPayPalCheckout(props = {}, hijackTarget) {
+
+    let urlProp = Promise.resolve(props.url);
+
+    let paymentToken = new Promise(resolve => {
+        props.init = (data) => {
+            resolve(data.paymentToken);
+        };
+    });
+
+    let errorHandler = once(err => {
+
+        $logger.error(`component_error`, { error: err.stack || err.toString() });
+
+        if (hijackTarget) {
+            $logger.warn(`render_error_hijack_revert_target`);
+            hijackTarget.removeAttribute('target');
+        }
+
+        urlProp.then(url => {
+            $logger.warn(`render_error_redirect_using_url`);
+            return redirect(url);
+        });
+
+        paymentToken.then(token => {
+            logger.warn(`render_error_redirect_using_token`);
+            return redirect(getFullpageRedirectUrl(token));
+        });
+    });
+
+    props.onError = errorHandler;
 
     let paypalCheckout;
 
     if (hijackTarget) {
 
-        let propUrl = props.url;
         delete props.url;
 
         paypalCheckout = initPayPalCheckout(props);
@@ -299,7 +303,7 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         paypalCheckout.hijack(hijackTarget);
         paypalCheckout.runTimeout();
 
-        propUrl.then(url => {
+        urlProp.then(url => {
             $logger.warn(`hijack_then_url_passed`);
             paypalCheckout.loadUrl(url);
         });
@@ -309,19 +313,11 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
         paypalCheckout = initPayPalCheckout(props);
     }
 
-    let render = paypalCheckout.render(null, !hijackTarget).catch(err => {
-
-        if (hijackTarget) {
-            $logger.warn(`hijack_with_error`, { error: err.stack || err.toString() });
-            hijackTarget.removeAttribute('target');
-        }
-
-        throw err;
-    });
+    let render = paypalCheckout.render(null, !hijackTarget);
 
     checkout.win = paypalCheckout.window;
 
-    return render;
+    return render.catch(errorHandler);
 }
 
 
@@ -371,6 +367,12 @@ function listenClick(container, button, clickHandler, condition) {
     }
 
     element.setAttribute('data-paypal-click-listener', true);
+
+    let targetElement = getHijackTargetElement(button);
+
+    if (targetElement && isClick) {
+        $logger.warn(`button_link_or_form`);
+    }
 
     element.addEventListener('click', event => {
 

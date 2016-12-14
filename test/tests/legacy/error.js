@@ -3,7 +3,7 @@ import paypal from 'src/index';
 import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement, uniqueID } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -192,6 +192,51 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 return onHashChange().then(urlHash => {
                     Checkout.props.testAction.def = () => 'checkout';
                     Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                });
+            });
+        });
+
+        it('should run a hybrid case, and redirect to full page if the window.open fails', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                testForm.querySelector('button').addEventListener('click', event => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(`#errorRedirectUrl?token=${token}`);
+                });
+
+                preventOpenWindow(flow);
+
+                testForm.querySelector('button').click();
+
+                return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
