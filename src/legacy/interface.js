@@ -48,29 +48,6 @@ if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
 
-
-
-
-
-function getFullpageRedirectUrl(token) {
-
-    if (!token) {
-        throw new Error(`Can not get redirect url - token is blank`);
-    }
-
-    if (token.match(/^https?:\/\//)) {
-        return token;
-    }
-
-    let ecToken = parseToken(token);
-
-    if (!ecToken) {
-        throw new Error(`Can not match token in ${token}`);
-    }
-
-    return `${config.checkoutUrl}?token=${ecToken}`;
-}
-
 function matchUrlAndPaymentToken(item) {
 
     if (!item || !item.trim()) {
@@ -102,7 +79,7 @@ function matchUrlAndPaymentToken(item) {
         paymentToken = '';
     } else if (paymentToken) {
         $logger.debug(`startflow_with_token`, { item });
-        url = getFullpageRedirectUrl(paymentToken);
+        url = `${config.checkoutUrl}?token=${paymentToken}`;
     }
 
     let paypalUrls = config.paypalUrls;
@@ -153,10 +130,6 @@ function awaitPaymentTokenAndUrl() {
 
         checkout.startFlow = once((item, opts) => {
             $logger.debug(`gettoken_startflow`, { item });
-
-            if (opts) {
-                $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
-            }
 
             let urlAndPaymentToken;
 
@@ -244,12 +217,7 @@ function initPayPalCheckout(props = {}) {
 
         reset();
 
-        try {
-            paypalCheckout.destroy();
-        } catch (err) {
-            $logger.warn(`destroy_error`, { error: err.stack || err.toString() });
-            console.error(err);
-        }
+        paypalCheckout.destroy();
 
         if (closeUrl) {
             $logger.warn(`closeflow_with_url`, { closeUrl });
@@ -286,7 +254,7 @@ function renderPayPalCheckout(props = {}, hijackTarget) {
 
         paymentToken.then(token => {
             logger.warn(`render_error_redirect_using_token`);
-            return redirect(getFullpageRedirectUrl(token));
+            return redirect(`${config.checkoutUrl}?token=${token}`);
         });
     });
 
@@ -564,10 +532,6 @@ checkout.initXO = initXO;
 
 function startFlow(item, opts) {
     $logger.debug(`startflow`, { item });
-
-    if (opts) {
-        $logger.warn(`startflow_with_options`, { opts: JSON.stringify(opts) });
-    }
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 

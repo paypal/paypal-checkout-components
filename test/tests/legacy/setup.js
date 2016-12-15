@@ -119,6 +119,29 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should render a button into a container and click on the button, then call startFlow with a url using paypal.checkout.urlPrefix', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    paypal.checkout.startFlow(`${paypal.checkout.urlPrefix}${token}#${hash}`);
+                }
+
+            }).then(() => {
+
+                document.querySelector('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                });
+            });
+        });
+
         it('should render a button into a container with test env, and click on the button, then call startFlow with a url', () => {
 
             let token = generateECToken();
