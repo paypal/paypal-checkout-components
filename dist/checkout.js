@@ -1,4 +1,4 @@
-this["ppxo"] = function(modules) {
+window["paypal"] = function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
         if (installedModules[moduleId]) return installedModules[moduleId].exports;
@@ -34,7 +34,7 @@ this["ppxo"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.36") {
+        if (window.paypal && window.paypal.version === "4.0.37") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -45,24 +45,31 @@ this["ppxo"] = function(modules) {
                 }
             }
             module.exports = window.paypal;
-            module.exports["default"] = module.exports;
+            module.exports["default"] = window.paypal;
         } else {
             window.pp_uid = window.pp_uid || (0, _util.uniqueID)();
             (0, _beacon.checkpoint)("load");
             try {
                 var paypal = isPayPalDomain() || false ? __webpack_require__("./src/interface/paypal.js") : __webpack_require__("./src/interface/public.js");
+                var _arr = [ window.paypal, window.PAYPAL ];
+                for (var _i = 0; _i < _arr.length; _i++) {
+                    var paypalNamespace = _arr[_i];
+                    if (!paypalNamespace) {
+                        continue;
+                    }
+                    var apps = paypal.apps;
+                    if (paypalNamespace.apps) {
+                        apps = _extends({}, paypalNamespace.apps, apps);
+                    }
+                    paypal = _extends({}, paypalNamespace, paypal, {
+                        apps: apps
+                    });
+                }
                 module.exports = paypal;
-                module.exports["default"] = module.exports;
-                if (window.paypal) {
-                    window.paypal = _extends({}, window.paypal, paypal);
-                } else {
-                    window.paypal = paypal;
-                }
-                if (window.PAYPAL) {
-                    window.PAYPAL = _extends({}, window.PAYPAL, paypal);
-                } else {
-                    window.PAYPAL = paypal;
-                }
+                module.exports["default"] = paypal;
+                window.paypal = paypal;
+                window.PAYPAL = paypal;
+                window.ppxo = paypal;
             } catch (err) {
                 (0, _beacon.beacon)("bootstrap_error", {
                     message: err ? err.toString() : "undefined",
@@ -153,7 +160,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.36";
+        var version = exports.version = "4.0.37";
         module.exports["default"] = module.exports;
     },
     "./src/lib/util.js": function(module, exports, __webpack_require__) {
@@ -161,6 +168,11 @@ this["ppxo"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        };
         exports.isPayPalDomain = isPayPalDomain;
         exports.memoize = memoize;
         exports.noop = noop;
@@ -168,6 +180,7 @@ this["ppxo"] = function(modules) {
         exports.uniqueID = uniqueID;
         exports.hashStr = hashStr;
         exports.match = match;
+        exports.safeJSON = safeJSON;
         var _config = __webpack_require__("./src/config/index.js");
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex)) || window.mockDomain === "mock://www.paypal.com";
@@ -221,6 +234,19 @@ this["ppxo"] = function(modules) {
                 return regmatch[1];
             }
         }
+        function safeJSON(item) {
+            return JSON.stringify(item, function(key, val) {
+                if (typeof val === "function") {
+                    return "<" + (typeof val === "undefined" ? "undefined" : _typeof(val)) + ">";
+                }
+                try {
+                    JSON.stringify(val);
+                } catch (err) {
+                    return "<" + (typeof val === "undefined" ? "undefined" : _typeof(val)) + ">";
+                }
+                return val;
+            });
+        }
     },
     "./src/config/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -237,20 +263,46 @@ this["ppxo"] = function(modules) {
                 }
             });
         });
+        var _constants = __webpack_require__("./src/config/constants.js");
+        Object.keys(_constants).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _constants[key];
+                }
+            });
+        });
     },
     "./src/config/config.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
+        exports.config = undefined;
+        var _checkoutUris, _billingUris, _buttonUris, _bridgeUris, _legacyCheckoutUris;
+        var _constants = __webpack_require__("./src/config/constants.js");
+        function _defineProperty(obj, key, value) {
+            if (key in obj) {
+                Object.defineProperty(obj, key, {
+                    value: value,
+                    enumerable: true,
+                    configurable: true,
+                    writable: true
+                });
+            } else {
+                obj[key] = value;
+            }
+            return obj;
+        }
         var config = exports.config = {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.36",
+            version: "4.0.37",
             ppobjects: false,
             cors: true,
-            env: false ? "test" : "production",
+            env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
             state: "paypal_xcomponent",
             locale: {
                 country: "US",
@@ -273,84 +325,78 @@ this["ppxo"] = function(modules) {
                 return config.stage;
             },
             get paypalUrls() {
-                return {
-                    local: "http://localhost.paypal.com:8000",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
+                var _ref;
+                return _ref = {}, _defineProperty(_ref, _constants.ENV.LOCAL, "http://localhost.paypal.com:8000"), 
+                _defineProperty(_ref, _constants.ENV.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
+                _defineProperty(_ref, _constants.ENV.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref, _constants.ENV.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref, _constants.ENV.TEST, window.location.protocol + "//" + window.location.host), 
+                _ref;
             },
             get paypalDomains() {
-                return {
-                    local: "http://localhost.paypal.com:8000",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: "mock://www.paypal.com"
-                };
+                var _ref2;
+                return _ref2 = {}, _defineProperty(_ref2, _constants.ENV.LOCAL, "http://localhost.paypal.com:8000"), 
+                _defineProperty(_ref2, _constants.ENV.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
+                _defineProperty(_ref2, _constants.ENV.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref2, _constants.ENV.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref2, _constants.ENV.TEST, "mock://www.paypal.com"), 
+                _ref2;
             },
             get wwwApiUrls() {
-                return {
-                    local: "https://www." + config.stage + ".qa.paypal.com",
-                    stage: "https://www." + config.stage + ".qa.paypal.com",
-                    sandbox: "https://www.sandbox.paypal.com",
-                    production: "https://www.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
+                var _ref3;
+                return _ref3 = {}, _defineProperty(_ref3, _constants.ENV.LOCAL, "https://www." + config.stage + ".qa.paypal.com"), 
+                _defineProperty(_ref3, _constants.ENV.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
+                _defineProperty(_ref3, _constants.ENV.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref3, _constants.ENV.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref3, _constants.ENV.TEST, window.location.protocol + "//" + window.location.host), 
+                _ref3;
             },
             get corsApiUrls() {
-                return {
-                    local: "https://" + config.apiStage + ".qa.paypal.com:11888",
-                    stage: "https://" + config.apiStage + ".qa.paypal.com:11888",
-                    sandbox: "https://cors.api.sandbox.paypal.com",
-                    production: "https://cors.api.paypal.com",
-                    test: window.location.protocol + "//" + window.location.host
-                };
+                var _ref4;
+                return _ref4 = {}, _defineProperty(_ref4, _constants.ENV.LOCAL, "https://" + config.apiStage + ".qa.paypal.com:11888"), 
+                _defineProperty(_ref4, _constants.ENV.STAGE, "https://" + config.apiStage + ".qa.paypal.com:11888"), 
+                _defineProperty(_ref4, _constants.ENV.SANDBOX, "https://cors.api.sandbox.paypal.com"), 
+                _defineProperty(_ref4, _constants.ENV.PRODUCTION, "https://cors.api.paypal.com"), 
+                _defineProperty(_ref4, _constants.ENV.TEST, window.location.protocol + "//" + window.location.host), 
+                _ref4;
             },
             get apiUrls() {
+                var _ref5;
                 var domain = window.location.protocol + "//" + window.location.host;
                 var corsApiUrls = config.corsApiUrls;
                 var wwwApiUrls = config.wwwApiUrls;
-                return {
-                    local: domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local,
-                    stage: domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage,
-                    sandbox: domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox,
-                    production: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
-                    test: domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test
-                };
+                return _ref5 = {}, _defineProperty(_ref5, _constants.ENV.LOCAL, domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local), 
+                _defineProperty(_ref5, _constants.ENV.STAGE, domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage), 
+                _defineProperty(_ref5, _constants.ENV.SANDBOX, domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox), 
+                _defineProperty(_ref5, _constants.ENV.PRODUCTION, domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production), 
+                _defineProperty(_ref5, _constants.ENV.TEST, domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test), 
+                _ref5;
             },
-            checkoutUris: {
-                local: "/webapps/hermes?ul=0",
-                stage: "/webapps/hermes",
-                sandbox: "/checkoutnow",
-                production: "/checkoutnow",
-                test: "/base/test/windows/checkout/index.htm?checkouturl=true"
-            },
-            billingUris: {
-                local: "/webapps/hermes/agreements?ul=0",
-                stage: "/webapps/hermes/agreements",
-                sandbox: "/agreements/approve",
-                production: "/agreements/approve",
-                test: "/base/test/windows/checkout/index.htm?billingurl=true"
-            },
-            buttonUris: {
-                local: "/webapps/hermes/button",
-                stage: "/webapps/hermes/button",
-                sandbox: "/webapps/hermes/button",
-                production: "/webapps/hermes/button",
-                test: "/base/test/windows/button/index.htm"
-            },
-            bridgeUris: {
-                local: "/webapps/hermes/component-meta",
-                stage: "/webapps/hermes/component-meta",
-                sandbox: "/webapps/hermes/component-meta",
-                production: "/webapps/hermes/component-meta",
-                test: "/base/test/windows/bridge/index.htm"
-            },
+            checkoutUris: (_checkoutUris = {}, _defineProperty(_checkoutUris, _constants.ENV.LOCAL, "/webapps/hermes?ul=0"), 
+            _defineProperty(_checkoutUris, _constants.ENV.STAGE, "/webapps/hermes"), _defineProperty(_checkoutUris, _constants.ENV.SANDBOX, "/checkoutnow"), 
+            _defineProperty(_checkoutUris, _constants.ENV.PRODUCTION, "/checkoutnow"), _defineProperty(_checkoutUris, _constants.ENV.TEST, "/base/test/windows/checkout/index.htm?checkouturl=true"), 
+            _checkoutUris),
+            billingUris: (_billingUris = {}, _defineProperty(_billingUris, _constants.ENV.LOCAL, "/webapps/hermes/agreements?ul=0"), 
+            _defineProperty(_billingUris, _constants.ENV.STAGE, "/webapps/hermes/agreements"), 
+            _defineProperty(_billingUris, _constants.ENV.SANDBOX, "/agreements/approve"), _defineProperty(_billingUris, _constants.ENV.PRODUCTION, "/agreements/approve"), 
+            _defineProperty(_billingUris, _constants.ENV.TEST, "/base/test/windows/checkout/index.htm?billingurl=true"), 
+            _billingUris),
+            buttonUris: (_buttonUris = {}, _defineProperty(_buttonUris, _constants.ENV.LOCAL, "/webapps/hermes/button"), 
+            _defineProperty(_buttonUris, _constants.ENV.STAGE, "/webapps/hermes/button"), _defineProperty(_buttonUris, _constants.ENV.SANDBOX, "/webapps/hermes/button"), 
+            _defineProperty(_buttonUris, _constants.ENV.PRODUCTION, "/webapps/hermes/button"), 
+            _defineProperty(_buttonUris, _constants.ENV.TEST, "/base/test/windows/button/index.htm"), 
+            _buttonUris),
+            bridgeUris: (_bridgeUris = {}, _defineProperty(_bridgeUris, _constants.ENV.LOCAL, "/webapps/hermes/component-meta"), 
+            _defineProperty(_bridgeUris, _constants.ENV.STAGE, "/webapps/hermes/component-meta"), 
+            _defineProperty(_bridgeUris, _constants.ENV.SANDBOX, "/webapps/hermes/component-meta"), 
+            _defineProperty(_bridgeUris, _constants.ENV.PRODUCTION, "/webapps/hermes/component-meta"), 
+            _defineProperty(_bridgeUris, _constants.ENV.TEST, "/base/test/windows/bridge/index.htm"), 
+            _bridgeUris),
+            legacyCheckoutUris: (_legacyCheckoutUris = {}, _defineProperty(_legacyCheckoutUris, _constants.ENV.LOCAL, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
+            _defineProperty(_legacyCheckoutUris, _constants.ENV.STAGE, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
+            _defineProperty(_legacyCheckoutUris, _constants.ENV.SANDBOX, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
+            _defineProperty(_legacyCheckoutUris, _constants.ENV.PRODUCTION, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
+            _defineProperty(_legacyCheckoutUris, _constants.ENV.TEST, "#fallback"), _legacyCheckoutUris),
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.36");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.37");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -358,98 +404,107 @@ this["ppxo"] = function(modules) {
             billingApiUri: "/v1/billing-agreements/agreement-tokens",
             experienceApiUri: "/v1/payment-experience/web-profiles",
             get checkoutUrls() {
+                var _ref6;
                 var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.checkoutUris.local,
-                    stage: "" + paypalUrls.stage + config.checkoutUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.checkoutUris.sandbox,
-                    production: "" + paypalUrls.production + config.checkoutUris.production,
-                    test: "" + paypalUrls.test + config.checkoutUris.test
-                };
+                return _ref6 = {}, _defineProperty(_ref6, _constants.ENV.LOCAL, "" + paypalUrls.local + config.checkoutUris.local), 
+                _defineProperty(_ref6, _constants.ENV.STAGE, "" + paypalUrls.stage + config.checkoutUris.stage), 
+                _defineProperty(_ref6, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.checkoutUris.sandbox), 
+                _defineProperty(_ref6, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.checkoutUris.production), 
+                _defineProperty(_ref6, _constants.ENV.TEST, "" + paypalUrls.test + config.checkoutUris.test), 
+                _ref6;
             },
             get billingUrls() {
+                var _ref7;
                 var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.billingUris.local,
-                    stage: "" + paypalUrls.stage + config.billingUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.billingUris.sandbox,
-                    production: "" + paypalUrls.production + config.billingUris.production,
-                    test: "" + paypalUrls.test + config.billingUris.test
-                };
+                return _ref7 = {}, _defineProperty(_ref7, _constants.ENV.LOCAL, "" + paypalUrls.local + config.billingUris.local), 
+                _defineProperty(_ref7, _constants.ENV.STAGE, "" + paypalUrls.stage + config.billingUris.stage), 
+                _defineProperty(_ref7, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.billingUris.sandbox), 
+                _defineProperty(_ref7, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.billingUris.production), 
+                _defineProperty(_ref7, _constants.ENV.TEST, "" + paypalUrls.test + config.billingUris.test), 
+                _ref7;
             },
             get buttonUrls() {
+                var _ref8;
                 var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.buttonUris.local,
-                    stage: "" + paypalUrls.stage + config.buttonUris.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.buttonUris.sandbox,
-                    production: "" + paypalUrls.production + config.buttonUris.production,
-                    test: "" + paypalUrls.test + config.buttonUris.test
-                };
+                return _ref8 = {}, _defineProperty(_ref8, _constants.ENV.LOCAL, "" + paypalUrls.local + config.buttonUris.local), 
+                _defineProperty(_ref8, _constants.ENV.STAGE, "" + paypalUrls.stage + config.buttonUris.stage), 
+                _defineProperty(_ref8, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.buttonUris.sandbox), 
+                _defineProperty(_ref8, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.buttonUris.production), 
+                _defineProperty(_ref8, _constants.ENV.TEST, "" + paypalUrls.test + config.buttonUris.test), 
+                _ref8;
             },
             get paymentsStandardUrls() {
+                var _ref9;
                 var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.paymentStandardUri,
-                    stage: "" + paypalUrls.stage + config.paymentStandardUri,
-                    sandbox: "" + paypalUrls.sandbox + config.paymentStandardUri,
-                    production: "" + paypalUrls.production + config.paymentStandardUri,
-                    test: "" + paypalUrls.test + config.paymentStandardUri
-                };
+                return _ref9 = {}, _defineProperty(_ref9, _constants.ENV.LOCAL, "" + paypalUrls.local + config.paymentStandardUri), 
+                _defineProperty(_ref9, _constants.ENV.STAGE, "" + paypalUrls.stage + config.paymentStandardUri), 
+                _defineProperty(_ref9, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.paymentStandardUri), 
+                _defineProperty(_ref9, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.paymentStandardUri), 
+                _defineProperty(_ref9, _constants.ENV.TEST, "" + paypalUrls.test + config.paymentStandardUri), 
+                _ref9;
             },
             get bridgeUrls() {
+                var _ref10;
                 var paypalUrls = config.paypalUrls;
-                return {
-                    local: "" + paypalUrls.local + config.bridgeUri + "&env=local",
-                    stage: "" + paypalUrls.stage + config.bridgeUri + "&env=stage&stage=" + config.stage,
-                    sandbox: "" + paypalUrls.sandbox + config.bridgeUri + "&env=sandbox",
-                    production: "" + paypalUrls.production + config.bridgeUri + "&env=production",
-                    test: "" + paypalUrls.test + config.bridgeUri + "&env=test"
-                };
+                return _ref10 = {}, _defineProperty(_ref10, _constants.ENV.LOCAL, "" + paypalUrls.local + config.bridgeUri + "&env=local"), 
+                _defineProperty(_ref10, _constants.ENV.STAGE, "" + paypalUrls.stage + config.bridgeUri + "&env=stage&stage=" + config.stage), 
+                _defineProperty(_ref10, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.bridgeUri + "&env=sandbox"), 
+                _defineProperty(_ref10, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.bridgeUri + "&env=production"), 
+                _defineProperty(_ref10, _constants.ENV.TEST, "" + paypalUrls.test + config.bridgeUri + "&env=test"), 
+                _ref10;
+            },
+            get legacyCheckoutUrls() {
+                var _ref11;
+                var paypalUrls = config.paypalUrls;
+                return _ref11 = {}, _defineProperty(_ref11, _constants.ENV.LOCAL, "" + paypalUrls.stage + config.legacyCheckoutUris.local), 
+                _defineProperty(_ref11, _constants.ENV.STAGE, "" + paypalUrls.stage + config.legacyCheckoutUris.stage), 
+                _defineProperty(_ref11, _constants.ENV.SANDBOX, "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox), 
+                _defineProperty(_ref11, _constants.ENV.PRODUCTION, "" + paypalUrls.production + config.legacyCheckoutUris.production), 
+                _defineProperty(_ref11, _constants.ENV.TEST, "" + paypalUrls.test + config.legacyCheckoutUris.test), 
+                _ref11;
             },
             get authApiUrls() {
+                var _ref12;
                 var apiUrls = config.apiUrls;
                 var authApiUri = config.authApiUri;
-                return {
-                    local: "" + apiUrls.local + authApiUri,
-                    stage: "" + apiUrls.stage + authApiUri,
-                    sandbox: "" + apiUrls.sandbox + authApiUri,
-                    production: "" + apiUrls.production + authApiUri,
-                    test: "" + apiUrls.test + authApiUri
-                };
+                return _ref12 = {}, _defineProperty(_ref12, _constants.ENV.LOCAL, "" + apiUrls.local + authApiUri), 
+                _defineProperty(_ref12, _constants.ENV.STAGE, "" + apiUrls.stage + authApiUri), 
+                _defineProperty(_ref12, _constants.ENV.SANDBOX, "" + apiUrls.sandbox + authApiUri), 
+                _defineProperty(_ref12, _constants.ENV.PRODUCTION, "" + apiUrls.production + authApiUri), 
+                _defineProperty(_ref12, _constants.ENV.TEST, "" + apiUrls.test + authApiUri), _ref12;
             },
             get paymentApiUrls() {
+                var _ref13;
                 var apiUrls = config.apiUrls;
                 var paymentApiUri = config.paymentApiUri;
-                return {
-                    local: "" + apiUrls.local + paymentApiUri,
-                    stage: "" + apiUrls.stage + paymentApiUri,
-                    sandbox: "" + apiUrls.sandbox + paymentApiUri,
-                    production: "" + apiUrls.production + paymentApiUri,
-                    test: "" + apiUrls.test + paymentApiUri
-                };
+                return _ref13 = {}, _defineProperty(_ref13, _constants.ENV.LOCAL, "" + apiUrls.local + paymentApiUri), 
+                _defineProperty(_ref13, _constants.ENV.STAGE, "" + apiUrls.stage + paymentApiUri), 
+                _defineProperty(_ref13, _constants.ENV.SANDBOX, "" + apiUrls.sandbox + paymentApiUri), 
+                _defineProperty(_ref13, _constants.ENV.PRODUCTION, "" + apiUrls.production + paymentApiUri), 
+                _defineProperty(_ref13, _constants.ENV.TEST, "" + apiUrls.test + paymentApiUri), 
+                _ref13;
             },
             get billingApiUrls() {
+                var _ref14;
                 var apiUrls = config.apiUrls;
                 var billingApiUri = config.billingApiUri;
-                return {
-                    local: "" + apiUrls.local + billingApiUri,
-                    stage: "" + apiUrls.stage + billingApiUri,
-                    sandbox: "" + apiUrls.sandbox + billingApiUri,
-                    production: "" + apiUrls.production + billingApiUri,
-                    test: "" + apiUrls.test + billingApiUri
-                };
+                return _ref14 = {}, _defineProperty(_ref14, _constants.ENV.LOCAL, "" + apiUrls.local + billingApiUri), 
+                _defineProperty(_ref14, _constants.ENV.STAGE, "" + apiUrls.stage + billingApiUri), 
+                _defineProperty(_ref14, _constants.ENV.SANDBOX, "" + apiUrls.sandbox + billingApiUri), 
+                _defineProperty(_ref14, _constants.ENV.PRODUCTION, "" + apiUrls.production + billingApiUri), 
+                _defineProperty(_ref14, _constants.ENV.TEST, "" + apiUrls.test + billingApiUri), 
+                _ref14;
             },
             get experienceApiUrls() {
+                var _ref15;
                 var apiUrls = config.apiUrls;
                 var experienceApiUri = config.experienceApiUri;
-                return {
-                    local: "" + apiUrls.local + experienceApiUri,
-                    stage: "" + apiUrls.stage + experienceApiUri,
-                    sandbox: "" + apiUrls.sandbox + experienceApiUri,
-                    production: "" + apiUrls.production + experienceApiUri,
-                    test: "" + apiUrls.test + experienceApiUri
-                };
+                return _ref15 = {}, _defineProperty(_ref15, _constants.ENV.LOCAL, "" + apiUrls.local + experienceApiUri), 
+                _defineProperty(_ref15, _constants.ENV.STAGE, "" + apiUrls.stage + experienceApiUri), 
+                _defineProperty(_ref15, _constants.ENV.SANDBOX, "" + apiUrls.sandbox + experienceApiUri), 
+                _defineProperty(_ref15, _constants.ENV.PRODUCTION, "" + apiUrls.production + experienceApiUri), 
+                _defineProperty(_ref15, _constants.ENV.TEST, "" + apiUrls.test + experienceApiUri), 
+                _ref15;
             },
             get paypalUrl() {
                 return config.paypalUrls[config.env];
@@ -477,6 +532,9 @@ this["ppxo"] = function(modules) {
             },
             get buttonUrl() {
                 return "" + config.paypalUrl + config.buttonUris[config.env];
+            },
+            get legacyCheckoutUrl() {
+                return config.legacyCheckoutUrls[config.env];
             },
             get bridgeUrl() {
                 return "" + config.paypalUrl + config.bridgeUri + "&env=" + config.env;
@@ -707,6 +765,19 @@ this["ppxo"] = function(modules) {
             }
         };
     },
+    "./src/config/constants.js": function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var ENV = exports.ENV = {
+            LOCAL: "local",
+            STAGE: "stage",
+            SANDBOX: "sandbox",
+            PRODUCTION: "production",
+            TEST: "test"
+        };
+    },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -799,7 +870,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.36";
+        var version = exports.version = "4.0.37";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -4168,6 +4239,8 @@ this["ppxo"] = function(modules) {
         var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
         var _src2 = _interopRequireDefault(_src);
         var _Base = __webpack_require__("./node_modules/Base64/base64.js");
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
         var _config = __webpack_require__("./src/config/index.js");
         var _lib = __webpack_require__("./src/lib/index.js");
         var _components = __webpack_require__("./src/components/index.js");
@@ -4194,6 +4267,7 @@ this["ppxo"] = function(modules) {
             };
         }
         var createAccessToken = memoize(function(env, client) {
+            _client2["default"].info("rest_api_create_access_token");
             env = env || _config.config.env;
             var clientID = client[env];
             if (!clientID) {
@@ -4226,6 +4300,7 @@ this["ppxo"] = function(modules) {
         });
         var createExperienceProfile = memoize(function(env, client) {
             var experienceDetails = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+            _client2["default"].info("rest_api_create_experience_profile");
             env = env || _config.config.env;
             var clientID = client[env];
             if (!clientID) {
@@ -4258,6 +4333,7 @@ this["ppxo"] = function(modules) {
             time: 10 * 60 * 1e3
         });
         function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
+            _client2["default"].info("rest_api_create_checkout_token");
             env = env || _config.config.env;
             var clientID = client[env];
             if (!clientID) {
@@ -4299,6 +4375,7 @@ this["ppxo"] = function(modules) {
             });
         }
         function createBillingToken(env, client, billingDetails, experienceDetails) {
+            _client2["default"].info("rest_api_create_billing_token");
             env = env || _config.config.env;
             var clientID = client[env];
             if (!clientID) {
@@ -4401,235 +4478,6 @@ this["ppxo"] = function(modules) {
                 return output;
             });
         })();
-    },
-    "./src/lib/index.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        var _device = __webpack_require__("./src/lib/device.js");
-        Object.keys(_device).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _device[key];
-                }
-            });
-        });
-        var _util = __webpack_require__("./src/lib/util.js");
-        Object.keys(_util).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _util[key];
-                }
-            });
-        });
-        var _logger = __webpack_require__("./src/lib/logger.js");
-        Object.keys(_logger).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _logger[key];
-                }
-            });
-        });
-        var _eligibility = __webpack_require__("./src/lib/eligibility.js");
-        Object.keys(_eligibility).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _eligibility[key];
-                }
-            });
-        });
-        var _errors = __webpack_require__("./src/lib/errors.js");
-        Object.keys(_errors).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _errors[key];
-                }
-            });
-        });
-        var _dom = __webpack_require__("./src/lib/dom.js");
-        Object.keys(_dom).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _dom[key];
-                }
-            });
-        });
-        var _http = __webpack_require__("./src/lib/http.js");
-        Object.keys(_http).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _http[key];
-                }
-            });
-        });
-        var _beacon = __webpack_require__("./src/lib/beacon.js");
-        Object.keys(_beacon).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _beacon[key];
-                }
-            });
-        });
-        var _throttle = __webpack_require__("./src/lib/throttle.js");
-        Object.keys(_throttle).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _throttle[key];
-                }
-            });
-        });
-    },
-    "./src/lib/device.js": function(module, exports) {
-        (function(global) {
-            "use strict";
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-            exports.getUserAgent = getUserAgent;
-            exports.isDevice = isDevice;
-            exports.isWebView = isWebView;
-            exports.getAgent = getAgent;
-            exports.isOperaMini = isOperaMini;
-            exports.isAndroid = isAndroid;
-            exports.isIos = isIos;
-            exports.isGoogleSearchApp = isGoogleSearchApp;
-            exports.isIosWebview = isIosWebview;
-            exports.isAndroidWebview = isAndroidWebview;
-            exports.supportsPopups = supportsPopups;
-            function getUserAgent() {
-                return window.navigator.mockUserAgent || window.navigator.userAgent;
-            }
-            function isDevice() {
-                var userAgent = getUserAgent();
-                if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
-                    return true;
-                }
-                return false;
-            }
-            function isWebView() {
-                var userAgent = getUserAgent();
-                return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
-            }
-            function getAgent(agent) {
-                var ua = getUserAgent();
-                var tem = void 0;
-                var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-                if (/trident/i.test(M[1])) {
-                    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-                    return [ "IE", tem[1] || "" ];
-                }
-                if (M[1] === "Chrome") {
-                    tem = ua.match(/\bOPR\/(\d+)/);
-                    if (tem !== null) {
-                        return [ "Opera", tem[1] ];
-                    }
-                }
-                M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
-                if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
-                    M.splice(1, 1, tem[1]);
-                }
-                return M;
-            }
-            function isOperaMini(ua) {
-                ua = ua || global.navigator.userAgent;
-                return ua.indexOf("Opera Mini") > -1;
-            }
-            function isAndroid(ua) {
-                ua = ua || global.navigator.userAgent;
-                return /Android/.test(ua);
-            }
-            function isIos(ua) {
-                ua = ua || global.navigator.userAgent;
-                return /iPhone|iPod|iPad/.test(ua);
-            }
-            function isGoogleSearchApp(ua) {
-                return /\bGSA\b/.test(ua);
-            }
-            function isIosWebview(ua) {
-                ua = ua || global.navigator.userAgent;
-                if (isIos(ua)) {
-                    if (isGoogleSearchApp(ua)) {
-                        return true;
-                    }
-                    return /.+AppleWebKit(?!.*Safari)/.test(ua);
-                }
-                return false;
-            }
-            function isAndroidWebview(ua) {
-                ua = ua || global.navigator.userAgent;
-                if (isAndroid(ua)) {
-                    return /Version\/[\d\.]+/.test(ua) && !isOperaMini(ua);
-                }
-                return false;
-            }
-            function supportsPopups(ua) {
-                ua = ua || global.navigator.userAgent;
-                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
-            }
-        }).call(exports, function() {
-            return this;
-        }());
-    },
-    "./src/lib/logger.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.initLogger = initLogger;
-        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
-        var _client2 = _interopRequireDefault(_client);
-        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
-        var _src2 = _interopRequireDefault(_src);
-        var _config = __webpack_require__("./src/config/index.js");
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {
-                "default": obj
-            };
-        }
-        function initLogger() {
-            _src2["default"].registerLogger(_client2["default"]);
-            _client2["default"].addPayloadBuilder(function() {
-                return {
-                    host: window.location.host,
-                    path: window.location.pathname,
-                    env: _config.config.env,
-                    country: _config.config.locale.country,
-                    lang: _config.config.locale.lang,
-                    uid: window.pp_uid,
-                    ver: "4.0.36"
-                };
-            });
-            _client2["default"].addMetaBuilder(function() {
-                return {
-                    state: _config.config.state
-                };
-            });
-            _client2["default"].init({
-                uri: _config.config.loggerUrl,
-                heartbeat: false,
-                logPerformance: false,
-                prefix: "ppxo"
-            });
-        }
     },
     "./node_modules/beaver-logger/client/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -5706,6 +5554,235 @@ this["ppxo"] = function(modules) {
                 state: "ui_" + currentState
             };
         });
+    },
+    "./src/lib/index.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var _device = __webpack_require__("./src/lib/device.js");
+        Object.keys(_device).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _device[key];
+                }
+            });
+        });
+        var _util = __webpack_require__("./src/lib/util.js");
+        Object.keys(_util).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _util[key];
+                }
+            });
+        });
+        var _logger = __webpack_require__("./src/lib/logger.js");
+        Object.keys(_logger).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _logger[key];
+                }
+            });
+        });
+        var _eligibility = __webpack_require__("./src/lib/eligibility.js");
+        Object.keys(_eligibility).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _eligibility[key];
+                }
+            });
+        });
+        var _errors = __webpack_require__("./src/lib/errors.js");
+        Object.keys(_errors).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _errors[key];
+                }
+            });
+        });
+        var _dom = __webpack_require__("./src/lib/dom.js");
+        Object.keys(_dom).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _dom[key];
+                }
+            });
+        });
+        var _http = __webpack_require__("./src/lib/http.js");
+        Object.keys(_http).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _http[key];
+                }
+            });
+        });
+        var _beacon = __webpack_require__("./src/lib/beacon.js");
+        Object.keys(_beacon).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _beacon[key];
+                }
+            });
+        });
+        var _throttle = __webpack_require__("./src/lib/throttle.js");
+        Object.keys(_throttle).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _throttle[key];
+                }
+            });
+        });
+    },
+    "./src/lib/device.js": function(module, exports) {
+        (function(global) {
+            "use strict";
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+            exports.getUserAgent = getUserAgent;
+            exports.isDevice = isDevice;
+            exports.isWebView = isWebView;
+            exports.getAgent = getAgent;
+            exports.isOperaMini = isOperaMini;
+            exports.isAndroid = isAndroid;
+            exports.isIos = isIos;
+            exports.isGoogleSearchApp = isGoogleSearchApp;
+            exports.isIosWebview = isIosWebview;
+            exports.isAndroidWebview = isAndroidWebview;
+            exports.supportsPopups = supportsPopups;
+            function getUserAgent() {
+                return window.navigator.mockUserAgent || window.navigator.userAgent;
+            }
+            function isDevice() {
+                var userAgent = getUserAgent();
+                if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+                    return true;
+                }
+                return false;
+            }
+            function isWebView() {
+                var userAgent = getUserAgent();
+                return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+            }
+            function getAgent(agent) {
+                var ua = getUserAgent();
+                var tem = void 0;
+                var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+                if (/trident/i.test(M[1])) {
+                    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                    return [ "IE", tem[1] || "" ];
+                }
+                if (M[1] === "Chrome") {
+                    tem = ua.match(/\bOPR\/(\d+)/);
+                    if (tem !== null) {
+                        return [ "Opera", tem[1] ];
+                    }
+                }
+                M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
+                if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
+                    M.splice(1, 1, tem[1]);
+                }
+                return M;
+            }
+            function isOperaMini(ua) {
+                ua = ua || global.navigator.userAgent;
+                return ua.indexOf("Opera Mini") > -1;
+            }
+            function isAndroid(ua) {
+                ua = ua || global.navigator.userAgent;
+                return /Android/.test(ua);
+            }
+            function isIos(ua) {
+                ua = ua || global.navigator.userAgent;
+                return /iPhone|iPod|iPad/.test(ua);
+            }
+            function isGoogleSearchApp(ua) {
+                return /\bGSA\b/.test(ua);
+            }
+            function isIosWebview(ua) {
+                ua = ua || global.navigator.userAgent;
+                if (isIos(ua)) {
+                    if (isGoogleSearchApp(ua)) {
+                        return true;
+                    }
+                    return /.+AppleWebKit(?!.*Safari)/.test(ua);
+                }
+                return false;
+            }
+            function isAndroidWebview(ua) {
+                ua = ua || global.navigator.userAgent;
+                if (isAndroid(ua)) {
+                    return /Version\/[\d\.]+/.test(ua) && !isOperaMini(ua);
+                }
+                return false;
+            }
+            function supportsPopups(ua) {
+                ua = ua || global.navigator.userAgent;
+                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
+            }
+        }).call(exports, function() {
+            return this;
+        }());
+    },
+    "./src/lib/logger.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.initLogger = initLogger;
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
+        var _src = __webpack_require__("./node_modules/xcomponent/src/index.js");
+        var _src2 = _interopRequireDefault(_src);
+        var _config = __webpack_require__("./src/config/index.js");
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        function initLogger() {
+            _src2["default"].registerLogger(_client2["default"]);
+            _client2["default"].addPayloadBuilder(function() {
+                return {
+                    host: window.location.host,
+                    path: window.location.pathname,
+                    env: _config.config.env,
+                    country: _config.config.locale.country,
+                    lang: _config.config.locale.lang,
+                    uid: window.pp_uid,
+                    ver: "4.0.37"
+                };
+            });
+            _client2["default"].addMetaBuilder(function() {
+                return {
+                    state: _config.config.state
+                };
+            });
+            _client2["default"].init({
+                uri: _config.config.loggerUrl,
+                heartbeat: false,
+                logPerformance: false,
+                prefix: "ppxo"
+            });
+        }
     },
     "./node_modules/xcomponent/src/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -9844,7 +9921,7 @@ this["ppxo"] = function(modules) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.36";
+                payload.version = "4.0.37";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -9864,7 +9941,7 @@ this["ppxo"] = function(modules) {
         function checkpoint(name) {
             var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             try {
-                var version = "4.0.36".replace(/[^0-9]+/g, "_");
+                var version = "4.0.37".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -9877,7 +9954,7 @@ this["ppxo"] = function(modules) {
         var FPTI_URL = "https://t.paypal.com/ts";
         function buildPayload() {
             return {
-                v: "checkout.js." + "4.0.36",
+                v: "checkout.js." + "4.0.37",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -10686,6 +10763,7 @@ this["ppxo"] = function(modules) {
         exports.getElements = getElements;
         exports.onDocumentReady = onDocumentReady;
         exports.getQueryParam = getQueryParam;
+        exports.urlWillRedirectPage = urlWillRedirectPage;
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _util = __webpack_require__("./src/lib/util.js");
         function loadScript(src, timeout) {
@@ -10802,6 +10880,18 @@ this["ppxo"] = function(modules) {
         });
         function getQueryParam(name) {
             return parseQuery(window.location.search.slice(1))[name];
+        }
+        function urlWillRedirectPage(url) {
+            if (url.indexOf("#") === -1) {
+                return true;
+            }
+            if (url.indexOf("#") === 0) {
+                return false;
+            }
+            if (url.split("#")[0] === window.location.href.split("#")[0]) {
+                return false;
+            }
+            return true;
         }
     },
     "./src/lib/http.js": function(module, exports, __webpack_require__) {
@@ -11083,7 +11173,7 @@ this["ppxo"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.36";
+                return _config.config.ppobjects ? "4" : "4.0.37";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11157,7 +11247,7 @@ this["ppxo"] = function(modules) {
                                         win.location = url;
                                     }, 1);
                                     return actions.close().then(function() {
-                                        if ((0, _common.urlWillRedirectPage)(url)) {
+                                        if ((0, _lib.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
                                         }
                                     });
@@ -11190,7 +11280,7 @@ this["ppxo"] = function(modules) {
                                         win.location = url;
                                     }, 1);
                                     return actions.close().then(function() {
-                                        if ((0, _common.urlWillRedirectPage)(url)) {
+                                        if ((0, _lib.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
                                         }
                                     });
@@ -11290,7 +11380,6 @@ this["ppxo"] = function(modules) {
             value: true
         });
         exports.validateProps = validateProps;
-        exports.urlWillRedirectPage = urlWillRedirectPage;
         var _config = __webpack_require__("./src/config/index.js");
         function validateProps(props) {
             var required = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
@@ -11327,18 +11416,6 @@ this["ppxo"] = function(modules) {
                     throw new Error("Invalid client ID: " + clientID);
                 }
             }
-        }
-        function urlWillRedirectPage(url) {
-            if (url.indexOf("#") === -1) {
-                return true;
-            }
-            if (url.indexOf("#") === 0) {
-                return false;
-            }
-            if (url.split("#")[0] === window.location.href.split("#")[0]) {
-                return false;
-            }
-            return true;
         }
     },
     "./src/components/checkout/index.js": function(module, exports, __webpack_require__) {
@@ -11475,7 +11552,7 @@ this["ppxo"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.36";
+                return _config.config.ppobjects ? "4" : "4.0.37";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11581,7 +11658,7 @@ this["ppxo"] = function(modules) {
                                         win.location = url;
                                     }, 1);
                                     return close().then(function() {
-                                        if ((0, _common.urlWillRedirectPage)(url)) {
+                                        if ((0, _lib.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
                                         }
                                     });
@@ -11658,7 +11735,7 @@ this["ppxo"] = function(modules) {
                                         win.location = url;
                                     }, 1);
                                     return close().then(function() {
-                                        if ((0, _common.urlWillRedirectPage)(url)) {
+                                        if ((0, _lib.urlWillRedirectPage)(url)) {
                                             return new _promise.SyncPromise();
                                         }
                                     });
@@ -11679,10 +11756,13 @@ this["ppxo"] = function(modules) {
                     type: "function",
                     required: false,
                     once: true,
-                    def: function def() {
+                    decorate: function decorate(original) {
                         return function(data) {
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
+                            if (original) {
+                                return original.apply(this, arguments);
+                            }
                         };
                     }
                 },
@@ -11694,11 +11774,16 @@ this["ppxo"] = function(modules) {
                     def: function def() {
                         return function(reason) {
                             var CLOSE_REASONS = _src2["default"].CONSTANTS.CLOSE_REASONS;
-                            if (this.props.onCancel && this.paymentToken && this.cancelUrl && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
-                                return this.props.onCancel({
-                                    paymentToken: this.paymentToken,
-                                    cancelUrl: this.cancelUrl
-                                });
+                            if (this.props.onCancel && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                                if (this.paymentToken && this.cancelUrl) {
+                                    _client2["default"].info("close_trigger_cancel");
+                                    return this.props.onCancel({
+                                        paymentToken: this.paymentToken,
+                                        cancelUrl: this.cancelUrl
+                                    });
+                                } else {
+                                    _client2["default"].warn("close_no_token_cancelurl");
+                                }
                             }
                         };
                     }
@@ -11830,6 +11915,7 @@ this["ppxo"] = function(modules) {
             value: true
         });
         exports.renderButtons = renderButtons;
+        exports.getHijackTargetElement = getHijackTargetElement;
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
         var _config = __webpack_require__("./src/config/index.js");
@@ -12017,6 +12103,25 @@ this["ppxo"] = function(modules) {
                 return buttons;
             });
         }
+        function getHijackTargetElement(button) {
+            if (button && button.form) {
+                $logger.debug("target_element_button_form");
+                return button.form;
+            }
+            if (button && button.tagName && button.tagName.toLowerCase() === "a") {
+                $logger.debug("target_element_link");
+                return button;
+            }
+            if (button && button.tagName && (button.tagName.toLowerCase() === "img" || button.tagName.toLowerCase() === "button") && button.parentNode && button.parentNode.tagName.toLowerCase() === "a") {
+                $logger.debug("target_element_parent_link");
+                return button.parentNode;
+            }
+            if (button && button.tagName && button.tagName.toLowerCase() === "button" && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === "a") {
+                $logger.debug("target_element_parent_parent_link");
+                return button.parentNode.parentNode;
+            }
+            $logger.error("target_element_not_found");
+        }
     },
     "./src/legacy/constants.js": function(module, exports) {
         "use strict";
@@ -12025,6 +12130,15 @@ this["ppxo"] = function(modules) {
         });
         var LOG_PREFIX = exports.LOG_PREFIX = "paypal_legacy";
         var BUTTON_JS_URL = exports.BUTTON_JS_URL = "https://www.paypalobjects.com/api/button.js";
+        var ATTRIBUTES = exports.ATTRIBUTES = {
+            BUTTON: "data-paypal-button",
+            MERCHANT_ID: "data-paypal-id",
+            ENV: "data-env",
+            SANDBOX: "data-sandbox"
+        };
+        var CLASSES = exports.CLASSES = {
+            HIDDEN_BUTTON: "paypal-button-hidden"
+        };
     },
     "./src/legacy/common.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -12145,112 +12259,32 @@ this["ppxo"] = function(modules) {
         var _button = __webpack_require__("./src/legacy/button.js");
         var _common = __webpack_require__("./src/legacy/common.js");
         var _throttle = __webpack_require__("./src/legacy/throttle.js");
+        var _util = __webpack_require__("./src/legacy/util.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
             };
         }
         var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
-        var REDIRECT_DELAY = 1;
-        var setupCalled = false;
-        var inClick = false;
-        var ifNotClickMethods = [];
-        function registerClick() {
-            inClick = true;
-            ifNotClickMethods = [];
-            setTimeout(function() {
-                inClick = false;
-            }, 1);
-        }
-        (0, _lib.onDocumentReady)(function() {
-            if (window.document && window.document.body) {
-                window.document.body.addEventListener("click", function() {
-                    registerClick();
-                });
-            }
-        });
-        var ifNotClickTimeout = void 0;
-        function ifNotClick(method) {
-            if (inClick) {
-                return;
-            }
-            ifNotClickMethods.push(method);
-            ifNotClickTimeout = ifNotClickTimeout || setTimeout(function() {
-                ifNotClickTimeout = null;
-                ifNotClickMethods.forEach(function(meth) {
-                    return meth();
-                });
-                ifNotClickMethods = [];
-            }, 1);
-        }
+        var checkout = exports.checkout = {};
+        var apps = exports.apps = {
+            checkout: checkout,
+            Checkout: checkout
+        };
         function reset() {
             $logger.debug("reset");
-            window.paypal.checkout.initXO = initXO;
-            window.paypal.checkout.startFlow = startFlow;
-            window.paypal.checkout.closeFlow = closeFlow;
+            checkout.initXO = initXO;
+            checkout.startFlow = startFlow;
+            checkout.closeFlow = closeFlow;
         }
-        function before(method, wrapper) {
-            return function() {
-                wrapper();
-                return method.apply(this, arguments);
-            };
-        }
-        function getUrlPrefix() {
-            return _config.config.checkoutUrl + "?token=";
-        }
+        checkout.reset = reset;
+        Object.defineProperty(checkout, "urlPrefix", {
+            get: function get() {
+                return _config.config.checkoutUrl + "?token=";
+            }
+        });
         if (window.xchild && !window.paypalCheckout) {
             window.paypalCheckout = window.xchild;
-        }
-        var redirected = false;
-        function logRedirect(location) {
-            if (redirected) {
-                $logger.warn("multiple_redirects");
-            }
-            redirected = true;
-            if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
-                (0, _lib.checkpoint)("flow_complete");
-            }
-            $logger.flush();
-        }
-        function redirect(url) {
-            logRedirect(url);
-            reset();
-            setTimeout(function() {
-                $logger.info("redirect", {
-                    url: url
-                });
-                window.location = url;
-            }, REDIRECT_DELAY);
-        }
-        function parseToken(token) {
-            if (!token) {
-                return;
-            }
-            token = decodeURIComponent(decodeURIComponent(token));
-            if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
-                return token;
-            }
-            var match = token.match(/token=((EC-)?[A-Z0-9]{17})/);
-            if (match) {
-                return match[1];
-            }
-            match = token.match(/(EC-[A-Z0-9]{17})/);
-            if (match) {
-                return match[1];
-            }
-        }
-        function getFullpageRedirectUrl(token) {
-            if (!token) {
-                throw new Error("Can not get redirect url - token is blank");
-            }
-            if (token.match(/^https?:\/\//)) {
-                return token;
-            }
-            var ecToken = parseToken(token);
-            if (!ecToken) {
-                throw new Error("Can not match token in " + token);
-            }
-            return _config.config.checkoutUrl + "?token=" + ecToken;
         }
         function matchUrlAndPaymentToken(item) {
             if (!item || !item.trim()) {
@@ -12259,14 +12293,14 @@ this["ppxo"] = function(modules) {
                 });
                 throw new Error("startflow_no_url_or_token");
             }
-            var paymentToken = item && parseToken(item);
+            var paymentToken = item && (0, _util.parseToken)(item);
             var url = item && item !== paymentToken ? item : null;
             if (url && !url.match(/^https?:\/\/|^\//)) {
                 $logger.warn("startflow_relative_url", {
                     url: url
                 });
                 if (url.toLowerCase().indexOf("ec-") === 0 && paymentToken) {
-                    url = "" + getUrlPrefix() + url;
+                    url = "" + _config.config.checkoutUrl + url;
                 }
             }
             if (url && paymentToken) {
@@ -12288,7 +12322,7 @@ this["ppxo"] = function(modules) {
                 $logger.debug("startflow_with_token", {
                     item: item
                 });
-                url = getFullpageRedirectUrl(paymentToken);
+                url = _config.config.checkoutUrl + "?token=" + paymentToken;
             }
             var paypalUrls = _config.config.paypalUrls;
             for (var _iterator = Object.keys(paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -12303,7 +12337,7 @@ this["ppxo"] = function(modules) {
                 }
                 var env = _ref;
                 var paypalUrl = paypalUrls[env];
-                if (env === "test") {
+                if (env === _config.ENV.TEST) {
                     continue;
                 }
                 if (env !== _config.config.env) {
@@ -12312,6 +12346,8 @@ this["ppxo"] = function(modules) {
                             env: _config.config.env,
                             url: url
                         });
+                        (0, _util.redirect)(url);
+                        throw new Error(url + " is not a " + _config.config.env + " url");
                     }
                 }
             }
@@ -12322,18 +12358,13 @@ this["ppxo"] = function(modules) {
         }
         function awaitPaymentTokenAndUrl() {
             var paymentTokenAndUrl = new _promise.SyncPromise(function(resolve, reject) {
-                window.paypal.checkout.initXO = function() {
+                checkout.initXO = function() {
                     $logger.warn("gettoken_initxo");
                 };
-                window.paypal.checkout.startFlow = (0, _lib.once)(function(item, opts) {
+                checkout.startFlow = (0, _lib.once)(function(item, opts) {
                     $logger.debug("gettoken_startflow", {
                         item: item
                     });
-                    if (opts) {
-                        $logger.warn("startflow_with_options", {
-                            opts: JSON.stringify(opts)
-                        });
-                    }
                     var urlAndPaymentToken = void 0;
                     try {
                         urlAndPaymentToken = matchUrlAndPaymentToken(item);
@@ -12344,7 +12375,8 @@ this["ppxo"] = function(modules) {
                     var url = _urlAndPaymentToken.url;
                     var paymentToken = _urlAndPaymentToken.paymentToken;
                     if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
-                        return redirect(url);
+                        $logger.warn("throttle_failed_on_startflow");
+                        return (0, _util.redirect)(url);
                     }
                     return resolve({
                         url: url,
@@ -12364,55 +12396,45 @@ this["ppxo"] = function(modules) {
             };
         }
         var paypalCheckoutInited = false;
+        var closeFlowCalled = false;
         function initPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             $logger.info("init_checkout");
             if (paypalCheckoutInited) {
                 $logger.warn("multiple_init_paypal_checkout");
             }
-            if (!setupCalled) {
-                $logger.warn("init_without_setup");
+            if (closeFlowCalled) {
+                $logger.debug("init_after_closeflow");
             }
             paypalCheckoutInited = true;
             (0, _lib.checkpoint)("flow_start");
-            props.payment = props.payment || _lib.noop;
             var paypalCheckout = _components.Checkout.init(_extends({
                 uid: window.pp_uid,
                 onAuthorize: function onAuthorize(data, actions) {
                     $logger.info("payment_authorized");
-                    logRedirect(data.returnUrl);
+                    (0, _util.logRedirect)(data.returnUrl);
                     return actions.redirect(window);
                 },
                 onCancel: function onCancel(data, actions) {
                     $logger.info("payment_canceled");
+                    (0, _util.logRedirect)(data.cancelUrl);
                     return actions.redirect(window);
-                },
-                onError: function onError(err) {
-                    $logger.error("error_handler", {
-                        error: err.stack || err.toString()
-                    });
                 },
                 fallback: function fallback(url) {
                     $logger.error("fallback_handler");
-                    redirect(url);
+                    (0, _util.redirect)(url);
                 }
             }, props));
-            window.paypal.checkout.closeFlow = function(closeUrl) {
+            checkout.closeFlow = function(closeUrl) {
                 $logger.warn("closeflow");
+                closeFlowCalled = true;
                 reset();
-                try {
-                    paypalCheckout.destroy();
-                } catch (err) {
-                    $logger.warn("destroy_error", {
-                        error: err.stack || err.toString()
-                    });
-                    console.error(err);
-                }
+                paypalCheckout.destroy();
                 if (closeUrl) {
                     $logger.warn("closeflow_with_url", {
                         closeUrl: closeUrl
                     });
-                    return redirect(closeUrl);
+                    return (0, _util.redirect)(closeUrl);
                 }
             };
             return paypalCheckout;
@@ -12420,91 +12442,59 @@ this["ppxo"] = function(modules) {
         function renderPayPalCheckout() {
             var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
             var hijackTarget = arguments[1];
-            ifNotClick(function() {
-                $logger.warn("render_without_click");
+            var urlProp = _promise.SyncPromise.resolve(props.url);
+            var paymentToken = new _promise.SyncPromise(function(resolve) {
+                props.init = function(data) {
+                    resolve(data.paymentToken);
+                };
             });
+            var errorHandler = (0, _lib.once)(function(err) {
+                $logger.error("component_error", {
+                    error: err.stack || err.toString()
+                });
+                if (hijackTarget) {
+                    $logger.warn("render_error_hijack_revert_target");
+                    hijackTarget.removeAttribute("target");
+                }
+                urlProp.then(function(url) {
+                    $logger.warn("render_error_redirect_using_url");
+                    return (0, _util.redirect)(url);
+                });
+                paymentToken.then(function(token) {
+                    _client2["default"].warn("render_error_redirect_using_token");
+                    return (0, _util.redirect)(_config.config.checkoutUrl + "?token=" + token);
+                });
+            });
+            props.onError = errorHandler;
             var paypalCheckout = void 0;
             if (hijackTarget) {
-                var propUrl = props.url;
                 delete props.url;
                 paypalCheckout = initPayPalCheckout(props);
                 paypalCheckout.hijack(hijackTarget);
                 paypalCheckout.runTimeout();
-                propUrl.then(function(url) {
+                urlProp.then(function(url) {
                     $logger.warn("hijack_then_url_passed");
                     paypalCheckout.loadUrl(url);
                 });
             } else {
                 paypalCheckout = initPayPalCheckout(props);
             }
-            var render = paypalCheckout.render(null, !hijackTarget)["catch"](function(err) {
-                $logger.error("error", {
-                    error: err.stack || err.toString()
-                });
-                _promise.SyncPromise.resolve(props.url).then(function(url) {
-                    return redirect(url);
-                });
-                throw err;
-            });
-            window.paypal.checkout.win = paypalCheckout.window;
-            return render;
+            var render = paypalCheckout.render(null, !hijackTarget);
+            checkout.win = paypalCheckout.window;
+            return render["catch"](errorHandler);
         }
         function handleClick(clickHandler, event) {
             $logger.debug("button_click_handler");
-            var initXOCalled = false;
-            var startFlowCalled = false;
-            var closeFlowCalled = false;
-            window.paypal.checkout.initXO = before(window.paypal.checkout.initXO, function() {
-                initXOCalled = true;
-            });
-            window.paypal.checkout.startFlow = before(window.paypal.checkout.startFlow, function() {
-                startFlowCalled = true;
-            });
-            window.paypal.checkout.closeFlow = before(window.paypal.checkout.closeFlow, function() {
-                closeFlowCalled = true;
-            });
             try {
-                if (clickHandler.toString().match(/^function\s*\w*\s*\(err(or)?\)\ *\{/)) {
-                    $logger.warn("click_function_expects_err");
-                    clickHandler.call(null);
-                } else {
-                    clickHandler.call(null, event);
-                }
+                clickHandler.call(null, event);
             } catch (err) {
                 $logger.error("click_handler_error", {
                     error: err.stack || err.toString()
                 });
             }
-            if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
-                $logger.debug("button_click_handler_no_initxo_startflow");
-                setTimeout(function() {
-                    if (!initXOCalled && !startFlowCalled && !closeFlowCalled) {
-                        $logger.debug("button_click_event_no_initxo_startflow");
-                    }
-                }, 1);
-            }
-        }
-        function getHijackTargetElement(button) {
-            if (button && button.form) {
-                $logger.debug("target_element_button_form");
-                return button.form;
-            }
-            if (button && button.tagName && button.tagName.toLowerCase() === "a") {
-                $logger.debug("target_element_link");
-                return button;
-            }
-            if (button && button.tagName && (button.tagName.toLowerCase() === "img" || button.tagName.toLowerCase() === "button") && button.parentNode && button.parentNode.tagName.toLowerCase() === "a") {
-                $logger.debug("target_element_parent_link");
-                return button.parentNode;
-            }
-            if (button && button.tagName && button.tagName.toLowerCase() === "button" && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === "a") {
-                $logger.debug("target_element_parent_parent_link");
-                return button.parentNode.parentNode;
-            }
-            $logger.error("target_element_not_found");
         }
         function handleClickHijack(button) {
-            var targetElement = getHijackTargetElement(button);
+            var targetElement = (0, _button.getHijackTargetElement)(button);
             if (!targetElement) {
                 return;
             }
@@ -12516,12 +12506,11 @@ this["ppxo"] = function(modules) {
             paymentToken.then(function(result) {
                 token = result;
             });
-            var payment = function payment() {
-                return token;
-            };
             renderPayPalCheckout({
                 url: url,
-                payment: payment
+                payment: function payment() {
+                    return _promise.SyncPromise.resolve(token);
+                }
             }, targetElement);
         }
         function listenClick(container, button, clickHandler, condition) {
@@ -12532,8 +12521,11 @@ this["ppxo"] = function(modules) {
                 return $logger.warn("button_already_has_paypal_click_listener");
             }
             element.setAttribute("data-paypal-click-listener", true);
+            var targetElement = (0, _button.getHijackTargetElement)(button);
+            if (targetElement && isClick) {
+                $logger.warn("button_link_or_form");
+            }
             element.addEventListener("click", function(event) {
-                registerClick();
                 (0, _lib.checkpoint)("flow_buttonclick");
                 if ((0, _lib.supportsPopups)()) {
                     $logger.debug("click_popups_supported");
@@ -12569,6 +12561,7 @@ this["ppxo"] = function(modules) {
                 }
             });
         }
+        var setupCalled = false;
         function setup(id) {
             var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
             (0, _lib.checkpoint)("flow_setup");
@@ -12576,26 +12569,15 @@ this["ppxo"] = function(modules) {
             $logger.info("setup", {
                 id: id,
                 env: options.environment,
-                options: JSON.stringify(options, function(key, val) {
-                    if (typeof val === "function") {
-                        return "<function>";
-                    }
-                    try {
-                        JSON.stringify(val);
-                    } catch (err) {
-                        return "<unserializable>";
-                    }
-                    return val;
-                })
+                options: (0, _lib.safeJSON)(options)
             });
             if (setupCalled) {
-                console.warn("setup_called_multiple_times");
+                $logger.debug("setup_called_multiple_times");
             }
             setupCalled = true;
-            reset();
             if (options.environment) {
                 if (options.environment === "live") {
-                    options.environment = "production";
+                    options.environment = _config.ENV.PRODUCTION;
                 }
                 if (_config.config.paypalUrls[options.environment]) {
                     _config.config.env = options.environment;
@@ -12649,6 +12631,7 @@ this["ppxo"] = function(modules) {
                 });
             }) ]);
         }
+        checkout.setup = setup;
         function initXO() {
             $logger.debug("initxo");
             if (!(0, _eligibility.isLegacyEligible)()) {
@@ -12657,25 +12640,22 @@ this["ppxo"] = function(modules) {
             if (!(0, _throttle.checkThrottle)()) {
                 return;
             }
-            reset();
             var _awaitPaymentTokenAnd2 = awaitPaymentTokenAndUrl();
             var url = _awaitPaymentTokenAnd2.url;
             var paymentToken = _awaitPaymentTokenAnd2.paymentToken;
             $logger.info("init_paypal_checkout_initxo");
             renderPayPalCheckout({
                 url: url,
-                payment: paymentToken
+                payment: function payment() {
+                    return paymentToken;
+                }
             });
         }
+        checkout.initXO = initXO;
         function startFlow(item, opts) {
             $logger.debug("startflow", {
                 item: item
             });
-            if (opts) {
-                $logger.warn("startflow_with_options", {
-                    opts: JSON.stringify(opts)
-                });
-            }
             var _matchUrlAndPaymentTo = matchUrlAndPaymentToken(item);
             var paymentToken = _matchUrlAndPaymentTo.paymentToken;
             var url = _matchUrlAndPaymentTo.url;
@@ -12683,76 +12663,31 @@ this["ppxo"] = function(modules) {
                 $logger.debug("ineligible_startflow_global", {
                     url: url
                 });
-                return redirect(url);
+                return (0, _util.redirect)(url);
             }
             if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
-                return redirect(url);
+                return (0, _util.redirect)(url);
             }
             $logger.info("init_paypal_checkout_startflow");
             renderPayPalCheckout({
                 url: url,
-                payment: paymentToken
+                payment: function payment() {
+                    return paymentToken;
+                }
             });
         }
+        checkout.startFlow = startFlow;
         function closeFlow(closeUrl) {
-            $logger.warn("closeflow");
+            $logger.warn("closeflow_not_opened");
             if (closeUrl) {
                 $logger.warn("closeflow_with_url", {
                     closeUrl: closeUrl
                 });
-                return redirect(closeUrl);
+                return (0, _util.redirect)(closeUrl);
             }
             console.warn("Checkout is not open, can not be closed");
         }
-        (0, _lib.onDocumentReady)(function() {
-            var buttons = Array.prototype.slice.call(document.querySelectorAll("[data-paypal-button]"));
-            if (buttons && buttons.length) {
-                $logger.debug("data_paypal_button", {
-                    number: buttons.length
-                });
-                for (var _iterator2 = buttons, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
-                    if (_isArray2) {
-                        if (_i2 >= _iterator2.length) break;
-                        _ref2 = _iterator2[_i2++];
-                    } else {
-                        _i2 = _iterator2.next();
-                        if (_i2.done) break;
-                        _ref2 = _i2.value;
-                    }
-                    var button = _ref2;
-                    var id = button.getAttribute("data-paypal-id");
-                    var environment = void 0;
-                    if (button.hasAttribute("data-env")) {
-                        environment = button.getAttribute("data-env");
-                    } else if (button.hasAttribute("data-sandbox")) {
-                        environment = "sandbox";
-                    }
-                    setup(id, {
-                        environment: environment,
-                        button: button
-                    });
-                }
-            }
-            Array.prototype.slice.call(document.getElementsByClassName("paypal-button-hidden")).forEach(function(el) {
-                el.className = el.className.replace("paypal-button-hidden", "");
-            });
-        });
-        var checkout = exports.checkout = {
-            setup: setup,
-            initXO: initXO,
-            startFlow: startFlow,
-            closeFlow: closeFlow,
-            reset: reset,
-            get urlPrefix() {
-                return getUrlPrefix();
-            }
-        };
-        var ppApps = window.paypal && window.paypal.apps || window.PAYPAL && window.PAYPAL.apps || {};
-        var apps = exports.apps = _extends({}, ppApps, {
-            checkout: checkout,
-            Checkout: checkout
-        });
+        checkout.closeFlow = closeFlow;
     },
     "./src/legacy/eligibility.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -13738,12 +13673,84 @@ this["ppxo"] = function(modules) {
         }
         logReturn();
     },
+    "./src/legacy/util.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.logRedirect = logRedirect;
+        exports.redirect = redirect;
+        exports.parseToken = parseToken;
+        var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var _client2 = _interopRequireDefault(_client);
+        var _config = __webpack_require__("./src/config/index.js");
+        var _lib = __webpack_require__("./src/lib/index.js");
+        var _config2 = __webpack_require__("./src/legacy/config.js");
+        var _constants = __webpack_require__("./src/legacy/constants.js");
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                "default": obj
+            };
+        }
+        var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
+        var redirected = false;
+        function logRedirect(location) {
+            if (redirected) {
+                _client2["default"].warn("multiple_redirects");
+            }
+            if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
+                (0, _lib.checkpoint)("flow_complete");
+            }
+            $logger.flush();
+        }
+        function redirect(url) {
+            if (_config.config.env === _config.ENV.TEST && (0, _lib.urlWillRedirectPage)(url)) {
+                return setTimeout(function() {
+                    window.location = "#fullpageRedirect?url=" + url;
+                }, _config2.REDIRECT_DELAY);
+            }
+            logRedirect(url);
+            redirected = true;
+            setTimeout(function() {
+                $logger.info("redirect", {
+                    url: url
+                });
+                window.location = url;
+            }, _config2.REDIRECT_DELAY);
+        }
+        function parseToken(token) {
+            if (!token) {
+                return;
+            }
+            token = decodeURIComponent(decodeURIComponent(token));
+            if (token.match(/^(EC-)?[A-Z0-9]{17}$/)) {
+                return token;
+            }
+            var match = token.match(/token=((EC-)?[A-Z0-9]{17})/);
+            if (match) {
+                return match[1];
+            }
+            match = token.match(/(EC-[A-Z0-9]{17})/);
+            if (match) {
+                return match[1];
+            }
+        }
+    },
+    "./src/legacy/config.js": function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        var REDIRECT_DELAY = exports.REDIRECT_DELAY = 1;
+    },
     "./src/legacy/ready.js": function(module, exports, __webpack_require__) {
         "use strict";
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
         var _lib = __webpack_require__("./src/lib/index.js");
+        var _config = __webpack_require__("./src/config/index.js");
         var _constants = __webpack_require__("./src/legacy/constants.js");
+        var _interface = __webpack_require__("./src/legacy/interface.js");
         function _interopRequireDefault(obj) {
             return obj && obj.__esModule ? obj : {
                 "default": obj
@@ -13789,6 +13796,40 @@ this["ppxo"] = function(modules) {
                 error: err.stack || err.toString()
             });
         }
+        (0, _lib.onDocumentReady)(function() {
+            var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + _constants.ATTRIBUTES.BUTTON + "]"));
+            if (buttons && buttons.length) {
+                $logger.debug("data_paypal_button", {
+                    number: buttons.length
+                });
+                for (var _iterator = buttons, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        _i = _iterator.next();
+                        if (_i.done) break;
+                        _ref = _i.value;
+                    }
+                    var button = _ref;
+                    var id = button.getAttribute(_constants.ATTRIBUTES.MERCHANT_ID);
+                    var environment = void 0;
+                    if (button.hasAttribute(_constants.ATTRIBUTES.ENV)) {
+                        environment = button.getAttribute(_constants.ATTRIBUTES.ENV);
+                    } else if (button.hasAttribute(_constants.ATTRIBUTES.SANDBOX)) {
+                        environment = _config.ENV.SANDBOX;
+                    }
+                    (0, _interface.setup)(id, {
+                        environment: environment,
+                        button: button
+                    });
+                }
+            }
+            Array.prototype.slice.call(document.getElementsByClassName(_constants.CLASSES.HIDDEN_BUTTON)).forEach(function(el) {
+                el.className = el.className.replace(_constants.CLASSES.HIDDEN_BUTTON, "");
+            });
+        });
     },
     "./src/setup.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -13855,7 +13896,7 @@ this["ppxo"] = function(modules) {
                 _config.config.stage = options.stage;
                 if (!options.env) {
                     delete _config.config.env;
-                    _config.config.env = "stage";
+                    _config.config.env = _config.ENV.STAGE;
                 }
             }
             if (options.apiStage) {
