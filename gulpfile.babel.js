@@ -7,7 +7,7 @@ import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_LIB, WEBPACK
 import webserver from 'gulp-webserver';
 
 gulp.task('test', ['lint', 'karma']);
-gulp.task('build', ['lint', 'webpack']);
+gulp.task('build', ['lint', 'karma', 'webpack']);
 
 gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib' ]);
 
