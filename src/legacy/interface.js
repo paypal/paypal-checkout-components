@@ -16,14 +16,7 @@ import { redirect, logRedirect, parseToken } from './util';
 let $logger = logger.prefix(LOG_PREFIX);
 
 export let checkout = {};
-
-let ppApps = (window.paypal && window.paypal.apps) || (window.PAYPAL && window.PAYPAL.apps) || {};
-
-export let apps = {
-    ...ppApps,
-    checkout,
-    Checkout: checkout
-};
+export let apps = { checkout, Checkout: checkout };
 
 export function reset() {
 

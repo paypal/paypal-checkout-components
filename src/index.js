@@ -21,7 +21,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
     }
 
     module.exports = window.paypal;
-    module.exports.default = module.exports;
+    module.exports.default = window.paypal;
 
 } else {
 
@@ -33,30 +33,27 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
         let paypal = (isPayPalDomain() || __TEST__) ? require('./interface/paypal') : require('./interface/public');
 
+        for (let paypalNamespace of [ window.paypal, window.PAYPAL ]) {
+
+            if (!paypalNamespace) {
+                continue;
+            }
+
+            let apps = paypal.apps;
+
+            if (paypalNamespace.apps) {
+                apps = { ...paypalNamespace.apps, ...apps };
+            }
+
+            paypal = { ...paypalNamespace, ...paypal, apps };
+        }
+
         module.exports = paypal;
-        module.exports.default = module.exports;
+        module.exports.default = paypal;
 
-        if (window.paypal) {
-
-            window.paypal = {
-                ...window.paypal,
-                ...paypal
-            };
-
-        } else {
-            window.paypal = paypal;
-        }
-
-        if (window.PAYPAL) {
-
-            window.PAYPAL = {
-                ...window.PAYPAL,
-                ...paypal
-            };
-
-        } else {
-            window.PAYPAL = paypal;
-        }
+        window.paypal = paypal;
+        window.PAYPAL = paypal;
+        window.ppxo = paypal;
 
     } catch (err) {
 

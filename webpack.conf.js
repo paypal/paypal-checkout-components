@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 
 export let FILE_NAME = 'checkout';
-export let MODULE_NAME = 'ppxo';
+export let MODULE_NAME = 'paypal';
 
 function getNextVersion() {
     let version = require('./package.json').version;
@@ -26,7 +26,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig(version, filename) {
+function getWebpackConfig(version, filename, target = 'window') {
 
     return {
       module: {
@@ -48,7 +48,7 @@ function getWebpackConfig(version, filename) {
       },
       output: {
         filename: filename,
-        libraryTarget: 'this',
+        libraryTarget: target,
         umdNamedDefine: true,
         library: MODULE_NAME,
         pathinfo: false
@@ -73,9 +73,9 @@ function getWebpackConfig(version, filename) {
     };
 }
 
-function getWebpackConfigMin(version, filename) {
+function getWebpackConfigMin(version, filename, target = 'window') {
 
-    let config = getWebpackConfig(version, filename);
+    let config = getWebpackConfig(version, filename, target);
 
     config.plugins = [
         new webpack.optimize.UglifyJsPlugin({
@@ -100,3 +100,6 @@ export let WEBPACK_CONFIG_MINOR = getWebpackConfig(nextMinorVersion, `${FILE_NAM
 
 export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfigMin(nextMajorVersion, `${FILE_NAME}.min.js`);
 export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfigMin(nextMinorVersion, `${FILE_NAME}.${nextMinorVersion}.min.js`);
+
+export let WEBPACK_CONFIG_LIB =     getWebpackConfig(nextMajorVersion, `${FILE_NAME}.lib.js`, 'umd');
+export let WEBPACK_CONFIG_LIB_MIN = getWebpackConfigMin(nextMajorVersion, `${FILE_NAME}.lib.min.js`, 'umd');
