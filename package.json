@@ -1,6 +1,6 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.36",
+  "version": "4.0.37",
   "description": "Checkout components, for integratng checkout products.",
   "main": "index.js",
   "scripts": {
