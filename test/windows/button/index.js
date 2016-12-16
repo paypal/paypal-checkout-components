@@ -2,16 +2,8 @@
 import paypal from 'src/index';
 import '../../tests/common';
 
-window.console.karma = function() {
-    let karma = window.karma || (window.top && window.top.karma) || (window.opener && window.opener.karma);
-    if (karma) {
-        karma.log('debug', arguments);
-    }
-    window.console.log.apply(window.console, arguments);
-};
-
 function renderCheckout() {
-    paypal.Checkout.renderTo(window.parent, {
+    paypal.Checkout.renderTo(window.top.frames[0], {
 
         payment: window.xprops.payment,
         onAuthorize(data, actions) {

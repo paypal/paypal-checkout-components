@@ -1,0 +1,14 @@
+
+<body>
+    <h1>Button Frame</h1>
+
+    <button id="button">Click me</button>
+
+    <script>
+        window.mockDomain = 'mock://www.paypal.com';
+        var parentWindow = (window.opener || window.parent);
+        window.__coverage__ = parentWindow.__coverage__;
+    </script>
+
+    <script src="./index.js"></script>
+</body>
