@@ -5,7 +5,6 @@ set -e;
 rm -rf node_modules/xcomponent node_modules/post-robot node_modules/sync-browser-mocks node_modules/beaver-logger
 npm install xcomponent post-robot sync-browser-mocks beaver-logger
 
-gulp test;
 gulp build;
 
 git add dist;
