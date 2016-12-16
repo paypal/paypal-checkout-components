@@ -2,6 +2,10 @@
 
     "parser": "babel-eslint",
 
+    "plugins": [
+        "flowtype"
+    ],
+
     "env": {
         "browser": false,
         "node": true,
@@ -270,7 +274,9 @@
         // disallow generator functions that do not have yield
         "require-yield": 2,
         "template-curly-spacing": 0,
-        "yield-star-spacing": 0
+        "yield-star-spacing": 0,
+
+        "flowtype/use-flow-type": 1
     }
 
 }

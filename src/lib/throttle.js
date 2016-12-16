@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { checkpoint, fpti } from './beacon';
 import { uniqueID, hashStr } from './util';
@@ -42,7 +43,7 @@ function getUID(name, uid) {
     return { uid, isNew };
 }
 
-export function getThrottle(name, sample, id) {
+export function getThrottle(name, sample : number, id) {
 
     let { uid, isNew } = getUID(name, id);
 

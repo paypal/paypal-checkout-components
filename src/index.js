@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { beacon, checkpoint } from './lib/beacon';
 import { uniqueID } from './lib/util';
@@ -49,7 +50,6 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
         }
 
         module.exports = paypal;
-        module.exports.default = paypal;
 
         window.paypal = paypal;
         window.PAYPAL = paypal;

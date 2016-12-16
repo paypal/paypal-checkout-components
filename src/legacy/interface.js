@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
@@ -31,6 +32,7 @@ export function reset() {
 
 checkout.reset = reset;
 
+// $FlowFixMe
 Object.defineProperty(checkout, 'urlPrefix', {
     get() {
         return `${config.checkoutUrl}?token=`;
@@ -70,7 +72,7 @@ function matchUrlAndPaymentToken(item) {
     } else if (url) {
         $logger.debug(`startflow_url_with_no_token`, { item });
         paymentToken = '';
-    } else if (paymentToken) {
+    } else {
         $logger.debug(`startflow_with_token`, { item });
         url = `${config.checkoutUrl}?token=${paymentToken}`;
     }
@@ -397,7 +399,7 @@ function listenClick(container, button, clickHandler, condition) {
 
 let setupCalled = false;
 
-function setup(id, options = {}) {
+export function setup(id, options = {}) {
 
     checkpoint('flow_setup');
 

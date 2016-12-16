@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { ENV } from './constants';
 
@@ -31,6 +32,8 @@ export let config = {
         'http://www.bluesuncorp.co.uk': 5000
     },
 
+    customCountry: false,
+
     SUPPORTED_AGENTS: {
         Chrome: 27,
         IE: 9,
@@ -41,7 +44,11 @@ export let config = {
     },
 
     get apiStage() {
-        return config.stage;
+        return config._apiStage || config.stage;
+    },
+
+    set apiStage(value) {
+        config._apiStage = value;
     },
 
     get paypalUrls() {
@@ -287,7 +294,11 @@ export let config = {
     },
 
     get paypalUrl() {
-        return config.paypalUrls[config.env];
+        return this._paypalUrl || config.paypalUrls[config.env];
+    },
+
+    set paypalUrl(value) {
+        this._paypalUrl = value;
     },
 
     get paypalDomain() {

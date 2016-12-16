@@ -1,3 +1,4 @@
+/* @flow weak */
 
 export function getUserAgent() {
     return window.navigator.mockUserAgent || window.navigator.userAgent;

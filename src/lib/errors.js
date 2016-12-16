@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import $logger from 'beaver-logger/client';
 

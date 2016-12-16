@@ -66,6 +66,7 @@ module.exports = function(config) {
                         query: {
                             presets: ['es2015'],
                             plugins: [
+                                'transform-flow-strip-types',
                                 'transform-object-rest-spread',
                                 'syntax-object-rest-spread',
                                 'transform-es3-property-literals',

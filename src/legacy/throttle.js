@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { getThrottle, match } from '../lib';
 import { config } from '../config';

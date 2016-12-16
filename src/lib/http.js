@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 

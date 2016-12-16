@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import $logger from 'beaver-logger/client';
 
@@ -16,7 +17,7 @@ function domainToEnv(domain) {
     }
 }
 
-function setDomainEnv(domain) {
+function setDomainEnv(domain : string) {
     let currentDomainEnv = domainToEnv(domain);
 
     if (currentDomainEnv && currentDomainEnv !== 'test') {

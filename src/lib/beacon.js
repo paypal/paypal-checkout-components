@@ -1,3 +1,4 @@
+/* @flow weak */
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 

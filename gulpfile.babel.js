@@ -1,13 +1,14 @@
 import gulp from 'gulp';
 import gulpWebpack from 'gulp-webpack';
 import eslint from 'gulp-eslint';
+import shell from 'gulp-shell';
 import { Server } from 'karma';
 import { argv } from 'yargs';
 import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_LIB, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN } from './webpack.conf';
 import webserver from 'gulp-webserver';
 
-gulp.task('test', ['lint', 'karma']);
-gulp.task('build', ['lint', 'karma', 'webpack']);
+gulp.task('test', ['lint', 'karma', 'typecheck']);
+gulp.task('build', ['test', 'webpack']);
 
 gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib' ]);
 
@@ -41,6 +42,7 @@ gulp.task('webpack-minor-min', ['lint'], function() {
       .pipe(gulp.dest('dist'));
 });
 
+gulp.task('typecheck', shell.task(['npm run-script flow']));
 
 gulp.task('lint', function() {
   return gulp.src([ 'src/**/*.js', 'test/{tests,windows}/**/*.js' ]).pipe(eslint())

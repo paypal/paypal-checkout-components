@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
@@ -9,6 +10,7 @@ import { isDevice, urlWillRedirectPage } from '../../lib';
 import { validateProps } from '../common';
 import { enableCheckoutIframe } from '../checkout';
 
+// $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
 export let Button = xcomponent.create({
@@ -106,6 +108,7 @@ export let Button = xcomponent.create({
                 if (original) {
                     return function(data, actions) {
 
+                        // $FlowFixMe
                         Object.defineProperty(data, 'payment', {
                             get() {
                                 $logger.warn(`data_payment_referenced`);

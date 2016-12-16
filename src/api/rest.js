@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import postRobot from 'post-robot/src';
@@ -65,11 +66,11 @@ let createAccessToken = memoize((env, client) => {
     }).then(res => {
 
         if (res && res.error === 'invalid_client') {
-            throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, 0, 4)}`);
+            throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, null, 4)}`);
         }
 
         if (!res || !res.access_token) {
-            throw new Error(`Auth Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
+            throw new Error(`Auth Api response error:\n\n${JSON.stringify(res, null, 4)}`);
         }
 
         return res.access_token;
@@ -113,7 +114,7 @@ let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
         }
 
         if (!res.id) {
-            throw new Error(`No id in experience profile response:\n\n${JSON.stringify(res, 0, 4)}`);
+            throw new Error(`No id in experience profile response:\n\n${JSON.stringify(res, null, 4)}`);
         }
 
         return res.id;
@@ -175,7 +176,7 @@ function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
             return res.id;
         }
 
-        throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
+        throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, null, 4)}`);
     });
 }
 
@@ -234,7 +235,7 @@ export function createBillingToken(env, client, billingDetails, experienceDetail
             return res.token_id;
         }
 
-        throw new Error(`Billing Api response error:\n\n${JSON.stringify(res, 0, 4)}`);
+        throw new Error(`Billing Api response error:\n\n${JSON.stringify(res, null, 4)}`);
     });
 }
 

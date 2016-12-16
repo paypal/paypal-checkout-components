@@ -1,3 +1,4 @@
+/* @flow weak */
 
 export const LOG_PREFIX = `paypal_legacy`;
 

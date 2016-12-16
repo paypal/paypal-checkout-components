@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import postRobot from 'post-robot/src';
 
@@ -86,9 +87,7 @@ window.watchForLegacyFallback = (win) => {
 
                                 if (win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES) {
                                     Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, 'Redirect', {
-                                        get() {
-                                            return Math.random();
-                                        }
+                                        value: Math.random().toString()
                                     });
                                 }
 
@@ -122,6 +121,7 @@ window.watchForLegacyFallback = (win) => {
                         delete this.onload;
                         this.onload = listener;
 
+                        // $FlowFixMe
                         Object.defineProperty(this, 'onload', {
                             get() {
                                 return listener;

@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import logger from 'beaver-logger/client';
 
@@ -40,6 +41,7 @@ let _paypalCheckoutReady = window.paypalCheckoutReady;
 try {
     delete window.paypalCheckoutReady;
 
+    // $FlowFixMe
     Object.defineProperty(window, 'paypalCheckoutReady', {
 
         set(method) {

@@ -1,0 +1,8 @@
+[ignore]
+./node_modules/gulp-flowtype
+[include]
+[libs]
+src/decs.js
+[options]
+unsafe.enable_getters_and_setters=true
+esproposal.export_star_as=enable

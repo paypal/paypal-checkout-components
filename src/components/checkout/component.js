@@ -1,9 +1,13 @@
+/* @flow weak */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
+// $FlowFixMe
 import parentTemplate from './parentTemplate.htm';
+
+// $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
 import { isDevice, request, getQueryParam, noop, urlWillRedirectPage } from '../../lib';

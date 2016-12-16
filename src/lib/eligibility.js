@@ -1,3 +1,5 @@
+/* @flow weak */
+
 import { isWebView, getAgent} from './device';
 import { config } from '../config';
 

@@ -1,3 +1,4 @@
+/* @flow weak */
 
 import Symbol from 'es6-symbol/polyfill';
 import ArrayIterator from 'es6-iterator/array';
