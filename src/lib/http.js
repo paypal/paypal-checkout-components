@@ -1,65 +1,44 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-export function request(options) {
+type requestOptions = {
+    url      : string,
+    method?  : string,
+    headers? : { [key:string] : string },
+    json?    : Object,
+    data?    : { [key:string] : string },
+    body?    : string,
+    win?     : window
+};
+
+export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : requestOptions) : Promise<Object> {
 
     return new Promise((resolve, reject) => {
 
-        options.method = options.method || 'get';
+        if (json && data || json && body || data && json) {
+            throw new Error(`Only options.json or options.data or options.body should be passed`);
+        }
 
-        let headers = options.headers || {};
-
-        if (options.json) {
+        if (json) {
             headers['Content-Type'] = headers['Content-Type'] || 'application/json';
-        } else if (options.body) {
+        } else if (data || body) {
             headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=utf-8';
         }
 
         headers.Accept = headers.Accept || 'application/json';
 
-        let xhr;
-
-        let win = options.win || window;
-
-        /*
-
-        let isCrossDomain = options.url.indexOf('http') === 0 && options.url.indexOf(`${window.location.protocol}//${window.location.host}`) !== 0;
-
-        if (win.XDomainRequest && win.navigator.userAgent.match(/MSIE (5|6|7|8|9)\./) && isCrossDomain) {
-
-            xhr = new win.XDomainRequest();
-
-            xhr.onload = function() {
-                resolve(JSON.parse(this.responseText));
-            };
-
-            xhr.onerror = function(evt) {
-                reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
-            };
-
-            xhr.open(options.method, options.url, true);
-
-            if (headers && Object.keys(headers).length) {
-                return reject(new Error(`Headers in a cross-domain IE9- request? Not a chance.`));
-            }
-
-        } else {
-
-        }
-        */
-
-        xhr = new win.XMLHttpRequest();
+        let xhr = new win.XMLHttpRequest();
 
         xhr.addEventListener('load', function() {
             resolve(JSON.parse(this.responseText));
         }, false);
 
         xhr.addEventListener('error', (evt) => {
-            reject(new Error(`Request to ${options.method.toLowerCase()} ${options.url} failed: ${evt.toString()}`));
+            reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: ${evt.toString()}`));
         }, false);
 
-        xhr.open(options.method, options.url, true);
+        xhr.open(method, url, true);
 
         if (headers) {
             for (let key in headers) {
@@ -67,26 +46,22 @@ export function request(options) {
             }
         }
 
-        if (options.json && !options.body) {
-            options.body = JSON.stringify(options.json);
-        }
-
-        if (options.body && typeof options.body === 'object') {
-            options.body = Object.keys(options.body).map(key => {
-                return `${encodeURIComponent(key)}=${encodeURIComponent(options.body[key])}`;
+        if (json) {
+            body = JSON.stringify(json);
+        } else if (data) {
+            body = Object.keys(data).map(key => {
+                return `${encodeURIComponent(key)}=${data ? encodeURIComponent(data[key]) : ''}`;
             }).join('&');
         }
 
-        xhr.send(options.body);
+        xhr.send(body);
     });
 }
 
-request.get = (url, options = {}) => {
-    let method = 'get';
-    return request({ method, url, ...options });
+request.get = (url : string, options = {}) => {
+    return request({ method: 'get', url, ...options });
 };
 
-request.post = (url, body, options = {}) => {
-    let method = 'post';
-    return request({ method, url, body, ...options });
+request.post = (url : string, data, options = {}) => {
+    return request({ method: 'post', url, data, ...options });
 };

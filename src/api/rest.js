@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import postRobot from 'post-robot/src';
@@ -10,15 +10,15 @@ import { request } from '../lib';
 
 import { Button } from '../components';
 
-let proxyRest = {};
+let proxyRest : { [key: string] : function } = {};
 
-function memoize(method, options = {}) {
+function memoize(method : function, options : { time?: number } = {}) : function {
 
-    let cache = {};
+    let cache : { [key: string] : mixed } = {};
 
-    return function() {
+    return function() : mixed {
 
-        let key = JSON.stringify(arguments);
+        let key : string = JSON.stringify(arguments);
 
         if (!cache.hasOwnProperty(key)) {
             cache[key] = method.apply(this, arguments);
@@ -34,13 +34,13 @@ function memoize(method, options = {}) {
     };
 }
 
-let createAccessToken = memoize((env, client) => {
+let createAccessToken = memoize((env : string, client : { [key: string] : string }) : string => {
 
     $logger.info(`rest_api_create_access_token`);
 
     env = env || config.env;
 
-    let clientID = client[env];
+    let clientID : string = client[env];
 
     if (!clientID) {
         throw new Error(`Client ID not found for env: ${env}`);
@@ -50,7 +50,7 @@ let createAccessToken = memoize((env, client) => {
         return proxyRest.createAccessToken(env, client);
     }
 
-    let basicAuth = btoa(`${clientID}:`);
+    let basicAuth : string = btoa(`${clientID}:`);
 
     return request({
 
@@ -59,7 +59,7 @@ let createAccessToken = memoize((env, client) => {
         headers: {
             Authorization: `Basic ${basicAuth}`
         },
-        body: {
+        data: {
             grant_type: `client_credentials`
         }
 
@@ -77,7 +77,7 @@ let createAccessToken = memoize((env, client) => {
     });
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
+let createExperienceProfile = memoize((env : string, client : { [key: string] : string }, experienceDetails : Object = {}) => {
 
     $logger.info(`rest_api_create_experience_profile`);
 
@@ -122,7 +122,7 @@ let createExperienceProfile = memoize((env, client, experienceDetails = {}) => {
 
 }, { time: 10 * 60 * 1000 });
 
-function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
+function createCheckoutToken(env : string, client : { [key: string] : string }, paymentDetails : Object, experienceDetails : Object) {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -180,7 +180,7 @@ function createCheckoutToken(env, client, paymentDetails, experienceDetails) {
     });
 }
 
-export function createBillingToken(env, client, billingDetails, experienceDetails) {
+export function createBillingToken(env : string, client : { [key: string] : string }, billingDetails : Object, experienceDetails? : Object) {
 
     $logger.info(`rest_api_create_billing_token`);
 

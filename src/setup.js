@@ -9,7 +9,7 @@ import { setupBridge } from './compat';
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-function domainToEnv(domain) {
+function domainToEnv(domain : string) {
     for (let env of Object.keys(config.paypalUrls)) {
         if (config.paypalUrls[env] === domain) {
             return env;
