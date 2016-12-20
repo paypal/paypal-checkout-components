@@ -45,9 +45,12 @@ gulp.task('webpack-minor-min', ['lint'], function() {
 gulp.task('typecheck', shell.task(['npm run-script flow']));
 
 gulp.task('lint', function() {
-  return gulp.src([ 'src/**/*.js', 'test/{tests,windows}/**/*.js' ]).pipe(eslint())
+  return gulp.src([ 'src/**/*.js', 'test/{tests,windows}/**/*.js' ]).pipe(eslint({
+    fix: Boolean(argv['fix'])
+  }))
   .pipe(eslint.format())
-  .pipe(eslint.failAfterError());
+  .pipe(eslint.failAfterError())
+  .pipe(gulp.dest('src'));
 });
 
 gulp.task('karma', ['lint'], function (done) {
