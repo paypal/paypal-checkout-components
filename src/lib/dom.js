@@ -79,11 +79,15 @@ export function getElements(collection : Array<string | HTMLElement> | NodeList<
         return [];
     }
 
-    if (collection instanceof HTMLElement) {
-        return [ collection ];
+    if (collection instanceof HTMLElement || typeof collection === 'string') {
+        let element = getElement(collection);
+        if (element) {
+            return [ element ];
+        }
+        return [];
     }
 
-    if (Array.isArray(collection) || isNodeList(collection)) {
+    if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
         let result = [];
 
         for (let i = 0; i < collection.length; i++) {

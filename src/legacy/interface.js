@@ -51,7 +51,7 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
     }
 
     let paymentToken = parseToken(item);
-    let url = paymentToken ? `${config.checkoutUrl}?token=${paymentToken}` : item;
+    let url = (paymentToken && item === paymentToken) ? `${config.checkoutUrl}?token=${paymentToken}` : item;
 
     if (url && !url.match(/^https?:\/\/|^\//)) {
         $logger.warn(`startflow_relative_url`, { url });
