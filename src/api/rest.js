@@ -10,9 +10,9 @@ import { request } from '../lib';
 
 import { Button } from '../components';
 
-let proxyRest : { [key : string] : () => Promise<any> } = {};
+let proxyRest : { [key : string] : () => Promise<Object> } = {};
 
-function memoize(method : Function, options : { time? : number } = {}) : () => any {
+function memoize(method : Function, options : { time? : number } = {}) : Function {
 
     let cache : { [key : string] : mixed } = {};
 
