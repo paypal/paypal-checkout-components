@@ -1,8 +1,8 @@
-/* @flow weak */
+/* @flow */
 
 import { config } from '../config';
 
-export function validateProps(props, required = true) {
+export function validateProps(props : Object, required : boolean = true) {
 
     if (!required) {
         return;

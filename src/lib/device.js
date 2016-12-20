@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 export function getUserAgent() {
     return window.navigator.mockUserAgent || window.navigator.userAgent;
@@ -20,7 +20,7 @@ export function isWebView() {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
-export function getAgent(agent) {
+export function getAgent(agent? : string) {
     let ua = getUserAgent();
     let tem;
     let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -41,27 +41,23 @@ export function getAgent(agent) {
     return M;
 }
 
-export function isOperaMini(ua) {
-    ua = ua || global.navigator.userAgent;
+export function isOperaMini(ua? : string = getUserAgent()) {
     return ua.indexOf('Opera Mini') > -1;
 }
 
-export function isAndroid(ua) {
-    ua = ua || global.navigator.userAgent;
+export function isAndroid(ua? : string = getUserAgent()) {
     return (/Android/).test(ua);
 }
 
-export function isIos(ua) {
-    ua = ua || global.navigator.userAgent;
+export function isIos(ua? : string = getUserAgent()) {
     return (/iPhone|iPod|iPad/).test(ua);
 }
 
-export function isGoogleSearchApp(ua) {
+export function isGoogleSearchApp(ua? : string = getUserAgent()) {
     return (/\bGSA\b/).test(ua);
 }
 
-export function isIosWebview(ua) {
-    ua = ua || global.navigator.userAgent;
+export function isIosWebview(ua? : string = getUserAgent()) {
     if (isIos(ua)) {
         if (isGoogleSearchApp(ua)) {
             return true;
@@ -71,15 +67,13 @@ export function isIosWebview(ua) {
     return false;
 }
 
-export function isAndroidWebview(ua) {
-    ua = ua || global.navigator.userAgent;
+export function isAndroidWebview(ua? : string = getUserAgent()) {
     if (isAndroid(ua)) {
         return (/Version\/[\d\.]+/).test(ua) && !isOperaMini(ua);
     }
     return false;
 }
 
-export function supportsPopups(ua) {
-    ua = ua || global.navigator.userAgent;
+export function supportsPopups(ua? : string = getUserAgent()) {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
 }

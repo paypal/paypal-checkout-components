@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 export * from './device';
 export * from './util';

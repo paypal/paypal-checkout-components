@@ -1,3 +1,3 @@
-/* @flow weak */
+/* @flow */
 
 export const REDIRECT_DELAY = 1;

@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 export * from './button';
 export * from './constants';

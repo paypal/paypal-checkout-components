@@ -1,3 +1,3 @@
-/* @flow weak */
+/* @flow */
 
 export * from './rest';

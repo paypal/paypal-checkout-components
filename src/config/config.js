@@ -43,6 +43,8 @@ export let config = {
         Opera: 23
     },
 
+    _apiStage: '',
+
     get apiStage() {
         return config._apiStage || config.stage;
     },
@@ -292,6 +294,8 @@ export let config = {
             [ ENV.TEST ]:       `${apiUrls.test}${experienceApiUri}`
         };
     },
+
+    _paypalUrl: '',
 
     get paypalUrl() {
         return this._paypalUrl || config.paypalUrls[config.env];

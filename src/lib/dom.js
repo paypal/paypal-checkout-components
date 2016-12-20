@@ -1,9 +1,9 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
 
-export function loadScript(src, timeout) {
+export function loadScript(src : string, timeout : number = 0) {
     return new Promise((resolve, reject) => {
         let script = document.createElement('script');
 
@@ -20,7 +20,7 @@ export function loadScript(src, timeout) {
 
         let scriptLoadError = new Error('script_loading_error');
 
-        script.onerror = function (event) {
+        script.onerror = function (event : Event) {
             return reject(scriptLoadError);
         };
 
@@ -37,7 +37,7 @@ export function loadScript(src, timeout) {
 }
 
 
-export function isNodeList(nodes) {
+export function isNodeList(nodes : mixed) {
 
     let result = Object.prototype.toString.call(nodes);
 
@@ -48,17 +48,17 @@ export function isNodeList(nodes) {
     return false;
 }
 
-function isElement(item) {
-    return item instanceof window.HTMLElement;
+function isElement(item) : boolean {
+    return item instanceof HTMLElement;
 }
 
-export function getElement(item) {
+export function getElement(item : string | HTMLElement) : ?HTMLElement {
 
     if (!item) {
         return;
     }
 
-    if (isElement(item)) {
+    if (item instanceof HTMLElement) {
         return item;
     }
 
@@ -73,15 +73,19 @@ export function getElement(item) {
     }
 }
 
-export function getElements(collection) {
+export function getElements(collection : Array<string | HTMLElement> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : Array<HTMLElement> {
 
     if (!collection) {
         return [];
     }
 
-    let result = [];
+    if (collection instanceof HTMLElement) {
+        return [ collection ];
+    }
 
     if (Array.isArray(collection) || isNodeList(collection)) {
+        let result = [];
+
         for (let i = 0; i < collection.length; i++) {
             let el = getElement(collection[i]);
             if (el) {
@@ -90,11 +94,6 @@ export function getElements(collection) {
         }
 
         return result;
-    }
-
-    let el = getElement(collection);
-    if (el) {
-        return [el];
     }
 
     return [];
@@ -118,11 +117,11 @@ let documentReady = new Promise(resolve => {
     }, 10);
 });
 
-export function onDocumentReady(method) {
+export function onDocumentReady(method : () => void) {
     return documentReady.then(method);
 }
 
-export let parseQuery = memoize(queryString => {
+export let parseQuery = memoize((queryString : string) => {
 
     let params = {};
 
@@ -146,11 +145,11 @@ export let parseQuery = memoize(queryString => {
 });
 
 
-export function getQueryParam(name) {
+export function getQueryParam(name : string) {
     return parseQuery(window.location.search.slice(1))[name];
 }
 
-export function urlWillRedirectPage(url) {
+export function urlWillRedirectPage(url : string) {
 
     if (url.indexOf('#') === -1) {
         return true;

@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import $logger from 'beaver-logger/client';
 
@@ -38,7 +38,7 @@ Promise.onPossiblyUnhandledException(err => {
     });
 });
 
-export function setup(options = {}) {
+export function setup(options : Object = {}) {
 
     checkForCommonErrors();
 

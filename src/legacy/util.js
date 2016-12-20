@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import logger from 'beaver-logger/client';
 
@@ -12,7 +12,7 @@ let $logger = logger.prefix(LOG_PREFIX);
 
 let redirected = false;
 
-export function logRedirect(location) {
+export function logRedirect(location : string) {
 
     if (redirected) {
         logger.warn(`multiple_redirects`);
@@ -25,7 +25,7 @@ export function logRedirect(location) {
     $logger.flush();
 }
 
-export function redirect(url) {
+export function redirect(url : string) {
 
     if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
         return setTimeout(() => {
@@ -43,6 +43,11 @@ export function redirect(url) {
     }, REDIRECT_DELAY);
 }
 
+export function isToken(item : string) : boolean {
+    return Boolean(item && item.match(/^(EC-)?[A-Z0-9]{17}$/));
+}
+
+
 /*  Parse Token
     -----------
 
@@ -50,7 +55,7 @@ export function redirect(url) {
     strip out the token from the url in order to pass it down as a prop
 */
 
-export function parseToken(token) {
+export function parseToken(token : string) {
 
     if (!token) {
         return;
@@ -77,4 +82,8 @@ export function parseToken(token) {
     if (match) {
         return match[1];
     }
+}
+
+export function hasToken(item : string) : boolean {
+    return Boolean(parseToken(item));
 }

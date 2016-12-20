@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';

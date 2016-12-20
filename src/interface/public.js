@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 export { default as postRobot } from 'post-robot/src';
 

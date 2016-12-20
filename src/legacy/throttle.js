@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { getThrottle, match } from '../lib';
 import { config } from '../config';
@@ -12,7 +12,7 @@ if (config.legacy_throttles.hasOwnProperty(domain)) {
     throttle = getThrottle(`incontext_${domainStr}`, config.legacy_throttles[domain]);
 }
 
-export function checkThrottle(token, forceLog = false) {
+export function checkThrottle(token : ?string, forceLog : boolean = false) {
 
     if (throttle) {
 

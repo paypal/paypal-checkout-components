@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { checkpoint, fpti } from './beacon';
 import { uniqueID, hashStr } from './util';
@@ -43,7 +43,7 @@ function getUID(name, uid) {
     return { uid, isNew };
 }
 
-export function getThrottle(name, sample : number, id) {
+export function getThrottle(name : string, sample : number, id? : string) {
 
     let { uid, isNew } = getUID(name, id);
 
@@ -78,7 +78,7 @@ export function getThrottle(name, sample : number, id) {
             return treatment;
         },
 
-        logStart(payload = {}) {
+        logStart(payload : { [key: string]: ?string } = {}) {
 
             let event = `${treatment}_start`;
 
@@ -91,7 +91,7 @@ export function getThrottle(name, sample : number, id) {
             return this;
         },
 
-        logComplete(payload = {}) {
+        logComplete(payload : { [key: string]: ?string }  = {}) {
 
             if (!loggedStart && isNew) {
                 return;

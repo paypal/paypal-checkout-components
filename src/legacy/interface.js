@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
@@ -43,15 +43,15 @@ if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
 
-function matchUrlAndPaymentToken(item) {
+function matchUrlAndPaymentToken(item) : { url: string, paymentToken: ?string } {
 
     if (!item || !item.trim()) {
         $logger.error(`startflow_no_url_or_token`, { item });
         throw new Error(`startflow_no_url_or_token`);
     }
 
-    let paymentToken = item && parseToken(item);
-    let url = (item && item !== paymentToken) ? item : null;
+    let paymentToken = parseToken(item);
+    let url = paymentToken ? `${config.checkoutUrl}?token=${paymentToken}` : item;
 
     if (url && !url.match(/^https?:\/\/|^\//)) {
         $logger.warn(`startflow_relative_url`, { url });
@@ -71,11 +71,14 @@ function matchUrlAndPaymentToken(item) {
 
     } else if (url) {
         $logger.debug(`startflow_url_with_no_token`, { item });
-        paymentToken = '';
-    } else {
+    } else if (paymentToken) {
         $logger.debug(`startflow_with_token`, { item });
-        url = `${config.checkoutUrl}?token=${paymentToken}`;
     }
+
+    return { paymentToken, url };
+}
+
+function checkUrlAgainstEnv(url : string) {
 
     let paypalUrls = config.paypalUrls;
 
@@ -94,8 +97,6 @@ function matchUrlAndPaymentToken(item) {
             }
         }
     }
-
-    return { paymentToken, url };
 }
 
 
@@ -126,15 +127,9 @@ function awaitPaymentTokenAndUrl() {
         checkout.startFlow = once((item, opts) => {
             $logger.debug(`gettoken_startflow`, { item });
 
-            let urlAndPaymentToken;
+            let { url, paymentToken } = matchUrlAndPaymentToken(item);
 
-            try {
-                urlAndPaymentToken = matchUrlAndPaymentToken(item);
-            } catch (err) {
-                return reject(err);
-            }
-
-            let { url, paymentToken } = urlAndPaymentToken;
+            checkUrlAgainstEnv(url);
 
             if (!checkThrottle(paymentToken, true)) {
                 $logger.warn(`throttle_failed_on_startflow`);
@@ -205,7 +200,7 @@ function initPayPalCheckout(props = {}) {
         ...props
     });
 
-    checkout.closeFlow = (closeUrl) => {
+    checkout.closeFlow = (closeUrl? : string) => {
         $logger.warn(`closeflow`);
 
         closeFlowCalled = true;
@@ -223,7 +218,7 @@ function initPayPalCheckout(props = {}) {
     return paypalCheckout;
 }
 
-function renderPayPalCheckout(props = {}, hijackTarget) {
+function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) {
 
     let urlProp = Promise.resolve(props.url);
 
@@ -319,7 +314,7 @@ function handleClickHijack(button) {
 
 function listenClick(container, button, clickHandler, condition) {
 
-    let element = (container.tagName.toLowerCase() === 'a') ? container : button;
+    let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
     checkpoint('flow_listenclick');
 
@@ -329,7 +324,7 @@ function listenClick(container, button, clickHandler, condition) {
         return $logger.warn(`button_already_has_paypal_click_listener`);
     }
 
-    element.setAttribute('data-paypal-click-listener', true);
+    element.setAttribute('data-paypal-click-listener', '');
 
     let targetElement = getHijackTargetElement(button);
 
@@ -337,7 +332,7 @@ function listenClick(container, button, clickHandler, condition) {
         $logger.warn(`button_link_or_form`);
     }
 
-    element.addEventListener('click', event => {
+    element.addEventListener('click', (event: Event) => {
 
         checkpoint('flow_buttonclick');
 
@@ -399,7 +394,7 @@ function listenClick(container, button, clickHandler, condition) {
 
 let setupCalled = false;
 
-export function setup(id, options = {}) {
+export function setup(id : string, options : Object = {}) {
 
     checkpoint('flow_setup');
 
@@ -525,12 +520,14 @@ checkout.initXO = initXO;
     method will have been patched over in getToken.
 */
 
-function startFlow(item, opts) {
+function startFlow(item : string) {
     $logger.debug(`startflow`, { item });
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
-    if (!isLegacyEligible(paymentToken)) {
+    checkUrlAgainstEnv(url);
+
+    if (!isLegacyEligible()) {
         $logger.debug(`ineligible_startflow_global`, { url });
         return redirect(url);
     }
@@ -555,7 +552,7 @@ checkout.startFlow = startFlow;
     Close the component in case of any error on the merchant side.
 */
 
-function closeFlow(closeUrl) {
+function closeFlow(closeUrl? : string) {
     $logger.warn(`closeflow_not_opened`);
 
     if (closeUrl) {

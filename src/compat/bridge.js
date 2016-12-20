@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
@@ -28,7 +28,7 @@ postRobot.on('meta', ({ source, data }) => {
     }
 });
 
-export function setupBridge(env) {
+export function setupBridge(env : string) {
     return Promise.try(() => {
 
         let bridgeUrl = config.bridgeUrls[env];

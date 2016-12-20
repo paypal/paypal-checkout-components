@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { isWebView, getAgent, isDevice, getUserAgent } from '../lib';
 

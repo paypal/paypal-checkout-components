@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { beacon, checkpoint } from './lib/beacon';
 import { uniqueID } from './lib/util';

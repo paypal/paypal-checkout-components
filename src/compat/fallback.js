@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import postRobot from 'post-robot/src';
 

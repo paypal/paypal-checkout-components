@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import logger from 'beaver-logger/client';
 
@@ -59,7 +59,7 @@ function renderButton(id, container, options, label) {
     return buttonDom.el.childNodes[0];
 }
 
-export function renderButtons(id, options) {
+export function renderButtons(id : string, options : Object) {
 
     return loadButtonJS().then(() => {
 
@@ -163,26 +163,37 @@ export function renderButtons(id, options) {
     });
 }
 
-export function getHijackTargetElement(button) {
+export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement) : ?Element {
 
-    if (button && button.form) {
+    // $FlowFixMe
+    let form = button.form;
+
+    if (form) {
         $logger.debug(`target_element_button_form`);
-        return button.form;
+        return form;
     }
 
-    if (button && button.tagName && button.tagName.toLowerCase() === 'a') {
+    let tagName = button.tagName && button.tagName.toLowerCase();
+
+    if (tagName === 'a') {
         $logger.debug(`target_element_link`);
         return button;
     }
 
-    if (button && button.tagName && (button.tagName.toLowerCase() === 'img' || button.tagName.toLowerCase() === 'button') && button.parentNode && button.parentNode.tagName.toLowerCase() === 'a') {
+    let parentElement = button.parentElement;
+    let parentTagName = parentElement && parentElement.tagName && parentElement.tagName.toLowerCase();
+
+    if ((tagName === 'img' || tagName === 'button') && parentTagName === 'a') {
         $logger.debug(`target_element_parent_link`);
-        return button.parentNode;
+        return parentElement;
     }
 
-    if (button && button.tagName && button.tagName.toLowerCase() === 'button' && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === 'a') {
-        $logger.debug(`target_element_parent_parent_link`);
-        return button.parentNode.parentNode;
+    let grandparentElement = parentElement && parentElement.parentElement;
+    let grandparentTagName = grandparentElement && grandparentElement.tagName && grandparentElement.tagName.toLowerCase();
+
+    if (tagName === 'button' && grandparentTagName === 'a') {
+        $logger.debug(`target_element_grandparent_link`);
+        return button.parentElement && button.parentElement.parentElement;
     }
 
     $logger.error(`target_element_not_found`);

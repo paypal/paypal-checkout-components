@@ -1,8 +1,8 @@
-/* @flow weak */
+/* @flow */
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
-export function beacon(event, payload = {}) {
+export function beacon(event : string, payload : Object = {}) {
     try {
 
         payload.event = `ppxo_${event}`;
@@ -32,7 +32,7 @@ export function beacon(event, payload = {}) {
 
 let loggedCheckpoints = [];
 
-export function checkpoint(name, payload = {}) {
+export function checkpoint(name : string, payload : Object = {}) {
     try {
 
         let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
@@ -71,7 +71,7 @@ function buildPayload() {
     };
 }
 
-export function fpti(payload = {}) {
+export function fpti(payload : Object = {}) {
 
     let query = [];
 

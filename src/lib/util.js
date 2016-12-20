@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import { config } from '../config';
 
@@ -7,7 +7,7 @@ export function isPayPalDomain() {
 }
 
 
-export function memoize(method) {
+export function memoize(method : Function) {
 
     let results = {};
 
@@ -33,7 +33,7 @@ export function noop() {
     // pass
 }
 
-export function once(method) {
+export function once(method : Function) {
     let called = false;
 
     return function () {
@@ -53,7 +53,7 @@ export function uniqueID() {
     });
 }
 
-export function hashStr(str) {
+export function hashStr(str : string) {
     let hash = 0;
 
     if (str.length === 0) {
@@ -69,14 +69,14 @@ export function hashStr(str) {
     return Math.abs(hash);
 }
 
-export function match(str, pattern) {
+export function match(str : string, pattern : RegExp) {
     let regmatch = str.match(pattern);
     if (regmatch) {
         return regmatch[1];
     }
 }
 
-export function safeJSON(item) {
+export function safeJSON(item : mixed) {
     return JSON.stringify(item, (key, val) => {
 
         if (typeof val === 'function') {

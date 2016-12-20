@@ -1,4 +1,4 @@
-/* @flow weak */
+/* @flow */
 
 import logger from 'beaver-logger/client';
 
@@ -10,7 +10,7 @@ let $logger = logger.prefix(LOG_PREFIX);
 const DEFAULT_COUNTRY = 'US';
 const DEFAULT_LANG = 'en';
 
-export function normalizeLocale(locale) {
+export function normalizeLocale(locale : string) {
 
     let [ lang, country ] = locale.split('_');
 
