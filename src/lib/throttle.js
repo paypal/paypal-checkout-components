@@ -78,7 +78,7 @@ export function getThrottle(name : string, sample : number, id? : string) {
             return treatment;
         },
 
-        logStart(payload : { [key: string]: ?string } = {}) {
+        logStart(payload : { [key : string] : ?string } = {}) {
 
             let event = `${treatment}_start`;
 
@@ -91,7 +91,7 @@ export function getThrottle(name : string, sample : number, id? : string) {
             return this;
         },
 
-        logComplete(payload : { [key: string]: ?string }  = {}) {
+        logComplete(payload : { [key : string] : ?string }  = {}) {
 
             if (!loggedStart && isNew) {
                 return;

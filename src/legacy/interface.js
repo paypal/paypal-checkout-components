@@ -43,7 +43,7 @@ if (window.xchild && !window.paypalCheckout) {
     window.paypalCheckout = window.xchild;
 }
 
-function matchUrlAndPaymentToken(item) : { url: string, paymentToken: ?string } {
+function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string } {
 
     if (!item || !item.trim()) {
         $logger.error(`startflow_no_url_or_token`, { item });
@@ -332,7 +332,7 @@ function listenClick(container, button, clickHandler, condition) {
         $logger.warn(`button_link_or_form`);
     }
 
-    element.addEventListener('click', (event: Event) => {
+    element.addEventListener('click', (event : Event) => {
 
         checkpoint('flow_buttonclick');
 

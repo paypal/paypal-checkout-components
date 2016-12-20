@@ -48,7 +48,7 @@ export function isNodeList(nodes : mixed) {
     return false;
 }
 
-function isElement(item) : boolean {
+export function isElement(item) : boolean {
     return item instanceof HTMLElement;
 }
 
