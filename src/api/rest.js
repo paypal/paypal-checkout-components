@@ -10,11 +10,11 @@ import { request } from '../lib';
 
 import { Button } from '../components';
 
-let proxyRest : { [key: string] : function } = {};
+let proxyRest : { [key : string] : () => Promise<any> } = {};
 
-function memoize(method : function, options : { time?: number } = {}) : function {
+function memoize(method : Function, options : { time? : number } = {}) : () => any {
 
-    let cache : { [key: string] : mixed } = {};
+    let cache : { [key : string] : mixed } = {};
 
     return function() : mixed {
 
@@ -34,7 +34,7 @@ function memoize(method : function, options : { time?: number } = {}) : function
     };
 }
 
-let createAccessToken = memoize((env : string, client : { [key: string] : string }) : string => {
+let createAccessToken = memoize((env : string, client : { [key : string] : string }) : string => {
 
     $logger.info(`rest_api_create_access_token`);
 
@@ -77,7 +77,7 @@ let createAccessToken = memoize((env : string, client : { [key: string] : string
     });
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env : string, client : { [key: string] : string }, experienceDetails : Object = {}) => {
+let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) => {
 
     $logger.info(`rest_api_create_experience_profile`);
 
@@ -122,7 +122,7 @@ let createExperienceProfile = memoize((env : string, client : { [key: string] : 
 
 }, { time: 10 * 60 * 1000 });
 
-function createCheckoutToken(env : string, client : { [key: string] : string }, paymentDetails : Object, experienceDetails : Object) {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails : Object) {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -180,7 +180,7 @@ function createCheckoutToken(env : string, client : { [key: string] : string }, 
     });
 }
 
-export function createBillingToken(env : string, client : { [key: string] : string }, billingDetails : Object, experienceDetails? : Object) {
+export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : Object) {
 
     $logger.info(`rest_api_create_billing_token`);
 

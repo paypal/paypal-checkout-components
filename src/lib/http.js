@@ -2,17 +2,17 @@
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-type requestOptions = {
-    url      : string,
-    method?  : string,
-    headers? : { [key:string] : string },
-    json?    : Object,
-    data?    : { [key:string] : string },
-    body?    : string,
-    win?     : window
+type RequestOptionsType = {
+    url : string,
+    method? : string,
+    headers? : { [key : string] : string },
+    json? : Object,
+    data? : { [key : string] : string },
+    body? : string,
+    win? : window
 };
 
-export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : requestOptions) : Promise<Object> {
+export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : Promise<Object> {
 
     return new Promise((resolve, reject) => {
 
