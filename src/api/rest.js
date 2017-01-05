@@ -122,7 +122,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
 
 }, { time: 10 * 60 * 1000 });
 
-function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails : Object) : Promise<string> {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : Object) : Promise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
 

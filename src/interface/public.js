@@ -1,5 +1,3 @@
-/* @flow */
-
 export { default as postRobot } from 'post-robot/src';
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';

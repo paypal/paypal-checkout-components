@@ -1,9 +1,11 @@
+/* @flow */
+
+import { assert } from 'chai';
 
 import paypal from 'src/index';
-import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -34,7 +36,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -56,12 +58,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'cancel';
+                paypal.Checkout.props.testAction.def = () => 'cancel';
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
@@ -73,6 +75,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let checkoutUrl = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
             delete config.checkoutUrl;
+
+            // $FlowFixMe
             config.checkoutUrl = '#testCheckoutUrl';
 
             let token = generateECToken();
@@ -87,10 +91,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+
+                    // $FlowFixMe
                     Object.defineProperty(config, 'checkoutUrl', checkoutUrl);
                 });
             });
@@ -111,7 +117,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -134,7 +140,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -158,7 +164,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -182,7 +188,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -209,7 +215,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -235,7 +241,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 if (clicked) {
                     throw new Error('Expected button not to be clicked');
@@ -258,7 +264,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -278,7 +284,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -300,7 +306,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl`);
@@ -320,8 +326,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     paypal.checkout.initXO();
 
-                    assert.ok(paypal.checkout.win, 'Expected paypal.ceheckout.win to be present');
-                    assert.ok(!paypal.checkout.win.closed, 'Expected paypal.ceheckout.win to not be closed');
+                    assert.isOk(paypal.checkout.win, 'Expected paypal.ceheckout.win to be present');
+                    assert.isOk(!paypal.checkout.win.closed, 'Expected paypal.ceheckout.win to not be closed');
 
                     setTimeout(() => {
                         paypal.checkout.startFlow(token);
@@ -330,7 +336,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -358,7 +364,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -386,7 +392,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -410,7 +416,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -438,7 +444,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -461,7 +467,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -512,7 +518,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
             });
         });
 
@@ -530,7 +536,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -555,7 +561,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#closeFlowUrl`);
@@ -603,7 +609,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
             });
         });
     });

@@ -1,4 +1,4 @@
-
+/* @flow */
 
 import paypal from 'src/index';
 

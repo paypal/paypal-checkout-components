@@ -1,10 +1,10 @@
-
+/* @flow */
 
 import paypal from 'src/index';
-import { Checkout } from 'src/index';
+import { assert } from 'chai';
 import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -55,12 +55,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(token);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -102,17 +102,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(token);
                 });
 
-                Checkout.props.testAction.def = () => 'cancel';
+                paypal.Checkout.props.testAction.def = () => 'cancel';
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
@@ -142,12 +142,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testLink.querySelector('button').addEventListener('click', event => {
+                getElement('button', testLink).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(token);
                 });
 
-                testLink.querySelector('button').click();
+                getElement('button', testLink).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -194,12 +194,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(token);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -231,7 +231,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testLink.addEventListener('click', event => {
+                testLink.addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(token);
                 });
@@ -273,7 +273,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            testForm.querySelector('button').addEventListener('click', event => {
+            getElement('button', testForm).addEventListener('click', (event : Event) => {
                 event.preventDefault();
                 paypal.checkout.initXO();
 
@@ -307,7 +307,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -330,7 +330,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
             });
 
-            testLink.addEventListener('click', event => {
+            testLink.addEventListener('click', (event : Event) => {
                 event.preventDefault();
                 paypal.checkout.initXO();
 
@@ -408,12 +408,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -457,12 +457,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -504,13 +504,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     paypal.checkout.startFlow(token);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -552,13 +552,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -602,13 +602,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -650,7 +650,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
@@ -658,7 +658,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -700,7 +700,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
@@ -708,7 +708,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -752,7 +752,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
@@ -760,7 +760,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -802,7 +802,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
@@ -810,7 +810,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
@@ -854,7 +854,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
@@ -862,7 +862,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
@@ -905,7 +905,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
 
                     setTimeout(() => {
@@ -913,7 +913,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }, 200);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#closeFlowUrl`);
@@ -955,13 +955,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
 
                     paypal.checkout.closeFlow('#closeFlowUrl');
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#closeFlowUrl`);
@@ -1003,7 +1003,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
 
                     paypal.checkout.initXO();
@@ -1038,7 +1038,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     };
                 }
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
             });
         });
 
@@ -1076,7 +1076,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
 
                     paypal.checkout.initXO();
@@ -1109,7 +1109,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     };
                 }
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
             });
         });
     });

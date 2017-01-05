@@ -1,6 +1,7 @@
-
+/* @flow */
 
 import paypal from 'src/index';
+import { assert } from 'chai';
 
 import { generateECToken, generateBillingToken } from '../common';
 
@@ -13,7 +14,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -29,7 +30,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -43,7 +44,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -69,7 +70,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -82,7 +83,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -101,7 +102,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -120,7 +121,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -139,7 +140,7 @@ describe(`paypal button component validation`, () => {
         }, '#meep').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 });

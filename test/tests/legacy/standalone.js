@@ -1,6 +1,8 @@
+/* @flow */
+
+import { assert } from 'chai';
 
 import paypal from 'src/index';
-import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
@@ -27,7 +29,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(token);
             });
 
@@ -43,16 +45,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(token);
             });
 
-            Checkout.props.testAction.def = () => 'cancel';
+            paypal.Checkout.props.testAction.def = () => 'cancel';
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                Checkout.props.testAction.def = () => 'checkout';
+                paypal.Checkout.props.testAction.def = () => 'checkout';
                 assert.equal(urlHash, `#cancel?token=${token}`);
             });
         });
@@ -63,7 +65,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
             });
 
@@ -78,7 +80,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(CHILD_REDIRECT_URI);
             });
 
@@ -94,7 +96,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
 
                 paypal.checkout.initXO();
 
@@ -116,7 +118,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.initXO();
 
                 setTimeout(() => {
@@ -136,7 +138,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.initXO();
 
                 setTimeout(() => {
@@ -156,7 +158,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
 
                 paypal.checkout.initXO();
                 paypal.checkout.startFlow(token);
@@ -173,7 +175,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
 
                 if (flow === 'popup') {
                     let open = window.open;
@@ -215,7 +217,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.initXO();
 
                 setTimeout(() => {
@@ -234,7 +236,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
 
                 if (flow === 'lightbox') {
                     setTimeout(() => {

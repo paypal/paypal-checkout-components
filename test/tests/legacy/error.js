@@ -1,9 +1,10 @@
+/* @flow */
 
 import paypal from 'src/index';
-import { Checkout } from 'src/index';
+import { assert } from 'chai';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement, uniqueID } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement, uniqueID, getElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -28,7 +29,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
             });
 
@@ -46,16 +47,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
             });
 
-            Checkout.props.testAction.def = () => 'error';
+            paypal.Checkout.props.testAction.def = () => 'error';
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                Checkout.props.testAction.def = () => 'checkout';
+                paypal.Checkout.props.testAction.def = () => 'checkout';
                 assert.equal(urlHash, `#redirectUrl?token=${token}`);
             });
         });
@@ -76,7 +77,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 preventOpenWindow(flow);
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#redirectUrl?token=${token}`);
@@ -98,12 +99,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'error';
+                paypal.Checkout.props.testAction.def = () => 'error';
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#redirectUrl?token=${token}`);
                 });
             });
@@ -129,7 +130,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 preventOpenWindow(flow);
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#redirectUrl?token=${token}`);
@@ -155,12 +156,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'error';
+                paypal.Checkout.props.testAction.def = () => 'error';
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#redirectUrl?token=${token}`);
                 });
             });
@@ -180,16 +181,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                let paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
                 delete config.checkoutUrl;
+
+                // $FlowFixMe
                 config.checkoutUrl = '#errorRedirectUrl';
 
                 preventOpenWindow(flow);
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+
+                    // $FlowFixMe
+                    Object.defineProperty(config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -209,17 +214,21 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                let paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
                 delete config.checkoutUrl;
+
+                // $FlowFixMe
                 config.checkoutUrl = '#errorRedirectUrl';
 
-                Checkout.props.testAction.def = () => 'error';
+                paypal.Checkout.props.testAction.def = () => 'error';
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
-                    Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
+
+                    // $FlowFixMe
+                    Object.defineProperty(config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -252,7 +261,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testForm.addEventListener('submit', event => {
                 if (!testForm.target) {
                     event.preventDefault();
-                    window.location = testForm.action;
+                    window.location = testForm.getAttribute('action');
                 }
             });
 
@@ -268,7 +277,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return result;
             });
@@ -303,17 +312,21 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'error';
+                paypal.Checkout.props.testAction.def = () => 'error';
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
-                let checkoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
+                let CheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
                 delete config.checkoutUrl;
+
+                // $FlowFixMe
                 config.checkoutUrl = '#errorRedirectUrl';
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
-                    Object.defineProperty(config, 'checkoutUrl', checkoutUrlDescriptor);
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
+
+                    // $FlowFixMe
+                    Object.defineProperty(config, 'checkoutUrl', CheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -349,14 +362,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(`#errorRedirectUrl?token=${token}`);
                 });
 
                 preventOpenWindow(flow);
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
@@ -394,17 +407,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').addEventListener('click', event => {
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     paypal.checkout.startFlow(`#errorRedirectUrl?token=${token}`);
                 });
 
-                Checkout.props.testAction.def = () => 'error';
+                paypal.Checkout.props.testAction.def = () => 'error';
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -418,6 +431,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 click(event) : void {
                     try {
+                        // $FlowFixMe
                         paypal.checkout.startFlow();
                     } catch (err) {
                         return done();
@@ -428,7 +442,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
             });
         });
 
@@ -446,7 +460,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
@@ -472,7 +486,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
@@ -494,12 +508,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'fallback';
+                paypal.Checkout.props.testAction.def = () => 'fallback';
 
-                document.querySelector('#testContainer button').click();
+                getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#fallbackUrl?token=${token}`);
                 });
             });

@@ -1,6 +1,7 @@
-
+/* @flow */
 
 import paypal from 'src/index';
+import { assert } from 'chai';
 
 import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
 
@@ -22,7 +23,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 return paypal.Checkout.render({
 
                     testAction: 'fallback',
@@ -49,7 +50,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', event => {
+            testButton.addEventListener('click', (event : Event) => {
                 return paypal.Checkout.render({
 
                     testAction: 'error',
@@ -59,7 +60,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     },
 
                     onError(err) : void {
-                        assert.ok(err instanceof Error);
+                        assert.isOk(err instanceof Error);
                         return done();
                     },
 
@@ -86,7 +87,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     },
 
                     onError(err) : void {
-                        assert.ok(err instanceof Error);
+                        assert.isOk(err instanceof Error);
                         return done();
                     },
 

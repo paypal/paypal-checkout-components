@@ -1,3 +1,4 @@
+/* @flow */
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
@@ -26,13 +27,13 @@ export function onHashChange() : Promise<string> {
     });
 }
 
-export function delay(time) : Promise<void> {
+export function delay(time : number) : Promise<void> {
     return new Promise(resolve => {
         setTimeout(resolve, time);
     });
 }
 
-export function uniqueID(length = 8, chars = '0123456789abcdefhijklmnopqrstuvwxyz') : string {
+export function uniqueID(length : number = 8, chars : string = '0123456789abcdefhijklmnopqrstuvwxyz') : string {
     return new Array(length + 1).join('x').replace(/x/g, item => {
         return chars.charAt(Math.floor(Math.random() * chars.length));
     });
@@ -58,7 +59,7 @@ export const CHILD_REDIRECT_URI = '/base/test/windows/redirect/index.htm';
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
-export function createElement(options) : HTMLElement {
+export function createElement(options : Object) : HTMLElement {
 
     let element = document.createElement(options.tag || 'div');
 
@@ -79,14 +80,18 @@ export function createElement(options) : HTMLElement {
     }
 
     if (options.container) {
-        let container = options.container;
 
-        if (typeof container === 'string') {
-            container = document.getElementById(container) || document.querySelector(container);
+        let container;
+        let containerName = options.container;
+
+        if (typeof containerName === 'string') {
+            container = document.getElementById(containerName) || document.querySelector(containerName);
+        } else {
+            container = containerName;
         }
 
         if (!container) {
-            throw new Error(`Could not find container: ${options.container}`);
+            throw new Error(`Could not find container: ${containerName}`);
         }
 
         container.appendChild(element);
@@ -95,13 +100,36 @@ export function createElement(options) : HTMLElement {
     return element;
 }
 
-export function destroyElement(element) {
+export function destroyElement(element : string | HTMLElement) {
 
     if (typeof element === 'string') {
         element = document.getElementById(element) || document.querySelector(element);
     }
 
-    element.parentNode.removeChild(element);
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+}
+
+export function getElement(el : string | HTMLElement, container : HTMLElement | Document = document) : HTMLElement {
+
+    if (!el) {
+        throw new Error(`No element passed`);
+    }
+
+    let element;
+
+    if (typeof el === 'string') {
+        element = container.querySelector(el);
+
+        if (!element) {
+            throw new Error(`Can not find element: ${el}`);
+        }
+    } else {
+        element = el;
+    }
+
+    return element;
 }
 
 
@@ -209,7 +237,7 @@ window.open = function() : window {
     return windowOpen.apply(this, arguments);
 };
 
-export function preventOpenWindow(flow) {
+export function preventOpenWindow(flow : string) {
 
     if (flow === 'popup') {
         let winOpen = window.open;
@@ -225,7 +253,8 @@ export function preventOpenWindow(flow) {
     } else if (flow === 'lightbox') {
 
         let documentCreateElement = document.createElement;
-        document.createElement = () => {
+        // $FlowFixMe
+        document.createElement = (name : string) => { // $FlowFixMe
             document.createElement = documentCreateElement;
             throw new Error('Can not create element');
         };

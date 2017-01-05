@@ -1,6 +1,7 @@
+/* @flow */
 
 import paypal from 'src/index';
-import '../../tests/common';
+import { getElement } from '../../tests/common';
 
 function renderCheckout() {
     paypal.Checkout.renderTo(window.top.frames[0], {
@@ -43,7 +44,7 @@ function renderCheckout() {
     });
 }
 
-document.querySelector('#button').addEventListener('click', event => {
+getElement('#button', document).addEventListener('click', (event : Event) => {
     renderCheckout();
 });
 

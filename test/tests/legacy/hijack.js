@@ -1,9 +1,11 @@
+/* @flow */
+
+import { assert } from 'chai';
 
 import paypal from 'src/index';
-import { Checkout } from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, uniqueID, generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
+import { onHashChange, uniqueID, generateECToken, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -49,7 +51,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -86,12 +88,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                Checkout.props.testAction.def = () => 'cancel';
+                paypal.Checkout.props.testAction.def = () => 'cancel';
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    Checkout.props.testAction.def = () => 'checkout';
+                    paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
@@ -117,7 +119,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testLink.querySelector('button').click();
+                getElement('button', testLink).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -159,7 +161,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testForm.querySelector('button').click();
+                getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -222,7 +224,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testLink.querySelector('#testButton').click();
+                getElement('#testButton', testLink).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -261,7 +263,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                testLink.querySelector('#testButton').click();
+                getElement('#testButton', testLink).click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);

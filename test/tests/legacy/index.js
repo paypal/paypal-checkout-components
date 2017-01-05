@@ -1,3 +1,4 @@
+/* @flow */
 
 export * from './ready';
 export * from './button';

@@ -1,7 +1,9 @@
+/* @flow */
 
 import paypal from 'src/index';
+import { assert } from 'chai';
 
-import { createElement, createTestContainer, destroyTestContainer } from '../common';
+import { createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 describe('paypal legacy button rendering', () => {
 
@@ -21,7 +23,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            assert.ok(document.querySelector('#testContainer button'));
+            assert.isOk(document.querySelector('#testContainer button'));
         });
     });
 
@@ -37,7 +39,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            assert.ok(document.querySelector('#testContainer button'));
+            assert.isOk(document.querySelector('#testContainer button'));
         });
     });
 
@@ -54,7 +56,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            getElement('#testContainer button').click();
         });
     });
 
@@ -73,7 +75,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            getElement('#testContainer button').click();
         });
     });
 
@@ -85,15 +87,15 @@ describe('paypal legacy button rendering', () => {
             container: 'testContainer',
 
             click(event) {
-                assert.ok(event, 'Expected an event to be passed to click function');
-                assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
+                assert.isOk(event, 'Expected an event to be passed to click function');
+                assert.isOk(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
 
                 done();
             }
 
         }).then(() => {
 
-            document.querySelector('#testContainer button').click();
+            getElement('#testContainer button').click();
         });
     });
 
@@ -155,7 +157,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            link.querySelector('button').click();
+            getElement('button', link).click();
         });
     });
 
@@ -524,8 +526,8 @@ describe('paypal legacy button rendering', () => {
             button: 'testButton',
 
             click(event) {
-                assert.ok(event, 'Expected an event to be passed to click function');
-                assert.ok(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
+                assert.isOk(event, 'Expected an event to be passed to click function');
+                assert.isOk(event.preventDefault instanceof Function, 'Expected event to have preventDefault method');
 
                 done();
             }
@@ -561,7 +563,7 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            customLink.querySelector('#testButton').click();
+            getElement('#testButton', customLink).click();
         });
     });
 
@@ -586,8 +588,8 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            buttonContainer1.querySelector('button').click();
-            buttonContainer2.querySelector('button').click();
+            getElement('button', buttonContainer1).click();
+            getElement('button', buttonContainer2).click();
         });
     });
 
@@ -612,8 +614,8 @@ describe('paypal legacy button rendering', () => {
 
         }).then(() => {
 
-            buttonContainer1.querySelector('button').click();
-            buttonContainer2.querySelector('button').click();
+            getElement('button', buttonContainer1).click();
+            getElement('button', buttonContainer2).click();
         });
     });
 
@@ -848,9 +850,9 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
-            let content3 = container3.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
+            let content3 = (getElement('.paypal-button-content span', container3).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match en_US');
             assert.notEqual(content1, content3, 'en_US should not match en_FR');
@@ -878,8 +880,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match no locale');
         });
@@ -906,8 +908,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match xx_XX');
         });
@@ -934,8 +936,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'fr_US should match fr');
         });
@@ -962,8 +964,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_US should match US');
         });
@@ -990,8 +992,8 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            let content1 = container1.querySelector('.paypal-button-content span').innerText.trim();
-            let content2 = container2.querySelector('.paypal-button-content span').innerText.trim();
+            let content1 = (getElement('.paypal-button-content span', container1).innerText || '').trim();
+            let content2 = (getElement('.paypal-button-content span', container2).innerText || '').trim();
 
             assert.equal(content1, content2, 'en_FR should match FR');
         });
@@ -1006,11 +1008,11 @@ describe('paypal legacy button options', () => {
             container: 'container1'
 
         }).then(() => {
-            assert.ok(container1.querySelector('button').classList.contains('paypal-style-checkout'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-size-small'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-pill'));
-            assert.ok(container1.querySelector('button').classList.contains('en_US'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-style-checkout'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-size-small'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-color-gold'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-shape-pill'));
+            assert.isOk(getElement('button', container1).classList.contains('en_US'));
         });
     });
 
@@ -1025,7 +1027,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-size-tiny'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-size-tiny'));
         });
     });
 
@@ -1040,7 +1042,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-size-small'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-size-small'));
         });
     });
 
@@ -1055,7 +1057,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-size-medium'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-size-medium'));
         });
     });
 
@@ -1070,7 +1072,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-pill'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-shape-pill'));
         });
     });
 
@@ -1085,7 +1087,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-rect'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-shape-rect'));
         });
     });
 
@@ -1100,7 +1102,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-color-gold'));
         });
     });
 
@@ -1115,7 +1117,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-color-blue'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-color-blue'));
         });
     });
 
@@ -1130,7 +1132,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-color-silver'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-color-silver'));
         });
     });
 
@@ -1145,7 +1147,7 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('fr_FR'));
+            assert.isOk(getElement('button', container1).classList.contains('fr_FR'));
         });
     });
 
@@ -1183,23 +1185,23 @@ describe('paypal legacy button options', () => {
 
         }).then(() => {
 
-            assert.ok(container1.querySelector('button').classList.contains('paypal-style-checkout'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-size-tiny'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-color-gold'));
-            assert.ok(container1.querySelector('button').classList.contains('paypal-shape-rect'));
-            assert.ok(container1.querySelector('button').classList.contains('de_DE'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-style-checkout'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-size-tiny'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-color-gold'));
+            assert.isOk(getElement('button', container1).classList.contains('paypal-shape-rect'));
+            assert.isOk(getElement('button', container1).classList.contains('de_DE'));
 
-            assert.ok(container2.querySelector('button').classList.contains('paypal-style-checkout'));
-            assert.ok(container2.querySelector('button').classList.contains('paypal-size-medium'));
-            assert.ok(container2.querySelector('button').classList.contains('paypal-color-silver'));
-            assert.ok(container2.querySelector('button').classList.contains('paypal-shape-pill'));
-            assert.ok(container2.querySelector('button').classList.contains('en_GB'));
+            assert.isOk(getElement('button', container2).classList.contains('paypal-style-checkout'));
+            assert.isOk(getElement('button', container2).classList.contains('paypal-size-medium'));
+            assert.isOk(getElement('button', container2).classList.contains('paypal-color-silver'));
+            assert.isOk(getElement('button', container2).classList.contains('paypal-shape-pill'));
+            assert.isOk(getElement('button', container2).classList.contains('en_GB'));
 
-            assert.ok(container3.querySelector('button').classList.contains('paypal-style-checkout'));
-            assert.ok(container3.querySelector('button').classList.contains('paypal-size-small'));
-            assert.ok(container3.querySelector('button').classList.contains('paypal-color-blue'));
-            assert.ok(container3.querySelector('button').classList.contains('paypal-shape-rect'));
-            assert.ok(container3.querySelector('button').classList.contains('es_ES'));
+            assert.isOk(getElement('button', container3).classList.contains('paypal-style-checkout'));
+            assert.isOk(getElement('button', container3).classList.contains('paypal-size-small'));
+            assert.isOk(getElement('button', container3).classList.contains('paypal-color-blue'));
+            assert.isOk(getElement('button', container3).classList.contains('paypal-shape-rect'));
+            assert.isOk(getElement('button', container3).classList.contains('es_ES'));
         });
     });
 });

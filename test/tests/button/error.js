@@ -1,6 +1,7 @@
-
+/* @flow */
 
 import paypal from 'src/index';
+import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
@@ -85,7 +86,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onError(err) : void {
-                    assert.ok(err instanceof Error);
+                    assert.isOk(err instanceof Error);
                     return done();
                 },
 

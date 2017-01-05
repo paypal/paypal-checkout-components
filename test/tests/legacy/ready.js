@@ -1,3 +1,4 @@
+/* @flow */
 
 import { delay } from '../common';
 

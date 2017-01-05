@@ -1,3 +1,4 @@
+/* @flow */
 
 import paypal from 'src/index';
 import { createTestContainer, createElement } from '../../tests/common';
@@ -54,7 +55,7 @@ if (window.xprops.testAction === 'checkout') {
 
     let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-    testButton.addEventListener('click', event => {
+    testButton.addEventListener('click', (event : Event) => {
         window.xchild.hide();
 
         paypal.Checkout.renderPopupTo(window.top.frames[0], {
@@ -76,7 +77,7 @@ if (window.xprops.testAction === 'checkout') {
 
     let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-    testButton.addEventListener('click', event => {
+    testButton.addEventListener('click', (event : Event) => {
         let win;
 
         if (window.opener) {

@@ -1,6 +1,7 @@
-
+/* @flow */
 
 import paypal from 'src/index';
+import { assert } from 'chai';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange } from '../common';
 
@@ -439,11 +440,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.ok(data.currentUrl.indexOf(`token=${checkoutToken}`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`token=${checkoutToken}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
                     return done();
                 },
 
@@ -469,11 +470,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.ok(data.currentUrl.indexOf(`token=${paymentID}`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`token=${paymentID}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
                     return done();
                 },
 
@@ -499,11 +500,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.ok(data.currentUrl.indexOf(`ba_token=${billingToken}`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`billingurl=true`) !== -1);
-                    assert.ok(data.currentUrl.indexOf(`&token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`?token=`) === -1);
-                    assert.ok(data.currentUrl.indexOf(`checkouturl`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`ba_token=${billingToken}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`billingurl=true`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`&token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`?token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`checkouturl`) === -1);
                     return done();
                 },
 
