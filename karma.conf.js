@@ -61,7 +61,7 @@ module.exports = function(config) {
                 loaders: [
                     {
                         test: /\.js$/,
-                        exclude: /(dist)/,
+                        exclude: /(dist|chai)/,
                         loader: 'babel',
                         query: {
                             presets: ['es2015'],

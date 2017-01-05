@@ -2,7 +2,6 @@
 
 import paypal from 'src/index';
 import postRobot from 'post-robot/src/index';
-import { assert } from 'chai';
 
 import '../common';
 

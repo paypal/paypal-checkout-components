@@ -37,7 +37,7 @@ function getWebpackConfig(version, filename, target = 'window') {
           },
           {
             test: /\.js$/,
-            exclude: /(sinon)/,
+            exclude: /(sinon|chai)/,
             loader: 'babel'
           },
           {
