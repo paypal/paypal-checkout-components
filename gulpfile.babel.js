@@ -44,13 +44,24 @@ gulp.task('webpack-minor-min', ['lint'], function() {
 
 gulp.task('typecheck', shell.task(['npm run-script flow']));
 
-gulp.task('lint', function() {
-  return gulp.src([ 'src/**/*.js', 'test/{tests,windows}/**/*.js' ]).pipe(eslint({
-    fix: Boolean(argv['fix'])
-  }))
-  .pipe(eslint.format())
-  .pipe(eslint.failAfterError())
-  .pipe(gulp.dest('src'));
+gulp.task('lint', ['lint-src', 'lint-test']);
+
+gulp.task('lint-src', function() {
+    return gulp.src([ 'src/**/*.js' ]).pipe(eslint({
+        fix: Boolean(argv['fix'])
+    }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
+        .pipe(gulp.dest('src'));
+});
+
+gulp.task('lint-test', function() {
+    return gulp.src([ 'test/{tests,windows}/**/*.js' ]).pipe(eslint({
+        fix: Boolean(argv['fix'])
+    }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
+        .pipe(gulp.dest('test'));
 });
 
 gulp.task('karma', ['lint'], function (done) {
