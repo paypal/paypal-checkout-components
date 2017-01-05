@@ -5,30 +5,30 @@ import postRobot from 'post-robot/src';
 import { isPayPalDomain, noop } from '../lib';
 import { config } from '../config';
 
-function match(str, pattern) {
-    let regmatch = str.match(pattern);
+function match(str : string, pattern : RegExp) : ?string {
+    let regmatch : ?Array<string> = str.match(pattern);
     if (regmatch) {
         return regmatch[1];
     }
 }
 
-let onAuthorize;
+let onAuthorize : ?Function;
 
 // Bridge
 
 if (isPayPalDomain()) {
-    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data }) => {
+    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => {
         onAuthorize = data.method;
     });
 }
 
 // Button / Merchant
 
-window.onLegacyPaymentAuthorize = (method) => {
+window.onLegacyPaymentAuthorize = (method : Function) => {
     onAuthorize = method;
 
     if (!isPayPalDomain()) {
-        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then(bridge => {
+        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : window) => {
             return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                 .then(noop);
         });
@@ -37,7 +37,7 @@ window.onLegacyPaymentAuthorize = (method) => {
 
 // Bridge / Button
 
-window.watchForLegacyFallback = (win) => {
+window.watchForLegacyFallback = (win : window) => {
     let interval = setInterval(() => {
         try {
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||
@@ -51,7 +51,7 @@ window.watchForLegacyFallback = (win) => {
 
             let send = win.XMLHttpRequest.prototype.send;
 
-            win.XMLHttpRequest.prototype.send = function () {
+            win.XMLHttpRequest.prototype.send = function() : void {
 
                 if (this._patched) {
                     return send.apply(this, arguments);
@@ -62,7 +62,7 @@ window.watchForLegacyFallback = (win) => {
                 let self = this;
                 let onload = this.onload;
 
-                function listener() {
+                function listener() : void {
 
                     if (self.readyState === self.DONE && self.status === 200 && self.responseText) {
 
@@ -123,7 +123,7 @@ window.watchForLegacyFallback = (win) => {
 
                         // $FlowFixMe
                         Object.defineProperty(this, 'onload', {
-                            get() {
+                            get() : Function {
                                 return listener;
                             },
                             set(handler) {

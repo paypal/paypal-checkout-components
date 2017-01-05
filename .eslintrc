@@ -301,10 +301,11 @@
         ],
         "flowtype/require-parameter-type": 0,
         "flowtype/require-return-type": [
-            0,
+            2,
             "always",
             {
-                "annotateUndefined": "never"
+                "annotateUndefined": "never",
+                "excludeArrowFunctions": true
             }
         ],
         "flowtype/require-valid-file-annotation": 2,

@@ -3,7 +3,7 @@
 import { beacon, checkpoint } from './lib/beacon';
 import { uniqueID } from './lib/util';
 
-function isPayPalDomain() {
+function isPayPalDomain() : boolean {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
 }
 

@@ -6,7 +6,7 @@ function renderCheckout() {
     paypal.Checkout.renderTo(window.top.frames[0], {
 
         payment: window.xprops.payment,
-        onAuthorize(data, actions) {
+        onAuthorize(data, actions) : void {
 
             return window.xprops.onAuthorize({
                 ...data,
@@ -21,7 +21,7 @@ function renderCheckout() {
                         // pass
                     },
 
-                    get() {
+                    get() : Object {
                         return {};
                     }
                 },

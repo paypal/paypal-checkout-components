@@ -10,7 +10,7 @@ let $logger = logger.prefix(LOG_PREFIX);
 const DEFAULT_COUNTRY = 'US';
 const DEFAULT_LANG = 'en';
 
-export function normalizeLocale(locale : string) {
+export function normalizeLocale(locale : string) : { country : string, lang : string } {
 
     let [ lang, country ] = locale.split('_');
 

@@ -3,7 +3,7 @@
 import { isWebView, getAgent} from './device';
 import { config } from '../config';
 
-export function isEligible() {
+export function isEligible() : boolean {
 
     let currentAgent = getAgent();
 

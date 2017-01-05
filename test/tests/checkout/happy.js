@@ -26,15 +26,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return generateECToken();
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
@@ -53,15 +53,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'cancel',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return generateECToken();
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done(new Error('Expected onAuthorize to not be called'));
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done();
                     }
 
@@ -80,15 +80,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return actions.redirect(window);
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return actions.redirect(window);
                     }
 
@@ -111,17 +111,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -139,15 +139,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return actions.redirect(window, '#successUrl');
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return actions.redirect(window, '#cancelUrl');
                     }
 
@@ -172,15 +172,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'cancel',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return actions.redirect(window);
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return actions.redirect(window);
                     }
 
@@ -205,15 +205,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'cancel',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return done(new Error('Expected onAuthorize to not be called'));
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
@@ -235,15 +235,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'cancel',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) {
+                    onAuthorize(data, actions) : void {
                         return actions.redirect(window, '#successUrl');
                     },
 
-                    onCancel(data, actions) {
+                    onCancel(data, actions) : void {
                         return actions.redirect(window, '#cancelUrl');
                     }
 
@@ -268,7 +268,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() {
+                    payment() : string | Promise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -282,11 +282,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         });
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -306,7 +306,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() {
+                    payment() : string | Promise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -323,11 +323,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         });
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -347,7 +347,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() {
+                    payment() : string | Promise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -359,11 +359,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         });
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -386,11 +386,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         }, 200);
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
@@ -407,15 +407,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment(resolve) {
+                    payment(resolve) : void {
                         return resolve(generateECToken());
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -431,17 +431,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return new Promise(resolve => {
                             return resolve(generateECToken());
                         });
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -459,11 +459,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return checkoutToken;
                     },
 
-                    onAuthorize(data) {
+                    onAuthorize(data) : void {
                         assert.ok(data.currentUrl.indexOf(`token=${checkoutToken}`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
@@ -472,7 +472,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -490,11 +490,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return paymentID;
                     },
 
-                    onAuthorize(data) {
+                    onAuthorize(data) : void {
                         assert.ok(data.currentUrl.indexOf(`token=${paymentID}`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
@@ -503,7 +503,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -521,11 +521,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', event => {
                 return paypal.Checkout.render({
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return billingToken;
                     },
 
-                    onAuthorize(data) {
+                    onAuthorize(data) : void {
                         assert.ok(data.currentUrl.indexOf(`ba_token=${billingToken}`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`billingurl=true`) !== -1);
                         assert.ok(data.currentUrl.indexOf(`&token=`) === -1);
@@ -534,7 +534,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
@@ -555,15 +555,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                         testAction: 'popout',
 
-                        payment() {
+                        payment() : string | Promise<string> {
                             return generateECToken();
                         },
 
-                        onAuthorize() {
+                        onAuthorize() : void {
                             return done();
                         },
 
-                        onCancel() {
+                        onCancel() : void {
                             return done(new Error('Expected onCancel to not be called'));
                         }
                     });
@@ -583,11 +583,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                         testAction: 'popout',
 
-                        payment() {
+                        payment() : string | Promise<string> {
                             return token;
                         },
 
-                        onAuthorize(data, actions) {
+                        onAuthorize(data, actions) : void {
                             return actions.redirect(window);
                         }
                     });
@@ -611,17 +611,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                         testAction: 'popout',
 
-                        payment() {
+                        payment() : string | Promise<string> {
                             return token;
                         },
 
-                        onAuthorize(data, actions) {
+                        onAuthorize(data, actions) : void {
                             return actions.redirect(window).then(() => {
                                 done();
                             });
                         },
 
-                        onCancel() {
+                        onCancel() : void {
                             return done(new Error('Expected onCancel to not be called'));
                         }
                     });

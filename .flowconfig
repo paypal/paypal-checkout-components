@@ -5,4 +5,5 @@
 src/decs.js
 [options]
 unsafe.enable_getters_and_setters=true
+experimental.const_params=false
 esproposal.export_star_as=enable

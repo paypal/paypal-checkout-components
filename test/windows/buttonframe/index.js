@@ -6,7 +6,7 @@ import { generateECToken } from '../../tests/common';
 
 paypal.Button.render({
 
-    payment() {
+    payment() : string {
         return generateECToken();
     },
 

@@ -34,7 +34,7 @@ function memoize(method : Function, options : { time? : number } = {}) : Functio
     };
 }
 
-let createAccessToken = memoize((env : string, client : { [key : string] : string }) : string => {
+let createAccessToken = memoize((env : string, client : { [key : string] : string }) : Promise<string> => {
 
     $logger.info(`rest_api_create_access_token`);
 
@@ -63,7 +63,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
             grant_type: `client_credentials`
         }
 
-    }).then(res => {
+    }).then((res : Object) : string => {
 
         if (res && res.error === 'invalid_client') {
             throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, null, 4)}`);
@@ -77,7 +77,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
     });
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) => {
+let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : Promise<string> => {
 
     $logger.info(`rest_api_create_experience_profile`);
 
@@ -96,7 +96,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
     experienceDetails.temporary = true;
     experienceDetails.name = experienceDetails.name ? `${experienceDetails.name}_${Math.random().toString()}` : Math.random().toString();
 
-    return createAccessToken(env, client).then(accessToken => {
+    return createAccessToken(env, client).then((accessToken) : Promise<Object> => {
 
         return request({
             method: `post`,
@@ -107,7 +107,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
             json: experienceDetails
         });
 
-    }).then(res => {
+    }).then((res) : string => {
 
         if (res && res.error) {
             throw new Error(res.error);
@@ -122,7 +122,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
 
 }, { time: 10 * 60 * 1000 });
 
-function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails : Object) {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails : Object) : Promise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -146,15 +146,15 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     paymentDetails.payer = paymentDetails.payer || {};
     paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
 
-    return createAccessToken(env, client).then(accessToken => {
+    return createAccessToken(env, client).then((accessToken) : Promise<Object> => {
 
-        return Promise.try(() => {
+        return Promise.try(() : ?Promise<Object> => {
 
             if (experienceDetails) {
                 return createExperienceProfile(env, client, experienceDetails);
             }
 
-        }).then(experienceID => {
+        }).then((experienceID) : Promise<Object> => {
 
             if (experienceID) {
                 paymentDetails.experience_profile_id = experienceID;
@@ -170,7 +170,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
             });
         });
 
-    }).then(res => {
+    }).then((res) : string => {
 
         if (res && res.id) {
             return res.id;
@@ -180,7 +180,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     });
 }
 
-export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : Object) {
+export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : Object) : Promise<string> {
 
     $logger.info(`rest_api_create_billing_token`);
 
@@ -205,15 +205,15 @@ export function createBillingToken(env : string, client : { [key : string] : str
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
 
-    return createAccessToken(env, client).then(accessToken => {
+    return createAccessToken(env, client).then((accessToken) : Promise<Object> => {
 
-        return Promise.try(() => {
+        return Promise.try(() : Promise<Object> => {
 
             if (experienceDetails) {
                 return createExperienceProfile(env, client, experienceDetails);
             }
 
-        }).then(experienceID => {
+        }).then((experienceID) : Promise<Object> => {
 
             if (experienceID) {
                 billingDetails.experience_profile_id = experienceID;

@@ -5,7 +5,7 @@ import { uniqueID, hashStr } from './util';
 
 let uids = {};
 
-function getUID(name, uid) {
+function getUID(name, uid) : { uid : string, isNew : boolean } {
 
     if (!uid) {
         if (uids[name]) {
@@ -43,7 +43,7 @@ function getUID(name, uid) {
     return { uid, isNew };
 }
 
-export function getThrottle(name : string, sample : number, id? : string) {
+export function getThrottle(name : string, sample : number, id? : string) : Object {
 
     let { uid, isNew } = getUID(name, id);
 
@@ -66,19 +66,19 @@ export function getThrottle(name : string, sample : number, id? : string) {
 
     return {
 
-        isEnabled() {
+        isEnabled() : boolean {
             return (group === 'test');
         },
 
-        isDisabled() {
+        isDisabled() : boolean {
             return (group !== 'test');
         },
 
-        getTreatment() {
+        getTreatment() : string {
             return treatment;
         },
 
-        logStart(payload : { [key : string] : ?string } = {}) {
+        logStart(payload : { [key : string] : ?string } = {}) : Object {
 
             let event = `${treatment}_start`;
 
@@ -91,10 +91,10 @@ export function getThrottle(name : string, sample : number, id? : string) {
             return this;
         },
 
-        logComplete(payload : { [key : string] : ?string }  = {}) {
+        logComplete(payload : { [key : string] : ?string }  = {}) : Object {
 
             if (!loggedStart && isNew) {
-                return;
+                return this;
             }
 
             let event = `${treatment}_complete`;

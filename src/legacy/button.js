@@ -11,7 +11,7 @@ let $logger = logger.prefix(LOG_PREFIX);
 
 let buttonJS;
 
-function loadButtonJS() {
+function loadButtonJS() : Promise<void> {
 
     if (buttonJS) {
         return buttonJS;
@@ -33,7 +33,7 @@ function loadButtonJS() {
     return buttonJS;
 }
 
-function renderButton(id, container, options, label) {
+function renderButton(id, container, options, label) : HTMLElement {
 
     if (options.locale) {
         let { country, lang } = normalizeLocale(options.locale);
@@ -59,7 +59,7 @@ function renderButton(id, container, options, label) {
     return buttonDom.el.childNodes[0];
 }
 
-export function renderButtons(id : string, options : Object) {
+export function renderButtons(id : string, options : Object) : Promise<Array<Object>> {
 
     return loadButtonJS().then(() => {
 
@@ -195,6 +195,4 @@ export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement)
         $logger.debug(`target_element_grandparent_link`);
         return button.parentElement && button.parentElement.parentElement;
     }
-
-    $logger.error(`target_element_not_found`);
 }

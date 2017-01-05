@@ -285,7 +285,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function() {
+            window.open = function() : window {
 
                 openCount += 1;
 
@@ -342,7 +342,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function() {
+            window.open = function() : window {
 
                 openCount += 1;
 
@@ -1022,13 +1022,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function() {
+                    window.open = function() : window {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
 
                         let close = win.close;
-                        win.close = function() {
+                        win.close = function() : void {
                             let result = close.apply(this, arguments);
                             done();
                             return result;
@@ -1093,13 +1093,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function() {
+                    window.open = function() : window {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
 
                         let close = win.close;
-                        win.close = function() {
+                        win.close = function() : void {
                             let result = close.apply(this, arguments);
                             done();
                             return result;

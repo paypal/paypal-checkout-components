@@ -34,7 +34,7 @@ checkout.reset = reset;
 
 // $FlowFixMe
 Object.defineProperty(checkout, 'urlPrefix', {
-    get() {
+    get() : string {
         return `${config.checkoutUrl}?token=`;
     }
 });
@@ -114,7 +114,7 @@ function checkUrlAgainstEnv(url : string) {
     global methods.
 */
 
-function awaitPaymentTokenAndUrl() {
+function awaitPaymentTokenAndUrl() : { url : Promise<string>, paymentToken : Promise<?string> } {
 
     let paymentTokenAndUrl = new Promise((resolve, reject) => {
 
@@ -160,7 +160,7 @@ function awaitPaymentTokenAndUrl() {
 let paypalCheckoutInited = false;
 let closeFlowCalled = false;
 
-function initPayPalCheckout(props = {}) {
+function initPayPalCheckout(props = {}) : Object {
 
     $logger.info(`init_checkout`);
 
@@ -180,13 +180,13 @@ function initPayPalCheckout(props = {}) {
 
         uid: window.pp_uid,
 
-        onAuthorize(data, actions) {
+        onAuthorize(data, actions) : Promise<void> {
             $logger.info(`payment_authorized`);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },
 
-        onCancel(data, actions) {
+        onCancel(data, actions) : Promise<void> {
             $logger.info(`payment_canceled`);
             logRedirect(data.cancelUrl);
             return actions.redirect(window);
@@ -218,7 +218,7 @@ function initPayPalCheckout(props = {}) {
     return paypalCheckout;
 }
 
-function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) {
+function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) : Promise<Object> {
 
     let urlProp = Promise.resolve(props.url);
 
@@ -289,12 +289,12 @@ function handleClick(clickHandler, event) {
     }
 }
 
-function handleClickHijack(button) {
+function handleClickHijack(button) : void {
 
     let targetElement = getHijackTargetElement(button);
 
     if (!targetElement) {
-        return;
+        return $logger.error(`target_element_not_found`);
     }
 
     $logger.info(`init_paypal_checkout_hijack`);
@@ -312,7 +312,7 @@ function handleClickHijack(button) {
 
 
 
-function listenClick(container, button, clickHandler, condition) {
+function listenClick(container, button, clickHandler, condition) : void {
 
     let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
@@ -394,7 +394,7 @@ function listenClick(container, button, clickHandler, condition) {
 
 let setupCalled = false;
 
-export function setup(id : string, options : Object = {}) {
+export function setup(id : string, options : Object = {}) : Promise<void> {
 
     checkpoint('flow_setup');
 
@@ -520,7 +520,7 @@ checkout.initXO = initXO;
     method will have been patched over in getToken.
 */
 
-function startFlow(item : string) {
+function startFlow(item : string) : void {
     $logger.debug(`startflow`, { item });
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
@@ -552,7 +552,7 @@ checkout.startFlow = startFlow;
     Close the component in case of any error on the merchant side.
 */
 
-function closeFlow(closeUrl? : string) {
+function closeFlow(closeUrl? : string) : void {
     $logger.warn(`closeflow_not_opened`);
 
     if (closeUrl) {

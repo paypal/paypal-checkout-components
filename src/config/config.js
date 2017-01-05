@@ -45,7 +45,7 @@ export let config = {
 
     _apiStage: '',
 
-    get apiStage() {
+    get apiStage() : string {
         return config._apiStage || config.stage;
     },
 
@@ -53,7 +53,7 @@ export let config = {
         config._apiStage = value;
     },
 
-    get paypalUrls() {
+    get paypalUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
             [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
@@ -63,7 +63,7 @@ export let config = {
         };
     },
 
-    get paypalDomains() {
+    get paypalDomains() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
             [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
@@ -73,7 +73,7 @@ export let config = {
         };
     },
 
-    get wwwApiUrls() {
+    get wwwApiUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `https://www.${config.stage}.qa.paypal.com`,
             [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
@@ -83,7 +83,7 @@ export let config = {
         };
     },
 
-    get corsApiUrls() {
+    get corsApiUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `https://${config.apiStage}.qa.paypal.com:11888`,
             [ ENV.STAGE ]:      `https://${config.apiStage}.qa.paypal.com:11888`,
@@ -93,7 +93,7 @@ export let config = {
         };
     },
 
-    get apiUrls() {
+    get apiUrls() : Object {
 
         let domain      = `${window.location.protocol}//${window.location.host}`;
         let corsApiUrls = config.corsApiUrls;
@@ -150,7 +150,7 @@ export let config = {
 
     loggerUri: `/webapps/hermes/api/logger`,
 
-    get bridgeUri() {
+    get bridgeUri() : string {
         return `${config.bridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
     },
 
@@ -161,7 +161,7 @@ export let config = {
     billingApiUri: `/v1/billing-agreements/agreement-tokens`,
     experienceApiUri: `/v1/payment-experience/web-profiles`,
 
-    get checkoutUrls() {
+    get checkoutUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -174,7 +174,7 @@ export let config = {
         };
     },
 
-    get billingUrls() {
+    get billingUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -187,7 +187,7 @@ export let config = {
         };
     },
 
-    get buttonUrls() {
+    get buttonUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -200,7 +200,7 @@ export let config = {
         };
     },
 
-    get paymentsStandardUrls() {
+    get paymentsStandardUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -213,7 +213,7 @@ export let config = {
         };
     },
 
-    get bridgeUrls() {
+    get bridgeUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -226,7 +226,7 @@ export let config = {
         };
     },
 
-    get legacyCheckoutUrls() {
+    get legacyCheckoutUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
@@ -239,7 +239,7 @@ export let config = {
         };
     },
 
-    get authApiUrls() {
+    get authApiUrls() : Object {
 
         let apiUrls    = config.apiUrls;
         let authApiUri = config.authApiUri;
@@ -253,7 +253,7 @@ export let config = {
         };
     },
 
-    get paymentApiUrls() {
+    get paymentApiUrls() : Object {
 
         let apiUrls       = config.apiUrls;
         let paymentApiUri = config.paymentApiUri;
@@ -267,7 +267,7 @@ export let config = {
         };
     },
 
-    get billingApiUrls() {
+    get billingApiUrls() : Object {
 
         let apiUrls       = config.apiUrls;
         let billingApiUri = config.billingApiUri;
@@ -281,7 +281,7 @@ export let config = {
         };
     },
 
-    get experienceApiUrls() {
+    get experienceApiUrls() : Object {
 
         let apiUrls          = config.apiUrls;
         let experienceApiUri = config.experienceApiUri;
@@ -297,7 +297,7 @@ export let config = {
 
     _paypalUrl: '',
 
-    get paypalUrl() {
+    get paypalUrl() : string {
         return this._paypalUrl || config.paypalUrls[config.env];
     },
 
@@ -305,19 +305,19 @@ export let config = {
         this._paypalUrl = value;
     },
 
-    get paypalDomain() {
+    get paypalDomain() : string {
         return config.paypalDomains[config.env];
     },
 
-    get corsApiUrl() {
+    get corsApiUrl() : string {
         return config.corsApiUrls[config.env];
     },
 
-    get wwwApiUrl() {
+    get wwwApiUrl() : string {
         return config.wwwApiUrls[config.env];
     },
 
-    get apiUrl() {
+    get apiUrl() : string {
 
         let domain     = `${window.location.protocol}//${window.location.host}`;
         let corsApiUrl = config.corsApiUrl;
@@ -326,47 +326,47 @@ export let config = {
         return domain === wwwApiUrl ? wwwApiUrl : corsApiUrl;
     },
 
-    get checkoutUrl() {
+    get checkoutUrl() : string {
         return `${config.paypalUrl}${config.checkoutUris[config.env]}`;
     },
 
-    get billingUrl() {
+    get billingUrl() : string {
         return `${config.paypalUrl}${config.billingUris[config.env]}`;
     },
 
-    get buttonUrl() {
+    get buttonUrl() : string {
         return `${config.paypalUrl}${config.buttonUris[config.env]}`;
     },
 
-    get legacyCheckoutUrl() {
+    get legacyCheckoutUrl() : string {
         return config.legacyCheckoutUrls[config.env];
     },
 
-    get bridgeUrl() {
+    get bridgeUrl() : string {
         return `${config.paypalUrl}${config.bridgeUri}&env=${config.env}`;
     },
 
-    get bridgeDomain() {
+    get bridgeDomain() : string {
         return `${config.paypalDomain}`;
     },
 
-    get loggerUrl() {
+    get loggerUrl() : string {
         return `${config.paypalUrl}${config.loggerUri}`;
     },
 
-    get authApiUrl() {
+    get authApiUrl() : string {
         return `${config.apiUrl}${config.authApiUri}`;
     },
 
-    get paymentApiUrl() {
+    get paymentApiUrl() : string {
         return `${config.apiUrl}${config.paymentApiUri}`;
     },
 
-    get billingApiUrl() {
+    get billingApiUrl() : string {
         return `${config.apiUrl}${config.billingApiUri}`;
     },
 
-    get experienceApiUrl() {
+    get experienceApiUrl() : string {
         return `${config.apiUrl}${config.experienceApiUri}`;
     },
 

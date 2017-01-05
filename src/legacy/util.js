@@ -27,10 +27,17 @@ export function logRedirect(location : string) {
 
 export function redirect(url : string) {
 
+    if (!url) {
+        throw new Error(`Redirect url undefined`);
+    }
+
     if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
-        return setTimeout(() => {
+
+        setTimeout(() => {
             window.location = `#fullpageRedirect?url=${url}`;
         }, REDIRECT_DELAY);
+
+        return;
     }
 
     logRedirect(url);
@@ -55,7 +62,7 @@ export function isToken(item : string) : boolean {
     strip out the token from the url in order to pass it down as a prop
 */
 
-export function parseToken(token : string) {
+export function parseToken(token : string) : ?string {
 
     if (!token) {
         return;

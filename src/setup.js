@@ -9,7 +9,7 @@ import { setupBridge } from './compat';
 
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 
-function domainToEnv(domain : string) {
+function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
         if (config.paypalUrls[env] === domain) {
             return env;
@@ -29,7 +29,7 @@ setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
 initLogger();
 
-Promise.onPossiblyUnhandledException(err => {
+Promise.onPossiblyUnhandledException((err : Error) => {
 
     beacon(`unhandled_error`, {
         message: err ? err.toString() : 'undefined',
@@ -91,7 +91,7 @@ export function setup(options : Object = {}) {
     $logger.info(`setup_${config.env}`);
 }
 
-function getCurrentScript() {
+function getCurrentScript() : ? HTMLScriptElement {
 
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 

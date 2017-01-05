@@ -2,16 +2,16 @@
 
 import { config } from '../config';
 
-export function isPayPalDomain() {
+export function isPayPalDomain() : boolean {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
 
-export function memoize(method : Function) {
+export function memoize(method : Function) : Function {
 
     let results = {};
 
-    return function() {
+    return function() : mixed {
 
         let args;
 
@@ -33,10 +33,10 @@ export function noop() {
     // pass
 }
 
-export function once(method : Function) {
+export function once(method : Function) : Function {
     let called = false;
 
-    return function () {
+    return function() : mixed {
         if (!called) {
             called = true;
             return method.apply(this, arguments);
@@ -44,7 +44,7 @@ export function once(method : Function) {
     };
 }
 
-export function uniqueID() {
+export function uniqueID() : string {
 
     let chars = '0123456789abcdef';
 
@@ -53,7 +53,7 @@ export function uniqueID() {
     });
 }
 
-export function hashStr(str : string) {
+export function hashStr(str : string) : number {
     let hash = 0;
 
     if (str.length === 0) {
@@ -69,14 +69,14 @@ export function hashStr(str : string) {
     return Math.abs(hash);
 }
 
-export function match(str : string, pattern : RegExp) {
+export function match(str : string, pattern : RegExp) : ?string {
     let regmatch = str.match(pattern);
     if (regmatch) {
         return regmatch[1];
     }
 }
 
-export function safeJSON(item : mixed) {
+export function safeJSON(item : mixed) : string {
     return JSON.stringify(item, (key, val) => {
 
         if (typeof val === 'function') {

@@ -26,7 +26,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let Main = window.React.createClass({
 
-                render() {
+                render() : Object {
 
                     return window.React.createElement(
                         'div',
@@ -38,15 +38,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                                 this.window.document.querySelector('button').click();
                             },
 
-                            payment() {
+                            payment() : string | Promise<string> {
                                 return generateECToken();
                             },
 
-                            onAuthorize() {
+                            onAuthorize() : void {
                                 return done();
                             },
 
-                            onCancel() {
+                            onCancel() : void {
                                 return done(new Error('Expected onCancel to not be called'));
                             }
                         })
@@ -75,15 +75,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     this.window.document.querySelector('button').click();
                 },
 
-                payment() {
+                payment() : string | Promise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() {
+                onAuthorize() : void {
                     return done();
                 },
 
-                onCancel() {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
             };

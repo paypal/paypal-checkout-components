@@ -3,7 +3,7 @@
 import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
 
-export function loadScript(src : string, timeout : number = 0) {
+export function loadScript(src : string, timeout : number = 0) : Promise<void> {
     return new Promise((resolve, reject) => {
         let script = document.createElement('script');
 
@@ -20,7 +20,7 @@ export function loadScript(src : string, timeout : number = 0) {
 
         let scriptLoadError = new Error('script_loading_error');
 
-        script.onerror = function (event : Event) {
+        script.onerror = (event : Event) => {
             return reject(scriptLoadError);
         };
 
@@ -37,7 +37,7 @@ export function loadScript(src : string, timeout : number = 0) {
 }
 
 
-export function isNodeList(nodes : mixed) {
+export function isNodeList(nodes : mixed) : boolean {
 
     let result = Object.prototype.toString.call(nodes);
 
@@ -103,7 +103,7 @@ export function getElements(collection : Array<string | HTMLElement> | NodeList<
     return [];
 }
 
-function isDocumentReady() {
+function isDocumentReady() : boolean {
     return document.readyState === 'complete';
 }
 
@@ -121,11 +121,11 @@ let documentReady = new Promise(resolve => {
     }, 10);
 });
 
-export function onDocumentReady(method : () => void) {
+export function onDocumentReady(method : () => void) : Promise<void> {
     return documentReady.then(method);
 }
 
-export let parseQuery = memoize((queryString : string) => {
+export let parseQuery = memoize((queryString : string) : Object => {
 
     let params = {};
 
@@ -149,11 +149,11 @@ export let parseQuery = memoize((queryString : string) => {
 });
 
 
-export function getQueryParam(name : string) {
+export function getQueryParam(name : string) : string {
     return parseQuery(window.location.search.slice(1))[name];
 }
 
-export function urlWillRedirectPage(url : string) {
+export function urlWillRedirectPage(url : string) : boolean {
 
     if (url.indexOf('#') === -1) {
         return true;

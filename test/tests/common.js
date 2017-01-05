@@ -4,7 +4,7 @@ import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import { config } from 'src/config';
 
-export function onHashChange() {
+export function onHashChange() : Promise<string> {
     return new Promise((resolve, reject) => {
         let currentHash = window.location.hash;
 
@@ -26,31 +26,31 @@ export function onHashChange() {
     });
 }
 
-export function delay(time) {
+export function delay(time) : Promise<void> {
     return new Promise(resolve => {
         setTimeout(resolve, time);
     });
 }
 
-export function uniqueID(length = 8, chars = '0123456789abcdefhijklmnopqrstuvwxyz') {
+export function uniqueID(length = 8, chars = '0123456789abcdefhijklmnopqrstuvwxyz') : string {
     return new Array(length + 1).join('x').replace(/x/g, item => {
         return chars.charAt(Math.floor(Math.random() * chars.length));
     });
 }
 
-export function generateECToken() {
+export function generateECToken() : string {
     return `EC-${uniqueID(17).toUpperCase()}`;
 }
 
-export function generatePaymentID() {
+export function generatePaymentID() : string {
     return `PAY-${uniqueID(20).toUpperCase()}`;
 }
 
-export function generateBillingToken() {
+export function generateBillingToken() : string {
     return `BA-${uniqueID(17).toUpperCase()}`;
 }
 
-export function generateExperienceToken() {
+export function generateExperienceToken() : string {
     return uniqueID(17).toUpperCase();
 }
 
@@ -58,7 +58,7 @@ export const CHILD_REDIRECT_URI = '/base/test/windows/redirect/index.htm';
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
-export function createElement(options) {
+export function createElement(options) : HTMLElement {
 
     let element = document.createElement(options.tag || 'div');
 
@@ -105,14 +105,14 @@ export function destroyElement(element) {
 }
 
 
-export function createTestContainer() {
+export function createTestContainer() : HTMLElement {
     return createElement({
         id: 'testContainer',
         container: document.body
     });
 }
 
-export function destroyTestContainer() {
+export function destroyTestContainer() : void {
     return destroyElement('testContainer');
 }
 
@@ -183,13 +183,13 @@ function doClick() {
 
 
 let HTMLElementClick = window.HTMLElement.prototype.click;
-window.HTMLElement.prototype.click = function() {
+window.HTMLElement.prototype.click = function() : void {
     doClick();
     return HTMLElementClick.apply(this, arguments);
 };
 
 let windowOpen = window.open;
-window.open = function() {
+window.open = function() : window {
     if (!isClick) {
         return {
             closed: true,
@@ -213,7 +213,7 @@ export function preventOpenWindow(flow) {
 
     if (flow === 'popup') {
         let winOpen = window.open;
-        window.open = function() {
+        window.open = () => {
             window.open = winOpen;
             return {
                 closed: true,

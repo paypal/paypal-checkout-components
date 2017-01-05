@@ -20,10 +20,10 @@ describe(`paypal button component validation`, () => {
     it('should attempt to render a button with payment and billing agreement and error out', () => {
 
         return paypal.Button.render({
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             },
-            billingAgreement() {
+            billingAgreement() : string | Promise<string> {
                 return generateBillingToken();
             }
         }, '#meep').then(() => {
@@ -37,7 +37,7 @@ describe(`paypal button component validation`, () => {
 
         return paypal.Button.render({
             commit: true,
-            billingAgreement() {
+            billingAgreement() : string | Promise<string> {
                 return generateBillingToken();
             }
         }, '#meep').then(() => {
@@ -51,7 +51,7 @@ describe(`paypal button component validation`, () => {
 
         return paypal.Button.render({
             commit: true,
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -63,7 +63,7 @@ describe(`paypal button component validation`, () => {
     it('should attempt to render a button with payment and no onAuthorize, and error out', () => {
 
         return paypal.Button.render({
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             }
         }, '#meep').then(() => {
@@ -89,7 +89,7 @@ describe(`paypal button component validation`, () => {
     it('should attempt to render a button with an invalid size, and error out', () => {
 
         return paypal.Button.render({
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -108,7 +108,7 @@ describe(`paypal button component validation`, () => {
     it('should attempt to render a button with no client id, and error out', () => {
 
         return paypal.Button.render({
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -127,7 +127,7 @@ describe(`paypal button component validation`, () => {
     it('should attempt to render a button with an invalid client id, and error out', () => {
 
         return paypal.Button.render({
-            payment() {
+            payment() : string | Promise<string> {
                 return generateECToken();
             },
             onAuthorize() {

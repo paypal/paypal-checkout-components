@@ -4,11 +4,11 @@ import { isWebView, getAgent, isDevice, getUserAgent } from '../lib';
 
 import { config } from '../config';
 
-export function isUnsupportedIE() {
-    return getUserAgent().match(/MSIE (5|6|7|8)\./i);
+export function isUnsupportedIE() : boolean {
+    return Boolean(getUserAgent().match(/MSIE (5|6|7|8)\./i));
 }
 
-export function isLegacyEligible() {
+export function isLegacyEligible() : boolean {
 
     let currentAgent = getAgent();
 

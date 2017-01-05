@@ -247,7 +247,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'DOESNOTEXIST1',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expectednon-existant button to not be clicked'));
                     }
                 },
@@ -265,7 +265,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     container: 'DOESNOTEXIST2',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expectednon-existant button to not be clicked'));
                     }
                 },
@@ -283,7 +283,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     container: 'DOESNOTEXIST3',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expectednon-existant button to not be clicked'));
                     }
                 }
@@ -465,7 +465,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     button: 'DOESNOTEXIST1',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 },
@@ -483,7 +483,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     button: 'DOESNOTEXIST2',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 },
@@ -501,7 +501,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     button: 'DOESNOTEXIST3',
-                    click(event) {
+                    click(event) : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 }

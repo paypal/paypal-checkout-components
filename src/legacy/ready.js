@@ -47,7 +47,7 @@ try {
         set(method) {
             $logger.debug(`paypal_checkout_ready_setter`);
 
-            _paypalCheckoutReady = function() {
+            _paypalCheckoutReady = function() : void {
                 if (!method.called) {
                     method.called = true;
                     return method.apply(this, arguments);
@@ -57,7 +57,7 @@ try {
             invokeReady(_paypalCheckoutReady);
         },
 
-        get() {
+        get() : Function {
             $logger.warn(`paypal_checkout_ready_getter`);
             return _paypalCheckoutReady;
         }

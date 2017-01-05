@@ -27,15 +27,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'fallback',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return generateECToken();
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done();
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
@@ -54,20 +54,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'error',
 
-                    payment() {
+                    payment() : string | Promise<string> {
                         return generateECToken();
                     },
 
-                    onError(err) {
+                    onError(err) : void {
                         assert.ok(err instanceof Error);
                         return done();
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
@@ -81,20 +81,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             it('should render checkout without a click event and error out', (done) => {
 
                 return paypal.Checkout.render({
-                    payment() {
+                    payment() : string | Promise<string> {
                         return generateECToken();
                     },
 
-                    onError(err) {
+                    onError(err) : void {
                         assert.ok(err instanceof Error);
                         return done();
                     },
 
-                    onAuthorize() {
+                    onAuthorize() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     },
 
-                    onCancel() {
+                    onCancel() : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 

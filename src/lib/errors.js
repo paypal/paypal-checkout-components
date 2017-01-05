@@ -2,7 +2,7 @@
 
 import $logger from 'beaver-logger/client';
 
-function warn(err) {
+function warn(err) : void {
     if (window.console) {
         if (window.console.warn) {
             return window.console.warn(err);

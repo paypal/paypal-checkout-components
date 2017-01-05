@@ -32,7 +32,7 @@ export function beacon(event : string, payload : Object = {}) {
 
 let loggedCheckpoints = [];
 
-export function checkpoint(name : string, payload : Object = {}) {
+export function checkpoint(name : string, payload : Object = {}) : void {
     try {
 
         let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
@@ -56,7 +56,7 @@ export function checkpoint(name : string, payload : Object = {}) {
 
 const FPTI_URL = 'https://t.paypal.com/ts';
 
-function buildPayload() {
+function buildPayload() : Object {
     return {
         v:     `checkout.js.${__MINOR_VERSION__}`,
         t:     Date.now(),

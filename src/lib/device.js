@@ -1,10 +1,10 @@
 /* @flow */
 
-export function getUserAgent() {
+export function getUserAgent() : string {
     return window.navigator.mockUserAgent || window.navigator.userAgent;
 }
 
-export function isDevice() {
+export function isDevice() : boolean {
     let userAgent = getUserAgent();
     if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
         return true;
@@ -13,14 +13,14 @@ export function isDevice() {
     return false;
 }
 
-export function isWebView() {
+export function isWebView() : boolean {
     let userAgent = getUserAgent();
     return (/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i).test(userAgent) ||
         (/\bwv\b/).test(userAgent) ||
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
-export function getAgent(agent? : string) {
+export function getAgent(agent? : string) : Array<string> {
     let ua = getUserAgent();
     let tem;
     let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -30,34 +30,34 @@ export function getAgent(agent? : string) {
     }
     if (M[1] === 'Chrome') {
         tem = ua.match(/\bOPR\/(\d+)/);
-        if (tem !== null) {
+        if (tem) {
             return ['Opera', tem[1]];
         }
     }
     M = M[2] ? [M[1], M[2]] : [window.navigator.appName, window.navigator.appVersion, '-?'];
-    if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
+    if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i))) {
         M.splice(1, 1, tem[1]);
     }
     return M;
 }
 
-export function isOperaMini(ua? : string = getUserAgent()) {
+export function isOperaMini(ua? : string = getUserAgent()) : boolean {
     return ua.indexOf('Opera Mini') > -1;
 }
 
-export function isAndroid(ua? : string = getUserAgent()) {
+export function isAndroid(ua? : string = getUserAgent()) : boolean {
     return (/Android/).test(ua);
 }
 
-export function isIos(ua? : string = getUserAgent()) {
+export function isIos(ua? : string = getUserAgent()) : boolean {
     return (/iPhone|iPod|iPad/).test(ua);
 }
 
-export function isGoogleSearchApp(ua? : string = getUserAgent()) {
+export function isGoogleSearchApp(ua? : string = getUserAgent()) : boolean {
     return (/\bGSA\b/).test(ua);
 }
 
-export function isIosWebview(ua? : string = getUserAgent()) {
+export function isIosWebview(ua? : string = getUserAgent()) : boolean {
     if (isIos(ua)) {
         if (isGoogleSearchApp(ua)) {
             return true;
@@ -67,13 +67,13 @@ export function isIosWebview(ua? : string = getUserAgent()) {
     return false;
 }
 
-export function isAndroidWebview(ua? : string = getUserAgent()) {
+export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
     if (isAndroid(ua)) {
         return (/Version\/[\d\.]+/).test(ua) && !isOperaMini(ua);
     }
     return false;
 }
 
-export function supportsPopups(ua? : string = getUserAgent()) {
+export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
 }

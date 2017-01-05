@@ -23,11 +23,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() {
+                payment() : string | Promise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize(data) {
+                onAuthorize(data) : void {
                     try {
                         console.log(data.payment);
                     } catch (err) {
@@ -37,7 +37,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected error to be triggered by referencing data.payment'));
                 },
 
-                onCancel() {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
@@ -54,15 +54,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'fallback',
 
-                payment() {
+                payment() : string | Promise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() {
+                onAuthorize() : void {
                     return done();
                 },
 
-                onCancel() {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
@@ -80,20 +80,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'error',
 
-                payment() {
+                payment() : string | Promise<string> {
                     return generateECToken();
                 },
 
-                onError(err) {
+                onError(err) : void {
                     assert.ok(err instanceof Error);
                     return done();
                 },
 
-                onAuthorize() {
+                onAuthorize() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 },
 
-                onCancel() {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 

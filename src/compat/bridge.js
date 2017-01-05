@@ -7,7 +7,7 @@ import postRobot from 'post-robot/src';
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 
-postRobot.on('meta', ({ source, data }) => {
+postRobot.on('meta', ({ source, data } : { source : window, data : Object }) => {
 
     if (data.iframeEligible) {
         enableCheckoutIframe();
@@ -28,11 +28,11 @@ postRobot.on('meta', ({ source, data }) => {
     }
 });
 
-export function setupBridge(env : string) {
+export function setupBridge(env : string) : Promise<void> {
     return Promise.try(() => {
 
-        let bridgeUrl = config.bridgeUrls[env];
-        let bridgeDomain = config.paypalDomains[env];
+        let bridgeUrl : string = config.bridgeUrls[env];
+        let bridgeDomain : string = config.paypalDomains[env];
 
         if (!postRobot.needsBridgeForDomain(bridgeDomain)) {
             return $logger.debug(`bridge_not_required`, { env });

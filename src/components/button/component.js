@@ -18,7 +18,7 @@ export let Button = xcomponent.create({
     tag: 'paypal-button',
     name: 'ppbutton',
 
-    buildUrl(instance) {
+    buildUrl(instance) : string {
         let env = instance.props.env || config.env;
 
         return config.buttonUrls[env];
@@ -33,15 +33,15 @@ export let Button = xcomponent.create({
     scrolling: false,
     componentTemplate,
 
-    get version() {
+    get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get domains() {
+    get domains() : Object {
         return config.paypalDomains;
     },
 
-    validateProps(component, props, required = true) {
+    validateProps(component, props, required = true) : void {
         if (required) {
             return validateProps(props);
         }
@@ -54,7 +54,7 @@ export let Button = xcomponent.create({
             required: false,
             queryParam: true,
 
-            def() {
+            def() : string {
                 return config.env;
             }
         },
@@ -62,7 +62,7 @@ export let Button = xcomponent.create({
         client: {
             type: 'object',
             required: false,
-            def() {
+            def() : Object {
                 return {};
             },
             sendToChild: false
@@ -73,7 +73,7 @@ export let Button = xcomponent.create({
             required: false,
             queryParam: true,
 
-            def() {
+            def() : string {
                 return config.stage;
             }
         },
@@ -104,9 +104,9 @@ export let Button = xcomponent.create({
             required: false,
             alias: 'onPaymentAuthorize',
 
-            decorate(original) {
+            decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) {
+                    return function(data, actions) : void {
 
                         // $FlowFixMe
                         Object.defineProperty(data, 'payment', {
@@ -157,9 +157,9 @@ export let Button = xcomponent.create({
             required: false,
             alias: 'onPaymentCancel',
 
-            decorate(original) {
+            decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) {
+                    return function(data, actions) : void {
 
                         let redirect = (win, url) => {
 
@@ -192,7 +192,7 @@ export let Button = xcomponent.create({
             type: 'object',
             required: false,
 
-            def(props) {
+            def(props) : { width : string | number, height : string | number } {
                 let size = props.style && props.style.size || 'small';
 
                 return {
@@ -227,7 +227,7 @@ export let Button = xcomponent.create({
             required: false,
             queryParam: true,
             alias: 'buttonStyle',
-            def() {
+            def() : Object {
                 return {
                     color: 'gold',
                     shape: 'pill',
@@ -241,7 +241,7 @@ export let Button = xcomponent.create({
             type: 'boolean',
             required: false,
 
-            def() {
+            def() : boolean {
                 let meta = document.querySelector('meta[name=viewport]');
                 return isDevice() && !meta && ((window.screen && window.screen.width) < 660);
             }
@@ -250,7 +250,7 @@ export let Button = xcomponent.create({
         testAction: {
             type: 'string',
             required: false,
-            def() {
+            def() : string {
                 return 'checkout';
             }
         }

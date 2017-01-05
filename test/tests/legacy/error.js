@@ -416,7 +416,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click(event) : void {
                     try {
                         paypal.checkout.startFlow();
                     } catch (err) {

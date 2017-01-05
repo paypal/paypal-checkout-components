@@ -19,7 +19,7 @@ import contentJSON from './content';
 let content = JSON.parse(contentJSON);
 
 
-function addHeader(name, value) {
+function addHeader(name, value) : void {
 
     if (!window.$Api) {
         return;
@@ -69,7 +69,7 @@ export let Checkout = xcomponent.create({
     tag: 'paypal-checkout',
     name: 'ppcheckout',
 
-    buildUrl(instance, props) {
+    buildUrl(instance, props) : string | Promise<string> {
         let env = instance.props.env || config.env;
 
         if (instance.props.billingAgreement) {
@@ -100,11 +100,11 @@ export let Checkout = xcomponent.create({
 
     remoteRenderDomain: config.paypal_domain_regex,
 
-    get bridgeUrls() {
+    get bridgeUrls() : Object {
         return config.bridgeUrls;
     },
 
-    get bridgeDomains() {
+    get bridgeDomains() : Object {
         return config.paypalDomains;
     },
 
@@ -114,26 +114,26 @@ export let Checkout = xcomponent.create({
         popup: true
     },
 
-    get version() {
+    get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get domains() {
+    get domains() : Object {
         return config.paypalDomains;
     },
 
-    validateProps(component, props, required = true) {
+    validateProps(component, props, required = true) : void {
         if (required) {
             return validateProps(props);
         }
     },
 
-    get componentTemplate() {
+    get componentTemplate() : string {
 
         return componentTemplate;
     },
 
-    get parentTemplate() {
+    get parentTemplate() : string {
 
         let template = parentTemplate;
         let localeContent = content[config.locale.country][config.locale.lang];
@@ -151,7 +151,7 @@ export let Checkout = xcomponent.create({
             required: false,
             queryParam: true,
 
-            def() {
+            def() : string {
                 return config.env;
             }
         },
@@ -161,7 +161,7 @@ export let Checkout = xcomponent.create({
             required: false,
             queryParam: true,
 
-            def() {
+            def() : string {
                 return config.stage;
             }
         },
@@ -176,7 +176,7 @@ export let Checkout = xcomponent.create({
         client: {
             type: 'object',
             required: false,
-            def() {
+            def() : Object {
                 return {};
             },
             sendToChild: false
@@ -187,10 +187,10 @@ export let Checkout = xcomponent.create({
             required: false,
             getter: true,
             memoize: true,
-            queryParam(value = '') {
+            queryParam(value = '') : string {
                 return value.indexOf('BA-') === 0 ? 'ba_token' : 'token';
             },
-            childDef() {
+            childDef() : ?string {
                 return getQueryParam('token');
             },
             alias: 'paymentToken'
@@ -216,9 +216,9 @@ export let Checkout = xcomponent.create({
             once: true,
             alias: 'onPaymentAuthorize',
 
-            decorate(original) {
+            decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) {
+                    return function(data, actions = {}) : void {
 
                         try {
                             logReturnUrl(data.returnUrl);
@@ -296,8 +296,8 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             sameDomain: true,
-            decorate(original) {
-                return function() {
+            decorate(original) : Function {
+                return function() : void {
                     enableCheckoutIframe(); // eslint-disable-line
                     if (original) {
                         return original.apply(this, arguments);
@@ -312,9 +312,9 @@ export let Checkout = xcomponent.create({
             once: true,
             alias: 'onPaymentCancel',
 
-            decorate(original) {
+            decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) {
+                    return function(data, actions = {}) : void {
 
                         let close = () => {
                             return Promise.try(() => {
@@ -357,8 +357,8 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
 
-            decorate(original) {
-                return function(data) {
+            decorate(original) : Function {
+                return function(data) : void {
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
@@ -376,8 +376,8 @@ export let Checkout = xcomponent.create({
             once: true,
             promisify: true,
 
-            def() {
-                return function(reason) {
+            def() : Function {
+                return function(reason) : void {
                     let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
                     if (this.props.onCancel && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
@@ -404,7 +404,7 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             promisify: true,
-            def() {
+            def() : Function {
                 return window.xprops && window.xprops.onError || noop;
             },
             once: true
@@ -415,8 +415,8 @@ export let Checkout = xcomponent.create({
             required: false,
             once: true,
 
-            def() {
-                return function(url) {
+            def() : Function {
+                return function(url) : void {
                     $logger.warn('fallback', { url });
                     return window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
@@ -426,7 +426,7 @@ export let Checkout = xcomponent.create({
         testAction: {
             type: 'string',
             required: false,
-            def() {
+            def() : string {
                 return 'checkout';
             }
         }
@@ -434,7 +434,7 @@ export let Checkout = xcomponent.create({
 
     autoResize: true,
 
-    get dimensions() {
+    get dimensions() : { width : string | number, height : string | number } {
 
         if (isDevice()) {
             return {
