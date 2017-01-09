@@ -3,8 +3,6 @@
 import 'src/index';
 import '../../tests/common';
 
-window.opener.console.warn('loaded fallback page');
-
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 patchXmlHttpRequest();
@@ -26,9 +24,7 @@ let interval = setInterval(() => {
 
     clearInterval(interval);
 
-    window.opener.console.warn('sending request');
     let req = new window.XMLHttpRequest();
-    window.opener.console.warn(req.open.toString());
     req.open('POST', '/legacy/complete', true);
     req.send();
 
