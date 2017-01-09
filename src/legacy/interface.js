@@ -218,7 +218,7 @@ function initPayPalCheckout(props = {}) : Object {
     return paypalCheckout;
 }
 
-function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) : SyncPromise<Object> {
+function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : SyncPromise<Object> {
 
     let urlProp = SyncPromise.resolve(props.url);
 

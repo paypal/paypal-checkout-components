@@ -7,7 +7,7 @@ import postRobot from 'post-robot/src';
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 
-postRobot.on('meta', ({ source, data } : { source : window, data : Object }) => {
+postRobot.on('meta', ({ source, data } : { source : typeof window, data : Object }) => {
 
     if (data.iframeEligible) {
         enableCheckoutIframe();

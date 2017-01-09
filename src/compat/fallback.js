@@ -28,7 +28,7 @@ window.onLegacyPaymentAuthorize = (method : Function) => {
     onAuthorize = method;
 
     if (!isPayPalDomain()) {
-        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : window) => {
+        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : typeof window) => {
             return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                 .then(noop);
         });
@@ -37,7 +37,7 @@ window.onLegacyPaymentAuthorize = (method : Function) => {
 
 // Bridge / Button
 
-window.watchForLegacyFallback = (win : window) => {
+window.watchForLegacyFallback = (win : typeof window) => {
     let interval = setInterval(() => {
         try {
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||

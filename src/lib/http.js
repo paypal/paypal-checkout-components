@@ -9,7 +9,7 @@ type RequestOptionsType = {
     json? : Object,
     data? : { [key : string] : string },
     body? : string,
-    win? : window
+    win? : typeof window
 };
 
 export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : SyncPromise<Object> {

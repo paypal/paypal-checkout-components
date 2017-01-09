@@ -52,7 +52,7 @@ export function isElement(item : mixed) : boolean {
     return item instanceof HTMLElement;
 }
 
-export function getElement(item : string | HTMLElement) : ?HTMLElement {
+export function getElement(item : mixed) : ?HTMLElement {
 
     if (!item) {
         return;
@@ -73,7 +73,7 @@ export function getElement(item : string | HTMLElement) : ?HTMLElement {
     }
 }
 
-export function getElements(collection : Array<string | HTMLElement> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : Array<HTMLElement> {
+export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : Array<HTMLElement> {
 
     if (!collection) {
         return [];

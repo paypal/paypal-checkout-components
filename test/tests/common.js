@@ -217,7 +217,8 @@ window.HTMLElement.prototype.click = function() : void {
 };
 
 let windowOpen = window.open;
-window.open = function() : window {
+window.open = function() : typeof window {
+
     if (!isClick) {
         return {
             closed: true,
