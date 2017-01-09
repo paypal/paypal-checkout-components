@@ -70,7 +70,10 @@ gulp.task('karma', ['lint'], function (done) {
     configFile: __dirname + '/karma.conf.js',
     singleRun: !Boolean(argv['keep-browser-open']),
     client: {
-      captureConsole: Boolean(argv['capture-console'])
+      captureConsole: Boolean(argv['capture-console']),
+      mocha: {
+        timeout : 5000
+      }
     }
   });
 
