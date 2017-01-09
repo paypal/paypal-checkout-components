@@ -3,23 +3,17 @@
 import logger from 'beaver-logger/client';
 
 import { config } from '../config';
-import { loadScript, getElements, getElement } from '../lib';
+import { loadScript, getElements, getElement, memoize } from '../lib';
 import { BUTTON_JS_URL, LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
-let buttonJS;
-
-function loadButtonJS() : Promise<void> {
-
-    if (buttonJS) {
-        return buttonJS;
-    }
+let loadButtonJS = memoize(() : SyncPromise<void> => {
 
     $logger.debug(`buttonjs_load`);
 
-    buttonJS = loadScript(BUTTON_JS_URL).catch(err => {
+    return loadScript(BUTTON_JS_URL).catch(err => {
         $logger.info(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
         return loadScript(BUTTON_JS_URL);
     }).then(result => {
@@ -29,9 +23,7 @@ function loadButtonJS() : Promise<void> {
         $logger.error(`buttonjs_load_error`, { error: err.stack || err.toString() });
         throw err;
     });
-
-    return buttonJS;
-}
+});
 
 function renderButton(id, container, options, label) : HTMLElement {
 
@@ -59,7 +51,7 @@ function renderButton(id, container, options, label) : HTMLElement {
     return buttonDom.el.childNodes[0];
 }
 
-export function renderButtons(id : string, options : Object) : Promise<Array<Object>> {
+export function renderButtons(id : string, options : Object) : SyncPromise<Array<Object>> {
 
     return loadButtonJS().then(() => {
 

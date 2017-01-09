@@ -1,12 +1,12 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import { config } from 'src/config';
 
-export function onHashChange() : Promise<string> {
-    return new Promise((resolve, reject) => {
+export function onHashChange() : SyncPromise<string> {
+    return new SyncPromise((resolve, reject) => {
         let currentHash = window.location.hash;
 
         let timeout;
@@ -27,8 +27,8 @@ export function onHashChange() : Promise<string> {
     });
 }
 
-export function delay(time : number) : Promise<void> {
-    return new Promise(resolve => {
+export function delay(time : number) : SyncPromise<void> {
+    return new SyncPromise(resolve => {
         setTimeout(resolve, time);
     });
 }

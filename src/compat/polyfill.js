@@ -2,7 +2,7 @@
 
 import Symbol from 'es6-symbol/polyfill';
 import ArrayIterator from 'es6-iterator/array';
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 if (!window.Symbol) {
     window.Symbol = Symbol;
@@ -16,6 +16,8 @@ if (!Array.prototype[Symbol.iterator]) {
 
 window.Symbol = Symbol;
 
+window.SyncPromise = SyncPromise;
+
 if (!window.Promise) {
-    window.Promise = Promise;
+    window.Promise = SyncPromise;
 }

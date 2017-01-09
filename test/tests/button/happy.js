@@ -1,6 +1,8 @@
 /* @flow */
 
 import paypal from 'src/index';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
+
 import { assert } from 'chai';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange } from '../common';
@@ -24,7 +26,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
@@ -49,7 +51,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'cancel',
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
@@ -74,7 +76,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -103,7 +105,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -130,7 +132,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -161,7 +163,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'cancel',
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -192,7 +194,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'cancel',
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -221,7 +223,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 testAction: 'cancel',
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return token;
                 },
 
@@ -252,7 +254,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -289,7 +291,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -329,7 +331,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -408,8 +410,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
-                    return new Promise(resolve => {
+                payment() : string | SyncPromise<string> {
+                    return new SyncPromise(resolve => {
                         return resolve(generateECToken());
                     });
                 },
@@ -435,7 +437,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return checkoutToken;
                 },
 
@@ -465,7 +467,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return paymentID;
                 },
 
@@ -495,7 +497,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return billingToken;
                 },
 
@@ -525,7 +527,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return paypal.Button.render({
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
@@ -558,7 +560,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'popout',
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
 
@@ -585,7 +587,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'popout',
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return token;
                     },
 
@@ -612,7 +614,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'popout',
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return token;
                     },
 
@@ -639,7 +641,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return paypal.Button.render({
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
 

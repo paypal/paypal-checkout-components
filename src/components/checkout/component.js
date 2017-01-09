@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
@@ -69,7 +69,7 @@ export let Checkout = xcomponent.create({
     tag: 'paypal-checkout',
     name: 'ppcheckout',
 
-    buildUrl(instance, props) : string | Promise<string> {
+    buildUrl(instance, props) : string | SyncPromise<string> {
         let env = instance.props.env || config.env;
 
         if (instance.props.billingAgreement) {
@@ -227,7 +227,7 @@ export let Checkout = xcomponent.create({
                         }
 
                         let close = () => {
-                            return Promise.try(() => {
+                            return SyncPromise.try(() => {
                                 if (actions.close) {
                                     return actions.close();
                                 }
@@ -247,12 +247,12 @@ export let Checkout = xcomponent.create({
 
                             return close().then(() => {
                                 if (urlWillRedirectPage(url)) {
-                                    return new Promise();
+                                    return new SyncPromise();
                                 }
                             });
                         };
 
-                        return Promise.try(() => {
+                        return SyncPromise.try(() => {
 
                             try {
                                 let isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
@@ -317,7 +317,7 @@ export let Checkout = xcomponent.create({
                     return function(data, actions = {}) : void {
 
                         let close = () => {
-                            return Promise.try(() => {
+                            return SyncPromise.try(() => {
                                 if (actions.close) {
                                     return actions.close();
                                 }
@@ -337,12 +337,12 @@ export let Checkout = xcomponent.create({
 
                             return close().then(() => {
                                 if (urlWillRedirectPage(url)) {
-                                    return new Promise();
+                                    return new SyncPromise();
                                 }
                             });
                         };
 
-                        return Promise.try(() => {
+                        return SyncPromise.try(() => {
                             return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
                             this.close();

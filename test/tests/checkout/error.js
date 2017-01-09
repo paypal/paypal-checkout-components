@@ -28,7 +28,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'fallback',
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
 
@@ -55,7 +55,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     testAction: 'error',
 
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
 
@@ -82,7 +82,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             it('should render checkout without a click event and error out', (done) => {
 
                 return paypal.Checkout.render({
-                    payment() : string | Promise<string> {
+                    payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 type RequestOptionsType = {
     url : string,
@@ -12,9 +12,9 @@ type RequestOptionsType = {
     win? : window
 };
 
-export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : Promise<Object> {
+export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : SyncPromise<Object> {
 
-    return new Promise((resolve, reject) => {
+    return new SyncPromise((resolve, reject) => {
 
         if (json && data || json && body || data && json) {
             throw new Error(`Only options.json or options.data or options.body should be passed`);

@@ -7,7 +7,7 @@ import { initLogger, checkForCommonErrors, beacon } from './lib';
 import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -29,7 +29,7 @@ setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
 initLogger();
 
-Promise.onPossiblyUnhandledException((err : Error) => {
+SyncPromise.onPossiblyUnhandledException((err : Error) => {
 
     beacon(`unhandled_error`, {
         message: err ? err.toString() : 'undefined',

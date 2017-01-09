@@ -21,10 +21,10 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with payment and billing agreement and error out', () => {
 
         return paypal.Checkout.render({
-            payment() : string | Promise<string> {
+            payment() : string | SyncPromise<string> {
                 return generateECToken();
             },
-            billingAgreement() : string | Promise<string> {
+            billingAgreement() : string | SyncPromise<string> {
                 return generateBillingToken();
             }
         }).then(() => {
@@ -38,7 +38,7 @@ describe(`paypal checkout component validation`, () => {
 
         return paypal.Checkout.render({
             commit: true,
-            billingAgreement() : string | Promise<string> {
+            billingAgreement() : string | SyncPromise<string> {
                 return generateBillingToken();
             }
         }).then(() => {
@@ -51,7 +51,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with payment and no onAuthorize, and error out', () => {
 
         return paypal.Checkout.render({
-            payment() : string | Promise<string> {
+            payment() : string | SyncPromise<string> {
                 return generateECToken();
             }
         }).then(() => {
@@ -77,7 +77,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with an invalid size, and error out', () => {
 
         return paypal.Checkout.render({
-            payment() : string | Promise<string> {
+            payment() : string | SyncPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -96,7 +96,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with no client id, and error out', () => {
 
         return paypal.Checkout.render({
-            payment() : string | Promise<string> {
+            payment() : string | SyncPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -115,7 +115,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with an invalid client id, and error out', () => {
 
         return paypal.Checkout.render({
-            payment() : string | Promise<string> {
+            payment() : string | SyncPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {

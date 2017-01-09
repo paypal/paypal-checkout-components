@@ -1,10 +1,10 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
 
-export function loadScript(src : string, timeout : number = 0) : Promise<void> {
-    return new Promise((resolve, reject) => {
+export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
+    return new SyncPromise((resolve, reject) => {
         let script = document.createElement('script');
 
         script.onload = function () {
@@ -107,7 +107,7 @@ function isDocumentReady() : boolean {
     return document.readyState === 'complete';
 }
 
-let documentReady = new Promise(resolve => {
+let documentReady = new SyncPromise(resolve => {
 
     if (isDocumentReady()) {
         return resolve();
@@ -121,7 +121,7 @@ let documentReady = new Promise(resolve => {
     }, 10);
 });
 
-export function onDocumentReady(method : () => void) : Promise<void> {
+export function onDocumentReady(method : () => void) : SyncPromise<void> {
     return documentReady.then(method);
 }
 

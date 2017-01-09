@@ -38,7 +38,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                                 this.window.document.querySelector('button').click();
                             },
 
-                            payment() : string | Promise<string> {
+                            payment() : string | SyncPromise<string> {
                                 return generateECToken();
                             },
 
@@ -75,7 +75,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     this.window.document.querySelector('button').click();
                 },
 
-                payment() : string | Promise<string> {
+                payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 

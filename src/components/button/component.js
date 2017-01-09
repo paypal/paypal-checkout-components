@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
@@ -133,7 +133,7 @@ export let Button = xcomponent.create({
 
                             return actions.close().then(() => {
                                 if (urlWillRedirectPage(url)) {
-                                    return new Promise();
+                                    return new SyncPromise();
                                 }
                             });
                         };
@@ -172,7 +172,7 @@ export let Button = xcomponent.create({
 
                             return actions.close().then(() => {
                                 if (urlWillRedirectPage(url)) {
-                                    return new Promise();
+                                    return new SyncPromise();
                                 }
                             });
                         };

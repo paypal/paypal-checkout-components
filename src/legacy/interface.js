@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
 
 import { Checkout } from '../components';
@@ -114,9 +114,9 @@ function checkUrlAgainstEnv(url : string) {
     global methods.
 */
 
-function awaitPaymentTokenAndUrl() : { url : Promise<string>, paymentToken : Promise<?string> } {
+function awaitPaymentTokenAndUrl() : { url : SyncPromise<string>, paymentToken : SyncPromise<?string> } {
 
-    let paymentTokenAndUrl = new Promise((resolve, reject) => {
+    let paymentTokenAndUrl = new SyncPromise((resolve, reject) => {
 
         checkout.initXO = () => {
             $logger.warn(`gettoken_initxo`);
@@ -180,13 +180,13 @@ function initPayPalCheckout(props = {}) : Object {
 
         uid: window.pp_uid,
 
-        onAuthorize(data, actions) : Promise<void> {
+        onAuthorize(data, actions) : SyncPromise<void> {
             $logger.info(`payment_authorized`);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },
 
-        onCancel(data, actions) : Promise<void> {
+        onCancel(data, actions) : SyncPromise<void> {
             $logger.info(`payment_canceled`);
             logRedirect(data.cancelUrl);
             return actions.redirect(window);
@@ -218,11 +218,11 @@ function initPayPalCheckout(props = {}) : Object {
     return paypalCheckout;
 }
 
-function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) : Promise<Object> {
+function renderPayPalCheckout(props : Object = {}, hijackTarget? : Element) : SyncPromise<Object> {
 
-    let urlProp = Promise.resolve(props.url);
+    let urlProp = SyncPromise.resolve(props.url);
 
-    let paymentToken = new Promise(resolve => {
+    let paymentToken = new SyncPromise(resolve => {
         props.init = (data) => {
             resolve(data.paymentToken);
         };
@@ -307,7 +307,7 @@ function handleClickHijack(button) : void {
         token = result;
     });
 
-    renderPayPalCheckout({ url, payment: () => Promise.resolve(token) }, targetElement);
+    renderPayPalCheckout({ url, payment: () => SyncPromise.resolve(token) }, targetElement);
 }
 
 
@@ -394,7 +394,7 @@ function listenClick(container, button, clickHandler, condition) : void {
 
 let setupCalled = false;
 
-export function setup(id : string, options : Object = {}) : Promise<void> {
+export function setup(id : string, options : Object = {}) : SyncPromise<void> {
 
     checkpoint('flow_setup');
 
@@ -464,7 +464,7 @@ export function setup(id : string, options : Object = {}) : Promise<void> {
         }
     }
 
-    return Promise.all([
+    return SyncPromise.all([
 
         setupBridge(config.env),
 

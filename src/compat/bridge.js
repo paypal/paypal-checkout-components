@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import postRobot from 'post-robot/src';
 
@@ -28,8 +28,8 @@ postRobot.on('meta', ({ source, data } : { source : window, data : Object }) => 
     }
 });
 
-export function setupBridge(env : string) : Promise<void> {
-    return Promise.try(() => {
+export function setupBridge(env : string) : SyncPromise<void> {
+    return SyncPromise.try(() => {
 
         let bridgeUrl : string = config.bridgeUrls[env];
         let bridgeDomain : string = config.paypalDomains[env];

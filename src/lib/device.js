@@ -20,7 +20,7 @@ export function isWebView() : boolean {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
-export function getAgent(agent? : string) : Array<string> {
+export function getAgent(agent? : ?string) : Array<string> {
     let ua = getUserAgent();
     let tem;
     let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
