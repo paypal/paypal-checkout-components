@@ -43,7 +43,7 @@ window.watchForLegacyFallback = (win : window) => {
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||
                             win.document.body.innerHTML.indexOf('wapapp') !== -1);
 
-            if (!isLegacy || win.ppxoMatching || win.closed) {
+            if (!isLegacy || win.ppxoWatching || win.closed) {
                 return;
             }
 
