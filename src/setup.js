@@ -38,7 +38,19 @@ SyncPromise.onPossiblyUnhandledException((err : Error) => {
     });
 });
 
-export function setup(options : Object = {}) {
+
+type SetupOptions = {
+    env? : ?string,
+    stage? : ?string,
+    apiStage? : ?string,
+    paypalUrl? : ?string,
+    state? : ?string,
+    ppobjects? : ?boolean,
+    lightbox? : ?boolean,
+    bridge? : ?boolean
+};
+
+export function setup(options : SetupOptions = {}) {
 
     checkForCommonErrors();
 

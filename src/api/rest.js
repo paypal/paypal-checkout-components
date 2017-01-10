@@ -6,35 +6,15 @@ import { btoa } from 'Base64';
 import $logger from 'beaver-logger/client';
 
 import { config } from '../config';
-import { request } from '../lib';
+import { request, memoize } from '../lib';
+
+import type { MemoizedFunction } from '../lib';
 
 import { Button } from '../components';
 
 let proxyRest : { [key : string] : () => SyncPromise<string> } = {};
 
-function memoize(method : Function, options : { time? : number } = {}) : Function {
-
-    let cache : { [key : string] : mixed } = {};
-
-    return function() : mixed {
-
-        let key : string = JSON.stringify(arguments);
-
-        if (!cache.hasOwnProperty(key)) {
-            cache[key] = method.apply(this, arguments);
-
-            if (options.time) {
-                setTimeout(() => {
-                    delete cache[key];
-                }, options.time);
-            }
-        }
-
-        return cache[key];
-    };
-}
-
-let createAccessToken = memoize((env : string, client : { [key : string] : string }) : SyncPromise<string> => {
+let createAccessToken : MemoizedFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }) : SyncPromise<string> => {
 
     $logger.info(`rest_api_create_access_token`);
 
@@ -63,7 +43,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
             grant_type: `client_credentials`
         }
 
-    }).then((res : Object) : string => {
+    }).then(res => {
 
         if (res && res.error === 'invalid_client') {
             throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, null, 4)}`);
@@ -75,9 +55,10 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
 
         return res.access_token;
     });
+
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : SyncPromise<string> => {
+let createExperienceProfile : MemoizedFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : SyncPromise<string> => {
 
     $logger.info(`rest_api_create_experience_profile`);
 
@@ -148,7 +129,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
     return createAccessToken(env, client).then((accessToken) : SyncPromise<Object> => {
 
-        return SyncPromise.try(() : ?Promise<Object> => {
+        return SyncPromise.try(() => {
 
             if (experienceDetails) {
                 return createExperienceProfile(env, client, experienceDetails);

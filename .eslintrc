@@ -291,7 +291,7 @@
         ],
         "flowtype/no-primitive-constructor-types": 2,
         "flowtype/no-weak-types": [2, {
-            "any": true,
+            "any": false,
             "Object": false,
             "Function": false
         }],
@@ -327,7 +327,7 @@
         ],
         "flowtype/type-id-match": [
             2,
-            "^([A-Z][a-z0-9]+)+Type$"
+            "^([A-Z][a-z0-9]+)+$"
         ],
         "flowtype/union-intersection-spacing": [
             2,

@@ -7,25 +7,35 @@ export function isPayPalDomain() : boolean {
 }
 
 
-export function memoize(method : Function) : Function {
+export type MemoizedFunction<P, R> = (...args : Array<P>) => R;
 
-    let results = {};
+export function memoize<P, R>(method : MemoizedFunction<P, R>, options : { time? : number } = {}) : MemoizedFunction<P, R> {
 
-    return function() : mixed {
+    let cache : { [key : string] : R } = {};
 
-        let args;
+    return function() : R {
+
+        let key : string;
 
         try {
-            args = JSON.stringify(Array.prototype.slice.call(arguments));
+            key = JSON.stringify(arguments);
         } catch (err) {
-            throw new Error('Arguments not serializable -- can not be used to memoize');
+            throw new Error(`Arguments not serializable -- can not be used to memoize`);
         }
 
-        if (!results.hasOwnProperty(args)) {
-            results[args] = method.apply(this, arguments);
+        if (cache.hasOwnProperty(key)) {
+            return cache[key];
         }
 
-        return results[args];
+        cache[key] = method.apply(this, arguments);
+
+        if (options.time) {
+            setTimeout(() => {
+                delete cache[key];
+            }, options.time);
+        }
+
+        return cache[key];
     };
 }
 

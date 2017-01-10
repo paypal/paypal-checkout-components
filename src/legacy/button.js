@@ -1,15 +1,18 @@
 /* @flow */
 
 import logger from 'beaver-logger/client';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { config } from '../config';
 import { loadScript, getElements, getElement, memoize } from '../lib';
 import { BUTTON_JS_URL, LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
+import type { MemoizedFunction } from '../lib';
+
 let $logger = logger.prefix(LOG_PREFIX);
 
-let loadButtonJS = memoize(() : SyncPromise<void> => {
+let loadButtonJS : MemoizedFunction<void, SyncPromise<void>> = memoize(() : SyncPromise<void> => {
 
     $logger.debug(`buttonjs_load`);
 
