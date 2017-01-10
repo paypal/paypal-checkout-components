@@ -8,13 +8,13 @@ import $logger from 'beaver-logger/client';
 import { config } from '../config';
 import { request, memoize } from '../lib';
 
-import type { MemoizedFunction } from '../lib';
+import type { GenericFunction } from '../lib';
 
 import { Button } from '../components';
 
 let proxyRest : { [key : string] : () => SyncPromise<string> } = {};
 
-let createAccessToken : MemoizedFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }) : SyncPromise<string> => {
+let createAccessToken : GenericFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }) : SyncPromise<string> => {
 
     $logger.info(`rest_api_create_access_token`);
 
@@ -58,7 +58,7 @@ let createAccessToken : MemoizedFunction<any, SyncPromise<string>> = memoize((en
 
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile : MemoizedFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : SyncPromise<string> => {
+let createExperienceProfile : GenericFunction<any, SyncPromise<string>> = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : SyncPromise<string> => {
 
     $logger.info(`rest_api_create_experience_profile`);
 

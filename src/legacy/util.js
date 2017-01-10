@@ -1,5 +1,6 @@
 /* @flow */
 
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
