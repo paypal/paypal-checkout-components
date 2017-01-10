@@ -26,7 +26,7 @@ export function logRedirect(location : string) {
     $logger.flush();
 }
 
-export function redirect(url : string) {
+export function redirect(url : string) : SyncPromise<void> {
 
     if (!url) {
         throw new Error(`Redirect url undefined`);
@@ -49,6 +49,8 @@ export function redirect(url : string) {
         $logger.info(`redirect`, { url });
         window.location = url;
     }, REDIRECT_DELAY);
+
+    return new SyncPromise();
 }
 
 export function isToken(item : string) : boolean {

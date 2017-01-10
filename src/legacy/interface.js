@@ -192,9 +192,9 @@ function initPayPalCheckout(props = {}) : Object {
             return actions.redirect(window);
         },
 
-        fallback(url) {
-            $logger.error(`fallback_handler`);
-            redirect(url);
+        fallback(url) : SyncPromise<void> {
+            $logger.error(`fallback_handler`, { url });
+            return redirect(url);
         },
 
         ...props
