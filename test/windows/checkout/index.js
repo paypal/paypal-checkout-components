@@ -73,24 +73,24 @@ if (window.xprops.testAction === 'checkout') {
 
 } else if (window.xprops.testAction === 'fallback') {
 
-    createTestContainer();
+    let parent = window.xchild.getParentComponentWindow();
 
-    let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+    window.xprops.paymentToken().then(paymentToken => {
+        window.xprops.fallback(`#fallbackUrl?token=${paymentToken}`).then(() => {
 
-    testButton.addEventListener('click', (event : Event) => {
-        let win;
+            createTestContainer();
 
-        if (window.opener) {
-            win = window;
-        } else {
-            win = window.open('', `fallbackWindow${Math.random()}`);
-        }
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        let parent = window.xchild.getParentComponentWindow();
+            testButton.addEventListener('click', (event : Event) => {
+                let win;
 
-        window.xprops.paymentToken().then(paymentToken => {
+                if (window.opener) {
+                    win = window;
+                } else {
+                    win = window.open('', `fallbackWindow${Math.random()}`);
+                }
 
-            window.xprops.fallback(`#fallbackUrl?token=${paymentToken}`).then(() => {
                 win.location = '/base/test/windows/fallback/index.htm';
 
                 if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
@@ -105,10 +105,10 @@ if (window.xprops.testAction === 'checkout') {
 
                 throw new Error('Can not find frame to watch for fallback');
             });
+
+            testButton.click();
         });
     });
-
-    testButton.click();
 
 } else if (window.xprops.testAction === 'error') {
 

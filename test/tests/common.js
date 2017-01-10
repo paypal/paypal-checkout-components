@@ -5,7 +5,7 @@ import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import { config } from 'src/config';
 
-export function onHashChange() : SyncPromise<string> {
+export function onHashChange(time = 4000) : SyncPromise<string> {
     return new SyncPromise((resolve, reject) => {
         let currentHash = window.location.hash;
 
@@ -22,8 +22,8 @@ export function onHashChange() : SyncPromise<string> {
 
         timeout = setTimeout(() => {
             clearInterval(interval);
-            return reject(new Error(`Hash did not change after 2000ms`));
-        }, 2000);
+            return reject(new Error(`Hash did not change after ${time}ms`));
+        }, time);
     });
 }
 
