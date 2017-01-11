@@ -5,7 +5,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { config } from '../config';
 import { loadScript, getElements, getElement, memoize } from '../lib';
-import { BUTTON_JS_URL, LOG_PREFIX } from './constants';
+import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
 import type { GenericFunction } from '../lib';
@@ -16,9 +16,9 @@ let loadButtonJS : GenericFunction<void, SyncPromise<void>> = memoize(() : SyncP
 
     $logger.debug(`buttonjs_load`);
 
-    return loadScript(BUTTON_JS_URL).catch(err => {
+    return loadScript(config.buttonJSUrl).catch(err => {
         $logger.info(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
-        return loadScript(BUTTON_JS_URL);
+        return loadScript(config.buttonJSUrl);
     }).then(result => {
         $logger.debug(`buttonjs_load_success`);
         return result;

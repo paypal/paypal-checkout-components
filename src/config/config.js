@@ -148,6 +148,18 @@ export let config = {
         [ ENV.TEST ]:       `#fallback`
     },
 
+    buttonJSUrls: {
+        [ ENV.LOCAL ]:      `https://www.paypalobjects.com/api/button.js`,
+        [ ENV.STAGE ]:      `https://www.paypalobjects.com/api/button.js`,
+        [ ENV.SANDBOX ]:    `https://www.paypalobjects.com/api/button.js`,
+        [ ENV.PRODUCTION ]: `https://www.paypalobjects.com/api/button.js`,
+        [ ENV.TEST ]:       `/base/test/lib/button.js`
+    },
+
+    get buttonJSUrl() : string {
+        return config.buttonJSUrls[config.env];
+    },
+
     loggerUri: `/webapps/hermes/api/logger`,
 
     get bridgeUri() : string {
