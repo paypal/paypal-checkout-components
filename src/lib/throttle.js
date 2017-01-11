@@ -1,11 +1,11 @@
 /* @flow */
 
 import { checkpoint, fpti } from './beacon';
-import { uniqueID, hashStr } from './util';
+import { uniqueID, hashStr, match } from './util';
 
 let uids = {};
 
-function getUID(name, uid) : { uid : string, isNew : boolean } {
+function getUID(name, uid) : string {
 
     if (!uid) {
         if (uids[name]) {
@@ -21,12 +21,7 @@ function getUID(name, uid) : { uid : string, isNew : boolean } {
         }
     }
 
-    let isNew;
-
-    if (uid) {
-        isNew = false;
-    } else {
-        isNew = true;
+    if (!uid) {
         uid = uniqueID();
     }
 
@@ -40,12 +35,12 @@ function getUID(name, uid) : { uid : string, isNew : boolean } {
         // pass
     }
 
-    return { uid, isNew };
+    return uid;
 }
 
 export function getThrottle(name : string, sample : number, id? : string) : Object {
 
-    let { uid, isNew } = getUID(name, id);
+    let uid = getUID(name, id);
 
     let throttle = hashStr(`${name}_${uid}`) % 10000;
 
@@ -61,8 +56,7 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
     let treatment = `${name}_${group}`;
 
-    let loggedStart = false;
-    let loggedComplete = false;
+    let logged : { [key : string] : boolean } = {};
 
     return {
 
@@ -78,34 +72,35 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
             return treatment;
         },
 
-        logStart(payload : { [key : string] : ?string } = {}) : Object {
+        log(checkpointName : string, payload : { [key : string] : ?string } = {}) : Object {
 
-            let event = `${treatment}_start`;
+            let event = `${treatment}_${checkpointName}`;
 
-            if (!loggedStart) {
+            if (!logged[checkpointName]) {
                 checkpoint(event, { ...payload, expuid: uid });
                 fpti({ ...payload, expuid: uid, eligibility_reason: event });
-                loggedStart = true;
+                logged[checkpointName] = true;
             }
 
             return this;
         },
 
+        logStart(payload : { [key : string] : ?string } = {}) : Object {
+            return this.log(`start`, payload);
+        },
+
         logComplete(payload : { [key : string] : ?string }  = {}) : Object {
-
-            if (!loggedStart && isNew) {
-                return this;
-            }
-
-            let event = `${treatment}_complete`;
-
-            if (!loggedComplete) {
-                checkpoint(event, { ...payload, expuid: uid });
-                fpti({ ...payload, expuid: uid, eligibility_reason: event });
-                loggedComplete = true;
-            }
-
-            return this;
+            return this.log(`complete`, payload);
         }
     };
+}
+
+export function getReturnToken() : ?string {
+
+    let token = match(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+    let payer = match(window.location.href, /PayerID=([A-Z0-9]+)/);
+
+    if (token && payer) {
+        return token;
+    }
 }

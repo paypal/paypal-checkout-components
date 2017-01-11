@@ -102,3 +102,41 @@ export function safeJSON(item : mixed) : string {
         return val;
     });
 }
+
+type Listener = {
+    listen : (method : Function) => {
+        cancel : () => void
+    },
+    once : (method : Function) => void,
+    trigger : () => void
+};
+
+export function eventEmitter() : Listener {
+
+    let listeners = [];
+
+    return {
+        listen(method : Function) : { cancel : () => void } {
+            listeners.push(method);
+
+            return {
+                cancel() {
+                    listeners.splice(listeners.indexOf(method), 1);
+                }
+            };
+        },
+
+        once(method : Function) {
+            let listener = this.listen(function() {
+                method.apply(null, arguments);
+                listener.cancel();
+            });
+        },
+
+        trigger() {
+            for (let listener of listeners) {
+                listener.apply(null, arguments);
+            }
+        }
+    };
+}

@@ -11,8 +11,8 @@ import { supportsPopups, getElements, once, checkpoint, safeJSON } from '../lib'
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
-import { checkThrottle } from './throttle';
 import { redirect, logRedirect, parseToken } from './util';
+import { onAuthorizeListener } from './listener';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -131,11 +131,6 @@ function awaitPaymentTokenAndUrl() : { url : SyncPromise<string>, paymentToken :
 
             checkUrlAgainstEnv(url);
 
-            if (!checkThrottle(paymentToken, true)) {
-                $logger.warn(`throttle_failed_on_startflow`);
-                return redirect(url);
-            }
-
             return resolve({ url, paymentToken });
         });
     });
@@ -182,6 +177,7 @@ function initPayPalCheckout(props = {}) : Object {
 
         onAuthorize(data, actions) : SyncPromise<void> {
             $logger.info(`payment_authorized`);
+            onAuthorizeListener.trigger(data.paymentToken);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },
@@ -336,28 +332,26 @@ function listenClick(container, button, clickHandler, condition) : void {
 
         checkpoint('flow_buttonclick');
 
+        let eligible = isLegacyEligible();
+
         if (supportsPopups()) {
             $logger.debug(`click_popups_supported`);
 
-            if (!isLegacyEligible()) {
+            if (!eligible) {
                 $logger.debug(`click_popups_supported_but_ineligible`);
             }
         } else {
             $logger.debug(`click_popups_not_supported`);
 
-            if (isLegacyEligible()) {
+            if (eligible) {
                 $logger.debug(`click_popups_not_supported_but_eligible`);
             }
         }
 
         if (!isClick) {
 
-            if (!isLegacyEligible()) {
+            if (!eligible) {
                 return $logger.debug(`ineligible_listenclick`);
-            }
-
-            if (!checkThrottle(null, true)) {
-                return;
             }
         }
 
@@ -488,16 +482,12 @@ checkout.setup = setup;
     getToken will handle loading the token into the window for us.
 */
 
-function initXO() {
+function initXO() : void {
 
     $logger.debug(`initxo`);
 
     if (!isLegacyEligible()) {
         return $logger.debug(`ineligible_initxo`);
-    }
-
-    if (!checkThrottle()) {
-        return;
     }
 
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
@@ -529,10 +519,6 @@ function startFlow(item : string) : void {
 
     if (!isLegacyEligible()) {
         $logger.debug(`ineligible_startflow_global`, { url });
-        return redirect(url);
-    }
-
-    if (!checkThrottle(paymentToken, true)) {
         return redirect(url);
     }
 

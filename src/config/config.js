@@ -28,8 +28,8 @@ export let config = {
 
     buttonSizes: ['tiny', 'small', 'medium'],
 
-    legacy_throttles: {
-        'http://www.bluesuncorp.co.uk': 5000
+    throttles: {
+        v4_mobile_device: 100
     },
 
     customCountry: false,

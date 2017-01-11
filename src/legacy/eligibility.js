@@ -1,12 +1,15 @@
 /* @flow */
 
-import { isWebView, getAgent, isDevice, getUserAgent } from '../lib';
-
 import { config } from '../config';
+import { isWebView, getAgent, isDevice, getUserAgent, getThrottle, getReturnToken } from '../lib';
+
+import { onAuthorizeListener } from './listener';
 
 export function isUnsupportedIE() : boolean {
     return Boolean(getUserAgent().match(/MSIE (5|6|7|8)\./i));
 }
+
+let throttle = getThrottle(`v4_mobile_device`, config.throttles.v4_mobile_device);
 
 export function isLegacyEligible() : boolean {
 
@@ -18,12 +21,26 @@ export function isLegacyEligible() : boolean {
         }
     }
 
-    if (isWebView() || isUnsupportedIE() || isDevice()) {
+    if (isWebView() || isUnsupportedIE()) {
         return false;
+    }
+
+    if (isDevice()) {
+        throttle.logStart();
+        return throttle.isEnabled();
     }
 
     return true;
 }
 
+onAuthorizeListener.once((token) => {
+    throttle.log(`authorize`, { fltk: token });
+});
 
+(function logReturn() {
+    let token = getReturnToken();
 
+    if (token && isDevice()) {
+        throttle.logComplete({ fltk: token });
+    }
+}());

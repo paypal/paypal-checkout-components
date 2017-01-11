@@ -25,6 +25,10 @@ export function beacon(event : string, payload : Object = {}) {
             beaconImage.src = `${BEACON_URL}?${query}`;
         }
 
+        if (window.console && window.console.log) {
+            window.console.log('*', event, payload);
+        }
+
     } catch (err) {
         // pass
     }
