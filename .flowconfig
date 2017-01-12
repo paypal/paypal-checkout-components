@@ -2,6 +2,7 @@
 ./node_modules/gulp-flowtype
 [include]
 [libs]
+flow-typed
 src/types.js
 [options]
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
