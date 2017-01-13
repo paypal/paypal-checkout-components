@@ -33,14 +33,20 @@ export function isLegacyEligible() : boolean {
     return true;
 }
 
-onAuthorizeListener.once((token) => {
-    throttle.log(`authorize`, { fltk: token });
-});
-
 (function logReturn() {
+
+    if (!isDevice()) {
+        return;
+    }
+
+    onAuthorizeListener.once((token) => {
+        throttle.log(`authorize`, { fltk: token });
+    });
+
     let token = getReturnToken();
 
-    if (token && isDevice()) {
+    if (token) {
         throttle.logComplete({ fltk: token });
     }
+
 }());
