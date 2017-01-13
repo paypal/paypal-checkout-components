@@ -37,7 +37,7 @@
             function isPayPalDomain() {
                 return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
             }
-            if (window.paypal && window.paypal.version === "4.0.37") {
+            if (window.paypal && window.paypal.version === "4.0.38") {
                 (0, _beacon.checkpoint)("load_again");
                 var error = "PayPal Checkout Integration Script already loaded on page";
                 if (window.console) {
@@ -69,7 +69,6 @@
                         });
                     }
                     module.exports = paypal;
-                    module.exports["default"] = paypal;
                     window.paypal = paypal;
                     window.PAYPAL = paypal;
                     window.ppxo = paypal;
@@ -159,11 +158,11 @@
             });
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-            var version = exports.version = "4.0.37";
+            var version = exports.version = "4.0.38";
             module.exports["default"] = module.exports;
         },
         "./src/lib/util.js": function(module, exports, __webpack_require__) {
@@ -174,7 +173,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.isPayPalDomain = isPayPalDomain;
             exports.memoize = memoize;
@@ -184,23 +183,31 @@
             exports.hashStr = hashStr;
             exports.match = match;
             exports.safeJSON = safeJSON;
+            exports.eventEmitter = eventEmitter;
             var _config = __webpack_require__("./src/config/index.js");
             function isPayPalDomain() {
                 return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex)) || window.mockDomain === "mock://www.paypal.com";
             }
             function memoize(method) {
-                var results = {};
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+                var cache = {};
                 return function() {
-                    var args = void 0;
+                    var key = void 0;
                     try {
-                        args = JSON.stringify(Array.prototype.slice.call(arguments));
+                        key = JSON.stringify(arguments);
                     } catch (err) {
                         throw new Error("Arguments not serializable -- can not be used to memoize");
                     }
-                    if (!results.hasOwnProperty(args)) {
-                        results[args] = method.apply(this, arguments);
+                    if (cache.hasOwnProperty(key)) {
+                        return cache[key];
                     }
-                    return results[args];
+                    cache[key] = method.apply(this, arguments);
+                    if (options.time) {
+                        setTimeout(function() {
+                            delete cache[key];
+                        }, options.time);
+                    }
+                    return cache[key];
                 };
             }
             function noop() {}
@@ -250,6 +257,40 @@
                     return val;
                 });
             }
+            function eventEmitter() {
+                var listeners = [];
+                return {
+                    listen: function listen(method) {
+                        listeners.push(method);
+                        return {
+                            cancel: function cancel() {
+                                listeners.splice(listeners.indexOf(method), 1);
+                            }
+                        };
+                    },
+                    once: function once(method) {
+                        var listener = this.listen(function() {
+                            method.apply(null, arguments);
+                            listener.cancel();
+                        });
+                    },
+                    trigger: function trigger() {
+                        for (var _iterator = listeners, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref;
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref = _iterator[_i++];
+                            } else {
+                                _i = _iterator.next();
+                                if (_i.done) break;
+                                _ref = _i.value;
+                            }
+                            var listener = _ref;
+                            listener.apply(null, arguments);
+                        }
+                    }
+                };
+            }
         },
         "./src/config/index.js": function(module, exports, __webpack_require__) {
             "use strict";
@@ -283,7 +324,7 @@
                 value: true
             });
             exports.config = undefined;
-            var _checkoutUris, _billingUris, _buttonUris, _bridgeUris, _legacyCheckoutUris;
+            var _checkoutUris, _billingUris, _buttonUris, _bridgeUris, _legacyCheckoutUris, _buttonJSUrls;
             var _constants = __webpack_require__("./src/config/constants.js");
             function _defineProperty(obj, key, value) {
                 if (key in obj) {
@@ -302,7 +343,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/" + "checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.37",
+                version: "4.0.38",
                 ppobjects: false,
                 cors: true,
                 env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
@@ -313,9 +354,10 @@
                 },
                 stage: "msmaster",
                 buttonSizes: [ "tiny", "small", "medium" ],
-                legacy_throttles: {
-                    "http://www.bluesuncorp.co.uk": 5e3
+                throttles: {
+                    v4_mobile_device: 100
                 },
+                customCountry: false,
                 SUPPORTED_AGENTS: {
                     Chrome: 27,
                     IE: 9,
@@ -324,8 +366,12 @@
                     Safari: 5.1,
                     Opera: 23
                 },
+                _apiStage: "",
                 get apiStage() {
-                    return config.stage;
+                    return config._apiStage || config.stage;
+                },
+                set apiStage(value) {
+                    config._apiStage = value;
                 },
                 get paypalUrls() {
                     var _ref;
@@ -397,9 +443,18 @@
                 _defineProperty(_legacyCheckoutUris, _constants.ENV.SANDBOX, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
                 _defineProperty(_legacyCheckoutUris, _constants.ENV.PRODUCTION, "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true"), 
                 _defineProperty(_legacyCheckoutUris, _constants.ENV.TEST, "#fallback"), _legacyCheckoutUris),
+                buttonJSUrls: (_buttonJSUrls = {}, _defineProperty(_buttonJSUrls, _constants.ENV.LOCAL, "https://www.paypalobjects.com/api/button.js"), 
+                _defineProperty(_buttonJSUrls, _constants.ENV.STAGE, "https://www.paypalobjects.com/api/button.js"), 
+                _defineProperty(_buttonJSUrls, _constants.ENV.SANDBOX, "https://www.paypalobjects.com/api/button.js"), 
+                _defineProperty(_buttonJSUrls, _constants.ENV.PRODUCTION, "https://www.paypalobjects.com/api/button.js"), 
+                _defineProperty(_buttonJSUrls, _constants.ENV.TEST, "/base/test/lib/button.js"), 
+                _buttonJSUrls),
+                get buttonJSUrl() {
+                    return config.buttonJSUrls[config.env];
+                },
                 loggerUri: "/webapps/hermes/api/logger",
                 get bridgeUri() {
-                    return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.37");
+                    return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.38");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -509,8 +564,12 @@
                     _defineProperty(_ref15, _constants.ENV.TEST, "" + apiUrls.test + experienceApiUri), 
                     _ref15;
                 },
+                _paypalUrl: "",
                 get paypalUrl() {
-                    return config.paypalUrls[config.env];
+                    return this._paypalUrl || config.paypalUrls[config.env];
+                },
+                set paypalUrl(value) {
+                    this._paypalUrl = value;
                 },
                 get paypalDomain() {
                     return config.paypalDomains[config.env];
@@ -869,11 +928,11 @@
             });
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-            var version = exports.version = "4.0.37";
+            var version = exports.version = "4.0.38";
             module.exports["default"] = module.exports;
         },
         "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -1155,7 +1214,7 @@
                 return _send(win, name, data, options, callback);
             }
             function client() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 if (!options.window) {
                     throw new Error("Expected options.window");
                 }
@@ -1357,9 +1416,7 @@
                 } catch (err) {
                     return;
                 }
-                var source = event.source;
-                var origin = event.origin;
-                var data = event.data;
+                var source = event.source, origin = event.origin, data = event.data;
                 var message = parseMessage(data);
                 if (!message) {
                     return;
@@ -1858,6 +1915,19 @@
                     return results;
                 });
             };
+            SyncPromise.promisifyCall = function() {
+                var args = Array.prototype.slice.call(arguments);
+                var method = args.shift();
+                if (typeof method !== "function") {
+                    throw new Error("Expected promisifyCall to be called with a function");
+                }
+                return new SyncPromise(function(resolve, reject) {
+                    args.push(function(err, result) {
+                        return err ? reject(err) : resolve(result);
+                    });
+                    return method.apply(null, args);
+                });
+            };
             function patchPromise() {
                 window.Promise = SyncPromise;
             }
@@ -1891,7 +1961,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var _conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
             var util = exports.util = {
@@ -2041,7 +2111,7 @@
                     }
                 },
                 replaceObject: function replaceObject(obj, callback) {
-                    var depth = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+                    var depth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
                     if (depth >= 100) {
                         throw new Error("Self-referential object passed, or object contained too many layers");
                     }
@@ -2126,7 +2196,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var _util = __webpack_require__("./node_modules/post-robot/src/lib/util.js");
             var _windows = __webpack_require__("./node_modules/post-robot/src/lib/windows.js");
@@ -2498,7 +2568,7 @@
                 }
             }
             function isWindowClosed(win) {
-                var allowMock = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+                var allowMock = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                 if (win === window) {
                     return false;
                 }
@@ -2786,6 +2856,7 @@
             var _cleanup = __webpack_require__("./node_modules/post-robot/src/lib/cleanup.js");
             var global = exports.global = window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT] = window[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT] || {};
             global.clean = global.clean || (0, _cleanup.cleanup)(global);
+            global.registerSelf = function() {};
         },
         "./node_modules/post-robot/src/lib/cleanup.js": function(module, exports, __webpack_require__) {
             "use strict";
@@ -2908,7 +2979,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.serializeMethod = serializeMethod;
             exports.serializeMethods = serializeMethods;
@@ -2927,9 +2998,7 @@
                     window: "*",
                     origin: "*"
                 }, function(_ref) {
-                    var source = _ref.source;
-                    var origin = _ref.origin;
-                    var data = _ref.data;
+                    var source = _ref.source, origin = _ref.origin, data = _ref.data;
                     var meth = _global.global.methods[data.id];
                     if (!meth) {
                         throw new Error("Could not find method with id: " + data.id);
@@ -3077,8 +3146,8 @@
                 }
             }
             function onWindowReady(win) {
-                var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
-                var name = arguments.length <= 2 || arguments[2] === undefined ? "Window" : arguments[2];
+                var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5e3;
+                var name = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Window";
                 for (var _iterator2 = _global.global.readyPromises, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                     var _ref2;
                     if (_isArray2) {
@@ -3296,7 +3365,7 @@
                 return obj;
             }
             function buildMessage(win, message) {
-                var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                 var id = _lib.util.uniqueID();
                 var type = (0, _lib.getWindowType)();
                 var sourceDomain = _lib.util.getDomain(window);
@@ -3475,10 +3544,7 @@
             var _global = __webpack_require__("./node_modules/post-robot/src/global.js");
             var _interface = __webpack_require__("./node_modules/post-robot/src/interface/index.js");
             _global.global.openTunnelToParent = function openTunnelToParent(_ref) {
-                var name = _ref.name;
-                var source = _ref.source;
-                var canary = _ref.canary;
-                var _sendMessage = _ref.sendMessage;
+                var name = _ref.name, source = _ref.source, canary = _ref.canary, _sendMessage = _ref.sendMessage;
                 var remoteWindow = (0, _lib.getParent)(window);
                 if (!remoteWindow) {
                     throw new Error("No parent window found to open tunnel to");
@@ -3509,7 +3575,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.openTunnelToOpener = openTunnelToOpener;
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
@@ -3529,10 +3595,10 @@
                             if (_i.done) break;
                             _ref = _i.value;
                         }
-                        var _frame = _ref;
+                        var frame = _ref;
                         try {
-                            if (_frame && _frame !== window && (0, _lib.isSameDomain)(_frame) && _frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                                return _frame;
+                            if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                                return frame;
                             }
                         } catch (err) {
                             continue;
@@ -3609,9 +3675,7 @@
                                 });
                             }
                         }).then(function(_ref2) {
-                            var source = _ref2.source;
-                            var origin = _ref2.origin;
-                            var data = _ref2.data;
+                            var source = _ref2.source, origin = _ref2.origin, data = _ref2.data;
                             if (source !== opener) {
                                 throw new Error("Source does not match opener");
                             }
@@ -3670,8 +3734,7 @@
                 return true;
             }
             function needsBridge(_ref) {
-                var win = _ref.win;
-                var domain = _ref.domain;
+                var win = _ref.win, domain = _ref.domain;
                 return needsBridgeForBrowser() && needsBridgeForWin(win) && needsBridgeForDomain(domain);
             }
             function getBridgeName(domain) {
@@ -3696,7 +3759,7 @@
             });
             _global.global.remoteWindows = _global.global.remoteWindows || [];
             function registerRemoteWindow(win) {
-                var timeout = arguments.length <= 1 || arguments[1] === undefined ? _conf.CONFIG.BRIDGE_TIMEOUT : arguments[1];
+                var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _conf.CONFIG.BRIDGE_TIMEOUT;
                 var sendMessagePromise = new _lib.promise.Promise();
                 _global.global.clean.push(_global.global.remoteWindows, {
                     win: win,
@@ -3805,8 +3868,7 @@
                     source: source,
                     domain: domain
                 }, function(_ref) {
-                    var origin = _ref.origin;
-                    var data = _ref.data;
+                    var origin = _ref.origin, data = _ref.data;
                     if (origin !== domain) {
                         throw new Error("Domain " + domain + " does not match origin " + origin);
                     }
@@ -4162,7 +4224,7 @@
                 return prom;
             }
             function listener() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 return {
                     on: function on(name, handler, errorHandler) {
                         return _on(name, options, handler, errorHandler);
@@ -4249,27 +4311,11 @@
             var _components = __webpack_require__("./src/components/index.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var proxyRest = {};
-            function memoize(method) {
-                var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-                var cache = {};
-                return function() {
-                    var key = JSON.stringify(arguments);
-                    if (!cache.hasOwnProperty(key)) {
-                        cache[key] = method.apply(this, arguments);
-                        if (options.time) {
-                            setTimeout(function() {
-                                delete cache[key];
-                            }, options.time);
-                        }
-                    }
-                    return cache[key];
-                };
-            }
-            var createAccessToken = memoize(function(env, client) {
+            var createAccessToken = (0, _lib.memoize)(function(env, client) {
                 _client2["default"].info("rest_api_create_access_token");
                 env = env || _config.config.env;
                 var clientID = client[env];
@@ -4286,23 +4332,23 @@
                     headers: {
                         Authorization: "Basic " + basicAuth
                     },
-                    body: {
+                    data: {
                         grant_type: "client_credentials"
                     }
                 }).then(function(res) {
                     if (res && res.error === "invalid_client") {
-                        throw new Error("Auth Api invalid " + env + " client id: " + clientID + ":\n\n" + JSON.stringify(res, 0, 4));
+                        throw new Error("Auth Api invalid " + env + " client id: " + clientID + ":\n\n" + JSON.stringify(res, null, 4));
                     }
                     if (!res || !res.access_token) {
-                        throw new Error("Auth Api response error:\n\n" + JSON.stringify(res, 0, 4));
+                        throw new Error("Auth Api response error:\n\n" + JSON.stringify(res, null, 4));
                     }
                     return res.access_token;
                 });
             }, {
                 time: 10 * 60 * 1e3
             });
-            var createExperienceProfile = memoize(function(env, client) {
-                var experienceDetails = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+            var createExperienceProfile = (0, _lib.memoize)(function(env, client) {
+                var experienceDetails = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                 _client2["default"].info("rest_api_create_experience_profile");
                 env = env || _config.config.env;
                 var clientID = client[env];
@@ -4328,7 +4374,7 @@
                         throw new Error(res.error);
                     }
                     if (!res.id) {
-                        throw new Error("No id in experience profile response:\n\n" + JSON.stringify(res, 0, 4));
+                        throw new Error("No id in experience profile response:\n\n" + JSON.stringify(res, null, 4));
                     }
                     return res.id;
                 });
@@ -4374,7 +4420,7 @@
                     if (res && res.id) {
                         return res.id;
                     }
-                    throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, 0, 4));
+                    throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, null, 4));
                 });
             }
             function createBillingToken(env, client, billingDetails, experienceDetails) {
@@ -4416,7 +4462,7 @@
                     if (res && res.token_id) {
                         return res.token_id;
                     }
-                    throw new Error("Billing Api response error:\n\n" + JSON.stringify(res, 0, 4));
+                    throw new Error("Billing Api response error:\n\n" + JSON.stringify(res, null, 4));
                 });
             }
             var rest = exports.rest = {
@@ -4538,7 +4584,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.print = print;
             exports.immediateFlush = immediateFlush;
@@ -4578,7 +4624,7 @@
                 }
             }
             function immediateFlush() {
-                var async = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+                var async = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
                 if (!_config.config.uri) {
                     return;
                 }
@@ -4756,7 +4802,7 @@
             exports.uniqueID = uniqueID;
             var _es6PromiseMin = __webpack_require__("./node_modules/es6-promise-min/dist/es6-promise.min.js");
             function extend(dest, src) {
-                var over = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+                var over = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
                 dest = dest || {};
                 src = src || {};
                 for (var i in src) {
@@ -4779,9 +4825,9 @@
                 return match[0] === window.location.protocol + "//" + window.location.host;
             }
             function ajax(method, url) {
-                var headers = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-                var data = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-                var async = arguments.length <= 4 || arguments[4] === undefined ? true : arguments[4];
+                var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+                var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+                var async = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
                 return new _es6PromiseMin.Promise(function(resolve) {
                     var XRequest = window.XMLHttpRequest || window.ActiveXObject;
                     if (window.XDomainRequest && !isSameDomain(url)) {
@@ -4868,7 +4914,7 @@
                 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                     return typeof obj;
                 } : function(obj) {
-                    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
                 };
                 /*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -5073,7 +5119,7 @@
                     };
                     var O = 0;
                     h.all = function(a, b) {
-                        return new k(this, a, (!0), b).c;
+                        return new k(this, a, !0, b).c;
                     };
                     h.race = function(a, b) {
                         function c(a) {
@@ -5114,7 +5160,7 @@
                             } else u(this, d, a, b);
                             return d;
                         },
-                        "catch": function _catch(a) {
+                        catch: function _catch(a) {
                             return this.then(null, a);
                         }
                     };
@@ -5655,95 +5701,92 @@
             });
         },
         "./src/lib/device.js": function(module, exports) {
-            (function(global) {
-                "use strict";
-                Object.defineProperty(exports, "__esModule", {
-                    value: true
-                });
-                exports.getUserAgent = getUserAgent;
-                exports.isDevice = isDevice;
-                exports.isWebView = isWebView;
-                exports.getAgent = getAgent;
-                exports.isOperaMini = isOperaMini;
-                exports.isAndroid = isAndroid;
-                exports.isIos = isIos;
-                exports.isGoogleSearchApp = isGoogleSearchApp;
-                exports.isIosWebview = isIosWebview;
-                exports.isAndroidWebview = isAndroidWebview;
-                exports.supportsPopups = supportsPopups;
-                function getUserAgent() {
-                    return window.navigator.mockUserAgent || window.navigator.userAgent;
+            "use strict";
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+            exports.getUserAgent = getUserAgent;
+            exports.isDevice = isDevice;
+            exports.isWebView = isWebView;
+            exports.getAgent = getAgent;
+            exports.isOperaMini = isOperaMini;
+            exports.isAndroid = isAndroid;
+            exports.isIos = isIos;
+            exports.isGoogleSearchApp = isGoogleSearchApp;
+            exports.isIosWebview = isIosWebview;
+            exports.isAndroidWebview = isAndroidWebview;
+            exports.supportsPopups = supportsPopups;
+            function getUserAgent() {
+                return window.navigator.mockUserAgent || window.navigator.userAgent;
+            }
+            function isDevice() {
+                var userAgent = getUserAgent();
+                if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+                    return true;
                 }
-                function isDevice() {
-                    var userAgent = getUserAgent();
-                    if (userAgent.match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i)) {
+                return false;
+            }
+            function isWebView() {
+                var userAgent = getUserAgent();
+                return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+            }
+            function getAgent(agent) {
+                var ua = getUserAgent();
+                var tem = void 0;
+                var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+                if (/trident/i.test(M[1])) {
+                    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+                    return [ "IE", tem[1] || "" ];
+                }
+                if (M[1] === "Chrome") {
+                    tem = ua.match(/\bOPR\/(\d+)/);
+                    if (tem) {
+                        return [ "Opera", tem[1] ];
+                    }
+                }
+                M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
+                if (tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) {
+                    M.splice(1, 1, tem[1]);
+                }
+                return M;
+            }
+            function isOperaMini() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                return ua.indexOf("Opera Mini") > -1;
+            }
+            function isAndroid() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                return /Android/.test(ua);
+            }
+            function isIos() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                return /iPhone|iPod|iPad/.test(ua);
+            }
+            function isGoogleSearchApp() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                return /\bGSA\b/.test(ua);
+            }
+            function isIosWebview() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                if (isIos(ua)) {
+                    if (isGoogleSearchApp(ua)) {
                         return true;
                     }
-                    return false;
+                    return /.+AppleWebKit(?!.*Safari)/.test(ua);
                 }
-                function isWebView() {
-                    var userAgent = getUserAgent();
-                    return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
+                return false;
+            }
+            function isAndroidWebview() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                if (isAndroid(ua)) {
+                    return /Version\/[\d\.]+/.test(ua) && !isOperaMini(ua);
                 }
-                function getAgent(agent) {
-                    var ua = getUserAgent();
-                    var tem = void 0;
-                    var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-                    if (/trident/i.test(M[1])) {
-                        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-                        return [ "IE", tem[1] || "" ];
-                    }
-                    if (M[1] === "Chrome") {
-                        tem = ua.match(/\bOPR\/(\d+)/);
-                        if (tem !== null) {
-                            return [ "Opera", tem[1] ];
-                        }
-                    }
-                    M = M[2] ? [ M[1], M[2] ] : [ window.navigator.appName, window.navigator.appVersion, "-?" ];
-                    if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i)) !== null) {
-                        M.splice(1, 1, tem[1]);
-                    }
-                    return M;
-                }
-                function isOperaMini(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    return ua.indexOf("Opera Mini") > -1;
-                }
-                function isAndroid(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    return /Android/.test(ua);
-                }
-                function isIos(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    return /iPhone|iPod|iPad/.test(ua);
-                }
-                function isGoogleSearchApp(ua) {
-                    return /\bGSA\b/.test(ua);
-                }
-                function isIosWebview(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    if (isIos(ua)) {
-                        if (isGoogleSearchApp(ua)) {
-                            return true;
-                        }
-                        return /.+AppleWebKit(?!.*Safari)/.test(ua);
-                    }
-                    return false;
-                }
-                function isAndroidWebview(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    if (isAndroid(ua)) {
-                        return /Version\/[\d\.]+/.test(ua) && !isOperaMini(ua);
-                    }
-                    return false;
-                }
-                function supportsPopups(ua) {
-                    ua = ua || global.navigator.userAgent;
-                    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
-                }
-            }).call(exports, function() {
-                return this;
-            }());
+                return false;
+            }
+            function supportsPopups() {
+                var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getUserAgent();
+                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
+            }
         },
         "./src/lib/logger.js": function(module, exports, __webpack_require__) {
             "use strict";
@@ -5758,7 +5801,7 @@
             var _config = __webpack_require__("./src/config/index.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function initLogger() {
@@ -5771,7 +5814,7 @@
                         country: _config.config.locale.country,
                         lang: _config.config.locale.lang,
                         uid: window.pp_uid,
-                        ver: "4.0.37"
+                        ver: "4.0.38"
                     };
                 });
                 _client2["default"].addMetaBuilder(function() {
@@ -5844,7 +5887,7 @@
             }
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function create(options) {
@@ -5959,7 +6002,7 @@
             }
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function _classCallCheck(instance, Constructor) {
@@ -5991,7 +6034,7 @@
             var Component = exports.Component = function(_BaseComponent) {
                 _inherits(Component, _BaseComponent);
                 function Component() {
-                    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                     _classCallCheck(this, Component);
                     var _this = _possibleConstructorReturn(this, (Component.__proto__ || Object.getPrototypeOf(Component)).call(this, options));
                     _this.validate(options);
@@ -6077,8 +6120,7 @@
                             _src2["default"].on(_constants.POST_MESSAGE.DELEGATE + "_" + this.name, {
                                 domain: this.remoteRenderDomain
                             }, function(_ref3) {
-                                var source = _ref3.source;
-                                var data = _ref3.data;
+                                var source = _ref3.source, data = _ref3.data;
                                 var delegate = _this2.delegate(source, data.options);
                                 return {
                                     overrides: delegate.getOverrides(data.context),
@@ -6132,7 +6174,7 @@
                 }, {
                     key: "delegate",
                     value: function delegate(source) {
-                        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                         return new _delegate.DelegateComponent(this, source, options);
                     }
                 }, {
@@ -6203,7 +6245,7 @@
                 }, {
                     key: "log",
                     value: function log(event) {
-                        var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                        var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                         _lib.logger.info("xc_" + this.name + "_" + event, payload);
                     }
                 }, {
@@ -6274,7 +6316,7 @@
             var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function _classCallCheck(instance, Constructor) {
@@ -6409,8 +6451,7 @@
                                     return _this.error(err);
                                 }
                             }, function(_ref3) {
-                                var source = _ref3.source;
-                                var data = _ref3.data;
+                                var source = _ref3.source, data = _ref3.data;
                                 _this.component.log("listener_" + name);
                                 return listeners[listenerName].call(_this, source, data);
                             });
@@ -6420,8 +6461,7 @@
                                     return _this.error(err);
                                 }
                             }, function(_ref4) {
-                                var origin = _ref4.origin;
-                                var data = _ref4.data;
+                                var origin = _ref4.origin, data = _ref4.data;
                                 _this.component.logError("unexpected_listener_" + name, {
                                     origin: origin,
                                     domain: domain
@@ -6562,7 +6602,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.getElement = getElement;
             exports.elementReady = elementReady;
@@ -6603,7 +6643,7 @@
             var _util = __webpack_require__("./node_modules/xcomponent/src/lib/util.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function isElement(element) {
@@ -6730,9 +6770,9 @@
                 return str;
             }
             function createElement() {
-                var tag = arguments.length <= 0 || arguments[0] === undefined ? "div" : arguments[0];
-                var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-                var container = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+                var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "div";
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+                var container = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
                 var element = document.createElement(tag);
                 if (options.style) {
                     (0, _util.extend)(element.style, options.style);
@@ -6794,18 +6834,17 @@
                 return {
                     cancel: function cancel() {
                         for (var _iterator4 = handlers, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                            var _ref4;
+                            var _ref5;
                             if (_isArray4) {
                                 if (_i4 >= _iterator4.length) break;
-                                _ref4 = _iterator4[_i4++];
+                                _ref5 = _iterator4[_i4++];
                             } else {
                                 _i4 = _iterator4.next();
                                 if (_i4.done) break;
-                                _ref4 = _i4.value;
+                                _ref5 = _i4.value;
                             }
-                            var _ref5 = _ref4;
-                            var el = _ref5.el;
-                            var eventHandler = _ref5.eventHandler;
+                            var _ref6 = _ref5;
+                            var el = _ref6.el, eventHandler = _ref6.eventHandler;
                             el.removeEventListener(eventName, eventHandler);
                         }
                     }
@@ -6825,16 +6864,16 @@
                     throw new Error("Can not parse query string params: " + queryString);
                 }
                 for (var _iterator5 = queryString.split("&"), _isArray5 = Array.isArray(_iterator5), _i5 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                    var _ref6;
+                    var _ref7;
                     if (_isArray5) {
                         if (_i5 >= _iterator5.length) break;
-                        _ref6 = _iterator5[_i5++];
+                        _ref7 = _iterator5[_i5++];
                     } else {
                         _i5 = _iterator5.next();
                         if (_i5.done) break;
-                        _ref6 = _i5.value;
+                        _ref7 = _i5.value;
                     }
-                    var pair = _ref6;
+                    var pair = _ref7;
                     pair = pair.split("=");
                     if (pair[0] && pair[1]) {
                         params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
@@ -6863,20 +6902,20 @@
                 return domain;
             }
             function formatQuery() {
-                var obj = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 return Object.keys(obj).map(function(key) {
                     return (0, _util.urlEncode)(key) + "=" + (0, _util.urlEncode)(obj[key]);
                 }).join("&");
             }
             function extendQuery(originalQuery) {
-                var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 if (!props || !Object.keys(props).length) {
                     return originalQuery;
                 }
                 return formatQuery(_extends({}, parseQuery(originalQuery), props));
             }
             function extendUrl(url) {
-                var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 var query = options.query || {};
                 var hash = options.hash || {};
                 var originalUrl = void 0;
@@ -6901,7 +6940,7 @@
                 return originalUrl;
             }
             function elementStoppedMoving(element) {
-                var timeout = arguments.length <= 1 || arguments[1] === undefined ? 5e3 : arguments[1];
+                var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5e3;
                 return new _promise.SyncPromise(function(resolve, reject) {
                     element = getElement(element);
                     var start = element.getBoundingClientRect();
@@ -6953,27 +6992,24 @@
             function changeStyle(el, styles) {
                 return new _promise.SyncPromise(function(resolve) {
                     for (var _iterator6 = Object.keys(styles), _isArray6 = Array.isArray(_iterator6), _i6 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
-                        var _ref7;
+                        var _ref8;
                         if (_isArray6) {
                             if (_i6 >= _iterator6.length) break;
-                            _ref7 = _iterator6[_i6++];
+                            _ref8 = _iterator6[_i6++];
                         } else {
                             _i6 = _iterator6.next();
                             if (_i6.done) break;
-                            _ref7 = _i6.value;
+                            _ref8 = _i6.value;
                         }
-                        var key = _ref7;
+                        var key = _ref8;
                         el.style[key] = styles[key];
                     }
                     setTimeout(resolve, 1);
                 });
             }
             function setOverflow(el) {
-                var value = arguments.length <= 1 || arguments[1] === undefined ? "auto" : arguments[1];
-                var _el$style = el.style;
-                var overflow = _el$style.overflow;
-                var overflowX = _el$style.overflowX;
-                var overflowY = _el$style.overflowY;
+                var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "auto";
+                var _el$style = el.style, overflow = _el$style.overflow, overflowX = _el$style.overflowX, overflowY = _el$style.overflowY;
                 el.style.overflow = el.style.overflowX = el.overflowY = value;
                 return {
                     reset: function reset() {
@@ -6987,7 +7023,7 @@
                 return Math.abs(one.height - two.height) > threshold || Math.abs(one.width - two.width) > threshold;
             }
             function trackDimensions(el) {
-                var threshold = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+                var threshold = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
                 var currentDimensions = getCurrentDimensions(el);
                 return {
                     check: function check() {
@@ -7003,8 +7039,8 @@
                 };
             }
             function onDimensionsChange(el) {
-                var delay = arguments.length <= 1 || arguments[1] === undefined ? 50 : arguments[1];
-                var threshold = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+                var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
+                var threshold = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
                 return new _promise.SyncPromise(function(resolve) {
                     var tracker = trackDimensions(el, threshold);
                     var interval = void 0;
@@ -7013,9 +7049,7 @@
                         return resolve(dimensions);
                     }, delay * 4);
                     interval = setInterval(function() {
-                        var _tracker$check = tracker.check();
-                        var changed = _tracker$check.changed;
-                        var dimensions = _tracker$check.dimensions;
+                        var _tracker$check = tracker.check(), changed = _tracker$check.changed, dimensions = _tracker$check.dimensions;
                         if (changed) {
                             tracker.reset();
                             return resolver(dimensions);
@@ -7026,31 +7060,31 @@
             function bindEvents(element, eventNames, handler) {
                 handler = (0, _fn.once)(handler);
                 for (var _iterator7 = eventNames, _isArray7 = Array.isArray(_iterator7), _i7 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
-                    var _ref8;
+                    var _ref9;
                     if (_isArray7) {
                         if (_i7 >= _iterator7.length) break;
-                        _ref8 = _iterator7[_i7++];
+                        _ref9 = _iterator7[_i7++];
                     } else {
                         _i7 = _iterator7.next();
                         if (_i7.done) break;
-                        _ref8 = _i7.value;
+                        _ref9 = _i7.value;
                     }
-                    var eventName = _ref8;
+                    var eventName = _ref9;
                     element.addEventListener(eventName, handler);
                 }
                 return {
                     cancel: (0, _fn.once)(function() {
                         for (var _iterator8 = eventNames, _isArray8 = Array.isArray(_iterator8), _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
-                            var _ref9;
+                            var _ref10;
                             if (_isArray8) {
                                 if (_i8 >= _iterator8.length) break;
-                                _ref9 = _iterator8[_i8++];
+                                _ref10 = _iterator8[_i8++];
                             } else {
                                 _i8 = _iterator8.next();
                                 if (_i8.done) break;
-                                _ref9 = _i8.value;
+                                _ref10 = _i8.value;
                             }
-                            var eventName = _ref9;
+                            var eventName = _ref10;
                             element.removeEventListener(eventName, handler);
                         }
                     })
@@ -7061,16 +7095,16 @@
                 element.style[name] = value;
                 var capitalizedName = (0, _util.capitalizeFirstLetter)(name);
                 for (var _iterator9 = VENDOR_PREFIXES, _isArray9 = Array.isArray(_iterator9), _i9 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                    var _ref10;
+                    var _ref11;
                     if (_isArray9) {
                         if (_i9 >= _iterator9.length) break;
-                        _ref10 = _iterator9[_i9++];
+                        _ref11 = _iterator9[_i9++];
                     } else {
                         _i9 = _iterator9.next();
                         if (_i9.done) break;
-                        _ref10 = _i9.value;
+                        _ref11 = _i9.value;
                     }
-                    var prefix = _ref10;
+                    var prefix = _ref11;
                     element.style["" + prefix + capitalizedName] = value;
                 }
             }
@@ -7102,7 +7136,7 @@
             var ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ];
             var ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ];
             function animate(element, name) {
-                var timeout = arguments.length <= 2 || arguments[2] === undefined ? 1e3 : arguments[2];
+                var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1e3;
                 return new _promise.SyncPromise(function(resolve, reject) {
                     element = getElement(element);
                     if (!element || !isValidAnimation(element, name)) {
@@ -7216,7 +7250,7 @@
                 };
             }
             function debounce(method) {
-                var time = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+                var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
                 var timeout = void 0;
                 return function() {
                     var _this = this, _arguments = arguments;
@@ -7235,7 +7269,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.urlEncode = urlEncode;
             exports.camelToDasherize = camelToDasherize;
@@ -7365,7 +7399,7 @@
                 }
             }
             function replaceObject(obj, callback) {
-                var parentKey = arguments.length <= 2 || arguments[2] === undefined ? "" : arguments[2];
+                var parentKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
                 var newobj = obj instanceof Array ? [] : {};
                 each(obj, function(item, key) {
                     var fullKey = parentKey ? parentKey + "." + key : key;
@@ -7389,8 +7423,8 @@
                 }
             }
             function dotify(obj) {
-                var prefix = arguments.length <= 1 || arguments[1] === undefined ? "" : arguments[1];
-                var newobj = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+                var newobj = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                 prefix = prefix ? prefix + "." : prefix;
                 for (var key in obj) {
                     if (obj[key] && _typeof(obj[key]) === "object") {
@@ -7543,7 +7577,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var _createClass = function() {
                 function defineProperties(target, props) {
@@ -7571,7 +7605,7 @@
             var _props = __webpack_require__("./node_modules/xcomponent/src/component/child/props.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function _classCallCheck(instance, Constructor) {
@@ -7614,8 +7648,7 @@
                     _this.onInit = _this.sendToParent(_constants.POST_MESSAGE.INIT, {
                         exports: _this.exports()
                     }).then(function(_ref) {
-                        var origin = _ref.origin;
-                        var data = _ref.data;
+                        var origin = _ref.origin, data = _ref.data;
                         _this.context = data.context;
                         window.xprops = _this.props = {};
                         _this.setProps(data.props, origin);
@@ -7677,9 +7710,9 @@
                 }, {
                     key: "setProps",
                     value: function setProps() {
-                        var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                         var origin = arguments[1];
-                        var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+                        var required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
                         window.xprops = this.props = this.props || {};
                         (0, _lib.extend)(this.props, (0, _props.normalizeChildProps)(this.component, props, origin, required));
                         for (var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -7811,7 +7844,7 @@
                             el = document.body;
                         }
                         var resize = function resize(width, height) {
-                            var history = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+                            var history = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
                             return _promise.SyncPromise["try"](function() {
                                 for (var _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                                     var _ref4;
@@ -7834,9 +7867,7 @@
                                 });
                                 var tracker = (0, _lib.trackDimensions)(el);
                                 return _this4.resize(width, height).then(function() {
-                                    var _tracker$check = tracker.check();
-                                    var changed = _tracker$check.changed;
-                                    var dimensions = _tracker$check.dimensions;
+                                    var _tracker$check = tracker.check(), changed = _tracker$check.changed, dimensions = _tracker$check.dimensions;
                                     if (changed) {
                                         return resize(dimensions.width, dimensions.height, history);
                                     }
@@ -7896,7 +7927,7 @@
                 }, {
                     key: "close",
                     value: function close() {
-                        var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.CHILD_CALL : arguments[0];
+                        var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.CHILD_CALL;
                         this.component.log("close_child");
                         this.sendToParent(_constants.POST_MESSAGE.CLOSE, {
                             reason: reason
@@ -7981,14 +8012,14 @@
             var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function normalize(str) {
                 return str && str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
             }
             function buildChildWindowName(name, version) {
-                var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                 options.id = (0, _lib.uniqueID)();
                 options.domain = (0, _lib.getDomain)(window);
                 var encodedName = normalize(name);
@@ -8006,12 +8037,7 @@
                 if (!window.name) {
                     return;
                 }
-                var _window$name$split = window.name.split("__");
-                var _window$name$split2 = _slicedToArray(_window$name$split, 4);
-                var xcomp = _window$name$split2[0];
-                var name = _window$name$split2[1];
-                var version = _window$name$split2[2];
-                var encodedOptions = _window$name$split2[3];
+                var _window$name$split = window.name.split("__"), _window$name$split2 = _slicedToArray(_window$name$split, 4), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
                 if (xcomp !== _constants.XCOMPONENT) {
                     return;
                 }
@@ -8502,7 +8528,7 @@
             exports.normalizeChildProps = normalizeChildProps;
             var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
             function normalizeChildProps(component, props, origin) {
-                var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+                var required = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
                 var result = {};
                 var _loop = function _loop() {
                     if (_isArray) {
@@ -8570,7 +8596,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var _slicedToArray = function() {
                 function sliceIterator(arr, i) {
@@ -8646,7 +8672,7 @@
             var _props = __webpack_require__("./node_modules/xcomponent/src/component/parent/props.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function _defineProperty(obj, key, value) {
@@ -8733,7 +8759,7 @@
             var ParentComponent = exports.ParentComponent = (_class = function(_BaseComponent) {
                 _inherits(ParentComponent, _BaseComponent);
                 function ParentComponent(component, context) {
-                    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                     _classCallCheck(this, ParentComponent);
                     var _this2 = _possibleConstructorReturn(this, (ParentComponent.__proto__ || Object.getPrototypeOf(ParentComponent)).call(this, component, options));
                     (0, _validate.validate)(component, options);
@@ -8770,7 +8796,7 @@
                 }, {
                     key: "buildChildWindowName",
                     value: function buildChildWindowName(parent) {
-                        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                         parent = parent || (this.context === _constants.CONTEXT_TYPES.LIGHTBOX ? _constants.WINDOW_REFERENCES.PARENT_PARENT : _constants.WINDOW_REFERENCES.DIRECT_PARENT);
                         var tag = this.component.tag;
                         var props = (0, _lib.replaceObject)(this.getPropsForChild(), function(value, key, fullKey) {
@@ -8816,8 +8842,8 @@
                 }, {
                     key: "setProps",
                     value: function setProps() {
-                        var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-                        var required = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+                        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                        var required = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                         this.props = this.props || {};
                         props.version = this.component.version;
                         (0, _validate.validateProps)(this.component, props, required);
@@ -8834,8 +8860,7 @@
                             url: this.props.url,
                             query: (0, _props.propsToQuery)(this.component.props, this.props)
                         }).then(function(_ref) {
-                            var url = _ref.url;
-                            var query = _ref.query;
+                            var url = _ref.url, query = _ref.query;
                             if (url && !_this4.getValidDomain(url)) {
                                 return url;
                             }
@@ -8966,7 +8991,7 @@
                     key: "updateProps",
                     value: function updateProps() {
                         var _this7 = this;
-                        var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                        var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                         var changed = false;
                         for (var _iterator3 = Object.keys(props), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                             var _ref4;
@@ -9036,7 +9061,7 @@
                     key: "render",
                     value: function render(element) {
                         var _this9 = this;
-                        var loadUrl = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+                        var loadUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                         return this.tryInit(function() {
                             _this9.component.log("render_" + _this9.context, {
                                 context: _this9.context,
@@ -9073,14 +9098,12 @@
                             tasks.showComponent = tasks.createComponentTemplate.then(function() {
                                 return _this9.showComponent();
                             });
-                            tasks.linkUrl = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref5) {
-                                var _ref6 = _slicedToArray(_ref5, 1);
-                                var domain = _ref6[0];
+                            tasks.linkDomain = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref5) {
+                                var _ref6 = _slicedToArray(_ref5, 1), domain = _ref6[0];
                                 return _src2["default"].linkUrl(_this9.window, domain);
                             });
                             tasks.listen = _promise.SyncPromise.all([ tasks.getDomain, tasks.open ]).then(function(_ref7) {
-                                var _ref8 = _slicedToArray(_ref7, 1);
-                                var domain = _ref8[0];
+                                var _ref8 = _slicedToArray(_ref7, 1), domain = _ref8[0];
                                 _this9.listen(_this9.window, domain);
                             });
                             tasks.watchForClose = tasks.open.then(function() {
@@ -9088,9 +9111,8 @@
                             });
                             if (loadUrl) {
                                 tasks.buildUrl = _this9.buildUrl();
-                                tasks.loadUrl = _promise.SyncPromise.all([ tasks.buildUrl, tasks.listen, tasks.openBridge, tasks.createComponentTemplate ]).then(function(_ref9) {
-                                    var _ref10 = _slicedToArray(_ref9, 1);
-                                    var url = _ref10[0];
+                                tasks.loadUrl = _promise.SyncPromise.all([ tasks.buildUrl, tasks.linkDomain, tasks.listen, tasks.openBridge, tasks.createComponentTemplate ]).then(function(_ref9) {
+                                    var _ref10 = _slicedToArray(_ref9, 1), url = _ref10[0];
                                     return _this9.loadUrl(url);
                                 });
                                 tasks.runTimeout = tasks.loadUrl.then(function() {
@@ -9198,7 +9220,7 @@
                     key: "renderTo",
                     value: function renderTo(win, element, context) {
                         var _this12 = this;
-                        var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+                        var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
                         return this.tryInit(function() {
                             _this12.context = _this12.context || _this12.component.getRenderContext(element, context);
                             _this12.validateRenderToParent(element, _this12.context);
@@ -9216,7 +9238,9 @@
                         var _this13 = this;
                         var closeWindowListener = (0, _lib.onCloseWindow)(this.window, function() {
                             _this13.component.log("detect_close_child");
-                            _this13.onInit.reject(new Error("Detected close during init"));
+                            if (_this13.driver.errorOnCloseDuringInit) {
+                                _this13.onInit.reject(new Error("Detected close during init"));
+                            }
                             return _promise.SyncPromise["try"](function() {
                                 return _this13.props.onClose(_constants.CLOSE_REASONS.CLOSE_DETECTED);
                             })["finally"](function() {
@@ -9347,7 +9371,7 @@
                     key: "close",
                     value: function close() {
                         var _this17 = this;
-                        var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
+                        var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                         return _promise.SyncPromise["try"](function() {
                             _this17.component.log("close", {
                                 reason: reason
@@ -9363,7 +9387,7 @@
                     key: "closeContainer",
                     value: function closeContainer() {
                         var _this18 = this;
-                        var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
+                        var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                         return _promise.SyncPromise["try"](function() {
                             return _this18.props.onClose(reason);
                         }).then(function() {
@@ -9382,7 +9406,7 @@
                     key: "closeComponent",
                     value: function closeComponent() {
                         var _this19 = this;
-                        var reason = arguments.length <= 0 || arguments[0] === undefined ? _constants.CLOSE_REASONS.PARENT_CALL : arguments[0];
+                        var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                         this.clean.run("destroyCloseWindowListener");
                         this.clean.run("destroyUnloadWindowListener");
                         var win = this.window;
@@ -9517,7 +9541,7 @@
                                 attributes: {
                                     id: _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.props.uid
                                 },
-                                "class": [ _constants.CLASS_NAMES.XCOMPONENT, _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.context ]
+                                class: [ _constants.CLASS_NAMES.XCOMPONENT, _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.context ]
                             });
                             (0, _lib.hideElement)(_this20.parentTemplate);
                             _this20.parentTemplateFrame.contentWindow.document.body.appendChild(_this20.parentTemplate);
@@ -9664,7 +9688,7 @@
             var _window = __webpack_require__("./node_modules/xcomponent/src/component/window.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function _defineProperty(obj, key, value) {
@@ -9687,6 +9711,7 @@
                 destroyOnUnload: false,
                 allowResize: true,
                 openOnClick: false,
+                errorOnCloseDuringInit: true,
                 open: function open(element) {
                     var _this = this;
                     if (!element) {
@@ -9763,13 +9788,10 @@
                 destroyOnUnload: true,
                 allowResize: false,
                 openOnClick: true,
+                errorOnCloseDuringInit: false,
                 open: function open() {
                     var _this3 = this;
-                    var _ref = this.props.dimensions || this.component.dimensions || {};
-                    var width = _ref.width;
-                    var height = _ref.height;
-                    var x = _ref.x;
-                    var y = _ref.y;
+                    var _ref = this.props.dimensions || this.component.dimensions || {}, width = _ref.width, height = _ref.height, x = _ref.x, y = _ref.y;
                     width = (0, _lib.isPerc)(width) ? parseInt(window.innerWidth * (0, _lib.toNum)(width) / 100, 10) : (0, 
                     _lib.toNum)(width);
                     height = (0, _lib.isPerc)(height) ? parseInt(window.innerHeight * (0, _lib.toNum)(height) / 100, 10) : (0, 
@@ -9839,6 +9861,7 @@
                 destroyOnUnload: false,
                 allowResize: true,
                 openOnClick: false,
+                errorOnCloseDuringInit: true,
                 renderToParentOverrides: {
                     openContainer: _constants.DELEGATE.CALL_DELEGATE,
                     destroyComponent: _constants.DELEGATE.CALL_DELEGATE,
@@ -9921,10 +9944,10 @@
             exports.fpti = fpti;
             var BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger";
             function beacon(event) {
-                var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.37";
+                    payload.version = "4.0.38";
                     payload.host = window.location.host;
                     payload.uid = window.pp_uid;
                     var query = [];
@@ -9938,13 +9961,16 @@
                         var beaconImage = new window.Image();
                         beaconImage.src = BEACON_URL + "?" + query;
                     }
+                    if (window.console && window.console.log) {
+                        window.console.log("*", event, payload);
+                    }
                 } catch (err) {}
             }
             var loggedCheckpoints = [];
             function checkpoint(name) {
-                var payload = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 try {
-                    var version = "4.0.37".replace(/[^0-9]+/g, "_");
+                    var version = "4.0.38".replace(/[^0-9]+/g, "_");
                     var checkpointName = version + "_" + name;
                     var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                     loggedCheckpoints.push(checkpointName);
@@ -9957,7 +9983,7 @@
             var FPTI_URL = "https://t.paypal.com/ts";
             function buildPayload() {
                 return {
-                    v: "checkout.js." + "4.0.37",
+                    v: "checkout.js." + "4.0.38",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -9970,7 +9996,7 @@
                 };
             }
             function fpti() {
-                var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var query = [];
                 payload = _extends({}, buildPayload(), payload);
                 for (var key in payload) {
@@ -9993,7 +10019,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.normalizeProp = normalizeProp;
             exports.normalizeProps = normalizeProps;
@@ -10068,7 +10094,7 @@
                 return value;
             }
             function normalizeProps(component, instance, props) {
-                var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+                var required = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
                 props = props || {};
                 var result = {};
                 for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -10199,7 +10225,7 @@
             var DelegateComponent = exports.DelegateComponent = function(_BaseComponent) {
                 _inherits(DelegateComponent, _BaseComponent);
                 function DelegateComponent(component, source) {
-                    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+                    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                     _classCallCheck(this, DelegateComponent);
                     var _this = _possibleConstructorReturn(this, (DelegateComponent.__proto__ || Object.getPrototypeOf(DelegateComponent)).call(this, component, options));
                     _this.component = component;
@@ -10372,7 +10398,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.validate = validate;
             var _constants = __webpack_require__("./node_modules/xcomponent/src/constants.js");
@@ -10701,7 +10727,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.isEligible = isEligible;
             var _device = __webpack_require__("./src/lib/device.js");
@@ -10726,7 +10752,7 @@
             var _client2 = _interopRequireDefault(_client);
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function warn(err) {
@@ -10762,6 +10788,7 @@
             exports.parseQuery = undefined;
             exports.loadScript = loadScript;
             exports.isNodeList = isNodeList;
+            exports.isElement = isElement;
             exports.getElement = getElement;
             exports.getElements = getElements;
             exports.onDocumentReady = onDocumentReady;
@@ -10769,7 +10796,8 @@
             exports.urlWillRedirectPage = urlWillRedirectPage;
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             var _util = __webpack_require__("./src/lib/util.js");
-            function loadScript(src, timeout) {
+            function loadScript(src) {
+                var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
                 return new _promise.SyncPromise(function(resolve, reject) {
                     var script = document.createElement("script");
                     script.onload = function() {
@@ -10801,13 +10829,13 @@
                 return false;
             }
             function isElement(item) {
-                return item instanceof window.HTMLElement;
+                return item instanceof HTMLElement;
             }
             function getElement(item) {
                 if (!item) {
                     return;
                 }
-                if (isElement(item)) {
+                if (item instanceof HTMLElement) {
                     return item;
                 }
                 if (typeof item === "string") {
@@ -10822,19 +10850,22 @@
                 if (!collection) {
                     return [];
                 }
-                var result = [];
-                if (Array.isArray(collection) || isNodeList(collection)) {
+                if (collection instanceof HTMLElement || typeof collection === "string") {
+                    var element = getElement(collection);
+                    if (element) {
+                        return [ element ];
+                    }
+                    return [];
+                }
+                if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
+                    var result = [];
                     for (var i = 0; i < collection.length; i++) {
-                        var _el = getElement(collection[i]);
-                        if (_el) {
-                            result.push(_el);
+                        var el = getElement(collection[i]);
+                        if (el) {
+                            result.push(el);
                         }
                     }
                     return result;
-                }
-                var el = getElement(collection);
-                if (el) {
-                    return [ el ];
                 }
                 return [];
             }
@@ -10913,64 +10944,56 @@
                 }
                 return target;
             };
-            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-            };
             exports.request = request;
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
-            function request(options) {
+            function request(_ref) {
+                var url = _ref.url, _ref$method = _ref.method, method = _ref$method === undefined ? "get" : _ref$method, _ref$headers = _ref.headers, headers = _ref$headers === undefined ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = _ref$win === undefined ? window : _ref$win;
                 return new _promise.SyncPromise(function(resolve, reject) {
-                    options.method = options.method || "get";
-                    var headers = options.headers || {};
-                    if (options.json) {
+                    if (json && data || json && body || data && json) {
+                        throw new Error("Only options.json or options.data or options.body should be passed");
+                    }
+                    if (json) {
                         headers["Content-Type"] = headers["Content-Type"] || "application/json";
-                    } else if (options.body) {
+                    } else if (data || body) {
                         headers["Content-Type"] = headers["Content-Type"] || "application/x-www-form-urlencoded; charset=utf-8";
                     }
                     headers.Accept = headers.Accept || "application/json";
-                    var xhr = void 0;
-                    var win = options.win || window;
-                    xhr = new win.XMLHttpRequest();
+                    var xhr = new win.XMLHttpRequest();
                     xhr.addEventListener("load", function() {
                         resolve(JSON.parse(this.responseText));
                     }, false);
                     xhr.addEventListener("error", function(evt) {
-                        reject(new Error("Request to " + options.method.toLowerCase() + " " + options.url + " failed: " + evt.toString()));
+                        reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString()));
                     }, false);
-                    xhr.open(options.method, options.url, true);
+                    xhr.open(method, url, true);
                     if (headers) {
-                        for (var key in headers) {
-                            xhr.setRequestHeader(key, headers[key]);
+                        for (var _key in headers) {
+                            xhr.setRequestHeader(_key, headers[_key]);
                         }
                     }
-                    if (options.json && !options.body) {
-                        options.body = JSON.stringify(options.json);
-                    }
-                    if (options.body && _typeof(options.body) === "object") {
-                        options.body = Object.keys(options.body).map(function(key) {
-                            return encodeURIComponent(key) + "=" + encodeURIComponent(options.body[key]);
+                    if (json) {
+                        body = JSON.stringify(json);
+                    } else if (data) {
+                        body = Object.keys(data).map(function(key) {
+                            return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
                         }).join("&");
                     }
-                    xhr.send(options.body);
+                    xhr.send(body);
                 });
             }
             request.get = function(url) {
-                var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-                var method = "get";
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 return request(_extends({
-                    method: method,
+                    method: "get",
                     url: url
                 }, options));
             };
-            request.post = function(url, body) {
-                var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-                var method = "post";
+            request.post = function(url, data) {
+                var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
                 return request(_extends({
-                    method: method,
+                    method: "post",
                     url: url,
-                    body: body
+                    data: data
                 }, options));
             };
         },
@@ -10991,6 +11014,7 @@
                 return target;
             };
             exports.getThrottle = getThrottle;
+            exports.getReturnToken = getReturnToken;
             var _beacon = __webpack_require__("./src/lib/beacon.js");
             var _util = __webpack_require__("./src/lib/util.js");
             var uids = {};
@@ -11006,11 +11030,7 @@
                         } catch (err) {}
                     }
                 }
-                var isNew = void 0;
-                if (uid) {
-                    isNew = false;
-                } else {
-                    isNew = true;
+                if (!uid) {
                     uid = (0, _util.uniqueID)();
                 }
                 uids[name] = uid;
@@ -11019,15 +11039,10 @@
                         window.sessionStorage.setItem("__throttle_uid_" + name + "__", uid);
                     }
                 } catch (err) {}
-                return {
-                    uid: uid,
-                    isNew: isNew
-                };
+                return uid;
             }
             function getThrottle(name, sample, id) {
-                var _getUID = getUID(name, id);
-                var uid = _getUID.uid;
-                var isNew = _getUID.isNew;
+                var uid = getUID(name, id);
                 var throttle = (0, _util.hashStr)(name + "_" + uid) % 1e4;
                 var group = void 0;
                 if (throttle < sample) {
@@ -11038,8 +11053,7 @@
                     group = "throttle";
                 }
                 var treatment = name + "_" + group;
-                var loggedStart = false;
-                var loggedComplete = false;
+                var logged = {};
                 return {
                     isEnabled: function isEnabled() {
                         return group === "test";
@@ -11050,10 +11064,10 @@
                     getTreatment: function getTreatment() {
                         return treatment;
                     },
-                    logStart: function logStart() {
-                        var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-                        var event = treatment + "_start";
-                        if (!loggedStart) {
+                    log: function log(checkpointName) {
+                        var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+                        var event = treatment + "_" + checkpointName;
+                        if (!logged[checkpointName]) {
                             (0, _beacon.checkpoint)(event, _extends({}, payload, {
                                 expuid: uid
                             }));
@@ -11061,29 +11075,26 @@
                                 expuid: uid,
                                 eligibility_reason: event
                             }));
-                            loggedStart = true;
+                            logged[checkpointName] = true;
                         }
                         return this;
                     },
+                    logStart: function logStart() {
+                        var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                        return this.log("start", payload);
+                    },
                     logComplete: function logComplete() {
-                        var payload = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-                        if (!loggedStart && isNew) {
-                            return;
-                        }
-                        var event = treatment + "_complete";
-                        if (!loggedComplete) {
-                            (0, _beacon.checkpoint)(event, _extends({}, payload, {
-                                expuid: uid
-                            }));
-                            (0, _beacon.fpti)(_extends({}, payload, {
-                                expuid: uid,
-                                eligibility_reason: event
-                            }));
-                            loggedComplete = true;
-                        }
-                        return this;
+                        var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                        return this.log("complete", payload);
                     }
                 };
+            }
+            function getReturnToken() {
+                var token = (0, _util.match)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+                var payer = (0, _util.match)(window.location.href, /PayerID=([A-Z0-9]+)/);
+                if (token && payer) {
+                    return token;
+                }
             }
         },
         "./src/components/index.js": function(module, exports, __webpack_require__) {
@@ -11158,7 +11169,7 @@
             var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var Button = exports.Button = _src2["default"].create({
@@ -11176,13 +11187,13 @@
                 scrolling: false,
                 componentTemplate: _componentTemplate2["default"],
                 get version() {
-                    return _config.config.ppobjects ? "4" : "4.0.37";
+                    return _config.config.ppobjects ? "4" : "4.0.38";
                 },
                 get domains() {
                     return _config.config.paypalDomains;
                 },
                 validateProps: function validateProps(component, props) {
-                    var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+                    var required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
                     if (required) {
                         return (0, _common.validateProps)(props);
                     }
@@ -11385,7 +11396,7 @@
             exports.validateProps = validateProps;
             var _config = __webpack_require__("./src/config/index.js");
             function validateProps(props) {
-                var required = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+                var required = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
                 if (!required) {
                     return;
                 }
@@ -11471,7 +11482,7 @@
             var _content2 = _interopRequireDefault(_content);
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var content = JSON.parse(_content2["default"]);
@@ -11555,13 +11566,13 @@
                     popup: true
                 },
                 get version() {
-                    return _config.config.ppobjects ? "4" : "4.0.37";
+                    return _config.config.ppobjects ? "4" : "4.0.38";
                 },
                 get domains() {
                     return _config.config.paypalDomains;
                 },
                 validateProps: function validateProps(component, props) {
-                    var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+                    var required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
                     if (required) {
                         return (0, _common.validateProps)(props);
                     }
@@ -11612,7 +11623,7 @@
                         getter: true,
                         memoize: true,
                         queryParam: function queryParam() {
-                            var value = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+                            var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
                             return value.indexOf("BA-") === 0 ? "ba_token" : "token";
                         },
                         childDef: function childDef() {
@@ -11641,7 +11652,7 @@
                             if (original) {
                                 return function(data) {
                                     var _this = this;
-                                    var actions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                                    var actions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                                     try {
                                         logReturnUrl(data.returnUrl);
                                     } catch (err) {}
@@ -11721,7 +11732,7 @@
                             if (original) {
                                 return function(data) {
                                     var _this2 = this;
-                                    var actions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                                    var actions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                                     var close = function close() {
                                         return _promise.SyncPromise["try"](function() {
                                             if (actions.close) {
@@ -11921,27 +11932,24 @@
             exports.getHijackTargetElement = getHijackTargetElement;
             var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
             var _client2 = _interopRequireDefault(_client);
+            var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             var _config = __webpack_require__("./src/config/index.js");
             var _lib = __webpack_require__("./src/lib/index.js");
             var _constants = __webpack_require__("./src/legacy/constants.js");
             var _common = __webpack_require__("./src/legacy/common.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
-            var buttonJS = void 0;
-            function loadButtonJS() {
-                if (buttonJS) {
-                    return buttonJS;
-                }
+            var loadButtonJS = (0, _lib.memoize)(function() {
                 $logger.debug("buttonjs_load");
-                buttonJS = (0, _lib.loadScript)(_constants.BUTTON_JS_URL)["catch"](function(err) {
+                return (0, _lib.loadScript)(_config.config.buttonJSUrl)["catch"](function(err) {
                     $logger.info("buttonjs_load_error_retry", {
                         error: err.stack || err.toString()
                     });
-                    return (0, _lib.loadScript)(_constants.BUTTON_JS_URL);
+                    return (0, _lib.loadScript)(_config.config.buttonJSUrl);
                 }).then(function(result) {
                     $logger.debug("buttonjs_load_success");
                     return result;
@@ -11951,13 +11959,10 @@
                     });
                     throw err;
                 });
-                return buttonJS;
-            }
+            });
             function renderButton(id, container, options, label) {
                 if (options.locale) {
-                    var _normalizeLocale = (0, _common.normalizeLocale)(options.locale);
-                    var country = _normalizeLocale.country;
-                    var lang = _normalizeLocale.lang;
+                    var _normalizeLocale = (0, _common.normalizeLocale)(options.locale), country = _normalizeLocale.country, lang = _normalizeLocale.lang;
                     options.locale = lang + "_" + country;
                 }
                 var lc = options.locale || _config.config.locale.lang + "_" + _config.config.locale.country;
@@ -12107,23 +12112,28 @@
                 });
             }
             function getHijackTargetElement(button) {
-                if (button && button.form) {
+                var form = button.form;
+                if (form) {
                     $logger.debug("target_element_button_form");
-                    return button.form;
+                    return form;
                 }
-                if (button && button.tagName && button.tagName.toLowerCase() === "a") {
+                var tagName = button.tagName && button.tagName.toLowerCase();
+                if (tagName === "a") {
                     $logger.debug("target_element_link");
                     return button;
                 }
-                if (button && button.tagName && (button.tagName.toLowerCase() === "img" || button.tagName.toLowerCase() === "button") && button.parentNode && button.parentNode.tagName.toLowerCase() === "a") {
+                var parentElement = button.parentElement;
+                var parentTagName = parentElement && parentElement.tagName && parentElement.tagName.toLowerCase();
+                if ((tagName === "img" || tagName === "button") && parentTagName === "a") {
                     $logger.debug("target_element_parent_link");
-                    return button.parentNode;
+                    return parentElement;
                 }
-                if (button && button.tagName && button.tagName.toLowerCase() === "button" && button.parentNode && button.parentNode.parentNode && button.parentNode.parentNode.tagName.toLowerCase() === "a") {
-                    $logger.debug("target_element_parent_parent_link");
-                    return button.parentNode.parentNode;
+                var grandparentElement = parentElement && parentElement.parentElement;
+                var grandparentTagName = grandparentElement && grandparentElement.tagName && grandparentElement.tagName.toLowerCase();
+                if (tagName === "button" && grandparentTagName === "a") {
+                    $logger.debug("target_element_grandparent_link");
+                    return button.parentElement && button.parentElement.parentElement;
                 }
-                $logger.error("target_element_not_found");
             }
         },
         "./src/legacy/constants.js": function(module, exports) {
@@ -12132,7 +12142,6 @@
                 value: true
             });
             var LOG_PREFIX = exports.LOG_PREFIX = "paypal_legacy";
-            var BUTTON_JS_URL = exports.BUTTON_JS_URL = "https://www.paypalobjects.com/api/button.js";
             var ATTRIBUTES = exports.ATTRIBUTES = {
                 BUTTON: "data-paypal-button",
                 MERCHANT_ID: "data-paypal-id",
@@ -12188,17 +12197,14 @@
             var _constants = __webpack_require__("./src/legacy/constants.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
             var DEFAULT_COUNTRY = "US";
             var DEFAULT_LANG = "en";
             function normalizeLocale(locale) {
-                var _locale$split = locale.split("_");
-                var _locale$split2 = _slicedToArray(_locale$split, 2);
-                var lang = _locale$split2[0];
-                var country = _locale$split2[1];
+                var _locale$split = locale.split("_"), _locale$split2 = _slicedToArray(_locale$split, 2), lang = _locale$split2[0], country = _locale$split2[1];
                 if (!country) {
                     if (_config.config.locales[lang]) {
                         country = lang;
@@ -12250,6 +12256,7 @@
                 return target;
             };
             exports.reset = reset;
+            exports.setup = setup;
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
             var _client2 = _interopRequireDefault(_client);
@@ -12261,11 +12268,11 @@
             var _constants = __webpack_require__("./src/legacy/constants.js");
             var _button = __webpack_require__("./src/legacy/button.js");
             var _common = __webpack_require__("./src/legacy/common.js");
-            var _throttle = __webpack_require__("./src/legacy/throttle.js");
             var _util = __webpack_require__("./src/legacy/util.js");
+            var _listener = __webpack_require__("./src/legacy/listener.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
@@ -12296,8 +12303,8 @@
                     });
                     throw new Error("startflow_no_url_or_token");
                 }
-                var paymentToken = item && (0, _util.parseToken)(item);
-                var url = item && item !== paymentToken ? item : null;
+                var paymentToken = (0, _util.parseToken)(item);
+                var url = paymentToken && item === paymentToken ? _config.config.checkoutUrl + "?token=" + paymentToken : item;
                 if (url && !url.match(/^https?:\/\/|^\//)) {
                     $logger.warn("startflow_relative_url", {
                         url: url
@@ -12320,13 +12327,17 @@
                     $logger.debug("startflow_url_with_no_token", {
                         item: item
                     });
-                    paymentToken = "";
                 } else if (paymentToken) {
                     $logger.debug("startflow_with_token", {
                         item: item
                     });
-                    url = _config.config.checkoutUrl + "?token=" + paymentToken;
                 }
+                return {
+                    paymentToken: paymentToken,
+                    url: url
+                };
+            }
+            function checkUrlAgainstEnv(url) {
                 var paypalUrls = _config.config.paypalUrls;
                 for (var _iterator = Object.keys(paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
@@ -12354,10 +12365,6 @@
                         }
                     }
                 }
-                return {
-                    paymentToken: paymentToken,
-                    url: url
-                };
             }
             function awaitPaymentTokenAndUrl() {
                 var paymentTokenAndUrl = new _promise.SyncPromise(function(resolve, reject) {
@@ -12368,19 +12375,8 @@
                         $logger.debug("gettoken_startflow", {
                             item: item
                         });
-                        var urlAndPaymentToken = void 0;
-                        try {
-                            urlAndPaymentToken = matchUrlAndPaymentToken(item);
-                        } catch (err) {
-                            return reject(err);
-                        }
-                        var _urlAndPaymentToken = urlAndPaymentToken;
-                        var url = _urlAndPaymentToken.url;
-                        var paymentToken = _urlAndPaymentToken.paymentToken;
-                        if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
-                            $logger.warn("throttle_failed_on_startflow");
-                            return (0, _util.redirect)(url);
-                        }
+                        var _matchUrlAndPaymentTo = matchUrlAndPaymentToken(item), url = _matchUrlAndPaymentTo.url, paymentToken = _matchUrlAndPaymentTo.paymentToken;
+                        checkUrlAgainstEnv(url);
                         return resolve({
                             url: url,
                             paymentToken: paymentToken
@@ -12401,7 +12397,7 @@
             var paypalCheckoutInited = false;
             var closeFlowCalled = false;
             function initPayPalCheckout() {
-                var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 $logger.info("init_checkout");
                 if (paypalCheckoutInited) {
                     $logger.warn("multiple_init_paypal_checkout");
@@ -12415,6 +12411,7 @@
                     uid: window.pp_uid,
                     onAuthorize: function onAuthorize(data, actions) {
                         $logger.info("payment_authorized");
+                        _listener.onAuthorizeListener.trigger(data.paymentToken);
                         (0, _util.logRedirect)(data.returnUrl);
                         return actions.redirect(window);
                     },
@@ -12424,8 +12421,10 @@
                         return actions.redirect(window);
                     },
                     fallback: function fallback(url) {
-                        $logger.error("fallback_handler");
-                        (0, _util.redirect)(url);
+                        $logger.error("fallback_handler", {
+                            url: url
+                        });
+                        return (0, _util.redirect)(url);
                     }
                 }, props));
                 checkout.closeFlow = function(closeUrl) {
@@ -12443,7 +12442,7 @@
                 return paypalCheckout;
             }
             function renderPayPalCheckout() {
-                var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var hijackTarget = arguments[1];
                 var urlProp = _promise.SyncPromise.resolve(props.url);
                 var paymentToken = new _promise.SyncPromise(function(resolve) {
@@ -12499,12 +12498,10 @@
             function handleClickHijack(button) {
                 var targetElement = (0, _button.getHijackTargetElement)(button);
                 if (!targetElement) {
-                    return;
+                    return $logger.error("target_element_not_found");
                 }
                 $logger.info("init_paypal_checkout_hijack");
-                var _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl();
-                var url = _awaitPaymentTokenAnd.url;
-                var paymentToken = _awaitPaymentTokenAnd.paymentToken;
+                var _awaitPaymentTokenAnd = awaitPaymentTokenAndUrl(), url = _awaitPaymentTokenAnd.url, paymentToken = _awaitPaymentTokenAnd.paymentToken;
                 var token = void 0;
                 paymentToken.then(function(result) {
                     token = result;
@@ -12523,30 +12520,28 @@
                 if (element.hasAttribute("data-paypal-click-listener")) {
                     return $logger.warn("button_already_has_paypal_click_listener");
                 }
-                element.setAttribute("data-paypal-click-listener", true);
+                element.setAttribute("data-paypal-click-listener", "");
                 var targetElement = (0, _button.getHijackTargetElement)(button);
                 if (targetElement && isClick) {
                     $logger.warn("button_link_or_form");
                 }
                 element.addEventListener("click", function(event) {
                     (0, _lib.checkpoint)("flow_buttonclick");
+                    var eligible = (0, _eligibility.isLegacyEligible)();
                     if ((0, _lib.supportsPopups)()) {
                         $logger.debug("click_popups_supported");
-                        if (!(0, _eligibility.isLegacyEligible)()) {
+                        if (!eligible) {
                             $logger.debug("click_popups_supported_but_ineligible");
                         }
                     } else {
                         $logger.debug("click_popups_not_supported");
-                        if ((0, _eligibility.isLegacyEligible)()) {
+                        if (eligible) {
                             $logger.debug("click_popups_not_supported_but_eligible");
                         }
                     }
                     if (!isClick) {
-                        if (!(0, _eligibility.isLegacyEligible)()) {
+                        if (!eligible) {
                             return $logger.debug("ineligible_listenclick");
-                        }
-                        if (!(0, _throttle.checkThrottle)(null, true)) {
-                            return;
                         }
                     }
                     $logger.info("button_click");
@@ -12566,7 +12561,7 @@
             }
             var setupCalled = false;
             function setup(id) {
-                var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 (0, _lib.checkpoint)("flow_setup");
                 id = id || "merchant";
                 $logger.info("setup", {
@@ -12640,12 +12635,7 @@
                 if (!(0, _eligibility.isLegacyEligible)()) {
                     return $logger.debug("ineligible_initxo");
                 }
-                if (!(0, _throttle.checkThrottle)()) {
-                    return;
-                }
-                var _awaitPaymentTokenAnd2 = awaitPaymentTokenAndUrl();
-                var url = _awaitPaymentTokenAnd2.url;
-                var paymentToken = _awaitPaymentTokenAnd2.paymentToken;
+                var _awaitPaymentTokenAnd2 = awaitPaymentTokenAndUrl(), url = _awaitPaymentTokenAnd2.url, paymentToken = _awaitPaymentTokenAnd2.paymentToken;
                 $logger.info("init_paypal_checkout_initxo");
                 renderPayPalCheckout({
                     url: url,
@@ -12655,20 +12645,16 @@
                 });
             }
             checkout.initXO = initXO;
-            function startFlow(item, opts) {
+            function startFlow(item) {
                 $logger.debug("startflow", {
                     item: item
                 });
-                var _matchUrlAndPaymentTo = matchUrlAndPaymentToken(item);
-                var paymentToken = _matchUrlAndPaymentTo.paymentToken;
-                var url = _matchUrlAndPaymentTo.url;
-                if (!(0, _eligibility.isLegacyEligible)(paymentToken)) {
+                var _matchUrlAndPaymentTo2 = matchUrlAndPaymentToken(item), paymentToken = _matchUrlAndPaymentTo2.paymentToken, url = _matchUrlAndPaymentTo2.url;
+                checkUrlAgainstEnv(url);
+                if (!(0, _eligibility.isLegacyEligible)()) {
                     $logger.debug("ineligible_startflow_global", {
                         url: url
                     });
-                    return (0, _util.redirect)(url);
-                }
-                if (!(0, _throttle.checkThrottle)(paymentToken, true)) {
                     return (0, _util.redirect)(url);
                 }
                 $logger.info("init_paypal_checkout_startflow");
@@ -12700,15 +12686,17 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             exports.isUnsupportedIE = isUnsupportedIE;
             exports.isLegacyEligible = isLegacyEligible;
-            var _lib = __webpack_require__("./src/lib/index.js");
             var _config = __webpack_require__("./src/config/index.js");
+            var _lib = __webpack_require__("./src/lib/index.js");
+            var _listener = __webpack_require__("./src/legacy/listener.js");
             function isUnsupportedIE() {
-                return (0, _lib.getUserAgent)().match(/MSIE (5|6|7|8)\./i);
+                return Boolean((0, _lib.getUserAgent)().match(/MSIE (5|6|7|8)\./i));
             }
+            var throttle = (0, _lib.getThrottle)("v4_mobile_device", _config.config.throttles.v4_mobile_device);
             function isLegacyEligible() {
                 var currentAgent = (0, _lib.getAgent)();
                 if ((typeof currentAgent === "undefined" ? "undefined" : _typeof(currentAgent)) === "object" && currentAgent.length === 2) {
@@ -12716,11 +12704,37 @@
                         return false;
                     }
                 }
-                if ((0, _lib.isWebView)() || isUnsupportedIE() || (0, _lib.isDevice)()) {
+                if ((0, _lib.isWebView)() || isUnsupportedIE()) {
                     return false;
+                }
+                if ((0, _lib.isDevice)()) {
+                    throttle.logStart();
+                    return throttle.isEnabled();
                 }
                 return true;
             }
+            _listener.onAuthorizeListener.once(function(token) {
+                throttle.log("authorize", {
+                    fltk: token
+                });
+            });
+            (function logReturn() {
+                var token = (0, _lib.getReturnToken)();
+                if (token && (0, _lib.isDevice)()) {
+                    throttle.logComplete({
+                        fltk: token
+                    });
+                }
+            })();
+        },
+        "./src/legacy/listener.js": function(module, exports, __webpack_require__) {
+            "use strict";
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+            exports.onAuthorizeListener = undefined;
+            var _lib = __webpack_require__("./src/lib/index.js");
+            var onAuthorizeListener = exports.onAuthorizeListener = (0, _lib.eventEmitter)();
         },
         "./src/compat/index.js": function(module, exports, __webpack_require__) {
             "use strict";
@@ -12773,12 +12787,11 @@
             var _config = __webpack_require__("./src/config/index.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             _src2["default"].on("meta", function(_ref) {
-                var source = _ref.source;
-                var data = _ref.data;
+                var source = _ref.source, data = _ref.data;
                 if (data.iframeEligible) {
                     (0, _components.enableCheckoutIframe)();
                 }
@@ -12821,7 +12834,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
             var _src2 = _interopRequireDefault(_src);
@@ -12829,7 +12842,7 @@
             var _config = __webpack_require__("./src/config/index.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function match(str, pattern) {
@@ -12864,7 +12877,7 @@
                     try {
                         var _ret = function() {
                             var isLegacy = win.document.body.innerHTML.indexOf("merchantpaymentweb") !== -1 || win.document.body.innerHTML.indexOf("wapapp") !== -1;
-                            if (!isLegacy || win.ppxoMatching || win.closed) {
+                            if (!isLegacy || win.ppxoWatching || win.closed) {
                                 return {
                                     v: void 0
                                 };
@@ -12895,9 +12908,7 @@
                                                 onAuthorize = null;
                                                 if (win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES) {
                                                     Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
-                                                        get: function get() {
-                                                            return Math.random();
-                                                        }
+                                                        value: Math.random().toString()
                                                     });
                                                 }
                                                 if (win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady) {
@@ -12950,7 +12961,7 @@
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             if (!window.Symbol) {
@@ -12962,6 +12973,7 @@
                 };
             }
             window.Symbol = _polyfill2["default"];
+            window.SyncPromise = _promise.SyncPromise;
             if (!window.Promise) {
                 window.Promise = _promise.SyncPromise;
             }
@@ -12971,7 +12983,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var d = __webpack_require__("./node_modules/d/index.js"), validateSymbol = __webpack_require__("./node_modules/es6-symbol/validate-symbol.js"), create = Object.create, defineProperties = Object.defineProperties, defineProperty = Object.defineProperty, objPrototype = Object.prototype, NativeSymbol, SymbolPolyfill, HiddenSymbol, globalSymbols = create(null), isNativeSafe;
             if (typeof Symbol === "function") {
@@ -13016,7 +13028,7 @@
                 });
             };
             defineProperties(SymbolPolyfill, {
-                "for": d(function(key) {
+                for: d(function(key) {
                     if (globalSymbols[key]) return globalSymbols[key];
                     return globalSymbols[key] = SymbolPolyfill(String(key));
                 }),
@@ -13253,7 +13265,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             module.exports = function(x) {
                 if (!x) return false;
@@ -13375,10 +13387,10 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var map = {
-                "function": true,
+                function: true,
                 object: true
             };
             module.exports = function(x) {
@@ -13609,7 +13621,7 @@
             var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
                 return typeof obj;
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
             };
             var validTypes = {
                 object: true,
@@ -13630,52 +13642,6 @@
                 return true;
             };
         },
-        "./src/legacy/throttle.js": function(module, exports, __webpack_require__) {
-            "use strict";
-            Object.defineProperty(exports, "__esModule", {
-                value: true
-            });
-            exports.checkThrottle = checkThrottle;
-            var _lib = __webpack_require__("./src/lib/index.js");
-            var _config = __webpack_require__("./src/config/index.js");
-            var domain = window.location.protocol + "//" + window.location.host;
-            var domainStr = domain.replace(/[^a-z0-9A-Z]+/g, "_");
-            var throttle = void 0;
-            if (_config.config.legacy_throttles.hasOwnProperty(domain)) {
-                throttle = (0, _lib.getThrottle)("incontext_" + domainStr, _config.config.legacy_throttles[domain]);
-            }
-            function checkThrottle(token) {
-                var forceLog = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-                if (throttle) {
-                    if (token || forceLog) {
-                        throttle.logStart({
-                            fltk: token
-                        });
-                    }
-                    if (window.sessionStorage) {
-                        try {
-                            window.sessionStorage.setItem("__pp_incontext_treatment__", throttle.getTreatment());
-                        } catch (err) {}
-                    }
-                    return throttle.isEnabled();
-                }
-                return true;
-            }
-            function logReturn() {
-                if (!throttle) {
-                    return;
-                }
-                var token = (0, _lib.match)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
-                var payer = (0, _lib.match)(window.location.href, /PayerID=([A-Z0-9]+)/);
-                if (!token || !payer) {
-                    return;
-                }
-                throttle.logComplete({
-                    fltk: token
-                });
-            }
-            logReturn();
-        },
         "./src/legacy/util.js": function(module, exports, __webpack_require__) {
             "use strict";
             Object.defineProperty(exports, "__esModule", {
@@ -13683,7 +13649,10 @@
             });
             exports.logRedirect = logRedirect;
             exports.redirect = redirect;
+            exports.isToken = isToken;
             exports.parseToken = parseToken;
+            exports.hasToken = hasToken;
+            var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
             var _client2 = _interopRequireDefault(_client);
             var _config = __webpack_require__("./src/config/index.js");
@@ -13692,7 +13661,7 @@
             var _constants = __webpack_require__("./src/legacy/constants.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
@@ -13707,10 +13676,14 @@
                 $logger.flush();
             }
             function redirect(url) {
+                if (!url) {
+                    throw new Error("Redirect url undefined");
+                }
                 if (_config.config.env === _config.ENV.TEST && (0, _lib.urlWillRedirectPage)(url)) {
-                    return setTimeout(function() {
+                    setTimeout(function() {
                         window.location = "#fullpageRedirect?url=" + url;
                     }, _config2.REDIRECT_DELAY);
+                    return;
                 }
                 logRedirect(url);
                 redirected = true;
@@ -13720,6 +13693,10 @@
                     });
                     window.location = url;
                 }, _config2.REDIRECT_DELAY);
+                return new _promise.SyncPromise();
+            }
+            function isToken(item) {
+                return Boolean(item && item.match(/^(EC-)?[A-Z0-9]{17}$/));
             }
             function parseToken(token) {
                 if (!token) {
@@ -13737,6 +13714,9 @@
                 if (match) {
                     return match[1];
                 }
+            }
+            function hasToken(item) {
+                return Boolean(parseToken(item));
             }
         },
         "./src/legacy/config.js": function(module, exports) {
@@ -13756,7 +13736,7 @@
             var _interface = __webpack_require__("./src/legacy/interface.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             var $logger = _client2["default"].prefix(_constants.LOG_PREFIX);
@@ -13849,7 +13829,7 @@
             var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
             function _interopRequireDefault(obj) {
                 return obj && obj.__esModule ? obj : {
-                    "default": obj
+                    default: obj
                 };
             }
             function domainToEnv(domain) {
@@ -13863,9 +13843,9 @@
                         if (_i.done) break;
                         _ref = _i.value;
                     }
-                    var env = _ref;
-                    if (_config.config.paypalUrls[env] === domain) {
-                        return env;
+                    var _env = _ref;
+                    if (_config.config.paypalUrls[_env] === domain) {
+                        return _env;
                     }
                 }
             }
@@ -13885,7 +13865,7 @@
                 });
             });
             function setup() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 (0, _lib.checkForCommonErrors)();
                 if (options.env) {
                     if (!_config.config.paypalUrls[options.env]) {
@@ -13987,7 +13967,7 @@
             exports.validateProps = validateProps;
             exports.validate = validate;
             function validateProp(prop, key, value) {
-                var required = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+                var required = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
                 var hasProp = value !== null && value !== undefined && value !== "";
                 if (!hasProp) {
                     if (required && prop.required !== false && !prop.hasOwnProperty("def")) {
@@ -14021,7 +14001,7 @@
                 }
             }
             function validateProps(component, props) {
-                var required = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+                var required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
                 props = props || {};
                 for (var _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
