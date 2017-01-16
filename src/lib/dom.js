@@ -3,8 +3,6 @@
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
 
-import type { GenericFunction } from '../lib';
-
 export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
     return new SyncPromise((resolve, reject) => {
         let script = document.createElement('script');
@@ -127,7 +125,7 @@ export function onDocumentReady(method : () => void) : SyncPromise<void> {
     return documentReady.then(method);
 }
 
-export let parseQuery : GenericFunction<string, Object> = memoize((queryString : string) : Object => {
+export let parseQuery = memoize((queryString : string) : Object => {
 
     let params = {};
 

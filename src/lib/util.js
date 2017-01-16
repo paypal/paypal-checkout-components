@@ -7,9 +7,9 @@ export function isPayPalDomain() : boolean {
 }
 
 
-export type GenericFunction<P, R> = (...args : Array<P>) => R;
+type FunctionProxy<T : Function> = (method : T) => T;
 
-export function memoize<P, R>(method : GenericFunction<P, R>, options : { time? : number } = {}) : GenericFunction<P, R> {
+export let memoize : FunctionProxy<*> = <R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) => {
 
     let cache : { [key : string] : R } = {};
 
@@ -37,7 +37,7 @@ export function memoize<P, R>(method : GenericFunction<P, R>, options : { time? 
 
         return cache[key];
     };
-}
+};
 
 export function noop() {
     // pass

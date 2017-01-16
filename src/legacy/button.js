@@ -8,11 +8,9 @@ import { loadScript, getElements, getElement, memoize } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
-import type { GenericFunction } from '../lib';
-
 let $logger = logger.prefix(LOG_PREFIX);
 
-let loadButtonJS : GenericFunction<void, SyncPromise<void>> = memoize(() : SyncPromise<void> => {
+let loadButtonJS = memoize(() : SyncPromise<void> => {
 
     $logger.debug(`buttonjs_load`);
 
