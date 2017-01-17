@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/mark.js"></script>
+    <script src="../js/jwt-csrf.min.js"></script>
+
+    <title>Paypal Integrations</title>
+</head>
+
+
+<body>
+    <a href="https://github.com/paypal/paypal-checkout"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 1100" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Paypal Integrations</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../?page=basic">Basic</a></li>
+                    <li><a href="../?page=agreements">Billing Agreements</a></li>
+                    <li><a href="../?page=braintree">Braintree V.zero</a> </li>
+                    <li><a href="../?page=serverside">Server Side</a></li>
+                    <li><a href="../?page=confirmation">Confirmation Page</a></li>
+                    <li><a href="../?page=buttonStyles">Button Styles</a></li>
+                    <li class="active"><a href="../?page=mark">Mark Integration</a></li>
+                    <li><a href="../?page=hybrid">Hybrid Integrations</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container left">
+
+        <div class="jumbotron">
+            <h1>Mark Integration</h1>
+            <p>If you want your buyers to choose their payment method , you can give them a choice!</p>
+        </div>
+
+
+        <img src="../img/watch.jpeg" class='showcase' alt="great watch">
+        <p>Excellent watch <br> for only <strong>$1.00 USD</strong></p>
+
+        <div class="container">
+            <p>Choose your method of payment: </p>
+            <form>
+                <div class="radio resize">
+                    <label>
+                        <input type="radio" name="paymentOption" value="Mark" checked>
+                        <img src="../img/payWithPaypal.jpg" alt="Pay with Paypal" class="paymentOptions" width="55" height="40">
+                    </label>
+                </div>
+                <div class="radio resize">
+                    <label>
+                        <input type="radio" name="paymentOption" value="Sole">
+                        <img src="../img/accepted_cards.png" alt="Accepting Visa, Mastercard, Discover and American Express" class="paymentOptions" width="220" height="40">
+                    </label>
+                </div>
+            </form>
+
+            <div id="myButtonContainer" class="center"></div>
+        </div>
+
+    </div>
+
+    <ul class="nav nav-tabs right">
+        <li role="presentation" class="active"><a href="#">mark.js</a></li>
+
+        <button id="eval" type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
+    </ul>
+
+
+    <div id="editor" class="right"></div>
+
+</body>
+
+
