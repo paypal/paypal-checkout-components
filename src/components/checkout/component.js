@@ -295,15 +295,7 @@ export let Checkout = xcomponent.create({
         onAuth: {
             type: 'function',
             required: false,
-            sameDomain: true,
-            decorate(original) : Function {
-                return function() : void {
-                    enableCheckoutIframe(); // eslint-disable-line
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
-                };
-            }
+            sameDomain: true
         },
 
         onCancel: {

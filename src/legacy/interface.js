@@ -325,7 +325,7 @@ function listenClick(container, button, clickHandler, condition) : void {
     let targetElement = getHijackTargetElement(button);
 
     if (targetElement && isClick) {
-        $logger.warn(`button_link_or_form`);
+        $logger.info(`button_link_or_form`);
     }
 
     element.addEventListener('click', (event : Event) => {

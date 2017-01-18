@@ -8,7 +8,6 @@ import { config } from '../../config';
 import { isDevice, urlWillRedirectPage } from '../../lib';
 
 import { validateProps } from '../common';
-import { enableCheckoutIframe } from '../checkout';
 
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
@@ -138,15 +137,7 @@ export let Button = xcomponent.create({
                             });
                         };
 
-                        let restart = () => {
-                            if (actions.restart) {
-                                enableCheckoutIframe();
-
-                                return actions.restart();
-                            }
-                        };
-
-                        return original.call(this, data, { ...actions, redirect, restart });
+                        return original.call(this, data, { ...actions, redirect });
                     };
                 }
             }
@@ -263,22 +254,3 @@ export let Button = xcomponent.create({
         height: '48px'
     }
 });
-
-if (Button.isChild() && window.xprops.onAuthorize) {
-    window.xchild.onProps(() => {
-        let onAuthorize = window.xprops.onAuthorize;
-
-        window.xprops.onAuthorize = (data, actions) => {
-            let restart = actions.restart;
-
-            if (restart) {
-                actions.restart = () => {
-                    enableCheckoutIframe();
-                    return restart();
-                };
-            }
-
-            return onAuthorize(data, actions);
-        };
-    });
-}
