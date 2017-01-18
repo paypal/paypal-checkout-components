@@ -12,6 +12,11 @@ type RequestOptionsType = {
     win? : typeof window
 };
 
+const HEADERS = {
+    CONTENT_TYPE: 'content-type',
+    ACCEPT: 'accept'
+};
+
 export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : SyncPromise<Object> {
 
     return new SyncPromise((resolve, reject) => {
@@ -20,13 +25,19 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
             throw new Error(`Only options.json or options.data or options.body should be passed`);
         }
 
-        if (json) {
-            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
-        } else if (data || body) {
-            headers['Content-Type'] = headers['Content-Type'] || 'application/x-www-form-urlencoded; charset=utf-8';
+        let normalizedHeaders = {};
+
+        for (let key of Object.keys(headers)) {
+            normalizedHeaders[key.toLowerCase()] = headers[key];
         }
 
-        headers.Accept = headers.Accept || 'application/json';
+        if (json) {
+            normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || 'application/json';
+        } else if (data || body) {
+            normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || 'application/x-www-form-urlencoded; charset=utf-8';
+        }
+
+        normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || 'application/json';
 
         let xhr = new win.XMLHttpRequest();
 
@@ -40,9 +51,9 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         xhr.open(method, url, true);
 
-        if (headers) {
-            for (let key in headers) {
-                xhr.setRequestHeader(key, headers[key]);
+        if (normalizedHeaders) {
+            for (let key in normalizedHeaders) {
+                xhr.setRequestHeader(key, normalizedHeaders[key]);
             }
         }
 
