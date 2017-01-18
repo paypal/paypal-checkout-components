@@ -28,6 +28,7 @@ function renderCheckout() {
                 },
 
                 restart() {
+                    paypal.Checkout.contexts.lightbox = true;
                     renderCheckout();
                 }
             });
@@ -38,6 +39,7 @@ function renderCheckout() {
         },
 
         onCancel: window.xprops.onCancel,
+        onError: window.xprops.onError,
         commit: window.xprops.commit,
         locale: window.xprops.locale,
         testAction: window.xprops.testAction

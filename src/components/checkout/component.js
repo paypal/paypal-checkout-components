@@ -10,7 +10,7 @@ import parentTemplate from './parentTemplate.htm';
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, request, getQueryParam, noop, urlWillRedirectPage } from '../../lib';
+import { isDevice, request, getQueryParam, urlWillRedirectPage } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps } from '../common';
@@ -396,9 +396,7 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             promisify: true,
-            def() : Function {
-                return window.xprops && window.xprops.onError || noop;
-            },
+            noop: true,
             once: true
         },
 
