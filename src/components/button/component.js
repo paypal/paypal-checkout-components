@@ -101,7 +101,6 @@ export let Button = xcomponent.create({
         onAuthorize: {
             type: 'function',
             required: false,
-            alias: 'onPaymentAuthorize',
 
             decorate(original) : ?Function {
                 if (original) {
@@ -146,7 +145,6 @@ export let Button = xcomponent.create({
         onCancel: {
             type: 'function',
             required: false,
-            alias: 'onPaymentCancel',
 
             decorate(original) : ?Function {
                 if (original) {

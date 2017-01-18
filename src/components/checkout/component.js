@@ -214,7 +214,6 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            alias: 'onPaymentAuthorize',
 
             decorate(original) : ?Function {
                 if (original) {
@@ -286,12 +285,6 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        onPaymentComplete: {
-            type: 'function',
-            required: false,
-            sendToChild: false
-        },
-
         onAuth: {
             type: 'function',
             required: false,
@@ -302,7 +295,6 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
-            alias: 'onPaymentCancel',
 
             decorate(original) : ?Function {
                 if (original) {
