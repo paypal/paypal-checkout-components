@@ -3,7 +3,7 @@
 import paypal from 'src/index';
 import { assert } from 'chai';
 
-import { generateECToken, generateBillingToken } from '../common';
+import { generateECToken } from '../common';
 
 describe(`paypal checkout component validation`, () => {
 
@@ -11,36 +11,6 @@ describe(`paypal checkout component validation`, () => {
 
         return paypal.Checkout.render({
             env: 'moo'
-        }).then(() => {
-            throw new Error('Expected error to be thrown');
-        }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
-        });
-    });
-
-    it('should attempt to render checkout with payment and billing agreement and error out', () => {
-
-        return paypal.Checkout.render({
-            payment() : string | SyncPromise<string> {
-                return generateECToken();
-            },
-            billingAgreement() : string | SyncPromise<string> {
-                return generateBillingToken();
-            }
-        }).then(() => {
-            throw new Error('Expected error to be thrown');
-        }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
-        });
-    });
-
-    it('should attempt to render checkout with billing agreement and commit, and error out', () => {
-
-        return paypal.Checkout.render({
-            commit: true,
-            billingAgreement() : string | SyncPromise<string> {
-                return generateBillingToken();
-            }
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {

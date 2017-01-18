@@ -82,15 +82,7 @@ export let Button = xcomponent.create({
             required: false,
             getter: true,
             memoize: false,
-            alias: 'paymentToken'
-        },
-
-        billingAgreement: {
-            type: 'string',
-            required: false,
-            getter: true,
-            memoize: false,
-            alias: 'billingToken'
+            alias: 'billingAgreement'
         },
 
         commit: {

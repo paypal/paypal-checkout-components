@@ -72,10 +72,6 @@ export let Checkout = xcomponent.create({
     buildUrl(instance, props) : string | SyncPromise<string> {
         let env = instance.props.env || config.env;
 
-        if (instance.props.billingAgreement) {
-            return config.billingUrls[env];
-        }
-
         return props.payment().then(token => {
 
             if (token.indexOf('BA-') === 0) {
@@ -194,15 +190,6 @@ export let Checkout = xcomponent.create({
                 return getQueryParam('token');
             },
             alias: 'paymentToken'
-        },
-
-        billingAgreement: {
-            type: 'string',
-            required: false,
-            getter: true,
-            memoize: true,
-            queryParam: 'ba_token',
-            alias: 'billingToken'
         },
 
         commit: {

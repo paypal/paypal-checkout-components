@@ -12,16 +12,8 @@ export function validateProps(props : Object, required : boolean = true) {
         throw new Error(`Invalid env: ${props.env}`);
     }
 
-    if (props.payment && props.billingAgreement) {
-        throw new Error(`Must specify either payment or billingAgreement`);
-    }
-
-    if (!props.payment && !props.billingAgreement) {
-        throw new Error(`Must specify either payment or billingAgreement`);
-    }
-
-    if (props.billingAgreement && props.commit) {
-        throw new Error(`Can not commit for billing transactions`);
+    if (!props.payment) {
+        throw new Error(`Must specify payment method`);
     }
 
     if (!props.onAuthorize) {

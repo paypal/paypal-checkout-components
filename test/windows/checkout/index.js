@@ -62,7 +62,6 @@ if (window.xprops.testAction === 'checkout') {
 
             url:              window.location.href,
             payment:          window.xprops.payment,
-            billingAgreement: window.xprops.billingAgreement,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,
             onError:          window.xprops.onError
