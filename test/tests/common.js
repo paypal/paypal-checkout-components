@@ -265,3 +265,32 @@ export function preventOpenWindow(flow : string) {
         throw new Error(`Flow not recognized: ${flow}`);
     }
 }
+
+export function setupNative(win : typeof window = window, isAuthorize : boolean = true) {
+
+    win.ppnativexo = {
+        start(url, { onAuthorize, onCancel }) {
+            setTimeout(() => {
+
+                let params = {};
+                url.split('?')[1].split('&').forEach(keypair => {
+                    let [ key, val ] = keypair.split('=');
+                    params[key] = val;
+                });
+
+                let returnURL = `#${ isAuthorize ? 'return' : 'cancel' }?token=${params.token}`;
+
+                if (isAuthorize) {
+                    returnURL = `${returnURL}&PayerID=YYYYYYYYYYYYY`;
+                }
+
+                return isAuthorize ? onAuthorize(returnURL) : onCancel(returnURL);
+
+            }, 200);
+        }
+    };
+}
+
+export function destroyNative(win : typeof window = window) {
+    delete win.ppnativexo;
+}

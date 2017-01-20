@@ -10,7 +10,10 @@ import parentTemplate from './parentTemplate.htm';
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
-import { isDevice, request, getQueryParam, urlWillRedirectPage } from '../../lib';
+import { determineParameterFromToken, determineUrlFromToken, redirect as redir } from './util';
+import { setupNativeProxy } from './native';
+
+import { isDevice, request, getQueryParam } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps } from '../common';
@@ -73,24 +76,7 @@ export let Checkout = xcomponent.create({
         let env = instance.props.env || config.env;
 
         return props.payment().then(token => {
-
-            if (token.indexOf('BA-') === 0) {
-                $logger.info(`url_billing`);
-                return config.billingUrls[env];
-            }
-
-            if (token.indexOf('PAY-') === 0) {
-                $logger.info(`url_payment`);
-                return config.checkoutUrls[env];
-            }
-
-            if (token.indexOf('EC-') === 0) {
-                $logger.info(`url_checkout`);
-                return config.checkoutUrls[env];
-            }
-
-            $logger.info(`url_default`);
-            return config.checkoutUrls[env];
+            return determineUrlFromToken(env, token);
         });
     },
 
@@ -184,7 +170,7 @@ export let Checkout = xcomponent.create({
             getter: true,
             memoize: true,
             queryParam(value = '') : string {
-                return value.indexOf('BA-') === 0 ? 'ba_token' : 'token';
+                return determineParameterFromToken(value);
             },
             childDef() : ?string {
                 return getQueryParam('token');
@@ -227,15 +213,10 @@ export let Checkout = xcomponent.create({
                             win = win || window.top;
                             url = url || data.returnUrl;
 
-                            setTimeout(() => {
-                                win.location = url;
-                            }, 1);
-
-                            return close().then(() => {
-                                if (urlWillRedirectPage(url)) {
-                                    return new SyncPromise();
-                                }
-                            });
+                            return SyncPromise.all([
+                                redir(win, url),
+                                close()
+                            ]);
                         };
 
                         return SyncPromise.try(() => {
@@ -302,15 +283,10 @@ export let Checkout = xcomponent.create({
                             win = win || window.top;
                             url = url || data.cancelUrl;
 
-                            setTimeout(() => {
-                                win.location = url;
-                            }, 1);
-
-                            return close().then(() => {
-                                if (urlWillRedirectPage(url)) {
-                                    return new SyncPromise();
-                                }
-                            });
+                            return SyncPromise.all([
+                                redir(win, url),
+                                close()
+                            ]);
                         };
 
                         return SyncPromise.try(() => {
@@ -425,6 +401,8 @@ export let Checkout = xcomponent.create({
         };
     }
 });
+
+setupNativeProxy(Checkout);
 
 let enableCheckoutIframeTimeout;
 

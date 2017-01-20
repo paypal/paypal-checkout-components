@@ -169,3 +169,32 @@ export function urlWillRedirectPage(url : string) : boolean {
 
     return true;
 }
+
+export function extendUrl(url : string, params : { [key : string] : string } = {}) : string {
+
+    let [ originalUrl, originalQueryString ] = url.split('?');
+
+    if (originalQueryString) {
+        let originalQuery = parseQuery(originalQueryString);
+
+        for (let key in originalQuery) {
+            if (!params.hasOwnProperty(key)) {
+                params[key] = originalQuery[key];
+            }
+        }
+    }
+
+    let newQueryString = Object.keys(params).map(key => {
+        if (key && params[key]) {
+            return `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
+        }
+    }).filter(Boolean).join('&');
+
+    let newUrl = originalUrl;
+
+    if (newQueryString) {
+        newUrl = `${newUrl}?${newQueryString}`;
+    }
+
+    return newUrl;
+}
