@@ -91,6 +91,7 @@ export function getPayment(paymentID) {
             })),
 
             transactions: map(payment.transactions, transaction => ({
+                custom: transaction.custom,
 
                 amount: using(transaction.amount, amount => ({
                     total:    amount.total,
