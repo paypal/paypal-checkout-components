@@ -175,7 +175,7 @@ export let Checkout = xcomponent.create({
             childDef() : ?string {
                 return getQueryParam('token');
             },
-            alias: 'paymentToken'
+            alias: 'billingAgreement'
         },
 
         commit: {

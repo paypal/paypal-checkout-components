@@ -7,7 +7,7 @@ import postRobot from 'post-robot/src/index';
 
 if (window.xprops.testAction === 'checkout') {
 
-    window.xprops.paymentToken().then(paymentToken => {
+    window.xprops.payment().then(paymentToken => {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
@@ -39,7 +39,7 @@ if (window.xprops.testAction === 'checkout') {
 
 } else if (window.xprops.testAction === 'cancel') {
 
-    window.xprops.paymentToken().then(paymentToken => {
+    window.xprops.payment().then(paymentToken => {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
@@ -74,7 +74,7 @@ if (window.xprops.testAction === 'checkout') {
 
     let parent = window.xchild.getParentComponentWindow();
 
-    window.xprops.paymentToken().then(paymentToken => {
+    window.xprops.payment().then(paymentToken => {
         window.xprops.fallback(`#fallbackUrl?token=${paymentToken}`).then(() => {
 
             createTestContainer();
@@ -111,7 +111,7 @@ if (window.xprops.testAction === 'checkout') {
 
 } else if (window.xprops.testAction === 'error') {
 
-    window.xprops.paymentToken().then(paymentToken => {
+    window.xprops.payment().then(paymentToken => {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
