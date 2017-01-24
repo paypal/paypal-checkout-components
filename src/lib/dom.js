@@ -3,36 +3,60 @@
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
 
-export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
-    return new SyncPromise((resolve, reject) => {
-        let script = document.createElement('script');
+function isDocumentReady() : boolean {
+    return Boolean(document.body) && document.readyState === 'complete';
+}
 
-        script.onload = function () {
-            resolve();
-        };
+let documentReady : SyncPromise<void> = new SyncPromise(resolve => {
 
-        // For Internet explorer 8 support
-        script.onreadystatechange = function () {
-            if (this.readyState === 'complete' || this.readyState === 'loaded') {
-                resolve();
-            }
-        };
+    if (isDocumentReady()) {
+        return resolve();
+    }
 
-        let scriptLoadError = new Error('script_loading_error');
-
-        script.onerror = (event : Event) => {
-            return reject(scriptLoadError);
-        };
-
-        if (timeout) {
-            setTimeout(() => {
-                return reject(new Error('script_loading_timed_out'));
-            }, timeout);
+    let interval = setInterval(() => {
+        if (isDocumentReady()) {
+            clearInterval(interval);
+            return resolve();
         }
+    }, 10);
+});
 
-        script.setAttribute('src', src);
+let documentBody : SyncPromise<HTMLElement> = documentReady.then(() => document.body);
 
-        document.body.appendChild(script);
+
+export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
+    return documentBody.then(body => {
+
+        return new SyncPromise((resolve, reject) => {
+            let script = document.createElement('script');
+
+            script.onload = function () {
+                resolve();
+            };
+
+            // For Internet explorer 8 support
+            script.onreadystatechange = function () {
+                if (this.readyState === 'complete' || this.readyState === 'loaded') {
+                    resolve();
+                }
+            };
+
+            let scriptLoadError = new Error('script_loading_error');
+
+            script.onerror = (event : Event) => {
+                return reject(scriptLoadError);
+            };
+
+            if (timeout) {
+                setTimeout(() => {
+                    return reject(new Error('script_loading_timed_out'));
+                }, timeout);
+            }
+
+            script.setAttribute('src', src);
+
+            body.appendChild(script);
+        });
     });
 }
 
@@ -102,24 +126,6 @@ export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | 
 
     return [];
 }
-
-function isDocumentReady() : boolean {
-    return document.readyState === 'complete';
-}
-
-let documentReady = new SyncPromise(resolve => {
-
-    if (isDocumentReady()) {
-        return resolve();
-    }
-
-    let interval = setInterval(() => {
-        if (isDocumentReady()) {
-            clearInterval(interval);
-            return resolve();
-        }
-    }, 10);
-});
 
 export function onDocumentReady(method : () => void) : SyncPromise<void> {
     return documentReady.then(method);

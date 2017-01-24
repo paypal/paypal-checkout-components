@@ -55,6 +55,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
 
             let container = document.createElement('div');
+
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
+
             document.body.appendChild(container);
 
             window.ReactDOM.render(window.React.createElement(Main, null), container);
@@ -93,6 +98,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             `;
 
             $compile(template)($scope, element => {
+
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
+
                 document.body.appendChild(element[0]);
             });
         });

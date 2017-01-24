@@ -100,7 +100,7 @@ export function createElement(options : Object) : HTMLElement {
     return element;
 }
 
-export function destroyElement(element : string | HTMLElement) {
+export function destroyElement(element : string | ?HTMLElement) {
 
     if (typeof element === 'string') {
         element = document.getElementById(element) || document.querySelector(element);
