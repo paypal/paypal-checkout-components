@@ -33,40 +33,6 @@ function addHeader(name, value) : void {
     }
 }
 
-
-function logReturnUrl(returnUrl) {
-
-    let currentDomain = `${window.location.protocol}//${window.location.host}`.toLowerCase();
-    returnUrl = returnUrl.toLowerCase();
-
-    if (currentDomain !== 'https://www.paypal.com') {
-
-        if (returnUrl.indexOf(currentDomain) === 0) {
-            $logger.info(`return_url_domain_match`);
-        } else {
-            $logger.info(`return_url_domain_mismatch`, { returnUrl, currentDomain });
-        }
-
-        let currentHost = currentDomain.replace(/^https?/, '');
-        let returnHost = returnUrl.replace(/^https?/, '');
-
-        if (returnHost.indexOf(currentHost) === 0) {
-            $logger.info(`return_url_host_match`);
-        } else {
-            $logger.info(`return_url_host_mismatch`, { returnUrl, currentDomain });
-        }
-
-        let currentTLD = currentHost.replace(/^www\./, '');
-        let returnTLD = returnHost.replace(/^www\./, '');
-
-        if (returnTLD.indexOf(currentTLD) === 0) {
-            $logger.info(`return_url_tld_match`);
-        } else {
-            $logger.info(`return_url_tld_mismatch`, { returnUrl, currentDomain });
-        }
-    }
-}
-
 export let Checkout = xcomponent.create({
 
     tag: 'paypal-checkout',
@@ -191,12 +157,6 @@ export let Checkout = xcomponent.create({
             decorate(original) : ?Function {
                 if (original) {
                     return function(data, actions = {}) : void {
-
-                        try {
-                            logReturnUrl(data.returnUrl);
-                        } catch (err) {
-                            // pass
-                        }
 
                         let close = () => {
                             return SyncPromise.try(() => {
