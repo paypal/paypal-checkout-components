@@ -216,3 +216,14 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
 
     return newUrl;
 }
+
+export function redirect(win : typeof window = window, url : string) : SyncPromise<void> {
+    return new SyncPromise(resolve => {
+        setTimeout(() => {
+            win.location = url;
+            if (!urlWillRedirectPage(url)) {
+                resolve();
+            }
+        }, 1);
+    });
+}

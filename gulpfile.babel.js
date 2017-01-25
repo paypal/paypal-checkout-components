@@ -70,7 +70,7 @@ gulp.task('karma', ['lint'], function (done) {
     client: {
       captureConsole: Boolean(argv['capture-console']),
       mocha: {
-        timeout : 5000
+        timeout : 8000
       }
     }
   });

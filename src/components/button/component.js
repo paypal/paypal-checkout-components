@@ -1,11 +1,10 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
 import { config } from '../../config';
-import { isDevice, urlWillRedirectPage } from '../../lib';
+import { isDevice, redirect as redir } from '../../lib';
 
 import { validateProps } from '../common';
 
@@ -98,34 +97,11 @@ export let Button = xcomponent.create({
                 if (original) {
                     return function(data, actions) : void {
 
-                        // $FlowFixMe
-                        Object.defineProperty(data, 'payment', {
-                            get() {
-                                $logger.warn(`data_payment_referenced`);
-
-                                throw new Error(`Please call actions.payment.get() to get payment details:\n\n` +
-                                     `    onAuthorize: function(data, actions) {\n` +
-                                     `        return actions.payment.get().then(function(payment) {\n` +
-                                     `            console.log(payment);\n` +
-                                     `        });\n` +
-                                     `    }\n\n`);
-                            }
-                        });
-
                         let redirect = (win, url) => {
-
-                            win = win || window.top;
-                            url = url || data.returnUrl;
-
-                            setTimeout(() => {
-                                win.location = url;
-                            }, 1);
-
-                            return actions.close().then(() => {
-                                if (urlWillRedirectPage(url)) {
-                                    return new SyncPromise();
-                                }
-                            });
+                            return SyncPromise.all([
+                                redir(win || window.top, url || data.returnUrl),
+                                actions.close()
+                            ]);
                         };
 
                         return original.call(this, data, { ...actions, redirect });
@@ -144,19 +120,10 @@ export let Button = xcomponent.create({
                     return function(data, actions) : void {
 
                         let redirect = (win, url) => {
-
-                            win = win || window.top;
-                            url = url || data.cancelUrl;
-
-                            setTimeout(() => {
-                                win.location = url;
-                            }, 1);
-
-                            return actions.close().then(() => {
-                                if (urlWillRedirectPage(url)) {
-                                    return new SyncPromise();
-                                }
-                            });
+                            return SyncPromise.all([
+                                redir(win || window.top, url || data.cancelUrl),
+                                actions.close()
+                            ]);
                         };
                         
                         return original.call(this, data, { ...actions, redirect });

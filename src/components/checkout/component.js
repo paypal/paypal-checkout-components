@@ -10,10 +10,10 @@ import parentTemplate from './parentTemplate.htm';
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
-import { determineParameterFromToken, determineUrlFromToken, redirect as redir } from './util';
+import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupNativeProxy } from './native';
 
-import { isDevice, request, getQueryParam } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir } from '../../lib';
 import { config } from '../../config';
 
 import { validateProps } from '../common';
@@ -169,12 +169,8 @@ export let Checkout = xcomponent.create({
                         };
 
                         let redirect = (win, url) => {
-
-                            win = win || window.top;
-                            url = url || data.returnUrl;
-
                             return SyncPromise.all([
-                                redir(win, url),
+                                redir(win || window.top, url || data.returnUrl),
                                 close()
                             ]);
                         };
@@ -240,12 +236,8 @@ export let Checkout = xcomponent.create({
                         };
 
                         let redirect = (win, url) => {
-
-                            win = win || window.top;
-                            url = url || data.cancelUrl;
-
                             return SyncPromise.all([
-                                redir(win, url),
+                                redir(win || window.top, url || data.cancelUrl),
                                 close()
                             ]);
                         };

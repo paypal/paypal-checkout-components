@@ -1,9 +1,8 @@
 /* @flow */
 
 import $logger from 'beaver-logger/client';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { match, urlWillRedirectPage } from '../../lib';
+import { match } from '../../lib';
 import { config } from '../../config';
 
 export function determineParameterFromToken(token : string) : string {
@@ -38,15 +37,4 @@ export function parseParamsFromUrl(url : string) : { [key : string] : ?string } 
         payerID:      match(url, /PayerID=([A-Z0-9]+)/),
         paymentID:    match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
     };
-}
-
-export function redirect(win : typeof window = window, url : string) : SyncPromise<void> {
-    return new SyncPromise(resolve => {
-        setTimeout(() => {
-            win.location = url;
-            if (!urlWillRedirectPage(url)) {
-                resolve();
-            }
-        }, 1);
-    });
 }

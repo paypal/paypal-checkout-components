@@ -3,8 +3,8 @@
 import { getter, memoize, once, noop } from 'xcomponent/src/lib';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { extendUrl } from '../../lib';
-import { determineParameterFromToken, determineUrlFromToken, parseParamsFromUrl, redirect } from './util';
+import { extendUrl, redirect } from '../../lib';
+import { determineParameterFromToken, determineUrlFromToken, parseParamsFromUrl } from './util';
 import { config } from '../../config';
 
 function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {

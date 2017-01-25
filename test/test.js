@@ -10,7 +10,7 @@ Checkout.props.timeout = Button.props.timeout = {
     type: 'number',
     required: false,
     def() {
-        return 1000;
+        return 3000;
     }
 };
 
