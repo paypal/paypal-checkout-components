@@ -263,6 +263,7 @@ export let Checkout = xcomponent.create({
             type: 'function',
             required: false,
             once: true,
+            noop: true,
 
             decorate(original) : ?Function {
                 if (original) {

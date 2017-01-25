@@ -137,6 +137,7 @@ export let Button = xcomponent.create({
         onCancel: {
             type: 'function',
             required: false,
+            noop: true,
 
             decorate(original) : ?Function {
                 if (original) {
