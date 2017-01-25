@@ -8,6 +8,7 @@ export * from './hijack';
 export * from './hybrid';
 export * from './customclick';
 export * from './error';
+export * from './native';
 
 import paypal from 'src/index';
 

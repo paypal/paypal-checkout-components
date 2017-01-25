@@ -266,31 +266,77 @@ export function preventOpenWindow(flow : string) {
     }
 }
 
-export function setupNative(win : typeof window = window, isAuthorize : boolean = true) {
+function errorOnWindowOpen(win) {
 
-    win.ppnativexo = {
-        start(url, { onAuthorize, onCancel }) {
-            setTimeout(() => {
+    if (win.open.reset) {
+        win.open.reset();
+    }
 
-                let params = {};
-                url.split('?')[1].split('&').forEach(keypair => {
-                    let [ key, val ] = keypair.split('=');
-                    params[key] = val;
-                });
+    let open = win.open;
 
-                let returnURL = `#${ isAuthorize ? 'return' : 'cancel' }?token=${params.token}`;
-
-                if (isAuthorize) {
-                    returnURL = `${returnURL}&PayerID=YYYYYYYYYYYYY`;
-                }
-
-                return isAuthorize ? onAuthorize(returnURL) : onCancel(returnURL);
-
-            }, 200);
-        }
+    win.open = () => {
+        throw new Error(`Should not open window when nativexo present`);
     };
+
+    win.open.reset = () => {
+        win.open = open;
+    };
+}
+
+export function setupNative({ win = window, flow, isAuthorize = true } : { win? : window, flow : string, isAuthorize? : boolean }) {
+
+    if (flow === 'lightbox') {
+
+        win.ppnativexo = {
+            start() {
+                throw new Error(`Should not invoke ppnativexo for lightbox`);
+            }
+        };
+
+    } else if (flow === 'popup') {
+
+        errorOnWindowOpen(win);
+
+        win.ppnativexo = {
+            start(url, { onAuthorize, onCancel }) {
+                setTimeout(() => {
+
+                    let params = {};
+
+                    let [ serverUrl, hash ] = url.split('#');
+                    let [ , query ] = serverUrl.split('?');
+
+                    if (query) {
+                        for (let keypair of query.split('&')) {
+                            let [ key, val ] = keypair.split('=');
+                            params[key] = val;
+                        }
+                    }
+
+                    let token = params.token || 'EC-XXXXXXXXXXXXXXXXX';
+
+                    let returnURL = `${window.location.href.split('#')[0]}#${ isAuthorize ? 'return' : 'cancel' }?token=${token}`;
+
+                    if (isAuthorize) {
+                        returnURL = `${returnURL}&PayerID=YYYYYYYYYYYYY`;
+                    }
+
+                    if (hash) {
+                        returnURL = `${returnURL}&hash=${hash}`;
+                    }
+
+                    return isAuthorize ? onAuthorize(returnURL) : onCancel(returnURL);
+
+                }, 200);
+            }
+        };
+    }
 }
 
 export function destroyNative(win : typeof window = window) {
     delete win.ppnativexo;
+
+    if (win.open.reset) {
+        win.open.reset();
+    }
 }

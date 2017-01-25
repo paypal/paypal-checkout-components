@@ -12,7 +12,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-            setupNative();
+            setupNative({ flow });
         });
 
         afterEach(() => {
@@ -50,7 +50,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout, then cancel the payment', (done) => {
 
-            setupNative(window, false);
+            setupNative({ flow, isAuthorize: false });
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
@@ -169,7 +169,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel', () => {
 
-            setupNative(window, false);
+            setupNative({ flow, isAuthorize: false });
 
             let token = generateECToken();
 
@@ -204,7 +204,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel and await the promise', (done) => {
 
-            setupNative(window, false);
+            setupNative({ flow, isAuthorize: false });
 
             let token = generateECToken();
 
@@ -236,7 +236,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel with a custom url', () => {
 
-            setupNative(window, false);
+            setupNative({ flow, isAuthorize: false });
 
             let token = generateECToken();
 
@@ -485,8 +485,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return checkoutToken;
                     },
 
-                    onAuthorize(data) {
-                        // pass
+                    onAuthorize(data) : void {
+                        if (flow === 'lightbox') {
+                            return done();
+                        }
                     },
 
                     onCancel() : void {
@@ -521,8 +523,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return paymentID;
                     },
 
-                    onAuthorize(data) {
-                        // pass
+                    onAuthorize(data) : void {
+                        if (flow === 'lightbox') {
+                            return done();
+                        }
                     },
 
                     onCancel() : void {
@@ -557,8 +561,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return billingToken;
                     },
 
-                    onAuthorize(data) {
-                        // pass
+                    onAuthorize(data) : void {
+                        if (flow === 'lightbox') {
+                            return done();
+                        }
                     },
 
                     onCancel() : void {

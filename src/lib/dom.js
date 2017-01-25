@@ -178,7 +178,15 @@ export function urlWillRedirectPage(url : string) : boolean {
 
 export function extendUrl(url : string, params : { [key : string] : string } = {}) : string {
 
-    let [ originalUrl, originalQueryString ] = url.split('?');
+    let hasHash = url.indexOf('#') > 0;
+
+    let [ serverUrl, hash ] = url.split('#');
+
+    if (hash && !serverUrl) {
+        [ serverUrl, hash ] = [ `#${hash}`, '' ];
+    }
+
+    let [ originalUrl, originalQueryString ] = serverUrl.split('?');
 
     if (originalQueryString) {
         let originalQuery = parseQuery(originalQueryString);
@@ -200,6 +208,10 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
 
     if (newQueryString) {
         newUrl = `${newUrl}?${newQueryString}`;
+    }
+
+    if (hasHash) {
+        newUrl = `${newUrl}#${hash || ''}`;
     }
 
     return newUrl;

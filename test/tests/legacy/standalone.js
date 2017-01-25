@@ -78,16 +78,18 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should call startFlow with a url with no token', () => {
 
+            let hash = uniqueID();
+
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
             });
         });
 
@@ -138,18 +140,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
+            let hash = uniqueID();
+
             testButton.addEventListener('click', (event : Event) => {
                 paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                    paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                 }, 100);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
             });
         });
 

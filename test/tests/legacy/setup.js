@@ -274,12 +274,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url with no token', () => {
 
+            let hash = uniqueID();
+
             return paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                    paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                 }
 
             }).then(() => {
@@ -287,7 +289,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
                 });
             });
         });
@@ -402,6 +404,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow with no token', () => {
 
+            let hash = uniqueID();
+
             return paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
@@ -410,7 +414,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                        paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                     }, 100);
                 }
 
@@ -419,7 +423,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
                 });
             });
         });

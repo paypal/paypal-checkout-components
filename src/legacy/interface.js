@@ -7,7 +7,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV } from '../config';
 import { setupBridge } from '../compat';
-import { supportsPopups, getElements, once, checkpoint, safeJSON } from '../lib';
+import { supportsPopups, getElements, once, checkpoint, safeJSON, extendUrl } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
@@ -51,7 +51,7 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
     }
 
     let paymentToken = parseToken(item);
-    let url = (paymentToken && item === paymentToken) ? `${config.checkoutUrl}?token=${paymentToken}` : item;
+    let url = (paymentToken && item === paymentToken) ? extendUrl(config.checkoutUrl, { token: paymentToken }) : item;
 
     if (url && !url.match(/^https?:\/\/|^\//)) {
         $logger.warn(`startflow_relative_url`, { url });
@@ -240,7 +240,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : S
 
         paymentToken.then(token => {
             logger.warn(`render_error_redirect_using_token`);
-            return redirect(`${config.checkoutUrl}?token=${token}`);
+            return redirect(extendUrl(config.checkoutUrl, { token }));
         });
     });
 

@@ -806,14 +806,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     event.preventDefault();
                     paypal.checkout.initXO();
                     setTimeout(() => {
-                        paypal.checkout.startFlow(CHILD_REDIRECT_URI);
+                        paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                     }, 200);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=redirectHash`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
                 });
             });
         });
