@@ -52,7 +52,6 @@ gulp.task('lint-src', function() {
     }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
-        .pipe(gulp.dest('src'));
 });
 
 gulp.task('lint-test', function() {
@@ -61,7 +60,6 @@ gulp.task('lint-test', function() {
     }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
-        .pipe(gulp.dest('test'));
 });
 
 gulp.task('karma', ['lint'], function (done) {
