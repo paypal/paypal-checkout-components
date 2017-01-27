@@ -63,19 +63,24 @@
             <form>
                 <div class="radio resize">
                     <label>
-                        <input type="radio" name="paymentOption" value="Mark" checked>
+                        <input type="radio" name="paymentOption" value="paypal" checked>
                         <img src="../img/payWithPaypal.jpg" alt="Pay with Paypal" class="paymentOptions" width="55" height="40">
                     </label>
                 </div>
                 <div class="radio resize">
                     <label>
-                        <input type="radio" name="paymentOption" value="Sole">
+                        <input type="radio" name="paymentOption" value="card">
                         <img src="../img/accepted_cards.png" alt="Accepting Visa, Mastercard, Discover and American Express" class="paymentOptions" width="220" height="40">
                     </label>
                 </div>
             </form>
 
-            <div id="myButtonContainer" class="center"></div>
+            <div id="buttonContainer" class="center">
+                <div id="paypalButton"></div>
+                <div id="cardButton">
+                    <button class="btn-primary">Checkout</button>
+                </div>
+            </div>
         </div>
 
     </div>
