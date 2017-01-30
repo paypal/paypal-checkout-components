@@ -11,8 +11,6 @@ import { validateProps } from '../common';
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
 
-let onAuth = new SyncPromise();
-
 export let Button = xcomponent.create({
 
     tag: 'paypal-button',
@@ -98,7 +96,8 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function() : void {
 
-                    onAuth.resolve();
+                    this.onAuth = this.onAuth || new SyncPromise();
+                    this.onAuth.resolve();
 
                     if (original) {
                         return original.apply(this, arguments);
@@ -115,8 +114,10 @@ export let Button = xcomponent.create({
                 return function() : void {
                     return SyncPromise.try(() => {
 
+                        this.onAuth = this.onAuth || new SyncPromise();
+
                         if (this.props.displayTo === USERS.REMEMBERED) {
-                            return onAuth;
+                            return this.onAuth;
                         }
 
                     }).then(() => {

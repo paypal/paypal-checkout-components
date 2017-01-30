@@ -3,6 +3,8 @@
 import paypal from 'src/index';
 import { getElement } from '../../tests/common';
 
+let [ , testGroup ] = window.xprops.testAction.split(':');
+
 function renderCheckout() {
     paypal.Checkout.renderTo(window.top.frames[0], {
 
@@ -49,6 +51,10 @@ function renderCheckout() {
 getElement('#button', document).addEventListener('click', (event : Event) => {
     renderCheckout();
 });
+
+if (testGroup === 'authed' && window.xprops.onAuth) {
+    window.xprops.onAuth();
+}
 
 
 

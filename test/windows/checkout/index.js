@@ -5,7 +5,9 @@ import { createTestContainer, createElement } from '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
 
-if (window.xprops.testAction === 'checkout') {
+let [ testAction ] = window.xprops.testAction.split(':');
+
+if (testAction === 'checkout') {
 
     window.xprops.payment().then(paymentToken => {
 
@@ -37,7 +39,7 @@ if (window.xprops.testAction === 'checkout') {
         });
     });
 
-} else if (window.xprops.testAction === 'cancel') {
+} else if (testAction === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {
 
@@ -49,7 +51,7 @@ if (window.xprops.testAction === 'checkout') {
         });
     });
 
-} else if (window.xprops.testAction === 'popout') {
+} else if (testAction === 'popout') {
 
     createTestContainer();
 
@@ -70,7 +72,7 @@ if (window.xprops.testAction === 'checkout') {
 
     testButton.click();
 
-} else if (window.xprops.testAction === 'fallback') {
+} else if (testAction === 'fallback') {
 
     let parent = window.xchild.getParentComponentWindow();
 
@@ -109,7 +111,7 @@ if (window.xprops.testAction === 'checkout') {
         });
     });
 
-} else if (window.xprops.testAction === 'error') {
+} else if (testAction === 'error') {
 
     window.xprops.payment().then(paymentToken => {
 
