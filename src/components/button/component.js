@@ -3,13 +3,15 @@
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
 
-import { config } from '../../config';
+import { config, USERS } from '../../config';
 import { isDevice, redirect as redir } from '../../lib';
 
 import { validateProps } from '../common';
 
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
+
+let onAuth = new SyncPromise();
 
 export let Button = xcomponent.create({
 
@@ -87,6 +89,44 @@ export let Button = xcomponent.create({
         commit: {
             type: 'boolean',
             required: false
+        },
+
+        onAuth: {
+            type: 'function',
+            required: false,
+
+            decorate(original) : Function {
+                return function() : void {
+
+                    onAuth.resolve();
+
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
+            }
+        },
+
+        onDisplay: {
+            type: 'function',
+            required: false,
+
+            decorate(original) : Function {
+                return function() : void {
+                    return SyncPromise.try(() => {
+
+                        if (this.props.displayTo === USERS.REMEMBERED) {
+                            return onAuth;
+                        }
+
+                    }).then(() => {
+
+                        if (original) {
+                            return original.apply(this, arguments);
+                        }
+                    });
+                };
+            }
         },
 
         onAuthorize: {
@@ -183,6 +223,14 @@ export let Button = xcomponent.create({
                     size:  'small',
                     label: 'checkout'
                 };
+            }
+        },
+
+        displayTo: {
+            type: 'string',
+            required: false,
+            def() : string {
+                return USERS.ALL;
             }
         },
 

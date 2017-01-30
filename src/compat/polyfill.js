@@ -16,8 +16,6 @@ if (!Array.prototype[Symbol.iterator]) {
 
 window.Symbol = Symbol;
 
-window.SyncPromise = SyncPromise;
-
 if (!window.Promise) {
     window.Promise = SyncPromise;
 }

@@ -7,3 +7,9 @@ export const ENV = {
     PRODUCTION: 'production',
     TEST:       'test'
 };
+
+
+export const USERS = {
+    ALL:        'all',
+    REMEMBERED: 'remembered'
+};

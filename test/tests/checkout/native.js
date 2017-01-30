@@ -2,6 +2,7 @@
 
 import paypal from 'src/index';
 import { assert } from 'chai';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupNative, destroyNative } from '../common';
 
