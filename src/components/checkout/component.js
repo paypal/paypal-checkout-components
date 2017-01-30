@@ -14,7 +14,7 @@ import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupNativeProxy } from './native';
 
 import { isDevice, request, getQueryParam, redirect as redir } from '../../lib';
-import { config } from '../../config';
+import { config, ENV } from '../../config';
 
 import { validateProps } from '../common';
 
@@ -110,7 +110,9 @@ export let Checkout = xcomponent.create({
             queryParam: true,
 
             def() : string {
-                return config.stage;
+                if (config.env === ENV.STAGE) {
+                    return config.stage;
+                }
             }
         },
 

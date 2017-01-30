@@ -3,7 +3,7 @@
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
 
-import { config, USERS } from '../../config';
+import { config, USERS, ENV } from '../../config';
 import { isDevice, redirect as redir } from '../../lib';
 
 import { validateProps } from '../common';
@@ -72,7 +72,9 @@ export let Button = xcomponent.create({
             queryParam: true,
 
             def() : string {
-                return config.stage;
+                if (config.env === ENV.STAGE) {
+                    return config.stage;
+                }
             }
         },
 
