@@ -49,6 +49,10 @@ function detectLightboxEligibility() {
     return isLightboxEligible().then(eligible => {
         if (eligible) {
             enableLightbox();
+
+            if (window.xprops.onAuth) {
+                window.xprops.onAuth();
+            }
         }
     });
 }
