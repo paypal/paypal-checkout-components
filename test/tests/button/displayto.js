@@ -3,7 +3,7 @@
 import paypal from 'src/index';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -42,7 +42,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (document.querySelector('#testContainer iframe').style.display === 'none') {
+                if (getElement('#testContainer iframe').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
@@ -73,7 +73,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 onEnter() {
 
-                    if (document.querySelector('#testContainer iframe').style.display !== 'none') {
+                    if (getElement('#testContainer iframe').style.display !== 'none') {
                         throw new Error(`Expected iframe to not be visible`);
                     }
 
@@ -105,7 +105,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (document.querySelector('#testContainer iframe').style.display === 'none') {
+                if (getElement('#testContainer iframe').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
@@ -136,7 +136,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (document.querySelector('#testContainer iframe').style.display === 'none') {
+                if (getElement('#testContainer iframe').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
