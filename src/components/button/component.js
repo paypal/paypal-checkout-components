@@ -71,8 +71,10 @@ export let Button = xcomponent.create({
             required: false,
             queryParam: true,
 
-            def() : string {
-                if (config.env === ENV.STAGE) {
+            def(props) : ?string {
+                let env = props.env || config.env;
+
+                if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stage;
                 }
             }
