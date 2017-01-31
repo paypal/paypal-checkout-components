@@ -2,6 +2,7 @@
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { memoize } from './util';
+import { isDevice } from './device';
 
 function isDocumentReady() : boolean {
     return Boolean(document.body) && document.readyState === 'complete';
@@ -226,4 +227,14 @@ export function redirect(win : typeof window = window, url : string) : SyncPromi
             }
         }, 1);
     });
+}
+
+export function hasMetaViewPort() : boolean {
+    let meta = document.querySelector('meta[name=viewport]');
+
+    if (isDevice() && window.screen.width < 660 && !meta) {
+        return false;
+    }
+
+    return true;
 }

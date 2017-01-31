@@ -4,7 +4,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
 
 import { config, USERS, ENV } from '../../config';
-import { isDevice, redirect as redir } from '../../lib';
+import { redirect as redir, hasMetaViewPort } from '../../lib';
 
 import { validateProps } from '../common';
 
@@ -244,8 +244,7 @@ export let Button = xcomponent.create({
             required: false,
 
             def() : boolean {
-                let meta = document.querySelector('meta[name=viewport]');
-                return isDevice() && !meta && ((window.screen && window.screen.width) < 660);
+                return !hasMetaViewPort();
             }
         },
 
