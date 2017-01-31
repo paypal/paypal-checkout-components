@@ -29,7 +29,7 @@ export let config = {
     buttonSizes: ['tiny', 'small', 'medium'],
 
     throttles: {
-        v4_mobile_device: 100
+        v4_mobile_device: 1000
     },
 
     customCountry: false,
