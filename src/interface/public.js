@@ -1,4 +1,5 @@
 export { default as postRobot } from 'post-robot/src';
+export { PopupOpenError } from 'xcomponent/src';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 export { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
