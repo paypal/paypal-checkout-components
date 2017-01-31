@@ -3,6 +3,15 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = function(config) {
+
+    var browser = [ 'PhantomJS' ];
+
+    if (process.env.TRAVIS) {
+        browser = [ 'Chrome_travis_ci' ];
+    } else if (argv.browser) {
+        browser = argv.browser.split(',');
+    }
+
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -158,10 +167,16 @@ module.exports = function(config) {
 
         captureTimeout: 120000,
 
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: (argv.browser && argv.browser.split(',')) || ['PhantomJS'],
+        browsers: browser,
 
 
         // Continuous Integration mode
