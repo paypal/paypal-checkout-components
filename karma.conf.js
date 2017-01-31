@@ -42,6 +42,7 @@ module.exports = function(config) {
             require('karma-safari-launcher'),
             require('karma-firefox-launcher'),
             require('karma-ie-launcher'),
+            require('karma-slimerjs-launcher'),
             require('karma-sinon-chai'),
             require('karma-coverage'),
             require('karma-spec-reporter'),
