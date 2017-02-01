@@ -49,6 +49,104 @@ function map(data, method, def) {
     return def;
 }
 
+function mapPayment(data) {
+
+    return using(data, payment => ({
+        id: payment.id,
+        intent: payment.intent,
+        state:  payment.state,
+        cart:   payment.cart,
+
+        payer: using(payment.payer, payer => ({
+            payment_method: payer.payment_method,
+            status:         payer.status,
+
+            payer_info: using(payer.payer_info, payerinfo => ({
+                email:        payerinfo.email,
+                salutation:   payerinfo.salutation,
+                first_name:   payerinfo.first_name,
+                middle_name:  payerinfo.first_name,
+                last_name:    payerinfo.last_name,
+                suffix:       payerinfo.suffix,
+                payer_id:     payerinfo.payer_id,
+                country_code: payerinfo.country_code,
+
+                shipping_address: using(payerinfo.shipping_address, address => ({
+                    recipient_name: address.recipient_name,
+                    line1:          address.line1,
+                    line2:          address.line2,
+                    city:           address.city,
+                    state:          address.state,
+                    postal_code:    address.postal_code,
+                    country_code:   address.country_code,
+                    phone:          address.phone
+                }))
+            }))
+        })),
+
+        transactions: map(payment.transactions, transaction => ({
+            custom: transaction.custom,
+
+            amount: using(transaction.amount, amount => ({
+                total:    amount.total,
+                currency: amount.currency,
+
+                details: using(amount.details, details => ({
+                    subtotal:          details.subtotal,
+                    tax:               details.tax,
+                    shipping:          details.shipping,
+                    handling_fee:      details.handling_fee,
+                    insurance:         details.insurance,
+                    shipping_discount: details.shipping_discount
+                }))
+            })),
+
+            item_list: using(transaction.item_list, itemlist => ({
+                items: map(itemlist.items, item => ({
+                    name:        item.name,
+                    sku:         item.sku,
+                    price:       item.price,
+                    currency:    item.currency,
+                    quantity:    item.quantity,
+                    description: item.description,
+                    tax:         item.tax
+                }))
+            })),
+
+            related_resources: map(transaction.related_resources, resource => ({
+
+                sale: using(resource.sale, sale => ({
+                    id:                     sale.id,
+                    state:                  sale.state,
+                    payment_mode:           sale.payment_mode,
+                    protection_eligibility: sale.protection_eligibility,
+                    parent_payment:         sale.parent_payment,
+
+                    amount: using(transaction.amount, amount => ({
+                        total:    amount.total,
+                        currency: amount.currency,
+
+                        details: using(amount.details, details => ({
+                            subtotal:          details.subtotal,
+                            tax:               details.tax,
+                            shipping:          details.shipping,
+                            handling_fee:      details.handling_fee,
+                            insurance:         details.insurance,
+                            shipping_discount: details.shipping_discount
+                        }))
+                    })),
+
+                    transaction_fee: using(sale.transaction_fee, fee => ({
+                        value:    fee.value,
+                        currency: fee.currency
+                    }))
+                }))
+            }))
+        }))
+    }));
+
+}
+
 export function getPayment(paymentID) {
 
     return $paymentApi.retrieve({
@@ -56,91 +154,28 @@ export function getPayment(paymentID) {
             id: paymentID
         }
     }).then(res => {
-
-        return using(res.data, payment => ({
-            id: payment.id,
-            intent: payment.intent,
-            state:  payment.state,
-            cart:   payment.cart,
-
-            payer: using(payment.payer, payer => ({
-                payment_method: payer.payment_method,
-                status:         payer.status,
-
-                payer_info: using(payer.payer_info, payerinfo => ({
-                    email:        payerinfo.email,
-                    salutation:   payerinfo.salutation,
-                    first_name:   payerinfo.first_name,
-                    middle_name:  payerinfo.first_name,
-                    last_name:    payerinfo.last_name,
-                    suffix:       payerinfo.suffix,
-                    payer_id:     payerinfo.payer_id,
-                    country_code: payerinfo.country_code,
-
-                    shipping_address: using(payerinfo.shipping_address, address => ({
-                        recipient_name: address.recipient_name,
-                        line1:          address.line1,
-                        line2:          address.line2,
-                        city:           address.city,
-                        state:          address.state,
-                        postal_code:    address.postal_code,
-                        country_code:   address.country_code,
-                        phone:          address.phone
-                    }))
-                }))
-            })),
-
-            transactions: map(payment.transactions, transaction => ({
-                custom: transaction.custom,
-
-                amount: using(transaction.amount, amount => ({
-                    total:    amount.total,
-                    currency: amount.currency,
-
-                    details: using(amount.details, details => ({
-                        subtotal:          details.subtotal,
-                        tax:               details.tax,
-                        shipping:          details.shipping,
-                        handling_fee:      details.handling_fee,
-                        insurance:         details.insurance,
-                        shipping_discount: details.shipping_discount
-                    }))
-                })),
-
-                item_list: using(transaction.item_list, itemlist => ({
-                    items: map(itemlist.items, item => ({
-                        name:        item.name,
-                        sku:         item.sku,
-                        price:       item.price,
-                        currency:    item.currency,
-                        quantity:    item.quantity,
-                        description: item.description,
-                        tax:         item.tax
-                    }))
-                }))
-            }))
-        }));
-
+        return mapPayment(res.data);
     });
 }
 
-export function executePayment(token, payerID, restartFlow) {
+export function executePayment(paymentID, payerID, restartFlow) {
 
     // TODO: Execute payment for WPS (inventory, etc.)
 
-    return $checkoutSessionApi.action('createpayment', {
+    return $paymentApi.action('execute', {
 
         model: {
-            id: token
+            id: paymentID
         },
 
         data: {
-            payer_id: payerID,
-            intent: 'sale'
+            payer_id: payerID
         }
 
-    }).then(result => {
-        return;
+    }).then(res => {
+
+        return mapPayment(res.data);
+
     }).catch(err => { // eslint-disable-line
 
         // processor decline use case, we re-render the flow.

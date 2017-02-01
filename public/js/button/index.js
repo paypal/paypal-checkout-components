@@ -134,7 +134,7 @@ function getActions(checkout, data, actions, intent) {
                         throw new Error('Client side execute is only available for sale transactions');
                     }
 
-                    return executePayment(data.paymentToken, data.payerID, restartFlow).finally(() => {
+                    return executePayment(data.paymentID, data.payerID, restartFlow).finally(() => {
                         actions.payment.get.reset();
                     });
                 }
@@ -145,7 +145,7 @@ function getActions(checkout, data, actions, intent) {
                         throw new Error('Client side execute is only available for sale transactions');
                     }
 
-                    return executePayment(data.paymentToken, data.payerID, restartFlow).finally(() => {
+                    return executePayment(data.paymentID, data.payerID, restartFlow).finally(() => {
                         actions.payment.get.reset();
                     });
                 });
