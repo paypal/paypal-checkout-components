@@ -270,5 +270,53 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 });
             });
         });
+
+        it('should render a custom button into a link and click on another button in the link', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+
+                container: 'testContainer',
+
+                tag: 'form',
+                id: 'testForm',
+                props: {
+                    action: config.checkoutUrl
+                },
+
+                children: [
+                    {
+                        tag: 'a',
+                        id: 'testLink',
+                        props: {
+                            href: `${config.checkoutUrl}&token=${token}#${hash}`
+                        },
+
+                        children: [
+                            {
+                                tag: 'div',
+                                id: 'testButton',
+                                html: 'clickme'
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testLink'
+
+            }).then(() => {
+
+                getElement('#testButton', testForm).click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                });
+            });
+        });
     });
 }

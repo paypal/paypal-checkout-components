@@ -97,6 +97,10 @@ export function createElement(options : Object) : HTMLElement {
         container.appendChild(element);
     }
 
+    if (options.html) {
+        element.innerHTML = options.html;
+    }
+
     return element;
 }
 

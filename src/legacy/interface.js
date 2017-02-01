@@ -285,9 +285,9 @@ function handleClick(clickHandler, event) {
     }
 }
 
-function handleClickHijack(button) : void {
+function handleClickHijack(element) : void {
 
-    let targetElement = getHijackTargetElement(button);
+    let targetElement = getHijackTargetElement(element);
 
     if (!targetElement) {
         return $logger.error(`target_element_not_found`);
@@ -322,7 +322,7 @@ function listenClick(container, button, clickHandler, condition) : void {
 
     element.setAttribute('data-paypal-click-listener', '');
 
-    let targetElement = getHijackTargetElement(button);
+    let targetElement = getHijackTargetElement(element);
 
     if (targetElement && isClick) {
         $logger.info(`button_link_or_form`);
@@ -369,7 +369,7 @@ function listenClick(container, button, clickHandler, condition) : void {
             return handleClick(clickHandler, event);
 
         } else {
-            return handleClickHijack(button);
+            return handleClickHijack(element);
         }
     });
 }
