@@ -9,4 +9,5 @@ before_script:
   - npm install -g gulp
   - npm install -g flow-typed
   - flow-typed install
-script: gulp test
+script:
+  - travis_retry gulp test
