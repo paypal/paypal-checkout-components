@@ -54,6 +54,7 @@ function getWebpackConfig(version, filename, target = 'window') {
         pathinfo: false
       },
       bail: true,
+      devtool: 'source-map',
       plugins: [
         new webpack.optimize.UglifyJsPlugin({
           test: /\.js$/,
