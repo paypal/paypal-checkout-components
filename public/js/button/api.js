@@ -179,7 +179,12 @@ export function executePayment(paymentID, payerID, restartFlow) {
     }).catch(err => { // eslint-disable-line
 
         // processor decline use case, we re-render the flow.
+        
         if (err && err.message === 'CC_PROCESSOR_DECLINED') {
+            return restartFlow();
+        }
+
+        if (err && err.message === 'INSTRUMENT_DECLINED') {
             return restartFlow();
         }
 
