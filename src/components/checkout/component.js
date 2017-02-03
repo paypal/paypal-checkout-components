@@ -13,7 +13,7 @@ import componentTemplate from './componentTemplate.htm';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupNativeProxy } from './native';
 
-import { isDevice, request, getQueryParam, redirect as redir } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort } from '../../lib';
 import { config, ENV } from '../../config';
 
 import { validateProps } from '../common';
@@ -364,6 +364,10 @@ setupNativeProxy(Checkout);
 let enableCheckoutIframeTimeout;
 
 export function enableCheckoutIframe() {
+
+    if (isDevice() && !hasMetaViewPort()) {
+        return;
+    }
 
     Checkout.contexts.lightbox = true;
     Checkout.contexts.iframe = true;

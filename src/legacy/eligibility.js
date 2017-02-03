@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
-import { isWebView, getAgent, isDevice, getUserAgent, getThrottle, getReturnToken, hasMetaViewPort } from '../lib';
+import { isWebView, getAgent, isDevice, getUserAgent, getThrottle, getReturnToken } from '../lib';
 
 import { onAuthorizeListener } from './listener';
 
@@ -25,7 +25,7 @@ export function isLegacyEligible() : boolean {
         return false;
     }
 
-    if (isDevice() && hasMetaViewPort()) {
+    if (isDevice()) {
         throttle.logStart();
         return throttle.isEnabled();
     }
