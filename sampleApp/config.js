@@ -1,6 +1,6 @@
 export let config = {
     client : {
-        sandbox :   '', // for you to fill out with your client_id
+        sandbox :   'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
         stage:      'alc_client1'
     },
 
@@ -21,7 +21,6 @@ export let config = {
         'braintree',
         'buttonStyles',
         'confirmation',
-        'hybrid',
         'mark',
         'serverside',
         'thankyou',

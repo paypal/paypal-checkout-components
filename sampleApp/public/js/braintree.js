@@ -27,110 +27,61 @@ $(document).ready(function (){
 });
 
 function renderPaypalWithBraintreeButton() {
-function generateBraintreePaypalInstance() {
+// Set up the Braintree client
 
-    // Request for getting the braintree client token from our serverside
+paypal.request.get('/generate-client-token').then(function(res) {
+    braintree.client.create({ authorization: res.clientToken }, function (err, client) {
+        braintree.paypal.create({ client: client }, function (err, paypalClient) {
 
-    return paypal.request.get('/generate-client-token')
-        .then(function (response) {
-            return getClientInstance(response.clientToken);
-        });
-}
+            // Render the PayPal button
 
-function getClientInstance (clientToken) {
+            paypal.Button.render({
 
-    // Create your own promises using paypal.Promise
-    return new paypal.Promise(function (resolve, reject) {
+                // Set your environment
 
-        // producing a braintree client
-        braintree.client.create( {authorization: clientToken }, function (err, clientInstance) {
-            if (err) {
-                reject(err);
-            }
-            // producing a paypal instance to create a payment
-            braintree.paypal.create( {client: clientInstance}, function (err, paypalInstance) {
-                if (err) {
-                    reject(err);
+                env: 'sandbox', // sandbox | production
+
+                // Wait for the PayPal button to be clicked
+
+                payment: function(resolve, reject) {
+
+                    // Call Braintree to create the payment
+
+                    return paypalClient.createPayment({
+                        flow:     'checkout',
+                        amount:   '1.00',
+                        currency: 'USD',
+                        intent:   'sale'
+
+                    }, function (err, data) {
+                        return err ? reject(err) : resolve(data.paymentID);
+                    });
+                },
+
+                // Wait for the payment to be authorized by the customer
+
+                onAuthorize: function(data, actions) {
+
+                    // Call Braintree to tokenize the payment
+
+                    return paypalClient.tokenizePayment(data, function (err, result) {
+
+                        // Call your server to finalize the payment
+
+                        return paypal.request.post('/payment', {
+                            nonce: result.nonce,
+                            amount: transaction.amount,
+                            currency: transaction.currency
+
+                        }).then(function (res) {
+                            console.log('Payment completed: ', res);
+                        });
+                    });
                 }
-                resolve(paypalInstance);
-            });
+
+            }, '#myContainerElement');
+
         });
     });
-}
-
-function completeBraintreeTransaction(req) {
-
-    // Request to complete the Braintree payment
-
-    return paypal.request.post('/payment', req)
-        .then(function (res) {
-            if(res.success) {
-                console.log('Payment completed: ', res);
-            }
-        });
-}
-
-function generateNonce(paypalInstance, data) {
-
-    // Fetch a Braintree Nonce
-
-    return new paypal.Promise(function (resolve, reject) {
-        return paypalInstance.tokenizePayment(data, function (err, result) {
-            if (err) {
-                reject(err);
-            }
-
-            resolve(result);
-        });
-    });
-}
-
-function renderPaypalButton(paypalInstance) {
-    var transaction = {
-        amount: '1.00',
-        currency: 'USD'
-    };
-
-    paypal.Button.render({
-        env: 'sandbox',
-        payment: function(resolve, reject) {
-
-            paypalInstance.createPayment({
-                flow: 'checkout',
-                amount: transaction.amount,
-                currency: transaction.currency,
-                intent: 'sale'
-            }, function (err, data) {
-                return err ? reject(err) : resolve(data.paymentID);
-            });
-
-        },
-
-        onAuthorize: function(data, actions) {
-            // fetch Braintree nonce
-            generateNonce(paypalInstance, data)
-                .then(function (result) {
-                    var req = {
-                        nonce: result.nonce,
-                        amount: transaction.amount,
-                        currency: transaction.currency
-                    };
-
-                    return completeBraintreeTransaction(req);
-                });
-
-        },
-
-        onCancel: function(data) {
-            console.log('The payment was cancelled!');
-        }
-    }, '#myContainerElement');
-}
-
-generateBraintreePaypalInstance()
-    .then(function (paypalInstance) {
-
-        renderPaypalButton(paypalInstance);
-    });
-
+});
 }

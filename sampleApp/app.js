@@ -7,7 +7,6 @@ import { nib }from 'nib';
 import uaParser from 'ua-parser';
 import routes from './routes';
 import path from 'path';
-import jwtCSRF from 'jwt-csrf';
 import cookieParser from 'cookie-parser';
 import bodyParse from 'body-parser';
 import { config } from './config';
@@ -23,8 +22,6 @@ function App (app, opts) {
 _.extend(App.prototype, {
     setup: function () {
         let app = this.app;
-        
-        let jwtMiddleware = jwtCSRF.middleware({secret: config.jwtCsrf.secret, excludeUrls: config.jwtCsrf.excludedPaths});
 
         app.use(morgan('combined'));
         app.use(express.static(this.staticDir, {maxAge: 86400000}));
@@ -42,7 +39,6 @@ _.extend(App.prototype, {
             next();
         }.bind(this));
 
-        app.use(jwtMiddleware);
         routes(app);
     },
 

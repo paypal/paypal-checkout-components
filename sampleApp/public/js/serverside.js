@@ -25,32 +25,38 @@ $(document).ready(function () {
 
 
 function renderPaypalButton() {
+// Render the PayPal button
+
 paypal.Button.render({
-    env: 'sandbox',
+
+    // Set your environment
+
+    env: 'sandbox', // sandbox | production
+
+    // Wait for the PayPal button to be clicked
 
     payment: function() {
-        // use paypal.request to make requests to your back end with Promises
 
-        return paypal.request.post('/create-payment', {})
-            .then(function (response) {
-                return response.payToken;
-            });
+        // Make a call to the merchant server to set up the payment
+
+        return paypal.request.post('/create-payment').then(function(res) {
+            return res.payToken;
+        });
     },
+
+    // Wait for the payment to be authorized by the customer
 
     onAuthorize: function(data, actions) {
-        // use paypal.request to make requests to your back end with Promises
 
-        var body = { payToken: data.paymentID, payerId: data.payerID };
+        // Make a call to the merchant server to execute the payment
 
-        return paypal.request.post('/execute-payment', body)
-            .then(function (res) {
-                console.log('Thank you for your payment', res);
-            });
+        return paypal.request.post('/execute-payment', {
+            payToken: data.paymentID,
+            payerId: data.payerID
+        }).then(function (res) {
 
-    },
-
-    onCancel: function(data) {
-        console.log('The payment was cancelled!');
+            console.log('Payment complete:', res);
+        });
     }
 
 }, '#myContainerElement');

@@ -20,7 +20,6 @@ let routeRegister = function (app) {
 
         res.writeHead(200);
         res.write(content);
-        res.write(`<script>window.getJwtCSRFToken = function () { return '${res.locals.csrfJwtTokens.header}'; }</script>`);
         res.end();
     });
     
@@ -49,6 +48,7 @@ let routeRegister = function (app) {
                res.send({payToken: response});
            }, err => {
                let error = err || err.message;
+               console.error(err);
                res.status(500).send('Internal Service Error, ' + error);
            });
     });

@@ -25,61 +25,75 @@ $(document).ready(function () {
 });
 
 function renderPaypalButton() {
-function renderConfirmationPage(details) {
-
-   return paypal.request.post('/confirmation', undefined , {json: details.payer.payer_info})
-        .then(function (response) {
-            var container = $('#content');
-            container.empty();
-
-            container.html(response.html);
-        });
-}
+// Render the PayPal button
 
 paypal.Button.render({
-    env: 'sandbox',
+
+    // Set your environment
+
+    env: 'sandbox', // sandbox | production
+
+    // PayPal Client IDs
+    // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+
     client: {
-        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
+        sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+        production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
     },
+
+    // Wait for the PayPal button to be clicked
+
     payment: function() {
+
+        // Make a client-side call to the REST api to create the payment
+
         return paypal.rest.payment.create(this.props.env, this.props.client, {
             transactions: [
                 {
-                    amount: {
-                        total:    '1.00',
-                        currency: 'USD'
-                    }
+                    amount: { total: '1.00', currency: 'USD' }
                 }
             ]
         });
     },
 
+    // Wait for the payment to be authorized by the customer
+
     onAuthorize: function(data, actions) {
 
-        var thankyouContainer = $('#thankyou');
-        $('#myContainerElement').hide();
+        // Get the payment details
 
-        var button = $('<button class="btn-primary">Please click the button to confirm</button>')
-            .click(function () {
-            // Get the payment details
-            actions.payment.get()
-                .then(function (data) {
-                    // Execute the payment
-                    actions.payment.execute()
-                        .then(function () {
-                            // render a confirmation page
-                            console.log('the paymnet complete', data);
-                            renderConfirmationPage(data);
+        return actions.payment.get().then(function(data) {
 
-                        });
+            // Display the payment details and a confirmation button
+
+            var shipping = data.payer.payer_info.shipping_address;
+
+            document.querySelector('#recipient').innerText = shipping.recipient_name;
+            document.querySelector('#address').innerText   = shipping.line1;
+            document.querySelector('#city').innerText      = shipping.city;
+            document.querySelector('#state').innerText     = shipping.state;
+            document.querySelector('#zip').innerText       = shipping.postal_code;
+            document.querySelector('#country').innerText   = shipping.country_code;
+
+            document.querySelector('#confirm').style.display = 'block';
+
+            // Listen for click on confirm button
+
+            document.querySelector('#confirmButton').addEventListener('click', function() {
+
+                // Execute the payment
+
+                return actions.payment.execute().then(function() {
+
+                    // Show a thank-you note
+
+                    document.querySelector('#thanksname').innerText = shipping.recipient_name;
+
+                    document.querySelector('#confirm').style.display = 'none';
+                    document.querySelector('#thanks').style.display = 'block';
                 });
+            });
         });
-
-        thankyouContainer.append(button);
-    },
-
-    onCancel: function(data) {
-        console.log('The payment was cancelled!');
     }
 
 }, '#myContainerElement');

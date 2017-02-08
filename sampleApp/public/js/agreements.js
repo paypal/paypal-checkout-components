@@ -25,34 +25,35 @@ $(document).ready(function () {
 });
 
 function renderBillingAgreementsIntegration() {
-paypal.Button.render({
-    env: 'sandbox',
-    payment: function() {
-        /*
-         Create a billing agreement from the server side and
-         pass the pay token shown in the approval url from the HATEOAS links
-         */
+// Render the PayPal button
 
-        return paypal.request.post('/create-agreement', {})
-            .then(function (response) {
-                return response.payToken;
-            });
+paypal.Button.render({
+
+    // Set your environment
+
+    env: 'sandbox', // sandbox | production
+
+    // Wait for the PayPal button to be clicked
+
+    payment: function() {
+
+        // Make a call to the merchant server to set up the agreement
+
+        return paypal.request.post('/create-agreement', {}).then(function (response) {
+            return response.payToken;
+        });
     },
+
+    // Wait for the payment to be authorized by the customer
 
     onAuthorize: function(data, actions) {
-        /*
-          Pass the Pay Token to execute the billing agreement
-         */
-        return paypal.request.post('/execute-agreement', {payToken: data.paymentToken})
-            .then(function (response) {
-                console.log('The payment is complete');
-            });
-    },
 
-    onCancel: function(data) {
-        console.log('The payment was cancelled!');
+        // Make a call to the merchant server to execute the agreement
+
+        return paypal.request.post('/execute-agreement', { payToken: data.paymentToken }) .then(function() {
+            console.log('The payment is complete');
+        });
     }
 
 }, '#myContainerElement');
-
 }
