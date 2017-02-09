@@ -7,6 +7,11 @@
     "test": "gulp test",
     "flow": "flow; test $? -eq 0 -o $? -eq 2"
   },
+  "files": [
+    "dist/checkout.lib.js",
+    "dist/checkout.lib.js.map",
+    "src/"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.paypal.com/paypal/paypal-checkout.git"
