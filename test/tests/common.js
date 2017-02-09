@@ -5,7 +5,7 @@ import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 import { config } from 'src/config';
 
-export function onHashChange(time : number = 4000) : SyncPromise<string> {
+export function onHashChange(time : number = 6000) : SyncPromise<string> {
     return new SyncPromise((resolve, reject) => {
         let currentHash = window.location.hash;
 
