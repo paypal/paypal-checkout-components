@@ -29,5 +29,3 @@ flow-typed
 
 #IDE
 .idea/*
-
-dist/checkout.4.0.*
