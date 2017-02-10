@@ -98,14 +98,23 @@ export let Button = xcomponent.create({
             required: false,
 
             decorate(original) : Function {
-                return function() : void {
+                return function() {
 
                     this.onAuth = this.onAuth || new SyncPromise();
                     this.onAuth.resolve();
+                };
+            }
+        },
 
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
+        onRemembered: {
+            type: 'function',
+            required: false,
+
+            decorate(original) : Function {
+                return function() {
+
+                    this.onAuth = this.onAuth || new SyncPromise();
+                    this.onAuth.resolve();
                 };
             }
         },
