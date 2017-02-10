@@ -4,12 +4,39 @@
 import { $Api } from 'squid-core/dist/api';
 import { $promise } from 'squid-core/dist/promise';
 import { $util } from 'squid-core/dist/util';
+import { $cookies } from 'squid-core/dist/config';
 
 import { getAuth, getPayment, executePayment, getLocale } from './api';
 
 let { Promise, config, Checkout } = window.paypal;
 
 $promise.use(Promise);
+
+function isLoggedIn() {
+    return getAuth().then(auth => {
+        if (auth.logged_in || auth.remembered || auth.refresh_token) {
+            return true;
+        }
+
+        return false;
+    });
+}
+
+function isCookied() {
+    return Boolean($cookies.login_email);
+}
+
+function isRemembered() {
+
+    return Promise.resolve().then(() => {
+
+        if (isCookied()) {
+            return true;
+        }
+
+        return isLoggedIn();
+    });
+}
 
 function isLightboxEligible() {
 
@@ -19,11 +46,7 @@ function isLightboxEligible() {
             return false;
         }
 
-        return getAuth().then(auth => {
-            if (auth.logged_in || auth.remembered || auth.refresh_token) {
-                return true;
-            }
-        });
+        return isLoggedIn();
     });
 }
 
@@ -222,6 +245,13 @@ function setup() {
         config.locale.lang = locale.lang;
     });
 
+    if (window.xprops.onRemembered) {
+        isRemembered().then(remembered => {
+            if (remembered) {
+                window.xprops.onRemembered();
+            }
+        });
+    }
 
     let button = document.getElementById('buttonContainer').querySelector('button');
 
