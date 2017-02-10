@@ -2,6 +2,8 @@
 
 import $logger from 'beaver-logger/client';
 
+import { isIEIntranet } from './device';
+
 function warn(err) : void {
     if (window.console) {
         if (window.console.warn) {
@@ -30,5 +32,9 @@ export function checkForCommonErrors() {
         warn(`JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.`);
 
         $logger.warn(`json_stringify_object_broken`);
+    }
+
+    if (isIEIntranet()) {
+        $logger.warn(`ie_intranet_mode`);
     }
 }

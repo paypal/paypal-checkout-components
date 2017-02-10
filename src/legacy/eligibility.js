@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
-import { isWebView, getAgent, isDevice, getUserAgent, getThrottle, getReturnToken } from '../lib';
+import { isWebView, getAgent, isDevice, getUserAgent, getThrottle, getReturnToken, isIEIntranet } from '../lib';
 
 import { onAuthorizeListener } from './listener';
 
@@ -21,7 +21,7 @@ export function isLegacyEligible() : boolean {
         }
     }
 
-    if (isWebView() || isUnsupportedIE()) {
+    if (isWebView() || isUnsupportedIE() || isIEIntranet()) {
         return false;
     }
 

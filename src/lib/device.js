@@ -74,6 +74,35 @@ export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
     return false;
 }
 
+export function isIE() : boolean {
+    return Boolean(window.document.documentMode);
+}
+
+export function isIEIntranet() : boolean {
+
+    if (!isIE()) {
+        return false;
+    }
+
+    try {
+        let status = window.status;
+
+        window.status = 'testIntranetMode';
+
+        if (window.status === 'testIntranetMode') {
+            window.status = status;
+
+            return true;
+        }
+
+        return false;
+
+    } catch (err) {
+
+        return false;
+    }
+}
+
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
 }
