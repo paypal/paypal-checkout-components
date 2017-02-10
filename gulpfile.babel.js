@@ -4,7 +4,7 @@ import eslint from 'gulp-eslint';
 import shell from 'gulp-shell';
 import { Server } from 'karma';
 import { argv } from 'yargs';
-import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_LIB, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN } from './webpack.conf';
+import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN, WEBPACK_CONFIG_LIB, WEBPACK_CONFIG_DEMO } from './webpack.conf';
 import webserver from 'gulp-webserver';
 
 gulp.task('test', ['lint', 'karma', 'typecheck']);
@@ -40,6 +40,12 @@ gulp.task('webpack-minor-min', ['lint'], function() {
   return gulp.src('src/index.js')
       .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR_MIN))
       .pipe(gulp.dest('dist'));
+});
+
+gulp.task('webpack-demo', [], function() {
+  return gulp.src('demo/app/client/js/index.jsx')
+      .pipe(gulpWebpack(WEBPACK_CONFIG_DEMO))
+      .pipe(gulp.dest('demo/app/build'));
 });
 
 gulp.task('typecheck', shell.task(['npm run-script flow']));

@@ -1,0 +1,38 @@
+
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+
+export let Code = React.createClass({
+
+    render() {
+        return (
+            <div id="code" className={ [ 'code', this.props.pattern ].join(' ') } dangerouslySetInnerHTML={ { __html: this.props.code } }></div>
+        );
+    },
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.code !== nextProps.code;
+    },
+
+    runScripts() {
+        setTimeout(() => {
+            Array.prototype.slice.call(findDOMNode(this).querySelectorAll('script')).forEach(script => {
+                try {
+                    eval(script.innerText);
+                } catch (err) {
+                    setTimeout(() => {
+                        throw err;
+                    });
+                }
+            });
+        }, 1);
+    },
+
+    componentDidMount() {
+        this.runScripts();
+    },
+
+    componentDidUpdate() {
+        this.runScripts();
+    }
+});

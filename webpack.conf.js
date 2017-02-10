@@ -26,7 +26,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig(version, filename, target = 'window') {
+function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target = 'window', minify = false }) {
 
     return {
       module: {
@@ -36,7 +36,7 @@ function getWebpackConfig(version, filename, target = 'window') {
             loader: "imports?define=>false,require=>false"
           },
           {
-            test: /\.js$/,
+            test: /\.jsx?$/,
             exclude: /(sinon|chai)/,
             loader: 'babel'
           },
@@ -50,18 +50,21 @@ function getWebpackConfig(version, filename, target = 'window') {
         filename: filename,
         libraryTarget: target,
         umdNamedDefine: true,
-        library: MODULE_NAME,
+        library: modulename,
         pathinfo: false
       },
       bail: true,
       devtool: 'source-map',
+      resolve: {
+        extensions: [ '', '.js', '.jsx' ],
+      },
       plugins: [
         new webpack.optimize.UglifyJsPlugin({
           test: /\.js$/,
-          beautify: true,
-          minimize: false,
-          compress: false,
-          mangle: false
+          beautify: !minify,
+          minimize: minify,
+          compress: minify,
+          mangle: minify
         }),
         new webpack.DefinePlugin({
             __TEST__: false,
@@ -74,33 +77,37 @@ function getWebpackConfig(version, filename, target = 'window') {
     };
 }
 
-function getWebpackConfigMin(version, filename, target = 'window') {
-
-    let config = getWebpackConfig(version, filename, target);
-
-    config.plugins = [
-        new webpack.optimize.UglifyJsPlugin({
-            test: /\.js$/,
-            minimize: true
-        }),
-        new webpack.DefinePlugin({
-            __TEST__: false,
-            __FILE_NAME__: JSON.stringify(filename),
-            __FILE_VERSION__: JSON.stringify(version),
-            ...getVersionVars()
-        })
-    ];
-    return config;
-}
-
 let nextMajorVersion = getNextMajorVersion();
 let nextMinorVersion = getNextMinorVersion();
 
-export let WEBPACK_CONFIG_MAJOR = getWebpackConfig(nextMajorVersion, `${FILE_NAME}.js`);
-export let WEBPACK_CONFIG_MINOR = getWebpackConfig(nextMinorVersion, `${FILE_NAME}.${nextMinorVersion}.js`);
+export let WEBPACK_CONFIG_MAJOR = getWebpackConfig({
+    version: nextMajorVersion,
+    filename: `${FILE_NAME}.js`,
+});
 
-export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfigMin(nextMajorVersion, `${FILE_NAME}.min.js`);
-export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfigMin(nextMinorVersion, `${FILE_NAME}.${nextMinorVersion}.min.js`);
+export let WEBPACK_CONFIG_MINOR = getWebpackConfig({
+    version: nextMinorVersion,
+    filename: `${FILE_NAME}.${nextMinorVersion}.js`,
+});
 
-export let WEBPACK_CONFIG_LIB =     getWebpackConfig(nextMajorVersion, `${FILE_NAME}.lib.js`, 'umd');
-export let WEBPACK_CONFIG_LIB_MIN = getWebpackConfigMin(nextMajorVersion, `${FILE_NAME}.lib.min.js`, 'umd');
+export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfig({
+    version: nextMajorVersion,
+    filename: `${FILE_NAME}.min.js`
+});
+
+export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfig({
+    version: nextMinorVersion,
+    filename: `${FILE_NAME}.${nextMinorVersion}.min.js`
+});
+
+export let WEBPACK_CONFIG_LIB = getWebpackConfig({
+    version: nextMajorVersion,
+    filename: `${FILE_NAME}.lib.js`,
+    target: `umd`
+});
+
+export let WEBPACK_CONFIG_DEMO = getWebpackConfig({
+    version: nextMajorVersion,
+    filename: `demo.js`,
+    modulename: `ppdemo`
+});

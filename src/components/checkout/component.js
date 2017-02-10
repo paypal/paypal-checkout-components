@@ -18,7 +18,7 @@ import { config, ENV } from '../../config';
 
 import { validateProps } from '../common';
 
-import contentJSON from './content';
+import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
 
 
