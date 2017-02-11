@@ -26,6 +26,8 @@ export let config = {
 
     stage: 'msmaster',
 
+    logLevel: 'debug',
+
     buttonSizes: ['tiny', 'small', 'medium'],
 
     throttles: {

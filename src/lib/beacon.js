@@ -1,5 +1,7 @@
 /* @flow */
 
+import { config, LOG_LEVEL } from '../config';
+
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
 export function beacon(event : string, payload : Object = {}) {
@@ -25,8 +27,10 @@ export function beacon(event : string, payload : Object = {}) {
             beaconImage.src = `${BEACON_URL}?${query}`;
         }
 
-        if (window.console && window.console.log) {
-            window.console.log('*', event, payload);
+        if (config.logLevel === LOG_LEVEL.DEBUG) {
+            if (window.console && window.console.log) {
+                window.console.log('*', event, payload);
+            }
         }
 
     } catch (err) {

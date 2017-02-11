@@ -13,3 +13,10 @@ export const USERS = {
     ALL:        'all',
     REMEMBERED: 'remembered'
 };
+
+export const LOG_LEVEL = {
+    DEBUG: 'debug',
+    INFO:  'info',
+    WARN:  'warn',
+    ERROR: 'error'
+};

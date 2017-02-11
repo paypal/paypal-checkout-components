@@ -1,6 +1,7 @@
 /* @flow */
 
 import $logger from 'beaver-logger/client';
+import postRobot from 'post-robot/src';
 
 import { config, ENV } from './config';
 import { initLogger, checkForCommonErrors, beacon } from './lib';
@@ -39,70 +40,6 @@ SyncPromise.onPossiblyUnhandledException((err : Error) => {
 });
 
 
-type SetupOptions = {
-    env? : ?string,
-    stage? : ?string,
-    apiStage? : ?string,
-    paypalUrl? : ?string,
-    state? : ?string,
-    ppobjects? : ?boolean,
-    lightbox? : ?boolean,
-    bridge? : ?boolean
-};
-
-export function setup(options : SetupOptions = {}) {
-
-    checkForCommonErrors();
-
-    if (options.env) {
-        if (!config.paypalUrls[options.env]) {
-            throw new Error(`Invalid env: ${options.env}`);
-        }
-
-        delete config.env;
-        config.env = options.env;
-    }
-
-    if (options.stage) {
-        delete config.stage;
-        config.stage = options.stage;
-        if (!options.env) {
-            delete config.env;
-            config.env = ENV.STAGE;
-        }
-    }
-
-    if (options.apiStage) {
-        delete config.apiStage;
-        config.apiStage = options.apiStage;
-    }
-
-    if (options.paypalUrl) {
-        delete config.paypalUrl;
-        config.paypalUrl = options.paypalUrl;
-        setDomainEnv(config.paypalUrl);
-    }
-
-    if (options.state) {
-        delete config.state;
-        config.state = options.state;
-    }
-
-    if (options.ppobjects) {
-        config.ppobjects = true;
-    }
-
-    if (options.lightbox) {
-        enableCheckoutIframe();
-    }
-
-    if (options.bridge) {
-        setupBridge(config.env);
-    }
-
-    $logger.info(`setup_${config.env}`);
-}
-
 function getCurrentScript() : ? HTMLScriptElement {
 
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
@@ -125,7 +62,84 @@ function getCurrentScript() : ? HTMLScriptElement {
 let currentScript = getCurrentScript();
 let currentProtocol = window.location.protocol.split(':')[0];
 
-$logger.debug(`current_protocol_${currentProtocol}`);
+
+type SetupOptions = {
+    env? : ?string,
+    stage? : ?string,
+    apiStage? : ?string,
+    paypalUrl? : ?string,
+    state? : ?string,
+    ppobjects? : ?boolean,
+    lightbox? : ?boolean,
+    bridge? : ?boolean,
+    logLevel? : ?string
+};
+
+export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, bridge, logLevel } : SetupOptions = {}) {
+
+    checkForCommonErrors();
+
+    if (env) {
+        if (!config.paypalUrls[env]) {
+            throw new Error(`Invalid env: ${env}`);
+        }
+
+        delete config.env;
+        config.env = env;
+    }
+
+    if (stage) {
+        delete config.stage;
+        config.stage = stage;
+        if (!env) {
+            delete config.env;
+            config.env = ENV.STAGE;
+        }
+    }
+
+    if (apiStage) {
+        delete config.apiStage;
+        config.apiStage = apiStage;
+    }
+
+    if (paypalUrl) {
+        delete config.paypalUrl;
+        config.paypalUrl = paypalUrl;
+        setDomainEnv(config.paypalUrl);
+    }
+
+    if (state) {
+        delete config.state;
+        config.state = state;
+    }
+
+    if (ppobjects) {
+        config.ppobjects = true;
+    }
+
+    if (lightbox) {
+        enableCheckoutIframe();
+    }
+
+    if (bridge) {
+        setupBridge(config.env);
+    }
+
+    if (logLevel) {
+
+        if ($logger.logLevels.indexOf(logLevel) === -1) {
+            throw new Error(`Invalid logLevel: ${logLevel}`);
+        }
+
+        config.logLevel = logLevel;
+        $logger.config.logLevel = logLevel;
+        postRobot.CONFIG.LOG_LEVEL = logLevel;
+    }
+
+    $logger.info(`setup_${config.env}`);
+
+    $logger.debug(`current_protocol_${currentProtocol}`);
+}
 
 if (currentScript) {
 
@@ -137,6 +151,7 @@ if (currentScript) {
         state:     currentScript.getAttribute('data-state'),
         lightbox:  currentScript.hasAttribute('data-enable-lightbox'),
         bridge:    currentScript.hasAttribute('data-enable-bridge'),
+        logLevel:  currentScript.getAttribute('data-log-level'),
         ppobjects: true
     });
 

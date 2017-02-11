@@ -1,12 +1,9 @@
 /* @flow */
 
 import $logger from 'beaver-logger/client';
-import xcomponent from 'xcomponent/src';
 import { config } from '../config';
 
 export function initLogger() {
-
-    xcomponent.registerLogger($logger);
 
     $logger.addPayloadBuilder(() => {
         return {
