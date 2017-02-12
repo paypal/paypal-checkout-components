@@ -1,5 +1,6 @@
 /* @flow */
 
+import 'babel-polyfill';
 import 'src/index';
 import '../../tests/common';
 

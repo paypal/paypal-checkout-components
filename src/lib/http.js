@@ -9,7 +9,7 @@ type RequestOptionsType = {
     json? : Object,
     data? : { [key : string] : string },
     body? : string,
-    win? : typeof window
+    win? : any
 };
 
 const HEADERS = {

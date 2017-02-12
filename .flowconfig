@@ -1,5 +1,7 @@
 [ignore]
-./node_modules/gulp-flowtype
+.*/node_modules/gulp-flowtype
+.*/node_modules/babel-plugin-flow-runtime
+.*/node_modules/flow-runtime
 [include]
 [libs]
 flow-typed

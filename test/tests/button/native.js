@@ -113,11 +113,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
                     return actions.redirect(window);
                 },
 
-                onCancel(data, actions) : void {
+                onCancel(data, actions) : SyncPromise<void> {
                     return actions.redirect(window);
                 }
 
@@ -144,7 +144,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
                     return actions.redirect(window).then(() => {
                         return done();
                     }).catch(done);
@@ -173,11 +173,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
                     return actions.redirect(window, '#successUrl');
                 },
 
-                onCancel(data, actions) : void {
+                onCancel(data, actions) : SyncPromise<void> {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
@@ -206,11 +206,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
                     return actions.redirect(window);
                 },
 
-                onCancel(data, actions) : void {
+                onCancel(data, actions) : SyncPromise<void> {
                     return actions.redirect(window);
                 }
 
@@ -243,7 +243,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onAuthorize to not be called'));
                 },
 
-                onCancel(data, actions) : void {
+                onCancel(data, actions) : SyncPromise<void> {
                     return actions.redirect(window).then(() => {
                         return done();
                     }).catch(done);
@@ -270,11 +270,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
                     return actions.redirect(window, '#successUrl');
                 },
 
-                onCancel(data, actions) : void {
+                onCancel(data, actions) : SyncPromise<void> {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
@@ -612,7 +612,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize(data, actions) : SyncPromise<void> {
 
                     if (isRestarted) {
                         return done();
@@ -676,7 +676,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : void {
+                    onAuthorize(data, actions) : SyncPromise<void> {
                         return actions.redirect(window);
                     }
 
@@ -705,7 +705,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : void {
+                    onAuthorize(data, actions) : SyncPromise<void> {
                         return actions.redirect(window).then(() => {
                             done();
                         });
@@ -734,7 +734,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return generateECToken();
                     },
 
-                    onAuthorize(data, actions) : void {
+                    onAuthorize(data, actions) : SyncPromise<void> {
 
                         if (isRestarted) {
                             return done();

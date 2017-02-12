@@ -124,7 +124,7 @@ export let Button = xcomponent.create({
             required: false,
 
             decorate(original) : Function {
-                return function() : void {
+                return function() : SyncPromise<void> {
                     return SyncPromise.try(() => {
 
                         this.onAuth = this.onAuth || new SyncPromise();
@@ -149,7 +149,7 @@ export let Button = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) : void {
+                    return function(data, actions) : void | SyncPromise<void> {
 
                         let redirect = (win, url) => {
                             return SyncPromise.all([
@@ -171,7 +171,7 @@ export let Button = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) : void {
+                    return function(data, actions) : void | SyncPromise<void> {
 
                         let redirect = (win, url) => {
                             return SyncPromise.all([

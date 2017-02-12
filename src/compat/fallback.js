@@ -1,6 +1,7 @@
 /* @flow */
 
 import postRobot from 'post-robot/src';
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { isPayPalDomain, noop } from '../lib';
 import { config } from '../config';
@@ -17,7 +18,7 @@ let onAuthorize : ?Function;
 // Bridge
 
 if (isPayPalDomain()) {
-    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => {
+    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, function({ data } : { data : { method : Function } }) { // eslint-disable-line
         onAuthorize = data.method;
     });
 }
@@ -27,17 +28,19 @@ if (isPayPalDomain()) {
 window.onLegacyPaymentAuthorize = (method : Function) => {
     onAuthorize = method;
 
-    if (!isPayPalDomain()) {
-        return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : typeof window) => {
-            return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
-                .then(noop);
-        });
-    }
+    return SyncPromise.try(() => {
+        if (!isPayPalDomain()) {
+            return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : any) => {
+                return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
+                    .then(noop);
+            });
+        }
+    });
 };
 
 // Bridge / Button
 
-window.watchForLegacyFallback = (win : typeof window) => {
+window.watchForLegacyFallback = (win : any) => {
     let interval = setInterval(() => {
         try {
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||

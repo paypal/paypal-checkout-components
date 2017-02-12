@@ -510,7 +510,7 @@ checkout.initXO = initXO;
     method will have been patched over in getToken.
 */
 
-function startFlow(item : string) : void {
+function startFlow(item : string) {
     $logger.debug(`startflow`, { item });
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
@@ -519,7 +519,8 @@ function startFlow(item : string) : void {
 
     if (!isLegacyEligible()) {
         $logger.debug(`ineligible_startflow_global`, { url });
-        return redirect(url);
+        redirect(url);
+        return;
     }
 
     $logger.info(`init_paypal_checkout_startflow`);
@@ -538,12 +539,13 @@ checkout.startFlow = startFlow;
     Close the component in case of any error on the merchant side.
 */
 
-function closeFlow(closeUrl? : string) : void {
+function closeFlow(closeUrl? : string) {
     $logger.warn(`closeflow_not_opened`);
 
     if (closeUrl) {
         $logger.warn(`closeflow_with_url`, { closeUrl });
-        return redirect(closeUrl);
+        redirect(closeUrl);
+        return;
     }
 
     console.warn('Checkout is not open, can not be closed');

@@ -221,7 +221,7 @@ window.HTMLElement.prototype.click = function() : void {
 };
 
 let windowOpen = window.open;
-window.open = function() : typeof window {
+window.open = function() : any {
 
     if (!isClick) {
         return {
@@ -337,7 +337,7 @@ export function setupNative({ win = window, flow, isAuthorize = true } : { win? 
     }
 }
 
-export function destroyNative(win : typeof window = window) {
+export function destroyNative(win : any = window) {
     delete win.ppnativexo;
 
     if (win.open.reset) {

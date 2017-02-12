@@ -4,9 +4,8 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import logger from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
-import { checkpoint, urlWillRedirectPage } from '../lib';
+import { checkpoint, urlWillRedirectPage, redirect as redir } from '../lib';
 
-import { REDIRECT_DELAY } from './config';
 import { LOG_PREFIX } from './constants';
 
 let $logger = logger.prefix(LOG_PREFIX);
@@ -16,8 +15,10 @@ let redirected = false;
 export function logRedirect(location : string) {
 
     if (redirected) {
-        logger.warn(`multiple_redirects`);
+        $logger.warn(`multiple_redirects`);
     }
+
+    redirected = true;
 
     if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
         checkpoint('flow_complete');
@@ -27,30 +28,20 @@ export function logRedirect(location : string) {
 }
 
 export function redirect(url : string) : SyncPromise<void> {
+    return SyncPromise.try(() => {
 
-    if (!url) {
-        throw new Error(`Redirect url undefined`);
-    }
+        if (!url) {
+            throw new Error(`Redirect url undefined`);
+        }
 
-    if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
+        if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
+            return redir(window, `#fullpageRedirect?url=${url}`);
+        }
 
-        setTimeout(() => {
-            window.location = `#fullpageRedirect?url=${url}`;
-        }, REDIRECT_DELAY);
+        logRedirect(url);
 
-        return;
-    }
-
-    logRedirect(url);
-
-    redirected = true;
-
-    setTimeout(() => {
-        $logger.info(`redirect`, { url });
-        window.location = url;
-    }, REDIRECT_DELAY);
-
-    return new SyncPromise();
+        return redir(window, url);
+    });
 }
 
 export function isToken(item : string) : boolean {

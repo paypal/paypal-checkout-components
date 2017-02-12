@@ -101,7 +101,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
 
 }, { time: 10 * 60 * 1000 });
 
-function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : Object) : SyncPromise<string> {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -159,7 +159,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     });
 }
 
-export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : Object) : SyncPromise<string> {
+export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
 
     $logger.info(`rest_api_create_billing_token`);
 

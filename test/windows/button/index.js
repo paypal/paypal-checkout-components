@@ -1,5 +1,6 @@
 /* @flow */
 
+import 'babel-polyfill';
 import paypal from 'src/index';
 import { getElement } from '../../tests/common';
 

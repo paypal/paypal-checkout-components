@@ -160,7 +160,7 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) : void {
+                    return function(data, actions = {}) : SyncPromise<void> {
 
                         let close = () => {
                             return SyncPromise.try(() => {
@@ -227,7 +227,7 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) : void {
+                    return function(data, actions = {}) : SyncPromise<void> {
 
                         let close = () => {
                             return SyncPromise.try(() => {
@@ -318,7 +318,7 @@ export let Checkout = xcomponent.create({
             once: true,
 
             def() : Function {
-                return function(url) : void {
+                return function(url) : SyncPromise<void> {
                     $logger.warn('fallback', { url });
                     return window.onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
@@ -388,7 +388,7 @@ if (Checkout.isChild()) {
 
     Checkout.renderPopupTo = function(win, props) : Object {
         if (win === win.top) {
-            win = window.xchild.getParentRenderWindow();
+            win = window.xchild.getParentRenderany();
         }
 
         return renderPopupTo.call(this, win, props);

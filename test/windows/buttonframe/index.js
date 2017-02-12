@@ -1,5 +1,6 @@
 /* @flow */
 
+import 'babel-polyfill';
 import paypal from 'src/index';
 import postRobot from 'post-robot/src/index';
 

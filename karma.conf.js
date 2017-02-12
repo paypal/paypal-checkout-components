@@ -83,6 +83,10 @@ module.exports = function(config) {
                                 'transform-es3-member-expression-literals',
                                 'transform-decorators-legacy',
                                 ['transform-es2015-for-of', {loose: true}],
+                                ['flow-runtime', {
+                                    'assert': true,
+                                    'annotate': true
+                                }],
                                 [ '__coverage__', { only: `${__dirname}/src` } ]
                             ]
                         }

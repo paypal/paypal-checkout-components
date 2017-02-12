@@ -27,7 +27,7 @@ function renderNative(props : Object) : SyncPromise<void> {
         throw new Error(`Invalid props.env: ${props.env}`);
     }
 
-    let env = props.env || config.env;
+    let env = props.env = props.env || config.env;
 
     let payment = memoize(getter(props.payment.bind({ props })));
     let onAuthorize = once(props.onAuthorize);
@@ -59,7 +59,7 @@ function renderNative(props : Object) : SyncPromise<void> {
                         // pass
                     },
 
-                    redirect(win : typeof window = window, redirectUrl : string = returnUrl) : SyncPromise<void> {
+                    redirect(win : any = window, redirectUrl : string = returnUrl) : SyncPromise<void> {
                         return redirect(win, redirectUrl);
                     }
                 });
@@ -76,7 +76,7 @@ function renderNative(props : Object) : SyncPromise<void> {
                         // pass
                     },
 
-                    redirect(win : typeof window = window, redirectUrl : string = cancelUrl) : SyncPromise<void> {
+                    redirect(win : any = window, redirectUrl : string = cancelUrl) : SyncPromise<void> {
                         return redirect(win, redirectUrl);
                     }
                 });
@@ -103,7 +103,7 @@ export function setupNativeProxy(Checkout : Object) {
     };
 
     let renderTo = Checkout.renderTo;
-    Checkout.renderTo = function(win : typeof window, props : Object) : SyncPromise<void> {
+    Checkout.renderTo = function(win : any, props : Object) : SyncPromise<void> {
         return branchNative(props, () => renderTo.apply(this, arguments));
     };
 

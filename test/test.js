@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
