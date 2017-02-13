@@ -69,28 +69,29 @@ span.pre {
     text-shadow: 1px 1px #444;
 }
 
-.app header .sandbox-toggle {
+.app header .toggle-component {
     float: right;
     margin-right: 20px;
     color: #eee;
 }
 
-.app header .sandbox-toggle * {
+.app header .toggle-component * {
     vertical-align: middle;
     line-height: 80px;
     margin: 0 3px;
 }
 
-.app header .sandbox-toggle .toggle {
+.app header .toggle-component .toggle {
     display: inline-block;
     height: 30px;
     width: 55px;
     border: 1px solid #eee;
     border-radius: 15px;
     position: relative;
+    cursor: pointer;
 }
 
-.app header .sandbox-toggle .toggle .switch {
+.app header .toggle-component .toggle .switch {
     display: inline-block;
     height: 24px;
     width: 24px;
@@ -103,36 +104,37 @@ span.pre {
     transition: left 0.1s ease;
 }
 
-.app header .sandbox-toggle.left .toggle .switch {
+.app header .toggle-component.left .toggle .switch {
 
 }
 
-.app header .sandbox-toggle.right .toggle .switch {
+.app header .toggle-component.right .toggle .switch {
     left: auto;
     left: 27px;
 }
 
-.app header .sandbox-toggle.left .right-toggle {
+.app header .toggle-component.left .right-toggle {
     color: #aaa;
 }
 
-.app header .sandbox-toggle.right .left-toggle {
+.app header .toggle-component.right .left-toggle {
     color: #aaa;
 }
 
 .app .main {
-    min-height: calc(100% - 80px);
-    height: calc(100% - 80px);
     box-sizing: border-box;
+    display: table;
+    min-height: calc(100% - 80px);
 }
 
 .app .main .column-left {
     width: 15%;
     background-color: #222;
-    min-height: 100%;
-    height: 100%;
-    float: left;
+    display: table-cell;
     box-sizing: border-box;
+    vertical-align: top;
+    min-width: 220px;
+    height: 100%;
 }
 
 .app .main .column-left ul {
@@ -181,19 +183,23 @@ a.active .bullet {
 
 .app .main .column-middle {
     width: 30%;
-    height: 100%;
     background: linear-gradient(#eee, #e0e0e0);
-    float: left;
+    display: table-cell;
+    vertical-align: top;
+    min-width: 470px;
+    height: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
 }
 
 .app .main .column-middle .demo {
-    width: 100%;
-    height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 0px 10px #fff;
     box-sizing: border-box;
     padding: 20px 40px;
+    height: 100%;
 }
 
 .app .main .column-middle .demo h3 {
@@ -226,10 +232,11 @@ a.active .bullet {
 
 .app .main .column-right {
     width: 55%;
-    height: 100%;
     background: linear-gradient(#444, #111);
-    float: left;
+    display: table-cell;
     box-sizing: border-box;
+    vertical-align: top;
+    height: 100%;
 }
 
 .app .main .column-right .editor {

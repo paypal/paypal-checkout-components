@@ -18,6 +18,7 @@ export let mark = {
     ),
 
     code: (ctx) => `
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
         <!-- Render the radio fields and button containers -->
 
@@ -61,7 +62,7 @@ export let mark = {
 
             paypal.Button.render({
 
-                env: 'sandbox',
+                env: '${ctx.env}',
 
                 client: {
                     sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',

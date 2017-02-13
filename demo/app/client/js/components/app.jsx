@@ -11,7 +11,9 @@ import * as patterns from '../patterns';
 export let App = React.createClass({
 
     getInitialState() {
-        return {};
+        return {
+            env: 'sandbox'
+        };
     },
 
     onChangeCode(code) {
@@ -24,13 +26,17 @@ export let App = React.createClass({
         }
     },
 
+    onChangeEnv(env) {
+        this.setState({ env });
+    },
+
     render() {
         let patternName = this.props.params.pattern || 'client';
         let activePattern = patterns[patternName];
 
         return (
             <div>
-                <Header />
+                <Header onChangeEnv={ env => this.onChangeEnv(env) } />
 
                 <div className="main">
                     <div className="column-left">
@@ -58,7 +64,7 @@ export let App = React.createClass({
                     </div>
 
                     <div className="column-right">
-                        <Editor code={activePattern.code()} onChange={val => this.onChangeCode(val)} />
+                        <Editor code={activePattern.code({ env: this.state.env })} onChange={val => this.onChangeCode(val)} />
                     </div>
                 </div>
             </div>

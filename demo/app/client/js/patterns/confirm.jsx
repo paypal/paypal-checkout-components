@@ -19,6 +19,8 @@ export let confirm = {
     ),
 
     code: (ctx) => `
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
         <div id="paypal-button-container"></div>
 
         <div id="confirm" class="hidden">
@@ -41,9 +43,9 @@ export let confirm = {
 
                 // Set your environment
 
-                env: 'sandbox', // sandbox | production
+                env: '${ctx.env}', // sandbox | production
 
-                // PayPal Client IDs
+                // PayPal Client IDs - replace with your own
                 // Create a PayPal app: https://developer.paypal.com/developer/applications/create
 
                 client: {

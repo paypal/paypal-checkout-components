@@ -17,6 +17,8 @@ export let styles = {
     ),
 
     code: (ctx) => `
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
         <div id="paypal-button-container"></div>
 
         <script>
@@ -27,7 +29,7 @@ export let styles = {
 
                 // Set your environment
 
-                env: 'sandbox', // sandbox | production
+                env: '${ctx.env}', // sandbox | production
 
                 // Specify the style of the button
 
@@ -37,7 +39,7 @@ export let styles = {
                     shape: 'pill'   // pill | rect
                 },
 
-                // PayPal Client IDs
+                // PayPal Client IDs - replace with your own
                 // Create a PayPal app: https://developer.paypal.com/developer/applications/create
 
                 client: {

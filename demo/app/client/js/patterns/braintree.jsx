@@ -19,6 +19,10 @@ export let braintree = {
     ),
 
     code: (ctx) => `
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.8.0/js/client.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.8.0/js/paypal.min.js"></script>
+
         <div id="paypal-button-container"></div>
 
         <script>
@@ -35,11 +39,11 @@ export let braintree = {
 
                             // Set your environment
 
-                            env: 'sandbox', // sandbox | production
+                            env: '${ctx.env}', // sandbox | production
 
                             // Wait for the PayPal button to be clicked
 
-                            payment: function(resolve, reject) {
+                            payment: function() {
 
                                 // Call Braintree to create the payment
 
@@ -48,9 +52,6 @@ export let braintree = {
                                     amount:   '1.00',
                                     currency: 'USD',
                                     intent:   'sale'
-
-                                }, function (err, data) {
-                                    return err ? reject(err) : resolve(data.paymentID);
                                 });
                             },
 
@@ -60,7 +61,7 @@ export let braintree = {
 
                                 // Call Braintree to tokenize the payment
 
-                                return paypalClient.tokenizePayment(data, function (err, result) {
+                                return paypalClient.tokenizePayment(data).then(function(result) {
 
                                     // Call your server to finalize the payment
 
@@ -69,9 +70,11 @@ export let braintree = {
                                         amount: transaction.amount,
                                         currency: transaction.currency
 
-                                    }).then(function (res) {
-                                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';
                                     });
+
+                                }).then(function (res) {
+
+                                    document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';
                                 });
                             }
 

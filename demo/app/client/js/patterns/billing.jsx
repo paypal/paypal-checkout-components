@@ -18,6 +18,8 @@ export let billing = {
     ),
 
     code: (ctx) => `
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
         <div id="paypal-button-container"></div>
 
         <script>
@@ -28,7 +30,7 @@ export let billing = {
 
                 // Set your environment
 
-                env: 'sandbox', // sandbox | production
+                env: '${ctx.env}', // sandbox | production
 
                 // Wait for the PayPal button to be clicked
 
