@@ -55,6 +55,7 @@ span.pre {
     font-size: 25px;
     letter-spacing: 1px;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .app header h1 img {
@@ -125,6 +126,7 @@ span.pre {
     box-sizing: border-box;
     display: table;
     min-height: calc(100% - 80px);
+    height: calc(100% - 80px);
 }
 
 .app .main .column-left {
@@ -183,7 +185,7 @@ a.active .bullet {
 
 .app .main .column-middle {
     width: 30%;
-    background: linear-gradient(#eee, #e0e0e0);
+    background: white;
     display: table-cell;
     vertical-align: top;
     min-width: 470px;
@@ -192,11 +194,12 @@ a.active .bullet {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
+    position: relative;
+    box-shadow: 0px 0px 10px #fff;
 }
 
 .app .main .column-middle .demo {
     background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0px 0px 10px #fff;
     box-sizing: border-box;
     padding: 20px 40px;
     height: 100%;
@@ -228,6 +231,10 @@ a.active .bullet {
 .app .main .column-middle .demo .code {
     text-align: center;
     padding: 10px 10px;
+}
+
+.app .main .column-middle .demo .code iframe {
+    display: inline-block;
 }
 
 .app .main .column-right {

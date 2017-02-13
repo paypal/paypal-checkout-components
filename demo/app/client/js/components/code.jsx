@@ -18,7 +18,7 @@ export let Code = React.createClass({
         setTimeout(() => {
             Array.prototype.slice.call(findDOMNode(this).querySelectorAll('script')).forEach(script => {
                 try {
-                    eval(script.innerText);
+                    eval(script.innerHTML);
                 } catch (err) {
                     setTimeout(() => {
                         throw err;
