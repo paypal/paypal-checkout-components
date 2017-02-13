@@ -2,28 +2,47 @@
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
+import postRobot from 'post-robot/src';
 
+import paypal from 'src/index';
 import { config } from 'src/config';
 
-export function onHashChange(time : number = 6000) : SyncPromise<string> {
+paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
+    type: 'number',
+    required: false,
+    def() : number {
+        return 60 * 1000;
+    }
+};
+
+postRobot.CONFIG.ACK_TIMEOUT = 60 * 1000;
+
+for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
+    let original = window.console[level];
+
+    window.console[level] = function() : void {
+
+        let date = new Date();
+        let args = Array.prototype.slice.call(arguments);
+
+        args.unshift(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`);
+
+        return original.apply(this, args);
+    };
+}
+
+export function onHashChange() : SyncPromise<string> {
     return new SyncPromise((resolve, reject) => {
         let currentHash = window.location.hash;
 
-        let timeout;
-        let interval;
-
-        interval = setInterval(() => {
+        function listener() {
             if (window.location.hash !== currentHash) {
-                clearInterval(interval);
-                clearTimeout(timeout);
-                return resolve(window.location.hash);
+                window.removeEventListener('hashchange', listener);
+                resolve(window.location.hash);
             }
-        }, 10);
+        }
 
-        timeout = setTimeout(() => {
-            clearInterval(interval);
-            return reject(new Error(`Hash did not change after ${time}ms`));
-        }, time);
+        window.addEventListener('hashchange', listener);
     });
 }
 

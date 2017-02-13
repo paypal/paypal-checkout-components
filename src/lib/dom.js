@@ -201,7 +201,7 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
         }
     }
 
-    let newQueryString = Object.keys(params).map(key => {
+    let newQueryString = Object.keys(params).sort().map(key => {
         if (key && params[key]) {
             return `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
         }

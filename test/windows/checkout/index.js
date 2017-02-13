@@ -90,7 +90,7 @@ if (testAction === 'checkout') {
                 if (window.opener) {
                     win = window;
                 } else {
-                    win = window.open('', `fallbackWindow${Math.random()}`);
+                    win = window.open('', `fallbackWindow${Math.random()}`, 'width=500,height=500');
                 }
 
                 win.location = '/base/test/windows/fallback/index.htm';

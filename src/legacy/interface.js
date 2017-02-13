@@ -35,7 +35,7 @@ checkout.reset = reset;
 // $FlowFixMe
 Object.defineProperty(checkout, 'urlPrefix', {
     get() : string {
-        return `${config.checkoutUrl}?token=`;
+        return `${config.checkoutUrl}${ config.checkoutUrl.indexOf('?') === -1 ? '?' : '&' }token=`;
     }
 });
 
@@ -190,6 +190,7 @@ function initPayPalCheckout(props = {}) : Object {
 
         fallback(url) : SyncPromise<void> {
             $logger.error(`fallback_handler`, { url });
+            this.destroy();
             return redirect(url);
         },
 

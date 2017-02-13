@@ -74,9 +74,10 @@ window.watchForLegacyFallback = (win : any) => {
 
                             if (response.type === 'redirect' && response.url && onAuthorize) {
 
-                                clearInterval(interval);
-
                                 let url = response.url;
+
+                                clearInterval(interval);
+                                win.close();
 
                                 onAuthorize({
                                     returnUrl:    url,
@@ -97,14 +98,6 @@ window.watchForLegacyFallback = (win : any) => {
                                 if (win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady) {
                                     win.mob.Xhr.prototype._xhrOnReady = noop;
                                 }
-
-                                setTimeout(() => {
-                                    if (!win.closed) {
-                                        win.close();
-                                    }
-                                }, 100);
-
-                                return;
                             }
 
                         } catch (err) {
