@@ -10,7 +10,7 @@ import webserver from 'gulp-webserver';
 gulp.task('test', ['lint', 'karma', 'typecheck']);
 gulp.task('build', ['test', 'webpack']);
 
-gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib' ]);
+gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib', 'webpack-demo' ]);
 
 gulp.task('webpack-major', ['lint'], function() {
   return gulp.src('src/index.js')

@@ -10,6 +10,8 @@ rm dist/*;
 gulp build;
 
 git add dist --all;
+git add demo/app/build --all;
+
 git commit -m "Dist" || echo "Nothing to distribute";
 
 mversion patch -m '%s';
