@@ -234,7 +234,7 @@ a.active .bullet {
 }
 
 .app .main .column-middle .demo .code iframe {
-    display: inline-block;
+    display: inline-block !important;
 }
 
 .app .main .column-right {
