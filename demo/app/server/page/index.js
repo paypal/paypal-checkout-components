@@ -19,7 +19,7 @@ module.exports = function(ctx) {
             <script src="/checkout/static/js/ace.js" type="text/javascript" charset="utf-8"></script>
         </head>
 
-        <body data-csrf="${ctx.csrf}">
+        <body data-csrf="${ ctx.csrf || '' }">
             <div id="app" class="app"></div>
             <script src="/checkout/static/js/demo.js"></script>
         </body>

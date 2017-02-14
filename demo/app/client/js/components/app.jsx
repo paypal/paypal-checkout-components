@@ -57,9 +57,11 @@ export let App = React.createClass({
                     <div className="column-middle">
                         <div className="demo">
                             <h3>{activePattern.fullName}</h3>
-                            {activePattern.description}
+                            {activePattern.intro}
                             <hr />
                             <Code pattern={patternName} code={this.state.code} />
+                            <hr />
+                            {activePattern.description}
                         </div>
                     </div>
 

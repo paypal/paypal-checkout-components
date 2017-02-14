@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     app.get('/', (req, res) =>{
 
-        res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com`);
+        res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com`);
 
         res.send(index({
             csrf: res.locals._csrf

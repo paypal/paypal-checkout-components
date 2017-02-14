@@ -7,10 +7,12 @@ export let styles = {
 
     fullName: `Express Checkout Custom Button Styles`,
 
+    intro: (
+        <p>Create a PayPal button and accept payments with a custom button style.</p>
+    ),
+
     description: (
         <div>
-            <p>Create a PayPal button and accept payments with a custom button style.</p>
-            <hr />
             <p>First, a button is created using <span className="pre">paypal.Button.render()</span>, and rendered to the <span className="pre">#paypal-button-container</span> element.</p>
             <p>Along with the other required options, we pass a <span className="pre">style</span> block with various options to customize the button. In this block I can specify the <span className="pre">size</span>, <span className="pre">color</span> and <span className="pre">shape</span> of the button</p>
         </div>

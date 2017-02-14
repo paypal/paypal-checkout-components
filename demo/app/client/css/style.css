@@ -216,7 +216,7 @@ a.active .bullet {
 .app .main .column-middle .demo hr {
     border: none;
     border-bottom: 1px solid #ccc;
-    margin: 30px 10px;
+    margin: 10px 10px;
 }
 
 .app .main .column-middle .demo p {
@@ -230,7 +230,8 @@ a.active .bullet {
 
 .app .main .column-middle .demo .code {
     text-align: center;
-    padding: 10px 10px;
+    padding: 10px 10px 0 10px;
+    min-height: 60px;
 }
 
 .app .main .column-middle .demo .code iframe {
@@ -275,4 +276,5 @@ a.active .bullet {
 
 .app .main .column-middle .demo .code.mark #card-button-container {
     margin-top: 20px;
+    min-height: 52px;
 }

@@ -7,12 +7,14 @@ export let braintree = {
 
     fullName: `Braintree Express Checkout`,
 
+    intro: (
+        <p>Create a PayPal button and accept payments using a Braintree integration.</p>
+    ),
+
     description: (
         <div>
-            <p>Create a PayPal button and accept payments using a Braintree integration.</p>
-            <hr />
-            <p>First, we generate a Braintree client token and initialize the Braintree javascript client, using <span className="pre">braintree.client.create()</span> and <span className="pre">braintree.paypal.create()</span>.</p>
-            <p>Then, a button is created using <span className="pre">paypal.Button.render()</span>, and rendered to the <span className="pre">#paypal-button-container</span> element.</p>
+            <p>First, we generate a client token and initialize Braintree using <span className="pre">braintree.client.create()</span> / <span className="pre">braintree.paypal.create()</span>.</p>
+            <p>Then, a button is created using <span className="pre">paypal.Button.render()</span> to the <span className="pre">#paypal-button-container</span> element.</p>
             <p>When the button is clicked, <span className="pre">payment()</span> is called. This function then uses <span className="pre">paypalClient.createPayment()</span> to invoke Braintree and create the payment.</p>
             <p>When the payment is authorized by the customer, <span className="pre">onAuthorize()</span> is called. This function then uses <span className="pre">paypalClient.tokenizePayment()</span> to invoke Braintree to tokenize the payment, then <span className="pre">paypal.request.post()</span> to invoke the merchant server and finalize the payment using the Braintree SDK.</p>
         </div>

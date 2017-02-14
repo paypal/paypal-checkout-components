@@ -7,10 +7,12 @@ export let client = {
 
     fullName: `Client Side Express Checkout`,
 
+    intro: (
+        <p>Create a PayPal button and accept payments using a purely client-side integration.</p>
+    ),
+
     description: (
         <div>
-            <p>Create a PayPal button and accept payments using a purely client-side integration.</p>
-            <hr />
             <p>First, a button is created using <span className="pre">paypal.Button.render()</span>, and rendered to the <span className="pre">#paypal-button-container</span> element.</p>
             <p>When the button is clicked, <span className="pre">payment()</span> is called. This function then calls <span className="pre">paypal.rest.payment.create()</span>, which invokes the PayPal REST API directly to create the payment.</p>
             <p>When the payment is authorized by the customer, <span className="pre">onAuthorize()</span> is called. This function then calls <span className="pre">actions.payment.execute()</span>, which invokes the PayPal REST API directly to execute the payment.</p>

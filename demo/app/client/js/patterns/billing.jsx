@@ -7,10 +7,12 @@ export let billing = {
 
     fullName: `Billing Agreements`,
 
+    intro: (
+        <p>Create a PayPal button and generate billing agreements using a server-side integration.</p>
+    ),
+
     description: (
         <div>
-            <p>Create a PayPal button and generate billing agreements using a server-side integration.</p>
-            <hr />
             <p>First, a button is created using <span className="pre">paypal.Button.render()</span>, and rendered to the <span className="pre">#paypal-button-container</span> element.</p>
             <p>When the button is clicked, <span className="pre">payment()</span> is called. This function then uses <span className="pre">paypal.request.post()</span> to call the merchant server, which invokes the PayPal REST API to create the billing agreement.</p>
             <p>When the agreement is authorized by the customer, <span className="pre">onAuthorize()</span> is called. This function then uses <span className="pre">paypal.request.post()</span> to call the merchant server, which invokes the PayPal REST API to capture the payment.</p>
