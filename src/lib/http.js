@@ -17,6 +17,8 @@ const HEADERS = {
     ACCEPT: 'accept'
 };
 
+let headerBuilders = [];
+
 export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : SyncPromise<Object> {
 
     return new SyncPromise((resolve, reject) => {
@@ -39,9 +41,21 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || 'application/json';
 
+        for (let headerBuilder of headerBuilders) {
+            let builtHeaders = headerBuilder();
+
+            for (let key of Object.keys(builtHeaders)) {
+                normalizedHeaders[key.toLowerCase()] = builtHeaders[key];
+            }
+        }
+
         let xhr = new win.XMLHttpRequest();
 
-        xhr.addEventListener('load', function() {
+        xhr.addEventListener('load', function() : void {
+            if (!this.status || this.status >= 400) {
+                return reject(this);
+            }
+
             resolve(JSON.parse(this.responseText));
         }, false);
 
@@ -51,10 +65,8 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         xhr.open(method, url, true);
 
-        if (normalizedHeaders) {
-            for (let key in normalizedHeaders) {
-                xhr.setRequestHeader(key, normalizedHeaders[key]);
-            }
+        for (let key in normalizedHeaders) {
+            xhr.setRequestHeader(key, normalizedHeaders[key]);
         }
 
         if (json) {
@@ -75,4 +87,8 @@ request.get = (url : string, options = {}) => {
 
 request.post = (url : string, data, options = {}) => {
     return request({ method: 'post', url, data, ...options });
+};
+
+request.addHeaderBuilder = (method) => {
+    headerBuilders.push(method);
 };

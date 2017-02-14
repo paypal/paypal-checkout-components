@@ -1,9 +1,9 @@
-import request from 'request';
-import { config } from '../config';
+var request = require('request');
+var config = require('../config');
 
-let api = {
+module.exports = {
     createPayment: (accessToken) => {
-        let paymentEndpoint = config.urls['sandbox'] + config.apis.payment;
+        var paymentEndpoint = config.urls['sandbox'] + config.apis.payment;
 
         return new Promise((resolve, reject) => {
            request.post({
@@ -12,7 +12,7 @@ let api = {
                    'Authorization': `Bearer ${accessToken}`,
                    'Content-Type': 'application/json'
                },
-               json: { ...config.payment.createReq }
+               json: Object.assign({}, config.payment.createReq)
 
            }, (error, res, body) => {
                
@@ -27,7 +27,7 @@ let api = {
     },
 
     executePayment: (accessToken, payToken, payerId) => {
-        let paymentEndpoint = config.urls['sandbox'] + config.apis.payment;
+        var paymentEndpoint = config.urls['sandbox'] + config.apis.payment;
         return new Promise((resolve, reject) => {
             request.post({
                 url: `${paymentEndpoint}/${payToken}/execute/`,
@@ -44,11 +44,11 @@ let api = {
                     error ? reject(error) : reject(res.statusMessage);
                 } else if (body.state === 'approved') {
                     
-                    let payerInfo = body.payer.payer_info;
-                    let transactionState = body.state;
-                    let txnDetails = body.transactions[0].amount;
+                    var payerInfo = body.payer.payer_info;
+                    var transactionState = body.state;
+                    var txnDetails = body.transactions[0].amount;
 
-                    let approval = {
+                    var approval = {
                         payerInfo: payerInfo,
                         state: transactionState,
                         transactionDetails: txnDetails
@@ -63,13 +63,12 @@ let api = {
     },
     
     createBillingAgreement: (accessToken, planId) => {
-        let billingEndpoint = config.urls['sandbox'] + config.apis.billing;
-        let req = {
-            ...config.billing.createReq,
+        var billingEndpoint = config.urls['sandbox'] + config.apis.billing;
+        var req = Object.assign({
             plan: {
                 id: planId
             }
-        };
+        }, config.billing.createReq);
         return new Promise((resolve, reject) => {
             request.post({
                 url: `${billingEndpoint}`,
@@ -91,7 +90,7 @@ let api = {
     },
 
     getActiveBillingPlans: (accessToken) => {
-        let billingEndpoint = config.urls['sandbox'] + config.apis.billingPlans;
+        var billingEndpoint = config.urls['sandbox'] + config.apis.billingPlans;
         return new Promise((resolve, reject) => {
             request.get({
                 url: `${billingEndpoint}/?status=ACTIVE&total_items=yes`,
@@ -101,7 +100,7 @@ let api = {
                 }
             }, (error, res, body) => {
                 body = JSON.parse(body);
-                let plans = body && body.plans;
+                var plans = body && body.plans;
                 if (error || res.statusCode >= 400) {
                     error ? reject(error) : reject(res.statusMessage);
                 } else if (plans && plans.length > 0 && plans[0]) {
@@ -115,7 +114,7 @@ let api = {
     },
 
     executeBillingAgreement: (accessToken, payToken) => {
-        let billingEndpoint = config.urls['sandbox'] + config.apis.billing;
+        var billingEndpoint = config.urls['sandbox'] + config.apis.billing;
 
         return new Promise((resolve, reject) => {
             request.post({
@@ -138,8 +137,8 @@ let api = {
     },
 
     getAccessToken: () => {
-        let encodedClientId = new Buffer(`${config.client['sandbox']}:`).toString('base64');
-        let authEndpoint = config.urls['sandbox'] + config.apis.auth;
+        var encodedClientId = new Buffer(`${config.client['sandbox']}:`).toString('base64');
+        var authEndpoint = config.urls['sandbox'] + config.apis.auth;
         
         return new Promise((resolve, reject) => {
             request.post({
@@ -156,7 +155,7 @@ let api = {
 
                     body = body && JSON.parse(body);
 
-                    let accessToken = body && body.access_token;
+                    var accessToken = body && body.access_token;
                     resolve(accessToken);
                 }
             });
@@ -164,5 +163,3 @@ let api = {
         });
     }
 };
-
-export default api;

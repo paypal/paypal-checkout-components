@@ -1,15 +1,15 @@
-import braintree from 'braintree';
+var braintree = require('braintree');
 
 
-let gateway = braintree.connect({
+var gateway = braintree.connect({
     accessToken: 'access_token$sandbox$3w2ttvwd246548hd$829117ab3d240f371c0b2069492b8453'
 });
 
 
-let api = {
+module.exports = {
   clientToken: () => {
       
-      let response = new Promise((resolve, reject) => {
+      var response = new Promise((resolve, reject) => {
          gateway.clientToken.generate({}, (err, res) => {
              if (err || res.success === false) {
                  reject(err);
@@ -23,7 +23,7 @@ let api = {
   },
 
   pay: (transaction) => {
-    let response = new Promise((resolve, reject) => {
+    var response = new Promise((resolve, reject) => {
         gateway.transaction.sale({
             amount: transaction && transaction.amount,
             paymentMethodNonce: transaction.nonce,
@@ -43,5 +43,3 @@ let api = {
 
   }
 };
-
-export default api;

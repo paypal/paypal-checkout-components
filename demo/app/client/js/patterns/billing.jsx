@@ -38,7 +38,7 @@ export let billing = {
 
                     // Make a call to the merchant server to set up the agreement
 
-                    return paypal.request.post('/create-agreement', {}).then(function (response) {
+                    return paypal.request.post('/checkout/api/paypal/agreement/create/', {}).then(function (response) {
                         return response.payToken;
                     });
                 },
@@ -49,7 +49,7 @@ export let billing = {
 
                     // Make a call to the merchant server to execute the agreement
 
-                    return paypal.request.post('/execute-agreement', { payToken: data.paymentToken }) .then(function() {
+                    return paypal.request.post('/checkout/api/paypal/agreement/execute/', { payToken: data.paymentToken }) .then(function() {
                         document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';
                     });
                 }

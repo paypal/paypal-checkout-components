@@ -10,7 +10,8 @@
   "files": [
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
-    "src/"
+    "src/",
+    "demo/"
   ],
   "repository": {
     "type": "git",

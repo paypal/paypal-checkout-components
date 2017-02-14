@@ -29,7 +29,7 @@ export let braintree = {
 
             // Set up the Braintree client
 
-            paypal.request.get('/generate-client-token').then(function(res) {
+            paypal.request.get('/checkout/api/braintree/client-token/').then(function(res) {
                 braintree.client.create({ authorization: res.clientToken }, function (err, client) {
                     braintree.paypal.create({ client: client }, function (err, paypalClient) {
 
@@ -65,7 +65,7 @@ export let braintree = {
 
                                     // Call your server to finalize the payment
 
-                                    return paypal.request.post('/payment', {
+                                    return paypal.request.post('/checkout/api/braintree/pay/', {
                                         nonce: result.nonce,
                                         amount: transaction.amount,
                                         currency: transaction.currency

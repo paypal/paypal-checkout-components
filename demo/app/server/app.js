@@ -15,7 +15,7 @@ function App (app, opts) {
 
 App.prototype = {
     setup: function () {
-        let app = this.app;
+        var app = this.app;
 
         app.use('/static/js', express.static(path.join(__dirname, '../build'), {maxAge: 86400000}));
         app.use('/static', express.static(path.join(__dirname, '../client'), {maxAge: 86400000}));
@@ -24,11 +24,6 @@ App.prototype = {
 
         app.use(bodyParse.json());
         app.use(bodyParse.urlencoded({extended: false}));
-
-        app.use(function setup(req, res, next) {
-            req.v4app = this;
-            next();
-        }.bind(this));
 
         routes(app);
     },
