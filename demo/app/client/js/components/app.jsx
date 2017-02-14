@@ -12,22 +12,35 @@ export let App = React.createClass({
 
     getInitialState() {
         return {
-            env: 'sandbox'
+            env: 'sandbox',
+            errors: []
         };
     },
 
     onChangeCode(code) {
-        this.setState({ code });
+        this.setState({ code, errors: [] });
     },
 
     componentWillMount() {
         if (window.location.hash === '#/') {
             window.location.hash = '#/pattern/client';
         }
+
+        paypal.onPossiblyUnhandledException(err => {
+            this.setState({ errors: this.state.errors.concat(err.stack || err.toString()) });
+        });
     },
 
     onChangeEnv(env) {
         this.setState({ env });
+    },
+
+    onCodeRun(code) {
+        this.setState({ errors: [] });
+    },
+
+    onCodeError(err) {
+        this.setState({ errors: this.state.errors.concat(err.stack || err.toString()) });
     },
 
     render() {
@@ -59,7 +72,22 @@ export let App = React.createClass({
                             <h3>{activePattern.fullName}</h3>
                             {activePattern.intro}
                             <hr />
-                            <Code pattern={patternName} code={this.state.code} />
+
+                            { this.state.errors.length
+                                ? <div className="errors">
+                                    {
+                                        this.state.errors.map(err =>
+                                            <p key={err}>{err}</p>
+                                        )
+                                    }
+                                </div>
+
+                                : <Code
+                                    pattern={patternName}
+                                    code={this.state.code}
+                                    onError={ err => this.onCodeError(err) } />
+                            }
+
                             <hr />
                             {activePattern.description}
                         </div>

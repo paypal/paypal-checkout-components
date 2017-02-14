@@ -234,6 +234,14 @@ a.active .bullet {
     min-height: 60px;
 }
 
+.app .main .column-middle .demo .errors {
+    font-size: 12px;
+    font-family: monospace;
+    color: red;
+    white-space: pre-line;
+    line-height: 20px;
+}
+
 .app .main .column-middle .demo .code iframe {
     display: inline-block !important;
 }

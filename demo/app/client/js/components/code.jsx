@@ -20,6 +20,11 @@ export let Code = React.createClass({
                 try {
                     eval(script.innerHTML);
                 } catch (err) {
+
+                    if (this.props.onError) {
+                        this.props.onError(err);
+                    }
+
                     setTimeout(() => {
                         throw err;
                     });
