@@ -56,7 +56,16 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 return reject(this);
             }
 
-            resolve(JSON.parse(this.responseText));
+            let result;
+
+            try {
+                result = JSON.parse(this.responseText);
+            } catch (err) {
+                return reject(err);
+            }
+
+            return resolve(result);
+
         }, false);
 
         xhr.addEventListener('error', (evt) => {
