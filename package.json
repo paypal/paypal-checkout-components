@@ -95,6 +95,7 @@
     "babel-preset-react": "^6.22.0",
     "babel-register": "^6.22.0",
     "beaver-logger": "^2",
+    "body-parser": "^1.16.1",
     "braintree": "^2.0.0",
     "cookie-parser": "^1.4.3",
     "es6-iterator": "^2.0.0",
