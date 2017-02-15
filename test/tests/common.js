@@ -289,7 +289,7 @@ export function preventOpenWindow(flow : string) {
     }
 }
 
-export function errorOnWindowOpen(win) {
+export function errorOnWindowOpen(win : any) {
 
     if (win.open.reset) {
         win.open.reset();
