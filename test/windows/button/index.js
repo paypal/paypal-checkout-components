@@ -10,7 +10,7 @@ function renderCheckout() {
     paypal.Checkout.renderTo(window.top.frames[0], {
 
         payment: window.xprops.payment,
-        onAuthorize(data, actions) : void {
+        onAuthorize(data, actions) : void | SyncPromise<void> {
 
             return window.xprops.onAuthorize({
                 ...data,

@@ -4,15 +4,17 @@ import paypal from 'src/index';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { assert } from 'chai';
 
-import { generateECToken, createTestContainer, destroyTestContainer, setupNative, destroyNative, onHashChange, generatePaymentID, generateBillingToken } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, setupNative, destroyNative, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup' ]) {
 
     describe(`paypal button component native happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+
+            setupNative({ flow });
         });
 
         afterEach(() => {
@@ -41,7 +43,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -49,6 +51,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         });
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
+
+            setupNative({ flow, isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -68,7 +72,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window, isAuthorize: false });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -77,6 +81,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
+
+            setupNative({ flow, isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -96,7 +102,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window, isAuthorize: false });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -123,7 +129,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -156,7 +162,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -183,7 +189,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -196,6 +202,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
+            setupNative({ flow, isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -216,7 +223,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window, isAuthorize: false });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -230,6 +237,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
             let token = generateECToken();
+            setupNative({ flow, isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -251,7 +259,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window, isAuthorize: false });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -260,6 +268,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
+            setupNative({ flow, isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -280,7 +289,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window, isAuthorize: false });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -323,7 +332,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -365,7 +374,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -402,7 +411,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -429,7 +438,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -453,8 +462,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
             }, '#testContainer').then(button => {
-
-                setupNative({ flow, win: button.window });
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -481,7 +488,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -492,6 +499,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let checkoutToken = generateECToken();
 
+            window.ppnativexo.start = (url) => {
+                assert.isOk(url.indexOf(`token=${checkoutToken}`) !== -1);
+                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                assert.isOk(url.indexOf(`billingurl`) === -1);
+                return done();
+            };
+
             return paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
@@ -501,6 +517,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 onAuthorize(data) : void {
                     if (flow === 'lightbox') {
                         return done();
+                    } else {
+                        return done(new Error('Expected onAuthorize to not be called'));
                     }
                 },
 
@@ -510,16 +528,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
-
-                button.window.ppnativexo.start = (url) => {
-                    assert.isOk(url.indexOf(`token=${checkoutToken}`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
-                    return done();
-                };
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -530,6 +539,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let paymentID = generatePaymentID();
 
+            window.ppnativexo.start = (url) => {
+                assert.isOk(url.indexOf(`token=${paymentID}`) !== -1);
+                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                assert.isOk(url.indexOf(`billingurl`) === -1);
+                return done();
+            };
+
             return paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
@@ -539,6 +557,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 onAuthorize(data) : void {
                     if (flow === 'lightbox') {
                         return done();
+                    } else {
+                        return done(new Error('Expected onAuthorize to not be called'));
                     }
                 },
 
@@ -548,16 +568,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
-
-                button.window.ppnativexo.start = (url) => {
-                    assert.isOk(url.indexOf(`token=${paymentID}`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
-                    return done();
-                };
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -568,6 +579,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let billingToken = generateBillingToken();
 
+            window.ppnativexo.start = (url) => {
+                assert.isOk(url.indexOf(`ba_token=${billingToken}`) !== -1);
+                assert.isOk(url.indexOf(`billingurl=true`) !== -1);
+                assert.isOk(url.indexOf(`&token=`) === -1);
+                assert.isOk(url.indexOf(`?token=`) === -1);
+                assert.isOk(url.indexOf(`checkouturl`) === -1);
+                return done();
+            };
+
             return paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
@@ -577,6 +597,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 onAuthorize(data) : void {
                     if (flow === 'lightbox') {
                         return done();
+                    } else {
+                        return done(new Error('Expected onAuthorize to not be called'));
                     }
                 },
 
@@ -586,16 +608,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
-
-                button.window.ppnativexo.start = (url) => {
-                    assert.isOk(url.indexOf(`ba_token=${billingToken}`) !== -1);
-                    assert.isOk(url.indexOf(`billingurl=true`) !== -1);
-                    assert.isOk(url.indexOf(`&token=`) === -1);
-                    assert.isOk(url.indexOf(`?token=`) === -1);
-                    assert.isOk(url.indexOf(`checkouturl`) === -1);
-                    return done();
-                };
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -628,7 +641,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                setupNative({ flow, win: button.window });
+                errorOnWindowOpen(button.window);
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
@@ -657,7 +670,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 }, '#testContainer').then(button => {
 
-                    setupNative({ flow, win: button.window });
+                    errorOnWindowOpen(button.window);
 
                     button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
@@ -682,7 +695,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 }, '#testContainer').then(button => {
 
-                    setupNative({ flow, win: button.window });
+                    errorOnWindowOpen(button.window);
 
                     button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
@@ -717,7 +730,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 }, '#testContainer').then(button => {
 
-                    setupNative({ flow, win: button.window });
+                    errorOnWindowOpen(button.window);
 
                     button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
@@ -756,7 +769,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 }, '#testContainer').then(button => {
 
-                    setupNative({ flow, win: button.window });
+                    errorOnWindowOpen(button.window);
 
                     button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();

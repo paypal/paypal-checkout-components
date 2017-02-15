@@ -257,6 +257,15 @@ export let Button = xcomponent.create({
             }
         },
 
+        nativeStart: {
+            type: 'function',
+            required: false,
+            get value() : ?Function {
+                return (window.xprops && window.xprops.nativeStart) ||
+                       (window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo));
+            }
+        },
+
         testAction: {
             type: 'string',
             required: false,

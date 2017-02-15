@@ -603,6 +603,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
+                setupNative({ flow: 'popup' });
+
                 testButton.click();
             });
 
@@ -626,6 +628,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         }
                     });
                 });
+
+                setupNative({ flow: 'popup' });
 
                 testButton.click();
 
@@ -660,6 +664,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         }
                     });
                 });
+
+                setupNative({ flow: 'popup' });
 
                 testButton.click();
             });
