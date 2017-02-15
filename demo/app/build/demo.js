@@ -8610,33 +8610,22 @@ window["ppdemo"] = function(modules) {
         };
         module.exports = ReactRef;
     },
-    "./node_modules/react-dom/lib/ReactOwner.js": function(module, exports, __webpack_require__) {
-        (function(process) {
-            "use strict";
-            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js");
-            var invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
-            function isValidOwner(object) {
-                return !!(object && typeof object.attachRef === "function" && typeof object.detachRef === "function");
-            }
-            var ReactOwner = {
-                addComponentAsRefTo: function addComponentAsRefTo(component, ref, owner) {
-                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "addComponentAsRefTo(...): Only a ReactOwner can have refs. You might be adding a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("119") : void 0;
-                    owner.attachRef(ref, component);
-                },
-                removeComponentAsRefFrom: function removeComponentAsRefFrom(component, ref, owner) {
-                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might be removing a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("120") : void 0;
-                    var ownerPublicInstance = owner.getPublicInstance();
-                    if (ownerPublicInstance && ownerPublicInstance.refs[ref] === component.getPublicInstance()) {
-                        owner.detachRef(ref);
-                    }
-                }
-            };
-            module.exports = ReactOwner;
-        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
-    },
     "./node_modules/react/react.js": function(module, exports, __webpack_require__) {
         "use strict";
         module.exports = __webpack_require__("./node_modules/react/lib/React.js");
+    },
+    "./node_modules/react-dom/lib/ReactInstrumentation.js": function(module, exports, __webpack_require__) {
+        (function(process) {
+            "use strict";
+            var debugTool = null;
+            if (process.env.NODE_ENV !== "production") {
+                var ReactDebugTool = __webpack_require__("./node_modules/react-dom/lib/ReactDebugTool.js");
+                debugTool = ReactDebugTool;
+            }
+            module.exports = {
+                debugTool: debugTool
+            };
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     },
     "./node_modules/react-dom/lib/ReactDebugTool.js": function(module, exports, __webpack_require__) {
         (function(process) {
@@ -16408,23 +16397,13 @@ window["ppdemo"] = function(modules) {
                 }
             });
         });
-        var _braintree = __webpack_require__("./demo/app/client/js/patterns/braintree.jsx");
-        Object.keys(_braintree).forEach(function(key) {
+        var _experience = __webpack_require__("./demo/app/client/js/patterns/experience.jsx");
+        Object.keys(_experience).forEach(function(key) {
             if (key === "default" || key === "__esModule") return;
             Object.defineProperty(exports, key, {
                 enumerable: true,
                 get: function get() {
-                    return _braintree[key];
-                }
-            });
-        });
-        var _billing = __webpack_require__("./demo/app/client/js/patterns/billing.jsx");
-        Object.keys(_billing).forEach(function(key) {
-            if (key === "default" || key === "__esModule") return;
-            Object.defineProperty(exports, key, {
-                enumerable: true,
-                get: function get() {
-                    return _billing[key];
+                    return _experience[key];
                 }
             });
         });
@@ -16529,12 +16508,12 @@ window["ppdemo"] = function(modules) {
             }
         };
     },
-    "./demo/app/client/js/patterns/braintree.jsx": function(module, exports, __webpack_require__) {
+    "./demo/app/client/js/patterns/experience.jsx": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.braintree = undefined;
+        exports.experience = undefined;
         var _react = __webpack_require__("./node_modules/react/react.js");
         var _react2 = _interopRequireDefault(_react);
         function _interopRequireDefault(obj) {
@@ -16542,66 +16521,25 @@ window["ppdemo"] = function(modules) {
                 default: obj
             };
         }
-        var braintree = exports.braintree = {
-            name: "Braintree",
-            fullName: "Braintree Express Checkout",
-            intro: _react2["default"].createElement("p", null, "Create a PayPal button and accept payments using a Braintree integration."),
-            description: _react2["default"].createElement("div", null, _react2["default"].createElement("p", null, "First, we generate a client token and initialize Braintree using ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "braintree.client.create()"), " / ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "braintree.paypal.create()"), "."), _react2["default"].createElement("p", null, "Then, a button is created using ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "paypal.Button.render()"), " to the ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "#paypal-button-container"), " element."), _react2["default"].createElement("p", null, "When the button is clicked, ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "payment()"), " is called. This function then uses ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "paypalClient.createPayment()"), " to invoke Braintree and create the payment."), _react2["default"].createElement("p", null, "When the payment is authorized by the customer, ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "onAuthorize()"), " is called. This function then uses ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "paypalClient.tokenizePayment()"), " to invoke Braintree to tokenize the payment, then ", _react2["default"].createElement("span", {
-                className: "pre"
-            }, "paypal.request.post()"), " to invoke the merchant server and finalize the payment using the Braintree SDK.")),
-            code: function code(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n        <script src="https://js.braintreegateway.com/web/3.8.0/js/client.min.js"></script>\n        <script src="https://js.braintreegateway.com/web/3.8.0/js/paypal.min.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Set up the Braintree client\n\n            paypal.request.get(\'/checkout/api/braintree/client-token/\').then(function(res) {\n                braintree.client.create({ authorization: res.clientToken }, function (err, client) {\n                    braintree.paypal.create({ client: client }, function (err, paypalClient) {\n\n                        // Render the PayPal button\n\n                        paypal.Button.render({\n\n                            // Set your environment\n\n                            env: \'' + ctx.env + "', // sandbox | production\n\n                            // Wait for the PayPal button to be clicked\n\n                            payment: function() {\n\n                                // Call Braintree to create the payment\n\n                                return paypalClient.createPayment({\n                                    flow:     'checkout',\n                                    amount:   '1.00',\n                                    currency: 'USD',\n                                    intent:   'sale'\n                                });\n                            },\n\n                            // Wait for the payment to be authorized by the customer\n\n                            onAuthorize: function(data, actions) {\n\n                                // Call Braintree to tokenize the payment\n\n                                return paypalClient.tokenizePayment(data).then(function(result) {\n\n                                    // Call your server to finalize the payment\n\n                                    return paypal.request.post('/checkout/api/braintree/pay/', {\n                                        nonce: result.nonce,\n                                        amount: transaction.amount,\n                                        currency: transaction.currency\n\n                                    });\n\n                                }).then(function (res) {\n\n                                    document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                                });\n                            }\n\n                        }, '#paypal-button-container');\n\n                    });\n                });\n            });\n\n        </script>\n    ";
-            }
-        };
-    },
-    "./demo/app/client/js/patterns/billing.jsx": function(module, exports, __webpack_require__) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.billing = undefined;
-        var _react = __webpack_require__("./node_modules/react/react.js");
-        var _react2 = _interopRequireDefault(_react);
-        function _interopRequireDefault(obj) {
-            return obj && obj.__esModule ? obj : {
-                default: obj
-            };
-        }
-        var billing = exports.billing = {
-            name: "Agreements",
-            fullName: "Billing Agreements",
-            intro: _react2["default"].createElement("p", null, "Create a PayPal button and generate billing agreements using a server-side integration."),
+        var experience = exports.experience = {
+            name: "Experience",
+            fullName: "Client Side Express Checkout Experience Profiles",
+            intro: _react2["default"].createElement("p", null, "Create a PayPal button and accept payments using a purely client-side integration, with an experience profile."),
             description: _react2["default"].createElement("div", null, _react2["default"].createElement("p", null, "First, a button is created using ", _react2["default"].createElement("span", {
                 className: "pre"
             }, "paypal.Button.render()"), ", and rendered to the ", _react2["default"].createElement("span", {
                 className: "pre"
             }, "#paypal-button-container"), " element."), _react2["default"].createElement("p", null, "When the button is clicked, ", _react2["default"].createElement("span", {
                 className: "pre"
-            }, "payment()"), " is called. This function then uses ", _react2["default"].createElement("span", {
+            }, "payment()"), " is called. This function then calls ", _react2["default"].createElement("span", {
                 className: "pre"
-            }, "paypal.request.post()"), " to call the merchant server, which invokes the PayPal REST API to create the billing agreement."), _react2["default"].createElement("p", null, "When the agreement is authorized by the customer, ", _react2["default"].createElement("span", {
+            }, "paypal.rest.payment.create()"), ", which invokes the PayPal REST API directly to create the payment and experience profile."), _react2["default"].createElement("p", null, "When the payment is authorized by the customer, ", _react2["default"].createElement("span", {
                 className: "pre"
-            }, "onAuthorize()"), " is called. This function then uses ", _react2["default"].createElement("span", {
+            }, "onAuthorize()"), " is called. This function then calls ", _react2["default"].createElement("span", {
                 className: "pre"
-            }, "paypal.request.post()"), " to call the merchant server, which invokes the PayPal REST API to capture the payment.")),
+            }, "actions.payment.execute()"), ", which invokes the PayPal REST API directly to execute the payment.")),
             code: function code(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a call to the merchant server to set up the agreement\n\n                    return paypal.request.post('/checkout/api/paypal/agreement/create/', {}).then(function (response) {\n                        return response.payToken;\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Make a call to the merchant server to execute the agreement\n\n                    return paypal.request.post('/checkout/api/paypal/agreement/execute/', { payToken: data.paymentToken }) .then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '1.00', currency: 'USD' }\n                            }\n                        ]\n                    }, {\n                        input_fields: {\n                            no_shipping: 1\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
             }
         };
     },
@@ -16671,17 +16609,28 @@ window["ppdemo"] = function(modules) {
             }
         };
     },
-    "./node_modules/react-dom/lib/ReactInstrumentation.js": function(module, exports, __webpack_require__) {
+    "./node_modules/react-dom/lib/ReactOwner.js": function(module, exports, __webpack_require__) {
         (function(process) {
             "use strict";
-            var debugTool = null;
-            if (process.env.NODE_ENV !== "production") {
-                var ReactDebugTool = __webpack_require__("./node_modules/react-dom/lib/ReactDebugTool.js");
-                debugTool = ReactDebugTool;
+            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js");
+            var invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
+            function isValidOwner(object) {
+                return !!(object && typeof object.attachRef === "function" && typeof object.detachRef === "function");
             }
-            module.exports = {
-                debugTool: debugTool
+            var ReactOwner = {
+                addComponentAsRefTo: function addComponentAsRefTo(component, ref, owner) {
+                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "addComponentAsRefTo(...): Only a ReactOwner can have refs. You might be adding a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("119") : void 0;
+                    owner.attachRef(ref, component);
+                },
+                removeComponentAsRefFrom: function removeComponentAsRefFrom(component, ref, owner) {
+                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might be removing a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("120") : void 0;
+                    var ownerPublicInstance = owner.getPublicInstance();
+                    if (ownerPublicInstance && ownerPublicInstance.refs[ref] === component.getPublicInstance()) {
+                        owner.detachRef(ref);
+                    }
+                }
             };
+            module.exports = ReactOwner;
         }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     }
 });

@@ -34,7 +34,7 @@ window["paypal"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.41") {
+        if (window.paypal && window.paypal.version === "4.0.42") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -178,7 +178,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.41";
+        var version = exports.version = "4.0.42";
         module.exports["default"] = module.exports;
     },
     "./src/config/index.js": function(module, exports, __webpack_require__) {
@@ -232,7 +232,7 @@ window["paypal"] = function(modules) {
             scriptUrl: "//www.paypalobjects.com/api/" + "checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.41",
+            version: "4.0.42",
             ppobjects: false,
             cors: true,
             env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
@@ -344,7 +344,7 @@ window["paypal"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.41");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.42");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -978,7 +978,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.41";
+        var version = exports.version = "4.0.42";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -9732,6 +9732,9 @@ window["paypal"] = function(modules) {
             if (prop.decorate) {
                 value = prop.decorate(value);
             }
+            if (prop.value) {
+                value = prop.value;
+            }
             if (prop.getter) {
                 if (!value) {
                     return;
@@ -10262,7 +10265,7 @@ window["paypal"] = function(modules) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.41";
+                payload.version = "4.0.42";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -10287,7 +10290,7 @@ window["paypal"] = function(modules) {
         function checkpoint(name) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
-                var version = "4.0.41".replace(/[^0-9]+/g, "_");
+                var version = "4.0.42".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10300,7 +10303,7 @@ window["paypal"] = function(modules) {
         var FPTI_URL = "https://t.paypal.com/ts";
         function buildPayload() {
             return {
-                v: "checkout.js." + "4.0.41",
+                v: "checkout.js." + "4.0.42",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -10967,7 +10970,7 @@ window["paypal"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.41"
+                    ver: "4.0.42"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -11379,7 +11382,13 @@ window["paypal"] = function(modules) {
                     if (!this.status || this.status >= 400) {
                         return reject(this);
                     }
-                    resolve(JSON.parse(this.responseText));
+                    var result = void 0;
+                    try {
+                        result = JSON.parse(this.responseText);
+                    } catch (err) {
+                        return reject(err);
+                    }
+                    return resolve(result);
                 }, false);
                 xhr.addEventListener("error", function(evt) {
                     reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString()));
@@ -11604,7 +11613,7 @@ window["paypal"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.41";
+                return _config.config.ppobjects ? "4" : "4.0.42";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11784,6 +11793,13 @@ window["paypal"] = function(modules) {
                         return !(0, _lib.hasMetaViewPort)();
                     }
                 },
+                nativeStart: {
+                    type: "function",
+                    required: false,
+                    get value() {
+                        return window.xprops && window.xprops.nativeStart || window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo);
+                    }
+                },
                 testAction: {
                     type: "string",
                     required: false,
@@ -11926,7 +11942,7 @@ window["paypal"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4" : "4.0.41";
+                return _config.config.ppobjects ? "4" : "4.0.42";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -12142,6 +12158,13 @@ window["paypal"] = function(modules) {
                         };
                     }
                 },
+                nativeStart: {
+                    type: "function",
+                    required: false,
+                    get value() {
+                        return window.xprops && window.xprops.nativeStart || window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo);
+                    }
+                },
                 testAction: {
                     type: "string",
                     required: false,
@@ -12303,8 +12326,8 @@ window["paypal"] = function(modules) {
                 }
             }));
             return awaitUrl.then(function(url) {
-                console.warn(url);
-                window.ppnativexo.start(url, {
+                var start = window.ppnativexo ? window.ppnativexo.start.bind(window.ppnativexo.start) : window.xprops.nativeStart;
+                start(url, {
                     onAuthorize: function onAuthorize(returnUrl) {
                         var data = (0, _util.parseParamsFromUrl)(returnUrl);
                         data.returnUrl = returnUrl;
@@ -12334,10 +12357,11 @@ window["paypal"] = function(modules) {
         }
         function setupNativeProxy(Checkout) {
             function branchNative(props, original) {
-                if (!window.ppnativexo || Checkout.contexts.lightbox) {
-                    return original();
+                var hasNativeXO = window.ppnativexo || window.xprops && window.xprops.nativeStart;
+                if (hasNativeXO && !Checkout.contexts.lightbox) {
+                    return renderNative(props);
                 }
-                return renderNative(props);
+                return original();
             }
             var render = Checkout.render;
             Checkout.render = function(props) {
