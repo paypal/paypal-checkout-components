@@ -15,7 +15,7 @@ $ git clone git@github.com:me/paypal-checkout.git
 $ cd paypal-checkout
 
 # Add the upstream repo
-$ git remote add upstream git://github.com/krakenjs/paypal-checkout.git
+$ git remote add upstream git@github.com:paypal/paypal-checkout.git
 
 # Get the latest upstream changes
 $ git pull upstream
