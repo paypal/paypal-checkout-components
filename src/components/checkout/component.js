@@ -397,7 +397,7 @@ if (Checkout.isChild()) {
 
     Checkout.renderPopupTo = function(win, props) : Object {
         if (win === win.top) {
-            win = window.xchild.getParentRenderany();
+            win = window.xchild.getParentRenderWindow();
         }
 
         return renderPopupTo.call(this, win, props);
