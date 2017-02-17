@@ -18,7 +18,7 @@ let onAuthorize : ?Function;
 // Bridge
 
 if (isPayPalDomain()) {
-    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, function({ data } : { data : { method : Function } }) { // eslint-disable-line
+    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => { // eslint-disable-line
         onAuthorize = data.method;
     });
 }

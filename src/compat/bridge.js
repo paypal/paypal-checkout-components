@@ -7,7 +7,7 @@ import postRobot from 'post-robot/src';
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 
-postRobot.on('meta', function({ source, data } : { source : any, data : Object }) { // eslint-disable-line
+postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
 
     if (data.iframeEligible) {
         enableCheckoutIframe();
