@@ -28,7 +28,7 @@ export let config = {
 
     logLevel: 'debug',
 
-    buttonSizes: ['tiny', 'small', 'medium'],
+    buttonSizes: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
 
     throttles: {
         v4_mobile_device: 1000

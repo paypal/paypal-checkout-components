@@ -213,6 +213,16 @@ export let Button = xcomponent.create({
                     medium: {
                         width: '230px',
                         height: '48px'
+                    },
+
+                    large: {
+                        width: '380px',
+                        height: '60px'
+                    },
+
+                    responsive: {
+                        width: '100%',
+                        height: '48px'
                     }
 
                 }[size];
