@@ -207,7 +207,7 @@ export let Button = xcomponent.create({
 
                     small: {
                         width: '148px',
-                        height: '48px'
+                        height: '42px'
                     },
 
                     medium: {
