@@ -285,7 +285,10 @@ export let Button = xcomponent.create({
         }
     },
 
-    autoResize: false,
+    autoResize: {
+        height: true,
+        width: false
+    },
 
     dimensions: {
         width: '148px',

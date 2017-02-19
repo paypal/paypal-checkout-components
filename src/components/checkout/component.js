@@ -343,7 +343,10 @@ export let Checkout = xcomponent.create({
         }
     },
 
-    autoResize: true,
+    autoResize: {
+        width: false,
+        height: true
+    },
 
     get dimensions() : { width : string | number, height : string | number } {
 
