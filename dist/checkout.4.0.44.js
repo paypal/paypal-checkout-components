@@ -34,7 +34,7 @@ window["paypal"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.43") {
+        if (window.paypal && window.paypal.version === "4.0.44") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -178,7 +178,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.43";
+        var version = exports.version = "4.0.44";
         module.exports["default"] = module.exports;
     },
     "./src/config/index.js": function(module, exports, __webpack_require__) {
@@ -229,10 +229,10 @@ window["paypal"] = function(modules) {
             return obj;
         }
         var config = exports.config = {
-            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.4.0.43.js",
+            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.4.0.44.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.43",
+            version: "4.0.44",
             ppobjects: false,
             cors: true,
             env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
@@ -243,7 +243,7 @@ window["paypal"] = function(modules) {
             },
             stage: "msmaster",
             logLevel: "debug",
-            buttonSizes: [ "tiny", "small", "medium" ],
+            buttonSizes: [ "tiny", "small", "medium", "large", "responsive" ],
             throttles: {
                 v4_mobile_device: 1e3
             },
@@ -344,7 +344,7 @@ window["paypal"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4.0.43" : "4.0.43");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4.0.44" : "4.0.44");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -978,7 +978,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.43";
+        var version = exports.version = "4.0.44";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -1217,16 +1217,14 @@ window["paypal"] = function(modules) {
                         }
                     });
                     if (options.timeout) {
-                        (function() {
-                            var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
-                                if (hasResult || (0, _lib.isWindowClosed)(options.window)) {
-                                    return timeout.cancel();
-                                }
-                                if (!remaining) {
-                                    return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
-                                }
-                            }, options.timeout);
-                        })();
+                        var timeout = _lib.util.intervalTimeout(options.timeout, 100, function(remaining) {
+                            if (hasResult || (0, _lib.isWindowClosed)(options.window)) {
+                                return timeout.cancel();
+                            }
+                            if (!remaining) {
+                                return reject(new Error("Post message response timed out after " + options.timeout + " ms"));
+                            }
+                        }, options.timeout);
                     }
                 })["catch"](reject);
             }), options.callback);
@@ -2309,29 +2307,31 @@ window["paypal"] = function(modules) {
                 });
             },
             logLevel: function logLevel(level, args) {
-                try {
-                    if (LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(_conf.CONFIG.LOG_LEVEL)) {
-                        return;
-                    }
-                    args = Array.prototype.slice.call(args);
-                    args.unshift("" + window.location.host + window.location.pathname);
-                    args.unshift("::");
-                    args.unshift("" + (0, _windows.getWindowType)().toLowerCase());
-                    args.unshift("[post-robot]");
-                    if (_conf.CONFIG.LOG_TO_PAGE) {
-                        log.writeToPage(level, args);
-                    }
-                    if (!window.console) {
-                        return;
-                    }
-                    if (!window.console[level]) {
-                        level = "log";
-                    }
-                    if (!window.console[level]) {
-                        return;
-                    }
-                    window.console[level].apply(window.console, args);
-                } catch (err) {}
+                setTimeout(function() {
+                    try {
+                        if (LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(_conf.CONFIG.LOG_LEVEL)) {
+                            return;
+                        }
+                        args = Array.prototype.slice.call(args);
+                        args.unshift("" + window.location.host + window.location.pathname);
+                        args.unshift("::");
+                        args.unshift("" + (0, _windows.getWindowType)().toLowerCase());
+                        args.unshift("[post-robot]");
+                        if (_conf.CONFIG.LOG_TO_PAGE) {
+                            log.writeToPage(level, args);
+                        }
+                        if (!window.console) {
+                            return;
+                        }
+                        if (!window.console[level]) {
+                            level = "log";
+                        }
+                        if (!window.console[level]) {
+                            return;
+                        }
+                        window.console[level].apply(window.console, args);
+                    } catch (err) {}
+                }, 1);
             },
             debug: function debug() {
                 log.logLevel("debug", arguments);
@@ -2615,8 +2615,12 @@ window["paypal"] = function(modules) {
         }
         function isWindowClosed(win) {
             var allowMock = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-            if (win === window) {
-                return false;
+            try {
+                if (win === window) {
+                    return false;
+                }
+            } catch (err) {
+                return true;
             }
             try {
                 if (!win) {
@@ -3618,11 +3622,6 @@ window["paypal"] = function(modules) {
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
         exports.openTunnelToOpener = openTunnelToOpener;
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
@@ -3641,47 +3640,38 @@ window["paypal"] = function(modules) {
                         if (_i.done) break;
                         _ref = _i.value;
                     }
-                    var frame = _ref;
+                    var _frame = _ref;
                     try {
-                        if (frame && frame !== window && (0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                            return frame;
+                        if (_frame && _frame !== window && (0, _lib.isSameDomain)(_frame) && _frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                            return _frame;
                         }
                     } catch (err) {
                         continue;
                     }
                 }
                 try {
-                    var _ret = function() {
-                        var frame = (0, _lib.getFrameByName)(win, (0, _common.getBridgeName)(_lib.util.getDomain()));
-                        if (!frame) {
-                            return {
-                                v: void 0
-                            };
-                        }
-                        if ((0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                            return {
-                                v: frame
-                            };
-                        }
-                        return {
-                            v: new _promise.SyncPromise(function(resolve) {
-                                var interval = void 0;
-                                var timeout = void 0;
-                                interval = setInterval(function() {
-                                    if ((0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
-                                        clearInterval(interval);
-                                        clearTimeout(timeout);
-                                        return resolve(frame);
-                                    }
-                                    setTimeout(function() {
-                                        clearInterval(interval);
-                                        return resolve();
-                                    }, 2e3);
-                                }, 100);
-                            })
-                        };
-                    }();
-                    if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+                    var frame = (0, _lib.getFrameByName)(win, (0, _common.getBridgeName)(_lib.util.getDomain()));
+                    if (!frame) {
+                        return;
+                    }
+                    if ((0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                        return frame;
+                    }
+                    return new _promise.SyncPromise(function(resolve) {
+                        var interval = void 0;
+                        var timeout = void 0;
+                        interval = setInterval(function() {
+                            if ((0, _lib.isSameDomain)(frame) && frame[_conf.CONSTANTS.WINDOW_PROPS.POSTROBOT]) {
+                                clearInterval(interval);
+                                clearTimeout(timeout);
+                                return resolve(frame);
+                            }
+                            setTimeout(function() {
+                                clearInterval(interval);
+                                return resolve();
+                            }, 2e3);
+                        }, 100);
+                    });
                 } catch (err) {
                     return;
                 }
@@ -4202,13 +4192,11 @@ window["paypal"] = function(modules) {
                 throw err;
             };
             if (options.once) {
-                (function() {
-                    var handler = options.handler;
-                    options.handler = _lib.util.once(function() {
-                        (0, _drivers.removeRequestListener)(options);
-                        return handler.apply(this, arguments);
-                    });
-                })();
+                var handler = options.handler;
+                options.handler = _lib.util.once(function() {
+                    (0, _drivers.removeRequestListener)(options);
+                    return handler.apply(this, arguments);
+                });
             }
             var override = options.override || _conf.CONFIG.MOCK_MODE;
             if (options.source) {
@@ -4220,14 +4208,12 @@ window["paypal"] = function(modules) {
                 options.errorHandler(err);
             };
             if (options.window && options.errorOnClose) {
-                (function() {
-                    var interval = _lib.util.safeInterval(function() {
-                        if ((0, _lib.isWindowClosed)(options.window)) {
-                            interval.cancel();
-                            options.handleError(new Error("Post message target window is closed"));
-                        }
-                    }, 50);
-                })();
+                var interval = _lib.util.safeInterval(function() {
+                    if ((0, _lib.isWindowClosed)(options.window)) {
+                        interval.cancel();
+                        options.handleError(new Error("Post message target window is closed"));
+                    }
+                }, 50);
             }
             return {
                 cancel: function cancel() {
@@ -4865,7 +4851,8 @@ window["paypal"] = function(modules) {
             if (!window.console || !window.console.log) {
                 return;
             }
-            if (_config.logLevels.indexOf(level) > _config.logLevels.indexOf(_config.config.logLevel)) {
+            var logLevel = window.LOG_LEVEL || _config.config.logLevel;
+            if (_config.logLevels.indexOf(level) > _config.logLevels.indexOf(logLevel)) {
                 return;
             }
             payload = payload || {};
@@ -5674,17 +5661,15 @@ window["paypal"] = function(modules) {
                 (0, _performance.initHeartBeat)();
             }
             if (_config.config.logUnload) {
-                (function() {
-                    var async = !_config.config.logUnloadSync;
-                    window.addEventListener("beforeunload", function() {
-                        (0, _logger.info)("window_beforeunload");
-                        (0, _logger.immediateFlush)(async);
-                    });
-                    window.addEventListener("unload", function() {
-                        (0, _logger.info)("window_unload");
-                        (0, _logger.immediateFlush)(async);
-                    });
-                })();
+                var async = !_config.config.logUnloadSync;
+                window.addEventListener("beforeunload", function() {
+                    (0, _logger.info)("window_beforeunload");
+                    (0, _logger.immediateFlush)(async);
+                });
+                window.addEventListener("unload", function() {
+                    (0, _logger.info)("window_unload");
+                    (0, _logger.immediateFlush)(async);
+                });
             }
             if (_config.config.flushInterval) {
                 setInterval(_logger.flush, _config.config.flushInterval);
@@ -6195,6 +6180,7 @@ window["paypal"] = function(modules) {
         exports.setOverflow = setOverflow;
         exports.trackDimensions = trackDimensions;
         exports.onDimensionsChange = onDimensionsChange;
+        exports.dimensionsMatchViewport = dimensionsMatchViewport;
         exports.bindEvents = bindEvents;
         exports.setVendorCSS = setVendorCSS;
         exports.animate = animate;
@@ -6591,17 +6577,28 @@ window["paypal"] = function(modules) {
                 }
             };
         }
-        function dimensionsDiff(one, two, threshold) {
-            return Math.abs(one.height - two.height) > threshold || Math.abs(one.width - two.width) > threshold;
+        function dimensionsDiff(one, two, _ref9) {
+            var _ref9$width = _ref9.width, width = _ref9$width === undefined ? true : _ref9$width, _ref9$height = _ref9.height, height = _ref9$height === undefined ? true : _ref9$height, _ref9$threshold = _ref9.threshold, threshold = _ref9$threshold === undefined ? 0 : _ref9$threshold;
+            if (width && Math.abs(one.width - two.width) > threshold) {
+                return true;
+            }
+            if (height && Math.abs(one.height - two.height) > threshold) {
+                return true;
+            }
+            return false;
         }
-        function trackDimensions(el) {
-            var threshold = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        function trackDimensions(el, _ref10) {
+            var _ref10$width = _ref10.width, width = _ref10$width === undefined ? true : _ref10$width, _ref10$height = _ref10.height, height = _ref10$height === undefined ? true : _ref10$height, _ref10$threshold = _ref10.threshold, threshold = _ref10$threshold === undefined ? 0 : _ref10$threshold;
             var currentDimensions = getCurrentDimensions(el);
             return {
                 check: function check() {
                     var newDimensions = getCurrentDimensions(el);
                     return {
-                        changed: dimensionsDiff(currentDimensions, newDimensions, threshold),
+                        changed: dimensionsDiff(currentDimensions, newDimensions, {
+                            width: width,
+                            height: height,
+                            threshold: threshold
+                        }),
                         dimensions: newDimensions
                     };
                 },
@@ -6610,11 +6607,14 @@ window["paypal"] = function(modules) {
                 }
             };
         }
-        function onDimensionsChange(el) {
-            var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-            var threshold = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+        function onDimensionsChange(el, _ref11) {
+            var _ref11$width = _ref11.width, width = _ref11$width === undefined ? true : _ref11$width, _ref11$height = _ref11.height, height = _ref11$height === undefined ? true : _ref11$height, _ref11$delay = _ref11.delay, delay = _ref11$delay === undefined ? 50 : _ref11$delay, _ref11$threshold = _ref11.threshold, threshold = _ref11$threshold === undefined ? 0 : _ref11$threshold;
             return new _promise.SyncPromise(function(resolve) {
-                var tracker = trackDimensions(el, threshold);
+                var tracker = trackDimensions(el, {
+                    width: width,
+                    height: height,
+                    threshold: threshold
+                });
                 var interval = void 0;
                 var resolver = (0, _fn.debounce)(function(dimensions) {
                     clearInterval(interval);
@@ -6629,34 +6629,45 @@ window["paypal"] = function(modules) {
                 }, delay);
             });
         }
+        function dimensionsMatchViewport(el, _ref12) {
+            var width = _ref12.width, height = _ref12.height;
+            var dimensions = getCurrentDimensions(el);
+            if (width && dimensions.width !== window.innerWidth) {
+                return false;
+            }
+            if (height && dimensions.height !== window.innerHeight) {
+                return false;
+            }
+            return true;
+        }
         function bindEvents(element, eventNames, handler) {
             handler = (0, _fn.once)(handler);
             for (var _iterator7 = eventNames, _isArray7 = Array.isArray(_iterator7), _i7 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
-                var _ref9;
+                var _ref13;
                 if (_isArray7) {
                     if (_i7 >= _iterator7.length) break;
-                    _ref9 = _iterator7[_i7++];
+                    _ref13 = _iterator7[_i7++];
                 } else {
                     _i7 = _iterator7.next();
                     if (_i7.done) break;
-                    _ref9 = _i7.value;
+                    _ref13 = _i7.value;
                 }
-                var eventName = _ref9;
+                var eventName = _ref13;
                 element.addEventListener(eventName, handler);
             }
             return {
                 cancel: (0, _fn.once)(function() {
                     for (var _iterator8 = eventNames, _isArray8 = Array.isArray(_iterator8), _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
-                        var _ref10;
+                        var _ref14;
                         if (_isArray8) {
                             if (_i8 >= _iterator8.length) break;
-                            _ref10 = _iterator8[_i8++];
+                            _ref14 = _iterator8[_i8++];
                         } else {
                             _i8 = _iterator8.next();
                             if (_i8.done) break;
-                            _ref10 = _i8.value;
+                            _ref14 = _i8.value;
                         }
-                        var eventName = _ref10;
+                        var eventName = _ref14;
                         element.removeEventListener(eventName, handler);
                     }
                 })
@@ -6667,16 +6678,16 @@ window["paypal"] = function(modules) {
             element.style[name] = value;
             var capitalizedName = (0, _util.capitalizeFirstLetter)(name);
             for (var _iterator9 = VENDOR_PREFIXES, _isArray9 = Array.isArray(_iterator9), _i9 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                var _ref11;
+                var _ref15;
                 if (_isArray9) {
                     if (_i9 >= _iterator9.length) break;
-                    _ref11 = _iterator9[_i9++];
+                    _ref15 = _iterator9[_i9++];
                 } else {
                     _i9 = _iterator9.next();
                     if (_i9.done) break;
-                    _ref11 = _i9.value;
+                    _ref15 = _i9.value;
                 }
-                var prefix = _ref11;
+                var prefix = _ref15;
                 element.style["" + prefix + capitalizedName] = value;
             }
         }
@@ -7087,6 +7098,7 @@ window["paypal"] = function(modules) {
         exports.promisify = promisify;
         exports.getter = getter;
         exports.delay = delay;
+        exports.cycle = cycle;
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         function denodeify(method) {
             return function() {
@@ -7132,6 +7144,11 @@ window["paypal"] = function(modules) {
         function delay(time) {
             return new _promise.SyncPromise(function(resolve) {
                 setTimeout(resolve, time);
+            });
+        }
+        function cycle(method) {
+            return _promise.SyncPromise["try"](method).then(function() {
+                return cycle(method);
             });
         }
     },
@@ -7263,9 +7280,7 @@ window["paypal"] = function(modules) {
                     _this.context = data.context;
                     window.xprops = _this.props = {};
                     _this.setProps(data.props, origin);
-                    if (_this.component.autoResize) {
-                        _this.watchForResize();
-                    }
+                    _this.watchForResize();
                     return _this;
                 })["catch"](function(err) {
                     _this.error(err);
@@ -7446,9 +7461,31 @@ window["paypal"] = function(modules) {
                     });
                 }
             }, {
+                key: "autoResize",
+                value: function autoResize() {
+                    var width = false;
+                    var height = false;
+                    var autoResize = this.component.autoResize;
+                    if ((typeof autoResize === "undefined" ? "undefined" : _typeof(autoResize)) === "object") {
+                        width = Boolean(autoResize.width);
+                        height = Boolean(autoResize.height);
+                    } else if (autoResize) {
+                        width = true;
+                        height = true;
+                    }
+                    return {
+                        width: width,
+                        height: height
+                    };
+                }
+            }, {
                 key: "watchForResize",
                 value: function watchForResize() {
                     var _this4 = this;
+                    var _autoResize = this.autoResize(), width = _autoResize.width, height = _autoResize.height;
+                    if (!width && !height) {
+                        return;
+                    }
                     if (!this.component.dimensions) {
                         return;
                     }
@@ -7459,45 +7496,29 @@ window["paypal"] = function(modules) {
                     if (window.navigator.userAgent.match(/MSIE (9|10)\./)) {
                         el = document.body;
                     }
-                    var resize = function resize(width, height) {
-                        var history = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-                        return _promise.SyncPromise["try"](function() {
-                            for (var _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                var _ref4;
-                                if (_isArray3) {
-                                    if (_i4 >= _iterator3.length) break;
-                                    _ref4 = _iterator3[_i4++];
-                                } else {
-                                    _i4 = _iterator3.next();
-                                    if (_i4.done) break;
-                                    _ref4 = _i4.value;
-                                }
-                                var size = _ref4;
-                                if (size.width === width && size.height === height) {
-                                    return;
-                                }
-                            }
-                            history.push({
+                    return _promise.SyncPromise["try"](function() {
+                        if (!(0, _lib.dimensionsMatchViewport)(el, {
+                            width: width,
+                            height: height
+                        })) {
+                            return _this4.resizeToElement(el, {
                                 width: width,
                                 height: height
                             });
-                            var tracker = (0, _lib.trackDimensions)(el);
-                            return _this4.resize(width, height).then(function() {
-                                var _tracker$check = tracker.check(), changed = _tracker$check.changed, dimensions = _tracker$check.dimensions;
-                                if (changed) {
-                                    return resize(dimensions.width, dimensions.height, history);
-                                }
+                        }
+                    }).then(function() {
+                        return (0, _lib.cycle)(function() {
+                            return (0, _lib.onDimensionsChange)(el, {
+                                width: width,
+                                height: height
+                            }).then(function(dimensions) {
+                                return _this4.resizeToElement(el, {
+                                    width: width,
+                                    height: height
+                                });
                             });
                         });
-                    };
-                    var watcher = function watcher() {
-                        (0, _lib.onDimensionsChange)(el).then(function(dimensions) {
-                            return resize(dimensions.width, dimensions.height);
-                        }).then(function() {
-                            watcher();
-                        });
-                    };
-                    watcher();
+                    });
                 }
             }, {
                 key: "exports",
@@ -7529,6 +7550,49 @@ window["paypal"] = function(modules) {
                             height: height
                         });
                     });
+                }
+            }, {
+                key: "resizeToElement",
+                value: function resizeToElement(el, _ref4) {
+                    var _this6 = this;
+                    var width = _ref4.width, height = _ref4.height;
+                    var history = [];
+                    var resize = function resize() {
+                        return _promise.SyncPromise["try"](function() {
+                            var tracker = (0, _lib.trackDimensions)(el, {
+                                width: width,
+                                height: height
+                            });
+                            var _tracker$check = tracker.check(), dimensions = _tracker$check.dimensions;
+                            for (var _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                                var _ref5;
+                                if (_isArray3) {
+                                    if (_i4 >= _iterator3.length) break;
+                                    _ref5 = _iterator3[_i4++];
+                                } else {
+                                    _i4 = _iterator3.next();
+                                    if (_i4.done) break;
+                                    _ref5 = _i4.value;
+                                }
+                                var size = _ref5;
+                                var widthMatch = !width || size.width === dimensions.width;
+                                var heightMatch = !height || size.height === dimensions.height;
+                                if (widthMatch && heightMatch) {
+                                    return;
+                                }
+                            }
+                            history.push({
+                                width: dimensions.width,
+                                height: dimensions.height
+                            });
+                            return _this6.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
+                                if (tracker.check().changed) {
+                                    return resize();
+                                }
+                            });
+                        });
+                    };
+                    return resize();
                 }
             }, {
                 key: "hide",
@@ -7582,6 +7646,47 @@ window["paypal"] = function(modules) {
             } ]);
             return ChildComponent;
         }(_base.BaseComponent);
+        if ((0, _window.isXComponentWindow)()) {
+            (function() {
+                var logLevels = _client2["default"].logLevels;
+                var _loop4 = function _loop4() {
+                    if (_isArray4) {
+                        if (_i5 >= _iterator4.length) return "break";
+                        _ref6 = _iterator4[_i5++];
+                    } else {
+                        _i5 = _iterator4.next();
+                        if (_i5.done) return "break";
+                        _ref6 = _i5.value;
+                    }
+                    var level = _ref6;
+                    var original = window.console[level];
+                    if (!original || !original.apply) {
+                        return "continue";
+                    }
+                    console[level] = function() {
+                        var logLevel = window.LOG_LEVEL;
+                        if (!logLevel || logLevels.indexOf(logLevel) === -1) {
+                            return original.apply(this, arguments);
+                        }
+                        if (logLevels.indexOf(level) > logLevels.indexOf(logLevel)) {
+                            return;
+                        }
+                        return original.apply(this, arguments);
+                    };
+                };
+                _loop5: for (var _iterator4 = logLevels, _isArray4 = Array.isArray(_iterator4), _i5 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                    var _ref6;
+                    var _ret4 = _loop4();
+                    switch (_ret4) {
+                      case "break":
+                        break _loop5;
+
+                      case "continue":
+                        continue;
+                    }
+                }
+            })();
+        }
     },
     "./node_modules/xcomponent/src/component/window.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -8205,14 +8310,12 @@ window["paypal"] = function(modules) {
                             value = prop.childDef.call();
                         }
                     } else if (prop.getter) {
-                        (function() {
-                            var val = value;
-                            value = function value() {
-                                return val.apply(this, arguments).then(function(res) {
-                                    return res ? res : prop.childDef.call();
-                                });
-                            };
-                        })();
+                        var val = value;
+                        value = function value() {
+                            return val.apply(this, arguments).then(function(res) {
+                                return res ? res : prop.childDef.call();
+                            });
+                        };
                     }
                 }
                 if (value && prop.sameDomain && origin !== (0, _lib.getDomain)(window)) {
@@ -8243,11 +8346,6 @@ window["paypal"] = function(modules) {
             value: true
         });
         exports.ParentComponent = undefined;
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
         var _slicedToArray = function() {
             function sliceIterator(arr, i) {
                 var _arr = [];
@@ -8996,27 +9094,21 @@ window["paypal"] = function(modules) {
             }, {
                 key: "resize",
                 value: function resize(width, height) {
-                    var _this16 = this;
                     this.component.log("resize", {
                         height: height,
                         width: width
                     });
                     this.driver.resize.call(this, width, height);
                     if (this.elementTemplate || this.iframe) {
-                        var _ret2 = function() {
-                            var overflow = void 0;
-                            if (_this16.elementTemplate) {
-                                overflow = (0, _lib.setOverflow)(_this16.elementTemplate, "hidden");
+                        var overflow = void 0;
+                        if (this.elementTemplate) {
+                            overflow = (0, _lib.setOverflow)(this.elementTemplate, "hidden");
+                        }
+                        return (0, _lib.elementStoppedMoving)(this.elementTemplate || this.iframe).then(function() {
+                            if (overflow) {
+                                overflow.reset();
                             }
-                            return {
-                                v: (0, _lib.elementStoppedMoving)(_this16.elementTemplate || _this16.iframe).then(function() {
-                                    if (overflow) {
-                                        overflow.reset();
-                                    }
-                                })
-                            };
-                        }();
-                        if ((typeof _ret2 === "undefined" ? "undefined" : _typeof(_ret2)) === "object") return _ret2.v;
+                        });
                     }
                 }
             }, {
@@ -9048,30 +9140,30 @@ window["paypal"] = function(modules) {
             }, {
                 key: "close",
                 value: function close() {
-                    var _this17 = this;
+                    var _this16 = this;
                     var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                     return _promise.SyncPromise["try"](function() {
-                        _this17.component.log("close", {
+                        _this16.component.log("close", {
                             reason: reason
                         });
-                        return _this17.props.onClose(reason);
+                        return _this16.props.onClose(reason);
                     }).then(function() {
-                        return _promise.SyncPromise.all([ _this17.closeComponent(), _this17.closeContainer() ]);
+                        return _promise.SyncPromise.all([ _this16.closeComponent(), _this16.closeContainer() ]);
                     }).then(function() {
-                        return _this17.destroy();
+                        return _this16.destroy();
                     });
                 }
             }, {
                 key: "closeContainer",
                 value: function closeContainer() {
-                    var _this18 = this;
+                    var _this17 = this;
                     var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                     return _promise.SyncPromise["try"](function() {
-                        return _this18.props.onClose(reason);
+                        return _this17.props.onClose(reason);
                     }).then(function() {
-                        return _promise.SyncPromise.all([ _this18.closeComponent(reason), _this18.hideContainer() ]);
+                        return _promise.SyncPromise.all([ _this17.closeComponent(reason), _this17.hideContainer() ]);
                     }).then(function() {
-                        return _this18.destroyContainer();
+                        return _this17.destroyContainer();
                     });
                 }
             }, {
@@ -9083,22 +9175,22 @@ window["paypal"] = function(modules) {
             }, {
                 key: "closeComponent",
                 value: function closeComponent() {
-                    var _this19 = this;
+                    var _this18 = this;
                     var reason = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.CLOSE_REASONS.PARENT_CALL;
                     this.clean.run("destroyCloseWindowListener");
                     this.clean.run("destroyUnloadWindowListener");
                     var win = this.window;
                     return _promise.SyncPromise["try"](function() {
-                        return _this19.cancelContainerEvents();
+                        return _this18.cancelContainerEvents();
                     }).then(function() {
-                        return _this19.props.onClose(reason);
+                        return _this18.props.onClose(reason);
                     }).then(function() {
-                        return _this19.hideComponent();
+                        return _this18.hideComponent();
                     }).then(function() {
-                        return _this19.destroyComponent();
+                        return _this18.destroyComponent();
                     }).then(function() {
-                        if (_this19.childExports && _this19.context === _constants.CONTEXT_TYPES.POPUP && !_src2["default"].winutil.isWindowClosed(win)) {
-                            _this19.childExports.close()["catch"](_lib.noop);
+                        if (_this18.childExports && _this18.context === _constants.CONTEXT_TYPES.POPUP && !_src2["default"].winutil.isWindowClosed(win)) {
+                            _this18.childExports.close()["catch"](_lib.noop);
                         }
                     });
                 }
@@ -9120,15 +9212,15 @@ window["paypal"] = function(modules) {
             }, {
                 key: "showComponent",
                 value: function showComponent() {
-                    var _this20 = this;
+                    var _this19 = this;
                     return _promise.SyncPromise["try"](function() {
-                        if (_this20.props.onDisplay) {
-                            return _this20.props.onDisplay();
+                        if (_this19.props.onDisplay) {
+                            return _this19.props.onDisplay();
                         }
                     }).then(function() {
-                        if (_this20.elementTemplate) {
-                            (0, _lib.addClass)(_this20.elementTemplate, _constants.CLASS_NAMES.SHOW_COMPONENT);
-                            (0, _lib.showAndAnimate)(_this20.elementTemplate, _constants.ANIMATION_NAMES.SHOW_COMPONENT);
+                        if (_this19.elementTemplate) {
+                            (0, _lib.addClass)(_this19.elementTemplate, _constants.CLASS_NAMES.SHOW_COMPONENT);
+                            (0, _lib.showAndAnimate)(_this19.elementTemplate, _constants.ANIMATION_NAMES.SHOW_COMPONENT);
                         }
                     });
                 }
@@ -9189,61 +9281,61 @@ window["paypal"] = function(modules) {
             }, {
                 key: "openContainer",
                 value: function openContainer() {
-                    var _this21 = this;
+                    var _this20 = this;
                     return _promise.SyncPromise["try"](function() {
-                        if (!_this21.driver.parentTemplate) {
+                        if (!_this20.driver.parentTemplate) {
                             return;
                         }
-                        return _this21.getParentTemplate();
+                        return _this20.getParentTemplate();
                     }).then(function(parentTemplate) {
                         if (!parentTemplate) {
                             return;
                         }
                         if (window.top !== window) {}
-                        _this21.parentTemplateFrame = (0, _lib.iframe)(null, {
+                        _this20.parentTemplateFrame = (0, _lib.iframe)(null, {
                             name: "__lightbox_container__" + (0, _lib.uniqueID)() + "__",
                             scrolling: "no"
                         }, document.body);
-                        _this21.parentTemplateFrame.style.display = "block";
-                        _this21.parentTemplateFrame.style.position = "fixed";
-                        _this21.parentTemplateFrame.style.top = "0";
-                        _this21.parentTemplateFrame.style.left = "0";
-                        _this21.parentTemplateFrame.style.width = "100%";
-                        _this21.parentTemplateFrame.style.height = "100%";
-                        _this21.parentTemplateFrame.style.zIndex = "2147483647";
-                        _this21.parentTemplateFrame.contentWindow.document.open();
-                        _this21.parentTemplateFrame.contentWindow.document.write("<body></body>");
-                        _this21.parentTemplateFrame.contentWindow.document.close();
-                        _this21.parentTemplate = (0, _lib.createElement)("div", {
+                        _this20.parentTemplateFrame.style.display = "block";
+                        _this20.parentTemplateFrame.style.position = "fixed";
+                        _this20.parentTemplateFrame.style.top = "0";
+                        _this20.parentTemplateFrame.style.left = "0";
+                        _this20.parentTemplateFrame.style.width = "100%";
+                        _this20.parentTemplateFrame.style.height = "100%";
+                        _this20.parentTemplateFrame.style.zIndex = "2147483647";
+                        _this20.parentTemplateFrame.contentWindow.document.open();
+                        _this20.parentTemplateFrame.contentWindow.document.write("<body></body>");
+                        _this20.parentTemplateFrame.contentWindow.document.close();
+                        _this20.parentTemplate = (0, _lib.createElement)("div", {
                             html: (0, _lib.template)(parentTemplate, {
-                                id: _constants.CLASS_NAMES.XCOMPONENT + "-" + _this21.props.uid,
+                                id: _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.props.uid,
                                 CLASS: _constants.CLASS_NAMES,
                                 ANIMATION: _constants.ANIMATION_NAMES
                             }),
                             attributes: {
-                                id: _constants.CLASS_NAMES.XCOMPONENT + "-" + _this21.props.uid
+                                id: _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.props.uid
                             },
-                            class: [ _constants.CLASS_NAMES.XCOMPONENT, _constants.CLASS_NAMES.XCOMPONENT + "-" + _this21.context ]
+                            class: [ _constants.CLASS_NAMES.XCOMPONENT, _constants.CLASS_NAMES.XCOMPONENT + "-" + _this20.context ]
                         });
-                        (0, _lib.hideElement)(_this21.parentTemplate);
-                        _this21.parentTemplateFrame.contentWindow.document.body.appendChild(_this21.parentTemplate);
-                        if (_this21.driver.renderedIntoParentTemplate) {
-                            _this21.elementTemplate = _this21.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0];
-                            if (!_this21.elementTemplate) {
+                        (0, _lib.hideElement)(_this20.parentTemplate);
+                        _this20.parentTemplateFrame.contentWindow.document.body.appendChild(_this20.parentTemplate);
+                        if (_this20.driver.renderedIntoParentTemplate) {
+                            _this20.elementTemplate = _this20.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0];
+                            if (!_this20.elementTemplate) {
                                 throw new Error("Could not find element to render component into");
                             }
-                            (0, _lib.hideElement)(_this21.elementTemplate);
+                            (0, _lib.hideElement)(_this20.elementTemplate);
                         }
                         var eventHandlers = [];
-                        if (_this21.driver.focusable) {
-                            eventHandlers.push((0, _lib.addEventToClass)(_this21.parentTemplate, _constants.CLASS_NAMES.FOCUS, _constants.EVENT_NAMES.CLICK, function(event) {
-                                return _this21.focus();
+                        if (_this20.driver.focusable) {
+                            eventHandlers.push((0, _lib.addEventToClass)(_this20.parentTemplate, _constants.CLASS_NAMES.FOCUS, _constants.EVENT_NAMES.CLICK, function(event) {
+                                return _this20.focus();
                             }));
                         }
-                        eventHandlers.push((0, _lib.addEventToClass)(_this21.parentTemplate, _constants.CLASS_NAMES.CLOSE, _constants.EVENT_NAMES.CLICK, function(event) {
-                            return _this21.userClose();
+                        eventHandlers.push((0, _lib.addEventToClass)(_this20.parentTemplate, _constants.CLASS_NAMES.CLOSE, _constants.EVENT_NAMES.CLICK, function(event) {
+                            return _this20.userClose();
                         }));
-                        _this21.clean.register("destroyContainerEvents", function() {
+                        _this20.clean.register("destroyContainerEvents", function() {
                             for (var _iterator5 = eventHandlers, _isArray5 = Array.isArray(_iterator5), _i5 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
                                 var _ref15;
                                 if (_isArray5) {
@@ -9258,10 +9350,10 @@ window["paypal"] = function(modules) {
                                 eventHandler.cancel();
                             }
                         });
-                        _this21.clean.register("destroyParentTemplate", function() {
-                            document.body.removeChild(_this21.parentTemplateFrame);
-                            delete _this21.parentTemplateFrame;
-                            delete _this21.parentTemplate;
+                        _this20.clean.register("destroyParentTemplate", function() {
+                            document.body.removeChild(_this20.parentTemplateFrame);
+                            delete _this20.parentTemplateFrame;
+                            delete _this20.parentTemplate;
                         });
                     });
                 }
@@ -9273,43 +9365,43 @@ window["paypal"] = function(modules) {
             }, {
                 key: "destroy",
                 value: function destroy() {
-                    var _this22 = this;
+                    var _this21 = this;
                     return _promise.SyncPromise["try"](function() {
-                        if (_this22.clean.hasTasks()) {
-                            _this22.component.log("destroy");
+                        if (_this21.clean.hasTasks()) {
+                            _this21.component.log("destroy");
                             _client2["default"].flush();
-                            return _this22.clean.all();
+                            return _this21.clean.all();
                         }
                     });
                 }
             }, {
                 key: "tryInit",
                 value: function tryInit(method) {
-                    var _this23 = this;
+                    var _this22 = this;
                     return _promise.SyncPromise["try"](method)["catch"](function(err) {
-                        _this23.onInit.reject(err);
+                        _this22.onInit.reject(err);
                         throw err;
                     }).then(function() {
-                        return _this23.onInit;
+                        return _this22.onInit;
                     });
                 }
             }, {
                 key: "error",
                 value: function error(err) {
-                    var _this24 = this;
+                    var _this23 = this;
                     this.handledErrors = this.handledErrors || [];
                     if (this.handledErrors.indexOf(err) !== -1) {
                         return;
                     }
                     this.handledErrors.push(err);
                     return _promise.SyncPromise["try"](function() {
-                        _this24.component.logError("error", {
+                        _this23.component.logError("error", {
                             error: err.stack || err.toString()
                         });
-                        _this24.onInit.reject(err);
-                        return _this24.props.onError(err);
+                        _this23.onInit.reject(err);
+                        return _this23.props.onError(err);
                     }).then(function() {
-                        return _this24.destroy();
+                        return _this23.destroy();
                     })["catch"](function(err2) {
                         throw new Error("An error was encountered while handling error:\n\n " + err.stack + "\n\n" + err2.stack);
                     }).then(function() {
@@ -9452,8 +9544,12 @@ window["paypal"] = function(modules) {
                 }
             },
             resize: function resize(width, height) {
-                this.iframe.style.width = (0, _lib.toCSS)(width);
-                this.iframe.style.height = (0, _lib.toCSS)(height);
+                if (width) {
+                    this.iframe.style.width = (0, _lib.toCSS)(width);
+                }
+                if (height) {
+                    this.iframe.style.height = (0, _lib.toCSS)(height);
+                }
             },
             hide: function hide() {
                 this.iframe.style.display = "none";
@@ -9583,8 +9679,12 @@ window["paypal"] = function(modules) {
             },
             resize: function resize(width, height) {
                 var container = this.parentTemplate.getElementsByClassName(_constants.CLASS_NAMES.ELEMENT)[0] || this.iframe;
-                container.style.width = (0, _lib.toCSS)(width);
-                container.style.height = (0, _lib.toCSS)(height);
+                if (width) {
+                    container.style.width = (0, _lib.toCSS)(width);
+                }
+                if (height) {
+                    container.style.height = (0, _lib.toCSS)(height);
+                }
             },
             hide: function hide() {
                 this.iframe.style.display = "none";
@@ -9742,21 +9842,17 @@ window["paypal"] = function(modules) {
                 if (value instanceof Function) {
                     value = value.bind(instance);
                 } else {
-                    (function() {
-                        var val = value;
-                        value = function value() {
-                            return val;
-                        };
-                    })();
+                    var val = value;
+                    value = function value() {
+                        return val;
+                    };
                 }
                 value = (0, _lib.getter)(value);
                 if (prop.memoize) {
-                    (function() {
-                        var val = (0, _lib.memoize)(value);
-                        value = function value() {
-                            return val();
-                        };
-                    })();
+                    var _val = (0, _lib.memoize)(value);
+                    value = function value() {
+                        return _val();
+                    };
                 }
                 return value;
             }
@@ -9774,26 +9870,24 @@ window["paypal"] = function(modules) {
                         }
                     }
                 } else {
-                    (function() {
-                        value = value.bind(instance);
-                        if (prop.denodeify) {
-                            value = (0, _lib.denodeify)(value);
-                        }
-                        if (prop.promisify) {
-                            value = (0, _lib.promisify)(value);
-                        }
-                        var original = value;
-                        value = function value() {
-                            component.log("call_prop_" + key);
-                            return original.apply(this, arguments);
-                        };
-                        if (prop.once) {
-                            value = (0, _lib.once)(value);
-                        }
-                        if (prop.memoize) {
-                            value = (0, _lib.memoize)(value);
-                        }
-                    })();
+                    value = value.bind(instance);
+                    if (prop.denodeify) {
+                        value = (0, _lib.denodeify)(value);
+                    }
+                    if (prop.promisify) {
+                        value = (0, _lib.promisify)(value);
+                    }
+                    var original = value;
+                    value = function value() {
+                        component.log("call_prop_" + key);
+                        return original.apply(this, arguments);
+                    };
+                    if (prop.once) {
+                        value = (0, _lib.once)(value);
+                    }
+                    if (prop.memoize) {
+                        value = (0, _lib.memoize)(value);
+                    }
                 }
             } else if (prop.type === "string") {} else if (prop.type === "object") {} else if (prop.type === "number") {
                 if (value !== undefined) {
@@ -10265,7 +10359,7 @@ window["paypal"] = function(modules) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.43";
+                payload.version = "4.0.44";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -10279,18 +10373,20 @@ window["paypal"] = function(modules) {
                     var beaconImage = new window.Image();
                     beaconImage.src = BEACON_URL + "?" + query;
                 }
-                if (_config.config.logLevel === _config.LOG_LEVEL.DEBUG) {
-                    if (window.console && window.console.log) {
-                        window.console.log("*", event, payload);
+                setTimeout(function() {
+                    if (_config.config.logLevel === _config.LOG_LEVEL.DEBUG) {
+                        if (window.console && window.console.log) {
+                            window.console.log("*", event, payload);
+                        }
                     }
-                }
+                }, 1);
             } catch (err) {}
         }
         var loggedCheckpoints = [];
         function checkpoint(name) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
-                var version = "4.0.43".replace(/[^0-9]+/g, "_");
+                var version = "4.0.44".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10303,7 +10399,7 @@ window["paypal"] = function(modules) {
         var FPTI_URL = "https://t.paypal.com/ts";
         function buildPayload() {
             return {
-                v: "checkout.js." + "4.0.43",
+                v: "checkout.js." + "4.0.44",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -10953,6 +11049,9 @@ window["paypal"] = function(modules) {
             value: true
         });
         exports.initLogger = initLogger;
+        exports.setLogLevel = setLogLevel;
+        var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
+        var _src2 = _interopRequireDefault(_src);
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
         var _config = __webpack_require__("./src/config/index.js");
@@ -10970,7 +11069,7 @@ window["paypal"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.43"
+                    ver: "4.0.44"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -10984,6 +11083,15 @@ window["paypal"] = function(modules) {
                 logPerformance: false,
                 prefix: "ppxo"
             });
+        }
+        function setLogLevel(logLevel) {
+            if (_client2["default"].logLevels.indexOf(logLevel) === -1) {
+                throw new Error("Invalid logLevel: " + logLevel);
+            }
+            _config.config.logLevel = logLevel;
+            _client2["default"].config.logLevel = logLevel;
+            _src2["default"].CONFIG.LOG_LEVEL = logLevel;
+            window.LOG_LEVEL = logLevel;
         }
     },
     "./src/lib/eligibility.js": function(module, exports, __webpack_require__) {
@@ -11613,7 +11721,7 @@ window["paypal"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4.0.43" : "4.0.43";
+                return _config.config.ppobjects ? "4.0.44" : "4.0.44";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11751,10 +11859,18 @@ window["paypal"] = function(modules) {
                             },
                             small: {
                                 width: "148px",
-                                height: "48px"
+                                height: "42px"
                             },
                             medium: {
                                 width: "230px",
+                                height: "48px"
+                            },
+                            large: {
+                                width: "380px",
+                                height: "60px"
+                            },
+                            responsive: {
+                                width: "100%",
                                 height: "48px"
                             }
                         }[size];
@@ -11793,6 +11909,13 @@ window["paypal"] = function(modules) {
                         return !(0, _lib.hasMetaViewPort)();
                     }
                 },
+                logLevel: {
+                    type: "string",
+                    required: false,
+                    get value() {
+                        return _config.config.logLevel;
+                    }
+                },
                 nativeStart: {
                     type: "function",
                     required: false,
@@ -11808,12 +11931,18 @@ window["paypal"] = function(modules) {
                     }
                 }
             },
-            autoResize: false,
+            autoResize: {
+                height: true,
+                width: false
+            },
             dimensions: {
                 width: "148px",
                 height: "48px"
             }
         });
+        if (Button.isChild() && window.xprops.logLevel) {
+            (0, _lib.setLogLevel)(window.xprops.logLevel);
+        }
     },
     "./src/components/common.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -11942,7 +12071,7 @@ window["paypal"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4.0.43" : "4.0.43";
+                return _config.config.ppobjects ? "4.0.44" : "4.0.44";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -12158,6 +12287,13 @@ window["paypal"] = function(modules) {
                         };
                     }
                 },
+                logLevel: {
+                    type: "string",
+                    required: false,
+                    get value() {
+                        return _config.config.logLevel;
+                    }
+                },
                 nativeStart: {
                     type: "function",
                     required: false,
@@ -12173,7 +12309,10 @@ window["paypal"] = function(modules) {
                     }
                 }
             },
-            autoResize: true,
+            autoResize: {
+                width: false,
+                height: true
+            },
             get dimensions() {
                 if ((0, _lib.isDevice)()) {
                     return {
@@ -12210,15 +12349,16 @@ window["paypal"] = function(modules) {
             }, 5 * 60 * 1e3);
         }
         if (Checkout.isChild()) {
-            (function() {
-                var renderPopupTo = Checkout.renderPopupTo;
-                Checkout.renderPopupTo = function(win, props) {
-                    if (win === win.top) {
-                        win = window.xchild.getParentRenderWindow();
-                    }
-                    return renderPopupTo.call(this, win, props);
-                };
-            })();
+            var renderPopupTo = Checkout.renderPopupTo;
+            Checkout.renderPopupTo = function(win, props) {
+                if (win === win.top) {
+                    win = window.xchild.getParentRenderWindow();
+                }
+                return renderPopupTo.call(this, win, props);
+            };
+        }
+        if (Checkout.isChild() && window.xprops.logLevel) {
+            (0, _lib.setLogLevel)(window.xprops.logLevel);
         }
     },
     "./src/components/checkout/parentTemplate.htm": function(module, exports) {
@@ -12602,35 +12742,33 @@ window["paypal"] = function(modules) {
                         }
                     }
                 } else if (options.container && options.container.length !== 0) {
-                    (function() {
-                        var labels = void 0;
-                        if (typeof options.type === "string") {
-                            labels = [ options.type ];
-                        } else if (options.type instanceof Array) {
-                            labels = options.type;
-                        } else {
-                            labels = [];
-                        }
-                        var containerElements = (0, _lib.getElements)(options.container);
-                        if (containerElements.length) {
-                            containerElements.forEach(function(container, i) {
-                                if (container.tagName && container.tagName.toLowerCase() === "a") {
-                                    $logger.warn("container_a_tag");
-                                }
-                                var buttonEl = renderButton(id, container, options, labels[i]);
-                                buttons.push({
-                                    container: container,
-                                    button: buttonEl,
-                                    click: options.click,
-                                    condition: options.condition
-                                });
+                    var labels = void 0;
+                    if (typeof options.type === "string") {
+                        labels = [ options.type ];
+                    } else if (options.type instanceof Array) {
+                        labels = options.type;
+                    } else {
+                        labels = [];
+                    }
+                    var containerElements = (0, _lib.getElements)(options.container);
+                    if (containerElements.length) {
+                        containerElements.forEach(function(container, i) {
+                            if (container.tagName && container.tagName.toLowerCase() === "a") {
+                                $logger.warn("container_a_tag");
+                            }
+                            var buttonEl = renderButton(id, container, options, labels[i]);
+                            buttons.push({
+                                container: container,
+                                button: buttonEl,
+                                click: options.click,
+                                condition: options.condition
                             });
-                        } else {
-                            $logger.warn("button_container_not_found", {
-                                container: JSON.stringify(options.container)
-                            });
-                        }
-                    })();
+                        });
+                    } else {
+                        $logger.warn("button_container_not_found", {
+                            container: JSON.stringify(options.container)
+                        });
+                    }
                 }
                 return buttons;
             });
@@ -13365,11 +13503,6 @@ window["paypal"] = function(modules) {
     },
     "./src/compat/fallback.js": function(module, exports, __webpack_require__) {
         "use strict";
-        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-            return typeof obj;
-        } : function(obj) {
-            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        };
         var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
         var _src2 = _interopRequireDefault(_src);
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
@@ -13412,73 +13545,68 @@ window["paypal"] = function(modules) {
         window.watchForLegacyFallback = function(win) {
             var interval = setInterval(function() {
                 try {
-                    var _ret = function() {
-                        var isLegacy = win.document.body.innerHTML.indexOf("merchantpaymentweb") !== -1 || win.document.body.innerHTML.indexOf("wapapp") !== -1;
-                        if (!isLegacy || win.ppxoWatching || win.closed) {
-                            return {
-                                v: void 0
-                            };
-                        }
-                        win.ppxoWatching = true;
-                        var send = win.XMLHttpRequest.prototype.send;
-                        win.XMLHttpRequest.prototype.send = function() {
-                            if (this._patched) {
-                                return send.apply(this, arguments);
-                            }
-                            this._patched = true;
-                            var self = this;
-                            var onload = this.onload;
-                            function listener() {
-                                if (self.readyState === self.DONE && self.status === 200 && self.responseText) {
-                                    try {
-                                        var response = JSON.parse(self.responseText.replace("while (1);", ""));
-                                        if (response.type === "redirect" && response.url && onAuthorize) {
-                                            var url = response.url;
-                                            clearInterval(interval);
-                                            win.close();
-                                            onAuthorize({
-                                                returnUrl: url,
-                                                paymentToken: match(url, /token=((EC-)?[A-Z0-9]+)/),
-                                                billingToken: match(url, /ba_token=((BA-)?[A-Z0-9]+)/),
-                                                payerID: match(url, /PayerID=([A-Z0-9]+)/),
-                                                paymentID: match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
-                                            });
-                                            onAuthorize = null;
-                                            if (win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES) {
-                                                Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
-                                                    value: Math.random().toString()
-                                                });
-                                            }
-                                            if (win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady) {
-                                                win.mob.Xhr.prototype._xhrOnReady = _lib.noop;
-                                            }
-                                        }
-                                    } catch (err) {
-                                        return;
-                                    }
-                                }
-                                if (onload) {
-                                    return onload.apply(this, arguments);
-                                }
-                            }
-                            if (this.onload !== listener) {
-                                try {
-                                    delete this.onload;
-                                    this.onload = listener;
-                                    Object.defineProperty(this, "onload", {
-                                        get: function get() {
-                                            return listener;
-                                        },
-                                        set: function set(handler) {
-                                            onload = handler;
-                                        }
-                                    });
-                                } catch (err) {}
-                            }
+                    var isLegacy = win.document.body.innerHTML.indexOf("merchantpaymentweb") !== -1 || win.document.body.innerHTML.indexOf("wapapp") !== -1;
+                    if (!isLegacy || win.ppxoWatching || win.closed) {
+                        return;
+                    }
+                    win.ppxoWatching = true;
+                    var send = win.XMLHttpRequest.prototype.send;
+                    win.XMLHttpRequest.prototype.send = function() {
+                        if (this._patched) {
                             return send.apply(this, arguments);
-                        };
-                    }();
-                    if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+                        }
+                        this._patched = true;
+                        var self = this;
+                        var onload = this.onload;
+                        function listener() {
+                            if (self.readyState === self.DONE && self.status === 200 && self.responseText) {
+                                try {
+                                    var response = JSON.parse(self.responseText.replace("while (1);", ""));
+                                    if (response.type === "redirect" && response.url && onAuthorize) {
+                                        var url = response.url;
+                                        clearInterval(interval);
+                                        win.close();
+                                        onAuthorize({
+                                            returnUrl: url,
+                                            paymentToken: match(url, /token=((EC-)?[A-Z0-9]+)/),
+                                            billingToken: match(url, /ba_token=((BA-)?[A-Z0-9]+)/),
+                                            payerID: match(url, /PayerID=([A-Z0-9]+)/),
+                                            paymentID: match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
+                                        });
+                                        onAuthorize = null;
+                                        if (win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES) {
+                                            Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
+                                                value: Math.random().toString()
+                                            });
+                                        }
+                                        if (win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady) {
+                                            win.mob.Xhr.prototype._xhrOnReady = _lib.noop;
+                                        }
+                                    }
+                                } catch (err) {
+                                    return;
+                                }
+                            }
+                            if (onload) {
+                                return onload.apply(this, arguments);
+                            }
+                        }
+                        if (this.onload !== listener) {
+                            try {
+                                delete this.onload;
+                                this.onload = listener;
+                                Object.defineProperty(this, "onload", {
+                                    get: function get() {
+                                        return listener;
+                                    },
+                                    set: function set(handler) {
+                                        onload = handler;
+                                    }
+                                });
+                            } catch (err) {}
+                        }
+                        return send.apply(this, arguments);
+                    };
                 } catch (err) {}
             }, 100);
         };
@@ -14338,8 +14466,6 @@ window["paypal"] = function(modules) {
         exports.setup = setup;
         var _client = __webpack_require__("./node_modules/beaver-logger/client/index.js");
         var _client2 = _interopRequireDefault(_client);
-        var _src = __webpack_require__("./node_modules/post-robot/src/index.js");
-        var _src2 = _interopRequireDefault(_src);
         var _config = __webpack_require__("./src/config/index.js");
         var _lib = __webpack_require__("./src/lib/index.js");
         var _components = __webpack_require__("./src/components/index.js");
@@ -14451,12 +14577,7 @@ window["paypal"] = function(modules) {
                 (0, _compat.setupBridge)(_config.config.env);
             }
             if (logLevel) {
-                if (_client2["default"].logLevels.indexOf(logLevel) === -1) {
-                    throw new Error("Invalid logLevel: " + logLevel);
-                }
-                _config.config.logLevel = logLevel;
-                _client2["default"].config.logLevel = logLevel;
-                _src2["default"].CONFIG.LOG_LEVEL = logLevel;
+                (0, _lib.setLogLevel)(logLevel);
             }
             _client2["default"].info("setup_" + _config.config.env);
             _client2["default"].debug("current_protocol_" + currentProtocol);
@@ -14532,4 +14653,4 @@ window["paypal"] = function(modules) {
         });
     }
 });
-//# sourceMappingURL=checkout.4.0.43.js.map
+//# sourceMappingURL=checkout.4.0.44.js.map
