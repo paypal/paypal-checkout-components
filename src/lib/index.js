@@ -9,4 +9,3 @@ export * from './dom';
 export * from './http';
 export * from './beacon';
 export * from './throttle';
-export * from './log';
