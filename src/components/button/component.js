@@ -4,7 +4,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
 
 import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 
 import { validateProps } from '../common';
 
@@ -267,6 +267,14 @@ export let Button = xcomponent.create({
             }
         },
 
+        logLevel: {
+            type: 'string',
+            required: false,
+            get value() : string {
+                return config.logLevel;
+            }
+        },
+
         nativeStart: {
             type: 'function',
             required: false,
@@ -295,3 +303,7 @@ export let Button = xcomponent.create({
         height: '48px'
     }
 });
+
+if (Button.isChild() && window.xprops.logLevel) {
+    setLogLevel(window.xprops.logLevel);
+}

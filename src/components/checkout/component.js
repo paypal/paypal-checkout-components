@@ -13,7 +13,7 @@ import componentTemplate from './componentTemplate.htm';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupNativeProxy } from './native';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
 
 import { validateProps } from '../common';
@@ -325,6 +325,14 @@ export let Checkout = xcomponent.create({
             }
         },
 
+        logLevel: {
+            type: 'string',
+            required: false,
+            get value() : string {
+                return config.logLevel;
+            }
+        },
+
         nativeStart: {
             type: 'function',
             required: false,
@@ -405,4 +413,8 @@ if (Checkout.isChild()) {
 
         return renderPopupTo.call(this, win, props);
     };
+}
+
+if (Checkout.isChild() && window.xprops.logLevel) {
+    setLogLevel(window.xprops.logLevel);
 }

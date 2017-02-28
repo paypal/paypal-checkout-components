@@ -27,11 +27,13 @@ export function beacon(event : string, payload : Object = {}) {
             beaconImage.src = `${BEACON_URL}?${query}`;
         }
 
-        if (config.logLevel === LOG_LEVEL.DEBUG) {
-            if (window.console && window.console.log) {
-                window.console.log('*', event, payload);
+        setTimeout(() => {
+            if (config.logLevel === LOG_LEVEL.DEBUG) {
+                if (window.console && window.console.log) {
+                    window.console.log('*', event, payload);
+                }
             }
-        }
+        }, 1);
 
     } catch (err) {
         // pass

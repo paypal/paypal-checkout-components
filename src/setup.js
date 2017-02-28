@@ -1,10 +1,9 @@
 /* @flow */
 
 import $logger from 'beaver-logger/client';
-import postRobot from 'post-robot/src';
 
 import { config, ENV } from './config';
-import { initLogger, checkForCommonErrors, beacon } from './lib';
+import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
 import { setupBridge } from './compat';
 
@@ -126,14 +125,7 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     }
 
     if (logLevel) {
-
-        if ($logger.logLevels.indexOf(logLevel) === -1) {
-            throw new Error(`Invalid logLevel: ${logLevel}`);
-        }
-
-        config.logLevel = logLevel;
-        $logger.config.logLevel = logLevel;
-        postRobot.CONFIG.LOG_LEVEL = logLevel;
+        setLogLevel(logLevel);
     }
 
     $logger.info(`setup_${config.env}`);
