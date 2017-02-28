@@ -151,26 +151,22 @@ function getActions(checkout, data, actions, intent) {
                     throw new Error('Client side execute is only available for REST based transactions');
                 }
 
-                if (data.intent) {
+                return executePayment(data.paymentID, data.payerID).finally(() => {
+                    actions.payment.get.reset();
 
-                    if (data.intent !== 'sale') {
-                        throw new Error('Client side execute is only available for sale transactions');
+                }).catch(err => { // eslint-disable-line
+
+                    // processor decline use case, we re-render the flow.
+
+                    if (err && err.message === 'CC_PROCESSOR_DECLINED') {
+                        return restartFlow();
                     }
 
-                    return executePayment(data.paymentID, data.payerID, restartFlow).finally(() => {
-                        actions.payment.get.reset();
-                    });
-                }
-
-                return actions.payment.get().then(payment => {
-
-                    if (!payment || payment.intent !== 'sale') {
-                        throw new Error('Client side execute is only available for sale transactions');
+                    if (err && err.message === 'INSTRUMENT_DECLINED') {
+                        return restartFlow();
                     }
 
-                    return executePayment(data.paymentID, data.payerID, restartFlow).finally(() => {
-                        actions.payment.get.reset();
-                    });
+                    throw new Error('Payment could not be executed');
                 });
             }),
 

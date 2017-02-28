@@ -158,7 +158,7 @@ export function getPayment(paymentID) {
     });
 }
 
-export function executePayment(paymentID, payerID, restartFlow) {
+export function executePayment(paymentID, payerID) {
 
     // TODO: Execute payment for WPS (inventory, etc.)
 
@@ -175,19 +175,5 @@ export function executePayment(paymentID, payerID, restartFlow) {
     }).then(res => {
 
         return mapPayment(res.data);
-
-    }).catch(err => { // eslint-disable-line
-
-        // processor decline use case, we re-render the flow.
-        
-        if (err && err.message === 'CC_PROCESSOR_DECLINED') {
-            return restartFlow();
-        }
-
-        if (err && err.message === 'INSTRUMENT_DECLINED') {
-            return restartFlow();
-        }
-
-        throw new Error('Payment could not be executed ');
     });
 }
