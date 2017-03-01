@@ -26,6 +26,22 @@ export function validateProps(props : Object, required : boolean = true) {
         }
     }
 
+    // Prop Validations for the credit button
+
+    // Tiny size for credit button is not supported
+    if (props.style.label && props.style.size) {
+        if (props.style.label === 'credit' && props.style.size === 'tiny') {
+            throw new Error(`Invalid credit button size: ${props.style.size}`);
+        }
+    }
+
+    // Custom colors for credit buttons are not supported
+    if (props.style.label && props.style.color) {
+        if (props.style.label === 'credit' && props.style.color) {
+            throw new Error(`Custom colors for credit button are not supported`);
+        }
+    }
+
     let env = props.env || config.env;
 
     if (props.client) {
