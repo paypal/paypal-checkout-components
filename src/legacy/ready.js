@@ -2,7 +2,7 @@
 
 import logger from 'beaver-logger/client';
 
-import { onDocumentReady } from '../lib';
+import { onDocumentReady, onKey } from '../lib';
 import { ENV } from '../config';
 
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
@@ -31,40 +31,23 @@ function invokeReady(method) {
     });
 }
 
-if (typeof window.paypalCheckoutReady === 'function') {
-    $logger.debug(`paypal_checkout_ready_preset`);
-    invokeReady(window.paypalCheckoutReady);
-}
 
-let _paypalCheckoutReady = window.paypalCheckoutReady;
+onKey(window, 'paypalCheckoutReady', method => {
 
-try {
-    delete window.paypalCheckoutReady;
+    if (typeof method === 'function') {
 
-    // $FlowFixMe
-    Object.defineProperty(window, 'paypalCheckoutReady', {
+        let oneTimeReady = function() : void {
+            if (!method.called) {
+                method.called = true;
+                return method.apply(this, arguments);
+            }
+        };
 
-        set(method) {
-            $logger.debug(`paypal_checkout_ready_setter`);
+        invokeReady(oneTimeReady);
 
-            _paypalCheckoutReady = function() : void {
-                if (!method.called) {
-                    method.called = true;
-                    return method.apply(this, arguments);
-                }
-            };
-
-            invokeReady(_paypalCheckoutReady);
-        },
-
-        get() : Function {
-            $logger.warn(`paypal_checkout_ready_getter`);
-            return _paypalCheckoutReady;
-        }
-    });
-} catch (err) {
-    $logger.warn(`paypal_checkout_ready_setter_error`, { error: err.stack || err.toString() });
-}
+        return oneTimeReady;
+    }
+});
 
 
 /*  Scan for buttons

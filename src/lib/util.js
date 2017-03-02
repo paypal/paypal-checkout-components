@@ -1,5 +1,6 @@
 /* @flow */
 
+import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { config } from '../config';
 
 export function isPayPalDomain() : boolean {
@@ -138,4 +139,44 @@ export function eventEmitter() : Listener {
             }
         }
     };
+}
+
+export function cycle(method : Function) : SyncPromise {
+    return SyncPromise.try(method).then(() => cycle(method));
+}
+
+export function onKey(obj : Object, key : string, callback : Function) {
+
+    if (!obj) {
+        return;
+    }
+
+    let value = obj[key];
+
+    if (value) {
+        value = callback(value) || value;
+    }
+
+    try {
+
+        delete obj[key];
+
+        Object.defineProperty(obj, key, {
+
+            set(item) {
+                value = item;
+
+                if (value) {
+                    value = callback(value) || value;
+                }
+            },
+
+            get() : mixed {
+                return value;
+            }
+        });
+
+    } catch (err) {
+        // pass
+    }
 }
