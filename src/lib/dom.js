@@ -90,10 +90,13 @@ export function getElement(item : mixed) : ?HTMLElement {
     }
 
     if (typeof item === 'string') {
-        let result = document.querySelector && document.querySelector(item);
 
-        if (result) {
-            return result;
+        if (document.querySelector) {
+            let result = document.querySelector(item);
+
+            if (result) {
+                return result;
+            }
         }
 
         return document.getElementById(item);
