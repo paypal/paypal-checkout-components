@@ -1,447 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-        <meta name="robots" content="noindex" />
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="robots" content="noindex" />
 
-        <title>PayPal</title>
+    <title>PayPal</title>
 
-        <style type="text/css">
+    <style type="text/css">
 
-            html, body {
-                padding: 0;
-                margin: 0;
-                width: 100%;
-                overflow: hidden;
-                text-align: center;
+        html, body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Base Button */
+
+        .paypal-button {
+            white-space: nowrap;
+            margin: 0;
+            padding: 0;
+            background: 0;
+            border: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            text-transform: none;
+            font-weight: 500;
+            -webkit-font-smoothing: antialiased;
+            font-smoothing: antialiased;
+            cursor: pointer;
+            z-index: 0;
+
+            width: 100%;
+
+            min-width: 80px;
+            min-height: 22px;
+
+            box-sizing: border-box;
+        }
+
+        .paypal-button .paypal-button-content {
+            padding: 4px 8px 4px;
+            border: 1px solid transparent;
+            border-radius: 0 3px 3px 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            position: relative;
+            display: inline-block;
+
+            width: calc(100% - 2px);
+
+            box-sizing: border-box;
+            border: none;
+        }
+
+        .paypal-button .paypal-button-content img {
+            padding: 0;
+            display: inline-block;
+            background: none;
+            border: none;
+            vertical-align: middle;
+        }
+
+        .paypal-button .paypal-button-content .text {
+            display: inline-block;
+            padding: 0 3px;
+            vertical-align: middle;
+            padding-top: 2px;
+        }
+
+        .paypal-button .paypal-button-content::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .paypal-button .paypal-button-tag-content {
+            max-width: 100%;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: normal;
+            color: #003366;
+            display: block;
+            text-align: center;
+            width: auto;
+        }
+
+
+        @media only screen and (max-width : 79px) {
+            .paypal-button {
+                display: none;
             }
+        }
 
-            /* Base Button */
+        @media only screen and (max-height : 21px) {
+            .paypal-button {
+                display: none;
+            }
+        }
+
+
+        /* Tiny */
+
+        @media only screen and (min-width : 80px) {
+            html, body {
+                min-height: 22px;
+            }
+        }
+
+        @media only screen and (min-width : 80px) and (min-height: 22px) {
 
             .paypal-button {
-                white-space: nowrap;
-                margin: 0;
-                padding: 0;
-                background: 0;
-                border: 0;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                text-transform: none;
-                font-weight: 500;
-                -webkit-font-smoothing: antialiased;
-                font-smoothing: antialiased;
-                cursor: pointer;
-                z-index: 0;
-
-                width: 100%;
-
-                min-width: 80px;
-                min-height: 22px;
-
-                box-sizing: border-box;
+                max-width: 100px;
             }
 
             .paypal-button .paypal-button-content {
-                padding: 4px 8px 4px;
-                border: 1px solid transparent;
-                border-radius: 0 3px 3px 0;
-                padding-top: 0;
-                padding-bottom: 0;
-                position: relative;
-                display: inline-block;
+                height: 18px;
+                max-height: 18px;
+                padding: 0 5px;
+                margin: 2px;
+                border-radius: 9px;
+                font-size: 10px;
 
-                width: calc(100% - 2px);
-
-                box-sizing: border-box;
-                border: none;
+                width: calc(100% - 4px);
             }
 
             .paypal-button .paypal-button-content img {
-                padding: 0;
-                display: inline-block;
-                background: none;
-                border: none;
-                vertical-align: middle;
+                height: 16px;
+                margin-top: 1px;
             }
 
             .paypal-button .paypal-button-content .text {
-                display: inline-block;
-                padding: 0 3px;
-                vertical-align: middle;
-                padding-top: 2px;
+
             }
 
             .paypal-button .paypal-button-content::before {
-                content: "";
-                position: absolute;
+                padding: 1px;
+                top: -1px;
+                left: -1px;
                 z-index: -1;
-                width: 100%;
-                height: 100%;
+                border-radius: 10px;
+            }
+
+            .paypal-button.paypal-shape-rect .paypal-button-content::before {
+                border-radius: 3px;
             }
 
             .paypal-button .paypal-button-tag-content {
-                max-width: 100%;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-weight: normal;
-                color: #003366;
-                display: block;
-                text-align: center;
-                width: auto;
+
             }
 
+            .paypal-button.paypal-shape-rect .paypal-button-content {
+                border-radius: 3px;
+            }
+        }
 
-            @media only screen and (max-width : 79px) {
-                .paypal-button {
-                    display: none;
-                }
+        /* Small */
+
+        @media only screen and (min-width : 100px) {
+            html, body {
+                min-height: 22px;
+                max-height: 42px;
+            }
+        }
+
+        @media only screen and (min-width : 100px) and (min-height: 22px) {
+
+            .paypal-button {
+                max-width: 180px;
             }
 
-            @media only screen and (max-height : 21px) {
-                .paypal-button {
-                    display: none;
-                }
+            .paypal-button .paypal-button-content {
+                height: 24px;
+                max-height: 24px;
+                padding: 0 6px;
+                margin: 2px;
+                border-radius: 12px;
+                font-size: 10px;
+
+                width: calc(100% - 4px);
             }
 
-
-            /* Tiny */
-
-            @media only screen and (min-width : 80px) {
-                html, body {
-                    min-height: 22px;
-                }
+            .paypal-button .paypal-button-content .text {
+                max-width: 60px;
+                padding-top: 2px;
             }
 
-            @media only screen and (min-width : 80px) and (min-height: 22px) {
-
-                .paypal-button {
-                    max-width: 100px;
-                }
-
-                .paypal-button .paypal-button-content {
-                    height: 18px;
-                    max-height: 18px;
-                    padding: 0 5px;
-                    margin: 2px;
-                    border-radius: 9px;
-                    font-size: 10px;
-
-                    width: calc(100% - 4px);
-                }
-
-                .paypal-button .paypal-button-content img {
-                    height: 16px;
-                    margin-top: 1px;
-                }
-
-                .paypal-button .paypal-button-content .text {
-
-                }
-
-                .paypal-button .paypal-button-content::before {
-                    padding: 1px;
-                    top: -1px;
-                    left: -1px;
-                    z-index: -1;
-                    border-radius: 10px;
-                }
-
-                .paypal-button.paypal-shape-rect .paypal-button-content::before {
-                    border-radius: 3px;
-                }
-
-                .paypal-button .paypal-button-tag-content {
-
-                }
-
-                .paypal-button.paypal-shape-rect .paypal-button-content {
-                    border-radius: 3px;
-                }
+            .paypal-button .paypal-button-content img {
+                height: 20px;
+                margin-top: 2px;
             }
 
-            /* Small */
-
-            @media only screen and (min-width : 100px) {
-                html, body {
-                    min-height: 22px;
-                    max-height: 42px;
-                }
+            .paypal-button .paypal-button-tag-content {
+                font-size: 9px;
+                margin-top: 1px;
             }
 
-            @media only screen and (min-width : 100px) and (min-height: 22px) {
-
-                .paypal-button {
-                    max-width: 180px;
-                }
-
-                .paypal-button .paypal-button-content {
-                    height: 24px;
-                    max-height: 24px;
-                    padding: 0 6px;
-                    margin: 2px;
-                    border-radius: 12px;
-                    font-size: 10px;
-
-                    width: calc(100% - 4px);
-                }
-
-                .paypal-button .paypal-button-content .text {
-                    max-width: 60px;
-                    padding-top: 2px;
-                }
-
-                .paypal-button .paypal-button-content img {
-                    height: 20px;
-                    margin-top: 2px;
-                }
-
-                .paypal-button .paypal-button-tag-content {
-                    font-size: 9px;
-                    margin-top: 3px;
-                }
-
-                .paypal-button .paypal-button-content::before {
-                    padding: 1px;
-                    top: -1px;
-                    left: -1px;
-                    border-radius: 14px;
-                }
-
-                .paypal-button.paypal-shape-rect .paypal-button-content,
-                .paypal-button.paypal-shape-rect .paypal-button-content::before {
-                    border-radius: 4px;
-                }
+            .paypal-button .paypal-button-content::before {
+                padding: 1px;
+                top: -1px;
+                left: -1px;
+                border-radius: 14px;
             }
 
+            .paypal-button.paypal-shape-rect .paypal-button-content,
+            .paypal-button.paypal-shape-rect .paypal-button-content::before {
+                border-radius: 4px;
+            }
+        }
 
-            /* Medium */
 
-            @media only screen and (min-width : 180px) {
-                html, body {
-                    min-height: 48px;
-                    max-height: 48px;
-                }
+        /* Medium */
+
+        @media only screen and (min-width : 180px) {
+            html, body {
+                min-height: 48px;
+                max-height: 48px;
+            }
+        }
+
+        @media only screen and (min-width : 180px) and (min-height: 48px) {
+
+            .paypal-button {
+                max-width: 250px;
             }
 
-            @media only screen and (min-width : 180px) and (min-height: 48px) {
+            .paypal-button .paypal-button-content {
+                height: 30px;
+                max-height: 30px;
+                padding: 0 6px;
+                margin: 2px;
+                border-radius: 15px;
+                font-size: 12px;
 
-                .paypal-button {
-                    max-width: 250px;
-                }
-
-                .paypal-button .paypal-button-content {
-                    height: 30px;
-                    max-height: 30px;
-                    padding: 0 6px;
-                    margin: 2px;
-                    border-radius: 15px;
-                    font-size: 12px;
-
-                    width: calc(100% - 4px);
-                }
-
-                .paypal-button .paypal-button-content img {
-                    height: 24px;
-                    padding-top: 2px;
-                }
-
-                .paypal-button .paypal-button-content .text {
-                    max-width: 140px;
-                    padding-top: 5px;
-                }
-
-                .paypal-button .paypal-button-content::before {
-                    padding: 2px;
-                    top: -2px;
-                    left: -2px;
-                    border-radius: 17px;
-                }
-
-                .paypal-button .paypal-button-tag-content {
-                    line-height: 12px;
-                    font-size: 10px;
-                }
-
-                .paypal-button.paypal-shape-rect .paypal-button-content,
-                .paypal-button.paypal-shape-rect .paypal-button-content::before {
-                    border-radius: 6px;
-                }
+                width: calc(100% - 4px);
             }
 
-
-            /* Large */
-
-            @media only screen and (min-width : 250px) {
-                html, body {
-                    min-height: 60px;
-                    max-height: 60px;
-                }
+            .paypal-button .paypal-button-content img {
+                height: 24px;
+                padding-top: 2px;
             }
 
-            @media only screen and (min-width : 250px) and (min-height: 60px) {
-
-                .paypal-button {
-                    max-width: 500px;
-                }
-
-                .paypal-button .paypal-button-content {
-                    height: 40px;
-                    max-height: 40px;
-                    padding: 0 6px;
-                    margin: 2px;
-                    border-radius: 20px;
-                    font-size: 14px;
-
-                    width: calc(100% - 4px);
-                }
-
-                .paypal-button .paypal-button-content img {
-                    height: 29px;
-                    padding-top: 4px;
-                }
-
-                .paypal-button .paypal-button-content .text {
-                    max-width: 140px;
-                    padding-top: 8px;
-                }
-
-                .paypal-button .paypal-button-content::before {
-                    padding: 2px;
-                    top: -2px;
-                    left: -2px;
-                    border-radius: 20px;
-                }
-
-                .paypal-button .paypal-button-tag-content {
-                    line-height: 12px;
-                    font-size: 10px;
-                }
-
-                .paypal-button.paypal-shape-rect .paypal-button-content,
-                .paypal-button.paypal-shape-rect .paypal-button-content::before {
-                    border-radius: 6px;
-                }
+            .paypal-button .paypal-button-content .text {
+                max-width: 140px;
+                padding-top: 5px;
             }
 
-
-
-
-            /* Gold */
-
-            .paypal-button.paypal-color-gold .paypal-button-content {
-                background: #ffc439;
-                color: #000;
-                text-shadow: 0px 1px 0 #ffdc88;
+            .paypal-button .paypal-button-content::before {
+                padding: 2px;
+                top: -2px;
+                left: -2px;
+                border-radius: 17px;
             }
 
-            .paypal-button.paypal-color-gold .paypal-button-content::before {
-                background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;
-                background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;
-                background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;
-                background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;
-                background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;
+            .paypal-button .paypal-button-tag-content {
+                font-size: 10px;
             }
 
-
-            /* Blue */
-
-            .paypal-button.paypal-color-blue .paypal-button-content {
-                background: #009cde;
-                color: white;
-                text-shadow: 0px -1px 0 #0d86bb;
+            .paypal-button.paypal-shape-rect .paypal-button-content,
+            .paypal-button.paypal-shape-rect .paypal-button-content::before {
+                border-radius: 6px;
             }
-            .paypal-button.paypal-color-blue .paypal-button-content::before {
-                background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;
-                background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-                background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-                background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-                background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;
+        }
+
+
+        /* Large */
+
+        @media only screen and (min-width : 250px) {
+            html, body {
+                min-height: 60px;
+                max-height: 60px;
             }
+        }
 
+        @media only screen and (min-width : 250px) and (min-height: 60px) {
 
-            /* Silver */
-
-            .paypal-button.paypal-color-silver .paypal-button-content {
-                background: #eee;
-                color: #000;
-                text-shadow: 0px -1px 0 #ccc;
+            .paypal-button {
+                max-width: 500px;
             }
 
-            .paypal-button.paypal-color-silver .paypal-button-content::before {
-                background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
-                background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-                background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-                background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-                background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
+            .paypal-button .paypal-button-content {
+                height: 40px;
+                max-height: 40px;
+                padding: 0 6px;
+                margin: 2px;
+                border-radius: 20px;
+                font-size: 14px;
+
+                width: calc(100% - 4px);
             }
 
-        </style>
-    </head>
+            .paypal-button .paypal-button-content img {
+                height: 29px;
+                padding-top: 4px;
+            }
 
-    <body>
-        <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
+            .paypal-button .paypal-button-content .text {
+                max-width: 140px;
+                padding-top: 8px;
+            }
 
-        <div id="buttonContainer">
-            <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
+            .paypal-button .paypal-button-content::before {
+                padding: 2px;
+                top: -2px;
+                left: -2px;
+                border-radius: 20px;
+            }
+
+            .paypal-button .paypal-button-tag-content {
+                font-size: 10px;
+            }
+
+            .paypal-button.paypal-shape-rect .paypal-button-content,
+            .paypal-button.paypal-shape-rect .paypal-button-content::before {
+                border-radius: 6px;
+            }
+        }
+
+
+
+
+        /* Gold */
+
+        .paypal-button.paypal-color-gold .paypal-button-content {
+            background: #ffc439;
+            color: #000;
+            text-shadow: 0px 1px 0 #ffdc88;
+        }
+
+        .paypal-button.paypal-color-gold .paypal-button-content::before {
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;
+            background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;
+            background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;
+            background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;
+            background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;
+        }
+
+
+        /* Blue */
+
+        .paypal-button.paypal-color-blue .paypal-button-content {
+            background: #009cde;
+            color: white;
+            text-shadow: 0px -1px 0 #0d86bb;
+        }
+        .paypal-button.paypal-color-blue .paypal-button-content::before {
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;
+            background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;
+            background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;
+            background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;
+            background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;
+        }
+
+
+        /* Silver */
+
+        .paypal-button.paypal-color-silver .paypal-button-content {
+            background: #eee;
+            color: #000;
+            text-shadow: 0px -1px 0 #ccc;
+        }
+
+        .paypal-button.paypal-color-silver .paypal-button-content::before {
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
+            background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
+        }
+
+
+        /* Credit Button */
+
+        /* Credit Blue */
+        .paypal-button.paypal-color-creditblue .paypal-button-content {
+            background: #003087;
+            color: white;
+            text-shadow: 0px -1px 0 #0d86bb;
+        }
+        .paypal-button.paypal-color-creditblue .paypal-button-content::before {
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;
+            background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+            background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;
+        }
+
+        /* Credit Tiny */
+
+        @media only screen and (min-width : 130px) {
+            html, body {
+                min-height: 42px;
+            }
+        }
+
+        @media only screen and (min-width : 130px) and (min-height: 42px) {
+
+            .paypal-button.paypal-style-credit .paypal-button-content img {
+                height: 15px;
+                margin-top: 4px;
+            }
+
+        }
+
+
+        /* Credit  Small */
+        @media only screen and (min-width: 160px) and (min-height: 48px) {
+
+            .paypal-button.paypal-style-credit .paypal-button-content img  {
+                height: 18px;
+                margin-top: 3px;
+            }
+        }
+
+
+        /* Credit Medium */
+        @media only screen and (min-width: 225px) and (min-height: 48px) {
+
+            .paypal-button.paypal-style-credit .paypal-button-content img  {
+                height: 24px;
+                padding-top: 0px;
+            }
+
+        }
+
+        /* Credit Large */
+        @media only screen and (min-width: 250px) and (min-height: 60px) {
+
+            .paypal-button.paypal-style-credit .paypal-button-content img {
+                height: 29px;
+                padding-top: 2px;
+            }
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
+
+<div id="buttonContainer">
+    <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
                 <span class="paypal-button-content">
                     {{{buttonConfig.logo}}}
                 </span>
-                <br>
-                <span class="paypal-button-tag-content" data-hide-if-overflow>{{buttonConfig.checkout_tag}}</span>
-            </button>
-        </div>
+        <br>
+        <span class="paypal-button-tag-content" data-hide-if-overflow="block">{{buttonConfig.label_tag}}</span>
+    </button>
+</div>
 
-        <script>
-            window.angular = {
-                value: function() {}
-            };
+<script>
+    window.angular = {
+        value: function() {}
+    };
 
-            window.meta    = {{json meta}};
-            window.cookies = {{json cookies}};
-        </script>
+    window.meta    = {{json meta}};
+    window.cookies = {{json cookies}};
+</script>
 
-        <script>
-            (function() {
-                function hideIfOverflow(el) {
+<script>
+    (function() {
+        function hideIfOverflow(el) {
 
-                    el.style.display = 'inline-block';
+            var displayType = el.getAttribute('data-hide-if-overflow') || 'inline-block';
+            el.style.display = displayType;
 
-                    var e = el.getBoundingClientRect();
-                    var p = el.parentNode.getBoundingClientRect();
+            var e = el.getBoundingClientRect();
+            var p = el.parentNode.getBoundingClientRect();
 
-                    if (window.location.href.indexOf('tiny') !== -1) {
-                        console.log('el', e);
-                        console.log('parent', p);
-                    }
+            if (window.location.href.indexOf('tiny') !== -1) {
+                console.log('el', e);
+                console.log('parent', p);
+            }
 
-                    var isOverflow = false;
+            var isOverflow = false;
 
-                    if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-                        isOverflow = true;
-                    } else if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
-                        isOverflow = true;
-                    }
+            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
+                isOverflow = true;
+            } else if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
+                isOverflow = true;
+            }
 
-                    if (isOverflow) {
-                        el.style.display = 'none';
-                    }
-                }
+            if (isOverflow) {
+                el.style.display = 'none';
+            }
+        }
 
-                var hideIfOverflowElements = Array.prototype.slice.call(document.querySelectorAll('[data-hide-if-overflow]'));
+        var hideIfOverflowElements = Array.prototype.slice.call(document.querySelectorAll('[data-hide-if-overflow]'));
 
-                function hideIfOverflowAll() {
-                    hideIfOverflowElements.forEach(hideIfOverflow);
-                }
+        function hideIfOverflowAll() {
+            hideIfOverflowElements.forEach(hideIfOverflow);
+        }
 
-                hideIfOverflowAll();
+        hideIfOverflowAll();
 
-                window.addEventListener('resize', hideIfOverflowAll);
-                window.addEventListener('load', hideIfOverflowAll);
-                document.addEventListener('DOMContentLoaded', hideIfOverflowAll);
-            })();
-        </script>
+        window.addEventListener('resize', hideIfOverflowAll);
+        window.addEventListener('load', hideIfOverflowAll);
+        document.addEventListener('DOMContentLoaded', hideIfOverflowAll);
+    })();
+</script>
 
-        <script src="{{meta.configUrl}}/js/config.js" onerror="scripterror(event)"></script>
-        <script src="{{meta.staticUrl}}/js/button.js" onerror="scripterror(event)"></script>
-    </body>
+<script src="{{meta.configUrl}}/js/config.js" onerror="scripterror(event)"></script>
+<script src="{{meta.staticUrl}}/js/button.js" onerror="scripterror(event)"></script>
+</body>
 </html>
