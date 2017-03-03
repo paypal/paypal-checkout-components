@@ -39,26 +39,44 @@ export let mark = {
 
         <script>
 
+            // Helper functions
+
+            function getElements(el) {
+                return Array.prototype.slice.call(document.querySelectorAll(el));
+            }
+
+            function hideElement(el) {
+                document.body.querySelector(el).style.display = 'none';
+            }
+
+            function showElement(el) {
+                document.body.querySelector(el).style.display = 'block';
+            }
+
             // Listen for changes to the radio fields
 
-            document.body.querySelectorAll('input[name=payment-option]').forEach(function(el) {
+            getElements('input[name=payment-option]').forEach(function(el) {
                 el.addEventListener('change', function(event) {
 
                     // If PayPal is selected, show the PayPal button
 
                     if (event.target.value === 'paypal') {
-                        document.body.querySelector('#card-button-container').style.display   = 'none';
-                        document.body.querySelector('#paypal-button-container').style.display = 'block';
+                        hideElement('#card-button-container');
+                        showElement('#paypal-button-container');
                     }
 
                     // If Card is selected, show the standard continue button
 
                     if (event.target.value === 'card') {
-                        document.body.querySelector('#card-button-container').style.display   = 'block';
-                        document.body.querySelector('#paypal-button-container').style.display = 'none';
+                        showElement('#card-button-container');
+                        hideElement('#paypal-button-container');
                     }
                 });
             });
+
+            // Hide Non-PayPal button by default
+
+            hideElement('#card-button-container');
 
             // Render the PayPal button
 
