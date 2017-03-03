@@ -34,7 +34,7 @@ window["paypal"] = function(modules) {
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
         }
-        if (window.paypal && window.paypal.version === "4.0.45") {
+        if (window.paypal && window.paypal.version === "4.0.46") {
             (0, _beacon.checkpoint)("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             if (window.console) {
@@ -178,7 +178,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.45";
+        var version = exports.version = "4.0.46";
         module.exports["default"] = module.exports;
     },
     "./src/config/index.js": function(module, exports, __webpack_require__) {
@@ -229,10 +229,10 @@ window["paypal"] = function(modules) {
             return obj;
         }
         var config = exports.config = {
-            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.4.0.45.min.js",
+            scriptUrl: "//www.paypalobjects.com/api/" + "checkout.4.0.46.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.45",
+            version: "4.0.46",
             ppobjects: false,
             cors: true,
             env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
@@ -344,7 +344,7 @@ window["paypal"] = function(modules) {
             },
             loggerUri: "/webapps/hermes/api/logger",
             get bridgeUri() {
-                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4.0.45" : "4.0.45");
+                return config.bridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4.0.46" : "4.0.46");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -759,6 +759,9 @@ window["paypal"] = function(modules) {
         exports.match = match;
         exports.safeJSON = safeJSON;
         exports.eventEmitter = eventEmitter;
+        exports.onKey = onKey;
+        exports.awaitKey = awaitKey;
+        var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _config = __webpack_require__("./src/config/index.js");
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(_config.config.paypal_domain_regex)) || window.mockDomain === "mock://www.paypal.com";
@@ -865,6 +868,338 @@ window["paypal"] = function(modules) {
                     }
                 }
             };
+        }
+        function onKey(obj, key, callback) {
+            if (!obj) {
+                return;
+            }
+            var value = obj[key];
+            if (value) {
+                value = callback(value) || value;
+            }
+            try {
+                delete obj[key];
+                Object.defineProperty(obj, key, {
+                    configurable: true,
+                    set: function set(item) {
+                        value = item;
+                        if (value) {
+                            value = callback(value) || value;
+                        }
+                    },
+                    get: function get() {
+                        return value;
+                    }
+                });
+            } catch (err) {}
+        }
+        function awaitKey(obj, key) {
+            return new _promise.SyncPromise(function(resolve) {
+                return onKey(obj, key, resolve);
+            });
+        }
+    },
+    "./node_modules/sync-browser-mocks/src/promise.js": function(module, exports) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.patchPromise = patchPromise;
+        function trycatch(method, successHandler, errorHandler) {
+            var isCalled = false;
+            var isSuccess = false;
+            var isError = false;
+            var err = void 0, res = void 0;
+            function flush() {
+                if (isCalled) {
+                    if (isError) {
+                        return errorHandler(err);
+                    } else if (isSuccess) {
+                        return successHandler(res);
+                    }
+                }
+            }
+            try {
+                method(function(result) {
+                    res = result;
+                    isSuccess = true;
+                    flush();
+                }, function(error) {
+                    err = error;
+                    isError = true;
+                    flush();
+                });
+            } catch (error) {
+                return errorHandler(error);
+            }
+            isCalled = true;
+            flush();
+        }
+        var possiblyUnhandledPromiseHandlers = [];
+        var possiblyUnhandledPromises = [];
+        var possiblyUnhandledPromiseTimeout = void 0;
+        function addPossiblyUnhandledPromise(promise) {
+            possiblyUnhandledPromises.push(promise);
+            possiblyUnhandledPromiseTimeout = possiblyUnhandledPromiseTimeout || setTimeout(flushPossiblyUnhandledPromises, 1);
+        }
+        function flushPossiblyUnhandledPromises() {
+            possiblyUnhandledPromiseTimeout = null;
+            var promises = possiblyUnhandledPromises;
+            possiblyUnhandledPromises = [];
+            var _loop = function _loop(i) {
+                var promise = promises[i];
+                if (promise.silentReject) {
+                    return "continue";
+                }
+                promise.handlers.push({
+                    onError: function onError(err) {
+                        if (promise.silentReject) {
+                            return;
+                        }
+                        dispatchError(err);
+                    }
+                });
+                promise.dispatch();
+            };
+            for (var i = 0; i < promises.length; i++) {
+                var _ret = _loop(i);
+                if (_ret === "continue") continue;
+            }
+        }
+        var dispatchedErrors = [];
+        function dispatchError(err) {
+            if (dispatchedErrors.indexOf(err) !== -1) {
+                return;
+            }
+            dispatchedErrors.push(err);
+            setTimeout(function() {
+                throw err;
+            }, 1);
+            for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
+                possiblyUnhandledPromiseHandlers[j](err);
+            }
+        }
+        var toString = {}.toString;
+        function isPromise(item) {
+            try {
+                if (!item) {
+                    return false;
+                }
+                if (window.Window && item instanceof window.Window) {
+                    return false;
+                }
+                if (window.constructor && item instanceof window.constructor) {
+                    return false;
+                }
+                if (toString) {
+                    var name = toString.call(item);
+                    if (name === "[object Window]" || name === "[object global]" || name === "[object DOMWindow]") {
+                        return false;
+                    }
+                }
+                if (item && item.then instanceof Function) {
+                    return true;
+                }
+            } catch (err) {
+                return false;
+            }
+            return false;
+        }
+        var SyncPromise = exports.SyncPromise = function SyncPromise(handler) {
+            this.resolved = false;
+            this.rejected = false;
+            this.silentReject = false;
+            this.handlers = [];
+            addPossiblyUnhandledPromise(this);
+            if (!handler) {
+                return;
+            }
+            var self = this;
+            trycatch(handler, function(res) {
+                return self.resolve(res);
+            }, function(err) {
+                return self.reject(err);
+            });
+        };
+        SyncPromise.resolve = function SyncPromiseResolve(value) {
+            if (isPromise(value)) {
+                return value;
+            }
+            return new SyncPromise().resolve(value);
+        };
+        SyncPromise.reject = function SyncPromiseResolve(error) {
+            return new SyncPromise().reject(error);
+        };
+        SyncPromise.prototype.resolve = function(result) {
+            if (this.resolved || this.rejected) {
+                return this;
+            }
+            if (isPromise(result)) {
+                throw new Error("Can not resolve promise with another promise");
+            }
+            this.resolved = true;
+            this.value = result;
+            this.dispatch();
+            return this;
+        };
+        SyncPromise.prototype.reject = function(error) {
+            if (this.resolved || this.rejected) {
+                return this;
+            }
+            if (isPromise(error)) {
+                throw new Error("Can not reject promise with another promise");
+            }
+            this.rejected = true;
+            this.value = error;
+            this.dispatch();
+            return this;
+        };
+        SyncPromise.prototype.asyncReject = function(error) {
+            this.silentReject = true;
+            this.reject(error);
+        };
+        SyncPromise.prototype.dispatch = function() {
+            var _this = this;
+            if (!this.resolved && !this.rejected) {
+                return;
+            }
+            var _loop2 = function _loop2() {
+                var handler = _this.handlers.shift();
+                var result = void 0, error = void 0;
+                try {
+                    if (_this.resolved) {
+                        result = handler.onSuccess ? handler.onSuccess(_this.value) : _this.value;
+                    } else if (_this.rejected) {
+                        if (handler.onError) {
+                            result = handler.onError(_this.value);
+                        } else {
+                            error = _this.value;
+                        }
+                    }
+                } catch (err) {
+                    error = err;
+                }
+                if (result === _this) {
+                    throw new Error("Can not return a promise from the the then handler of the same promise");
+                }
+                if (!handler.promise) {
+                    return "continue";
+                }
+                if (error) {
+                    handler.promise.reject(error);
+                } else if (isPromise(result)) {
+                    result.then(function(res) {
+                        handler.promise.resolve(res);
+                    }, function(err) {
+                        handler.promise.reject(err);
+                    });
+                } else {
+                    handler.promise.resolve(result);
+                }
+            };
+            while (this.handlers.length) {
+                var _ret2 = _loop2();
+                if (_ret2 === "continue") continue;
+            }
+        };
+        SyncPromise.prototype.then = function(onSuccess, onError) {
+            if (onSuccess && typeof onSuccess !== "function" && !onSuccess.call) {
+                throw new Error("Promise.then expected a function for success handler");
+            }
+            if (onError && typeof onError !== "function" && !onError.call) {
+                throw new Error("Promise.then expected a function for error handler");
+            }
+            var promise = new SyncPromise(null, this);
+            this.handlers.push({
+                promise: promise,
+                onSuccess: onSuccess,
+                onError: onError
+            });
+            this.silentReject = true;
+            this.dispatch();
+            return promise;
+        };
+        SyncPromise.prototype["catch"] = function(onError) {
+            return this.then(null, onError);
+        };
+        SyncPromise.prototype["finally"] = function(handler) {
+            return this.then(function(result) {
+                return SyncPromise["try"](handler).then(function() {
+                    return result;
+                });
+            }, function(err) {
+                return SyncPromise["try"](handler).then(function() {
+                    throw err;
+                });
+            });
+        };
+        SyncPromise.all = function(promises) {
+            var promise = new SyncPromise();
+            var count = promises.length;
+            var results = [];
+            var _loop3 = function _loop3(i) {
+                var prom = isPromise(promises[i]) ? promises[i] : SyncPromise.resolve(promises[i]);
+                prom.then(function(result) {
+                    results[i] = result;
+                    count -= 1;
+                    if (count === 0) {
+                        promise.resolve(results);
+                    }
+                }, function(err) {
+                    promise.reject(err);
+                });
+            };
+            for (var i = 0; i < promises.length; i++) {
+                _loop3(i);
+            }
+            if (!count) {
+                promise.resolve(results);
+            }
+            return promise;
+        };
+        SyncPromise.onPossiblyUnhandledException = function syncPromiseOnPossiblyUnhandledException(handler) {
+            possiblyUnhandledPromiseHandlers.push(handler);
+        };
+        SyncPromise["try"] = function syncPromiseTry(method) {
+            return SyncPromise.resolve().then(method);
+        };
+        SyncPromise.delay = function syncPromiseDelay(delay) {
+            return new SyncPromise(function(resolve) {
+                setTimeout(resolve, delay);
+            });
+        };
+        SyncPromise.hash = function(obj) {
+            var results = {};
+            var promises = [];
+            var _loop4 = function _loop4(key) {
+                if (obj.hasOwnProperty(key)) {
+                    promises.push(SyncPromise.resolve(obj[key]).then(function(result) {
+                        results[key] = result;
+                    }));
+                }
+            };
+            for (var key in obj) {
+                _loop4(key);
+            }
+            return SyncPromise.all(promises).then(function() {
+                return results;
+            });
+        };
+        SyncPromise.promisifyCall = function() {
+            var args = Array.prototype.slice.call(arguments);
+            var method = args.shift();
+            if (typeof method !== "function") {
+                throw new Error("Expected promisifyCall to be called with a function");
+            }
+            return new SyncPromise(function(resolve, reject) {
+                args.push(function(err, result) {
+                    return err ? reject(err) : resolve(result);
+                });
+                return method.apply(null, args);
+            });
+        };
+        function patchPromise() {
+            window.Promise = SyncPromise;
         }
     },
     "./src/interface/paypal.js": function(module, exports, __webpack_require__) {
@@ -978,7 +1313,7 @@ window["paypal"] = function(modules) {
             };
         }
         var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-        var version = exports.version = "4.0.45";
+        var version = exports.version = "4.0.46";
         module.exports["default"] = module.exports;
     },
     "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -1672,309 +2007,6 @@ window["paypal"] = function(modules) {
                 return Promise.all(results);
             }
         };
-    },
-    "./node_modules/sync-browser-mocks/src/promise.js": function(module, exports) {
-        "use strict";
-        Object.defineProperty(exports, "__esModule", {
-            value: true
-        });
-        exports.patchPromise = patchPromise;
-        function trycatch(method, successHandler, errorHandler) {
-            var isCalled = false;
-            var isSuccess = false;
-            var isError = false;
-            var err = void 0, res = void 0;
-            function flush() {
-                if (isCalled) {
-                    if (isError) {
-                        return errorHandler(err);
-                    } else if (isSuccess) {
-                        return successHandler(res);
-                    }
-                }
-            }
-            try {
-                method(function(result) {
-                    res = result;
-                    isSuccess = true;
-                    flush();
-                }, function(error) {
-                    err = error;
-                    isError = true;
-                    flush();
-                });
-            } catch (error) {
-                return errorHandler(error);
-            }
-            isCalled = true;
-            flush();
-        }
-        var possiblyUnhandledPromiseHandlers = [];
-        var possiblyUnhandledPromises = [];
-        var possiblyUnhandledPromiseTimeout = void 0;
-        function addPossiblyUnhandledPromise(promise) {
-            possiblyUnhandledPromises.push(promise);
-            possiblyUnhandledPromiseTimeout = possiblyUnhandledPromiseTimeout || setTimeout(flushPossiblyUnhandledPromises, 1);
-        }
-        function flushPossiblyUnhandledPromises() {
-            possiblyUnhandledPromiseTimeout = null;
-            var promises = possiblyUnhandledPromises;
-            possiblyUnhandledPromises = [];
-            var _loop = function _loop(i) {
-                var promise = promises[i];
-                if (promise.silentReject) {
-                    return "continue";
-                }
-                promise.handlers.push({
-                    onError: function onError(err) {
-                        if (promise.silentReject) {
-                            return;
-                        }
-                        dispatchError(err);
-                    }
-                });
-                promise.dispatch();
-            };
-            for (var i = 0; i < promises.length; i++) {
-                var _ret = _loop(i);
-                if (_ret === "continue") continue;
-            }
-        }
-        var dispatchedErrors = [];
-        function dispatchError(err) {
-            if (dispatchedErrors.indexOf(err) !== -1) {
-                return;
-            }
-            dispatchedErrors.push(err);
-            setTimeout(function() {
-                throw err;
-            }, 1);
-            for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) {
-                possiblyUnhandledPromiseHandlers[j](err);
-            }
-        }
-        var toString = {}.toString;
-        function isPromise(item) {
-            try {
-                if (!item) {
-                    return false;
-                }
-                if (window.Window && item instanceof window.Window) {
-                    return false;
-                }
-                if (window.constructor && item instanceof window.constructor) {
-                    return false;
-                }
-                if (toString) {
-                    var name = toString.call(item);
-                    if (name === "[object Window]" || name === "[object global]" || name === "[object DOMWindow]") {
-                        return false;
-                    }
-                }
-                if (item && item.then instanceof Function) {
-                    return true;
-                }
-            } catch (err) {
-                return false;
-            }
-            return false;
-        }
-        var SyncPromise = exports.SyncPromise = function SyncPromise(handler) {
-            this.resolved = false;
-            this.rejected = false;
-            this.silentReject = false;
-            this.handlers = [];
-            addPossiblyUnhandledPromise(this);
-            if (!handler) {
-                return;
-            }
-            var self = this;
-            trycatch(handler, function(res) {
-                return self.resolve(res);
-            }, function(err) {
-                return self.reject(err);
-            });
-        };
-        SyncPromise.resolve = function SyncPromiseResolve(value) {
-            if (isPromise(value)) {
-                return value;
-            }
-            return new SyncPromise().resolve(value);
-        };
-        SyncPromise.reject = function SyncPromiseResolve(error) {
-            return new SyncPromise().reject(error);
-        };
-        SyncPromise.prototype.resolve = function(result) {
-            if (this.resolved || this.rejected) {
-                return this;
-            }
-            if (isPromise(result)) {
-                throw new Error("Can not resolve promise with another promise");
-            }
-            this.resolved = true;
-            this.value = result;
-            this.dispatch();
-            return this;
-        };
-        SyncPromise.prototype.reject = function(error) {
-            if (this.resolved || this.rejected) {
-                return this;
-            }
-            if (isPromise(error)) {
-                throw new Error("Can not reject promise with another promise");
-            }
-            this.rejected = true;
-            this.value = error;
-            this.dispatch();
-            return this;
-        };
-        SyncPromise.prototype.asyncReject = function(error) {
-            this.silentReject = true;
-            this.reject(error);
-        };
-        SyncPromise.prototype.dispatch = function() {
-            var _this = this;
-            if (!this.resolved && !this.rejected) {
-                return;
-            }
-            var _loop2 = function _loop2() {
-                var handler = _this.handlers.shift();
-                var result = void 0, error = void 0;
-                try {
-                    if (_this.resolved) {
-                        result = handler.onSuccess ? handler.onSuccess(_this.value) : _this.value;
-                    } else if (_this.rejected) {
-                        if (handler.onError) {
-                            result = handler.onError(_this.value);
-                        } else {
-                            error = _this.value;
-                        }
-                    }
-                } catch (err) {
-                    error = err;
-                }
-                if (result === _this) {
-                    throw new Error("Can not return a promise from the the then handler of the same promise");
-                }
-                if (!handler.promise) {
-                    return "continue";
-                }
-                if (error) {
-                    handler.promise.reject(error);
-                } else if (isPromise(result)) {
-                    result.then(function(res) {
-                        handler.promise.resolve(res);
-                    }, function(err) {
-                        handler.promise.reject(err);
-                    });
-                } else {
-                    handler.promise.resolve(result);
-                }
-            };
-            while (this.handlers.length) {
-                var _ret2 = _loop2();
-                if (_ret2 === "continue") continue;
-            }
-        };
-        SyncPromise.prototype.then = function(onSuccess, onError) {
-            if (onSuccess && typeof onSuccess !== "function" && !onSuccess.call) {
-                throw new Error("Promise.then expected a function for success handler");
-            }
-            if (onError && typeof onError !== "function" && !onError.call) {
-                throw new Error("Promise.then expected a function for error handler");
-            }
-            var promise = new SyncPromise(null, this);
-            this.handlers.push({
-                promise: promise,
-                onSuccess: onSuccess,
-                onError: onError
-            });
-            this.silentReject = true;
-            this.dispatch();
-            return promise;
-        };
-        SyncPromise.prototype["catch"] = function(onError) {
-            return this.then(null, onError);
-        };
-        SyncPromise.prototype["finally"] = function(handler) {
-            return this.then(function(result) {
-                return SyncPromise["try"](handler).then(function() {
-                    return result;
-                });
-            }, function(err) {
-                return SyncPromise["try"](handler).then(function() {
-                    throw err;
-                });
-            });
-        };
-        SyncPromise.all = function(promises) {
-            var promise = new SyncPromise();
-            var count = promises.length;
-            var results = [];
-            var _loop3 = function _loop3(i) {
-                var prom = isPromise(promises[i]) ? promises[i] : SyncPromise.resolve(promises[i]);
-                prom.then(function(result) {
-                    results[i] = result;
-                    count -= 1;
-                    if (count === 0) {
-                        promise.resolve(results);
-                    }
-                }, function(err) {
-                    promise.reject(err);
-                });
-            };
-            for (var i = 0; i < promises.length; i++) {
-                _loop3(i);
-            }
-            if (!count) {
-                promise.resolve(results);
-            }
-            return promise;
-        };
-        SyncPromise.onPossiblyUnhandledException = function syncPromiseOnPossiblyUnhandledException(handler) {
-            possiblyUnhandledPromiseHandlers.push(handler);
-        };
-        SyncPromise["try"] = function syncPromiseTry(method) {
-            return SyncPromise.resolve().then(method);
-        };
-        SyncPromise.delay = function syncPromiseDelay(delay) {
-            return new SyncPromise(function(resolve) {
-                setTimeout(resolve, delay);
-            });
-        };
-        SyncPromise.hash = function(obj) {
-            var results = {};
-            var promises = [];
-            var _loop4 = function _loop4(key) {
-                if (obj.hasOwnProperty(key)) {
-                    promises.push(SyncPromise.resolve(obj[key]).then(function(result) {
-                        results[key] = result;
-                    }));
-                }
-            };
-            for (var key in obj) {
-                _loop4(key);
-            }
-            return SyncPromise.all(promises).then(function() {
-                return results;
-            });
-        };
-        SyncPromise.promisifyCall = function() {
-            var args = Array.prototype.slice.call(arguments);
-            var method = args.shift();
-            if (typeof method !== "function") {
-                throw new Error("Expected promisifyCall to be called with a function");
-            }
-            return new SyncPromise(function(resolve, reject) {
-                args.push(function(err, result) {
-                    return err ? reject(err) : resolve(result);
-                });
-                return method.apply(null, args);
-            });
-        };
-        function patchPromise() {
-            window.Promise = SyncPromise;
-        }
     },
     "./node_modules/post-robot/src/lib/tick.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -10366,7 +10398,7 @@ window["paypal"] = function(modules) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.45";
+                payload.version = "4.0.46";
                 payload.host = window.location.host;
                 payload.uid = window.pp_uid;
                 var query = [];
@@ -10393,7 +10425,7 @@ window["paypal"] = function(modules) {
         function checkpoint(name) {
             var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             try {
-                var version = "4.0.45".replace(/[^0-9]+/g, "_");
+                var version = "4.0.46".replace(/[^0-9]+/g, "_");
                 var checkpointName = version + "_" + name;
                 var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                 loggedCheckpoints.push(checkpointName);
@@ -10406,7 +10438,7 @@ window["paypal"] = function(modules) {
         var FPTI_URL = "https://t.paypal.com/ts";
         function buildPayload() {
             return {
-                v: "checkout.js." + "4.0.45",
+                v: "checkout.js." + "4.0.46",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -11076,7 +11108,7 @@ window["paypal"] = function(modules) {
                     country: _config.config.locale.country,
                     lang: _config.config.locale.lang,
                     uid: window.pp_uid,
-                    ver: "4.0.45"
+                    ver: "4.0.46"
                 };
             });
             _client2["default"].addMetaBuilder(function() {
@@ -11288,9 +11320,11 @@ window["paypal"] = function(modules) {
                 return item;
             }
             if (typeof item === "string") {
-                var result = document.querySelector && document.querySelector(item);
-                if (result) {
-                    return result;
+                if (document.querySelector) {
+                    var result = document.querySelector(item);
+                    if (result) {
+                        return result;
+                    }
                 }
                 return document.getElementById(item);
             }
@@ -11666,6 +11700,16 @@ window["paypal"] = function(modules) {
                 }
             });
         });
+        var _common = __webpack_require__("./src/components/common.js");
+        Object.keys(_common).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _common[key];
+                }
+            });
+        });
     },
     "./src/components/button/index.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -11728,7 +11772,7 @@ window["paypal"] = function(modules) {
             scrolling: false,
             componentTemplate: _componentTemplate2["default"],
             get version() {
-                return _config.config.ppobjects ? "4.0.45" : "4.0.45";
+                return _config.config.ppobjects ? "4.0.46" : "4.0.46";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -11923,11 +11967,14 @@ window["paypal"] = function(modules) {
                         return _config.config.logLevel;
                     }
                 },
-                nativeStart: {
-                    type: "function",
+                bridge: {
+                    type: "object",
                     required: false,
                     get value() {
-                        return window.xprops && window.xprops.nativeStart || window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo);
+                        return {
+                            open: (0, _common.getBridgeOpen)(),
+                            get: _common.awaitBridgeOpen
+                        };
                     }
                 },
                 testAction: {
@@ -11947,8 +11994,11 @@ window["paypal"] = function(modules) {
                 height: "48px"
             }
         });
-        if (Button.isChild() && window.xprops.logLevel) {
-            (0, _lib.setLogLevel)(window.xprops.logLevel);
+        if (Button.isChild()) {
+            if (window.xprops.logLevel) {
+                (0, _lib.setLogLevel)(window.xprops.logLevel);
+            }
+            (0, _common.awaitBridgeOpen)();
         }
     },
     "./src/components/common.js": function(module, exports, __webpack_require__) {
@@ -11957,7 +12007,11 @@ window["paypal"] = function(modules) {
             value: true
         });
         exports.validateProps = validateProps;
+        exports.getBridgeOpen = getBridgeOpen;
+        exports.clearBridge = clearBridge;
+        exports.awaitBridgeOpen = awaitBridgeOpen;
         var _config = __webpack_require__("./src/config/index.js");
+        var _lib = __webpack_require__("./src/lib/index.js");
         function validateProps(props) {
             var required = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
             if (!required) {
@@ -11988,6 +12042,45 @@ window["paypal"] = function(modules) {
                 }
             }
         }
+        var bridgeOpen = void 0;
+        function getBridgeOpen() {
+            var bridge = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window.popupBridge;
+            if (bridgeOpen) {
+                return bridgeOpen;
+            }
+            if (bridge) {
+                bridgeOpen = function bridgeOpen(url, callback) {
+                    if (bridge) {
+                        bridge.onComplete = callback;
+                        bridge.open((0, _lib.extendUrl)(url, {
+                            redirect_uri: window.popupBridge.getReturnUrlPrefix()
+                        }));
+                    } else {
+                        throw new Error("Bridge not available");
+                    }
+                };
+            } else if (window.xprops && window.xprops.bridge && window.xprops.bridge.open) {
+                bridgeOpen = window.xprops.bridge.open;
+            }
+            return bridgeOpen;
+        }
+        function clearBridge() {
+            bridgeOpen = null;
+        }
+        function awaitBridgeOpen() {
+            if (window.xprops && window.xprops.bridge && window.xprops.bridge.get) {
+                return window.xprops.bridge.get().then(function(open) {
+                    bridgeOpen = open;
+                    return open;
+                });
+            }
+            return (0, _lib.awaitKey)(window, "popupBridge").then(function(bridge) {
+                return getBridgeOpen(bridge);
+            });
+        }
+        awaitBridgeOpen().then(function(open) {
+            bridgeOpen = open;
+        });
     },
     "./src/components/button/componentTemplate.htm": function(module, exports) {
         module.exports = "<style>\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10;\n    }\n    .spinner .loader {\n        height: 20px;\n        width: 20px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin: -14px 0 0 -14px;\n        opacity: 1;\n        filter: alpha(opacity=100);\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 4px solid rgba(0, 0, 0, .2);\n        border-right: 4px solid rgba(0, 0, 0, .2);\n        border-bottom: 4px solid rgba(0, 0, 0, .2);\n        border-top: 4px solid rgba(33, 128, 192, 0.8);\n        border-radius: 100%;\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n</style>\n\n<div class=\"spinner\">\n    <p id=\"loader\" class=\"loader\"></p>\n</div>\n\n<script>\n    (function() {\n\n        var loader = document.getElementById('loader');\n\n        var size   = Math.round(document.documentElement.scrollHeight * 0.4);\n        var border = Math.round(size * 0.2);\n        var margin = Math.round(border + (size / 2));\n\n        loader.style.height = loader.style.width = size + 'px';\n        loader.style.borderWidth = border + 'px';\n        loader.style.marginTop = loader.style.marginLeft = '-' + margin + 'px';\n\n    })();\n</script>\n";
@@ -12036,7 +12129,7 @@ window["paypal"] = function(modules) {
         var _componentTemplate = __webpack_require__("./src/components/checkout/componentTemplate.htm");
         var _componentTemplate2 = _interopRequireDefault(_componentTemplate);
         var _util = __webpack_require__("./src/components/checkout/util.js");
-        var _native = __webpack_require__("./src/components/checkout/native.js");
+        var _bridge = __webpack_require__("./src/components/checkout/bridge.js");
         var _lib = __webpack_require__("./src/lib/index.js");
         var _config = __webpack_require__("./src/config/index.js");
         var _common = __webpack_require__("./src/components/common.js");
@@ -12078,7 +12171,7 @@ window["paypal"] = function(modules) {
                 popup: true
             },
             get version() {
-                return _config.config.ppobjects ? "4.0.45" : "4.0.45";
+                return _config.config.ppobjects ? "4.0.46" : "4.0.46";
             },
             get domains() {
                 return _config.config.paypalDomains;
@@ -12301,11 +12394,14 @@ window["paypal"] = function(modules) {
                         return _config.config.logLevel;
                     }
                 },
-                nativeStart: {
-                    type: "function",
+                bridge: {
+                    type: "object",
                     required: false,
                     get value() {
-                        return window.xprops && window.xprops.nativeStart || window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo);
+                        return {
+                            open: (0, _common.getBridgeOpen)(),
+                            get: _common.awaitBridgeOpen
+                        };
                     }
                 },
                 testAction: {
@@ -12339,7 +12435,7 @@ window["paypal"] = function(modules) {
                 };
             }
         });
-        (0, _native.setupNativeProxy)(Checkout);
+        (0, _bridge.setupBridgeProxy)(Checkout);
         var enableCheckoutIframeTimeout = void 0;
         function enableCheckoutIframe() {
             if ((0, _lib.isDevice)() && !(0, _lib.hasMetaViewPort)()) {
@@ -12363,9 +12459,10 @@ window["paypal"] = function(modules) {
                 }
                 return renderPopupTo.call(this, win, props);
             };
-        }
-        if (Checkout.isChild() && window.xprops.logLevel) {
-            (0, _lib.setLogLevel)(window.xprops.logLevel);
+            if (window.xprops.logLevel) {
+                (0, _lib.setLogLevel)(window.xprops.logLevel);
+            }
+            (0, _common.awaitBridgeOpen)();
         }
     },
     "./src/components/checkout/parentTemplate.htm": function(module, exports) {
@@ -12419,17 +12516,18 @@ window["paypal"] = function(modules) {
             };
         }
     },
-    "./src/components/checkout/native.js": function(module, exports, __webpack_require__) {
+    "./src/components/checkout/bridge.js": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
             value: true
         });
-        exports.setupNativeProxy = setupNativeProxy;
+        exports.setupBridgeProxy = setupBridgeProxy;
         var _lib = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         var _promise = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
         var _lib2 = __webpack_require__("./src/lib/index.js");
         var _util = __webpack_require__("./src/components/checkout/util.js");
         var _config = __webpack_require__("./src/config/index.js");
+        var _common = __webpack_require__("./src/components/common.js");
         function _defineProperty(obj, key, value) {
             if (key in obj) {
                 Object.defineProperty(obj, key, {
@@ -12448,79 +12546,92 @@ window["paypal"] = function(modules) {
                 return result ? truthyResult : falsyResult;
             });
         }
-        function renderNative(props) {
-            if (!props.payment) {
-                throw new Error("Expected props.payment to be passed");
-            }
-            if (!props.onAuthorize) {
-                throw new Error("Expected props.onAuthorize to be passed");
-            }
-            if (props.env && !_config.config.checkoutUrls[props.env]) {
-                throw new Error("Invalid props.env: " + props.env);
-            }
-            var env = props.env = props.env || _config.config.env;
-            var payment = (0, _lib.memoize)((0, _lib.getter)(props.payment.bind({
-                props: props
-            })));
-            var _onAuthorize = (0, _lib.once)(props.onAuthorize);
-            var _onCancel = (0, _lib.once)(props.onCancel || _lib.noop);
-            var awaitUrl = ternary(props.url, props.url, payment().then(function(token) {
-                if (token) {
-                    var _extendUrl;
-                    return (0, _lib2.extendUrl)((0, _util.determineUrlFromToken)(env, token), (_extendUrl = {}, 
-                    _defineProperty(_extendUrl, (0, _util.determineParameterFromToken)(token), token), 
-                    _defineProperty(_extendUrl, "useraction", props.commit ? "commit" : ""), _extendUrl));
+        function renderBridge(props, openBridge) {
+            return _promise.SyncPromise["try"](function() {
+                if (!props.payment) {
+                    throw new Error("Expected props.payment to be passed");
                 }
-            }));
-            return awaitUrl.then(function(url) {
-                var start = window.ppnativexo ? window.ppnativexo.start.bind(window.ppnativexo.start) : window.xprops.nativeStart;
-                start(url, {
-                    onAuthorize: function onAuthorize(returnUrl) {
-                        var data = (0, _util.parseParamsFromUrl)(returnUrl);
-                        data.returnUrl = returnUrl;
-                        _onAuthorize(data, {
-                            close: function close() {},
-                            redirect: function redirect() {
-                                var win = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
-                                var redirectUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : returnUrl;
-                                return (0, _lib2.redirect)(win, redirectUrl);
-                            }
-                        });
-                    },
-                    onCancel: function onCancel(cancelUrl) {
-                        var data = (0, _util.parseParamsFromUrl)(cancelUrl);
-                        data.cancelUrl = cancelUrl;
-                        _onCancel(data, {
-                            close: function close() {},
-                            redirect: function redirect() {
-                                var win = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
-                                var redirectUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : cancelUrl;
-                                return (0, _lib2.redirect)(win, redirectUrl);
-                            }
-                        });
+                if (!props.onAuthorize) {
+                    throw new Error("Expected props.onAuthorize to be passed");
+                }
+                if (props.env && !_config.config.checkoutUrls[props.env]) {
+                    throw new Error("Invalid props.env: " + props.env);
+                }
+                var env = props.env = props.env || _config.config.env;
+                var payment = (0, _lib.memoize)((0, _lib.getter)(props.payment.bind({
+                    props: props
+                })));
+                var onAuthorize = (0, _lib.once)(props.onAuthorize);
+                var onCancel = (0, _lib.once)(props.onCancel || _lib.noop);
+                var awaitUrl = ternary(props.url, props.url, payment().then(function(token) {
+                    if (token) {
+                        var _extendUrl;
+                        return (0, _lib2.extendUrl)((0, _util.determineUrlFromToken)(env, token), (_extendUrl = {}, 
+                        _defineProperty(_extendUrl, (0, _util.determineParameterFromToken)(token), token), 
+                        _defineProperty(_extendUrl, "useraction", props.commit ? "commit" : ""), _extendUrl));
                     }
+                }));
+                return awaitUrl.then(function(url) {
+                    return new _promise.SyncPromise(function(resolve, reject) {
+                        openBridge(url, function(err, payload) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            if (!payload) {
+                                return reject(new Error("No payload passed in popupBridge.onComplete"));
+                            }
+                            var query = payload.queryItems;
+                            var data = {
+                                paymentToken: query.token,
+                                billingToken: query.billingToken,
+                                paymentID: query.paymentId,
+                                payerID: query.payerID,
+                                returnUrl: query.returnUrl,
+                                cancelUrl: query.cancelUrl
+                            };
+                            var actions = {
+                                close: function close() {}
+                            };
+                            if (query.opType === "payment") {
+                                actions.redirect = function() {
+                                    var win = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+                                    var redirectUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : data.returnUrl;
+                                    return (0, _lib2.redirect)(win, redirectUrl);
+                                };
+                                onAuthorize(data, actions);
+                                resolve();
+                            } else if (query.opType === "cancel") {
+                                actions.redirect = function() {
+                                    var win = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+                                    var redirectUrl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : data.cancelUrl;
+                                    return (0, _lib2.redirect)(win, redirectUrl);
+                                };
+                                onCancel(data, actions);
+                                resolve();
+                            }
+                        });
+                    });
                 });
             });
         }
-        function setupNativeProxy(Checkout) {
-            function branchNative(props, original) {
-                var hasNativeXO = window.ppnativexo || window.xprops && window.xprops.nativeStart;
-                if (hasNativeXO && !Checkout.contexts.lightbox) {
-                    return renderNative(props);
-                }
-                return original();
+        function setupBridgeProxy(Checkout) {
+            function doRender(props, original) {
+                var openBridge = (0, _common.getBridgeOpen)();
+                return openBridge ? renderBridge(props, openBridge)["catch"](function() {
+                    return original();
+                }) : original();
             }
             var render = Checkout.render;
             Checkout.render = function(props) {
                 var _this = this, _arguments = arguments;
-                return branchNative(props, function() {
+                return doRender(props, function() {
                     return render.apply(_this, _arguments);
                 });
             };
             var renderTo = Checkout.renderTo;
             Checkout.renderTo = function(win, props) {
                 var _this2 = this, _arguments2 = arguments;
-                return branchNative(props, function() {
+                return doRender(props, function() {
                     return renderTo.apply(_this2, _arguments2);
                 });
             };
@@ -12530,14 +12641,14 @@ window["paypal"] = function(modules) {
                 var _render = instance.render;
                 instance.render = function() {
                     var _this3 = this, _arguments3 = arguments;
-                    return branchNative(props, function() {
+                    return doRender(props, function() {
                         return _render.apply(_this3, _arguments3);
                     });
                 };
                 var _renderTo = instance.renderTo;
                 instance.renderTo = function() {
                     var _this4 = this, _arguments4 = arguments;
-                    return branchNative(props, function() {
+                    return doRender(props, function() {
                         return _renderTo.apply(_this4, _arguments4);
                     });
                 };
@@ -14402,34 +14513,18 @@ window["paypal"] = function(modules) {
                 }, 1);
             });
         }
-        if (typeof window.paypalCheckoutReady === "function") {
-            $logger.debug("paypal_checkout_ready_preset");
-            invokeReady(window.paypalCheckoutReady);
-        }
-        var _paypalCheckoutReady = window.paypalCheckoutReady;
-        try {
-            delete window.paypalCheckoutReady;
-            Object.defineProperty(window, "paypalCheckoutReady", {
-                set: function set(method) {
-                    $logger.debug("paypal_checkout_ready_setter");
-                    _paypalCheckoutReady = function _paypalCheckoutReady() {
-                        if (!method.called) {
-                            method.called = true;
-                            return method.apply(this, arguments);
-                        }
-                    };
-                    invokeReady(_paypalCheckoutReady);
-                },
-                get: function get() {
-                    $logger.warn("paypal_checkout_ready_getter");
-                    return _paypalCheckoutReady;
-                }
-            });
-        } catch (err) {
-            $logger.warn("paypal_checkout_ready_setter_error", {
-                error: err.stack || err.toString()
-            });
-        }
+        (0, _lib.onKey)(window, "paypalCheckoutReady", function(method) {
+            if (typeof method === "function") {
+                var oneTimeReady = function oneTimeReady() {
+                    if (!method.called) {
+                        method.called = true;
+                        return method.apply(this, arguments);
+                    }
+                };
+                invokeReady(oneTimeReady);
+                return oneTimeReady;
+            }
+        });
         (0, _lib.onDocumentReady)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + _constants.ATTRIBUTES.BUTTON + "]"));
             if (buttons && buttons.length) {
@@ -14660,4 +14755,4 @@ window["paypal"] = function(modules) {
         });
     }
 });
-//# sourceMappingURL=checkout.4.0.45.min.js.map
+//# sourceMappingURL=checkout.4.0.46.js.map
