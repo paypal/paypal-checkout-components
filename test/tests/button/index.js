@@ -5,5 +5,5 @@ export * from './validation';
 export * from './error';
 export * from './drivers';
 export * from './frame';
-export * from './native';
+export * from './bridge';
 export * from './displayto';

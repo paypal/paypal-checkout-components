@@ -4,16 +4,16 @@ import paypal from 'src/index';
 import { assert } from 'chai';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupNative, destroyNative } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupBridge, destroyBridge } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal checkout component native happy path on ${flow}`, () => {
+    describe(`paypal checkout component bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-            setupNative({ flow });
+            setupBridge();
         });
 
         afterEach(() => {
@@ -21,7 +21,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyNative();
+            destroyBridge();
         });
 
         it('should render checkout, then complete the payment', (done) => {
@@ -51,7 +51,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout, then cancel the payment', (done) => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
@@ -170,7 +170,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel', () => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -205,7 +205,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel and await the promise', (done) => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -237,7 +237,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel with a custom url', () => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -471,7 +471,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                window.ppnativexo.start = (url) => {
+                window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`token=${checkoutToken}`) !== -1);
                     assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(url.indexOf(`&ba_token=`) === -1);
@@ -509,7 +509,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                window.ppnativexo.start = (url) => {
+                window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`token=${paymentID}`) !== -1);
                     assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(url.indexOf(`&ba_token=`) === -1);
@@ -547,7 +547,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                window.ppnativexo.start = (url) => {
+                window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`ba_token=${billingToken}`) !== -1);
                     assert.isOk(url.indexOf(`billingurl=true`) !== -1);
                     assert.isOk(url.indexOf(`&token=`) === -1);
@@ -603,7 +603,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupNative({ flow: 'popup' });
+                setupBridge();
 
                 testButton.click();
             });
@@ -629,7 +629,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupNative({ flow: 'popup' });
+                setupBridge();
 
                 testButton.click();
 
@@ -665,7 +665,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupNative({ flow: 'popup' });
+                setupBridge();
 
                 testButton.click();
             });

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
-import { awaitKey } from '../lib';
+import { awaitKey, extendUrl } from '../lib';
 
 export function validateProps(props : Object, required : boolean = true) {
 
@@ -42,12 +42,48 @@ export function validateProps(props : Object, required : boolean = true) {
     }
 }
 
-export function getNativeStart() : ?Function {
-    return window.ppnativexo && window.ppnativexo.start && window.ppnativexo.start.bind(window.ppnativexo);
+let bridgeOpen;
+
+export function getBridgeOpen(bridge : ?Object = window.popupBridge) : ?Function {
+
+    if (bridgeOpen) {
+        return bridgeOpen;
+    }
+
+    if (bridge) {
+        bridgeOpen = (url, callback) => {
+            if (bridge) {
+                bridge.onComplete = callback;
+                bridge.open(extendUrl(url, { redirect_uri: window.popupBridge.getReturnUrlPrefix() }));
+            } else {
+                throw new Error('Bridge not available');
+            }
+        };
+
+    } else if (window.xprops && window.xprops.bridge && window.xprops.bridge.open) {
+        bridgeOpen = window.xprops.bridge.open;
+    }
+
+    return bridgeOpen;
 }
 
-export function awaitNativeStart() : SyncPromise<Function> {
-    return awaitKey(window, 'ppnativexo').then(nativexo => {
-        return nativexo.start.bind(nativexo);
+export function clearBridge() {
+    bridgeOpen = null;
+}
+
+export function awaitBridgeOpen() : SyncPromise<Function> {
+    if (window.xprops && window.xprops.bridge && window.xprops.bridge.get) {
+        return window.xprops.bridge.get().then(open => {
+            bridgeOpen = open;
+            return open;
+        });
+    }
+
+    return awaitKey(window, 'popupBridge').then(bridge => {
+        return getBridgeOpen(bridge);
     });
 }
+
+awaitBridgeOpen().then(open => {
+    bridgeOpen = open;
+});

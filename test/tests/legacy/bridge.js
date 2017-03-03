@@ -5,17 +5,17 @@ import { assert } from 'chai';
 import paypal from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupNative, destroyNative, uniqueID, CHILD_REDIRECT_URI } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupBridge, destroyBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy native checkout setup/startflow on ${flow}`, () => {
+    describe(`paypal legacy bridge checkout setup/startflow on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
 
-            setupNative({ flow });
+            setupBridge();
         });
 
         afterEach(() => {
@@ -23,7 +23,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyNative();
+            destroyBridge();
         });
 
         it('should render a button into a container and click on the button, then call startFlow', () => {
@@ -50,7 +50,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a cancel', () => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 

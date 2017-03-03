@@ -11,12 +11,12 @@ import parentTemplate from './parentTemplate.htm';
 import componentTemplate from './componentTemplate.htm';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
-import { setupNativeProxy } from './native';
+import { setupBridgeProxy } from './bridge';
 
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
 
-import { validateProps, getNativeStart, awaitNativeStart } from '../common';
+import { validateProps, getBridgeOpen, awaitBridgeOpen } from '../common';
 
 import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
@@ -333,13 +333,13 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        native: {
+        bridge: {
             type: 'object',
             required: false,
             get value() : Object {
                 return {
-                    start: getNativeStart(),
-                    get: awaitNativeStart
+                    open: getBridgeOpen(),
+                    get: awaitBridgeOpen
                 };
             }
         },
@@ -381,7 +381,7 @@ export let Checkout = xcomponent.create({
     }
 });
 
-setupNativeProxy(Checkout);
+setupBridgeProxy(Checkout);
 
 let enableCheckoutIframeTimeout;
 
@@ -420,15 +420,5 @@ if (Checkout.isChild()) {
         setLogLevel(window.xprops.logLevel);
     }
 
-    let native = window.xprops.native;
-
-    if (native && !window.ppnativexo) {
-        if (native.start) {
-            window.ppnativexo = { start: native.start };
-        } else if (native.get) {
-            native.get().then(start => {
-                window.ppnativexo = { start };
-            });
-        }
-    }
+    awaitBridgeOpen();
 }

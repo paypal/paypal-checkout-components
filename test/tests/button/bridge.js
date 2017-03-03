@@ -4,17 +4,17 @@ import paypal from 'src/index';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { assert } from 'chai';
 
-import { generateECToken, createTestContainer, destroyTestContainer, setupNative, destroyNative, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, setupBridge, destroyBridge, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal button component native happy path on ${flow}`, () => {
+    describe(`paypal button component bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
 
-            setupNative({ flow });
+            setupBridge();
         });
 
         afterEach(() => {
@@ -22,7 +22,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyNative();
+            destroyBridge();
         });
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
@@ -52,7 +52,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -82,7 +82,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -202,7 +202,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -237,7 +237,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
             let token = generateECToken();
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -268,7 +268,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
-            setupNative({ flow, isAuthorize: false });
+            setupBridge({ isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -499,7 +499,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let checkoutToken = generateECToken();
 
-            window.ppnativexo.start = (url) => {
+            window.popupBridge.open = (url) => {
                 assert.isOk(url.indexOf(`token=${checkoutToken}`) !== -1);
                 assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                 assert.isOk(url.indexOf(`&ba_token=`) === -1);
@@ -539,7 +539,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let paymentID = generatePaymentID();
 
-            window.ppnativexo.start = (url) => {
+            window.popupBridge.open = (url) => {
                 assert.isOk(url.indexOf(`token=${paymentID}`) !== -1);
                 assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                 assert.isOk(url.indexOf(`&ba_token=`) === -1);
@@ -579,7 +579,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let billingToken = generateBillingToken();
 
-            window.ppnativexo.start = (url) => {
+            window.popupBridge.open = (url) => {
                 assert.isOk(url.indexOf(`ba_token=${billingToken}`) !== -1);
                 assert.isOk(url.indexOf(`billingurl=true`) !== -1);
                 assert.isOk(url.indexOf(`&token=`) === -1);
@@ -648,9 +648,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        it('should render a button into a container and set up native after the render', (done) => {
+        it('should render a button into a container and set up bridge after the render', (done) => {
 
-            destroyNative();
+            destroyBridge();
 
             return paypal.Button.render({
 
@@ -670,7 +670,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                setupNative({ flow });
+                setupBridge();
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 setTimeout(() => button.window.document.querySelector('button').click(), 50);

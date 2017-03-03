@@ -6,6 +6,7 @@ import postRobot from 'post-robot/src';
 
 import paypal from 'src/index';
 import { config } from 'src/config';
+import { clearBridge } from 'src/components';
 
 paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
     type: 'number',
@@ -298,7 +299,7 @@ export function errorOnWindowOpen(win : any) {
     let open = win.open;
 
     win.open = () => {
-        throw new Error(`Should not open window when nativexo present`);
+        throw new Error(`Should not open window when bridge present`);
     };
 
     win.open.reset = () => {
@@ -306,47 +307,76 @@ export function errorOnWindowOpen(win : any) {
     };
 }
 
-export function setupNative({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean }) {
+function parseUrl(url : string) : Object {
+
+    let [ serverUrl, hash ] = url.split('#');
+    let [ , query ] = serverUrl.split('?');
+
+    let params = {};
+
+    if (query) {
+        for (let keypair of query.split('&')) {
+            let [ key, val ] = keypair.split('=');
+            params[decodeURIComponent(key)] = decodeURIComponent(val);
+        }
+    }
+
+    return {
+        url: serverUrl,
+        query: params,
+        hash
+    };
+}
+
+export function setupBridge({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean } = {}) {
 
     errorOnWindowOpen(win);
 
-    win.ppnativexo = {
-        start(url, { onAuthorize, onCancel }) {
+    win.popupBridge = {
+
+        getReturnUrlPrefix() : string {
+            return 'app://foobar';
+        },
+
+        open(url) {
             setTimeout(() => {
 
-                let params = {};
+                let { query, hash } = parseUrl(url);
 
-                let [ serverUrl, hash ] = url.split('#');
-                let [ , query ] = serverUrl.split('?');
+                let queryItems : Object = {
+                    token: query.token || 'EC-XXXXXXXXXXXXXXXXX'
+                };
 
-                if (query) {
-                    for (let keypair of query.split('&')) {
-                        let [ key, val ] = keypair.split('=');
-                        params[key] = val;
+                if (isAuthorize) {
+                    queryItems.opType    = 'payment';
+                    queryItems.payerId   = 'YYYYYYYYYYYYY';
+                    queryItems.returnUrl = `#return?token=${queryItems.token}&PayerID=YYYYYYYYYYYYY`;
+                    if (hash) {
+                        queryItems.returnUrl = `${queryItems.returnUrl}&hash=${hash}`;
+                    }
+                } else {
+                    queryItems.opType    = 'cancel';
+                    queryItems.cancelUrl = `#cancel?token=${queryItems.token}`;
+                    if (hash) {
+                        queryItems.cancelUrl = `${queryItems.cancelUrl}&hash=${hash}`;
                     }
                 }
 
-                let token = params.token || 'EC-XXXXXXXXXXXXXXXXX';
-
-                let returnURL = `${window.location.href.split('#')[0]}#${ isAuthorize ? 'return' : 'cancel' }?token=${token}`;
-
-                if (isAuthorize) {
-                    returnURL = `${returnURL}&PayerID=YYYYYYYYYYYYY`;
+                if (win.popupBridge.onComplete) {
+                    return win.popupBridge.onComplete(null, {
+                        queryItems
+                    });
                 }
-
-                if (hash) {
-                    returnURL = `${returnURL}&hash=${hash}`;
-                }
-
-                return isAuthorize ? onAuthorize(returnURL) : onCancel(returnURL);
 
             }, 200);
         }
     };
 }
 
-export function destroyNative(win : any = window) {
-    delete win.ppnativexo;
+export function destroyBridge(win : any = window) {
+    delete win.popupBridge;
+
+    clearBridge();
 
     if (win.open.reset) {
         win.open.reset();
