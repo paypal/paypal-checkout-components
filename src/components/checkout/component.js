@@ -16,7 +16,7 @@ import { setupNativeProxy } from './native';
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
 
-import { validateProps } from '../common';
+import { validateProps, getNativeStart, awaitNativeStart } from '../common';
 
 import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
@@ -333,12 +333,14 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        nativeStart: {
-            type: 'function',
+        native: {
+            type: 'object',
             required: false,
-            get value() : ?Function {
-                return (window.xprops && window.xprops.nativeStart) ||
-                       (window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo));
+            get value() : Object {
+                return {
+                    start: getNativeStart(),
+                    get: awaitNativeStart
+                };
             }
         },
 
@@ -413,8 +415,20 @@ if (Checkout.isChild()) {
 
         return renderPopupTo.call(this, win, props);
     };
-}
 
-if (Checkout.isChild() && window.xprops.logLevel) {
-    setLogLevel(window.xprops.logLevel);
+    if (window.xprops.logLevel) {
+        setLogLevel(window.xprops.logLevel);
+    }
+
+    let native = window.xprops.native;
+
+    if (native && !window.ppnativexo) {
+        if (native.start) {
+            window.ppnativexo = { start: native.start };
+        } else if (native.get) {
+            native.get().then(start => {
+                window.ppnativexo = { start };
+            });
+        }
+    }
 }

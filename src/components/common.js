@@ -1,6 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
+import { awaitKey } from '../lib';
 
 export function validateProps(props : Object, required : boolean = true) {
 
@@ -39,4 +40,14 @@ export function validateProps(props : Object, required : boolean = true) {
             throw new Error(`Invalid client ID: ${clientID}`);
         }
     }
+}
+
+export function getNativeStart() : ?Function {
+    return window.ppnativexo && window.ppnativexo.start && window.ppnativexo.start.bind(window.ppnativexo);
+}
+
+export function awaitNativeStart() : SyncPromise<Function> {
+    return awaitKey(window, 'ppnativexo').then(nativexo => {
+        return nativexo.start.bind(nativexo);
+    });
 }

@@ -6,7 +6,7 @@ import xcomponent from 'xcomponent/src';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 
-import { validateProps } from '../common';
+import { validateProps, getNativeStart, awaitNativeStart } from '../common';
 
 // $FlowFixMe
 import componentTemplate from './componentTemplate.htm';
@@ -275,12 +275,14 @@ export let Button = xcomponent.create({
             }
         },
 
-        nativeStart: {
-            type: 'function',
+        native: {
+            type: 'object',
             required: false,
-            get value() : ?Function {
-                return (window.xprops && window.xprops.nativeStart) ||
-                       (window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo));
+            get value() : Object {
+                return {
+                    start: getNativeStart(),
+                    get: awaitNativeStart
+                };
             }
         },
 
@@ -304,6 +306,22 @@ export let Button = xcomponent.create({
     }
 });
 
-if (Button.isChild() && window.xprops.logLevel) {
-    setLogLevel(window.xprops.logLevel);
+if (Button.isChild()) {
+
+    if (window.xprops.logLevel) {
+        setLogLevel(window.xprops.logLevel);
+    }
+
+    let native = window.xprops.native;
+
+    if (native && !window.ppnativexo) {
+        if (native.start) {
+            window.ppnativexo = { start: native.start };
+        } else if (native.get) {
+            native.get().then(start => {
+                window.ppnativexo = { start };
+            });
+        }
+    }
 }
+

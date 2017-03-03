@@ -141,10 +141,6 @@ export function eventEmitter() : Listener {
     };
 }
 
-export function cycle(method : Function) : SyncPromise {
-    return SyncPromise.try(method).then(() => cycle(method));
-}
-
 export function onKey(obj : Object, key : string, callback : Function) {
 
     if (!obj) {
@@ -163,6 +159,8 @@ export function onKey(obj : Object, key : string, callback : Function) {
 
         Object.defineProperty(obj, key, {
 
+            configurable: true,
+
             set(item) {
                 value = item;
 
@@ -179,4 +177,10 @@ export function onKey(obj : Object, key : string, callback : Function) {
     } catch (err) {
         // pass
     }
+}
+
+export function awaitKey(obj : Object, key : string) : SyncPromise {
+    return new SyncPromise(resolve => {
+        return onKey(obj, key, resolve);
+    });
 }

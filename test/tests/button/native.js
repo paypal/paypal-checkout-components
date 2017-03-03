@@ -6,7 +6,7 @@ import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer, setupNative, destroyNative, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
 
-for (let flow of [ 'popup' ]) {
+for (let flow of [ 'popup', 'lightbox' ]) {
 
     describe(`paypal button component native happy path on ${flow}`, () => {
 
@@ -645,6 +645,35 @@ for (let flow of [ 'popup' ]) {
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
+            });
+        });
+
+        it('should render a button into a container and set up native after the render', (done) => {
+
+            destroyNative();
+
+            return paypal.Button.render({
+
+                payment() : string | SyncPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer').then(button => {
+
+                errorOnWindowOpen(button.window);
+
+                setupNative({ flow });
+
+                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+                setTimeout(() => button.window.document.querySelector('button').click(), 50);
             });
         });
 

@@ -44,9 +44,7 @@ function renderNative(props : Object) : SyncPromise<void> {
 
     return awaitUrl.then(url => {
 
-        let start = window.ppnativexo
-            ? window.ppnativexo.start.bind(window.ppnativexo.start)
-            : window.xprops.nativeStart;
+        let start = window.ppnativexo && window.ppnativexo.start.bind(window.ppnativexo.start);
 
         start(url, {
 
@@ -92,9 +90,7 @@ export function setupNativeProxy(Checkout : Object) {
 
     function branchNative(props : Object, original : Function) : SyncPromise<void> {
 
-        let hasNativeXO = window.ppnativexo || window.xprops && window.xprops.nativeStart;
-
-        if (hasNativeXO && !Checkout.contexts.lightbox) {
+        if (window.ppnativexo) {
             return renderNative(props);
         }
 
