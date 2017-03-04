@@ -249,7 +249,7 @@ function setup() {
         });
     }
 
-    let button = document.getElementById('buttonContainer').querySelector('button');
+    let button = document.getElementById('paypal-button-container').querySelector('button');
 
     button.addEventListener('click', event => {
         event.preventDefault();

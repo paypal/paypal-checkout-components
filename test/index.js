@@ -84,7 +84,7 @@ describe('Button Configurations before rendering', () => {
             let button = getButtonConfig(req).buttonConfig;
 
             assert(button.label_tag === 'The safer, easier way to pay');
-            assert(button.logo === `${config.themes.general}<span class="text" data-hide-if-overflow> Check out</span>`);
+            assert(button.logo === `${config.themes.general}<span class="text"> Check out</span>`);
 
             done();
         } catch (err) {
@@ -105,7 +105,7 @@ describe('Button Configurations before rendering', () => {
             let button = getButtonConfig(req).buttonConfig;
 
             assert(button.label_tag === 'Überall schnell und sicher bezahlen.');
-            assert(button.logo === `<span class="text" data-hide-if-overflow>Direkt zu </span>${config.themes.general}`);
+            assert(button.logo === `<span class="text">Direkt zu </span>${config.themes.general}`);
             done();
 
         } catch (err) {
@@ -124,7 +124,7 @@ describe('Button Configurations before rendering', () => {
             let button = getButtonConfig(req).buttonConfig;
 
             assert(button.label_tag === '更安全、更便捷的付款方式');
-            assert(button.logo === `<span class="text" data-hide-if-overflow>使用</span>${config.themes.general}<span class="text" data-hide-if-overflow>结账</span>`);
+            assert(button.logo === `<span class="text">使用</span>${config.themes.general}<span class="text">结账</span>`);
             done();
 
         } catch (err) {
@@ -153,7 +153,7 @@ describe('Button Configurations before rendering', () => {
             assert(button.label === 'checkout');
             assert(button.locale === 'en_US');
 
-            assert(button.logo === `${config.themes.blue_checkout}<span class="text" data-hide-if-overflow> Check out</span>`, 'Expected the blue theme');
+            assert(button.logo === `${config.themes.blue_checkout}<span class="text"> Check out</span>`, 'Expected the blue theme');
             assert(button.label_tag === 'The safer, easier way to pay');
 
             done();
