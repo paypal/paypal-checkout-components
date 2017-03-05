@@ -1,6 +1,8 @@
 PayPal Checkout
 ---------------
 
+[![Build Status](https://travis-ci.org/paypal/paypal-checkout.svg?branch=master)](https://travis-ci.org/paypal/paypal-checkout)
+
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [xcomponent](https://github.com/krakenjs/xcomponent).
 
