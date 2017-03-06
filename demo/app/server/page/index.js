@@ -13,8 +13,8 @@ module.exports = function(ctx) {
 
             <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
-            <script src="/checkout/static/js/braintree.client.min.js"></script>
-            <script src="/checkout/static/js/braintree.paypal.min.js"></script>
+            <script src="https://js.braintreegateway.com/web/3.9.0/js/client.min.js"></script>
+            <script src="https://js.braintreegateway.com/web/3.9.0/js/paypal-checkout.min.js"></script>
 
             <script src="/checkout/static/js/ace.js" type="text/javascript" charset="utf-8"></script>
         </head>
