@@ -318,5 +318,107 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 });
             });
         });
+
+        it('should render a button into a form container and click on the button, with a true condition', () => {
+
+            let token = generateECToken();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: config.checkoutUrl
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return true;
+                }
+
+            }).then(() => {
+
+                getElement('button', testForm).click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a false condition', () => {
+
+            let token = generateECToken();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: config.checkoutUrl
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return false;
+                }
+
+            }).then(() => {
+
+                let windowOpened = false;
+                let windowOpen = window.open;
+
+                window.open = () => {
+                    windowOpened = true;
+                };
+
+                let submitted = false;
+
+                testForm.addEventListener('submit', event => {
+                    event.preventDefault();
+                    submitted = true;
+                });
+
+                getElement('button', testForm).click();
+
+                if (submitted) {
+                    throw new Error('Expected form to not be submitted');
+                }
+
+                if (windowOpened) {
+                    throw new Error('Expected window not to be opened');
+                }
+
+                window.open = windowOpen;
+            });
+        });
     });
 }
