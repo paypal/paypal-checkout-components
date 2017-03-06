@@ -25,7 +25,7 @@
     "krakenjs",
     "kraken"
   ],
-  "license" : "Apache-2.0",
+  "license": "Apache-2.0",
   "readmeFilename": "README.md",
   "devDependencies": {
     "babel-core": "^6.7.7",
