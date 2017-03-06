@@ -22,8 +22,8 @@ export let braintree = {
 
     code: (ctx) => `
         <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-        <script src="https://js.braintreegateway.com/web/3.8.0/js/client.min.js"></script>
-        <script src="https://js.braintreegateway.com/web/3.8.0/js/paypal.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.9.0/js/client.min.js"></script>
+        <script src="https://js.braintreegateway.com/web/3.9.0/js/paypal-checkout.min.js"></script>
 
         <div id="paypal-button-container"></div>
 
@@ -33,7 +33,7 @@ export let braintree = {
 
             paypal.request.get('/checkout/api/braintree/client-token/').then(function(res) {
                 braintree.client.create({ authorization: res.clientToken }, function (err, client) {
-                    braintree.paypal.create({ client: client }, function (err, paypalClient) {
+                    braintree.paypalCheckout.create({ client: client }, function (err, paypalClient) {
 
                         // Render the PayPal button
 
