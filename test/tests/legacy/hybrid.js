@@ -1041,5 +1041,259 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 getElement('button', testForm).click();
             });
         });
+
+        /*
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow and a true condition', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+            let clicked = false;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return true;
+                },
+
+                click() {
+                    clicked = true;
+                }
+
+            }).then(() => {
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                getElement('button', testForm).click();
+
+                if (!clicked) {
+                    throw new Error('Expected click handler to have been called');
+                }
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow and a false condition', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+            let clicked = false;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return false;
+                },
+
+                click() {
+                    clicked = true;
+                }
+
+            }).then(() => {
+
+                let windowOpened = false;
+                let windowOpen = window.open;
+
+                window.open = () => {
+                    windowOpened = true;
+                };
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    paypal.checkout.startFlow(token);
+                });
+
+                getElement('button', testForm).click();
+
+                if (clicked) {
+                    throw new Error('Expected click handler to not have been called');
+                }
+
+                if (windowOpened) {
+                    throw new Error('Expected window not to be opened');
+                }
+
+                window.open = windowOpen;
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and initXO/startFlow and a true condition', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+            let clicked = false;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return true;
+                },
+
+                click() {
+                    clicked = true;
+                }
+
+            }).then(() => {
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(token);
+                    }, 50);
+                });
+
+                getElement('button', testForm).click();
+
+                if (!clicked) {
+                    throw new Error('Expected click handler to have been called');
+                }
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container and click on the button, with a custom listener and initXO/startFlow and a false condition', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+            let clicked = false;
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                condition() : boolean {
+                    return false;
+                },
+
+                click() {
+                    clicked = true;
+                }
+
+            }).then(() => {
+
+                let windowOpened = false;
+                let windowOpen = window.open;
+
+                window.open = () => {
+                    windowOpened = true;
+                };
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(token);
+                    }, 50);
+                });
+
+                getElement('button', testForm).click();
+
+                if (clicked) {
+                    throw new Error('Expected click handler to not have been called');
+                }
+
+                if (windowOpened) {
+                    throw new Error('Expected window not to be opened');
+                }
+
+                window.open = windowOpen;
+            });
+        });
+
+        */
     });
 }

@@ -200,6 +200,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
             let hash = uniqueID();
+            let clicked = false;
 
             return paypal.checkout.setup('merchantID', {
 
@@ -210,12 +211,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 click(event) {
+                    clicked = true;
                     paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
 
                 getElement('#testContainer button').click();
+
+                if (!clicked) {
+                    throw new Error('Expected click handler to have been called');
+                }
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
@@ -241,11 +247,24 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
+                let windowOpened = false;
+                let windowOpen = window.open;
+
+                window.open = () => {
+                    windowOpened = true;
+                };
+
                 getElement('#testContainer button').click();
 
                 if (clicked) {
                     throw new Error('Expected button not to be clicked');
                 }
+
+                if (windowOpened) {
+                    throw new Error('Expected window not to be opened');
+                }
+
+                window.open = windowOpen;
             });
         });
 
