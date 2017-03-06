@@ -92,12 +92,14 @@ export let WEBPACK_CONFIG_MINOR = getWebpackConfig({
 
 export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfig({
     version: nextMajorVersion,
-    filename: `${FILE_NAME}.min.js`
+    filename: `${FILE_NAME}.min.js`,
+    minify: true
 });
 
 export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfig({
     version: nextMinorVersion,
-    filename: `${FILE_NAME}.${nextMinorVersion}.min.js`
+    filename: `${FILE_NAME}.${nextMinorVersion}.min.js`,
+    minify: true
 });
 
 export let WEBPACK_CONFIG_LIB = getWebpackConfig({
