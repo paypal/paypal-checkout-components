@@ -27,6 +27,22 @@ export function validateProps(props : Object, required : boolean = true) {
         }
     }
 
+    if (props.style && props.style.label) {
+        if (props.style.label !== 'checkout' && props.style.label !== 'credit') {
+            throw new Error(`Invalid label for button: ${props.style.label}`);
+        }
+    }
+
+    // Tiny size for credit button is not supported 
+    if (props.style && props.style.label === 'credit' && props.style.size === 'tiny') { 
+        throw new Error(`Invalid credit button size: ${props.style.size}`); 
+    }  
+
+    // Custom colors for credit buttons are not supported 
+    if (props.style && props.style.label === 'credit' && props.style.color) {
+        throw new Error(`Custom colors for credit button are not supported`);
+    }
+
     let env = props.env || config.env;
 
     if (props.client) {
