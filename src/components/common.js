@@ -28,7 +28,7 @@ export function validateProps(props : Object, required : boolean = true) {
     }
 
     if (props.style && props.style.label) {
-        if (props.style.label !== 'checkout' || props.style.label !== 'credit') {
+        if (props.style.label !== 'checkout' && props.style.label !== 'credit') {
             throw new Error(`Invalid label for button: ${props.style.label}`);
         }
     }
