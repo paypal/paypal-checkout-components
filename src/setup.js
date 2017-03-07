@@ -27,8 +27,6 @@ function setDomainEnv(domain : string) {
 
 setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
-initLogger();
-
 SyncPromise.onPossiblyUnhandledException((err : Error) => {
 
     beacon(`unhandled_error`, {
@@ -54,13 +52,19 @@ function getCurrentScript() : ? HTMLScriptElement {
     }
 
     if (document.currentScript) {
-        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+        //  Logger not inited yet: $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
     }
 }
 
 let currentScript = getCurrentScript();
 let currentProtocol = window.location.protocol.split(':')[0];
 
+let prefix = 'ppxo';
+if (currentScript && currentScript instanceof HTMLElement) {
+    prefix = currentScript.getAttribute('data-log-prefix');
+}
+
+initLogger({ logPrefix:  prefix});
 
 type SetupOptions = {
     env? : ?string,

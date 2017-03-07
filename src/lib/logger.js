@@ -4,7 +4,11 @@ import postRobot from 'post-robot/src';
 import $logger from 'beaver-logger/client';
 import { config } from '../config';
 
-export function initLogger() {
+type LoggerOptions = {
+    loggerPrefix? : string
+};
+
+export function initLogger(options : LoggerOptions) {
 
     $logger.addPayloadBuilder(() => {
         return {
@@ -28,7 +32,7 @@ export function initLogger() {
         uri: config.loggerUrl,
         heartbeat: false,
         logPerformance: false,
-        prefix: `ppxo`
+        prefix: options.logPrefix || `ppxo`
     });
 }
 
