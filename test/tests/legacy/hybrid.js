@@ -1041,6 +1041,5 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 getElement('button', testForm).click();
             });
         });
-
     });
 }
