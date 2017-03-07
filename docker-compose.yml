@@ -6,6 +6,6 @@ services:
     ports:
       - "8002:8002"
     volumes:
-      - .:/demo
+      - .:/paypal-checkout
     environment:
       - PORT=8002
