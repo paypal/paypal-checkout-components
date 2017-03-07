@@ -1,0 +1,11 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: node demo/app/server
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/paypal-checkout
+    environment:
+      - PORT=8002
