@@ -7,28 +7,32 @@
         top: 0;
         left: 0;
         margin: 0;
-    }
-    .spinner {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        z-index: 10;
         text-align: center;
     }
-    .spinner .loader {
-        display: inline-block;
+    .spinner {
         height: 60vmin;
         width: 60vmin;
-        margin-top: 4vmin;
-        opacity: 1;
-        filter: alpha(opacity=100);
+        margin-top: 20vmin;
+        display: inline-block;
+        z-index: 10;
+    }
+    .spinner .loader {
+        height: 100%;
+        width: 100%;
+
+        box-sizing: border-box;
+
+        border-width: 10vmin;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, .2);
+        border-top-color: rgba(33, 128, 192, 0.8);
+        border-radius: 100%;
+
         -webkit-animation: rotation .7s infinite linear;
         -moz-animation: rotation .7s infinite linear;
         -o-animation: rotation .7s infinite linear;
         animation: rotation .7s infinite linear;
-        border: 16vmin solid rgba(0, 0, 0, .2);
-        border-top: 16vmin solid rgba(33, 128, 192, 0.8);
-        border-radius: 100%;
+
     }
 
     @-webkit-keyframes rotation {
@@ -66,5 +70,5 @@
 </style>
 
 <div class="spinner">
-    <p id="loader" class="loader"></p>
+    <div id="loader" class="loader"></div>
 </div>

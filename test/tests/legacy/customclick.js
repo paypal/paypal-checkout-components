@@ -68,6 +68,57 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
+        it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return paypal.checkout.setup('merchantID', {
+
+                container: 'testForm',
+
+                click() {
+                    // pass
+                }
+
+            }).then(() => {
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        paypal.checkout.startFlow(token);
+                    }, 50);
+                });
+
+                getElement('button', testForm).click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
         it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow, and a cancel', () => {
 
             let token = generateECToken();

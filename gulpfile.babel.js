@@ -1,7 +1,8 @@
+
 import gulp from 'gulp';
 import gulpWebpack from 'gulp-webpack';
 import eslint from 'gulp-eslint';
-import shell from 'gulp-shell';
+import flow from 'gulp-flowtype';
 import { Server } from 'karma';
 import { argv } from 'yargs';
 import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN, WEBPACK_CONFIG_LIB, WEBPACK_CONFIG_DEMO } from './webpack.conf';
@@ -48,7 +49,10 @@ gulp.task('webpack-demo', [], function() {
       .pipe(gulp.dest('demo/app/build'));
 });
 
-gulp.task('typecheck', shell.task(['npm run-script flow']));
+gulp.task('typecheck', function() {
+    return gulp.src([ 'src/**/*.js', 'test/**/*.js' ])
+        .pipe(flow())
+});
 
 gulp.task('lint', ['lint-src', 'lint-test']);
 

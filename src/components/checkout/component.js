@@ -385,9 +385,22 @@ setupBridgeProxy(Checkout);
 
 let enableCheckoutIframeTimeout;
 
-export function enableCheckoutIframe() {
+function allowCheckoutIframe() : boolean {
 
-    if (isDevice() && !hasMetaViewPort()) {
+    if (isDevice()) {
+        return false;
+    }
+
+    if (!hasMetaViewPort()) {
+        return false;
+    }
+
+    return true;
+}
+
+export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } : { force? : boolean, timeout? : number } = {}) {
+
+    if (!force && !allowCheckoutIframe()) {
         return;
     }
 
@@ -401,7 +414,7 @@ export function enableCheckoutIframe() {
     enableCheckoutIframeTimeout = setTimeout(() => {
         Checkout.contexts.lightbox = false;
         Checkout.contexts.iframe = false;
-    }, 5 * 60 * 1000);
+    }, timeout);
 }
 
 if (Checkout.isChild()) {

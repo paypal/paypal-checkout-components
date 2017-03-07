@@ -2,9 +2,11 @@
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import xcomponent from 'xcomponent/src';
+import $logger from 'beaver-logger/client';
 
+import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView } from '../../lib';
 
 import { validateProps, getBridgeOpen, awaitBridgeOpen } from '../common';
 
@@ -307,6 +309,11 @@ export let Button = xcomponent.create({
 });
 
 if (Button.isChild()) {
+
+    if (isWebView()) {
+        $logger.info('force_enable_iframe_webview');
+        enableCheckoutIframe({ force: true, time: 30 * 60 * 1000 });
+    }
 
     if (window.xprops.logLevel) {
         setLogLevel(window.xprops.logLevel);

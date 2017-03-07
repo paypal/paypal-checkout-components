@@ -113,4 +113,66 @@ describe(`paypal button component validation`, () => {
             return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
         });
     });
+
+    it('should attempt to render a button with an invalid label and error out', () => {
+
+        return paypal.Button.render({
+            payment() : string | SyncPromise<string> {
+                return generateECToken();
+            },
+            onAuthorize() {
+                // pass
+            },
+            style: {
+                label: 'moo'
+            }
+        }, '#meep').then(() => {
+            throw new Error('Expected error to be thrown');
+        }, err => {
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+        });
+    });
+
+
+    it('should attempt to render a credit button with size:tiny and error out', () => {
+
+        return paypal.Button.render({
+            payment() : string | SyncPromise<string> {
+                return generateECToken();
+            },
+            onAuthorize() {
+                // pass
+            },
+            style: {
+                size: 'tiny',
+                label: 'credit',
+                shape: 'pill'
+            }
+        }, '#meep').then(() => {
+            throw new Error('Expected error to be thrown');
+        }, err => {
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+        });
+    });
+
+    it('should attempt to render a credit button with custom color and error out', () => {
+
+        return paypal.Button.render({
+            payment() : string | SyncPromise<string> {
+                return generateECToken();
+            },
+            onAuthorize() {
+                // pass
+            },
+            style: {
+                label: 'credit',
+                shape: 'pill',
+                color: 'gold'
+            }
+        }, '#meep').then(() => {
+            throw new Error('Expected error to be thrown');
+        }, err => {
+            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+        });
+    });
 });

@@ -362,6 +362,11 @@ function listenClick(container, button, clickHandler, condition) : void {
             if (condition.call()) {
                 $logger.info(`button_click_condition_enabled`);
             } else {
+
+                if (!isClick) {
+                    event.preventDefault();
+                }
+
                 return $logger.info(`button_click_condition_disabled`);
             }
         }
