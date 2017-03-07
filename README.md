@@ -6,13 +6,6 @@ PayPal Checkout
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [xcomponent](https://github.com/krakenjs/xcomponent).
 
-These components support various levels of integration, depending on your requirements:
-
-- A simple PayPal Button which takes your customer through the payment process end-to-end
-- An advanced PayPal Button which allows you to use [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/) to accept and process payments
-
-We also support native React, Angular and Ember components for the PayPal Button.
-
 ### Which Integration is right for me?
 
 - Do you want the **simplest possible PayPal Integration**? If so, you should stick with the [**Basic PayPal Checkout Button**](https://github.com/paypal/paypal-checkout/tree/master/docs/button.md#basic-integration)
@@ -56,3 +49,31 @@ If you want to use the advanced javascript integrations, you will need a way to 
 server side. The simplest way to do this is using the [PayPal Payments REST API](https://developer.paypal.com/docs/api/payments/)
 
 ### [Integrating with the PayPal REST API](https://github.com/paypal/paypal-checkout/tree/master/docs/paypal-rest-api.md)
+
+-----
+
+## Development
+
+Please feel free to follow the [Contribution Guidelines](./CONTRIBUTING.md) to contribute to this repository. PRs are welcome, but for major changes please raise an issue first.
+
+### Quick Setup
+
+Set up your env:
+
+```bash
+npm install -g gulp flow-bin flow-typed
+npm install
+flow-typed install
+```
+
+Run tests:
+
+```bash
+gulp test
+```
+
+Build checkout.js:
+
+```bash
+gulp build
+```
