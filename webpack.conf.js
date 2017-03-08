@@ -29,51 +29,51 @@ function getVersionVars() {
 function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target = 'window', minify = false }) {
 
     return {
-      module: {
-        loaders: [
-          {
-            test: /sinon\.js$/,
-            loader: "imports?define=>false,require=>false"
-          },
-          {
-            test: /\.jsx?$/,
-            exclude: /(sinon|chai)/,
-            loader: 'babel'
-          },
-          {
-            test: /\.(html?|css|json)$/,
-            loader: 'raw-loader'
-          }
+        module: {
+            loaders: [
+                {
+                    test: /sinon\.js$/,
+                    loader: "imports?define=>false,require=>false"
+                },
+                {
+                    test: /\.jsx?$/,
+                    exclude: /(sinon|chai)/,
+                    loader: 'babel'
+                },
+                {
+                    test: /\.(html?|css|json)$/,
+                    loader: 'raw-loader'
+                }
+            ]
+        },
+        output: {
+            filename: filename,
+            libraryTarget: target,
+            umdNamedDefine: true,
+            library: modulename,
+            pathinfo: false
+        },
+        bail: true,
+        devtool: 'source-map',
+        resolve: {
+            extensions: [ '', '.js', '.jsx' ],
+        },
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+                test: /\.js$/,
+                beautify: !minify,
+                minimize: minify,
+                compress: minify,
+                mangle: minify
+            }),
+            new webpack.DefinePlugin({
+                __TEST__: false,
+                __FILE_NAME__: JSON.stringify(filename),
+                __FILE_VERSION__: JSON.stringify(version),
+                ...getVersionVars()
+            }),
+            new webpack.NamedModulesPlugin()
         ]
-      },
-      output: {
-        filename: filename,
-        libraryTarget: target,
-        umdNamedDefine: true,
-        library: modulename,
-        pathinfo: false
-      },
-      bail: true,
-      devtool: 'source-map',
-      resolve: {
-        extensions: [ '', '.js', '.jsx' ],
-      },
-      plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-          test: /\.js$/,
-          beautify: !minify,
-          minimize: minify,
-          compress: minify,
-          mangle: minify
-        }),
-        new webpack.DefinePlugin({
-            __TEST__: false,
-            __FILE_NAME__: JSON.stringify(filename),
-            __FILE_VERSION__: JSON.stringify(version),
-            ...getVersionVars()
-        }),
-        new webpack.NamedModulesPlugin()
-      ]
     };
 }
 

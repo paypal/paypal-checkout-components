@@ -14,39 +14,39 @@ gulp.task('build', ['test', 'webpack']);
 gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib', 'webpack-demo' ]);
 
 gulp.task('webpack-major', ['lint'], function() {
-  return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR))
-      .pipe(gulp.dest('dist'));
+    return gulp.src('src/index.js')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('webpack-minor', ['lint'], function() {
-  return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR))
-      .pipe(gulp.dest('dist'));
+    return gulp.src('src/index.js')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('webpack-lib', ['lint'], function() {
-  return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_LIB))
-      .pipe(gulp.dest('dist'));
+    return gulp.src('src/index.js')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_LIB))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('webpack-major-min', ['lint'], function() {
-  return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR_MIN))
-      .pipe(gulp.dest('dist'));
+    return gulp.src('src/index.js')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR_MIN))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('webpack-minor-min', ['lint'], function() {
-  return gulp.src('src/index.js')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR_MIN))
-      .pipe(gulp.dest('dist'));
+    return gulp.src('src/index.js')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR_MIN))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('webpack-demo', [], function() {
-  return gulp.src('demo/app/client/js/index.jsx')
-      .pipe(gulpWebpack(WEBPACK_CONFIG_DEMO))
-      .pipe(gulp.dest('demo/app/build'));
+    return gulp.src('demo/app/client/js/index.jsx')
+        .pipe(gulpWebpack(WEBPACK_CONFIG_DEMO))
+        .pipe(gulp.dest('demo/app/build'));
 });
 
 gulp.task('typecheck', function() {
@@ -74,29 +74,29 @@ gulp.task('lint-test', function() {
 
 gulp.task('karma', ['lint'], function (done) {
 
-  let server = new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: !Boolean(argv['keep-browser-open']),
-    client: {
-      captureConsole: Boolean(argv['capture-console']),
-      mocha: {
-        timeout : 60 * 1000,
-        bail: true
-      }
-    }
-  });
+    let server = new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: !Boolean(argv['keep-browser-open']),
+        client: {
+            captureConsole: Boolean(argv['capture-console']),
+            mocha: {
+                timeout : 60 * 1000,
+                bail: true
+            }
+        }
+    });
 
-  server.on('browser_error', function (browser, err) {
-    console.log('Karma Run Failed: ' + err.message);
-    throw err;
-  });
+    server.on('browser_error', function (browser, err) {
+        console.log('Karma Run Failed: ' + err.message);
+        throw err;
+    });
 
-  server.on('run_complete', function (browsers, results) {
-    if (results.failed) {
-      return done(new Error('Karma: Tests Failed'));
-    }
-    done();
-  });
+    server.on('run_complete', function (browsers, results) {
+        if (results.failed) {
+            return done(new Error('Karma: Tests Failed'));
+        }
+        done();
+    });
 
-  server.start();
+    server.start();
 });

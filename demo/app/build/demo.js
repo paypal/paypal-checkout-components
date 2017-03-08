@@ -4802,10 +4802,9 @@ window["ppdemo"] = function(modules) {
         var defaultParseQueryString = _queryString.parse;
         var useQueries = function useQueries(createHistory) {
             return function() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var history = createHistory(options);
-                var stringifyQuery = options.stringifyQuery;
-                var parseQueryString = options.parseQueryString;
+                var stringifyQuery = options.stringifyQuery, parseQueryString = options.parseQueryString;
                 if (typeof stringifyQuery !== "function") stringifyQuery = defaultStringifyQuery;
                 if (typeof parseQueryString !== "function") parseQueryString = defaultParseQueryString;
                 var decodeQuery = function decodeQuery(location) {
@@ -5060,7 +5059,7 @@ window["ppdemo"] = function(modules) {
             var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function(obj) {
                 return typeof obj === "undefined" ? "undefined" : _typeof2(obj);
             } : function(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
+                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
             };
             var _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
@@ -5088,9 +5087,9 @@ window["ppdemo"] = function(modules) {
                 return _extends(Object.create(null), props);
             };
             var createLocation = exports.createLocation = function createLocation() {
-                var input = arguments.length <= 0 || arguments[0] === undefined ? "/" : arguments[0];
-                var action = arguments.length <= 1 || arguments[1] === undefined ? _Actions.POP : arguments[1];
-                var key = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+                var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/";
+                var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _Actions.POP;
+                var key = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
                 var object = typeof input === "string" ? (0, _PathUtils.parsePath)(input) : input;
                 process.env.NODE_ENV !== "production" ? (0, _warning2["default"])(!object.path, "Location descriptor objects should have a `pathname`, not a `path`.") : void 0;
                 var pathname = object.pathname || "/";
@@ -5150,10 +5149,7 @@ window["ppdemo"] = function(modules) {
                 };
             }
             var addQueryStringValueToPath = exports.addQueryStringValueToPath = function addQueryStringValueToPath(path, key, value) {
-                var _parsePath = parsePath(path);
-                var pathname = _parsePath.pathname;
-                var search = _parsePath.search;
-                var hash = _parsePath.hash;
+                var _parsePath = parsePath(path), pathname = _parsePath.pathname, search = _parsePath.search, hash = _parsePath.hash;
                 return createPath({
                     pathname: pathname,
                     search: search + (search.indexOf("?") === -1 ? "?" : "&") + key + "=" + value,
@@ -5161,10 +5157,7 @@ window["ppdemo"] = function(modules) {
                 });
             };
             var stripQueryStringValueFromPath = exports.stripQueryStringValueFromPath = function stripQueryStringValueFromPath(path, key) {
-                var _parsePath2 = parsePath(path);
-                var pathname = _parsePath2.pathname;
-                var search = _parsePath2.search;
-                var hash = _parsePath2.hash;
+                var _parsePath2 = parsePath(path), pathname = _parsePath2.pathname, search = _parsePath2.search, hash = _parsePath2.hash;
                 return createPath({
                     pathname: pathname,
                     search: search.replace(new RegExp("([?&])" + key + "=[a-zA-Z0-9]+(&?)"), function(match, prefix, suffix) {
@@ -5174,8 +5167,7 @@ window["ppdemo"] = function(modules) {
                 });
             };
             var getQueryStringValueFromPath = exports.getQueryStringValueFromPath = function getQueryStringValueFromPath(path, key) {
-                var _parsePath3 = parsePath(path);
-                var search = _parsePath3.search;
+                var _parsePath3 = parsePath(path), search = _parsePath3.search;
                 var match = search.match(new RegExp("[?&]" + key + "=([a-zA-Z0-9]+)"));
                 return match && match[1];
             };
@@ -5207,10 +5199,7 @@ window["ppdemo"] = function(modules) {
             };
             var createPath = exports.createPath = function createPath(location) {
                 if (location == null || typeof location === "string") return location;
-                var basename = location.basename;
-                var pathname = location.pathname;
-                var search = location.search;
-                var hash = location.hash;
+                var basename = location.basename, pathname = location.pathname, search = location.search, hash = location.hash;
                 var path = (basename || "") + pathname;
                 if (search && search !== "?") path += search;
                 if (hash) path += hash;
@@ -5242,13 +5231,13 @@ window["ppdemo"] = function(modules) {
         }
         var useBasename = function useBasename(createHistory) {
             return function() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 var history = createHistory(options);
                 var basename = options.basename;
                 var addBasename = function addBasename(location) {
                     if (!location) return location;
                     if (basename && location.basename == null) {
-                        if (location.pathname.indexOf(basename) === 0) {
+                        if (location.pathname.toLowerCase().indexOf(basename.toLowerCase()) === 0) {
                             location.pathname = location.pathname.substring(basename.length);
                             location.basename = basename;
                             if (location.pathname === "") location.pathname = "/";
@@ -5352,7 +5341,7 @@ window["ppdemo"] = function(modules) {
                 }, {});
             };
             var createMemoryHistory = function createMemoryHistory() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 if (Array.isArray(options)) {
                     options = {
                         entries: options
@@ -5407,9 +5396,7 @@ window["ppdemo"] = function(modules) {
                     replaceLocation: replaceLocation,
                     go: go
                 }));
-                var _options = options;
-                var entries = _options.entries;
-                var current = _options.current;
+                var _options = options, entries = _options.entries, current = _options.current;
                 if (typeof entries === "string") {
                     entries = [ entries ];
                 } else if (!Array.isArray(entries)) {
@@ -5454,13 +5441,8 @@ window["ppdemo"] = function(modules) {
             };
         }
         var createHistory = function createHistory() {
-            var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-            var getCurrentLocation = options.getCurrentLocation;
-            var getUserConfirmation = options.getUserConfirmation;
-            var pushLocation = options.pushLocation;
-            var replaceLocation = options.replaceLocation;
-            var go = options.go;
-            var keyLength = options.keyLength;
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+            var getCurrentLocation = options.getCurrentLocation, getUserConfirmation = options.getUserConfirmation, pushLocation = options.pushLocation, replaceLocation = options.replaceLocation, go = options.go, keyLength = options.keyLength;
             var currentLocation = void 0;
             var pendingLocation = void 0;
             var beforeListeners = [];
@@ -5560,7 +5542,7 @@ window["ppdemo"] = function(modules) {
                 return (0, _PathUtils.createPath)(location);
             };
             var createLocation = function createLocation(location, action) {
-                var key = arguments.length <= 2 || arguments[2] === undefined ? createKey() : arguments[2];
+                var key = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : createKey();
                 return (0, _LocationUtils.createLocation)(location, action, key);
             };
             return {
@@ -5761,16 +5743,12 @@ window["ppdemo"] = function(modules) {
                 };
             }
             var createBrowserHistory = function createBrowserHistory() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 !_ExecutionEnvironment.canUseDOM ? process.env.NODE_ENV !== "production" ? (0, _invariant2["default"])(false, "Browser history needs a DOM") : (0, 
                 _invariant2["default"])(false) : void 0;
                 var useRefresh = options.forceRefresh || !(0, _DOMUtils.supportsHistory)();
                 var Protocol = useRefresh ? RefreshProtocol : BrowserProtocol;
-                var getUserConfirmation = Protocol.getUserConfirmation;
-                var getCurrentLocation = Protocol.getCurrentLocation;
-                var pushLocation = Protocol.pushLocation;
-                var replaceLocation = Protocol.replaceLocation;
-                var go = Protocol.go;
+                var getUserConfirmation = Protocol.getUserConfirmation, getCurrentLocation = Protocol.getCurrentLocation, pushLocation = Protocol.pushLocation, replaceLocation = Protocol.replaceLocation, go = Protocol.go;
                 var history = (0, _createHistory2["default"])(_extends({
                     getUserConfirmation: getUserConfirmation
                 }, options, {
@@ -5842,7 +5820,8 @@ window["ppdemo"] = function(modules) {
         };
         var startListener = exports.startListener = function startListener(listener) {
             var handlePopState = function handlePopState(event) {
-                if (event.state !== undefined) listener(_createLocation(event.state));
+                if ((0, _DOMUtils.isExtraneousPopstateEvent)(event)) return;
+                listener(_createLocation(event.state));
             };
             (0, _DOMUtils.addEventListener)(window, PopStateEvent, handlePopState);
             var handleUnpoppedHashChange = function handleUnpoppedHashChange() {
@@ -5859,8 +5838,7 @@ window["ppdemo"] = function(modules) {
             };
         };
         var updateLocation = function updateLocation(location, updateState) {
-            var state = location.state;
-            var key = location.key;
+            var state = location.state, key = location.key;
             if (state !== undefined) (0, _DOMStateStorage.saveState)(key, state);
             updateState({
                 key: key
@@ -5899,6 +5877,9 @@ window["ppdemo"] = function(modules) {
         };
         var supportsPopstateOnHashchange = exports.supportsPopstateOnHashchange = function supportsPopstateOnHashchange() {
             return window.navigator.userAgent.indexOf("Trident") === -1;
+        };
+        var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
+            return event.state === undefined && navigator.userAgent.indexOf("CriOS") === -1;
         };
     },
     "./node_modules/history/lib/DOMStateStorage.js": function(module, exports, __webpack_require__) {
@@ -6099,11 +6080,10 @@ window["ppdemo"] = function(modules) {
                 }
             };
             var createHashHistory = function createHashHistory() {
-                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 !_ExecutionEnvironment.canUseDOM ? process.env.NODE_ENV !== "production" ? (0, _invariant2["default"])(false, "Hash history needs a DOM") : (0, 
                 _invariant2["default"])(false) : void 0;
-                var queryKey = options.queryKey;
-                var hashType = options.hashType;
+                var queryKey = options.queryKey, hashType = options.hashType;
                 process.env.NODE_ENV !== "production" ? (0, _warning2["default"])(queryKey !== false, "Using { queryKey: false } no longer works. Instead, just don't " + "use location state if you don't want a key in your URL query string") : void 0;
                 if (typeof queryKey !== "string") queryKey = DefaultQueryKey;
                 if (hashType == null) hashType = "slash";
@@ -6240,8 +6220,7 @@ window["ppdemo"] = function(modules) {
                 };
             };
             var updateLocation = function updateLocation(location, pathCoder, queryKey, updateHash) {
-                var state = location.state;
-                var key = location.key;
+                var state = location.state, key = location.key;
                 var path = pathCoder.encodePath((0, _PathUtils.createPath)(location));
                 if (state !== undefined) {
                     path = (0, _PathUtils.addQueryStringValueToPath)(path, queryKey, key);
@@ -8610,22 +8589,33 @@ window["ppdemo"] = function(modules) {
         };
         module.exports = ReactRef;
     },
+    "./node_modules/react-dom/lib/ReactOwner.js": function(module, exports, __webpack_require__) {
+        (function(process) {
+            "use strict";
+            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js");
+            var invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
+            function isValidOwner(object) {
+                return !!(object && typeof object.attachRef === "function" && typeof object.detachRef === "function");
+            }
+            var ReactOwner = {
+                addComponentAsRefTo: function addComponentAsRefTo(component, ref, owner) {
+                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "addComponentAsRefTo(...): Only a ReactOwner can have refs. You might be adding a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("119") : void 0;
+                    owner.attachRef(ref, component);
+                },
+                removeComponentAsRefFrom: function removeComponentAsRefFrom(component, ref, owner) {
+                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might be removing a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("120") : void 0;
+                    var ownerPublicInstance = owner.getPublicInstance();
+                    if (ownerPublicInstance && ownerPublicInstance.refs[ref] === component.getPublicInstance()) {
+                        owner.detachRef(ref);
+                    }
+                }
+            };
+            module.exports = ReactOwner;
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+    },
     "./node_modules/react/react.js": function(module, exports, __webpack_require__) {
         "use strict";
         module.exports = __webpack_require__("./node_modules/react/lib/React.js");
-    },
-    "./node_modules/react-dom/lib/ReactInstrumentation.js": function(module, exports, __webpack_require__) {
-        (function(process) {
-            "use strict";
-            var debugTool = null;
-            if (process.env.NODE_ENV !== "production") {
-                var ReactDebugTool = __webpack_require__("./node_modules/react-dom/lib/ReactDebugTool.js");
-                debugTool = ReactDebugTool;
-            }
-            module.exports = {
-                debugTool: debugTool
-            };
-        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     },
     "./node_modules/react-dom/lib/ReactDebugTool.js": function(module, exports, __webpack_require__) {
         (function(process) {
@@ -16397,6 +16387,16 @@ window["ppdemo"] = function(modules) {
                 }
             });
         });
+        var _braintree = __webpack_require__("./demo/app/client/js/patterns/braintree.jsx");
+        Object.keys(_braintree).forEach(function(key) {
+            if (key === "default" || key === "__esModule") return;
+            Object.defineProperty(exports, key, {
+                enumerable: true,
+                get: function get() {
+                    return _braintree[key];
+                }
+            });
+        });
         var _experience = __webpack_require__("./demo/app/client/js/patterns/experience.jsx");
         Object.keys(_experience).forEach(function(key) {
             if (key === "default" || key === "__esModule") return;
@@ -16508,6 +16508,47 @@ window["ppdemo"] = function(modules) {
             }
         };
     },
+    "./demo/app/client/js/patterns/braintree.jsx": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: true
+        });
+        exports.braintree = undefined;
+        var _react = __webpack_require__("./node_modules/react/react.js");
+        var _react2 = _interopRequireDefault(_react);
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {
+                default: obj
+            };
+        }
+        var braintree = exports.braintree = {
+            name: "Braintree",
+            fullName: "Braintree Express Checkout",
+            intro: _react2["default"].createElement("p", null, "Create a PayPal button and accept payments using a Braintree integration."),
+            description: _react2["default"].createElement("div", null, _react2["default"].createElement("p", null, "First, we generate a client token and initialize Braintree using ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "braintree.client.create()"), " / ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "braintree.paypal.create()"), "."), _react2["default"].createElement("p", null, "Then, a button is created using ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "paypal.Button.render()"), " to the ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "#paypal-button-container"), " element."), _react2["default"].createElement("p", null, "When the button is clicked, ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "payment()"), " is called. This function then uses ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "paypalClient.createPayment()"), " to invoke Braintree and create the payment."), _react2["default"].createElement("p", null, "When the payment is authorized by the customer, ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "onAuthorize()"), " is called. This function then uses ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "paypalClient.tokenizePayment()"), " to invoke Braintree to tokenize the payment, then ", _react2["default"].createElement("span", {
+                className: "pre"
+            }, "paypal.request.post()"), " to invoke the merchant server and finalize the payment using the Braintree SDK.")),
+            code: function code(ctx) {
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n        <script src="https://js.braintreegateway.com/web/3.9.0/js/client.min.js"></script>\n        <script src="https://js.braintreegateway.com/web/3.9.0/js/paypal-checkout.min.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Set up the Braintree client\n\n            paypal.request.get(\'/checkout/api/braintree/client-token/\').then(function(res) {\n                braintree.client.create({ authorization: res.clientToken }, function (err, client) {\n                    braintree.paypalCheckout.create({ client: client }, function (err, paypalClient) {\n\n                        // Render the PayPal button\n\n                        paypal.Button.render({\n\n                            // Set your environment\n\n                            env: \'' + ctx.env + "', // sandbox | production\n\n                            // Wait for the PayPal button to be clicked\n\n                            payment: function() {\n\n                                // Call Braintree to create the payment\n\n                                return paypalClient.createPayment({\n                                    flow:     'checkout',\n                                    amount:   '1.00',\n                                    currency: 'USD',\n                                    intent:   'sale'\n                                });\n                            },\n\n                            // Wait for the payment to be authorized by the customer\n\n                            onAuthorize: function(data, actions) {\n\n                                // Call Braintree to tokenize the payment\n\n                                return paypalClient.tokenizePayment(data).then(function(result) {\n\n                                    // Call your server to finalize the payment\n\n                                    return paypal.request.post('/checkout/api/braintree/pay/', {\n                                        nonce: result.nonce,\n                                        amount: transaction.amount,\n                                        currency: transaction.currency\n\n                                    });\n\n                                }).then(function (res) {\n\n                                    document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                                });\n                            }\n\n                        }, '#paypal-button-container');\n\n                    });\n                });\n            });\n\n        </script>\n    ";
+            }
+        };
+    },
     "./demo/app/client/js/patterns/experience.jsx": function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -16609,28 +16650,17 @@ window["ppdemo"] = function(modules) {
             }
         };
     },
-    "./node_modules/react-dom/lib/ReactOwner.js": function(module, exports, __webpack_require__) {
+    "./node_modules/react-dom/lib/ReactInstrumentation.js": function(module, exports, __webpack_require__) {
         (function(process) {
             "use strict";
-            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js");
-            var invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
-            function isValidOwner(object) {
-                return !!(object && typeof object.attachRef === "function" && typeof object.detachRef === "function");
+            var debugTool = null;
+            if (process.env.NODE_ENV !== "production") {
+                var ReactDebugTool = __webpack_require__("./node_modules/react-dom/lib/ReactDebugTool.js");
+                debugTool = ReactDebugTool;
             }
-            var ReactOwner = {
-                addComponentAsRefTo: function addComponentAsRefTo(component, ref, owner) {
-                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "addComponentAsRefTo(...): Only a ReactOwner can have refs. You might be adding a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("119") : void 0;
-                    owner.attachRef(ref, component);
-                },
-                removeComponentAsRefFrom: function removeComponentAsRefFrom(component, ref, owner) {
-                    !isValidOwner(owner) ? process.env.NODE_ENV !== "production" ? invariant(false, "removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might be removing a ref to a component that was not created inside a component's `render` method, or you have multiple copies of React loaded (details: https://fb.me/react-refs-must-have-owner).") : _prodInvariant("120") : void 0;
-                    var ownerPublicInstance = owner.getPublicInstance();
-                    if (ownerPublicInstance && ownerPublicInstance.refs[ref] === component.getPublicInstance()) {
-                        owner.detachRef(ref);
-                    }
-                }
+            module.exports = {
+                debugTool: debugTool
             };
-            module.exports = ReactOwner;
         }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     }
 });

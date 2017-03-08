@@ -2,6 +2,7 @@
 
 import { getter, memoize, once, noop } from 'xcomponent/src/lib';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import $logger from 'beaver-logger/client';
 
 import { extendUrl, redirect } from '../../lib';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
@@ -103,7 +104,10 @@ export function setupBridgeProxy(Checkout : Object) {
 
     function doRender(props, original) : SyncPromise<void> {
         let openBridge = getBridgeOpen();
-        return openBridge ? renderBridge(props, openBridge).catch(() => original()) : original();
+        return openBridge ? renderBridge(props, openBridge).catch((err) => {
+            $logger.error(`render_bridge_error`, { err: err.stack || err.toString() });
+            return original();
+        }) : original();
     }
 
     let render = Checkout.render;
