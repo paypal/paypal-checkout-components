@@ -47,9 +47,18 @@ function renderButton(id, container, options, label) : HTMLElement {
     $logger.debug(`render_button_size_${size}`);
     $logger.debug(`render_button_label_${label}`);
 
-    let buttonDom = window.paypal.button.create(id, { lc, color, shape, size }, { type, label });
-    container.appendChild(buttonDom.el);
-    return buttonDom.el.childNodes[0];
+    let el = window.paypal.button.create(id, { lc, color, shape, size }, { type, label }).el;
+    container.appendChild(el);
+    
+    try {
+        let visible = Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+        $logger.info(`in_page_button_${ visible ? 'visible' : 'not_visible' }`);
+
+    } catch (err) {
+        // pass
+    }
+
+    return el.childNodes[0];
 }
 
 export function renderButtons(id : string, options : Object) : SyncPromise<Array<Object>> {
