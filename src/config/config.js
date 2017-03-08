@@ -162,7 +162,7 @@ export let config = {
         return config.buttonJSUrls[config.env];
     },
 
-    loggerUri: `/webapps/hermes/api/logger`,
+    loggerUri: `/xoplatform/logger/api/logger`,
 
     get bridgeUri() : string {
         return `${config.bridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
