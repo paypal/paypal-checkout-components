@@ -369,18 +369,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: config.checkoutUrl
-                },
-
-                children: [
-                    {
-                        tag: 'input',
-                        props: {
-                            name: 'token',
-                            value: token
-                        }
-                    }
-                ]
+                    action: `#fullpageRedirectUrl?token=${token}`
+                }
             });
 
             return paypal.checkout.setup('merchantID', {
@@ -393,31 +383,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                let windowOpened = false;
-                let windowOpen = window.open;
-
-                window.open = () => {
-                    windowOpened = true;
-                };
-
-                let submitted = false;
-
-                testForm.addEventListener('submit', event => {
-                    event.preventDefault();
-                    submitted = true;
-                });
-
                 getElement('button', testForm).click();
 
-                if (submitted) {
-                    throw new Error('Expected form to not be submitted');
-                }
-
-                if (windowOpened) {
-                    throw new Error('Expected window not to be opened');
-                }
-
-                window.open = windowOpen;
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                });
             });
         });
     });
