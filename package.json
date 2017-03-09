@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "rm -r node_modules/gulp-flowtype/node_modules/flow-bin"
+    "postinstall": "node postinstall.js"
   },
   "files": [
     "dist/checkout.lib.js",
