@@ -64,7 +64,7 @@ export let confirm = {
                     return paypal.rest.payment.create(this.props.env, this.props.client, {
                         transactions: [
                             {
-                                amount: { total: '1.00', currency: 'USD' }
+                                amount: { total: '0.01', currency: 'USD' }
                             }
                         ]
                     });
