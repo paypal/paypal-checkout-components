@@ -11,7 +11,8 @@
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
     "src/",
-    "demo/"
+    "demo/",
+    "postinstall.js"
   ],
   "repository": {
     "type": "git",
