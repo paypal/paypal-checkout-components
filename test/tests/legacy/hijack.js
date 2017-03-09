@@ -373,6 +373,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
             });
 
+            testForm.addEventListener('submit', event => {
+                if (!testForm.target) {
+                    event.preventDefault();
+                    setTimeout(() => {
+                        window.location = testForm.getAttribute('action');
+                    });
+                }
+            });
+
             return paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',
