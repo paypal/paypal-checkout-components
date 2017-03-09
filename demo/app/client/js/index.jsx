@@ -18,3 +18,25 @@ render((
     <Route path="/pattern/:pattern" component={App}/>
   </Router>
 ), document.getElementById('app'));
+
+
+let buttonRender = paypal.Button.render;
+paypal.Button.render = function(props = {}) {
+
+    if (props.env && props.env !== 'production') {
+        return buttonRender.apply(this, arguments);
+    }
+
+    let onAuthorize = props.onAuthorize;
+    props.onAuthorize = function(data, actions) {
+
+        actions.payment.execute = function() {
+            console.warn(`Execute inhibited in production mode; returning payment details without executing`);
+            return actions.payment.get();
+        };
+
+        return onAuthorize.apply(this, arguments);
+    };
+
+    return buttonRender.apply(this, arguments);
+};

@@ -348,17 +348,17 @@ export function setupBridge({ win = window, isAuthorize = true } : { win? : wind
                 };
 
                 if (isAuthorize) {
-                    queryItems.opType    = 'payment';
-                    queryItems.payerId   = 'YYYYYYYYYYYYY';
-                    queryItems.returnUrl = `#return?token=${queryItems.token}&PayerID=YYYYYYYYYYYYY`;
+                    queryItems.opType = 'payment';
+                    queryItems.payerId = 'YYYYYYYYYYYYY';
+                    queryItems.redirect_uri = `#return?token=${queryItems.token}&PayerID=YYYYYYYYYYYYY`;
                     if (hash) {
-                        queryItems.returnUrl = `${queryItems.returnUrl}&hash=${hash}`;
+                        queryItems.redirect_uri = `${queryItems.redirect_uri}&hash=${hash}`;
                     }
                 } else {
-                    queryItems.opType    = 'cancel';
-                    queryItems.cancelUrl = `#cancel?token=${queryItems.token}`;
+                    queryItems.opType = 'cancel';
+                    queryItems.redirect_uri = `#cancel?token=${queryItems.token}`;
                     if (hash) {
-                        queryItems.cancelUrl = `${queryItems.cancelUrl}&hash=${hash}`;
+                        queryItems.redirect_uri = `${queryItems.redirect_uri}&hash=${hash}`;
                     }
                 }
 

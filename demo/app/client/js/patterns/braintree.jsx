@@ -51,7 +51,7 @@ export let braintree = {
 
                                 return paypalClient.createPayment({
                                     flow:     'checkout',
-                                    amount:   '1.00',
+                                    amount:   '0.01',
                                     currency: 'USD',
                                     intent:   'sale'
                                 });

@@ -40,7 +40,8 @@ function renderBridge(props : Object, openBridge : Function) : SyncPromise<void>
             if (token) {
                 return extendUrl(determineUrlFromToken(env, token), {
                     [ determineParameterFromToken(token) ]: token,
-                    useraction: props.commit ? 'commit' : ''
+                    useraction: props.commit ? 'commit' : '',
+                    native_xo: '1'
                 });
             }
         }));
@@ -60,13 +61,11 @@ function renderBridge(props : Object, openBridge : Function) : SyncPromise<void>
 
                     let query = payload.queryItems;
 
-                    let data = {
+                    let data : Object = {
                         paymentToken: query.token,
                         billingToken: query.billingToken,
                         paymentID:    query.paymentId,
-                        payerID:      query.payerID,
-                        returnUrl:    query.returnUrl,
-                        cancelUrl:    query.cancelUrl
+                        payerID:      query.payerID
                     };
 
                     let actions : Object = {
@@ -77,6 +76,8 @@ function renderBridge(props : Object, openBridge : Function) : SyncPromise<void>
 
                     if (query.opType === 'payment') {
 
+                        data.returnUrl = query.redirect_uri;
+
                         actions.redirect = (win : any = window, redirectUrl : string = data.returnUrl) : SyncPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
@@ -86,12 +87,18 @@ function renderBridge(props : Object, openBridge : Function) : SyncPromise<void>
 
                     } else if (query.opType === 'cancel') {
 
+                        data.cancelUrl = query.redirect_uri;
+
                         actions.redirect = (win : any = window, redirectUrl : string = data.cancelUrl) : SyncPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
 
                         onCancel(data, actions);
                         resolve();
+
+                    } else {
+
+                        return reject(new Error(`Did not find opType in popup bridge returned query params`));
                     }
                 });
             });
