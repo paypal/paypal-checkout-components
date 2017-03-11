@@ -80,7 +80,7 @@ gulp.task('karma', ['lint'], function (done) {
         client: {
             captureConsole: Boolean(argv['capture-console']),
             mocha: {
-                timeout : 60 * 1000,
+                timeout : process.env.TRAVIS ? 60 * 1000 : 10 * 1000,
                 bail: true
             }
         }
