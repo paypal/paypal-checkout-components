@@ -133,29 +133,35 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     $logger.debug(`current_protocol_${currentProtocol}`);
 }
 
-if (currentScript) {
+let setupComplete = false;
+if (!setupComplete) {
+    
+    if (currentScript) {
 
-    setup({
-        env:       currentScript.getAttribute('data-env'),
-        stage:     currentScript.getAttribute('data-stage'),
-        apiStage:  currentScript.getAttribute('data-api-stage'),
-        paypalUrl: currentScript.getAttribute('data-paypal-url'),
-        state:     currentScript.getAttribute('data-state'),
-        lightbox:  currentScript.hasAttribute('data-enable-lightbox'),
-        bridge:    currentScript.hasAttribute('data-enable-bridge'),
-        logLevel:  currentScript.getAttribute('data-log-level'),
-        ppobjects: true
-    });
+        setup({
+            env:       currentScript.getAttribute('data-env'),
+            stage:     currentScript.getAttribute('data-stage'),
+            apiStage:  currentScript.getAttribute('data-api-stage'),
+            paypalUrl: currentScript.getAttribute('data-paypal-url'),
+            state:     currentScript.getAttribute('data-state'),
+            lightbox:  currentScript.hasAttribute('data-enable-lightbox'),
+            bridge:    currentScript.hasAttribute('data-enable-bridge'),
+            logLevel:  currentScript.getAttribute('data-log-level'),
+            ppobjects: true
+        });
 
-    let scriptProtocol = currentScript.src.split(':')[0];
+        setupComplete = true;
 
-    $logger.debug(`current_script_protocol_${scriptProtocol}`);
-    $logger.debug(`current_script_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }_protocol`);
+        let scriptProtocol = currentScript.src.split(':')[0];
 
-} else {
-    $logger.debug(`no_current_script`);
+        $logger.debug(`current_script_protocol_${scriptProtocol}`);
+        $logger.debug(`current_script_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }_protocol`);
 
-    if (document.currentScript) {
-        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+    } else {
+        $logger.debug(`no_current_script`);
+
+        if (document.currentScript) {
+            $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+        }
     }
 }
