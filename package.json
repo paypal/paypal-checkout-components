@@ -1,17 +1,18 @@
 {
   "name": "paypal-checkout",
-  "version": "4.0.48",
+  "version": "4.0.51",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "rm -r node_modules/gulp-flowtype/node_modules/flow-bin"
+    "postinstall": "node postinstall.js"
   },
   "files": [
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
     "src/",
-    "demo/"
+    "demo/",
+    "postinstall.js"
   ],
   "repository": {
     "type": "git",

@@ -9,9 +9,8 @@ import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView } from '../../lib';
 
 import { validateProps, getBridgeOpen, awaitBridgeOpen } from '../common';
-
-// $FlowFixMe
-import componentTemplate from './componentTemplate.htm';
+import { parentTemplate } from './parentTemplate';
+import { componentTemplate } from './componentTemplate';
 
 export let Button = xcomponent.create({
 
@@ -31,6 +30,8 @@ export let Button = xcomponent.create({
     },
 
     scrolling: false,
+
+    parentTemplate,
     componentTemplate,
 
     get version() : string {

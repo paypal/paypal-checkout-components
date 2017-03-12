@@ -1,0 +1,83 @@
+
+export let componentTemplate = (context = {}) => `
+    
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            text-align: center;
+        }
+        .spinner {
+            height: 60vmin;
+            width: 60vmin;
+            margin-top: 20vmin;
+            display: inline-block;
+            z-index: 10;
+        }
+        .spinner .loader {
+            height: 100%;
+            width: 100%;
+    
+            box-sizing: border-box;
+    
+            border-width: 10vmin;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, .2);
+            border-top-color: rgba(33, 128, 192, 0.8);
+            border-radius: 100%;
+    
+            -webkit-animation: rotation .7s infinite linear;
+            -moz-animation: rotation .7s infinite linear;
+            -o-animation: rotation .7s infinite linear;
+            animation: rotation .7s infinite linear;
+    
+        }
+    
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg)
+            }
+            to {
+                -webkit-transform: rotate(359deg)
+            }
+        }
+        @-moz-keyframes rotation {
+            from {
+                -moz-transform: rotate(0deg)
+            }
+            to {
+                -moz-transform: rotate(359deg)
+            }
+        }
+        @-o-keyframes rotation {
+            from {
+                -o-transform: rotate(0deg)
+            }
+            to {
+                -o-transform: rotate(359deg)
+            }
+        }
+        @keyframes rotation {
+            from {
+                transform: rotate(0deg)
+            }
+            to {
+                transform: rotate(359deg)
+            }
+        }
+    </style>
+    
+    <div class="spinner">
+        <div id="loader" class="loader"></div>
+    </div>
+        
+`;
+
+
+
+

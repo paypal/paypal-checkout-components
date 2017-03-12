@@ -4,11 +4,8 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import $logger from 'beaver-logger/client';
 import xcomponent from 'xcomponent/src';
 
-// $FlowFixMe
-import parentTemplate from './parentTemplate.htm';
-
-// $FlowFixMe
-import componentTemplate from './componentTemplate.htm';
+import { parentTemplate } from './parentTemplate';
+import { componentTemplate } from './componentTemplate';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupBridgeProxy } from './bridge';
@@ -76,20 +73,11 @@ export let Checkout = xcomponent.create({
         }
     },
 
-    get componentTemplate() : string {
+    componentTemplate,
+    parentTemplate(ctx = {}) : string {
 
-        return componentTemplate;
-    },
-
-    get parentTemplate() : string {
-
-        let template = parentTemplate;
-        let localeContent = content[config.locale.country][config.locale.lang];
-
-        template = template.replace('#windowMessage', localeContent.windowMessage);
-        template = template.replace('#continue', localeContent.continue);
-
-        return template;
+        ctx.content = content[config.locale.country][config.locale.lang];
+        return parentTemplate(ctx);
     },
 
     props: {

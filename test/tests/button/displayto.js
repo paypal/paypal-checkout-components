@@ -42,7 +42,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (getElement('#testContainer iframe').style.display === 'none') {
+                if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
@@ -73,7 +73,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 onEnter() {
 
-                    if (getElement('#testContainer iframe').style.display !== 'none') {
+                    if (getElement('.paypal-button-parent').style.display !== 'none') {
                         throw new Error(`Expected iframe to not be visible`);
                     }
 
@@ -105,7 +105,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (getElement('#testContainer iframe').style.display === 'none') {
+                if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
@@ -136,7 +136,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                if (getElement('#testContainer iframe').style.display === 'none') {
+                if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
