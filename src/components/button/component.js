@@ -8,7 +8,7 @@ import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView } from '../../lib';
 
-import { validateProps, getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
+import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 
@@ -42,12 +42,6 @@ export let Button = xcomponent.create({
         return config.paypalDomains;
     },
 
-    validateProps(component, props, required = true) : void {
-        if (required) {
-            return validateProps(props);
-        }
-    },
-
     props: {
 
         env: {
@@ -57,6 +51,12 @@ export let Button = xcomponent.create({
 
             def() : string {
                 return config.env;
+            },
+
+            validate(env) {
+                if (!config.paypalUrls[env]) {
+                    throw new Error(`Invalid env: ${env}`);
+                }
             }
         },
 
@@ -66,7 +66,19 @@ export let Button = xcomponent.create({
             def() : Object {
                 return {};
             },
-            sendToChild: false
+            sendToChild: false,
+
+            validate(client, props) {
+                let env = props.env || config.env;
+
+                if (!client[env]) {
+                    throw new Error(`Client ID not found for env: ${env}`);
+                }
+
+                if (client[env].match(/^(.)\1+$/)) {
+                    throw new Error(`Invalid client ID: ${client[env]}`);
+                }
+            }
         },
 
         stage: {
@@ -251,6 +263,25 @@ export let Button = xcomponent.create({
                     size:  'small',
                     label: 'checkout'
                 };
+            },
+
+            validate(style) {
+
+                if (style.size && config.buttonStyles.size.indexOf(style.size) === -1) {
+                    throw new Error(`Invalid button size: ${style.size}`);
+                }
+
+                if (style.label && config.buttonStyles.label.indexOf(style.label) === -1) {
+                    throw new Error(`Invalid button label: ${style.label}`);
+                }
+
+                if (style.label === 'credit' && style.size === 'tiny') {
+                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
+                }
+
+                if (style.label === 'credit' && style.color) {
+                    throw new Error(`Custom colors for ${style.label} button are not supported`);
+                }
             }
         },
 

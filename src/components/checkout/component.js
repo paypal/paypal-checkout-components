@@ -13,7 +13,7 @@ import { setupPopupBridgeProxy } from './popupBridge';
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
 
-import { validateProps, getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
+import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 
 import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
@@ -71,12 +71,6 @@ export let Checkout = xcomponent.create({
         return config.paypalDomains;
     },
 
-    validateProps(component, props, required = true) : void {
-        if (required) {
-            return validateProps(props);
-        }
-    },
-
     componentTemplate,
     parentTemplate(ctx = {}) : string {
 
@@ -93,6 +87,12 @@ export let Checkout = xcomponent.create({
 
             def() : string {
                 return config.env;
+            },
+
+            validate(env) {
+                if (!config.paypalUrls[env]) {
+                    throw new Error(`Invalid env: ${env}`);
+                }
             }
         },
 
@@ -123,7 +123,19 @@ export let Checkout = xcomponent.create({
             def() : Object {
                 return {};
             },
-            sendToChild: false
+            sendToChild: false,
+
+            validate(client, props) {
+                let env = props.env || config.env;
+
+                if (!client[env]) {
+                    throw new Error(`Client ID not found for env: ${env}`);
+                }
+
+                if (client[env].match(/^(.)\1+$/)) {
+                    throw new Error(`Invalid client ID: ${client[env]}`);
+                }
+            }
         },
 
         payment: {

@@ -28,7 +28,10 @@ export let config = {
 
     logLevel: 'info',
 
-    buttonSizes: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
+    buttonStyles: {
+        size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
+        label: [ 'checkout', 'credit' ]
+    },
 
     throttles: {
         v4_mobile_device: 1000
