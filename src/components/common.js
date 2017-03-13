@@ -58,48 +58,50 @@ export function validateProps(props : Object, required : boolean = true) {
     }
 }
 
-let bridgeOpen;
+let popupBridgeOpener;
 
-export function getBridgeOpen(bridge : ?Object = window.popupBridge) : ?Function {
+export function getPopupBridgeOpener(popupBridge : ?Object = window.popupBridge) : ?Function {
 
-    if (bridgeOpen) {
-        return bridgeOpen;
+    if (popupBridgeOpener) {
+        return popupBridgeOpener;
     }
 
-    if (bridge) {
-        bridgeOpen = (url, callback) => {
-            if (bridge) {
-                bridge.onComplete = callback;
-                bridge.open(extendUrl(url, { redirect_uri: window.popupBridge.getReturnUrlPrefix() }));
-            } else {
-                throw new Error('Bridge not available');
+    if (popupBridge) {
+        popupBridgeOpener = (url, callback) => {
+
+            if (!popupBridge) {
+                throw new Error('Popup Bridge not available');
             }
+
+            popupBridge.onComplete = callback;
+            popupBridge.open(extendUrl(url, { redirect_uri: popupBridge.getReturnUrlPrefix() }));
         };
 
-    } else if (window.xprops && window.xprops.bridge && window.xprops.bridge.open) {
-        bridgeOpen = window.xprops.bridge.open;
+        return popupBridgeOpener;
     }
 
-    return bridgeOpen;
+
+    if (window.xprops && window.xprops.popupBridge && window.xprops.popupBridge.open) {
+        popupBridgeOpener = window.xprops.popupBridge.open;
+
+        return popupBridgeOpener;
+    }
 }
 
-export function clearBridge() {
-    bridgeOpen = null;
+export function clearPopupBridgeOpener() {
+    popupBridgeOpener = null;
 }
 
-export function awaitBridgeOpen() : SyncPromise<Function> {
-    if (window.xprops && window.xprops.bridge && window.xprops.bridge.get) {
-        return window.xprops.bridge.get().then(open => {
-            bridgeOpen = open;
-            return open;
+export function awaitPopupBridgeOpener() : SyncPromise<Function> {
+
+    if (window.xprops && window.xprops.popupBridge) {
+        return window.xprops.popupBridge.awaitOpener().then(opener => {
+            popupBridgeOpener = opener;
+            return opener;
         });
     }
 
-    return awaitKey(window, 'popupBridge').then(bridge => {
-        return getBridgeOpen(bridge);
+    return awaitKey(window, 'popupBridge').then(popupBridge => {
+        return getPopupBridgeOpener(popupBridge);
     });
 }
-
-awaitBridgeOpen().then(open => {
-    bridgeOpen = open;
-});

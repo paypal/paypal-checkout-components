@@ -6,7 +6,7 @@ import postRobot from 'post-robot/src';
 
 import paypal from 'src/index';
 import { config } from 'src/config';
-import { clearBridge } from 'src/components';
+import { clearPopupBridgeOpener } from 'src/components';
 
 paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
     type: 'number',
@@ -328,7 +328,7 @@ function parseUrl(url : string) : Object {
     };
 }
 
-export function setupBridge({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean } = {}) {
+export function setupPopupBridge({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean } = {}) {
 
     errorOnWindowOpen(win);
 
@@ -373,10 +373,10 @@ export function setupBridge({ win = window, isAuthorize = true } : { win? : wind
     };
 }
 
-export function destroyBridge(win : any = window) {
+export function destroyPopupBridge(win : any = window) {
     delete win.popupBridge;
 
-    clearBridge();
+    clearPopupBridgeOpener();
 
     if (win.open.reset) {
         win.open.reset();

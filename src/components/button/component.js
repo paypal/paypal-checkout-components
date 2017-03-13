@@ -8,7 +8,7 @@ import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView } from '../../lib';
 
-import { validateProps, getBridgeOpen, awaitBridgeOpen } from '../common';
+import { validateProps, getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 
@@ -278,13 +278,13 @@ export let Button = xcomponent.create({
             }
         },
 
-        bridge: {
+        popupBridge: {
             type: 'object',
             required: false,
             get value() : Object {
                 return {
-                    open: getBridgeOpen(),
-                    get: awaitBridgeOpen
+                    open: getPopupBridgeOpener(),
+                    awaitOpener: awaitPopupBridgeOpener
                 };
             }
         },
@@ -320,6 +320,6 @@ if (Button.isChild()) {
         setLogLevel(window.xprops.logLevel);
     }
 
-    awaitBridgeOpen();
+    awaitPopupBridgeOpener();
 }
 

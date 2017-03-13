@@ -5,7 +5,7 @@ import $logger from 'beaver-logger/client';
 import { config, ENV } from './config';
 import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
-import { setupBridge } from './compat';
+import { setupPostBridge } from './compat';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
@@ -70,11 +70,11 @@ type SetupOptions = {
     state? : ?string,
     ppobjects? : ?boolean,
     lightbox? : ?boolean,
-    bridge? : ?boolean,
+    postBridge? : ?boolean,
     logLevel? : ?string
 };
 
-export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, bridge, logLevel } : SetupOptions = {}) {
+export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, postBridge, logLevel } : SetupOptions = {}) {
 
     checkForCommonErrors();
 
@@ -120,8 +120,8 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
         enableCheckoutIframe();
     }
 
-    if (bridge) {
-        setupBridge(config.env);
+    if (postBridge) {
+        setupPostBridge(config.env);
     }
 
     if (logLevel) {
@@ -136,15 +136,15 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
 if (currentScript) {
 
     setup({
-        env:       currentScript.getAttribute('data-env'),
-        stage:     currentScript.getAttribute('data-stage'),
-        apiStage:  currentScript.getAttribute('data-api-stage'),
-        paypalUrl: currentScript.getAttribute('data-paypal-url'),
-        state:     currentScript.getAttribute('data-state'),
-        lightbox:  currentScript.hasAttribute('data-enable-lightbox'),
-        bridge:    currentScript.hasAttribute('data-enable-bridge'),
-        logLevel:  currentScript.getAttribute('data-log-level'),
-        ppobjects: true
+        env:        currentScript.getAttribute('data-env'),
+        stage:      currentScript.getAttribute('data-stage'),
+        apiStage:   currentScript.getAttribute('data-api-stage'),
+        paypalUrl:  currentScript.getAttribute('data-paypal-url'),
+        state:      currentScript.getAttribute('data-state'),
+        lightbox:   currentScript.hasAttribute('data-enable-lightbox'),
+        postBridge: currentScript.hasAttribute('data-enable-bridge'),
+        logLevel:   currentScript.getAttribute('data-log-level'),
+        ppobjects:  true
     });
 
     let scriptProtocol = currentScript.src.split(':')[0];

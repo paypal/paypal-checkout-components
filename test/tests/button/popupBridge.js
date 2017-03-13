@@ -4,7 +4,7 @@ import paypal from 'src/index';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { assert } from 'chai';
 
-import { generateECToken, createTestContainer, destroyTestContainer, setupBridge, destroyBridge, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, setupPopupBridge, destroyPopupBridge, onHashChange, generatePaymentID, generateBillingToken, errorOnWindowOpen } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -14,7 +14,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
 
-            setupBridge();
+            setupPopupBridge();
         });
 
         afterEach(() => {
@@ -22,7 +22,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyBridge();
+            destroyPopupBridge();
         });
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
@@ -52,7 +52,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -82,7 +82,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -202,7 +202,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel', () => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -237,7 +237,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button then redirect on cancel and await the promise', (done) => {
 
             let token = generateECToken();
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             return paypal.Button.render({
 
@@ -268,7 +268,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
             let token = generateECToken();
 
             return paypal.Button.render({
@@ -650,7 +650,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and set up bridge after the render', (done) => {
 
-            destroyBridge();
+            destroyPopupBridge();
 
             return paypal.Button.render({
 
@@ -670,7 +670,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                setupBridge();
+                setupPopupBridge();
 
                 button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 setTimeout(() => button.window.document.querySelector('button').click(), 50);

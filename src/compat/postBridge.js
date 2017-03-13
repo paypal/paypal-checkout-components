@@ -28,26 +28,26 @@ postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
     }
 });
 
-export function setupBridge(env : string) : SyncPromise<void> {
+export function setupPostBridge(env : string) : SyncPromise<void> {
     return SyncPromise.try(() => {
 
-        let bridgeUrl : string = config.bridgeUrls[env];
-        let bridgeDomain : string = config.paypalDomains[env];
+        let postBridgeUrl : string = config.postBridgeUrls[env];
+        let postBridgeDomain : string = config.paypalDomains[env];
 
-        if (!postRobot.needsBridgeForDomain(bridgeDomain)) {
-            return $logger.debug(`bridge_not_required`, { env });
+        if (!postRobot.needsBridgeForDomain(postBridgeDomain)) {
+            return $logger.debug(`post_bridge_not_required`, { env });
         }
 
-        $logger.debug(`setup_bridge`, { env });
+        $logger.debug(`setup_post_bridge`, { env });
         
-        return postRobot.openBridge(bridgeUrl, bridgeDomain).catch(err => {
+        return postRobot.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
 
-            // Bridge is best-effort for everything but IE
+            // Post-Bridge is best-effort for everything but IE
 
-            if (postRobot.needsBridge({ domain: bridgeDomain })) {
+            if (postRobot.needsBridge({ domain: postBridgeDomain })) {
                 throw err;
             } else {
-                $logger.debug(`open_bridge_transient_failure`);
+                $logger.debug(`open_post_bridge_transient_failure`);
             }
         });
     });
