@@ -39,6 +39,10 @@ export let Checkout = xcomponent.create({
         let env = instance.props.env || config.env;
 
         return props.payment().then(token => {
+            if (!token) {
+                throw new Error(`Expected payment id or token to be passed, got ${token}`);
+            }
+
             return determineUrlFromToken(env, token);
         });
     },
@@ -127,6 +131,7 @@ export let Checkout = xcomponent.create({
             required: false,
             getter: true,
             memoize: true,
+            timeout: __TEST__ ? 500 : 10 * 1000,
             queryParam(value = '') : string {
                 return determineParameterFromToken(value);
             },
@@ -143,7 +148,7 @@ export let Checkout = xcomponent.create({
 
         onAuthorize: {
             type: 'function',
-            required: false,
+            required: true,
             once: true,
 
             decorate(original) : ?Function {

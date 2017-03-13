@@ -12,14 +12,6 @@ export function validateProps(props : Object, required : boolean = true) {
     if (props.env && !config.paypalUrls[props.env]) {
         throw new Error(`Invalid env: ${props.env}`);
     }
-
-    if (!props.payment) {
-        throw new Error(`Must specify payment method`);
-    }
-
-    if (!props.onAuthorize) {
-        throw new Error(`Must specify onAuthorize callback`);
-    }
     
     if (props.style && props.style.size) {
         if (config.buttonSizes.indexOf(props.style.size) === -1) {

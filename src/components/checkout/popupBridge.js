@@ -18,8 +18,8 @@ function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {
 function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncPromise<void> {
     return SyncPromise.try(() => {
 
-        if (!props.payment) {
-            throw new Error(`Expected props.payment to be passed`);
+        if (!props.payment && !props.url) {
+            throw new Error(`Expected props.payment or props.url to be passed`);
         }
 
         if (!props.onAuthorize) {
@@ -32,7 +32,11 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncP
 
         let env = props.env = props.env || config.env;
 
-        let payment = memoize(getter(props.payment.bind({ props })));
+        let getPayment = (typeof props.payment === 'function')
+            ? props.payment.bind({ props })
+            : () => props.payment;
+
+        let payment = memoize(getter(getPayment));
         let onAuthorize = once(props.onAuthorize);
         let onCancel = once(props.onCancel || noop);
 

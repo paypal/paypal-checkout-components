@@ -85,9 +85,10 @@ export let Button = xcomponent.create({
 
         payment: {
             type: 'string',
-            required: false,
+            required: true,
             getter: true,
             memoize: false,
+            timeout: __TEST__ ? 500 : 10 * 1000,
             alias: 'billingAgreement'
         },
 
@@ -148,7 +149,7 @@ export let Button = xcomponent.create({
 
         onAuthorize: {
             type: 'function',
-            required: false,
+            required: true,
 
             decorate(original) : ?Function {
                 if (original) {
