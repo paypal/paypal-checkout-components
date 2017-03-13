@@ -406,17 +406,7 @@ export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } 
 }
 
 if (Checkout.isChild()) {
-
-    let renderPopupTo = Checkout.renderPopupTo;
-
-    Checkout.renderPopupTo = function(win, props) : Object {
-        if (win === win.top) {
-            win = window.xchild.getParentRenderWindow();
-        }
-
-        return renderPopupTo.call(this, win, props);
-    };
-
+    
     if (window.xprops.logLevel) {
         setLogLevel(window.xprops.logLevel);
     }
