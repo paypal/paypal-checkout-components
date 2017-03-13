@@ -134,12 +134,12 @@ export let config = {
         [ ENV.TEST ]:       `/base/test/windows/button/index.htm`
     },
 
-    bridgeUris: {
+    postBridgeUris: {
         [ ENV.LOCAL ]:      `/webapps/hermes/component-meta`,
         [ ENV.STAGE ]:      `/webapps/hermes/component-meta`,
         [ ENV.SANDBOX ]:    `/webapps/hermes/component-meta`,
         [ ENV.PRODUCTION ]: `/webapps/hermes/component-meta`,
-        [ ENV.TEST ]:       `/base/test/windows/bridge/index.htm`
+        [ ENV.TEST ]:       `/base/test/windows/component-meta/index.htm`
     },
 
     legacyCheckoutUris: {
@@ -164,8 +164,8 @@ export let config = {
 
     loggerUri: `/xoplatform/logger/api/logger`,
 
-    get bridgeUri() : string {
-        return `${config.bridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
+    get postBridgeUri() : string {
+        return `${config.postBridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
     },
 
     paymentStandardUri: `/webapps/xorouter?cmd=_s-xclick`,
@@ -227,16 +227,16 @@ export let config = {
         };
     },
 
-    get bridgeUrls() : Object {
+    get postBridgeUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
         return {
-            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.bridgeUri}&env=local`,
-            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.bridgeUri}&env=stage&stage=${config.stage}`,
-            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.bridgeUri}&env=sandbox`,
-            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.bridgeUri}&env=production`,
-            [ ENV.TEST ]:       `${paypalUrls.test}${config.bridgeUri}&env=test`
+            [ ENV.LOCAL ]:      `${paypalUrls.local}${config.postBridgeUri}&env=local`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.postBridgeUri}&env=stage&stage=${config.stage}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.postBridgeUri}&env=sandbox`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.postBridgeUri}&env=production`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.postBridgeUri}&env=test`
         };
     },
 
@@ -356,11 +356,11 @@ export let config = {
         return config.legacyCheckoutUrls[config.env];
     },
 
-    get bridgeUrl() : string {
-        return `${config.paypalUrl}${config.bridgeUri}&env=${config.env}`;
+    get postBridgeUrl() : string {
+        return `${config.paypalUrl}${config.postBridgeUri}&env=${config.env}`;
     },
 
-    get bridgeDomain() : string {
+    get postBridgeDomain() : string {
         return `${config.paypalDomain}`;
     },
 

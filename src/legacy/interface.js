@@ -6,7 +6,7 @@ import logger from 'beaver-logger/client';
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV } from '../config';
-import { setupBridge } from '../compat';
+import { setupPostBridge } from '../compat';
 import { supportsPopups, getElements, once, checkpoint, safeJSON, extendUrl, isIEIntranet } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
@@ -461,7 +461,7 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
 
     return SyncPromise.all([
 
-        !isIEIntranet() ? setupBridge(config.env) : null,
+        !isIEIntranet() ? setupPostBridge(config.env) : null,
 
         renderButtons(id, options).then(buttons => {
             buttons.forEach(button => {

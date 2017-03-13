@@ -46,7 +46,7 @@ export let Checkout = xcomponent.create({
     remoteRenderDomain: config.paypal_domain_regex,
 
     get bridgeUrls() : Object {
-        return config.bridgeUrls;
+        return config.postBridgeUrls;
     },
 
     get bridgeDomains() : Object {

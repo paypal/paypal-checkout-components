@@ -15,7 +15,7 @@ function match(str : string, pattern : RegExp) : ?string {
 
 let onAuthorize : ?Function;
 
-// Bridge
+// Post-Bridge
 
 if (isPayPalDomain()) {
     postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => { // eslint-disable-line
@@ -30,15 +30,15 @@ window.onLegacyPaymentAuthorize = (method : Function) => {
 
     return SyncPromise.try(() => {
         if (!isPayPalDomain()) {
-            return postRobot.openBridge(config.bridgeUrl, config.bridgeDomain).then((bridge : any) => {
-                return postRobot.send(bridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
+            return postRobot.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
+                return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);
             });
         }
     });
 };
 
-// Bridge / Button
+// Post-Bridge / Button
 
 window.watchForLegacyFallback = (win : any) => {
     let interval = setInterval(() => {
