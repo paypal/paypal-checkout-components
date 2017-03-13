@@ -4,7 +4,7 @@ import paypal from 'src/index';
 import { assert } from 'chai';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupBridge, destroyBridge } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupPopupBridge, destroyPopupBridge } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -13,7 +13,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         beforeEach(() => {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-            setupBridge();
+            setupPopupBridge();
         });
 
         afterEach(() => {
@@ -21,7 +21,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyBridge();
+            destroyPopupBridge();
         });
 
         it('should render checkout, then complete the payment', (done) => {
@@ -51,7 +51,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout, then cancel the payment', (done) => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
@@ -170,7 +170,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel', () => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -205,7 +205,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel and await the promise', (done) => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -237,7 +237,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render checkout then redirect on cancel with a custom url', () => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 
@@ -603,7 +603,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupBridge();
+                setupPopupBridge();
 
                 testButton.click();
             });
@@ -629,7 +629,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupBridge();
+                setupPopupBridge();
 
                 testButton.click();
 
@@ -665,7 +665,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     });
                 });
 
-                setupBridge();
+                setupPopupBridge();
 
                 testButton.click();
             });

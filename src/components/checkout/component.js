@@ -8,12 +8,12 @@ import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
-import { setupBridgeProxy } from './bridge';
+import { setupPopupBridgeProxy } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
 
-import { validateProps, getBridgeOpen, awaitBridgeOpen } from '../common';
+import { validateProps, getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 
 import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
@@ -321,13 +321,13 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        bridge: {
+        popupBridge: {
             type: 'object',
             required: false,
             get value() : Object {
                 return {
-                    open: getBridgeOpen(),
-                    get: awaitBridgeOpen
+                    open: getPopupBridgeOpener(),
+                    awaitOpener: awaitPopupBridgeOpener
                 };
             }
         },
@@ -369,7 +369,7 @@ export let Checkout = xcomponent.create({
     }
 });
 
-setupBridgeProxy(Checkout);
+setupPopupBridgeProxy(Checkout);
 
 let enableCheckoutIframeTimeout;
 
@@ -421,5 +421,5 @@ if (Checkout.isChild()) {
         setLogLevel(window.xprops.logLevel);
     }
 
-    awaitBridgeOpen();
+    awaitPopupBridgeOpener();
 }

@@ -7,7 +7,7 @@ import $logger from 'beaver-logger/client';
 import { extendUrl, redirect } from '../../lib';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { config } from '../../config';
-import { getBridgeOpen } from '../common';
+import { getPopupBridgeOpener } from '../common';
 
 function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {
     return SyncPromise.resolve(condition).then(result => {
@@ -15,7 +15,7 @@ function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {
     });
 }
 
-function renderBridge(props : Object, openBridge : Function) : SyncPromise<void> {
+function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncPromise<void> {
     return SyncPromise.try(() => {
 
         if (!props.payment) {
@@ -107,12 +107,12 @@ function renderBridge(props : Object, openBridge : Function) : SyncPromise<void>
 }
 
 
-export function setupBridgeProxy(Checkout : Object) {
+export function setupPopupBridgeProxy(Checkout : Object) {
 
     function doRender(props, original) : SyncPromise<void> {
-        let openBridge = getBridgeOpen();
-        return openBridge ? renderBridge(props, openBridge).catch((err) => {
-            $logger.error(`render_bridge_error`, { err: err.stack || err.toString() });
+        let openBridge = getPopupBridgeOpener();
+        return openBridge ? renderThroughPopupBridge(props, openBridge).catch((err) => {
+            $logger.error(`popup_bridge_error`, { err: err.stack || err.toString() });
             return original();
         }) : original();
     }

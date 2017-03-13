@@ -5,7 +5,7 @@ import { assert } from 'chai';
 import paypal from 'src/index';
 import { config } from 'src/config';
 
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupBridge, destroyBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupPopupBridge, destroyPopupBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -15,7 +15,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             createTestContainer();
             paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
 
-            setupBridge();
+            setupPopupBridge();
         });
 
         afterEach(() => {
@@ -23,7 +23,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.location.hash = '';
             paypal.Checkout.contexts.lightbox = false;
 
-            destroyBridge();
+            destroyPopupBridge();
         });
 
         it('should render a button into a container and click on the button, then call startFlow', () => {
@@ -50,7 +50,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a cancel', () => {
 
-            setupBridge({ isAuthorize: false });
+            setupPopupBridge({ isAuthorize: false });
 
             let token = generateECToken();
 

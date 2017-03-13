@@ -8,7 +8,7 @@ export * from './hijack';
 export * from './hybrid';
 export * from './customclick';
 export * from './error';
-export * from './bridge';
+export * from './popupBridge';
 
 import paypal from 'src/index';
 
