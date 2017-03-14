@@ -18,6 +18,12 @@ export function initLogger() {
         };
     });
 
+    $logger.addHeaderBuilder(() => {
+        return {
+            'x-app-name': 'checkoutjs'
+        };
+    });
+
     $logger.addMetaBuilder(() => {
         return {
             state: config.state
@@ -44,5 +50,3 @@ export function setLogLevel(logLevel : string) {
     postRobot.CONFIG.LOG_LEVEL = logLevel;
     window.LOG_LEVEL = logLevel;
 }
-
-
