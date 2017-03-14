@@ -53,19 +53,19 @@ export let credit = {
 
                 payment: function() {
 
-                return paypal.rest.payment.create(this.props.env, this.props.client, {
-                    transactions: [
-                        {
-                            amount: { total: '0.01', currency: 'USD' }
+                    return paypal.rest.payment.create(this.props.env, this.props.client, {
+                        transactions: [
+                            {
+                                amount: { total: '0.01', currency: 'USD' }
+                            }
+                        ],
+                        
+                        payer: {
+                            payment_method: 'paypal',
+                            external_selected_funding_instrument_type: 'CREDIT'
                         }
-                    ],
-                    
-                    payer: {
-                        payment_method: 'paypal',
-                        external_selected_funding_instrument_type: 'CREDIT'
-                    }
-                                        
-                    });
+                                            
+                        });
                 },
 
                 // Wait for the payment to be authorized by the customer

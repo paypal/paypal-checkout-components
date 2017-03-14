@@ -3,7 +3,7 @@ import React from 'react';
 
 export let styles = {
 
-    name: `Checkout Button`,
+    name: `Button Styles`,
 
     fullName: `Express Checkout Custom Button Styles`,
 
