@@ -36,8 +36,8 @@ export let credit = {
                 // Specify the style of the button
 
                 style: {
-                    size:  'small', // small | medium
                     label: 'credit',
+                    size:  'small', // small | medium
                     shape: 'rect'   // pill | rect
                 },
 
