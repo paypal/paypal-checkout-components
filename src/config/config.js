@@ -28,7 +28,10 @@ export let config = {
 
     logLevel: 'info',
 
-    buttonSizes: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
+    buttonStyles: {
+        size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
+        label: [ 'checkout', 'credit' ]
+    },
 
     throttles: {
         v4_mobile_device: 1000
@@ -162,7 +165,7 @@ export let config = {
         return config.buttonJSUrls[config.env];
     },
 
-    loggerUri: `/xoplatform/logger/api/logger`,
+    loggerUri: `/webapps/hermes/api/logger`,
 
     get postBridgeUri() : string {
         return `${config.postBridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;

@@ -2,7 +2,7 @@
 
 import { config, LOG_LEVEL } from '../config';
 
-const BEACON_URL = 'https://www.paypal.com/xoplatform/logger/api/logger';
+const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
 export function beacon(event : string, payload : Object = {}) {
     try {
