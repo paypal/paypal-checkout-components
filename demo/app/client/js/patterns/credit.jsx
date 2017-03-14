@@ -1,20 +1,20 @@
 
 import React from 'react';
 
-export let styles = {
+export let credit = {
 
-    name: `Checkout Button`,
+    name: `Credit Button`,
 
-    fullName: `Express Checkout Custom Button Styles`,
+    fullName: `Express Checkout Custom Credit Button`,
 
     intro: (
-        <p>Create a PayPal button and accept payments with a custom button style.</p>
+        <p>Create a PayPal credit button and initialize the credit flow.</p>
     ),
 
     description: (
         <div>
             <p>First, a button is created using <span className="pre">paypal.Button.render()</span>, and rendered to the <span className="pre">#paypal-button-container</span> element.</p>
-            <p>Along with the other required options, we pass a <span className="pre">style</span> block with various options to customize the button. In this block I can specify the <span className="pre">size</span>, <span className="pre">color</span> and <span className="pre">shape</span> of the button.</p>
+            <p>Along with the other required options, we pass a <span className="pre">style</span> block with various options to customize the button. In order to render the credit button, set the <span className="pre">label</span> parameter as credit. Various options for <span className="pre">size</span> and <span className="pre">shape</span> of the button can be specified to customize the button.</p>
         </div>
     ),
 
@@ -36,9 +36,9 @@ export let styles = {
                 // Specify the style of the button
 
                 style: {
-                    size:  'small', // tiny | small | medium
-                    color: 'blue',  // gold | blue | silver
-                    shape: 'pill'   // pill | rect
+                    size:  'small', // small | medium
+                    label: 'credit',
+                    shape: 'rect'   // pill | rect
                 },
 
                 // PayPal Client IDs - replace with your own
@@ -53,14 +53,18 @@ export let styles = {
 
                 payment: function() {
 
-                    // Make a client-side call to the REST api to create the payment
-
-                    return paypal.rest.payment.create(this.props.env, this.props.client, {
-                        transactions: [
-                            {
-                                amount: { total: '0.01', currency: 'USD' }
-                            }
-                        ]
+                return paypal.rest.payment.create(this.props.env, this.props.client, {
+                    transactions: [
+                        {
+                            amount: { total: '0.01', currency: 'USD' }
+                        }
+                    ],
+                    
+                    payer: {
+                        payment_method: 'paypal',
+                        external_selected_funding_instrument_type: 'CREDIT'
+                    }
+                                        
                     });
                 },
 
