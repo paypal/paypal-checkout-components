@@ -10,11 +10,12 @@ var index = require('./page/index');
 
 module.exports = function (app) {
 
-    app.get('/', (req, res) =>{
+    app.get('/', (req, res) => {
 
         res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com`);
 
         res.send(index({
+            baseURL: req.baseUrl,
             csrf: res.locals._csrf
         }));
     });

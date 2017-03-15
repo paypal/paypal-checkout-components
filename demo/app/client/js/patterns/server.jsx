@@ -40,7 +40,7 @@ export let server = {
 
                     // Make a call to the merchant server to set up the payment
 
-                    return paypal.request.post('/checkout/api/paypal/payment/create/').then(function(res) {
+                    return paypal.request.post('${ctx.baseURL}/api/paypal/payment/create/').then(function(res) {
                         return res.payToken;
                     });
                 },
@@ -51,7 +51,7 @@ export let server = {
 
                     // Make a call to the merchant server to execute the payment
 
-                    return paypal.request.post('/checkout/api/paypal/payment/execute/', {
+                    return paypal.request.post('${ctx.baseURL}/api/paypal/payment/execute/', {
                         payToken: data.paymentID,
                         payerId: data.payerID
                     }).then(function (res) {
