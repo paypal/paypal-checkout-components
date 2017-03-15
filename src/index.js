@@ -2,6 +2,7 @@
 
 import { beacon, checkpoint } from './lib/beacon';
 import { uniqueID } from './lib/util';
+import { extendPayPalNamespace } from './namespace';
 
 function isPayPalDomain() : boolean {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
@@ -21,8 +22,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
         }
     }
 
-    module.exports = window.paypal;
-    module.exports.default = window.paypal;
+    module.exports = module.exports.default = window.paypal;
 
 } else {
 
@@ -32,28 +32,13 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
     try {
 
-        let paypal = (isPayPalDomain() || __TEST__) ? require('./interface/paypal') : require('./interface/public');
+        let isPublic = (!isPayPalDomain() && !__TEST__);
 
-        for (let paypalNamespace of [ window.paypal, window.PAYPAL ]) {
+        let paypal = isPublic
+            ? require('./interface/public')
+            : require('./interface/paypal');
 
-            if (!paypalNamespace) {
-                continue;
-            }
-
-            let apps = paypal.apps;
-
-            if (paypalNamespace.apps) {
-                apps = { ...paypalNamespace.apps, ...apps };
-            }
-
-            paypal = { ...paypalNamespace, ...paypal, apps };
-        }
-
-        module.exports = paypal;
-
-        window.paypal = paypal;
-        window.PAYPAL = paypal;
-        window.ppxo = paypal;
+        module.exports = module.exports.default = extendPayPalNamespace(paypal);
 
     } catch (err) {
 

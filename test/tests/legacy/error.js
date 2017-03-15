@@ -427,7 +427,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 click(event) : void {
                     try {
-                        // $FlowFixMe
                         paypal.checkout.startFlow();
                     } catch (err) {
                         return done();

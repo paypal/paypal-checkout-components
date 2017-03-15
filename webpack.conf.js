@@ -80,36 +80,82 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
 let nextMajorVersion = getNextMajorVersion();
 let nextMinorVersion = getNextMinorVersion();
 
-export let WEBPACK_CONFIG_MAJOR = getWebpackConfig({
-    version: nextMajorVersion,
-    filename: `${FILE_NAME}.js`,
-});
+export let webpack_tasks = {
 
-export let WEBPACK_CONFIG_MINOR = getWebpackConfig({
-    version: nextMinorVersion,
-    filename: `${FILE_NAME}.${nextMinorVersion}.js`,
-});
+    major: {
+        src: 'src/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.js`
+        })
+    },
 
-export let WEBPACK_CONFIG_MAJOR_MIN = getWebpackConfig({
-    version: nextMajorVersion,
-    filename: `${FILE_NAME}.min.js`,
-    minify: true
-});
+    minor: {
+        src: 'src/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMinorVersion,
+            filename: `${FILE_NAME}.${nextMinorVersion}.js`
+        })
+    },
 
-export let WEBPACK_CONFIG_MINOR_MIN = getWebpackConfig({
-    version: nextMinorVersion,
-    filename: `${FILE_NAME}.${nextMinorVersion}.min.js`,
-    minify: true
-});
+    major_min: {
+        src: 'src/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.min.js`,
+            minify: true
+        })
+    },
 
-export let WEBPACK_CONFIG_LIB = getWebpackConfig({
-    version: nextMajorVersion,
-    filename: `${FILE_NAME}.lib.js`,
-    target: `umd`
-});
+    minor_min: {
+        src: 'src/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMinorVersion,
+            filename: `${FILE_NAME}.${nextMinorVersion}.min.js`,
+            minify: true
+        })
+    },
 
-export let WEBPACK_CONFIG_DEMO = getWebpackConfig({
-    version: nextMajorVersion,
-    filename: `demo.js`,
-    modulename: `ppdemo`
-});
+    lib: {
+        src: 'src/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.lib.js`,
+            target: `umd`
+        })
+    },
+
+    demo: {
+        src: 'demo/app/client/js/index.jsx',
+        out: 'demo/app/build',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `demo.js`,
+            modulename: `ppdemo`
+        })
+    },
+
+    child_loader: {
+        src: 'src/loader/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `checkout.child.loader.js`
+        })
+    },
+
+    child_loader_min: {
+        src: 'src/loader/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `checkout.child.loader.min.js`,
+            minify: true
+        })
+    }
+};
