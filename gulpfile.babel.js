@@ -5,49 +5,23 @@ import eslint from 'gulp-eslint';
 import flow from 'gulp-flowtype';
 import { Server } from 'karma';
 import { argv } from 'yargs';
-import { WEBPACK_CONFIG_MAJOR, WEBPACK_CONFIG_MINOR, WEBPACK_CONFIG_MAJOR_MIN, WEBPACK_CONFIG_MINOR_MIN, WEBPACK_CONFIG_LIB, WEBPACK_CONFIG_DEMO } from './webpack.conf';
-import webserver from 'gulp-webserver';
+import { webpack_tasks } from './webpack.conf';
 
 gulp.task('test', ['lint', 'karma', 'typecheck']);
 gulp.task('build', ['test', 'webpack']);
 
-gulp.task('webpack', ['webpack-major', 'webpack-minor', 'webpack-major-min', 'webpack-minor-min', 'webpack-lib', 'webpack-demo' ]);
+Object.keys(webpack_tasks).forEach(name => {
 
-gulp.task('webpack-major', ['lint'], function() {
-    return gulp.src('src/index.js')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR))
-        .pipe(gulp.dest('dist'));
+    gulp.task(`webpack-${name.replace(/_/g, '-')}`, [ 'lint' ], () => {
+        let task = webpack_tasks[name];
+
+        return gulp.src(task.src)
+            .pipe(gulpWebpack(task.cfg))
+            .pipe(gulp.dest(task.out));
+    });
 });
 
-gulp.task('webpack-minor', ['lint'], function() {
-    return gulp.src('src/index.js')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('webpack-lib', ['lint'], function() {
-    return gulp.src('src/index.js')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_LIB))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('webpack-major-min', ['lint'], function() {
-    return gulp.src('src/index.js')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_MAJOR_MIN))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('webpack-minor-min', ['lint'], function() {
-    return gulp.src('src/index.js')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_MINOR_MIN))
-        .pipe(gulp.dest('dist'));
-});
-
-gulp.task('webpack-demo', [], function() {
-    return gulp.src('demo/app/client/js/index.jsx')
-        .pipe(gulpWebpack(WEBPACK_CONFIG_DEMO))
-        .pipe(gulp.dest('demo/app/build'));
-});
+gulp.task('webpack', Object.keys(webpack_tasks).map(name => `webpack-${name.replace(/_/g, '-')}`));
 
 gulp.task('typecheck', function() {
     return gulp.src([ 'src/**/*.js', 'test/**/*.js' ])
