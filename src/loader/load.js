@@ -27,7 +27,7 @@ function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => v
     loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, (err, result) => {
 
         if (err && !urls.latest) {
-            return loadScript(urls.major, config.xchild_global, callback);
+            return loadScript(`${urls.major}?t=${Date.now()}`, config.xchild_global, callback);
         }
 
         return callback(err, result);
