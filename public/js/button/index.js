@@ -14,6 +14,11 @@ $promise.use(Promise);
 
 function isLoggedIn() {
     return getAuth().then(auth => {
+
+        if (auth.guest) {
+            return false;
+        }
+
         if (auth.logged_in || auth.remembered || auth.refresh_token) {
             return true;
         }
