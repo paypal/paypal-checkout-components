@@ -28,4 +28,4 @@ node_modules
 flow-typed
 
 #IDE
-.idea/*
+**/.idea/*
