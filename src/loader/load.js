@@ -3,7 +3,7 @@
 import { config } from './config';
 import { responder } from './responder';
 import { isLatest, getVersion, isXComponent } from './component';
-import { loadScript, warn } from './util';
+import { loadScript, warn, parseQuery } from './util';
 
 export let integrationResponder = responder();
 
@@ -16,6 +16,23 @@ function getIntegrationURLs() : { latest : boolean, major : string, minor : stri
     };
 }
 
+function getIntegrationProps() : Object {
+
+    let props = { ...config.script_props };
+
+    let query = parseQuery();
+
+    if (query.env) {
+        props['data-env'] = query.env;
+    }
+
+    if (query.stage) {
+        props['data-stage'] = query.stage;
+    }
+
+    return props;
+}
+
 function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => void) : void {
 
     if (!isXComponent()) {
@@ -23,11 +40,12 @@ function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => v
     }
 
     let urls = getIntegrationURLs();
+    let props = getIntegrationProps();
 
-    loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, (err, result) => {
+    loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, props, (err, result) => {
 
         if (err && !urls.latest) {
-            return loadScript(`${urls.major}?t=${Date.now()}`, config.xchild_global, callback);
+            return loadScript(`${urls.major}?t=${Date.now()}`, config.xchild_global, props, callback);
         }
 
         return callback(err, result);
