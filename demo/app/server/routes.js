@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var braintree = require('./lib/braintree');
+// var braintree = require('./lib/braintree');
 var paypal = require('./lib/paypal');
 var config = require('./config');
 
@@ -20,6 +20,8 @@ module.exports = function (app) {
         }));
     });
 
+    /*
+
     app.get('/api/braintree/client-token/', (req, res) => {
         return braintree.clientToken().then(response => {
            res.send(response);
@@ -35,6 +37,8 @@ module.exports = function (app) {
             res.status(500).send('Could not complete payment, ' + err);
         });
     });
+
+    */
 
     app.post('/api/paypal/payment/create/', (req, res) => {
        return paypal.getAccessToken()
