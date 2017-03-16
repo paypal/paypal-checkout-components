@@ -27,7 +27,7 @@
             function isPayPalDomain() {
                 return Boolean((window.location.protocol + "//" + window.location.host).match(/^https?:\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/));
             }
-            if (window.paypal && window.paypal.version === "4.0.52") {
+            if (window.paypal && window.paypal.version === "4.0.53") {
                 (0, _beacon.checkpoint)("load_again");
                 var error = "PayPal Checkout Integration Script already loaded on page";
                 if (window.console) {
@@ -172,7 +172,7 @@
                 };
             }
             var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-            var version = exports.version = "4.0.52";
+            var version = exports.version = "4.0.53";
             module.exports["default"] = module.exports;
         },
         "./src/config/index.js": function(module, exports, __webpack_require__) {
@@ -226,7 +226,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/" + "checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.52",
+                version: "4.0.53",
                 ppobjects: false,
                 cors: true,
                 env: false ? _constants.ENV.TEST : _constants.ENV.PRODUCTION,
@@ -341,7 +341,7 @@
                 },
                 loggerUri: "/webapps/hermes/api/logger",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.52");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.53");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -1342,7 +1342,7 @@
                 };
             }
             var onPossiblyUnhandledException = exports.onPossiblyUnhandledException = _promise.SyncPromise.onPossiblyUnhandledException;
-            var version = exports.version = "4.0.52";
+            var version = exports.version = "4.0.53";
             module.exports["default"] = module.exports;
         },
         "./node_modules/post-robot/src/index.js": function(module, exports, __webpack_require__) {
@@ -1549,7 +1549,7 @@
                         }
                         options.window = options.window.contentWindow;
                     }
-                    if (options.window === null) {
+                    if (!options.window) {
                         throw new Error("Expected options.window to be a window object, iframe, or iframe element id.");
                     }
                     options.domain = options.domain || "*";
@@ -10495,7 +10495,7 @@
                 var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.52";
+                    payload.version = "4.0.53";
                     payload.host = window.location.host;
                     payload.uid = window.pp_uid;
                     var query = [];
@@ -10522,7 +10522,7 @@
             function checkpoint(name) {
                 var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
                 try {
-                    var version = "4.0.52".replace(/[^0-9]+/g, "_");
+                    var version = "4.0.53".replace(/[^0-9]+/g, "_");
                     var checkpointName = version + "_" + name;
                     var logged = loggedCheckpoints.indexOf(checkpointName) !== -1;
                     loggedCheckpoints.push(checkpointName);
@@ -10535,7 +10535,7 @@
             var FPTI_URL = "https://t.paypal.com/ts";
             function buildPayload() {
                 return {
-                    v: "checkout.js." + "4.0.52",
+                    v: "checkout.js." + "4.0.53",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -11205,7 +11205,7 @@
                         country: _config.config.locale.country,
                         lang: _config.config.locale.lang,
                         uid: window.pp_uid,
-                        ver: "4.0.52"
+                        ver: "4.0.53"
                     };
                 });
                 _client2["default"].addMetaBuilder(function() {
@@ -11873,7 +11873,7 @@
                 parentTemplate: _parentTemplate.parentTemplate,
                 componentTemplate: _componentTemplate.componentTemplate,
                 get version() {
-                    return _config.config.ppobjects ? "4" : "4.0.52";
+                    return _config.config.ppobjects ? "4" : "4.0.53";
                 },
                 get domains() {
                     return _config.config.paypalDomains;
@@ -12219,7 +12219,7 @@
                     popup: true
                 },
                 get version() {
-                    return _config.config.ppobjects ? "4" : "4.0.52";
+                    return _config.config.ppobjects ? "4" : "4.0.53";
                 },
                 get domains() {
                     return _config.config.paypalDomains;

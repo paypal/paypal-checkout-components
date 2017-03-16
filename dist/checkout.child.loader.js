@@ -77,6 +77,17 @@ window["paypal"] = function(modules) {
             value: true
         });
         exports.integrationResponder = undefined;
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
         var _config = __webpack_require__("./src/loader/config.js");
         var _responder = __webpack_require__("./src/loader/responder.js");
         var _component = __webpack_require__("./src/loader/component.js");
@@ -89,14 +100,26 @@ window["paypal"] = function(modules) {
                 minor: _config.config.checkoutjs_url.replace("{version}", "." + (0, _component.getVersion)())
             };
         }
+        function getIntegrationProps() {
+            var props = _extends({}, _config.config.script_props);
+            var query = (0, _util.parseQuery)();
+            if (query.env) {
+                props["data-env"] = query.env;
+            }
+            if (query.stage) {
+                props["data-stage"] = query.stage;
+            }
+            return props;
+        }
         function loadCheckoutIntegration(callback) {
             if (!(0, _component.isXComponent)()) {
                 return callback(null, null);
             }
             var urls = getIntegrationURLs();
-            (0, _util.loadScript)(urls.latest ? urls.major : urls.minor, _config.config.xchild_global, function(err, result) {
+            var props = getIntegrationProps();
+            (0, _util.loadScript)(urls.latest ? urls.major : urls.minor, _config.config.xchild_global, props, function(err, result) {
                 if (err && !urls.latest) {
-                    return (0, _util.loadScript)(urls.major + "?t=" + Date.now(), _config.config.xchild_global, callback);
+                    return (0, _util.loadScript)(urls.major + "?t=" + Date.now(), _config.config.xchild_global, props, callback);
                 }
                 return callback(err, result);
             });
@@ -121,7 +144,12 @@ window["paypal"] = function(modules) {
             latest_version: "latest",
             xcomponent: "xcomponent",
             xchild_global: "xchild",
-            name_separator: "__"
+            name_separator: "__",
+            script_props: {
+                "data-paypal-checkout": "",
+                "data-no-bridge": "",
+                "data-state": "ppxo_checkout"
+            }
         };
     },
     "./src/loader/responder.js": function(module, exports) {
@@ -191,7 +219,8 @@ window["paypal"] = function(modules) {
         });
         exports.loadScript = loadScript;
         exports.warn = warn;
-        function loadScript(url, prop, callback) {
+        exports.parseQuery = parseQuery;
+        function loadScript(url, prop, attrs, callback) {
             if (window[prop]) {
                 return callback(null, window[prop]);
             }
@@ -201,7 +230,6 @@ window["paypal"] = function(modules) {
             }
             var script = document.createElement("script");
             script.src = url;
-            container.appendChild(script);
             script.onload = function() {
                 if (!window[prop]) {
                     return callback(new Error("Expected " + prop + " to be present on window"));
@@ -211,6 +239,20 @@ window["paypal"] = function(modules) {
             script.onerror = function(err) {
                 return callback(err);
             };
+            for (var _iterator = Object.keys(attrs), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var attr = _ref;
+                script.setAttribute(attr, attrs[attr]);
+            }
+            container.appendChild(script);
         }
         function warn() {
             var message = Array.prototype.slice.call(arguments).join(" ");
@@ -219,6 +261,36 @@ window["paypal"] = function(modules) {
             } else if (window.console && window.console.log) {
                 window.console.log(message);
             }
+        }
+        function parseQuery() {
+            var queryString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window.location.search;
+            var params = {};
+            if (queryString && queryString.indexOf("?") === 0) {
+                queryString = queryString.slice(1);
+            }
+            if (!queryString) {
+                return params;
+            }
+            if (queryString.indexOf("=") === -1) {
+                throw new Error("Can not parse query string params: " + queryString);
+            }
+            for (var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                }
+                var pair = _ref2;
+                pair = pair.split("=");
+                if (pair[0] && pair[1]) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            }
+            return params;
         }
     }
 });
