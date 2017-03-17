@@ -1,4 +1,5 @@
 import webpack from 'webpack';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 
 export let FILE_NAME = 'checkout';
 export let MODULE_NAME = 'paypal';
@@ -30,7 +31,7 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
 
     return {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /sinon\.js$/,
                     loader: "imports?define=>false,require=>false"
@@ -38,7 +39,7 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 {
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel'
+                    loader: 'babel-loader'
                 },
                 {
                     test: /\.(html?|css|json)$/,
@@ -54,17 +55,17 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
             pathinfo: false
         },
         bail: true,
-        devtool: 'source-map',
         resolve: {
-            extensions: [ '', '.js', '.jsx' ],
+            extensions: [ '.js', '.jsx' ]
         },
         plugins: [
-            new webpack.optimize.UglifyJsPlugin({
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[file].map'
+            }),
+            new UglifyJSPlugin({
                 test: /\.js$/,
-                beautify: !minify,
                 minimize: minify,
-                compress: minify ? { warnings: false } : false,
-                mangle: minify,
+                sourceMap: minify
             }),
             new webpack.DefinePlugin({
                 __TEST__: false,
