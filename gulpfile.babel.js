@@ -1,8 +1,9 @@
 
 import gulp from 'gulp';
-import gulpWebpack from 'gulp-webpack';
+import gulpWebpack from 'webpack-stream';
 import eslint from 'gulp-eslint';
 import flow from 'gulp-flowtype';
+import webpack from 'webpack';
 import { Server } from 'karma';
 import { argv } from 'yargs';
 import { webpack_tasks } from './webpack.conf';
@@ -16,7 +17,7 @@ Object.keys(webpack_tasks).forEach(name => {
         let task = webpack_tasks[name];
 
         return gulp.src(task.src)
-            .pipe(gulpWebpack(task.cfg))
+            .pipe(gulpWebpack(task.cfg, webpack))
             .pipe(gulp.dest(task.out));
     });
 });
