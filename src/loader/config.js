@@ -6,5 +6,11 @@ export let config = {
     latest_version: 'latest',
     xcomponent:     'xcomponent',
     xchild_global:  'xchild',
-    name_separator: '__'
+    name_separator: '__',
+
+    script_props: {
+        'data-paypal-checkout': '',
+        'data-no-bridge': '',
+        'data-state': 'ppxo_checkout'
+    }
 };

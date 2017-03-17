@@ -63,8 +63,8 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 test: /\.js$/,
                 beautify: !minify,
                 minimize: minify,
-                compress: minify,
-                mangle: minify
+                compress: minify ? { warnings: false } : false,
+                mangle: minify,
             }),
             new webpack.DefinePlugin({
                 __TEST__: false,

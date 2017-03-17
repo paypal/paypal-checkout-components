@@ -23,7 +23,7 @@ Object.keys(webpack_tasks).forEach(name => {
 
 gulp.task('webpack', Object.keys(webpack_tasks).map(name => `webpack-${name.replace(/_/g, '-')}`));
 
-gulp.task('typecheck', function() {
+gulp.task('typecheck', [ 'lint' ], function() {
     return gulp.src([ 'src/**/*.js', 'test/**/*.js' ])
         .pipe(flow())
 });

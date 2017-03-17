@@ -44,8 +44,12 @@ export let App = React.createClass({
     },
 
     render() {
+
         let patternName = this.props.params.pattern || 'client';
         let activePattern = patterns[patternName];
+
+        let env = this.state.env;
+        let baseURL = document.body.getAttribute('data-base-url');
 
         return (
             <div>
@@ -94,7 +98,7 @@ export let App = React.createClass({
                     </div>
 
                     <div className="column-right">
-                        <Editor code={activePattern.code({ env: this.state.env })} onChange={val => this.onChangeCode(val)} />
+                        <Editor code={activePattern.code({ env, baseURL })} onChange={val => this.onChangeCode(val)} />
                     </div>
                 </div>
             </div>

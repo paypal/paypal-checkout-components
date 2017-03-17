@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var braintree = require('./lib/braintree');
+// var braintree = require('./lib/braintree');
 var paypal = require('./lib/paypal');
 var config = require('./config');
 
@@ -10,14 +10,17 @@ var index = require('./page/index');
 
 module.exports = function (app) {
 
-    app.get('/', (req, res) =>{
+    app.get('/', (req, res) => {
 
         res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com`);
 
         res.send(index({
+            baseURL: req.baseUrl,
             csrf: res.locals._csrf
         }));
     });
+
+    /*
 
     app.get('/api/braintree/client-token/', (req, res) => {
         return braintree.clientToken().then(response => {
@@ -34,6 +37,8 @@ module.exports = function (app) {
             res.status(500).send('Could not complete payment, ' + err);
         });
     });
+
+    */
 
     app.post('/api/paypal/payment/create/', (req, res) => {
        return paypal.getAccessToken()

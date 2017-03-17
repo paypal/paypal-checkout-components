@@ -26,12 +26,12 @@ export let mark = {
 
         <label>
             <input type="radio" name="payment-option" value="paypal" checked>
-            <img src="/checkout/static/img/paypal-mark.jpg" alt="Pay with Paypal">
+            <img src="${ctx.baseURL}/static/img/paypal-mark.jpg" alt="Pay with Paypal">
         </label>
 
         <label>
             <input type="radio" name="payment-option" value="card">
-            <img src="/checkout/static/img/card-mark.png" alt="Accepting Visa, Mastercard, Discover and American Express">
+            <img src="${ctx.baseURL}/static/img/card-mark.png" alt="Accepting Visa, Mastercard, Discover and American Express">
         </label>
 
         <div id="paypal-button-container"></div>

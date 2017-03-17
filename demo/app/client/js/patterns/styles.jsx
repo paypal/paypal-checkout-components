@@ -36,10 +36,10 @@ export let styles = {
                 // Specify the style of the button
 
                 style: {
-                    label: 'checkout', // checkout || credit (optional: defaults to checkout if not specified)
-                    size:  'small', // tiny | small | medium
-                    shape: 'pill',   // pill | rect
-                    color: 'blue'  // gold | blue | silver
+                    label: 'checkout', // checkout || credit
+                    size:  'small',    // tiny | small | medium
+                    shape: 'pill',     // pill | rect
+                    color: 'blue'      // gold | blue | silver
                 },
 
                 // PayPal Client IDs - replace with your own

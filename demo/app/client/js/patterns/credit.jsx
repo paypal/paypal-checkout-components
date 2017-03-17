@@ -63,9 +63,8 @@ export let credit = {
                         payer: {
                             payment_method: 'paypal',
                             external_selected_funding_instrument_type: 'CREDIT'
-                        }
-                                            
-                        });
+                        }               
+                    });
                 },
 
                 // Wait for the payment to be authorized by the customer

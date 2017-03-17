@@ -1,6 +1,6 @@
 /* @flow */
 
-export function loadScript(url : string, prop : string, callback : (err : ?Error, res : ?mixed) => void) : void {
+export function loadScript(url : string, prop : string, attrs : Object, callback : (err : ?Error, res : ?mixed) => void) : void {
 
     if (window[prop]) {
         return callback(null, window[prop]);
@@ -15,7 +15,6 @@ export function loadScript(url : string, prop : string, callback : (err : ?Error
     let script = document.createElement('script');
 
     script.src = url;
-    container.appendChild(script);
 
     script.onload = () => {
         if (!window[prop]) {
@@ -28,6 +27,12 @@ export function loadScript(url : string, prop : string, callback : (err : ?Error
     script.onerror = (err : Error) => {
         return callback(err);
     };
+
+    for (let attr of Object.keys(attrs)) {
+        script.setAttribute(attr, attrs[attr]);
+    }
+
+    container.appendChild(script);
 }
 
 export function warn() {
@@ -38,4 +43,31 @@ export function warn() {
     } else if (window.console && window.console.log) {
         window.console.log(message);
     }
+}
+
+export function parseQuery(queryString : string = window.location.search) : Object {
+
+    let params = {};
+
+    if (queryString && queryString.indexOf('?') === 0) {
+        queryString = queryString.slice(1);
+    }
+
+    if (!queryString) {
+        return params;
+    }
+
+    if (queryString.indexOf('=') === -1) {
+        throw new Error(`Can not parse query string params: ${queryString}`);
+    }
+
+    for (let pair of queryString.split('&')) {
+        pair = pair.split('=');
+
+        if (pair[0] && pair[1]) {
+            params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        }
+    }
+
+    return params;
 }
