@@ -41,6 +41,10 @@ export function getAgent(agent? : ?string) : Array<string> {
     return M;
 }
 
+export function isFirefoxMobile(ua? : string = getUserAgent()) : boolean {
+    return (/FxiOS/i).test(ua);
+}
+
 export function isOperaMini(ua? : string = getUserAgent()) : boolean {
     return ua.indexOf('Opera Mini') > -1;
 }

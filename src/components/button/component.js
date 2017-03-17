@@ -6,7 +6,7 @@ import $logger from 'beaver-logger/client';
 
 import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView, isFirefoxMobile } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 import { parentTemplate } from './parentTemplate';
@@ -195,7 +195,7 @@ export let Button = xcomponent.create({
                                 actions.close()
                             ]);
                         };
-                        
+
                         return original.call(this, data, { ...actions, redirect });
                     };
                 }
@@ -244,7 +244,7 @@ export let Button = xcomponent.create({
                 }[size];
             }
         },
-        
+
         locale: {
             type: 'string',
             required: false,
@@ -343,7 +343,7 @@ export let Button = xcomponent.create({
 
 if (Button.isChild()) {
 
-    if (isWebView()) {
+    if (isWebView() || isFirefoxMobile()) {
         $logger.info('force_enable_iframe_webview');
         enableCheckoutIframe({ force: true, time: 30 * 60 * 1000 });
     }
@@ -354,4 +354,3 @@ if (Button.isChild()) {
 
     awaitPopupBridgeOpener();
 }
-
