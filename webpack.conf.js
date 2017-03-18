@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import path from 'path';
 
 export let FILE_NAME = 'checkout';
 export let MODULE_NAME = 'paypal';
@@ -29,7 +30,7 @@ function getVersionVars() {
 
 function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target = 'window', minify = false }) {
 
-    return {
+    let config = {
         module: {
             rules: [
                 {
@@ -62,11 +63,6 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
             }),
-            new UglifyJSPlugin({
-                test: /\.js$/,
-                minimize: minify,
-                sourceMap: minify
-            }),
             new webpack.DefinePlugin({
                 __TEST__: false,
                 __FILE_NAME__: JSON.stringify(filename),
@@ -76,6 +72,17 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
             new webpack.NamedModulesPlugin()
         ]
     };
+
+
+    if (minify) {
+        config.plugins.push(new UglifyJSPlugin({
+            test: /\.js$/,
+            minimize: true,
+            sourceMap: true
+        }));
+    }
+
+    return config;
 }
 
 let nextMajorVersion = getNextMajorVersion();
