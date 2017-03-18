@@ -1,4 +1,6 @@
 import webpack from 'webpack';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import path from 'path';
 
 export let FILE_NAME = 'checkout';
 export let MODULE_NAME = 'paypal';
@@ -28,9 +30,9 @@ function getVersionVars() {
 
 function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target = 'window', minify = false }) {
 
-    return {
+    let config = {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /sinon\.js$/,
                     loader: "imports?define=>false,require=>false"
@@ -38,7 +40,7 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 {
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel'
+                    loader: 'babel-loader'
                 },
                 {
                     test: /\.(html?|css|json)$/,
@@ -54,17 +56,12 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
             pathinfo: false
         },
         bail: true,
-        devtool: 'source-map',
         resolve: {
-            extensions: [ '', '.js', '.jsx' ],
+            extensions: [ '.js', '.jsx' ]
         },
         plugins: [
-            new webpack.optimize.UglifyJsPlugin({
-                test: /\.js$/,
-                beautify: !minify,
-                minimize: minify,
-                compress: minify ? { warnings: false } : false,
-                mangle: minify,
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[file].map'
             }),
             new webpack.DefinePlugin({
                 __TEST__: false,
@@ -75,6 +72,17 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
             new webpack.NamedModulesPlugin()
         ]
     };
+
+
+    if (minify) {
+        config.plugins.push(new UglifyJSPlugin({
+            test: /\.js$/,
+            minimize: true,
+            sourceMap: true
+        }));
+    }
+
+    return config;
 }
 
 let nextMajorVersion = getNextMajorVersion();

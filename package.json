@@ -59,7 +59,6 @@
     "gulp-eslint": "^2.0.0",
     "gulp-flowtype": "^1.0.0",
     "gulp-karma": "0.0.5",
-    "gulp-webpack": "^1.5.0",
     "gulp-webserver": "^0.9.1",
     "istanbul-instrumenter-loader": "^0.2.0",
     "karma": "^0.13.22",
@@ -75,7 +74,7 @@
     "karma-slimerjs-launcher": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.26",
-    "karma-webpack": "^1.7.0",
+    "karma-webpack": "^2.0.3",
     "lolex": "^1.5.0",
     "mocha": "^2.5.3",
     "phantomjs-prebuilt": "^2.1.7",
@@ -84,7 +83,10 @@
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
     "text-loader": "0.0.1",
-    "webpack": "^1.13.1",
+    "uglify-js": "^2.8.13",
+    "uglifyjs-webpack-plugin": "^0.3.0",
+    "webpack": "^2.2.1",
+    "webpack-stream": "^3.2.0",
     "yargs": "^4.7.1"
   },
   "dependencies": {
