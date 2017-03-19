@@ -84,7 +84,7 @@ module.exports = function(config) {
                                     'assert': true,
                                     'annotate': true
                                 }],
-                                [ '__coverage__', { only: `${__dirname}/src` } ]
+                                [ 'istanbul', { only: `${__dirname}/src` } ]
                             ]
                         }
                     },
@@ -117,7 +117,7 @@ module.exports = function(config) {
         preprocessors: {
             'test/test.js': ['webpack', 'sourcemap'],
             'test/windows/**/*.js': ['webpack', 'sourcemap'],
-            'src/**/*.js': ['coverage', 'sourcemap']
+            'src/**/*.js': ['sourcemap']
         },
 
         // test results reporter to use
