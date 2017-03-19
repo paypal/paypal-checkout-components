@@ -198,7 +198,7 @@
         "no-bitwise": 2,
         "no-continue": 0,
         "no-inline-comments": 0,
-        "no-lonely-if": 2,
+        "no-lonely-if": 0,
         "no-mixed-spaces-and-tabs": [2, true],
         "no-multiple-empty-lines": 0,
         "no-negated-condition": 0,
