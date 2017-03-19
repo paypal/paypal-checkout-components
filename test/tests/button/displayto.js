@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'checkout', authed: true },
+                test: { flow, action: 'checkout', authed: true },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -46,7 +46,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -55,7 +54,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'checkout' },
+                test: { flow, action: 'checkout' },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -87,7 +86,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'checkout', authed: true },
+                test: { flow, action: 'checkout', authed: true },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -109,7 +108,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -118,7 +116,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'checkout' },
+                test: { flow, action: 'checkout' },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -140,7 +138,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     throw new Error(`Expected iframe to be visible`);
                 }
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });

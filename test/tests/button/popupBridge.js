@@ -29,6 +29,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
+                test: { flow, action: 'checkout' },
+
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
@@ -45,7 +47,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -56,7 +57,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'cancel' },
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -74,7 +75,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -86,7 +86,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'cancel' },
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -104,7 +104,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -114,6 +113,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -131,7 +132,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
@@ -145,6 +145,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -164,7 +166,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -174,6 +175,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -191,7 +194,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
@@ -207,7 +209,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'cancel' },
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -225,7 +227,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
@@ -241,7 +242,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'cancel' },
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -261,7 +262,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -273,7 +273,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'cancel' },
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -291,7 +291,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
@@ -303,6 +302,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, call the REST api to create a payment, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -334,7 +335,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -342,6 +342,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -376,7 +378,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -384,6 +385,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -413,7 +416,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -421,6 +423,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment(resolve) {
                     setTimeout(() => {
@@ -440,7 +444,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -448,6 +451,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, with an immediately resolved token passed, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment(resolve) : void {
                     return resolve(generateECToken());
@@ -463,7 +468,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -471,6 +475,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return new SyncPromise(resolve => {
@@ -490,7 +496,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -509,6 +514,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             };
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return checkoutToken;
@@ -530,7 +537,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -549,6 +555,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             };
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return paymentID;
@@ -570,7 +578,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -589,6 +596,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             };
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return billingToken;
@@ -610,7 +619,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -620,6 +628,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let isRestarted = false;
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -643,7 +653,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 errorOnWindowOpen(button.window);
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -653,6 +662,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             destroyPopupBridge();
 
             return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -672,7 +683,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 setupPopupBridge();
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 setTimeout(() => button.window.document.querySelector('button').click(), 50);
             });
         });
@@ -683,7 +693,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return window.paypal.Button.render({
 
-                    test: { action: 'popout' },
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -701,7 +711,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     errorOnWindowOpen(button.window);
 
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
                 });
             });
@@ -712,7 +721,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 window.paypal.Button.render({
 
-                    test: { action: 'popout' },
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -726,7 +735,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     errorOnWindowOpen(button.window);
 
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
                 });
 
@@ -741,7 +749,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 window.paypal.Button.render({
 
-                    test: { action: 'popout' },
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -761,7 +769,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     errorOnWindowOpen(button.window);
 
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
                 });
             });
@@ -771,6 +778,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 let isRestarted = false;
 
                 return window.paypal.Button.render({
+
+                    test: { flow, action: 'checkout' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -800,7 +809,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                     errorOnWindowOpen(button.window);
 
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                     button.window.document.querySelector('button').click();
                 });
             });

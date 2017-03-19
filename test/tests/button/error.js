@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'fallback' },
+                test: { flow, action: 'fallback' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -41,7 +41,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });
@@ -50,7 +49,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { action: 'error' },
+                test: { flow, action: 'error' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -71,7 +70,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
                 button.window.document.querySelector('button').click();
             });
         });

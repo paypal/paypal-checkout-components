@@ -4,6 +4,10 @@ import 'babel-polyfill';
 import 'src/load';
 import { getElement } from '../../tests/common';
 
+if (window.xprops.test.flow === 'lightbox') {
+    window.paypal.Checkout.contexts.lightbox = true;
+}
+
 function renderCheckout() {
     window.paypal.Checkout.renderTo(window.top.frames[0], {
 
