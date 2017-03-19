@@ -1,14 +1,14 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import xcomponent from 'xcomponent/src';
-import $logger from 'beaver-logger/client';
+import * as xcomponent from 'xcomponent/src';
+import * as $logger from 'beaver-logger/client';
 
 import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView, isFirefoxMobile } from '../../lib';
 
-import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
+import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 
@@ -321,11 +321,11 @@ export let Button = xcomponent.create({
             }
         },
 
-        testAction: {
-            type: 'string',
+        test: {
+            type: 'object',
             required: false,
-            def() : string {
-                return 'checkout';
+            def() : Object {
+                return { action: 'checkout' };
             }
         }
     },

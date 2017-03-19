@@ -1,9 +1,9 @@
-import webpack from 'webpack';
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import path from 'path';
+let webpack = require('webpack');
+let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+let path = require('path');
 
-export let FILE_NAME = 'checkout';
-export let MODULE_NAME = 'paypal';
+const FILE_NAME = 'checkout';
+const MODULE_NAME = `__paypal__${Math.random()}`;
 
 function getNextVersion() {
     let version = require('./package.json').version;
@@ -69,18 +69,17 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 __FILE_VERSION__: JSON.stringify(version),
                 ...getVersionVars()
             }),
-            new webpack.NamedModulesPlugin()
+            new webpack.NamedModulesPlugin(),
+            new UglifyJSPlugin({
+                test: /\.js$/,
+                beautify: !minify,
+                minimize: minify,
+                compress: { warnings: false },
+                mangle: minify,
+                sourceMap: true
+            })
         ]
     };
-
-
-    if (minify) {
-        config.plugins.push(new UglifyJSPlugin({
-            test: /\.js$/,
-            minimize: true,
-            sourceMap: true
-        }));
-    }
 
     return config;
 }
@@ -88,10 +87,10 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
 let nextMajorVersion = getNextMajorVersion();
 let nextMinorVersion = getNextMinorVersion();
 
-export let webpack_tasks = {
+module.exports.webpack_tasks = {
 
     major: {
-        src: 'src/index.js',
+        src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMajorVersion,
@@ -100,7 +99,7 @@ export let webpack_tasks = {
     },
 
     minor: {
-        src: 'src/index.js',
+        src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMinorVersion,
@@ -109,7 +108,7 @@ export let webpack_tasks = {
     },
 
     major_min: {
-        src: 'src/index.js',
+        src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMajorVersion,
@@ -119,7 +118,7 @@ export let webpack_tasks = {
     },
 
     minor_min: {
-        src: 'src/index.js',
+        src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMinorVersion,

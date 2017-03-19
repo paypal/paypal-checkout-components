@@ -1,13 +1,19 @@
 /* @flow */
 
-import 'babel-polyfill';
-import paypal from 'src/index';
-import { getElement } from '../../tests/common';
+import { getElement, errorOnWindowOpen } from '../../tests/common';
 
-let [ , testGroup ] = window.xprops.testAction.split(':');
+let { action, flow, authed, bridge, delay } = window.xprops.test;
+
+if (flow === 'lightbox') {
+    window.paypal.Checkout.contexts.lightbox = true;
+}
+
+if (bridge) {
+    errorOnWindowOpen();
+}
 
 function renderCheckout() {
-    paypal.Checkout.renderTo(window.top.frames[0], {
+    window.paypal.Checkout.renderTo(window.top.frames[0], {
 
         payment: window.xprops.payment,
         onAuthorize(data, actions) : void | SyncPromise<void> {
@@ -31,7 +37,7 @@ function renderCheckout() {
                 },
 
                 restart() {
-                    paypal.Checkout.contexts.lightbox = true;
+                    window.paypal.Checkout.contexts.lightbox = true;
                     renderCheckout();
                 }
             });
@@ -45,7 +51,7 @@ function renderCheckout() {
         onError: window.xprops.onError,
         commit: window.xprops.commit,
         locale: window.xprops.locale,
-        testAction: window.xprops.testAction
+        test: window.xprops.test
     });
 }
 
@@ -53,8 +59,21 @@ getElement('#button', document).addEventListener('click', (event : Event) => {
     renderCheckout();
 });
 
-if (testGroup === 'authed' && window.xprops.onAuth) {
-    window.xprops.onAuth();
+if (action === 'auth') {
+
+    if (authed && window.xprops.onAuth) {
+        window.xprops.onAuth();
+    }
+
+} else {
+
+    if (delay) {
+        setTimeout(() => {
+            getElement('#button', document).click();
+        }, delay);
+    } else {
+        getElement('#button', document).click();
+    }
 }
 
 

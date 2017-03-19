@@ -1,19 +1,17 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import $logger from 'beaver-logger/client';
-import xcomponent from 'xcomponent/src';
+import * as $logger from 'beaver-logger/client';
+import * as xcomponent from 'xcomponent/src';
 
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
-import { setupPopupBridgeProxy } from './popupBridge';
+import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
-
-import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
 
 import contentJSON from './content.json';
 let content = JSON.parse(contentJSON);
@@ -349,11 +347,11 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        testAction: {
-            type: 'string',
+        test: {
+            type: 'object',
             required: false,
-            def() : string {
-                return 'checkout';
+            def() : Object {
+                return { action: 'checkout' };
             }
         }
     },

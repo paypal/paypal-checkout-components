@@ -1,6 +1,5 @@
 /* @flow */
 
-import paypal from 'src/index';
 import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
@@ -11,20 +10,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render button, then fall back and complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'fallback',
+                test: { flow, action: 'fallback' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -39,18 +38,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button, render checkout, then error out', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'error',
+                test: { flow, action: 'error' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -69,11 +64,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
     });
 }

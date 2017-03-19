@@ -10,8 +10,8 @@ export * from './customclick';
 export * from './error';
 export * from './popupBridge';
 
-import paypal from 'src/index';
+
 
 beforeEach(() => {
-    paypal.checkout.reset();
+    window.paypal.checkout.reset();
 });

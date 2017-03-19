@@ -1,14 +1,9 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
-import postRobot from 'post-robot/src';
 
-import paypal from 'src/index';
-import { config } from 'src/config';
-import { clearPopupBridgeOpener } from 'src/components';
-
-paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
+window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
     type: 'number',
     required: false,
     def() : number {
@@ -16,7 +11,7 @@ paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
     }
 };
 
-postRobot.CONFIG.ACK_TIMEOUT = 60 * 1000;
+window.paypal.postRobot.CONFIG.ACK_TIMEOUT = 60 * 1000;
 
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
@@ -172,13 +167,15 @@ patchXmlHttpRequest();
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: config.loggerUrl,
+    uri: window.paypal.config.loggerUrl,
     data: {}
 }).listen();
 
+console.warn('!!!!', window.paypal.config.authApiUrl);
+
 $mockEndpoint.register({
     method: 'POST',
-    uri: config.authApiUrl,
+    uri: window.paypal.config.authApiUrl,
     data: {
         access_token: 'ABCDEFGH'
     }
@@ -186,7 +183,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: config.paymentApiUrl,
+    uri: window.paypal.config.paymentApiUrl,
     handler: () => ({
         id: generatePaymentID()
     })
@@ -194,7 +191,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: config.billingApiUrl,
+    uri: window.paypal.config.billingApiUrl,
     handler: () => ({
         token_id: generateBillingToken()
     })
@@ -202,7 +199,7 @@ $mockEndpoint.register({
 
 $mockEndpoint.register({
     method: 'POST',
-    uri: config.experienceApiUrl,
+    uri: window.paypal.config.experienceApiUrl,
     handler: () => ({
         id: generateExperienceToken()
     })
@@ -290,7 +287,7 @@ export function preventOpenWindow(flow : string) {
     }
 }
 
-export function errorOnWindowOpen(win : any) {
+export function errorOnWindowOpen(win : any = window) {
 
     if (win.open.reset) {
         win.open.reset();
@@ -376,7 +373,9 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
 export function destroyPopupBridge(win : any = window) {
     delete win.popupBridge;
 
-    clearPopupBridgeOpener();
+    if (window.popupBridge) {
+        delete window.popupBridge.popupBridgeOpener;
+    }
 
     if (win.open.reset) {
         win.open.reset();

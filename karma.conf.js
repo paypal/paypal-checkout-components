@@ -1,6 +1,6 @@
-var argv = require('yargs').argv;
-var path = require('path');
-var webpack = require('webpack');
+let argv = require('yargs').argv;
+let path = require('path');
+let webpack = require('webpack');
 
 module.exports = function(config) {
 
@@ -29,6 +29,10 @@ module.exports = function(config) {
             'test/lib/react_v15.1.0.js',
             'test/lib/react-dom_v15.1.0.js',
             'test/lib/angular.min.js',
+
+            'node_modules/babel-polyfill/dist/polyfill.js',
+
+            { pattern: 'src/load.js', included: true, served: true },
 
             { pattern: 'test/test.js', included: true, served: true },
             { pattern: 'test/**/*', included: false, served: true }
@@ -71,7 +75,7 @@ module.exports = function(config) {
                         exclude: /(dist|chai)/,
                         loader: 'babel-loader',
                         query: {
-                            presets: ['es2015'],
+                            presets: [ [ 'es2015', { 'modules': false } ] ],
                             plugins: [
                                 'transform-flow-strip-types',
                                 'transform-object-rest-spread',
@@ -84,7 +88,7 @@ module.exports = function(config) {
                                     'assert': true,
                                     'annotate': true
                                 }],
-                                [ '__coverage__', { only: `${__dirname}/src` } ]
+                                [ 'istanbul', { only: `${__dirname}/src` } ]
                             ]
                         }
                     },
@@ -115,9 +119,10 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'src/load.js': ['webpack', 'sourcemap'],
             'test/test.js': ['webpack', 'sourcemap'],
             'test/windows/**/*.js': ['webpack', 'sourcemap'],
-            'src/**/*.js': ['coverage', 'sourcemap']
+            'src/**/*.js': ['sourcemap']
         },
 
         // test results reporter to use

@@ -1,25 +1,24 @@
 /* @flow */
 
-import paypal from 'src/index';
 import { assert } from 'chai';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupPopupBridge, destroyPopupBridge } from '../common';
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal checkout component bridge happy path on ${flow}`, () => {
+    describe(`paypal checkout component popup bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
             setupPopupBridge();
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
 
             destroyPopupBridge();
         });
@@ -29,7 +28,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -56,9 +55,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
-                    testAction: 'cancel',
+                    test: { action: 'cancel' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -85,7 +84,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.Checkout.render({
+                window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -116,7 +115,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -144,7 +143,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.Checkout.render({
+                window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -177,9 +176,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.Checkout.render({
+                window.paypal.Checkout.render({
 
-                    testAction: 'cancel',
+                    test: { action: 'cancel' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -212,9 +211,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
-                    testAction: 'cancel',
+                    test: { action: 'cancel' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -244,9 +243,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.Checkout.render({
+                window.paypal.Checkout.render({
 
-                    testAction: 'cancel',
+                    test: { action: 'cancel' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -275,7 +274,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     client: {
                         test: 'ewgwegegwegegegeg'
@@ -286,7 +285,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         let env    = this.props.env;
                         let client = this.props.client;
 
-                        return paypal.rest.payment.create(env, client, {
+                        return window.paypal.rest.payment.create(env, client, {
                             transactions: [
                                 {
                                     amount: { total: '1.00', currency: 'USD' }
@@ -313,7 +312,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     client: {
                         test: 'ewgwegegwegegegeg'
@@ -324,7 +323,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         let env    = this.props.env;
                         let client = this.props.client;
 
-                        return paypal.rest.payment.create(env, client, {
+                        return window.paypal.rest.payment.create(env, client, {
                             transactions: [
                                 {
                                     amount: { total: '1.00', currency: 'USD' }
@@ -354,7 +353,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     client: {
                         test: 'ewgwegegwegegegeg'
@@ -365,7 +364,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         let env    = this.props.env;
                         let client = this.props.client;
 
-                        return paypal.rest.billingAgreement.create(env, client, {
+                        return window.paypal.rest.billingAgreement.create(env, client, {
                             plan: {
                                 type: 'MERCHANT_INITIATED_BILLING'
                             }
@@ -391,7 +390,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment(resolve) {
                         setTimeout(() => {
@@ -418,7 +417,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment(resolve) : void {
                         return resolve(generateECToken());
@@ -442,7 +441,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return new SyncPromise(resolve => {
@@ -480,7 +479,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done();
                 };
 
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return checkoutToken;
@@ -518,7 +517,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done();
                 };
 
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return paymentID;
@@ -556,7 +555,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done();
                 };
 
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     payment() : string | SyncPromise<string> {
                         return billingToken;
@@ -585,9 +584,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', (event : Event) => {
-                    return paypal.Checkout.render({
+                    return window.paypal.Checkout.render({
 
-                        testAction: 'popout',
+                        test: { action: 'popout' },
 
                         payment() : string | SyncPromise<string> {
                             return generateECToken();
@@ -615,9 +614,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', (event : Event) => {
-                    paypal.Checkout.render({
+                    window.paypal.Checkout.render({
 
-                        testAction: 'popout',
+                        test: { action: 'popout' },
 
                         payment() : string | SyncPromise<string> {
                             return token;
@@ -645,9 +644,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', (event : Event) => {
-                    paypal.Checkout.render({
+                    window.paypal.Checkout.render({
 
-                        testAction: 'popout',
+                        test: { action: 'popout' },
 
                         payment() : string | SyncPromise<string> {
                             return token;

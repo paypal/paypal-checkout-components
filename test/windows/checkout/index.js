@@ -1,20 +1,16 @@
 /* @flow */
 
-import 'babel-polyfill';
-import paypal from 'src/index';
 import { createTestContainer, createElement } from '../../tests/common';
 
-import postRobot from 'post-robot/src/index';
+let { action } = window.xprops.test;
 
-let [ testAction ] = window.xprops.testAction.split(':');
-
-if (testAction === 'checkout') {
+if (action === 'checkout') {
 
     window.xprops.payment().then(paymentToken => {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
-        return paypal.Promise.try(() => {
+        return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
@@ -40,7 +36,7 @@ if (testAction === 'checkout') {
         });
     });
 
-} else if (testAction === 'cancel') {
+} else if (action === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {
 
@@ -52,7 +48,7 @@ if (testAction === 'checkout') {
         });
     });
 
-} else if (testAction === 'popout') {
+} else if (action === 'popout') {
 
     createTestContainer();
 
@@ -61,7 +57,7 @@ if (testAction === 'checkout') {
     testButton.addEventListener('click', (event : Event) => {
         window.xchild.hide();
 
-        paypal.Checkout.renderPopupTo(window.top.frames[0], {
+        window.paypal.Checkout.renderPopupTo(window.top.frames[0], {
 
             url:              window.location.href,
             payment:          window.xprops.payment,
@@ -73,7 +69,7 @@ if (testAction === 'checkout') {
 
     testButton.click();
 
-} else if (testAction === 'fallback') {
+} else if (action === 'fallback') {
 
     let parent = window.xchild.getParentComponentWindow();
 
@@ -95,12 +91,12 @@ if (testAction === 'checkout') {
 
                 win.location = '/base/test/windows/fallback/index.htm';
 
-                if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+                if (window.paypal.postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
                     return parent.watchForLegacyFallback(win);
                 }
 
-                for (let frame of postRobot.winutil.getFrames(parent)) {
-                    if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                for (let frame of window.paypal.postRobot.winutil.getFrames(parent)) {
+                    if (window.paypal.postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
                         return frame.watchForLegacyFallback(win);
                     }
                 }
@@ -112,13 +108,13 @@ if (testAction === 'checkout') {
         });
     });
 
-} else if (testAction === 'error') {
+} else if (action === 'error') {
 
     window.xprops.payment().then(paymentToken => {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
-        return paypal.Promise.try(() => {
+        return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({

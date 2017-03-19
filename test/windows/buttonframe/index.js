@@ -1,19 +1,15 @@
 /* @flow */
 
-import 'babel-polyfill';
-import paypal from 'src/index';
-import postRobot from 'post-robot/src/index';
-
 import { generateECToken } from '../../tests/common';
 
-paypal.Button.render({
+window.paypal.Button.render({
 
     payment() : string {
         return generateECToken();
     },
 
     onAuthorize() {
-        postRobot.send(window.top.frames[0], 'onAuthorize');
+        window.paypal.postRobot.send(window.top.frames[0], 'onAuthorize');
     }
 
 }, document.body).then(button => {

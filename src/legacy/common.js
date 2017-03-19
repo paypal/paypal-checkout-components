@@ -1,6 +1,6 @@
 /* @flow */
 
-import logger from 'beaver-logger/client';
+import * as logger from 'beaver-logger/client';
 
 import { config } from '../config';
 import { LOG_PREFIX } from './constants';

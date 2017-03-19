@@ -1,7 +1,5 @@
 /* @flow */
 
-import paypal from 'src/index';
-
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
 window.angular.module('app', ['paypal-button']);
@@ -13,13 +11,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a container with React and click on the button, then complete the payment', (done) => {
@@ -28,21 +26,19 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 render() : Object {
 
+                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
                     return window.React.createElement(
                         'div',
                         null,
-                        window.React.createElement(paypal.Button.react, {
-
-                            onEnter() {
-                                this.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                                this.window.document.querySelector('button').click();
-                            },
+                        window.React.createElement(window.paypal.Button.react, {
 
                             payment() : string | SyncPromise<string> {
                                 return generateECToken();
                             },
 
                             onAuthorize() : void {
+                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                                 return done();
                             },
 
@@ -73,18 +69,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let $scope = $rootScope.$new();
 
-            $scope.opts = {
+            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
 
-                onEnter() {
-                    this.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    this.window.document.querySelector('button').click();
-                },
+            $scope.opts = {
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
                 onAuthorize() : void {
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     return done();
                 },
 

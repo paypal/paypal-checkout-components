@@ -1,7 +1,5 @@
 /* @flow */
 
-import 'babel-polyfill';
-import 'src/index';
 import '../../tests/common';
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';

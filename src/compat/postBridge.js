@@ -1,8 +1,8 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import $logger from 'beaver-logger/client';
-import postRobot from 'post-robot/src';
+import * as $logger from 'beaver-logger/client';
+import * as postRobot from 'post-robot/src';
 
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';

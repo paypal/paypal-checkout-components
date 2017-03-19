@@ -1,7 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
 
@@ -11,33 +10,33 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
-        it('should render a button into a container to only remembered users, with a logged in user, then complete the payment', (done) => {
+        it('should render a button into a container to only remembered users, with a logged in user', () => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'checkout:authed',
+                test: { flow, action: 'auth', authed: true },
 
-                displayTo: paypal.USERS.REMEMBERED,
+                displayTo: window.paypal.USERS.REMEMBERED,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -45,30 +44,27 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
             });
         });
 
         it('should render a button into a container to only remembered users, with a logged out user', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'checkout',
+                test: { flow, action: 'auth', authed: false },
 
-                displayTo: paypal.USERS.REMEMBERED,
+                displayTo: window.paypal.USERS.REMEMBERED,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done(new Error('Expected onAuthorize to not be called'));
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 },
 
                 onEnter() {
@@ -83,24 +79,24 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container to all, with a logged in user, then complete the payment', (done) => {
+        it('should render a button into a container to all, with a logged in user', () => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'checkout:authed',
+                test: { flow, action: 'auth', authed: true },
 
-                displayTo: paypal.USERS.ALL,
+                displayTo: window.paypal.USERS.ALL,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -108,30 +104,27 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
             });
         });
 
-        it('should render a button into a container to all, with a logged out user, then complete the payment', (done) => {
+        it('should render a button into a container to all, with a logged out user', () => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'checkout',
+                test: { flow, action: 'auth', authed: false },
 
-                displayTo: paypal.USERS.ALL,
+                displayTo: window.paypal.USERS.ALL,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -139,9 +132,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
             });
         });
     });

@@ -1,7 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { assert } from 'chai';
 
@@ -13,18 +12,20 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -38,16 +39,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 billingAgreement() : string | SyncPromise<string> {
                     return generateECToken();
@@ -61,18 +60,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -86,18 +81,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done();
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -113,12 +106,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                 });
+
             });
         });
 
@@ -126,7 +117,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -142,18 +135,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -169,12 +160,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
                 });
+
             });
         });
 
@@ -182,9 +171,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -200,12 +189,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
+
             });
         });
 
@@ -213,9 +200,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -231,20 +218,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }).catch(done);
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { flow, action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -260,18 +243,18 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
                 });
+
             });
         });
 
         it('should render a button into a container and click on the button, call the REST api to create a payment, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -282,7 +265,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.payment.create(env, client, {
+                    return window.paypal.rest.payment.create(env, client, {
                         transactions: [
                             {
                                 amount: { total: '1.00', currency: 'USD' }
@@ -299,16 +282,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -319,7 +300,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.payment.create(env, client, {
+                    return window.paypal.rest.payment.create(env, client, {
                         transactions: [
                             {
                                 amount: { total: '1.00', currency: 'USD' }
@@ -339,16 +320,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -359,7 +338,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.billingAgreement.create(env, client, {
+                    return window.paypal.rest.billingAgreement.create(env, client, {
                         plan: {
                             type: 'MERCHANT_INITIATED_BILLING'
                         }
@@ -374,16 +353,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment(resolve) {
                     setTimeout(() => {
@@ -399,16 +376,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with an immediately resolved token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment(resolve) : void {
                     return resolve(generateECToken());
@@ -422,16 +397,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return new SyncPromise(resolve => {
@@ -447,18 +420,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a checkout token on the correct url, then complete the payment', (done) => {
 
             let checkoutToken = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return checkoutToken;
@@ -477,18 +448,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a payment id on the correct url, then complete the payment', (done) => {
 
             let paymentID = generatePaymentID();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return paymentID;
@@ -507,18 +476,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a billing token on the correct url, then complete the payment', (done) => {
 
             let billingToken = generateBillingToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return billingToken;
@@ -537,18 +504,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, restart the payment, then complete the payment', (done) => {
 
             let isRestarted = false;
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -568,20 +533,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         if (flow === 'lightbox') {
         
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 
-                return paypal.Button.render({
+                return window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -595,20 +556,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
 
             it('should render checkout, popout, then redirect', () => {
 
                 let token = generateECToken();
 
-                paypal.Button.render({
+                window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -618,11 +575,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return actions.redirect(window);
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -633,9 +586,9 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 let token = generateECToken();
 
-                paypal.Button.render({
+                window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -651,18 +604,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
 
             it('should render a button into a container and click on the button, restart the payment, popout, then complete the payment', (done) => {
 
                 let isRestarted = false;
 
-                return paypal.Button.render({
+                return window.paypal.Button.render({
+
+                    test: { flow, action: 'checkout' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -677,7 +628,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         isRestarted = true;
 
                         return this.updateProps({
-                            testAction: 'popout'
+                            test: { action: 'popout' }
 
                         }).then(() => {
                             return actions.restart();
@@ -688,11 +639,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
         }
     });
