@@ -2,10 +2,16 @@
 
 import 'babel-polyfill';
 import 'src/load';
-import { getElement } from '../../tests/common';
+import { getElement, errorOnWindowOpen } from '../../tests/common';
 
-if (window.xprops.test.flow === 'lightbox') {
+let { action, flow, authed, bridge, delay } = window.xprops.test;
+
+if (flow === 'lightbox') {
     window.paypal.Checkout.contexts.lightbox = true;
+}
+
+if (bridge) {
+    errorOnWindowOpen();
 }
 
 function renderCheckout() {
@@ -55,8 +61,21 @@ getElement('#button', document).addEventListener('click', (event : Event) => {
     renderCheckout();
 });
 
-if (window.xprops.test.authed && window.xprops.onAuth) {
-    window.xprops.onAuth();
+if (action === 'auth') {
+
+    if (authed && window.xprops.onAuth) {
+        window.xprops.onAuth();
+    }
+
+} else {
+
+    if (delay) {
+        setTimeout(() => {
+            getElement('#button', document).click();
+        }, delay);
+    } else {
+        getElement('#button', document).click();
+    }
 }
 
 

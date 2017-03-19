@@ -20,11 +20,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             window.paypal.Checkout.contexts.lightbox = false;
         });
 
-        it('should render a button into a container to only remembered users, with a logged in user, then complete the payment', (done) => {
+        it('should render a button into a container to only remembered users, with a logged in user', () => {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'checkout', authed: true },
+                test: { flow, action: 'auth', authed: true },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -32,12 +32,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -45,8 +45,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.document.querySelector('button').click();
             });
         });
 
@@ -54,7 +52,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'checkout' },
+                test: { flow, action: 'auth', authed: false },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -62,12 +60,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done(new Error('Expected onAuthorize to not be called'));
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 },
 
                 onEnter() {
@@ -82,11 +80,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container to all, with a logged in user, then complete the payment', (done) => {
+        it('should render a button into a container to all, with a logged in user', () => {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'checkout', authed: true },
+                test: { flow, action: 'auth', authed: true },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -94,12 +92,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -107,16 +105,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.document.querySelector('button').click();
             });
         });
 
-        it('should render a button into a container to all, with a logged out user, then complete the payment', (done) => {
+        it('should render a button into a container to all, with a logged out user', () => {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'checkout' },
+                test: { flow, action: 'auth', authed: false },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -124,12 +120,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return generateECToken();
                 },
 
-                onAuthorize() : void {
-                    return done();
+                onAuthorize() {
+                    throw new Error('Expected onAuthorize to not be called');
                 },
 
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
                 }
 
             }, '#testContainer').then(button => {
@@ -137,8 +133,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 if (getElement('.paypal-button-parent').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
                 }
-
-                button.window.document.querySelector('button').click();
             });
         });
     });

@@ -9,7 +9,7 @@ import { onHashChange, generateECToken, createTestContainer, destroyTestContaine
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal legacy bridge checkout setup/startflow on ${flow}`, () => {
+    describe(`paypal legacy popup bridge checkout setup/startflow on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();

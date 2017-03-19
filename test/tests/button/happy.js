@@ -40,10 +40,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
@@ -64,10 +61,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
@@ -88,10 +82,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done();
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize', () => {
@@ -115,8 +106,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
             }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -146,10 +135,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on authorize with a custom url', () => {
@@ -173,8 +159,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
             }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
@@ -204,8 +188,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }, '#testContainer').then(button => {
 
-                button.window.document.querySelector('button').click();
-
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
@@ -234,10 +216,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     }).catch(done);
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button then redirect on cancel with a custom url', () => {
@@ -261,8 +240,6 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
             }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
@@ -302,10 +279,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
@@ -343,10 +317,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', (done) => {
@@ -379,10 +350,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
@@ -405,10 +373,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with an immediately resolved token passed, then complete the payment', (done) => {
@@ -429,10 +394,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
@@ -455,10 +417,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a checkout token on the correct url, then complete the payment', (done) => {
@@ -486,10 +445,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a payment id on the correct url, then complete the payment', (done) => {
@@ -517,10 +473,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button with a billing token on the correct url, then complete the payment', (done) => {
@@ -548,10 +501,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render a button into a container and click on the button, restart the payment, then complete the payment', (done) => {
@@ -580,10 +530,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         if (flow === 'lightbox') {
@@ -606,10 +553,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
 
             it('should render checkout, popout, then redirect', () => {
@@ -628,10 +572,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return actions.redirect(window);
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
@@ -660,10 +601,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
 
             it('should render a button into a container and click on the button, restart the payment, popout, then complete the payment', (done) => {
@@ -698,10 +636,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                }, '#testContainer').then(button => {
-
-                    button.window.document.querySelector('button').click();
-                });
+                }, '#testContainer');
             });
         }
     });

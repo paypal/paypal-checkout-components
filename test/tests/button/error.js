@@ -39,10 +39,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
 
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
 
         it('should render button, render checkout, then error out', (done) => {
@@ -68,10 +65,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
-
-                button.window.document.querySelector('button').click();
-            });
+            }, '#testContainer');
         });
     });
 }

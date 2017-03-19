@@ -28,21 +28,19 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 render() : Object {
 
+                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
                     return window.React.createElement(
                         'div',
                         null,
                         window.React.createElement(window.paypal.Button.react, {
-
-                            onEnter() {
-                                this.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                                this.window.document.querySelector('button').click();
-                            },
 
                             payment() : string | SyncPromise<string> {
                                 return generateECToken();
                             },
 
                             onAuthorize() : void {
+                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                                 return done();
                             },
 
@@ -73,18 +71,16 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let $scope = $rootScope.$new();
 
-            $scope.opts = {
+            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
 
-                onEnter() {
-                    this.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
-                    this.window.document.querySelector('button').click();
-                },
+            $scope.opts = {
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
                 },
 
                 onAuthorize() : void {
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     return done();
                 },
 

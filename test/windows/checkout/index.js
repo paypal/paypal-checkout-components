@@ -6,7 +6,7 @@ import { createTestContainer, createElement } from '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
 
-let action = window.xprops.test.action;
+let { action } = window.xprops.test;
 
 if (action === 'checkout') {
 

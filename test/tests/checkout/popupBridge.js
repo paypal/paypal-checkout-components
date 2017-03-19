@@ -8,7 +8,7 @@ import { generateECToken, generateBillingToken, generatePaymentID, createTestCon
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
-    describe(`paypal checkout component bridge happy path on ${flow}`, () => {
+    describe(`paypal checkout component popup bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
