@@ -1,8 +1,8 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import xcomponent from 'xcomponent/src';
-import $logger from 'beaver-logger/client';
+import * as xcomponent from 'xcomponent/src';
+import * as $logger from 'beaver-logger/client';
 
 import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';

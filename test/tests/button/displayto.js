@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
@@ -11,22 +11,22 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a container to only remembered users, with a logged in user, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'checkout:authed',
 
-                displayTo: paypal.USERS.REMEMBERED,
+                displayTo: window.paypal.USERS.REMEMBERED,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -53,11 +53,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container to only remembered users, with a logged out user', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'checkout',
 
-                displayTo: paypal.USERS.REMEMBERED,
+                displayTo: window.paypal.USERS.REMEMBERED,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -85,11 +85,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container to all, with a logged in user, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'checkout:authed',
 
-                displayTo: paypal.USERS.ALL,
+                displayTo: window.paypal.USERS.ALL,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -116,11 +116,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container to all, with a logged out user, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'checkout',
 
-                displayTo: paypal.USERS.ALL,
+                displayTo: window.paypal.USERS.ALL,
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();

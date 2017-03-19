@@ -1,8 +1,8 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import $logger from 'beaver-logger/client';
-import xcomponent from 'xcomponent/src';
+import * as $logger from 'beaver-logger/client';
+import * as xcomponent from 'xcomponent/src';
 
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';

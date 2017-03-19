@@ -1,7 +1,7 @@
 /* @flow */
 
-import postRobot from 'post-robot/src';
-import $logger from 'beaver-logger/client';
+import * as postRobot from 'post-robot/src';
+import * as $logger from 'beaver-logger/client';
 import { config } from '../config';
 
 export function initLogger() {

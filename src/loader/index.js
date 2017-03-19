@@ -1,6 +1,6 @@
 /* @flow */
 
-import { extendPayPalNamespace } from '../namespace';
+import { extendNamespace } from '../lib/namespace';
 
-module.exports = module.exports.default = extendPayPalNamespace(require('./interface'));
+extendNamespace(require('./interface'), [ 'paypal', 'PAYPAL' ], [ 'apps' ]);
 

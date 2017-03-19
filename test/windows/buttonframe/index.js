@@ -1,12 +1,12 @@
 /* @flow */
 
 import 'babel-polyfill';
-import paypal from 'src/index';
+import 'src/load';
 import postRobot from 'post-robot/src/index';
 
 import { generateECToken } from '../../tests/common';
 
-paypal.Button.render({
+window.paypal.Button.render({
 
     payment() : string {
         return generateECToken();

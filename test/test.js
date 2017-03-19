@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
-import paypal from 'src/index';
+import 'src/load';
 import xcomponent from 'xcomponent/src/index';
 import './tests';
 

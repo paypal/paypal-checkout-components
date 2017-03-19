@@ -1,18 +1,18 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { assert } from 'chai';
 
 describe('paypal happy cases', () => {
 
-    it('should export paypal.Checkout and paypal.Button', () => {
+    it('should exportwindow.paypal.Checkout andwindow.paypal.Button', () => {
 
-        assert.isOk(paypal.Checkout);
-        assert.isOk(paypal.Button);
+        assert.isOk(window.paypal.Checkout);
+        assert.isOk(window.paypal.Button);
     });
 
     it('should export isEligible method', () => {
 
-        assert.isOk(paypal.isEligible());
+        assert.isOk(window.paypal.isEligible());
     });
 });

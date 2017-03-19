@@ -1,6 +1,6 @@
-var argv = require('yargs').argv;
-var path = require('path');
-var webpack = require('webpack');
+let argv = require('yargs').argv;
+let path = require('path');
+let webpack = require('webpack');
 
 module.exports = function(config) {
 
@@ -71,7 +71,7 @@ module.exports = function(config) {
                         exclude: /(dist|chai)/,
                         loader: 'babel-loader',
                         query: {
-                            presets: ['es2015'],
+                            presets: [ [ 'es2015', { 'modules': false } ] ],
                             plugins: [
                                 'transform-flow-strip-types',
                                 'transform-object-rest-spread',

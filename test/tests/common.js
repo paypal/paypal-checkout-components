@@ -4,11 +4,11 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import postRobot from 'post-robot/src';
 
-import paypal from 'src/index';
+import 'src/load';
 import { config } from 'src/config';
 import { clearPopupBridgeOpener } from 'src/components';
 
-paypal.Checkout.props.timeout = paypal.Button.props.timeout = {
+window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
     type: 'number',
     required: false,
     def() : number {

@@ -1,6 +1,6 @@
 /* @flow */
 
-import logger from 'beaver-logger/client';
+import * as logger from 'beaver-logger/client';
 
 import { onDocumentReady, onKey } from '../lib';
 import { ENV } from '../config';

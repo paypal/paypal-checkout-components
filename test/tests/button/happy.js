@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { assert } from 'chai';
@@ -13,18 +13,18 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -47,7 +47,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 billingAgreement() : string | SyncPromise<string> {
                     return generateECToken();
@@ -70,7 +70,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'cancel',
 
@@ -97,7 +97,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -126,7 +126,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -153,7 +153,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -182,7 +182,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'cancel',
 
@@ -213,7 +213,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'cancel',
 
@@ -242,7 +242,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'cancel',
 
@@ -271,7 +271,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, call the REST api to create a payment, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -282,7 +282,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.payment.create(env, client, {
+                    return window.paypal.rest.payment.create(env, client, {
                         transactions: [
                             {
                                 amount: { total: '1.00', currency: 'USD' }
@@ -308,7 +308,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -319,7 +319,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.payment.create(env, client, {
+                    return window.paypal.rest.payment.create(env, client, {
                         transactions: [
                             {
                                 amount: { total: '1.00', currency: 'USD' }
@@ -348,7 +348,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 client: {
                     test: 'ewgwegegwegegegeg'
@@ -359,7 +359,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     let env    = this.props.env;
                     let client = this.props.client;
 
-                    return paypal.rest.billingAgreement.create(env, client, {
+                    return window.paypal.rest.billingAgreement.create(env, client, {
                         plan: {
                             type: 'MERCHANT_INITIATED_BILLING'
                         }
@@ -383,7 +383,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment(resolve) {
                     setTimeout(() => {
@@ -408,7 +408,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, with an immediately resolved token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment(resolve) : void {
                     return resolve(generateECToken());
@@ -431,7 +431,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return new SyncPromise(resolve => {
@@ -458,7 +458,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let checkoutToken = generateECToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return checkoutToken;
@@ -488,7 +488,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let paymentID = generatePaymentID();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return paymentID;
@@ -518,7 +518,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let billingToken = generateBillingToken();
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return billingToken;
@@ -548,7 +548,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let isRestarted = false;
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -579,7 +579,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 
-                return paypal.Button.render({
+                return window.paypal.Button.render({
 
                     testAction: 'popout',
 
@@ -606,7 +606,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 let token = generateECToken();
 
-                paypal.Button.render({
+                window.paypal.Button.render({
 
                     testAction: 'popout',
 
@@ -633,7 +633,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 let token = generateECToken();
 
-                paypal.Button.render({
+                window.paypal.Button.render({
 
                     testAction: 'popout',
 
@@ -662,7 +662,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 let isRestarted = false;
 
-                return paypal.Button.render({
+                return window.paypal.Button.render({
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();

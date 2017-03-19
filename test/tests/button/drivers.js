@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
@@ -13,13 +13,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a container with React and click on the button, then complete the payment', (done) => {
@@ -31,7 +31,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     return window.React.createElement(
                         'div',
                         null,
-                        window.React.createElement(paypal.Button.react, {
+                        window.React.createElement(window.paypal.Button.react, {
 
                             onEnter() {
                                 this.window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');

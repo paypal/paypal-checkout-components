@@ -1,7 +1,7 @@
 /* @flow */
 
 import 'babel-polyfill';
-import paypal from 'src/index';
+import 'src/load';
 import { createTestContainer, createElement } from '../../tests/common';
 
 import postRobot from 'post-robot/src/index';
@@ -14,7 +14,7 @@ if (testAction === 'checkout') {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
-        return paypal.Promise.try(() => {
+        return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
@@ -61,7 +61,7 @@ if (testAction === 'checkout') {
     testButton.addEventListener('click', (event : Event) => {
         window.xchild.hide();
 
-        paypal.Checkout.renderPopupTo(window.top.frames[0], {
+        window.paypal.Checkout.renderPopupTo(window.top.frames[0], {
 
             url:              window.location.href,
             payment:          window.xprops.payment,
@@ -118,7 +118,7 @@ if (testAction === 'checkout') {
 
         let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
-        return paypal.Promise.try(() => {
+        return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({

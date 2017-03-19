@@ -2,7 +2,7 @@
 
 import { assert } from 'chai';
 
-import paypal from 'src/index';
+import 'src/load';
 import { config } from 'src/config';
 
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupPopupBridge, destroyPopupBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
@@ -13,7 +13,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
 
             setupPopupBridge();
         });
@@ -21,7 +21,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
 
             destroyPopupBridge();
         });
@@ -30,12 +30,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(token);
+                    window.paypal.checkout.startFlow(token);
                 }
 
             }).then(() => {
@@ -54,22 +54,22 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let token = generateECToken();
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(token);
+                    window.paypal.checkout.startFlow(token);
                 }
 
             }).then(() => {
 
-                paypal.Checkout.props.testAction.def = () => 'cancel';
+                window.paypal.Checkout.props.testAction.def = () => 'cancel';
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
@@ -80,12 +80,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -102,12 +102,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let hash = uniqueID();
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
                 click(event) {
-                    paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                    window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                 }
 
             }).then(() => {

@@ -1,13 +1,13 @@
 /* @flow */
 
 import 'babel-polyfill';
-import paypal from 'src/index';
+import 'src/load';
 import { getElement } from '../../tests/common';
 
 let [ , testGroup ] = window.xprops.testAction.split(':');
 
 function renderCheckout() {
-    paypal.Checkout.renderTo(window.top.frames[0], {
+    window.paypal.Checkout.renderTo(window.top.frames[0], {
 
         payment: window.xprops.payment,
         onAuthorize(data, actions) : void | SyncPromise<void> {
@@ -31,7 +31,7 @@ function renderCheckout() {
                 },
 
                 restart() {
-                    paypal.Checkout.contexts.lightbox = true;
+                    window.paypal.Checkout.contexts.lightbox = true;
                     renderCheckout();
                 }
             });

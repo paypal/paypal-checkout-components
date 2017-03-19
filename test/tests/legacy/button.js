@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { assert } from 'chai';
 
 import { createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
@@ -17,7 +17,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container', () => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer'
 
@@ -29,7 +29,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container using buttons array', () => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -46,7 +46,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container and provide a working click handler', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -62,7 +62,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container using buttons array and provide a working click handler', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -82,7 +82,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -103,7 +103,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -144,7 +144,7 @@ describe('paypal legacy button rendering', () => {
             container: 'testContainer'
         });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -169,7 +169,7 @@ describe('paypal legacy button rendering', () => {
             container: 'testContainer'
         });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -196,7 +196,7 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -221,7 +221,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should prioritize buttons[i].container over options.container', (done) => {
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'fooContainer',
 
@@ -244,7 +244,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -302,7 +302,7 @@ describe('paypal legacy button rendering', () => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
 
@@ -323,7 +323,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton', 'testButton2' ],
 
@@ -349,7 +349,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButtonDOESNOTEXIST1', 'testButton', 'testButtonDOESNOTEXIST2', 'testButton2', 'testButtonDOESNOTEXIST3' ],
 
@@ -375,7 +375,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [ 'testButton', 'testButton2' ],
 
@@ -398,7 +398,7 @@ describe('paypal legacy button rendering', () => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -422,7 +422,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -462,7 +462,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -521,7 +521,7 @@ describe('paypal legacy button rendering', () => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
 
@@ -553,7 +553,7 @@ describe('paypal legacy button rendering', () => {
             ]
         });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'customLink',
 
@@ -574,7 +574,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: [ 'buttonContainer1', 'buttonContainer2' ],
 
@@ -600,7 +600,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: [ 'DOESNOTEXIST1', 'buttonContainer1', 'DOESNOTEXIST2', 'buttonContainer2', 'DOESNOTEXIST3' ],
 
@@ -625,7 +625,7 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'customLink',
 
@@ -653,7 +653,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
             container: 'randomContainer',
@@ -673,7 +673,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton' ],
             container: 'randomContainer',
@@ -693,7 +693,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton' ],
             container: [ 'randomContainer' ],
@@ -713,7 +713,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
             container: 'randomContainer',
@@ -737,7 +737,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
             container: 'randomContainer',
@@ -757,7 +757,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
             container: [ 'randomContainer' ],
@@ -777,7 +777,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton' ],
             container: 'randomContainer',
@@ -797,7 +797,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton' ],
             container: [ 'randomContainer' ],
@@ -829,7 +829,7 @@ describe('paypal legacy button options', () => {
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
         let container3 = createElement({ id: 'container3', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -865,7 +865,7 @@ describe('paypal legacy button options', () => {
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -892,7 +892,7 @@ describe('paypal legacy button options', () => {
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -920,7 +920,7 @@ describe('paypal legacy button options', () => {
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -948,7 +948,7 @@ describe('paypal legacy button options', () => {
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -976,7 +976,7 @@ describe('paypal legacy button options', () => {
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -1003,7 +1003,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1'
 
@@ -1020,7 +1020,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             size: 'tiny'
@@ -1035,7 +1035,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             size: 'small'
@@ -1050,7 +1050,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             size: 'medium'
@@ -1065,7 +1065,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             shape: 'pill'
@@ -1080,7 +1080,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             shape: 'rect'
@@ -1095,7 +1095,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             color: 'gold'
@@ -1110,7 +1110,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             color: 'blue'
@@ -1125,7 +1125,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             color: 'silver'
@@ -1140,7 +1140,7 @@ describe('paypal legacy button options', () => {
 
         let container1 = createElement({ id: 'container1', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
             locale: 'fr_FR'
@@ -1157,7 +1157,7 @@ describe('paypal legacy button options', () => {
         let container2 = createElement({ id: 'container2', container: 'testContainer' });
         let container3 = createElement({ id: 'container3', container: 'testContainer' });
 
-        return paypal.checkout.setup('merchantID', {
+        return window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {

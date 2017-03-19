@@ -2,7 +2,7 @@
 
 import { assert } from 'chai';
 
-import paypal from 'src/index';
+import 'src/load';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
@@ -13,13 +13,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render a button into a form container and click on the button', () => {
@@ -45,7 +45,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm'
 
@@ -82,18 +82,18 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm'
 
             }).then(() => {
 
-                paypal.Checkout.props.testAction.def = () => 'cancel';
+                window.paypal.Checkout.props.testAction.def = () => 'cancel';
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });
@@ -113,7 +113,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testLink'
 
@@ -155,7 +155,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 button: 'testButton'
 
@@ -183,7 +183,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 button: 'testLink'
 
@@ -218,7 +218,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 button: 'testButton'
 
@@ -257,7 +257,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 button: 'testButton'
 
@@ -305,7 +305,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testLink'
 
@@ -342,7 +342,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 ]
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',
 
@@ -382,7 +382,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 }
             });
 
-            return paypal.checkout.setup('merchantID', {
+            return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',
 

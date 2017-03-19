@@ -1,6 +1,6 @@
 /* @flow */
 
-import $logger from 'beaver-logger/client';
+import * as $logger from 'beaver-logger/client';
 
 import { match } from '../../lib';
 import { config } from '../../config';

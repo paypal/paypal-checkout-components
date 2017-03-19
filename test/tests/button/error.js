@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
@@ -11,18 +11,18 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render button, then fall back and complete the payment', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'fallback',
 
@@ -48,7 +48,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         it('should render button, render checkout, then error out', (done) => {
 
-            return paypal.Button.render({
+            return window.paypal.Button.render({
 
                 testAction: 'error',
 

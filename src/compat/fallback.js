@@ -1,6 +1,6 @@
 /* @flow */
 
-import postRobot from 'post-robot/src';
+import * as postRobot from 'post-robot/src';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { isPayPalDomain, noop } from '../lib';

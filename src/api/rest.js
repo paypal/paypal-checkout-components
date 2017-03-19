@@ -1,9 +1,9 @@
 /* @flow */
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
-import postRobot from 'post-robot/src';
+import * as postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
-import $logger from 'beaver-logger/client';
+import * as $logger from 'beaver-logger/client';
 
 import { config } from '../config';
 import { request, memoize } from '../lib';

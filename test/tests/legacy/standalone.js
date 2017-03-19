@@ -2,7 +2,7 @@
 
 import { assert } from 'chai';
 
-import paypal from 'src/index';
+import 'src/load';
 import { config } from 'src/config';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
@@ -15,13 +15,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should call startFlow', () => {
@@ -30,7 +30,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.startFlow(token);
+                window.paypal.checkout.startFlow(token);
             });
 
             testButton.click();
@@ -46,15 +46,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let token = generateECToken();
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.startFlow(token);
+                window.paypal.checkout.startFlow(token);
             });
 
-            paypal.Checkout.props.testAction.def = () => 'cancel';
+            window.paypal.Checkout.props.testAction.def = () => 'cancel';
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                paypal.Checkout.props.testAction.def = () => 'checkout';
+                window.paypal.Checkout.props.testAction.def = () => 'checkout';
                 assert.equal(urlHash, `#cancel?token=${token}`);
             });
         });
@@ -66,7 +66,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let hash = uniqueID();
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
             });
 
             testButton.click();
@@ -83,7 +83,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
             });
 
             testButton.click();
@@ -100,10 +100,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                paypal.checkout.initXO();
+                window.paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    paypal.checkout.startFlow(token);
+                    window.paypal.checkout.startFlow(token);
                 }, 100);
             });
 
@@ -121,11 +121,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let hash = uniqueID();
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.initXO();
+                window.paypal.checkout.initXO();
 
                 setTimeout(() => {
 
-                    paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
                 }, 100);
             });
 
@@ -143,10 +143,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let hash = uniqueID();
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.initXO();
+                window.paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                    window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
                 }, 100);
             });
 
@@ -164,8 +164,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                paypal.checkout.initXO();
-                paypal.checkout.startFlow(token);
+                window.paypal.checkout.initXO();
+                window.paypal.checkout.startFlow(token);
             });
 
             testButton.click();
@@ -199,13 +199,13 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     };
                 }
 
-                paypal.checkout.initXO();
+                window.paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    paypal.checkout.closeFlow();
+                    window.paypal.checkout.closeFlow();
 
                     if (flow === 'lightbox') {
-                        if (paypal.checkout.win.closed) {
+                        if (window.paypal.checkout.win.closed) {
                             return done();
                         } else {
                             return done(new Error('Expected lightbox to be closed'));
@@ -222,10 +222,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                paypal.checkout.initXO();
+                window.paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    paypal.checkout.closeFlow('#closeFlowUrl');
+                    window.paypal.checkout.closeFlow('#closeFlowUrl');
                 }, 100);
             });
 
@@ -244,7 +244,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 if (flow === 'lightbox') {
                     setTimeout(() => {
-                        if (paypal.checkout.win.closed) {
+                        if (window.paypal.checkout.win.closed) {
                             return done();
                         } else {
                             return done(new Error('Expected lightbox to be closed'));
@@ -265,8 +265,8 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     };
                 }
 
-                paypal.checkout.initXO();
-                paypal.checkout.closeFlow();
+                window.paypal.checkout.initXO();
+                window.paypal.checkout.closeFlow();
             });
 
             testButton.click();

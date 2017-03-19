@@ -1,6 +1,6 @@
 /* @flow */
 
-import paypal from 'src/index';
+import 'src/load';
 import { assert } from 'chai';
 
 import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
@@ -11,12 +11,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
         });
 
         afterEach(() => {
             destroyTestContainer();
-            paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.lightbox = false;
         });
 
         it('should render checkout, then fall back and complete the payment', (done) => {
@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     testAction: 'fallback',
 
@@ -51,7 +51,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
 
                     testAction: 'error',
 
@@ -81,7 +81,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         if (flow === 'popup') {
             it('should render checkout without a click event and error out', (done) => {
 
-                return paypal.Checkout.render({
+                return window.paypal.Checkout.render({
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
                     },
