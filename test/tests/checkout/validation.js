@@ -1,6 +1,5 @@
 /* @flow */
 
-import 'src/load';
 import { assert } from 'chai';
 
 import { generateECToken } from '../common';

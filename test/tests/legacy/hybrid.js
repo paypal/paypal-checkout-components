@@ -2,8 +2,8 @@
 
 import { assert } from 'chai';
 
-import 'src/load';
-import { config } from 'src/config';
+
+
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
 
@@ -32,7 +32,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -75,7 +75,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -121,7 +121,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${config.checkoutUrl}&token=${token}#${hash}`
+                    href: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 }
             });
 
@@ -154,7 +154,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -202,7 +202,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 id: 'testLink',
                 container: 'testContainer',
                 props: {
-                    href: `${config.checkoutUrl}&token=${token}#${hash}`
+                    href: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 }
             });
 
@@ -235,7 +235,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -257,7 +257,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 });
 
                 getElement('button', testForm).click();
@@ -280,7 +280,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -323,7 +323,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -367,7 +367,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -390,7 +390,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 });
 
                 getElement('button', testForm).click();
@@ -413,7 +413,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -457,7 +457,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -503,7 +503,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -527,7 +527,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                        window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                     }, 200);
                 });
 
@@ -551,7 +551,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -597,7 +597,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -645,7 +645,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -692,7 +692,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -760,7 +760,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -806,7 +806,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -850,7 +850,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -916,7 +916,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -985,7 +985,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [

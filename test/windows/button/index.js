@@ -1,7 +1,5 @@
 /* @flow */
 
-import 'babel-polyfill';
-import 'src/load';
 import { getElement, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow, authed, bridge, delay } = window.xprops.test;

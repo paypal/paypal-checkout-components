@@ -1,8 +1,7 @@
 /* @flow */
 
-import 'src/load';
 import { assert } from 'chai';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupPopupBridge, destroyPopupBridge } from '../common';
 

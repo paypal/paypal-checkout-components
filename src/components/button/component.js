@@ -8,7 +8,7 @@ import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView, isFirefoxMobile } from '../../lib';
 
-import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../common';
+import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { parentTemplate } from './parentTemplate';
 import { componentTemplate } from './componentTemplate';
 

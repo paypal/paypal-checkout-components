@@ -2,8 +2,8 @@
 
 import { assert } from 'chai';
 
-import 'src/load';
-import { config } from 'src/config';
+
+
 
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupPopupBridge, destroyPopupBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
 
@@ -85,7 +85,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {

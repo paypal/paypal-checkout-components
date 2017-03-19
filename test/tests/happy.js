@@ -1,6 +1,5 @@
 /* @flow */
 
-import 'src/load';
 import { assert } from 'chai';
 
 describe('paypal happy cases', () => {

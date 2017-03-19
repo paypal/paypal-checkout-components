@@ -1,7 +1,6 @@
 /* @flow */
 
-import 'src/load';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { assert } from 'chai';
 
@@ -110,6 +109,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
                 });
+
             });
         });
 
@@ -163,6 +163,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
                 });
+
             });
         });
 
@@ -191,6 +192,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
+
             });
         });
 
@@ -244,6 +246,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
                 });
+
             });
         });
 

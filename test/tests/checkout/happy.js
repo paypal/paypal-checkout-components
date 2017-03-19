@@ -1,10 +1,9 @@
 /* @flow */
 
-import 'src/load';
 import { assert } from 'chai';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement } from '../common';
+let SyncPromise = window.paypal.Promise;
 
 for (let flow of [ 'popup', 'lightbox' ]) {
 
@@ -148,7 +147,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         }).catch(done);
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : void {
                         return done(new Error('Expected onCancel to not be called'));
                     }
                 });
@@ -295,7 +294,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : SyncPromise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;

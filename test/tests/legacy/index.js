@@ -10,7 +10,7 @@ export * from './customclick';
 export * from './error';
 export * from './popupBridge';
 
-import 'src/load';
+
 
 beforeEach(() => {
     window.paypal.checkout.reset();

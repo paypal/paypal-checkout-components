@@ -1,9 +1,6 @@
-import 'babel-polyfill';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
-import 'src/load';
-import xcomponent from 'xcomponent/src/index';
 import './tests';
 
 
@@ -13,7 +10,7 @@ paypal.setup({
 
 afterEach(() => {
     delete window.navigator.mockUserAgent;
-    return xcomponent.destroyAll().then(() => {
+    return window.paypal.destroyAll().then(() => {
         // return postRobot.destroyBridges();
     });
 });

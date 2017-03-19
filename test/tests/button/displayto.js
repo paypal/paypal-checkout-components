@@ -1,7 +1,6 @@
 /* @flow */
 
-import 'src/load';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+let SyncPromise = window.paypal.Promise;
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
 

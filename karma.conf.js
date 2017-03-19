@@ -30,6 +30,10 @@ module.exports = function(config) {
             'test/lib/react-dom_v15.1.0.js',
             'test/lib/angular.min.js',
 
+            'node_modules/babel-polyfill/dist/polyfill.js',
+
+            { pattern: 'src/load.js', included: true, served: true },
+
             { pattern: 'test/test.js', included: true, served: true },
             { pattern: 'test/**/*', included: false, served: true }
         ],
@@ -115,6 +119,7 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'src/load.js': ['webpack', 'sourcemap'],
             'test/test.js': ['webpack', 'sourcemap'],
             'test/windows/**/*.js': ['webpack', 'sourcemap'],
             'src/**/*.js': ['sourcemap']

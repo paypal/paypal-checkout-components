@@ -2,8 +2,8 @@
 
 import { assert } from 'chai';
 
-import 'src/load';
-import { config } from 'src/config';
+
+
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
          createTestContainer, destroyTestContainer } from '../common';
@@ -66,7 +66,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             let hash = uniqueID();
 
             testButton.addEventListener('click', (event : Event) => {
-                window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
             });
 
             testButton.click();
@@ -125,7 +125,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 setTimeout(() => {
 
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }, 100);
             });
 

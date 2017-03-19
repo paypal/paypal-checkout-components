@@ -1,9 +1,9 @@
 /* @flow */
 
-import 'src/load';
-import { extendUrl } from 'src/lib';
+
+import { extendUrl } from 'src/lib/dom';
 import { assert } from 'chai';
-import { config } from 'src/config';
+
 
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement, uniqueID, getElement } from '../common';
 
@@ -56,7 +56,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             return onHashChange().then(urlHash => {
                 window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
-                assert.equal(urlHash, `#fullpageRedirect?url=${extendUrl(config.checkoutUrl, { token })}`);
+                assert.equal(urlHash, `#fullpageRedirect?url=${extendUrl(window.paypal.config.checkoutUrl, { token })}`);
             });
         });
 
@@ -183,20 +183,17 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                let paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
-                delete config.checkoutUrl;
+                let paypalCheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+                delete window.paypal.config.checkoutUrl;
 
-                // $FlowFixMe
-                config.checkoutUrl = '#errorRedirectUrl';
+                window.paypal.config.checkoutUrl = '#errorRedirectUrl';
 
                 preventOpenWindow(flow);
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-
-                    // $FlowFixMe
-                    Object.defineProperty(config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
+                    Object.defineProperty(window.paypal.config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -287,7 +284,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: config.checkoutUrl
+                    action: window.paypal.config.checkoutUrl
                 },
 
                 children: [
@@ -311,17 +308,15 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 getElement('button', testForm).click();
 
-                let CheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
-                delete config.checkoutUrl;
+                let CheckoutUrlDescriptor = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+                delete window.paypal.config.checkoutUrl;
 
-                // $FlowFixMe
-                config.checkoutUrl = '#errorRedirectUrl';
+                window.paypal.config.checkoutUrl = '#errorRedirectUrl';
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
-                    // $FlowFixMe
-                    Object.defineProperty(config, 'checkoutUrl', CheckoutUrlDescriptor);
+                    Object.defineProperty(window.paypal.config, 'checkoutUrl', CheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
                 });
             });
@@ -337,7 +332,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [
@@ -383,7 +378,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
                 id: 'testForm',
                 props: {
-                    action: `${config.checkoutUrl}&token=${token}#${hash}`
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
                 },
 
                 children: [

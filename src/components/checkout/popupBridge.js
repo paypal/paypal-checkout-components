@@ -4,14 +4,52 @@ import { getter, memoize, once, noop } from 'xcomponent/src/lib';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as $logger from 'beaver-logger/client';
 
-import { extendUrl, redirect } from '../../lib';
+import { extendUrl, redirect, awaitKey } from '../../lib';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { config } from '../../config';
-import { getPopupBridgeOpener } from '../common';
 
 function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {
     return SyncPromise.resolve(condition).then(result => {
         return result ? truthyResult : falsyResult;
+    });
+}
+
+export function getPopupBridgeOpener(popupBridge : ?Object = window.popupBridge) : ?Function {
+
+    if (popupBridge) {
+
+        popupBridge.opener = popupBridge.opener || ((url, callback) => {
+
+            if (!popupBridge) {
+                throw new Error(`Popup Bridge not available`);
+            }
+
+            popupBridge.onComplete = callback;
+            popupBridge.open(extendUrl(url, { redirect_uri: popupBridge.getReturnUrlPrefix() }));
+        });
+
+        return popupBridge.opener;
+    }
+
+    if (window.xprops && window.xprops.popupBridge && window.xprops.popupBridge.open) {
+        return window.xprops.popupBridge.open;
+    }
+}
+
+export function awaitPopupBridgeOpener() : SyncPromise<Function> {
+
+    if (window.xprops && window.xprops.popupBridge) {
+        return window.xprops.popupBridge.awaitOpener().then(opener => {
+
+            window.popupBridge = window.popupBridge || {};
+            window.popupBridge.opener = opener;
+
+            return opener;
+        });
+    }
+
+    return awaitKey(window, 'popupBridge').then(popupBridge => {
+        return getPopupBridgeOpener(popupBridge);
     });
 }
 

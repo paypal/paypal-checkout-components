@@ -2,8 +2,8 @@
 
 import { assert } from 'chai';
 
-import 'src/load';
-import { config } from 'src/config';
+
+
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
@@ -73,11 +73,10 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             window.navigator.mockUserAgent = IE8_USER_AGENT;
 
-            let checkoutUrl = Object.getOwnPropertyDescriptor(config, 'checkoutUrl');
-            delete config.checkoutUrl;
+            let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+            delete window.paypal.config.checkoutUrl;
 
-            // $FlowFixMe
-            config.checkoutUrl = '#testCheckoutUrl';
+            window.paypal.config.checkoutUrl = '#testCheckoutUrl';
 
             let token = generateECToken();
 
@@ -95,9 +94,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
-
-                    // $FlowFixMe
-                    Object.defineProperty(config, 'checkoutUrl', checkoutUrl);
+                    Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
                 });
             });
         });
@@ -112,7 +109,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -159,7 +156,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -183,7 +180,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 container: 'testContainer',
 
                 click(event) {
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -212,7 +209,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 click(event) {
                     clicked = true;
-                    window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                 }
 
             }).then(() => {
@@ -461,7 +458,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${config.checkoutUrl}&token=${token}#${hash}`);
+                        window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
                     }, 100);
                 }
 

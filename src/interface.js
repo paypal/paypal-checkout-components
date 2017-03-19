@@ -3,9 +3,6 @@
 import * as _postRobot from 'post-robot/src';
 export let postRobot = _postRobot;
 
-import * as _xcomponent from 'post-robot/src';
-export let xcomponent = _xcomponent;
-
 export { PopupOpenError } from 'xcomponent/src';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
@@ -27,11 +24,14 @@ export let version = __MINOR_VERSION__;
 
 import { isPayPalDomain } from './lib';
 import { Checkout as CheckoutComponent } from './components';
+import * as xcomponent from 'xcomponent/src';
 
 export let Checkout;
 export let PayPalCheckout;
+export let destroyAll;
 
 if (isPayPalDomain() || __TEST__) {
     Checkout = CheckoutComponent;
     PayPalCheckout = CheckoutComponent;
+    destroyAll = xcomponent.destroyAll;
 }

@@ -1,7 +1,5 @@
 /* @flow */
 
-import 'src/load';
-
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
 window.angular.module('app', ['paypal-button']);

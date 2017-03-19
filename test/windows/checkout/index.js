@@ -1,10 +1,6 @@
 /* @flow */
 
-import 'babel-polyfill';
-import 'src/load';
 import { createTestContainer, createElement } from '../../tests/common';
-
-import postRobot from 'post-robot/src/index';
 
 let { action } = window.xprops.test;
 
@@ -95,12 +91,12 @@ if (action === 'checkout') {
 
                 win.location = '/base/test/windows/fallback/index.htm';
 
-                if (postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+                if (window.paypal.postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
                     return parent.watchForLegacyFallback(win);
                 }
 
-                for (let frame of postRobot.winutil.getFrames(parent)) {
-                    if (postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                for (let frame of window.paypal.postRobot.winutil.getFrames(parent)) {
+                    if (window.paypal.postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
                         return frame.watchForLegacyFallback(win);
                     }
                 }

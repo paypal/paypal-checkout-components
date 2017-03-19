@@ -1,7 +1,4 @@
-
-
-import 'src/load';
-import postRobot from 'post-robot/src/index';
+/* @flow */
 
 import '../common';
 
@@ -22,9 +19,14 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             let iframe = document.createElement('iframe');
             iframe.src = `/base/test/windows/buttonframe/index.htm#${flow}`;
+
+            if (!document.body) {
+                throw new Error('Expected document.body to be present');
+            }
+
             document.body.appendChild(iframe);
 
-            return postRobot.once('onAuthorize');
+            return window.paypal.postRobot.once('onAuthorize');
         });
     });
 }
