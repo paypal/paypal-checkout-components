@@ -72,7 +72,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return generateECToken();
@@ -184,7 +184,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -215,7 +215,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -244,7 +244,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'cancel',
+                test: { action: 'cancel' },
 
                 payment() : string | SyncPromise<string> {
                     return token;
@@ -581,7 +581,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 return window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -608,7 +608,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -635,7 +635,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
                 window.paypal.Button.render({
 
-                    testAction: 'popout',
+                    test: { action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
                         return token;
@@ -677,7 +677,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                         isRestarted = true;
 
                         return this.updateProps({
-                            testAction: 'popout'
+                            test: { action: 'popout' }
 
                         }).then(() => {
                             return actions.restart();

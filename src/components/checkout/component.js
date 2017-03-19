@@ -349,11 +349,11 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        testAction: {
-            type: 'string',
+        test: {
+            type: 'object',
             required: false,
-            def() : string {
-                return 'checkout';
+            def() : Object {
+                return { action: 'checkout' };
             }
         }
     },

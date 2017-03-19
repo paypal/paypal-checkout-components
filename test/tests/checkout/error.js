@@ -26,7 +26,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    testAction: 'fallback',
+                    test: { action: 'fallback' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();
@@ -53,7 +53,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    testAction: 'error',
+                    test: { action: 'error' },
 
                     payment() : string | SyncPromise<string> {
                         return generateECToken();

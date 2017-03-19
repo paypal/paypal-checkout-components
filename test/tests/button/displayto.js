@@ -24,7 +24,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'checkout:authed',
+                test: { action: 'checkout', authed: true },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -55,7 +55,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'checkout',
+                test: { action: 'checkout' },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -87,7 +87,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'checkout:authed',
+                test: { action: 'checkout', authed: true },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -118,7 +118,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             return window.paypal.Button.render({
 
-                testAction: 'checkout',
+                test: { action: 'checkout' },
 
                 displayTo: window.paypal.USERS.ALL,
 

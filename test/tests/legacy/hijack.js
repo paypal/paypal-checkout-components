@@ -88,12 +88,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'cancel';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'cancel' });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#cancel?token=${token}`);
                 });
             });

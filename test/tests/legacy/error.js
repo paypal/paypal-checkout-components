@@ -49,12 +49,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 window.paypal.checkout.startFlow(token);
             });
 
-            window.paypal.Checkout.props.testAction.def = () => 'error';
+            window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                 assert.equal(urlHash, `#fullpageRedirect?url=${extendUrl(config.checkoutUrl, { token })}`);
             });
@@ -99,12 +99,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'error';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                     assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
                 });
@@ -158,12 +158,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'error';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
                 });
             });
@@ -217,12 +217,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'error';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                     assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
                 });
@@ -307,7 +307,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'error';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
                 getElement('button', testForm).click();
 
@@ -318,7 +318,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 config.checkoutUrl = '#errorRedirectUrl';
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                     // $FlowFixMe
                     Object.defineProperty(config, 'checkoutUrl', CheckoutUrlDescriptor);
@@ -408,12 +408,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     window.paypal.checkout.startFlow(redirectUrl);
                 });
 
-                window.paypal.Checkout.props.testAction.def = () => 'error';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
                 });
             });
@@ -503,12 +503,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.testAction.def = () => 'fallback';
+                window.paypal.Checkout.props.test.def = () => ({ action: 'fallback' });
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.testAction.def = () => 'checkout';
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fallbackUrl?token=${token}`);
                 });
             });
