@@ -29,3 +29,5 @@ flow-typed
 
 #IDE
 **/.idea/*
+
+.DS_Store
