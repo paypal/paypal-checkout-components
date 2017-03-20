@@ -70,7 +70,7 @@ export function generateExperienceToken() : string {
     return uniqueID(17).toUpperCase();
 }
 
-export const CHILD_REDIRECT_URI = '/base/test/windows/redirect/index.htm';
+export const CHILD_REDIRECT_URI = `${window.paypal.config.paypalUrl}/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
@@ -170,8 +170,6 @@ $mockEndpoint.register({
     uri: window.paypal.config.loggerUrl,
     data: {}
 }).listen();
-
-console.warn('!!!!', window.paypal.config.authApiUrl);
 
 $mockEndpoint.register({
     method: 'POST',
