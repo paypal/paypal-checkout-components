@@ -33,8 +33,8 @@ export let Checkout = xcomponent.create({
     tag: 'paypal-checkout',
     name: 'ppcheckout',
 
-    buildUrl(instance, props) : string | SyncPromise<string> {
-        let env = instance.props.env || config.env;
+    buildUrl(props) : string | SyncPromise<string> {
+        let env = props.env || config.env;
 
         return props.payment().then(token => {
             if (!token) {
@@ -44,8 +44,6 @@ export let Checkout = xcomponent.create({
             return determineUrlFromToken(env, token);
         });
     },
-
-    remoteRenderDomain: config.paypal_domain_regex,
 
     get bridgeUrls() : Object {
         return config.postBridgeUrls;

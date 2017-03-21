@@ -17,8 +17,8 @@ export let Button = xcomponent.create({
     tag: 'paypal-button',
     name: 'ppbutton',
 
-    buildUrl(instance) : string {
-        let env = instance.props.env || config.env;
+    buildUrl(props) : string {
+        let env = props.env || config.env;
 
         return config.buttonUrls[env];
     },
