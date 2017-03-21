@@ -41,7 +41,7 @@ export function getAgent(agent? : ?string) : Array<string> {
     return M;
 }
 
-export function isFirefoxMobile(ua? : string = getUserAgent()) : boolean {
+export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
 }
 
@@ -108,5 +108,5 @@ export function isIEIntranet() : boolean {
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
-    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
+    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua));
 }
