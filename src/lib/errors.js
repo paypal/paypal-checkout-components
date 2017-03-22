@@ -39,7 +39,8 @@ export function checkForCommonErrors() {
     }
 
     if (isIE() && !isIECompHeader()) {
-        $logger.warn(`Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">`);
+        $logger.warn(`ie_meta_compatibility_header_missing`, {
+            message: `Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">` });
     }
 
     function foo(bar, baz, zomg) {
