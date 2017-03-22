@@ -2,7 +2,7 @@
 
 import * as $logger from 'beaver-logger/client';
 
-import { isIEIntranet } from './device';
+import { isIE, isIEIntranet, isIECompHeader } from './device';
 
 function warn(err) : void {
     if (window.console) {
@@ -36,6 +36,11 @@ export function checkForCommonErrors() {
 
     if (isIEIntranet()) {
         $logger.warn(`ie_intranet_mode`);
+    }
+
+    if (isIE() && !isIECompHeader()) {
+        $logger.warn(`ie_meta_compatibility_header_missing`, {
+            message: `Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">` });
     }
 
     function foo(bar, baz, zomg) {
