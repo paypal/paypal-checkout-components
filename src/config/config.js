@@ -570,6 +570,7 @@ export let config = {
     TM: [ 'en', 'fr', 'es', 'zh' ],
     TN: [ 'ar', 'en', 'fr', 'es', 'zh' ],
     TO: [ 'en' ],
+    TR: ['tr', 'en'],
     TT: [ 'en', 'fr', 'es', 'zh' ],
     TV: [ 'en', 'fr', 'es', 'zh' ],
     TW: [ 'zh', 'en' ],
