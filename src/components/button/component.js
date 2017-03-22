@@ -113,12 +113,11 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
 
-            decorate(original) : Function {
-                return function() {
+            value() {
+                this.onAuth = this.onAuth || new SyncPromise();
+                this.onAuth.resolve();
 
-                    this.onAuth = this.onAuth || new SyncPromise();
-                    this.onAuth.resolve();
-                };
+                enableCheckoutIframe();
             }
         },
 
@@ -126,12 +125,9 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
 
-            decorate(original) : Function {
-                return function() {
-
-                    this.onAuth = this.onAuth || new SyncPromise();
-                    this.onAuth.resolve();
-                };
+            value() {
+                this.onAuth = this.onAuth || new SyncPromise();
+                this.onAuth.resolve();
             }
         },
 
@@ -343,7 +339,7 @@ export let Button = xcomponent.create({
 
 if (Button.isChild()) {
 
-    if (!forceIframe()) {
+    if (forceIframe()) {
         $logger.info('force_enable_iframe');
         enableCheckoutIframe({ force: true, time: 30 * 60 * 1000 });
     }

@@ -356,7 +356,7 @@ export let Checkout = xcomponent.create({
 
     autoResize: {
         width: false,
-        height: true
+        height: false
     },
 
     get dimensions() : { width : string | number, height : string | number } {
@@ -365,13 +365,6 @@ export let Checkout = xcomponent.create({
             return {
                 width: '100%',
                 height: '100%'
-            };
-        }
-
-        if (this.contexts.lightbox) {
-            return {
-                width: '450px',
-                height: '300px'
             };
         }
 
