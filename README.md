@@ -6,6 +6,11 @@ PayPal Checkout
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [xcomponent](https://github.com/krakenjs/xcomponent).
 
+### [Try it here: developer.paypal.com/demo/checkout/](https://developer.paypal.com/demo/checkout)
+### [Learn more here: developer.paypal.com/docs/integration/direct/express-checkout/](https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/add-paypal-button/)
+
+-----
+
 ### Which Integration is right for me?
 
 - Do you want the **simplest possible PayPal Integration**? If so, you should stick with the [**Basic PayPal Checkout Button**](https://github.com/paypal/paypal-checkout/tree/master/docs/button.md#basic-integration)
