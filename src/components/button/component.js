@@ -142,7 +142,11 @@ export let Button = xcomponent.create({
                         this.onAuth = this.onAuth || new SyncPromise();
 
                         if (this.props.displayTo === USERS.REMEMBERED) {
-                            return this.onAuth;
+                            $logger.info(`button_render_wait_for_remembered_user`);
+
+                            return this.onAuth.then(() => {
+                                $logger.info(`button_render_got_remembered_user`);
+                            });
                         }
 
                     }).then(() => {
