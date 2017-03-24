@@ -50,29 +50,43 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
         throw new Error(`startflow_no_url_or_token`);
     }
 
+
     let paymentToken = parseToken(item);
-    let url = (paymentToken && item === paymentToken) ? extendUrl(config.checkoutUrl, { token: paymentToken }) : item;
+    let url = (paymentToken && paymentToken === item) ? '' : item;
 
-    if (url && !url.match(/^https?:\/\/|^\//)) {
-        $logger.warn(`startflow_relative_url`, { url });
+    if (url) {
 
-        if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
-            url = `${config.checkoutUrl}${url}`;
-        }
-    }
+        if (!url.match(/^https?:\/\/|^\//)) {
+            if (paymentToken) {
+                $logger.info(`startflow_relative_url_with_token`, {url});
+            } else {
+                $logger.info(`startflow_relative_url_no_token`, {url});
+            }
 
-    if (url && paymentToken) {
+            if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
+                url = `${config.checkoutUrl}${url}`;
+            }
 
-        if (url.indexOf('.paypal.com') !== -1) {
-            $logger.debug(`startflow_paypalurl_with_token`, { item });
+        } else if (paymentToken) {
+            if (url.indexOf('.paypal.com') !== -1) {
+                $logger.debug(`startflow_paypalurl_with_token`, { url });
+            } else {
+                $logger.debug(`startflow_url_with_token`, { url });
+            }
+
         } else {
-            $logger.debug(`startflow_url_with_token`, { item });
+            $logger.debug(`startflow_url_no_token`, { url });
         }
 
-    } else if (url) {
-        $logger.debug(`startflow_url_with_no_token`, { item });
-    } else if (paymentToken) {
-        $logger.debug(`startflow_with_token`, { item });
+    } else {
+
+        if (paymentToken) {
+            url = extendUrl(config.checkoutUrl, { token: paymentToken });
+            $logger.debug(`startflow_with_token`, { url });
+        } else {
+            $logger.error(`startflow_no_url_or_token`, { url });
+            throw new Error(`Could not determine url or token from "${item}"`);
+        }
     }
 
     return { paymentToken, url };
