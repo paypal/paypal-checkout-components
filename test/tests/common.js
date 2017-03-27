@@ -74,6 +74,8 @@ export const CHILD_REDIRECT_URI = `${window.paypal.config.paypalUrl}/base/test/w
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
+export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+
 export function createElement(options : Object) : HTMLElement {
 
     let element = document.createElement(options.tag || 'div');
