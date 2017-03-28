@@ -30,6 +30,20 @@ function getVersionVars() {
 function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false }) {
 
     let config = {
+        stats: {
+            hash: process.env.WEBPACK_DEBUG ? true : false,
+            timings: process.env.WEBPACK_DEBUG ? true : false,
+            chunks: process.env.WEBPACK_DEBUG ? true : false,
+            chunkModules: process.env.WEBPACK_DEBUG ? true : false,
+            modules: process.env.WEBPACK_DEBUG ? true : false,
+            cached: process.env.WEBPACK_DEBUG ? true : false,
+            cachedAssets: process.env.WEBPACK_DEBUG ? true : false,
+            reasons: process.env.WEBPACK_DEBUG ? true : false,
+            source: process.env.WEBPACK_DEBUG ? true : false,
+            errorDetails: process.env.WEBPACK_DEBUG ? true : false,
+            performance: process.env.WEBPACK_DEBUG ? true : false,
+            warnings: process.env.WEBPACK_DEBUG ? true : false
+        },
         module: {
             rules: [
                 {

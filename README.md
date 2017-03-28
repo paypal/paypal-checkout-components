@@ -82,3 +82,13 @@ Build checkout.js:
 ```bash
 gulp build
 ```
+
+### Debug Webpack
+```sh
+WEBPACK_DEBUG=1 gulp webpack
+```
+
+### Debug Karma
+```sh
+WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
+```
