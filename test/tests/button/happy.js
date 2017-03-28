@@ -6,19 +6,19 @@ import { assert } from 'chai';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
@@ -536,7 +536,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             }, '#testContainer');
         });
 
-        if (flow === 'lightbox') {
+        if (flow === 'iframe') {
         
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 

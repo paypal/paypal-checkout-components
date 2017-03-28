@@ -4,8 +4,8 @@ import { getElement, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow, authed, bridge, delay } = window.xprops.test;
 
-if (flow === 'lightbox') {
-    window.paypal.Checkout.contexts.lightbox = true;
+if (flow === 'iframe') {
+    window.paypal.Checkout.contexts.iframe = true;
 }
 
 if (bridge) {
@@ -37,7 +37,7 @@ function renderCheckout() {
                 },
 
                 restart() {
-                    window.paypal.Checkout.contexts.lightbox = true;
+                    window.paypal.Checkout.contexts.iframe = true;
                     renderCheckout();
                 }
             });

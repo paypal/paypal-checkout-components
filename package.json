@@ -98,11 +98,11 @@
     "es6-iterator": "^2.0.0",
     "es6-symbol": "^3.1.0",
     "express": "^4.14.1",
-    "post-robot": "^4.0.0",
+    "post-robot": "^5.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
     "request": "^2.79.0",
-    "xcomponent": "^1.0.3"
+    "xcomponent": "^2.0.0"
   }
 }

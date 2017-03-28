@@ -34,17 +34,17 @@ export function setupPostBridge(env : string) : SyncPromise<void> {
         let postBridgeUrl : string = config.postBridgeUrls[env];
         let postBridgeDomain : string = config.paypalDomains[env];
 
-        if (!postRobot.needsBridgeForDomain(postBridgeDomain)) {
+        if (!postRobot.bridge.needsBridgeForDomain(postBridgeDomain)) {
             return $logger.debug(`post_bridge_not_required`, { env });
         }
 
         $logger.debug(`setup_post_bridge`, { env });
         
-        return postRobot.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
+        return postRobot.bridge.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
 
             // Post-Bridge is best-effort for everything but IE
 
-            if (postRobot.needsBridge({ domain: postBridgeDomain })) {
+            if (postRobot.bridge.needsBridge({ domain: postBridgeDomain })) {
                 throw err;
             } else {
                 $logger.debug(`open_post_bridge_transient_failure`);

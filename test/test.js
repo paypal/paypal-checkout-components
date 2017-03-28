@@ -11,7 +11,7 @@ paypal.setup({
 afterEach(() => {
     delete window.navigator.mockUserAgent;
     return window.paypal.destroyAll().then(() => {
-        // return postRobot.destroyBridges();
+        // return postRobot.bridge.destroyBridges();
     });
 });
 

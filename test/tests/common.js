@@ -270,7 +270,7 @@ export function preventOpenWindow(flow : string) {
                 }
             };
         };
-    } else if (flow === 'lightbox') {
+    } else if (flow === 'iframe') {
 
         let documentCreateElement = document.createElement;
         // $FlowFixMe

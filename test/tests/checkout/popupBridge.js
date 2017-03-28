@@ -5,20 +5,20 @@ let SyncPromise = window.paypal.Promise;
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupPopupBridge, destroyPopupBridge } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component popup bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
             setupPopupBridge();
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
 
             destroyPopupBridge();
         });
@@ -486,7 +486,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        if (flow === 'lightbox') {
+                        if (flow === 'iframe') {
                             return done();
                         }
                     },
@@ -524,7 +524,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        if (flow === 'lightbox') {
+                        if (flow === 'iframe') {
                             return done();
                         }
                     },
@@ -562,7 +562,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        if (flow === 'lightbox') {
+                        if (flow === 'iframe') {
                             return done();
                         }
                     },
@@ -577,7 +577,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.click();
         });
 
-        if (flow === 'lightbox') {
+        if (flow === 'iframe') {
 
             it('should render checkout, popout, then complete the payment', (done) => {
 

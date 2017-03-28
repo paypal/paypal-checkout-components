@@ -1,5 +1,5 @@
 
-export let parentTemplate = (ctx = {}) => `
+export let containerTemplate = (ctx = {}) => `
 
     <style>
         .paypal-button-parent {

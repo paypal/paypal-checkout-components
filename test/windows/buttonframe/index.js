@@ -14,7 +14,7 @@ window.paypal.Button.render({
 
 }, document.body).then(button => {
 
-    button.window.paypal.Checkout.contexts.lightbox = (window.location.hash === '#lightbox');
+    button.window.paypal.Checkout.contexts.iframe = (window.location.hash === '#iframe');
     button.window.document.querySelector('button').click();
 });
 

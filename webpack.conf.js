@@ -64,6 +64,8 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
             }),
             new webpack.DefinePlugin({
                 __TEST__: false,
+                __IE_POPUP_SUPPORT__: true,
+                __POPUP_SUPPORT__: true,
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
                 ...getVersionVars()

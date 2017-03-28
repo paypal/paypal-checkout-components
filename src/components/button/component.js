@@ -9,7 +9,7 @@ import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
-import { parentTemplate } from './parentTemplate';
+import { containerTemplate } from './containerTemplate';
 import { componentTemplate } from './componentTemplate';
 
 export let Button = xcomponent.create({
@@ -25,20 +25,19 @@ export let Button = xcomponent.create({
 
     contexts: {
         iframe: true,
-        lightbox: false,
         popup: false
     },
 
     scrolling: false,
 
-    parentTemplate,
+    containerTemplate,
     componentTemplate,
 
     get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get domains() : Object {
+    get domain() : Object {
         return config.paypalDomains;
     },
 

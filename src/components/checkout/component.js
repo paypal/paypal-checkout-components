@@ -4,7 +4,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as $logger from 'beaver-logger/client';
 import * as xcomponent from 'xcomponent/src';
 
-import { parentTemplate } from './parentTemplate';
+import { containerTemplate } from './containerTemplate';
 import { componentTemplate } from './componentTemplate';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
@@ -45,17 +45,20 @@ export let Checkout = xcomponent.create({
         });
     },
 
-    get bridgeUrls() : Object {
+    get domain() : Object {
+        return config.paypalDomains;
+    },
+
+    get bridgeUrl() : Object {
         return config.postBridgeUrls;
     },
 
-    get bridgeDomains() : Object {
+    get bridgeDomain() : Object {
         return config.paypalDomains;
     },
 
     contexts: {
         iframe: false,
-        lightbox: false,
         popup: true
     },
 
@@ -63,15 +66,13 @@ export let Checkout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get domains() : Object {
-        return config.paypalDomains;
-    },
+    sandboxContainer: true,
 
     componentTemplate,
-    parentTemplate(ctx = {}) : string {
+    containerTemplate(ctx = {}) : string {
 
         ctx.content = content[config.locale.country][config.locale.lang];
-        return parentTemplate(ctx);
+        return containerTemplate(ctx);
     },
 
     props: {
@@ -145,6 +146,11 @@ export let Checkout = xcomponent.create({
             },
             childDef() : ?string {
                 return getQueryParam('token');
+            },
+            validate(value, props) {
+                if (!value && !props.url) {
+                    throw new Error(`Expected props.payment to be passed`);
+                }
             },
             alias: 'billingAgreement'
         },
@@ -398,7 +404,6 @@ export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } 
         return;
     }
 
-    Checkout.contexts.lightbox = true;
     Checkout.contexts.iframe = true;
 
     if (enableCheckoutIframeTimeout) {
@@ -406,7 +411,6 @@ export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } 
     }
 
     enableCheckoutIframeTimeout = setTimeout(() => {
-        Checkout.contexts.lightbox = false;
         Checkout.contexts.iframe = false;
     }, timeout);
 }

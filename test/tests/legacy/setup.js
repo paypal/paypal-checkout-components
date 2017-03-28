@@ -7,19 +7,19 @@ import { assert } from 'chai';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy checkout setup/startflow on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container and click on the button, then call startFlow', () => {
@@ -526,11 +526,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     setTimeout(() => {
                         window.paypal.checkout.closeFlow();
 
-                        if (flow === 'lightbox') {
+                        if (flow === 'iframe') {
                             if (window.paypal.checkout.win.closed) {
                                 return done();
                             } else {
-                                return done(new Error('Expected lightbox to be closed'));
+                                return done(new Error('Expected iframe to be closed'));
                             }
                         }
                     }, 100);
@@ -618,11 +618,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                     window.paypal.checkout.initXO();
                     window.paypal.checkout.closeFlow();
 
-                    if (flow === 'lightbox') {
+                    if (flow === 'iframe') {
                         if (window.paypal.checkout.win.closed) {
                             return done();
                         } else {
-                            return done(new Error('Expected lightbox to be closed'));
+                            return done(new Error('Expected iframe to be closed'));
                         }
                     }
                 }

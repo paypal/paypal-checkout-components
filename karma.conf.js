@@ -102,6 +102,8 @@ module.exports = function(config) {
             plugins: [
                 new webpack.DefinePlugin({
                     __TEST__: true,
+                    __IE_POPUP_SUPPORT__: true,
+                    __POPUP_SUPPORT__: true,
                     __FILE_NAME__: '"paypal.checkout.v4.js"',
                     __FILE_VERSION__: '"4"',
                     __MAJOR_VERSION__: '"4"',
