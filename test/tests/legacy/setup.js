@@ -5,7 +5,7 @@ import { assert } from 'chai';
 
 
 
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -72,6 +72,37 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', () => {
 
             window.navigator.mockUserAgent = IE8_USER_AGENT;
+
+            let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
+            delete window.paypal.config.checkoutUrl;
+
+            window.paypal.config.checkoutUrl = '#testCheckoutUrl';
+
+            let token = generateECToken();
+
+            return window.paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click(event) {
+                    window.paypal.checkout.startFlow(token);
+                }
+
+            }).then(() => {
+
+                getElement('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+                    Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
+                });
+            });
+        });
+
+        it('should render a button into a container and click on the button, then call startFlow in an ineligible browser in Intranet Mode', () => {
+
+            window.navigator.mockUserAgent = IE11_USER_AGENT;
+            window.document.documentMode = 11;
 
             let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
             delete window.paypal.config.checkoutUrl;
