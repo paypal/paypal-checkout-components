@@ -70,9 +70,12 @@ export let Checkout = xcomponent.create({
 
     componentTemplate,
     containerTemplate(ctx = {}) : string {
-
         ctx.content = content[config.locale.country][config.locale.lang];
         return containerTemplate(ctx);
+    },
+
+    get defaultEnv() : string {
+        return config.env;
     },
 
     props: {

@@ -41,6 +41,10 @@ export let Button = xcomponent.create({
         return config.paypalDomains;
     },
 
+    get defaultEnv() : string {
+        return config.env;
+    },
+
     props: {
 
         env: {
