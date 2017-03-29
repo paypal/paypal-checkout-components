@@ -93,7 +93,7 @@ WEBPACK_DEBUG=1 gulp webpack
 WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
 ```
 
-#Tasks
+## Tasks
 
 | Task  | Description |
 | ------------- | ------------- |
