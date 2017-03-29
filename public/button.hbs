@@ -442,14 +442,14 @@
     </head>
 
     <body>
-        <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
-
         <div id="paypal-button-container">
             <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
                 <div class="paypal-button-content">{{{buttonConfig.logo}}}</div>
                 <div class="paypal-button-tag-content">{{buttonConfig.label_tag}}</div>
             </button>
         </div>
+
+        <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
 
         <script>
             window.angular = {
