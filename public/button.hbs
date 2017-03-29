@@ -466,12 +466,24 @@
                     return Array.prototype.slice.call(document.querySelectorAll(selector));
                 }
 
+                function isVisible(el) {
+                    return el.style.display !== 'none';
+                }
+
                 function showElement(el, displayType) {
                     el.style.display = displayType || 'block';
                 }
 
                 function hideElement(el) {
                     el.style.display = 'none';
+                }
+
+                function makeElementVisible(el) {
+                    el.style.visibility = '';
+                }
+
+                function makeElementInvisible(el) {
+                    el.style.visibility = 'hidden';
                 }
 
                 function isOverflowing(el) {
@@ -493,11 +505,20 @@
                 function hideIfOverflow(selector, displayType) {
                     getElements(selector).forEach(function(el) {
 
-                        showElement(el, displayType);
-
-                        if (isOverflowing(el)) {
-                            hideElement(el);
+                        if (isVisible(el) && isOverflowing(el)) {
+                            return hideElement(el);
                         }
+
+                        makeElementInvisible(el);
+                        setTimeout(function() {
+                            showElement(el, displayType);
+
+                            if (isOverflowing(el)) {
+                                hideElement(el);
+                            } else {
+                                makeElementVisible(el);
+                            }
+                        }, 1);
                     });
                 }
 
