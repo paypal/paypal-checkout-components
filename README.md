@@ -85,12 +85,12 @@ gulp build
 
 ### Debug Webpack
 ```sh
-WEBPACK_DEBUG=1 gulp webpack
+gulp build --debug
 ```
 
 ### Debug Karma
 ```sh
-WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
+gulp test --debug
 ```
 
 ## Tasks
