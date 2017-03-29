@@ -54,8 +54,8 @@ module.exports = function(config) {
         ],
 
         webpackMiddleware: {
-            noInfo: process.env.WEBPACK_DEBUG ? false : true,
-            stats: process.env.WEBPACK_DEBUG ? true : false
+            noInfo: argv['debug'] ? false : true,
+            stats: argv['debug'] ? true : false
         },
 
         webpack: {
@@ -164,7 +164,7 @@ module.exports = function(config) {
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: process.env.KARMA_DEBUG ? config.LOG_DEBUG : config.LOG_WARN,
+        logLevel: argv['debug'] ? config.LOG_DEBUG : config.LOG_WARN,
 
 
         // enable / disable watching file and executing tests whenever any file changes

@@ -2,7 +2,6 @@ let webpack = require('webpack');
 let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
 let argv = require('yargs').argv;
-
 const FILE_NAME = 'checkout';
 
 function getNextVersion() {
