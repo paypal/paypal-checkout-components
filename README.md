@@ -97,7 +97,7 @@ WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
 
 | Task  | Description |
 | ------------- | ------------- |
-| gulp build  | Build checkout.js only.  Quickest build for rapid development and testing. |
-| gulp build:all | Build everything.  Used for releasing dist  |
-| gulp build:minor | Build checkout.js and next version. |
-| gulp build:min | Build all minified files.  Super slow |
+| gulp build:quick  | Build checkout.js only with eval sourcemap.  Quickest build for rapid development and testing.  Should not be used in production |
+| gulp build | Build everything.  Used for releasing dist  |
+| gulp build:minor | Build checkout.js and next version with maps. |
+| gulp build:min | Build all minified files and maps |

@@ -34,6 +34,7 @@ const FILE_NAME = 'checkout';
 
 function defaultConfig () {
     return {
+        devtool: 'source-map',
         stats: {
             hash: argv['debug'] ? true : false,
             timings: argv['debug'] ? true : false,
@@ -77,9 +78,7 @@ function defaultConfig () {
             extensions: [ '.js', '.jsx' ]
         },
         plugins: [
-            new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map'
-            }),
+
             new webpack.DefinePlugin({
                 __TEST__: false,
                 __IE_POPUP_SUPPORT__: true,
@@ -94,7 +93,26 @@ function defaultConfig () {
     };
 }
 
-
+function quick() {
+    let config = defaultConfig();
+    config.devtool = 'cheap-module-eval-source-map';
+    config.output.filename = `${FILE_NAME}.js`;
+    config.output.libraryTarget = 'window';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: true,
+            minimize: false,
+            compress: { warnings: false },
+            mangle: false,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/load.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+major.displayName = 'webpack-major';
 
 function major() {
     let config = defaultConfig();
@@ -186,5 +204,6 @@ module.exports = {
     all: all,
     min: min,
     minor: def,
-    major: major
+    major: major,
+    quick: quick
 }

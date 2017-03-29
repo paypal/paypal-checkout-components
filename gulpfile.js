@@ -31,13 +31,13 @@ let test = gulp.series(testTasks.lint, testTasks.flow, testTasks.karma);
 test.displayName = 'test';
 gulp.task(test);
 
-let build = gulp.series(buildTasks.major);
+let build = gulp.series(buildTasks.all);
 build.displayName = 'build';
 gulp.task(build);
 
-let buildAll = gulp.series(buildTasks.all);
-buildAll.displayName = 'build:all';
-gulp.task(buildAll);
+let buildQuick = gulp.series(buildTasks.quick);
+buildQuick.displayName = 'build:quick';
+gulp.task(buildQuick);
 
 let buildMinor = gulp.series(buildTasks.minor);
 buildMinor.displayName = 'build:minor';
