@@ -97,7 +97,7 @@ gulp test --debug
 
 | Task  | Description |
 | ------------- | ------------- |
-| gulp build:quick  | Build checkout.js only with eval sourcemap.  Quickest build for rapid development and testing.  Should not be used in production |
+| gulp build:watch  | Build checkout.js only with eval sourcemap.  Watch files for changes.  Quickest build for rapid development and testing.  Should not be used in production |
 | gulp build | Build everything.  Used for releasing dist  |
 | gulp build:minor | Build checkout.js and next version with maps. |
 | gulp build:min | Build all minified files and maps |

@@ -93,26 +93,18 @@ function defaultConfig () {
     };
 }
 
-function quick() {
+function watch() {
     let config = defaultConfig();
+    config.watch = true;
     config.devtool = 'cheap-module-eval-source-map';
     config.output.filename = `${FILE_NAME}.js`;
     config.output.libraryTarget = 'window';
-    config.plugins.push(
-        new UglifyJSPlugin({
-            test: /\.js$/,
-            beautify: true,
-            minimize: false,
-            compress: { warnings: false },
-            mangle: false,
-            sourceMap: true
-        })
-    );
+    
     return gulp.src('src/load.js')
             .pipe(webpackStream(config, webpack))
             .pipe(gulp.dest('dist'));
 }
-major.displayName = 'webpack-major';
+watch.displayName = 'webpack-watch';
 
 function major() {
     let config = defaultConfig();
@@ -194,16 +186,75 @@ function minorMin() {
 }
 minorMin.displayName = 'webpack-minor-min';
 
+function lib() {
+    let config = defaultConfig();
+    config.output.filename = `${FILE_NAME}.lib.js`;
+    config.output.libraryTarget = 'umd';
+    config.output.library = 'paypal';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: true,
+            minimize: false,
+            compress: { warnings: false },
+            mangle: false,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/index.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+lib.displayName = 'webpack-lib';
+
+function child() {
+    let config = defaultConfig();
+    config.output.filename = `checkout.child.loader.js`;
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: true,
+            minimize: false,
+            compress: { warnings: false },
+            mangle: false,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/loader/index.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+child.displayName = 'webpack-child';
+
+function childMin() {
+    let config = defaultConfig();
+    config.output.filename = `checkout.child.loader.js`;
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: false,
+            minimize: true,
+            compress: { warnings: false },
+            mangle: true,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/loader/index.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+childMin.displayName = 'webpack-child-min';
 
 
-let min = gulp.parallel(majorMin, minorMin);
-let def = gulp.parallel(major, minor);
-let all = gulp.series(def, min);
+
+let min = gulp.parallel(majorMin, minorMin, childMin);
+let def = gulp.parallel(major, minor, child);
+let all = gulp.series(def, min, lib);
 
 module.exports = {
     all: all,
     min: min,
     minor: def,
     major: major,
-    quick: quick
+    watch: watch
 }

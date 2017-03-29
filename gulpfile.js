@@ -35,9 +35,9 @@ let build = gulp.series(buildTasks.all);
 build.displayName = 'build';
 gulp.task(build);
 
-let buildQuick = gulp.series(buildTasks.quick);
-buildQuick.displayName = 'build:quick';
-gulp.task(buildQuick);
+let buildWatch = gulp.series(buildTasks.watch);
+buildWatch.displayName = 'build:watch';
+gulp.task(buildWatch);
 
 let buildMinor = gulp.series(buildTasks.minor);
 buildMinor.displayName = 'build:minor';
