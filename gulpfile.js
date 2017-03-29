@@ -31,6 +31,18 @@ let test = gulp.series(testTasks.lint, testTasks.flow, testTasks.karma);
 test.displayName = 'test';
 gulp.task(test);
 
-let build = gulp.parallel(buildTasks.major, buildTasks.minor);
+let build = gulp.series(buildTasks.major);
 build.displayName = 'build';
 gulp.task(build);
+
+let buildAll = gulp.series(buildTasks.all);
+buildAll.displayName = 'build:all';
+gulp.task(buildAll);
+
+let buildMinor = gulp.series(buildTasks.minor);
+buildMinor.displayName = 'build:minor';
+gulp.task(buildMinor);
+
+let buildMin = gulp.series(buildTasks.min);
+buildMin.displayName = 'build:min';
+gulp.task(buildMin);

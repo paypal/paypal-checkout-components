@@ -89,42 +89,102 @@ function defaultConfig () {
                 __MAJOR_VERSION__: JSON.stringify(getNextMajorVersion()),
                 __MINOR_VERSION__: JSON.stringify(getNextMinorVersion())
             }),
-            new webpack.NamedModulesPlugin(),
-            new UglifyJSPlugin({
-                test: /\.js$/,
-                beautify: true,
-                minimize: false,
-                compress: { warnings: false },
-                mangle: false,
-                sourceMap: true
-            })
+            new webpack.NamedModulesPlugin()
         ]
     };
 }
+
 
 
 function major() {
     let config = defaultConfig();
     config.output.filename = `${FILE_NAME}.js`;
     config.output.libraryTarget = 'window';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: true,
+            minimize: false,
+            compress: { warnings: false },
+            mangle: false,
+            sourceMap: true
+        })
+    );
     return gulp.src('src/load.js')
             .pipe(webpackStream(config, webpack))
             .pipe(gulp.dest('dist'));
 }
 major.displayName = 'webpack-major';
 
+function majorMin() {
+    let config = defaultConfig();
+    config.output.filename = `${FILE_NAME}.min.js`;
+    config.output.libraryTarget = 'window';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: false,
+            minimize: true,
+            compress: { warnings: false },
+            mangle: true,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/load.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+majorMin.displayName = 'webpack-major-min';
+
 function minor() {
     let config = defaultConfig();
     config.output.filename = `${FILE_NAME}.${nextMinorVersion}.js`;
     config.output.libraryTarget = 'window';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: true,
+            minimize: false,
+            compress: { warnings: false },
+            mangle: false,
+            sourceMap: true
+        })
+    );
     return gulp.src('src/load.js')
             .pipe(webpackStream(config, webpack))
             .pipe(gulp.dest('dist'));
 }
 minor.displayName = 'webpack-minor';
 
+function minorMin() {
+    let config = defaultConfig();
+    config.output.filename = `${FILE_NAME}..${nextMinorVersion}.min.js`;
+    config.output.libraryTarget = 'window';
+    config.plugins.push(
+        new UglifyJSPlugin({
+            test: /\.js$/,
+            beautify: false,
+            minimize: true,
+            compress: { warnings: false },
+            mangle: true,
+            sourceMap: true
+        })
+    );
+    return gulp.src('src/load.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+minorMin.displayName = 'webpack-minor-min';
+
+
+
+let min = gulp.parallel(majorMin, minorMin);
+let def = gulp.parallel(major, minor);
+let all = gulp.series(def, min);
 
 module.exports = {
-    major: major,
-    minor: minor
+    all: all,
+    min: min,
+    minor: def,
+    major: major
 }

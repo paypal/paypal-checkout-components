@@ -92,3 +92,11 @@ WEBPACK_DEBUG=1 gulp webpack
 ```sh
 WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
 ```
+
+#Tasks
+| Task  | Description |
+| ------------- | ------------- |
+| gulp build  | Build checkout.js only.  Quickest build for rapid development and testing. |
+| gulp build:all | Build everything.  Used for releasing dist  |
+| gulp build:minor | Build checkout.js and next version. |
+| gulp build:min | Build all minified files.  Super slow |
