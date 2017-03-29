@@ -94,6 +94,7 @@ WEBPACK_DEBUG=1 KARMA_DEBUG=1 gulp test
 ```
 
 #Tasks
+
 | Task  | Description |
 | ------------- | ------------- |
 | gulp build  | Build checkout.js only.  Quickest build for rapid development and testing. |
