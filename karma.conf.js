@@ -7,7 +7,7 @@ module.exports = function(config) {
     var browser = [ 'PhantomJS' ];
 
     if (process.env.TRAVIS) {
-        browser = [ 'Chrome_travis_ci' ];
+        browser = [ 'Firefox' ];
     } else if (argv.browser) {
         browser = argv.browser.split(',');
     }
