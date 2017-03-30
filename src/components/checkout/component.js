@@ -416,7 +416,7 @@ export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } 
 }
 
 if (Checkout.isChild()) {
-    
+
     if (window.xprops.logLevel) {
         setLogLevel(window.xprops.logLevel);
     }

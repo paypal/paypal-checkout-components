@@ -243,7 +243,7 @@ a.active .bullet {
 }
 
 .app .main .column-middle .demo .code iframe {
-    display: inline-block !important;
+    display: inline-block;
 }
 
 .app .main .column-right {

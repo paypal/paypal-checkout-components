@@ -9,8 +9,7 @@ import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
-import { containerTemplate } from './containerTemplate';
-import { componentTemplate } from './componentTemplate';
+import { containerTemplate, componentTemplate } from './templates';
 
 export let Button = xcomponent.create({
 
@@ -33,12 +32,70 @@ export let Button = xcomponent.create({
     containerTemplate,
     componentTemplate,
 
+    sacrificialComponentTemplate: true,
+
     get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
     get domain() : Object {
         return config.paypalDomains;
+    },
+
+    getInitialDimensions(props : Object, container : HTMLElement) {
+
+        let style = props.style || {};
+        let size = style.size || 'small';
+
+        let responsiveHeight = '42px';
+
+        if (size === 'responsive') {
+            let width = container.offsetWidth;
+
+            if (width < 100) {
+                responsiveHeight = '22px';
+            } else if (width < 180) {
+                responsiveHeight = '42px';
+            } else if (width < 250) {
+                responsiveHeight = '48px';
+            } else {
+                responsiveHeight = '60px';
+            }
+        }
+
+        return {
+
+            tiny: {
+                width: '80px',
+                height: '22px'
+            },
+
+            small: {
+                width: '148px',
+                height: '42px'
+            },
+
+            medium: {
+                width: '230px',
+                height: '48px'
+            },
+
+            large: {
+                width: '380px',
+                height: '60px'
+            },
+
+            responsive: {
+                width: '100%',
+                height: responsiveHeight
+            }
+
+        }[size];
+    },
+
+    autoResize: {
+        width: false,
+        height: true
     },
 
     props: {
@@ -206,44 +263,6 @@ export let Button = xcomponent.create({
             required: false
         },
 
-        dimensions: {
-            type: 'object',
-            required: false,
-
-            def(props) : { width : string | number, height : string | number } {
-                let size = props.style && props.style.size || 'small';
-
-                return {
-
-                    tiny: {
-                        width: '80px',
-                        height: '22px'
-                    },
-
-                    small: {
-                        width: '148px',
-                        height: '42px'
-                    },
-
-                    medium: {
-                        width: '230px',
-                        height: '48px'
-                    },
-
-                    large: {
-                        width: '380px',
-                        height: '60px'
-                    },
-
-                    responsive: {
-                        width: '100%',
-                        height: '48px'
-                    }
-
-                }[size];
-            }
-        },
-
         locale: {
             type: 'string',
             required: false,
@@ -327,16 +346,6 @@ export let Button = xcomponent.create({
                 return { action: 'checkout' };
             }
         }
-    },
-
-    autoResize: {
-        height: true,
-        width: false
-    },
-
-    dimensions: {
-        width: '148px',
-        height: '48px'
     }
 });
 
