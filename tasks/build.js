@@ -32,7 +32,7 @@ let nextMinorVersion = getNextMinorVersion();
 
 const FILE_NAME = 'checkout';
 
-function defaultConfig () {
+function defaultConfig (filename) {
     return {
         devtool: 'source-map',
         stats: {
@@ -67,7 +67,7 @@ function defaultConfig () {
             ]
         },
         output: {
-            // filename: filename,
+            filename: filename,
             //libraryTarget: target,
             umdNamedDefine: true,
             // library: modulename,
@@ -83,7 +83,7 @@ function defaultConfig () {
                 __TEST__: false,
                 __IE_POPUP_SUPPORT__: true,
                 __POPUP_SUPPORT__: true,
-                __FILE_NAME__: '[file]',
+                __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(nextMajorVersion),
                 __MAJOR_VERSION__: JSON.stringify(getNextMajorVersion()),
                 __MINOR_VERSION__: JSON.stringify(getNextMinorVersion())
@@ -94,10 +94,9 @@ function defaultConfig () {
 }
 
 function watch() {
-    let config = defaultConfig();
+    let config = defaultConfig(`${FILE_NAME}.js`);
     config.watch = true;
     config.devtool = 'cheap-module-eval-source-map';
-    config.output.filename = `${FILE_NAME}.js`;
     config.output.libraryTarget = 'window';
     
     return gulp.src('src/load.js')
@@ -107,8 +106,7 @@ function watch() {
 watch.displayName = 'webpack-watch';
 
 function major() {
-    let config = defaultConfig();
-    config.output.filename = `${FILE_NAME}.js`;
+    let config = defaultConfig(`${FILE_NAME}.js`);
     config.output.libraryTarget = 'window';
     config.plugins.push(
         new UglifyJSPlugin({
@@ -127,8 +125,7 @@ function major() {
 major.displayName = 'webpack-major';
 
 function majorMin() {
-    let config = defaultConfig();
-    config.output.filename = `${FILE_NAME}.min.js`;
+    let config = defaultConfig(`${FILE_NAME}.min.js`);
     config.output.libraryTarget = 'window';
     config.plugins.push(
         new UglifyJSPlugin({
@@ -147,8 +144,7 @@ function majorMin() {
 majorMin.displayName = 'webpack-major-min';
 
 function minor() {
-    let config = defaultConfig();
-    config.output.filename = `${FILE_NAME}.${nextMinorVersion}.js`;
+    let config = defaultConfig(`${FILE_NAME}.${nextMinorVersion}.js`);
     config.output.libraryTarget = 'window';
     config.plugins.push(
         new UglifyJSPlugin({
@@ -167,8 +163,7 @@ function minor() {
 minor.displayName = 'webpack-minor';
 
 function minorMin() {
-    let config = defaultConfig();
-    config.output.filename = `${FILE_NAME}..${nextMinorVersion}.min.js`;
+    let config = defaultConfig(`${FILE_NAME}..${nextMinorVersion}.min.js`);
     config.output.libraryTarget = 'window';
     config.plugins.push(
         new UglifyJSPlugin({
@@ -187,8 +182,7 @@ function minorMin() {
 minorMin.displayName = 'webpack-minor-min';
 
 function lib() {
-    let config = defaultConfig();
-    config.output.filename = `${FILE_NAME}.lib.js`;
+    let config = defaultConfig(`${FILE_NAME}.lib.js`);
     config.output.libraryTarget = 'umd';
     config.output.library = 'paypal';
     config.plugins.push(
@@ -208,8 +202,7 @@ function lib() {
 lib.displayName = 'webpack-lib';
 
 function child() {
-    let config = defaultConfig();
-    config.output.filename = `checkout.child.loader.js`;
+    let config = defaultConfig(`checkout.child.loader.js`);
     config.plugins.push(
         new UglifyJSPlugin({
             test: /\.js$/,
@@ -227,8 +220,7 @@ function child() {
 child.displayName = 'webpack-child';
 
 function childMin() {
-    let config = defaultConfig();
-    config.output.filename = `checkout.child.loader.js`;
+    let config = defaultConfig(`checkout.child.loader.js`);
     config.plugins.push(
         new UglifyJSPlugin({
             test: /\.js$/,

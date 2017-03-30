@@ -25,19 +25,10 @@ gulp.task(gulp.series(flow));
 
 
 function karma(done) {
-    let server = new karmaServer.Server({
+    new karmaServer.Server({
         configFile: process.cwd() + '/karma.conf.js',
-        singleRun: !Boolean(argv['keep-browser-open']),
-        client: {
-            captureConsole: Boolean(argv['capture-console']),
-            mocha: {
-                timeout : process.env.TRAVIS ? 60 * 1000 : 10 * 1000,
-                bail: true
-            }
-        }
-    }, function () {
-        done();
-    }).start();
+        singleRun: true
+    }, done).start();
 }
 karma.displayName = 'karma';
 gulp.task(gulp.series(karma));

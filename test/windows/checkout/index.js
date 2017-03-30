@@ -33,6 +33,7 @@ if (action === 'checkout') {
                 returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href
             });
+    
         });
     });
 

@@ -8,12 +8,13 @@ paypal.setup({
     env: 'test'
 });
 
-afterEach(() => {
+afterEach((done) => {
     delete window.navigator.mockUserAgent;
     delete window.document.documentMode;
-    return window.paypal.destroyAll().then(() => {
-        // return postRobot.bridge.destroyBridges();
-    });
+    return window.paypal.destroyAll()
+        .then(() => {
+            return done();
+        });
 });
 
 beforeEach(() => {

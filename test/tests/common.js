@@ -32,12 +32,13 @@ export function onHashChange() : SyncPromise<string> {
         let currentHash = window.location.hash;
 
         function listener() {
+            console.log('Hash Event listener', window.location.hash, currentHash);
+            
             if (window.location.hash !== currentHash) {
                 window.removeEventListener('hashchange', listener);
                 resolve(window.location.hash);
             }
         }
-
         window.addEventListener('hashchange', listener);
     });
 }
@@ -128,6 +129,7 @@ export function destroyElement(element : string | ?HTMLElement) {
     }
 
     if (element && element.parentNode) {
+        console.log('element is', element);
         element.parentNode.removeChild(element);
     }
 }

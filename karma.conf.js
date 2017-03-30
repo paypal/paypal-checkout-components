@@ -4,27 +4,32 @@ let webpack = require('webpack');
 
 module.exports = function(config) {
 
-    var browser = [ 'PhantomJS' ];
-
-    if (process.env.TRAVIS) {
-        browser = [ 'Chrome_travis_ci' ];
-    } else if (argv.browser) {
-        browser = argv.browser.split(',');
-    }
-
-    config.set({
-
+    let karmaConfig = {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: __dirname,
+        port: 9876,
+        colors: true,
+        logLevel: argv['debug'] ? config.LOG_DEBUG : config.LOG_WARN,
+        client: {
+            captureConsole: argv.debug ? true : false,
+            mocha: {
+                timeout : 10000 // 6 seconds - upped from 2 seconds
+            }
+        },
+        singleRun: true,
+        runInParent: true,
+        useIframe: false,
 
-        // frameworks to use
+        browserNoActivityTimeout: 60 * 60 * 1000,
+        browserDisconnectTimeout: 30 * 1000,
+        browserDisconnectTolerance: 2,
+        captureTimeout: 120000,
+        reportSlowerThan: 8000,
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: [
             'mocha',
             'sinon-chai'
         ],
-
-        // list of files / patterns to load in the browser
         files: [
             'test/lib/react_v15.1.0.js',
             'test/lib/react-dom_v15.1.0.js',
@@ -32,10 +37,8 @@ module.exports = function(config) {
 
             'node_modules/babel-polyfill/dist/polyfill.js',
 
-            { pattern: 'src/load.js', included: true, served: true },
-
-            { pattern: 'test/test.js', included: true, served: true },
-            { pattern: 'test/**/*', included: false, served: true }
+            { pattern: 'dist/checkout.js', included: true, served: true },
+            { pattern: 'test/test.js', included: true, served: true }
         ],
 
         plugins: [
@@ -50,16 +53,61 @@ module.exports = function(config) {
             require('karma-sinon-chai'),
             require('karma-coverage'),
             require('karma-spec-reporter'),
-            require('karma-sourcemap-loader')
+            // require('karma-sourcemap-loader')
         ],
-
-        webpackMiddleware: {
-            noInfo: argv['debug'] ? false : true,
-            stats: argv['debug'] ? true : false
+        reporters: ['coverage'],
+        browsers: ['PhantomJS'],
+        preprocessors: {
+            'test/test.js': ['webpack'],
+            'test/windows/**/*.js': ['webpack']
         },
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+        coverageReporter: {
 
-        webpack: {
-            devtool: 'inline-source-map',
+            instrumenterOptions: {
+                istanbul: { noCompact: true }
+            },
+
+            reporters: [
+                {
+                    type: 'text'
+                },
+                {
+                    type : 'html',
+                    dir : 'coverage/',
+                    subdir: '.'
+                }
+            ]
+        }
+    };
+    
+    
+
+    if (process.env.TRAVIS) {
+        karmaConfig.browser = [ 'Chrome_travis_ci' ];
+    } else if (argv.browser) {
+        karmaConfig.browser = argv.browser.split(',');
+    }
+
+    if (argv.quick) {
+        karmaConfig.reporters.push('progress');
+    } else {
+        karmaConfig.reporters.push('spec');
+    }
+
+    if (!argv.nowebpack) {
+        karmaConfig.webpackMiddleware = {
+            noInfo: argv.debug ? false : true,
+            stats: argv.debug ? true : false
+        };
+
+        karmaConfig.webpack = {
+            // devtool: 'inline-source-map',
 
             resolve: {
                 modules: [
@@ -110,93 +158,8 @@ module.exports = function(config) {
                     __MINOR_VERSION__: '"4.0"'
                 })
             ]
-        },
+        };
+    }
 
-
-        // list of files to exclude
-        exclude: [
-        ],
-
-
-        // preprocess matching files before serving them to the browser
-        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-            'src/load.js': ['webpack', 'sourcemap'],
-            'test/test.js': ['webpack', 'sourcemap'],
-            'test/windows/**/*.js': ['webpack', 'sourcemap'],
-            'src/**/*.js': ['sourcemap']
-        },
-
-        // test results reporter to use
-        // possible values: 'dots', 'progress'
-        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: [
-            'spec',
-            'coverage'
-        ],
-
-        coverageReporter: {
-
-            instrumenterOptions: {
-                istanbul: { noCompact: true }
-            },
-
-            reporters: [
-                {
-                    type: 'text'
-                },
-                {
-                    type : 'html',
-                    dir : 'coverage/',
-                    subdir: '.'
-                }
-            ]
-        },
-
-
-        // web server port
-        port: 9876,
-
-
-        // enable / disable colors in the output (reporters and logs)
-        colors: true,
-
-
-        // level of logging
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: argv['debug'] ? config.LOG_DEBUG : config.LOG_WARN,
-
-
-        // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
-
-        browserNoActivityTimeout: 60 * 60 * 1000,
-        browserDisconnectTimeout: 30 * 1000,
-        browserDisconnectTolerance: 2,
-
-        captureTimeout: 120000,
-
-        customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        },
-
-        // start these browsers
-        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: browser,
-
-
-        // Continuous Integration mode
-        // if true, Karma captures browsers, runs the tests and exits
-        singleRun: true,
-
-        runInParent: true,
-        useIframe: false,
-
-        // Concurrency level
-        // how many browser should be started simultaneous
-        concurrency: Infinity
-    });
+    config.set(karmaConfig);
 };
