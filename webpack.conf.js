@@ -39,7 +39,10 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 {
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
                 },
                 {
                     test: /\.(html?|css|json)$/,
