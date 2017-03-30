@@ -20,10 +20,8 @@ module.exports = function(config) {
         runInParent: true,
         useIframe: false,
 
-        browserNoActivityTimeout: 60 * 60 * 1000,
-        browserDisconnectTimeout: 30 * 1000,
-        browserDisconnectTolerance: 2,
-        captureTimeout: 120000,
+        
+        captureTimeout: 30000,
         reportSlowerThan: 8000,
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: [
@@ -37,8 +35,9 @@ module.exports = function(config) {
 
             'node_modules/babel-polyfill/dist/polyfill.js',
 
-            { pattern: 'dist/checkout.js', included: true, served: true },
-            { pattern: 'test/test.js', included: true, served: true }
+            { pattern: 'dist/paypal.checkout.v4.js', included: true, served: true },
+            { pattern: 'test/test.js', included: true, served: true },
+            { pattern: 'test/windows/**/*', included: false, served: true }
         ],
 
         plugins: [
@@ -58,9 +57,9 @@ module.exports = function(config) {
         reporters: ['coverage'],
         browsers: ['PhantomJS'],
         preprocessors: {
-            'test/test.js': ['webpack'],
-            'test/windows/**/*.js': ['webpack']
+            'test/test.js': ['webpack']
         },
+        
         customLaunchers: {
             Chrome_travis_ci: {
                 base: 'Chrome',
@@ -107,7 +106,7 @@ module.exports = function(config) {
         };
 
         karmaConfig.webpack = {
-            // devtool: 'inline-source-map',
+            devtool: 'inline-source-map',
 
             resolve: {
                 modules: [

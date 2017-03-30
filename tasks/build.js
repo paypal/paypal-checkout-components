@@ -80,7 +80,7 @@ function defaultConfig (filename) {
         plugins: [
 
             new webpack.DefinePlugin({
-                __TEST__: false,
+                __TEST__: filename === 'paypal.checkout.v4.js' ? true : false,
                 __IE_POPUP_SUPPORT__: true,
                 __POPUP_SUPPORT__: true,
                 __FILE_NAME__: JSON.stringify(filename),
@@ -104,6 +104,17 @@ function watch() {
             .pipe(gulp.dest('dist'));
 }
 watch.displayName = 'webpack-watch';
+
+function test() {
+    let config = defaultConfig('paypal.checkout.v4.js');
+    config.devtool = 'inline-source-map';
+    config.output.libraryTarget = 'window';
+    
+    return gulp.src('src/load.js')
+            .pipe(webpackStream(config, webpack))
+            .pipe(gulp.dest('dist'));
+}
+test.displayName = 'webpack-test';
 
 function major() {
     let config = defaultConfig(`${FILE_NAME}.js`);
@@ -241,12 +252,13 @@ childMin.displayName = 'webpack-child-min';
 
 let min = gulp.parallel(majorMin, minorMin, childMin);
 let def = gulp.parallel(major, minor, child);
-let all = gulp.series(def, min, lib);
+let all = gulp.series(def, min, lib, test);
 
 module.exports = {
     all: all,
     min: min,
     minor: def,
     major: major,
-    watch: watch
+    watch: watch,
+    test: test
 }
