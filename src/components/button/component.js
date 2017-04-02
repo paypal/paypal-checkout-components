@@ -42,7 +42,7 @@ export let Button = xcomponent.create({
         return config.paypalDomains;
     },
 
-    getInitialDimensions(props : Object, container : HTMLElement): { width : string, height : string } {
+    getInitialDimensions(props : Object, container : HTMLElement) : { width : string, height : string } {
 
         let style = props.style || {};
         let size = style.size || 'small';

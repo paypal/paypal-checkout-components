@@ -2,11 +2,11 @@
 
 export function componentScript() {
 
-    function getElements(selector) {
+    function getElements(selector) : Array<HTMLElement> {
         return Array.prototype.slice.call(document.querySelectorAll(selector));
     }
 
-    function isVisible(el : HTMLElement) {
+    function isVisible(el : HTMLElement) : boolean {
         return el.style.display !== 'none';
     }
 
@@ -51,7 +51,7 @@ export function componentScript() {
     }
 
     function hideIfOverflow(selector : string, displayType : string) {
-        getElements(selector).forEach(function(el) {
+        getElements(selector).forEach(el => {
 
             if (isVisible(el) && isOverflowing(el)) {
                 return hideElement(el);
@@ -74,9 +74,9 @@ export function componentScript() {
         hideIfOverflow('.paypal-button-tag-content', 'block');
         hideIfOverflow('.paypal-button-content .text', 'inline-block');
 
-        getElements('.paypal-button-content img').forEach(function(img) {
+        getElements('.paypal-button-content img').forEach(img => {
             if (isOverflowing(img)) {
-                getElements('.paypal-button-content .text').forEach(function(el) {
+                getElements('.paypal-button-content .text').forEach(el => {
                     hideElement(el);
                 });
             }
