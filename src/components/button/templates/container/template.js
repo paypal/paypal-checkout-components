@@ -1,6 +1,6 @@
 /* @flow */
 
-export function containerTemplate({ props, CLASS } : { props : Object, CLASS : Object }) {
+export function containerTemplate({ props, CLASS } : { props : Object, CLASS : Object }) : string {
 
     let style = props.style || {};
     let label = style.label || 'checkout';

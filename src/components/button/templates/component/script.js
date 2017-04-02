@@ -6,7 +6,7 @@ export function componentScript() {
         return Array.prototype.slice.call(document.querySelectorAll(selector));
     }
 
-    function isVisible(el) {
+    function isVisible(el : HTMLElement) {
         return el.style.display !== 'none';
     }
 
@@ -14,11 +14,11 @@ export function componentScript() {
         el.style.display = displayType || 'block';
     }
 
-    function hideElement(el) {
+    function hideElement(el : HTMLElement) {
         el.style.display = 'none';
     }
 
-    function makeElementVisible(el) {
+    function makeElementVisible(el : HTMLElement) {
         el.style.visibility = '';
     }
 
@@ -26,14 +26,22 @@ export function componentScript() {
         el.style.visibility = 'hidden';
     }
 
-    function isOverflowing(el) {
+    function isOverflowing(el : HTMLElement) : boolean {
 
         if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
             return true;
         }
 
+        let parent = el.parentNode;
+
+        if (!parent) {
+            return false;
+        }
+
         let e = el.getBoundingClientRect();
-        let p = el.parentNode.getBoundingClientRect();
+
+        // $FlowFixMe
+        let p = parent.getBoundingClientRect();
 
         if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
             return true;
@@ -42,7 +50,7 @@ export function componentScript() {
         return false;
     }
 
-    function hideIfOverflow(selector, displayType) {
+    function hideIfOverflow(selector : string, displayType : string) {
         getElements(selector).forEach(function(el) {
 
             if (isVisible(el) && isOverflowing(el)) {

@@ -2,6 +2,7 @@
 .*/node_modules/gulp-flowtype
 .*/node_modules/babel-plugin-flow-runtime
 .*/node_modules/flow-runtime
+.*/node_modules/cross-domain-safe-weakmap/test
 [include]
 [libs]
 flow-typed

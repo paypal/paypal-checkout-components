@@ -53,7 +53,7 @@ let buttonConfig = {
     }
 };
 
-export function componentTemplate({ props } : { props : Object }) {
+export function componentTemplate({ props } : { props : Object }) : string {
 
     let { country, lang } = config.locale;
     let content = componentContentJSON[country][lang];
