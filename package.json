@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "clean": "rm -rf dist",
+    "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install"
   },
   "files": [
     "dist/checkout.lib.js",
@@ -55,7 +57,8 @@
     "eslint-plugin-flowtype": "^2.29.1",
     "flow-bin": "^0.41.0",
     "flow-runtime": "^0.5.0",
-    "gulp": "^3.9.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^6.1.2",
     "gulp-eslint": "^2.0.0",
     "gulp-flowtype": "^1.0.0",
     "gulp-webserver": "^0.9.1",
@@ -67,6 +70,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^1.0.1",
+    "karma-nightmare": "^0.4.5",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
     "karma-sinon-chai": "^1.2.0",
@@ -76,7 +80,6 @@
     "karma-webpack": "^2.0.3",
     "lolex": "^1.5.0",
     "mocha": "^2.5.3",
-    "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
     "regenerator-runtime": "^0.10.1",
     "sinon": "^1.17.4",

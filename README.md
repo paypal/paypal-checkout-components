@@ -82,3 +82,22 @@ Build checkout.js:
 ```bash
 gulp build
 ```
+
+### Debug Webpack
+```sh
+gulp build --debug
+```
+
+### Debug Karma
+```sh
+gulp test --debug
+```
+
+## Tasks
+
+| Task  | Description |
+| ------------- | ------------- |
+| gulp build:watch  | Build checkout.js only with eval sourcemap.  Watch files for changes.  Quickest build for rapid development and testing.  Should not be used in production |
+| gulp build | Build everything.  Used for releasing dist  |
+| gulp build:minor | Build checkout.js and next version with maps. |
+| gulp build:min | Build all minified files and maps |

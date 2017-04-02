@@ -2,7 +2,6 @@ let webpack = require('webpack');
 let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
 let argv = require('yargs').argv;
-
 const FILE_NAME = 'checkout';
 
 function getNextVersion() {
@@ -54,10 +53,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 {
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true
-                    }
+                    loader: 'babel-loader'
                 },
                 {
                     test: /\.(html?|css|json)$/,
