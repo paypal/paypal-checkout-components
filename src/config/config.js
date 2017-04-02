@@ -26,7 +26,7 @@ export let config = {
 
     stage: 'msmaster',
 
-    logLevel: 'info',
+    logLevel: __DEFAULT_LOG_LEVEL__,
 
     buttonStyles: {
         size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],

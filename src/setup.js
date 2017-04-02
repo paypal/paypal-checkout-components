@@ -126,6 +126,8 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
 
     if (logLevel) {
         setLogLevel(logLevel);
+    } else {
+        setLogLevel(config.logLevel);
     }
 
     $logger.info(`setup_${config.env}`);

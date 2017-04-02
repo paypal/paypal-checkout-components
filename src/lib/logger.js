@@ -28,7 +28,8 @@ export function initLogger() {
         uri: config.loggerUrl,
         heartbeat: false,
         logPerformance: false,
-        prefix: `ppxo`
+        prefix: `ppxo`,
+        logLevel: __DEFAULT_LOG_LEVEL__
     });
 }
 

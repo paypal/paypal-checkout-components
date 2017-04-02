@@ -101,13 +101,14 @@ module.exports = function(config) {
             bail: false,
             plugins: [
                 new webpack.DefinePlugin({
-                    __TEST__: true,
-                    __IE_POPUP_SUPPORT__: true,
-                    __POPUP_SUPPORT__: true,
-                    __FILE_NAME__: '"paypal.checkout.v4.js"',
-                    __FILE_VERSION__: '"4"',
-                    __MAJOR_VERSION__: '"4"',
-                    __MINOR_VERSION__: '"4.0"'
+                    __TEST__: JSON.stringify(true),
+                    __IE_POPUP_SUPPORT__: JSON.stringify(true),
+                    __POPUP_SUPPORT__: JSON.stringify(true),
+                    __FILE_NAME__: JSON.stringify('paypal.checkout.v4.js'),
+                    __FILE_VERSION__: JSON.stringify('4'),
+                    __MAJOR_VERSION__: JSON.stringify('4'),
+                    __MINOR_VERSION__: JSON.stringify('4.0'),
+                    __DEFAULT_LOG_LEVEL__: JSON.stringify(argv.loglevel || argv['log-level'] || 'warn')
                 })
             ]
         },

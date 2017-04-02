@@ -66,11 +66,12 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 filename: '[file].map'
             }),
             new webpack.DefinePlugin({
-                __TEST__: false,
-                __IE_POPUP_SUPPORT__: true,
-                __POPUP_SUPPORT__: true,
+                __TEST__: JSON.stringify(false),
+                __IE_POPUP_SUPPORT__: JSON.stringify(true),
+                __POPUP_SUPPORT__: JSON.stringify(true),
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
+                __DEFAULT_LOG_LEVEL__: JSON.stringify('info'),
                 ...getVersionVars()
             }),
             new webpack.NamedModulesPlugin(),
