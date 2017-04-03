@@ -173,7 +173,7 @@ function initPayPalCheckout(props = {}) : Object {
 
     $logger.info(`init_checkout`);
 
-    if (paypalCheckoutInited) {
+    if (paypalCheckoutInited && config.env !== ENV.TEST) {
         $logger.warn(`multiple_init_paypal_checkout`);
     }
 
