@@ -591,7 +591,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 setupPopupBridge();
             });
-        });
+        }).timeout(120000);
 
         if (flow === 'iframe') {
 

@@ -72,6 +72,7 @@
     "karma-mocha": "^1.0.1",
     "karma-nightmare": "^0.4.5",
     "karma-phantomjs-launcher": "^1.0.0",
+    "karma-renamer-preprocessor": "0.0.1",
     "karma-safari-launcher": "^1.0.0",
     "karma-sinon-chai": "^1.2.0",
     "karma-slimerjs-launcher": "^1.1.0",
