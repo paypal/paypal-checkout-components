@@ -20,6 +20,10 @@ module.exports = function(config) {
         runInParent: true,
         useIframe: false,
 
+        browserNoActivityTimeout: 60 * 60 * 1000,
+        browserDisconnectTimeout: 30 * 1000,
+        browserDisconnectTolerance: 2,
+
         
         captureTimeout: 30000,
         reportSlowerThan: 8000,
@@ -32,12 +36,11 @@ module.exports = function(config) {
             'test/lib/react_v15.1.0.js',
             'test/lib/react-dom_v15.1.0.js',
             'test/lib/angular.min.js',
-
             'node_modules/babel-polyfill/dist/polyfill.js',
-
-            { pattern: 'dist/paypal.checkout.v4.js', included: true, served: true },
-            { pattern: 'test/test.js', included: true, served: true },
-            { pattern: 'test/windows/**/*', included: false, served: true }
+            { pattern: 'test/lib/button.js', included: false, served: true },
+            { pattern: 'dist/checkout.test.js', included: true, served: true },
+            { pattern: 'test/windows/**/*', included: false, served: true },
+            { pattern: 'test/test.js', included: true, served: true }
         ],
 
         plugins: [
@@ -52,19 +55,37 @@ module.exports = function(config) {
             require('karma-sinon-chai'),
             require('karma-coverage'),
             require('karma-spec-reporter'),
-            // require('karma-sourcemap-loader')
+            require('karma-sourcemap-loader')
         ],
         reporters: ['coverage'],
-        browsers: ['PhantomJS'],
+        browsers: ['PhantomJS_custom'],
         preprocessors: {
-            'test/test.js': ['webpack']
+            'test/test.js': ['webpack', 'sourcemap'],
+            'dist/checkout.test.js': ['sourcemap'],
+            'test/windows/**/*.js': ['webpack']
         },
         
         customLaunchers: {
             Chrome_travis_ci: {
                 base: 'Chrome',
                 flags: ['--no-sandbox']
+            },
+            // This solves the PhantomJS memory issue
+            'PhantomJS_custom': {
+                base: 'PhantomJS',
+                options: {
+                    settings: {
+                        webSecurityEnabled: false,
+                        clearMemoryCaches: true
+                    },
+                },
+                flags: ['--load-images=true'],
+                debug: true
             }
+        },
+        phantomjsLauncher: {
+            // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+            exitOnResourceError: true
         },
         coverageReporter: {
 

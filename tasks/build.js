@@ -80,13 +80,13 @@ function defaultConfig (filename) {
         plugins: [
 
             new webpack.DefinePlugin({
-                __TEST__: filename === 'paypal.checkout.v4.js' ? true : false,
+                __TEST__: filename === 'checkout.test.js' ? true : false,
                 __IE_POPUP_SUPPORT__: true,
                 __POPUP_SUPPORT__: true,
                 __FILE_NAME__: JSON.stringify(filename),
-                __FILE_VERSION__: JSON.stringify(nextMajorVersion),
-                __MAJOR_VERSION__: JSON.stringify(getNextMajorVersion()),
-                __MINOR_VERSION__: JSON.stringify(getNextMinorVersion())
+                __FILE_VERSION__: filename === 'checkout.test.js' ? '"4"' : JSON.stringify(nextMajorVersion),
+                __MAJOR_VERSION__: filename === 'checkout.test.js' ? '"4"' : JSON.stringify(getNextMajorVersion()),
+                __MINOR_VERSION__: filename === 'checkout.test.js' ? '"4.0"' : JSON.stringify(getNextMinorVersion())
             }),
             new webpack.NamedModulesPlugin()
         ]
@@ -106,7 +106,7 @@ function watch() {
 watch.displayName = 'webpack-watch';
 
 function test() {
-    let config = defaultConfig('paypal.checkout.v4.js');
+    let config = defaultConfig('checkout.test.js');
     config.devtool = 'inline-source-map';
     config.output.libraryTarget = 'window';
     

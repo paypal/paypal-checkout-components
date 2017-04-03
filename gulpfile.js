@@ -27,7 +27,15 @@ Object.keys(webpackConfig.webpack_tasks).forEach(name => {
 gulp.task('webpack', Object.keys(webpackConfig.webpack_tasks).map(name => `webpack-${name.replace(/_/g, '-')}`));
 */
 
-let test = gulp.series(testTasks.lint, testTasks.flow, buildTasks.test, testTasks.karma);
+let karma = gulp.series(testTasks.karma);
+karma.displayName = 'karma';
+gulp.task(karma);
+
+let test = gulp.series(
+                    gulp.parallel(testTasks.lint, testTasks.flow), 
+                    buildTasks.test, 
+                    testTasks.karma
+            );
 test.displayName = 'test';
 gulp.task(test);
 

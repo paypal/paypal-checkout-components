@@ -10,8 +10,9 @@ paypal.setup({
 
 afterEach(() => {
     delete window.navigator.mockUserAgent;
-    delete window.document.documentMode;
-    return window.paypal.destroyAll();
+    return window.paypal.destroyAll().then(() => {
+        // return postRobot.bridge.destroyBridges();
+    });
 });
 
 beforeEach(() => {

@@ -7,7 +7,7 @@ let SyncPromise = window.paypal.Promise;
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe.only(`paypal checkout component happy path on ${flow}`, () => {
+    describe(`paypal checkout component happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();

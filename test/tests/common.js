@@ -32,13 +32,12 @@ export function onHashChange() : SyncPromise<string> {
         let currentHash = window.location.hash;
 
         function listener() {
-            console.log('Hash Event listener', window.location.hash, currentHash);
-            
             if (window.location.hash !== currentHash) {
                 window.removeEventListener('hashchange', listener);
                 resolve(window.location.hash);
             }
         }
+
         window.addEventListener('hashchange', listener);
     });
 }
@@ -74,8 +73,6 @@ export function generateExperienceToken() : string {
 export const CHILD_REDIRECT_URI = `${window.paypal.config.paypalUrl}/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
-
-export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 
 export function createElement(options : Object) : HTMLElement {
 
@@ -129,7 +126,6 @@ export function destroyElement(element : string | ?HTMLElement) {
     }
 
     if (element && element.parentNode) {
-        console.log('element is', element);
         element.parentNode.removeChild(element);
     }
 }
