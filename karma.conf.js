@@ -75,6 +75,7 @@ module.exports = function(config) {
                         exclude: /(dist|chai)/,
                         loader: 'babel-loader',
                         query: {
+                            cacheDirectory: true,
                             presets: [ [ 'es2015', { 'modules': false } ] ],
                             plugins: [
                                 'transform-flow-strip-types',
