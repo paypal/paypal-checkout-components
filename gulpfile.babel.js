@@ -26,7 +26,9 @@ gulp.task('webpack', Object.keys(webpackConfig.webpack_tasks).map(name => `webpa
 
 gulp.task('typecheck', [ 'lint' ], function() {
     return gulp.src([ 'src/**/*.js', 'test/**/*.js' ])
-        .pipe(gulpFlowtype())
+        .pipe(gulpFlowtype({
+            abort: true
+        }))
 });
 
 gulp.task('lint', ['lint-src', 'lint-test']);
