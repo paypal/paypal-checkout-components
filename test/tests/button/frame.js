@@ -27,7 +27,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             document.body.appendChild(iframe);
 
             return window.paypal.postRobot.once('onAuthorize').then(() => {
-                iframe.parentNode.removeChild(iframe);
+                if (iframe.parentNode) {
+                    iframe.parentNode.removeChild(iframe);
+                }
             });
         });
     });
