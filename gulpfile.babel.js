@@ -52,7 +52,7 @@ gulp.task('lint-test', function() {
 
 gulp.task('karma', function (done) {
 
-    if(yargs.argv.clear) {
+    if(yargs.argv['clear-cache']) {
         del.sync(['node_modules/.cache/babel-loader', 'node_modules/.cache/phantomjs']);
     }
 
