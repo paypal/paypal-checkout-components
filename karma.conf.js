@@ -20,6 +20,13 @@ function browsers() {
     if (karmaConfig.browsers.indexOf('PhantomJS_custom') !== -1) {
         addPhantom();
     }
+    
+    if(karmaConfig.browsers.indexOf('Chrome_travis_ci') !== -1) {
+        karmaConfig.customLaunchers.Chrome_travis_ci = {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        };
+    }
 
 }
 
@@ -29,12 +36,6 @@ function addPhantom() {
     };
     karmaConfig.customLaunchers.PhantomJS_custom = {
         base: 'PhantomJS',
-        options: {
-            windowName: 'my-window',
-            settings: {
-                webSecurityEnabled: false
-            },
-        },
         flags: ['--load-images=true', '--disk-cache=true', '--disk-cache-path=node_modules/.cache/phantomjs', '--max-disk-cache-size=1000000'],
         debug: argv.debug ? true : false
     }
@@ -115,7 +116,7 @@ let karmaConfig = {
     ],
     reportSlowerThan: 10000,
     runInParent: true,
-    singleRun: argv.debug ? false : true,
+    singleRun: argv.debug || argv['keep-open'] ? false : true,
     useIframe: false,
     webpackMiddleware: {
         noInfo: argv.debug ? false : true,
@@ -185,7 +186,7 @@ module.exports = function(config) {
     karmaConfig. logLevel = argv.debug ? config.LOG_DEBUG : config.LOG_WARN;
     
     if (!argv.quick) {
-        // addCoverage();
+        addCoverage();
     }
 
     browsers();
