@@ -7,8 +7,9 @@ let webpack = require('webpack');
 let karma = require('karma');
 let yargs = require('yargs');
 let webpackConfig = require('./webpack.conf');
+let del = require('del');
 
-gulp.task('test', ['lint', 'karma', 'typecheck']);
+gulp.task('test', ['lint', 'typecheck', 'karma']);
 gulp.task('build', ['test', 'webpack']);
 
 Object.keys(webpackConfig.webpack_tasks).forEach(name => {
@@ -51,16 +52,12 @@ gulp.task('lint-test', function() {
 
 gulp.task('karma', function (done) {
 
+    if(yargs.argv['clear-cache']) {
+        del.sync(['node_modules/.cache/babel-loader', 'node_modules/.cache/phantomjs']);
+    }
+
     let server = new karma.Server({
         configFile: __dirname + '/karma.conf.js',
-        singleRun: !Boolean(yargs.argv['keep-browser-open']),
-        client: {
-            captureConsole: Boolean(yargs.argv['capture-console']),
-            mocha: {
-                timeout : process.env.TRAVIS ? 60 * 1000 : 10 * 1000,
-                bail: true
-            }
-        }
     });
 
     server.on('browser_error', function (browser, err) {

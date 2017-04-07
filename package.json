@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install"
   },
   "files": [
     "dist/checkout.lib.js",
@@ -51,6 +52,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
     "chai": "^3.5.0",
+    "del": "^2.2.2",
     "eslint": "^2",
     "eslint-plugin-flowtype": "^2.29.1",
     "flow-bin": "^0.41.0",
