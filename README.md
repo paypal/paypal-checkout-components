@@ -82,3 +82,16 @@ Build checkout.js:
 ```bash
 gulp build
 ```
+
+
+## Test Tasks
+```
+gulp test
+```
+
+| Flags  | Description |
+| ------------- | ------------- |
+| --clear | Clear Babel Loader and PhantomJS cache |
+| --debug | Debug mode.  PhantomJS, Karma, and CheckoutJS  |
+| --quick | Fastest testing.  Minimal output, no coverage |
+| --browsers | Choose Browser |
