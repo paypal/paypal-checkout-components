@@ -58,6 +58,14 @@ gulp.task('karma', function (done) {
 
     let server = new karma.Server({
         configFile: __dirname + '/karma.conf.js',
+        singleRun: !(yargs.argv.debug || yargs.argv['keep-open']),
+        client: {
+            captureConsole: Boolean(yargs.argv['capture-console']),
+            mocha: {
+                timeout : process.env.TRAVIS ? 60 * 1000 : 10 * 1000,
+                bail: true
+            }
+        }
     });
 
     server.on('browser_error', function (browser, err) {
