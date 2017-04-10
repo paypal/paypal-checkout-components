@@ -28,15 +28,6 @@ node('mesos') {
   stage 'Coverage'
   withEnv(["PATH+NODE=${tool name: '4.8.0', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'}/bin"]) {
     sh 'npm run cover'
-
-    publishHTML(target: [
-      allowMissing: false,
-      alwaysLinkToLastBuild: false,
-      keepAll: true,
-      reportDir: 'coverage',
-      reportFiles: 'index.html',
-      reportName: "Coverage Report"
-    ])
   }
 
   stage 'Build'
