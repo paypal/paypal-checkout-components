@@ -5,19 +5,19 @@ import { assert } from 'chai';
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement } from '../common';
 let SyncPromise = window.paypal.Promise;
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render checkout, then complete the payment', (done) => {
@@ -570,7 +570,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             testButton.click();
         });
 
-        if (flow === 'lightbox') {
+        if (flow === 'iframe') {
 
             it('should render checkout, popout, then complete the payment', (done) => {
 

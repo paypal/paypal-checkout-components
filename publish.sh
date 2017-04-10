@@ -2,8 +2,8 @@
 
 set -e;
 
-rm -rf node_modules/xcomponent node_modules/post-robot node_modules/sync-browser-mocks node_modules/beaver-logger
-npm install xcomponent post-robot sync-browser-mocks beaver-logger
+rm -rf node_modules/xcomponent node_modules/post-robot node_modules/sync-browser-mocks node_modules/beaver-logger node_modules/cross-domain-safe-weakmap
+npm install xcomponent post-robot sync-browser-mocks beaver-logger cross-domain-safe-weakmap
 
 npm run postinstall
 
@@ -16,7 +16,7 @@ git add demo/app/build --all;
 
 git commit -m "Dist" || echo "Nothing to distribute";
 
-mversion patch -m '%s';
+npm version ${1-patch};
 
 git push;
 git push --tags;

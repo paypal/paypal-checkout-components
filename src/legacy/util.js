@@ -18,7 +18,9 @@ export function logRedirect(location : string) {
         $logger.warn(`multiple_redirects`);
     }
 
-    redirected = true;
+    if (urlWillRedirectPage(location)) {
+        redirected = true;
+    }
 
     if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
         checkpoint('flow_complete');

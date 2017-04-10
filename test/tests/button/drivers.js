@@ -5,19 +5,19 @@ import { generateECToken, createTestContainer, destroyTestContainer } from '../c
 window.angular.module('app', ['paypal-button']);
 window.angular.bootstrap(document.body, ['app']);
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button framework drivers on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container with React and click on the button, then complete the payment', (done) => {
@@ -88,7 +88,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             };
 
             let template = `
-                <paypal-button on-enter="opts.onEnter" payment="opts.payment" on-authorize="opts.onAuthorize" on-cancel="opts.onCancel"></test-component>
+                <paypal-button on-render="opts.onRender" payment="opts.payment" on-authorize="opts.onAuthorize" on-cancel="opts.onCancel"></test-component>
             `;
 
             $compile(template)($scope, element => {

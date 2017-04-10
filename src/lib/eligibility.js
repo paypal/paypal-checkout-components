@@ -1,9 +1,17 @@
 /* @flow */
 
-import { isWebView, getAgent} from './device';
+import { getAgent, supportsPopups, getUserAgent, isIEIntranet } from './device';
 import { config } from '../config';
 
+export function isUnsupportedIE() : boolean {
+    return Boolean(getUserAgent().match(/MSIE (5|6|7|8)\./i));
+}
+
 export function isEligible() : boolean {
+
+    if (isUnsupportedIE() || isIEIntranet()) {
+        return false;
+    }
 
     let currentAgent = getAgent();
 
@@ -13,5 +21,9 @@ export function isEligible() : boolean {
         }
     }
 
-    return !isWebView();
+    return true;
+}
+
+export function forceIframe() : boolean {
+    return !supportsPopups();
 }

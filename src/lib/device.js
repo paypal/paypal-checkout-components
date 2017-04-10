@@ -41,7 +41,7 @@ export function getAgent(agent? : ?string) : Array<string> {
     return M;
 }
 
-export function isFirefoxMobile(ua? : string = getUserAgent()) : boolean {
+export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
 }
 
@@ -82,6 +82,15 @@ export function isIE() : boolean {
     return Boolean(window.document.documentMode);
 }
 
+export function isIECompHeader() : boolean {
+    let mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]');
+    let mContent = window.document.querySelector('meta[content="IE=edge"]');
+    if (mHttp && mContent) {
+        return true;
+    }
+    return false;
+}
+
 export function isIEIntranet() : boolean {
 
     if (!isIE()) {
@@ -108,5 +117,5 @@ export function isIEIntranet() : boolean {
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
-    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua));
+    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua));
 }

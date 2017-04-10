@@ -3,7 +3,6 @@ let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
 
 const FILE_NAME = 'checkout';
-const MODULE_NAME = `__paypal__${Math.random()}`;
 
 function getNextVersion() {
     let version = require('./package.json').version;
@@ -28,7 +27,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target = 'window', minify = false }) {
+function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false }) {
 
     let config = {
         module: {
@@ -40,7 +39,10 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 {
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
                 },
                 {
                     test: /\.(html?|css|json)$/,
@@ -64,9 +66,12 @@ function getWebpackConfig({ version, filename, modulename = MODULE_NAME, target 
                 filename: '[file].map'
             }),
             new webpack.DefinePlugin({
-                __TEST__: false,
+                __TEST__: JSON.stringify(false),
+                __IE_POPUP_SUPPORT__: JSON.stringify(true),
+                __POPUP_SUPPORT__: JSON.stringify(true),
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
+                __DEFAULT_LOG_LEVEL__: JSON.stringify('info'),
                 ...getVersionVars()
             }),
             new webpack.NamedModulesPlugin(),
@@ -133,7 +138,8 @@ module.exports.webpack_tasks = {
         cfg: getWebpackConfig({
             version: nextMajorVersion,
             filename: `${FILE_NAME}.lib.js`,
-            target: `umd`
+            target: `umd`,
+            modulename: `paypal`
         })
     },
 

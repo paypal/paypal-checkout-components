@@ -32,7 +32,8 @@
         "__MINOR_VERSION__": true,
         "__MAJOR_VERSION__": true,
         "__FILE_NAME__": true,
-        "__FILE_VERSION__": true
+        "__FILE_VERSION__": true,
+        "__DEFAULT_LOG_LEVEL__": true
     },
 
     "fix": true,

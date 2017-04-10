@@ -2,17 +2,17 @@
 
 import '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component embedded frame on ${flow}`, () => {
 
         beforeEach(() => {
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container and click on the button, then complete the payment', () => {
@@ -26,7 +26,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             document.body.appendChild(iframe);
 
-            return window.paypal.postRobot.once('onAuthorize');
+            return window.paypal.postRobot.once('onAuthorize').then(() => {
+                if (iframe.parentNode) {
+                    iframe.parentNode.removeChild(iframe);
+                }
+            });
         });
     });
 }

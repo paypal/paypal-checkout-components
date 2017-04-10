@@ -6,40 +6,96 @@ import * as $logger from 'beaver-logger/client';
 
 import { enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, isWebView, isFirefoxMobile } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
-import { parentTemplate } from './parentTemplate';
-import { componentTemplate } from './componentTemplate';
+import { containerTemplate, componentTemplate } from './templates';
 
 export let Button = xcomponent.create({
 
     tag: 'paypal-button',
     name: 'ppbutton',
 
-    buildUrl(instance) : string {
-        let env = instance.props.env || config.env;
+    buildUrl(props) : string {
+        let env = props.env || config.env;
 
         return config.buttonUrls[env];
     },
 
     contexts: {
         iframe: true,
-        lightbox: false,
         popup: false
     },
 
     scrolling: false,
 
-    parentTemplate,
+    containerTemplate,
     componentTemplate,
+
+    sacrificialComponentTemplate: true,
 
     get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    get domains() : Object {
+    get domain() : Object {
         return config.paypalDomains;
+    },
+
+    getInitialDimensions(props : Object, container : HTMLElement) : { width : string, height : string } {
+
+        let style = props.style || {};
+        let size = style.size || 'small';
+
+        let responsiveHeight = '42px';
+
+        if (size === 'responsive') {
+            let width = container.offsetWidth;
+
+            if (width < 100) {
+                responsiveHeight = '22px';
+            } else if (width < 180) {
+                responsiveHeight = '42px';
+            } else if (width < 250) {
+                responsiveHeight = '48px';
+            } else {
+                responsiveHeight = '60px';
+            }
+        }
+
+        return {
+
+            tiny: {
+                width: '80px',
+                height: '22px'
+            },
+
+            small: {
+                width: '148px',
+                height: '42px'
+            },
+
+            medium: {
+                width: '230px',
+                height: '48px'
+            },
+
+            large: {
+                width: '380px',
+                height: '60px'
+            },
+
+            responsive: {
+                width: '100%',
+                height: responsiveHeight
+            }
+
+        }[size];
+    },
+
+    autoResize: {
+        width: false,
+        height: true
     },
 
     props: {
@@ -113,12 +169,11 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
 
-            decorate(original) : Function {
-                return function() {
+            value() {
+                this.onAuth = this.onAuth || new SyncPromise();
+                this.onAuth.resolve();
 
-                    this.onAuth = this.onAuth || new SyncPromise();
-                    this.onAuth.resolve();
-                };
+                enableCheckoutIframe();
             }
         },
 
@@ -126,12 +181,9 @@ export let Button = xcomponent.create({
             type: 'function',
             required: false,
 
-            decorate(original) : Function {
-                return function() {
-
-                    this.onAuth = this.onAuth || new SyncPromise();
-                    this.onAuth.resolve();
-                };
+            value() {
+                this.onAuth = this.onAuth || new SyncPromise();
+                this.onAuth.resolve();
             }
         },
 
@@ -146,7 +198,11 @@ export let Button = xcomponent.create({
                         this.onAuth = this.onAuth || new SyncPromise();
 
                         if (this.props.displayTo === USERS.REMEMBERED) {
-                            return this.onAuth;
+                            $logger.info(`button_render_wait_for_remembered_user`);
+
+                            return this.onAuth.then(() => {
+                                $logger.info(`button_render_got_remembered_user`);
+                            });
                         }
 
                     }).then(() => {
@@ -205,44 +261,6 @@ export let Button = xcomponent.create({
         onClick: {
             type: 'function',
             required: false
-        },
-
-        dimensions: {
-            type: 'object',
-            required: false,
-
-            def(props) : { width : string | number, height : string | number } {
-                let size = props.style && props.style.size || 'small';
-
-                return {
-
-                    tiny: {
-                        width: '80px',
-                        height: '22px'
-                    },
-
-                    small: {
-                        width: '148px',
-                        height: '42px'
-                    },
-
-                    medium: {
-                        width: '230px',
-                        height: '48px'
-                    },
-
-                    large: {
-                        width: '380px',
-                        height: '60px'
-                    },
-
-                    responsive: {
-                        width: '100%',
-                        height: '48px'
-                    }
-
-                }[size];
-            }
         },
 
         locale: {
@@ -328,23 +346,13 @@ export let Button = xcomponent.create({
                 return { action: 'checkout' };
             }
         }
-    },
-
-    autoResize: {
-        height: true,
-        width: false
-    },
-
-    dimensions: {
-        width: '148px',
-        height: '48px'
     }
 });
 
 if (Button.isChild()) {
 
-    if (isWebView() || isFirefoxMobile()) {
-        $logger.info('force_enable_iframe_webview');
+    if (forceIframe()) {
+        $logger.info('force_enable_iframe');
         enableCheckoutIframe({ force: true, time: 30 * 60 * 1000 });
     }
 

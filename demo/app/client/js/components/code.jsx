@@ -15,22 +15,20 @@ export let Code = React.createClass({
     },
 
     runScripts() {
-        setTimeout(() => {
-            Array.prototype.slice.call(findDOMNode(this).querySelectorAll('script')).forEach(script => {
-                try {
-                    eval(script.innerHTML);
-                } catch (err) {
+        Array.prototype.slice.call(findDOMNode(this).querySelectorAll('script')).forEach(script => {
+            try {
+                eval(script.innerHTML);
+            } catch (err) {
 
-                    if (this.props.onError) {
-                        this.props.onError(err);
-                    }
-
-                    setTimeout(() => {
-                        throw err;
-                    });
+                if (this.props.onError) {
+                    this.props.onError(err);
                 }
-            });
-        }, 1);
+
+                setTimeout(() => {
+                    throw err;
+                });
+            }
+        });
     },
 
     componentDidMount() {

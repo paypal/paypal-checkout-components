@@ -70,9 +70,11 @@ export function generateExperienceToken() : string {
     return uniqueID(17).toUpperCase();
 }
 
-export const CHILD_REDIRECT_URI = '/base/test/windows/redirect/index.htm';
+export const CHILD_REDIRECT_URI = `${window.paypal.config.paypalUrl}/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
+
+export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 
 export function createElement(options : Object) : HTMLElement {
 
@@ -170,8 +172,6 @@ $mockEndpoint.register({
     uri: window.paypal.config.loggerUrl,
     data: {}
 }).listen();
-
-console.warn('!!!!', window.paypal.config.authApiUrl);
 
 $mockEndpoint.register({
     method: 'POST',
@@ -272,7 +272,7 @@ export function preventOpenWindow(flow : string) {
                 }
             };
         };
-    } else if (flow === 'lightbox') {
+    } else if (flow === 'iframe') {
 
         let documentCreateElement = document.createElement;
         // $FlowFixMe

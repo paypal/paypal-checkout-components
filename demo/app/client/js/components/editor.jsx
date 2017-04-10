@@ -29,17 +29,19 @@ export let Editor = React.createClass({
 
         editor.getSession().on('change', debounce(() => {
             let value = editor.getValue();
-            if (this.props.onChange && value) {
+            if (this.props.onChange && value && value !== stripIndent(this.props.code)) {
                 this.props.onChange(value);
             }
         }, 300));
 
         editor.setValue(stripIndent(this.props.code), -1);
+        this.props.onChange(this.props.code);
 
         this.setState({ editor: editor });
     },
 
     componentWillUpdate: function(nextProps, nextState){
         nextState.editor.setValue(stripIndent(nextProps.code), -1);
+        this.props.onChange(nextProps.code);
     }
 });

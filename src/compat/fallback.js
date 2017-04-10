@@ -30,7 +30,7 @@ window.onLegacyPaymentAuthorize = (method : Function) => {
 
     return SyncPromise.try(() => {
         if (!isPayPalDomain()) {
-            return postRobot.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
+            return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
                 return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);
             });

@@ -4,18 +4,18 @@ import { assert } from 'chai';
 
 import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal checkout component error cases on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should render checkout, then fall back and complete the payment', (done) => {

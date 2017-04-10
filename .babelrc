@@ -1,5 +1,19 @@
 {
-    "presets": [ [ "es2015", { "modules": false } ], "react" ],
+    "presets": [
+        [
+            "env", {
+                "targets": {
+                    "ie": 9,
+                    "chrome": 27,
+                    "firefox": 30,
+                    "safari": 5,
+                    "opera": 23
+                },
+                "modules": false
+            }
+        ],
+        "react"
+    ],
     "plugins": [
         "transform-flow-strip-types",
         "transform-object-rest-spread",

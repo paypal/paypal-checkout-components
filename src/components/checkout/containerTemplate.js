@@ -1,5 +1,5 @@
 
-export let parentTemplate = (ctx = {}) => `
+export let containerTemplate = (ctx = {}) => `
     
     <div class="paypal-checkout-overlay ${ctx.CLASS.FOCUS}">
         <a href="#${ctx.CLASS.CLOSE}" class="${ctx.CLASS.CLOSE}"></a>
@@ -16,12 +16,12 @@ export let parentTemplate = (ctx = {}) => `
             </div>
         </div>
     
-        <div class="${ctx.CLASS.ELEMENT} paypal-checkout-lightbox-element"></div>
+        <div class="${ctx.CLASS.ELEMENT} paypal-checkout-iframe-element"></div>
     </div>
     
     <style>
     
-        #${ctx.id}.${ctx.CLASS.POPUP}, #${ctx.id}.${ctx.CLASS.LIGHTBOX} {
+        #${ctx.id}.${ctx.CLASS.POPUP}, #${ctx.id}.${ctx.CLASS.IFRAME} {
             position: fixed;
             z-index: 2147483647;
             top: 0;
@@ -125,7 +125,7 @@ export let parentTemplate = (ctx = {}) => `
             padding: 10px 0;
         }
     
-        #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-message, #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-continue {
+        #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-message, #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-continue {
             display: none;
         }
     
@@ -183,11 +183,11 @@ export let parentTemplate = (ctx = {}) => `
             color: white;
         }
     
-        #${ctx.id} .paypal-checkout-lightbox-element {
+        #${ctx.id} .paypal-checkout-iframe-element {
             display: none;
         }
     
-        #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-lightbox-element {
+        #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-iframe-element {
     
             display: block;
     
@@ -240,7 +240,7 @@ export let parentTemplate = (ctx = {}) => `
     
         @media screen and (max-width: 450px) {
     
-            #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-lightbox-element {
+            #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-iframe-element {
                 min-width: calc(100% - 20px);
                 min-width: -webkit-calc(100% - 20px);
                 min-width: -moz-calc(100% - 20px);
@@ -251,7 +251,7 @@ export let parentTemplate = (ctx = {}) => `
     
         @media screen and (min-width: 490px) {
     
-            #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-lightbox-element {
+            #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-iframe-element {
                 max-width: 450px;
                 max-width: 450px;
                 max-width: 450px;
@@ -261,7 +261,7 @@ export let parentTemplate = (ctx = {}) => `
             }
         }
     
-        #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-lightbox-element iframe {
+        #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-iframe-element iframe {
     
             width: 100%;
             height: 100%;
@@ -487,7 +487,7 @@ export let parentTemplate = (ctx = {}) => `
     
     <!--[if IE 9 ]>
         <style>
-            #${ctx.id}.${ctx.CLASS.LIGHTBOX} .paypal-checkout-lightbox-element {
+            #${ctx.id}.${ctx.CLASS.IFRAME} .paypal-checkout-iframe-element {
     
                 transform: none;
                 -ms-transform: none;

@@ -9,19 +9,19 @@ import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElem
          createTestContainer, destroyTestContainer } from '../common';
 
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal legacy standalone checkout on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
         });
 
         it('should call startFlow', () => {
@@ -204,11 +204,11 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 setTimeout(() => {
                     window.paypal.checkout.closeFlow();
 
-                    if (flow === 'lightbox') {
+                    if (flow === 'iframe') {
                         if (window.paypal.checkout.win.closed) {
                             return done();
                         } else {
-                            return done(new Error('Expected lightbox to be closed'));
+                            return done(new Error('Expected iframe to be closed'));
                         }
                     }
                 }, 100);
@@ -242,12 +242,12 @@ for (let flow of [ 'popup', 'lightbox' ]) {
 
             testButton.addEventListener('click', (event : Event) => {
 
-                if (flow === 'lightbox') {
+                if (flow === 'iframe') {
                     setTimeout(() => {
                         if (window.paypal.checkout.win.closed) {
                             return done();
                         } else {
-                            return done(new Error('Expected lightbox to be closed'));
+                            return done(new Error('Expected iframe to be closed'));
                         }
                     });
 

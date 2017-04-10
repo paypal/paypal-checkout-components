@@ -5,13 +5,13 @@ import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer, setupPopupBridge, destroyPopupBridge, onHashChange, generatePaymentID, generateBillingToken } from '../common';
 
-for (let flow of [ 'popup', 'lightbox' ]) {
+for (let flow of [ 'popup', 'iframe' ]) {
 
     describe(`paypal button component popup bridge happy path on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.lightbox = (flow === 'lightbox');
+            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
 
             setupPopupBridge();
         });
@@ -19,7 +19,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.lightbox = false;
+            window.paypal.Checkout.contexts.iframe = false;
 
             destroyPopupBridge();
         });
@@ -452,7 +452,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    if (flow === 'lightbox') {
+                    if (flow === 'iframe') {
                         return done();
                     } else {
                         return done(new Error('Expected onAuthorize to not be called'));
@@ -488,7 +488,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    if (flow === 'lightbox') {
+                    if (flow === 'iframe') {
                         return done();
                     } else {
                         return done(new Error('Expected onAuthorize to not be called'));
@@ -524,7 +524,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    if (flow === 'lightbox') {
+                    if (flow === 'iframe') {
                         return done();
                     } else {
                         return done(new Error('Expected onAuthorize to not be called'));
@@ -593,7 +593,7 @@ for (let flow of [ 'popup', 'lightbox' ]) {
             });
         });
 
-        if (flow === 'lightbox') {
+        if (flow === 'iframe') {
 
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 
