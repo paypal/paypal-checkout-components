@@ -47,6 +47,10 @@ function isLightboxEligible() {
 
     return Promise.resolve().then(() => {
 
+        if (window.xprops.disableLightbox) {
+            return false;
+        }
+
         if (!$util.cookiesEnabled()) {
             return false;
         }
