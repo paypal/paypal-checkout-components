@@ -42,6 +42,10 @@ export let client = {
                     production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'
                 },
 
+                // Set to 'Pay Now'
+
+                commit: true,
+
                 // Wait for the PayPal button to be clicked
 
                 payment: function() {
