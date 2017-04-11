@@ -10,6 +10,7 @@ module.exports = function(config) {
     let autoWatch = Boolean(keepOpen);
     let coverage  = !Boolean(argv['disable-coverage']) && !quick;
     let browsers  = argv['browser'];
+    let logLevel  = argv['log-level'] || argv['loglevel'];
 
     let karmaConfig = {
 
@@ -158,7 +159,7 @@ module.exports = function(config) {
                     __FILE_VERSION__:      JSON.stringify('4'),
                     __MAJOR_VERSION__:     JSON.stringify('4'),
                     __MINOR_VERSION__:     JSON.stringify('4.0'),
-                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : 'error')
+                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : logLevel || 'error')
                 })
             ]
         },
@@ -168,7 +169,7 @@ module.exports = function(config) {
         ],
 
         autoWatch: autoWatch,
-        logLevel: debug ? config.LOG_DEBUG : config.LOG_WARN,
+        logLevel: debug ? config.LOG_DEBUG : logLevel || config.LOG_WARN,
 
         basePath: __dirname,
 
