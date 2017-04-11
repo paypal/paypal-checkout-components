@@ -1,5 +1,5 @@
 
-export function parentTemplate({}) {
+export function parentTemplate({}) : string {
 
     return `
 
@@ -20,6 +20,6 @@ export function parentTemplate({}) {
                 overflow: hidden
             }
         </style>
-        
+
     `;
-};
+}

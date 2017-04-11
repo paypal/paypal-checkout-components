@@ -129,5 +129,3 @@ if (action === 'checkout') {
         });
     });
 }
-
-

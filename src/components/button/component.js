@@ -4,7 +4,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { enableCheckoutIframe } from '../checkout';
+import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
 
@@ -320,6 +320,11 @@ export let Button = xcomponent.create({
             }
         },
 
+        validate: {
+            type: 'function',
+            required: false
+        },
+
         logLevel: {
             type: 'string',
             required: false,
@@ -361,4 +366,28 @@ if (Button.isChild()) {
     }
 
     awaitPopupBridgeOpener();
+
+    if (window.xprops.validate) {
+
+        let enabled = true;
+
+        window.xprops.validate({
+
+            enable() {
+                enabled = true;
+            },
+
+            disable() {
+                enabled = false;
+            }
+        });
+
+        let renderTo = Checkout.renderTo;
+
+        Checkout.renderTo = function() : ?Promise<Object> {
+            if (enabled) {
+                return renderTo.apply(this, arguments);
+            }
+        };
+    }
 }

@@ -4,7 +4,7 @@ import { config } from '../../../config';
 import componentContentJSON from './content.json';
 let componentContent = JSON.parse(componentContentJSON);
 
-export function containerTemplate({ id, CLASS, ANIMATION }) {
+export function containerTemplate({ id, CLASS, ANIMATION }) : string {
 
     let content = componentContent[config.locale.country][config.locale.lang];
 

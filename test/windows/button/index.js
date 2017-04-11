@@ -2,7 +2,7 @@
 
 import { getElement, errorOnWindowOpen } from '../../tests/common';
 
-let { action, flow, authed, bridge, delay } = window.xprops.test;
+let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender } = window.xprops.test;
 
 if (flow === 'iframe') {
     window.paypal.Checkout.contexts.iframe = true;
@@ -13,7 +13,7 @@ if (bridge) {
 }
 
 function renderCheckout() {
-    window.paypal.Checkout.renderTo(window.top.frames[0], {
+    window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
         payment: window.xprops.payment,
         onAuthorize(data, actions) : void | SyncPromise<void> {
@@ -51,11 +51,18 @@ function renderCheckout() {
         onError: window.xprops.onError,
         commit: window.xprops.commit,
         locale: window.xprops.locale,
-        test: window.xprops.test
+        test: {
+            action: action || 'checkout'
+        }
     });
 }
 
 getElement('#button', document).addEventListener('click', (event : Event) => {
+
+    if (window.xprops.onClick) {
+        window.xprops.onClick();
+    }
+
     renderCheckout();
 });
 
@@ -65,7 +72,7 @@ if (action === 'auth') {
         window.xprops.onAuth();
     }
 
-} else {
+} else if (action === 'checkout' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {
@@ -76,5 +83,10 @@ if (action === 'auth') {
     }
 }
 
-
-
+if (onRender) {
+    onRender({
+        click() {
+            getElement('#button', document).click();
+        }
+    });
+}

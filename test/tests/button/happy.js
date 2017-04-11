@@ -537,7 +537,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         if (flow === 'iframe') {
-        
+
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 
                 return window.paypal.Button.render({

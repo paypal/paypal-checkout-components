@@ -1,5 +1,5 @@
 
-export function componentTemplate({}) {
+export function componentTemplate({}) : string {
 
     return `
 
