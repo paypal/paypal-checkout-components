@@ -4,18 +4,13 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as $logger from 'beaver-logger/client';
 import * as xcomponent from 'xcomponent/src';
 
-import { containerTemplate } from './containerTemplate';
-import { componentTemplate } from './componentTemplate';
+import { containerTemplate, componentTemplate } from './templates';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
-
-import contentJSON from './content.json';
-let content = JSON.parse(contentJSON);
-
 
 function addHeader(name, value) : void {
 
@@ -69,11 +64,7 @@ export let Checkout = xcomponent.create({
     sandboxContainer: true,
 
     componentTemplate,
-    containerTemplate(ctx = {}) : string {
-
-        ctx.content = content[config.locale.country][config.locale.lang];
-        return containerTemplate(ctx);
-    },
+    containerTemplate,
 
     props: {
 

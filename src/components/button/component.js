@@ -315,7 +315,7 @@ export let Button = xcomponent.create({
             type: 'boolean',
             required: false,
 
-            def() : boolean {
+            get value() : boolean {
                 return !hasMetaViewPort();
             }
         },

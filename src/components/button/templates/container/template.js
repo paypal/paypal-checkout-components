@@ -10,6 +10,7 @@ export function containerTemplate({ props, CLASS } : { props : Object, CLASS : O
         <style>
             .paypal-button-parent {
                 font-size: 0;
+                display: inline-block;
             }
 
             .paypal-button-parent.paypal-button-parent-label-checkout {
