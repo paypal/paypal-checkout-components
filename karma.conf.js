@@ -204,11 +204,7 @@ module.exports = function(config) {
         browserDisconnectTimeout: 30 * 1000,
         browserDisconnectTolerance: 2,
         captureTimeout: 120000,
-        reportSlowerThan: 10000,
-
-        phantomjsLauncher: {
-            exitOnResourceError: true
-        }
+        reportSlowerThan: 10000
     };
 
 
