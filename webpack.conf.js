@@ -79,7 +79,10 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 test: /\.js$/,
                 beautify: !minify,
                 minimize: minify,
-                compress: { warnings: false },
+                compress: {
+                    warnings: false,
+                    sequences: minify
+                },
                 mangle: minify,
                 sourceMap: true
             })
