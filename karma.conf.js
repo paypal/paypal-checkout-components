@@ -72,7 +72,9 @@ module.exports = function(config) {
             xChrome: {
                 base: 'Chrome',
                 flags: [
-                    '--no-sandbox'
+                    '--no-sandbox',
+                    '--enable-precise-memory-info',
+                    '--js-flags="--expose-gc"'
                 ]
             },
 
