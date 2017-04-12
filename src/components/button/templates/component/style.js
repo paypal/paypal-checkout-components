@@ -295,7 +295,7 @@ export let componentStyle = `
             padding: 2px;
             top: -2px;
             left: -2px;
-            border-radius: 20px;
+            border-radius: 22px;
         }
 
         .paypal-button.paypal-shape-rect .paypal-button-content,
@@ -397,7 +397,7 @@ export let componentStyle = `
 
     /* Credit  Small */
 
-    @media only screen and (min-width: 100px) and (min-height: 22px) {
+    @media only screen and (min-width: 148px) and (min-height: 42px) {
 
         .paypal-button.paypal-style-credit .paypal-button-content img  {
             height: 16px;
@@ -427,4 +427,63 @@ export let componentStyle = `
         }
 
     }
+    
+    /* Pay Button */
+
+            @media only screen and (max-width : 147px) {
+                .paypal-button.paypal-style-pay {
+                    display: none;
+                }
+            }
+
+            .paypal-button.paypal-style-pay {
+                min-width: 148px;
+                min-height: 42px;
+            }
+
+            /* Pay  Small */
+
+            @media only screen and (min-width: 148px) and (min-height: 42px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 11px;
+                    padding-top: 2px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img  {
+                    height: 16px;
+                    padding-top: 6px;
+                }
+            }
+
+
+            /* Pay Medium */
+
+            @media only screen and (min-width: 180px) and (min-height: 48px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 13px;
+                    padding-top: 3px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img  {
+                    height: 20px;
+                    padding-top: 7px;
+                }
+
+            }
+
+            /* Pay Large */
+
+            @media only screen and (min-width: 250px) and (min-height: 60px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 15px;
+                    padding-top: 4px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img {
+                    height: 28px;
+                    padding-top: 8px;
+                }
+
+            }
+
 `;
