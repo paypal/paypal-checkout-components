@@ -30,7 +30,7 @@ export let config = {
 
     buttonStyles: {
         size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
-        label: [ 'checkout', 'credit' ]
+        label: [ 'checkout', 'credit', 'pay' ]
     },
 
     throttles: {

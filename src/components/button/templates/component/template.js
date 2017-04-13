@@ -23,9 +23,9 @@ let buttonConfig = {
 
     pay: {
         colors: [ 'gold', 'blue', 'silver' ],
-        sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
+        sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { gold: 'blue', silver: 'blue', blue: 'white' },
+        logos:   { gold: 'blue_nopp', silver: 'blue_nopp', blue: 'white_nopp' },
         label: true,
         logo: true,
         tagline: false
