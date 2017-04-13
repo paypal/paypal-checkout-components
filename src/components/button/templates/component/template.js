@@ -1,7 +1,5 @@
 /* @flow */
 
-import { config } from '../../../../config';
-
 import { componentLogos } from './logos';
 import { componentStyle } from './style';
 import { componentScript } from './script';
@@ -55,7 +53,12 @@ let buttonConfig = {
 
 export function componentTemplate({ props } : { props : Object }) : string {
 
-    let { country, lang } = config.locale;
+    if (!props.locale) {
+        throw new Error(`Expected props.locale to be set`);
+    }
+
+    let [ lang, country ] = props.locale.split('_');
+
     let content = componentContentJSON[country][lang];
 
     let style = props.style || {};
@@ -113,7 +116,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Could not build content for button`);
     }
 
-    let labelTag = conf.tagline ? content[`${label}_tag`] : '';
+    let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
 
     return `
 

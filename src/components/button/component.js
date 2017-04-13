@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
@@ -266,7 +266,11 @@ export let Button = xcomponent.create({
         locale: {
             type: 'string',
             required: false,
-            queryParam: 'locale.x'
+            queryParam: 'locale.x',
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${lang}_${country}`;
+            }
         },
 
         style: {

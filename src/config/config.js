@@ -387,6 +387,11 @@ export let config = {
         return `${config.apiUrl}${config.experienceApiUri}`;
     },
 
+    defaultLocale: {
+        country: 'US',
+        lang: 'en'
+    },
+
     locales: {
         AD: [ 'en', 'fr', 'es', 'zh' ],
         AE: [ 'en', 'fr', 'es', 'zh', 'ar' ],

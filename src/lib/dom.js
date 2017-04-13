@@ -3,6 +3,8 @@
 import * as $logger from 'beaver-logger/client';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
+import { config } from '../config';
+
 import { memoize } from './util';
 import { isDevice } from './device';
 
@@ -245,4 +247,48 @@ export function hasMetaViewPort() : boolean {
     }
 
     return true;
+}
+
+export function normalizeLocale(locale : string) : ?{ country : string, lang : string } {
+
+    if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+        let [ lang, country ] = locale.split(/[-_]/);
+        if (config.locales[country] && config.locales[country].indexOf(lang) !== -1) {
+            return { country, lang };
+        }
+    }
+
+    if (locale && locale.match(/^[a-z]{2}$/)) {
+        if (config.locales[config.defaultLocale.country].indexOf(locale) !== -1) {
+            return { country: config.defaultLocale.country, lang: locale };
+        }
+    }
+}
+
+export function getBrowserLocale() : { country : string, lang : string } {
+
+    if (window.navigator.languages) {
+        for (let locale of Array.prototype.slice.apply(window.navigator.languages)) {
+            let loc = normalizeLocale(locale);
+            if (loc) {
+                return loc;
+            }
+        }
+    }
+
+    if (window.navigator.language) {
+        let loc = normalizeLocale(window.navigator.language);
+        if (loc) {
+            return loc;
+        }
+    }
+
+    if (window.navigator.userLanguage) {
+        let loc = normalizeLocale(window.navigator.userLanguage);
+        if (loc) {
+            return loc;
+        }
+    }
+
+    return config.defaultLocale;
 }
