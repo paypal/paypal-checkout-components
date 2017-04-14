@@ -507,17 +507,6 @@
         </button>
     </div>
 
-    <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
-
-    <script>
-        window.angular = {
-            value: function() {}
-        };
-
-        window.meta    = {{json meta}};
-        window.cookies = {{json cookies}};
-    </script>
-
     <script>
         (function() {
             function getElements(selector) {
@@ -599,6 +588,17 @@
             window.addEventListener('load', hideOverflowElements);
             document.addEventListener('DOMContentLoaded', hideOverflowElements);
         })();
+    </script>
+
+    <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
+
+    <script>
+        window.angular = {
+            value: function() {}
+        };
+
+        window.meta    = {{json meta}};
+        window.cookies = {{json cookies}};
     </script>
 
     <script src="{{meta.configUrl}}/js/config.js" onerror="scripterror(event)"></script>
