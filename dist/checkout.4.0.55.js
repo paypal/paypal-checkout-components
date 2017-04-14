@@ -8932,7 +8932,7 @@
             componentTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.55";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects, "4.0.55";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -9463,7 +9463,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.55";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects, "4.0.55";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -9945,7 +9945,7 @@
             return config;
         });
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.55.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
             version: "4.0.55",
@@ -10068,7 +10068,8 @@
             },
             loggerUri: "/webapps/hermes/api/logger",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.55");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
+                "4.0.55");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12405,4 +12406,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.js.map
+//# sourceMappingURL=checkout.4.0.55.js.map

@@ -8,47 +8,59 @@
             l: !1,
             exports: {}
         };
-        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
-        module.l = !0, module.exports;
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        module.l = !0;
+        return module.exports;
     }
     var installedModules = {};
-    return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
+    __webpack_require__.m = modules;
+    __webpack_require__.c = installedModules;
     __webpack_require__.i = function(value) {
         return value;
-    }, __webpack_require__.d = function(exports, name, getter) {
+    };
+    __webpack_require__.d = function(exports, name, getter) {
         __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
             configurable: !1,
             enumerable: !0,
             get: getter
         });
-    }, __webpack_require__.n = function(module) {
+    };
+    __webpack_require__.n = function(module) {
         var getter = module && module.__esModule ? function() {
             return module.default;
         } : function() {
             return module;
         };
-        return __webpack_require__.d(getter, "a", getter), getter;
-    }, __webpack_require__.o = function(object, property) {
+        __webpack_require__.d(getter, "a", getter);
+        return getter;
+    };
+    __webpack_require__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = "./src/loader/index.js");
+    };
+    __webpack_require__.p = "";
+    return __webpack_require__(__webpack_require__.s = "./src/loader/index.js");
 }({
     "./node_modules/webpack/buildin/harmony-module.js": function(module, exports) {
         module.exports = function(originalModule) {
             if (!originalModule.webpackPolyfill) {
                 var module = Object.create(originalModule);
-                module.children || (module.children = []), Object.defineProperty(module, "loaded", {
+                module.children || (module.children = []);
+                Object.defineProperty(module, "loaded", {
                     enumerable: !0,
                     get: function() {
                         return module.l;
                     }
-                }), Object.defineProperty(module, "id", {
+                });
+                Object.defineProperty(module, "id", {
                     enumerable: !0,
                     get: function() {
                         return module.i;
                     }
-                }), Object.defineProperty(module, "exports", {
+                });
+                Object.defineProperty(module, "exports", {
                     enumerable: !0
-                }), module.webpackPolyfill = 1;
+                });
+                module.webpackPolyfill = 1;
             }
             return module;
         };
@@ -56,12 +68,13 @@
     "./src/lib/namespace.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function _defineProperty(obj, key, value) {
-            return key in obj ? Object.defineProperty(obj, key, {
+            key in obj ? Object.defineProperty(obj, key, {
                 value: value,
                 enumerable: !0,
                 configurable: !0,
                 writable: !0
-            }) : obj[key] = value, obj;
+            }) : obj[key] = value;
+            return obj;
         }
         function extendNamespace(xports) {
             for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -70,7 +83,8 @@
                     if (_i >= _iterator.length) break;
                     _ref = _iterator[_i++];
                 } else {
-                    if (_i = _iterator.next(), _i.done) break;
+                    _i = _iterator.next();
+                    if (_i.done) break;
                     _ref = _i.value;
                 }
                 var name = _ref, namespace = window[name];
@@ -80,11 +94,12 @@
                         if (_i3 >= _iterator3.length) break;
                         _ref3 = _iterator3[_i3++];
                     } else {
-                        if (_i3 = _iterator3.next(), _i3.done) break;
+                        _i3 = _iterator3.next();
+                        if (_i3.done) break;
                         _ref3 = _i3.value;
                     }
                     var childname = _ref3, childnamespace = xports[childname];
-                    namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace)), 
+                    namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
                     xports = _extends({}, namespace, xports, _defineProperty({}, childname, childnamespace));
                 }
             }
@@ -94,7 +109,8 @@
                     if (_i2 >= _iterator2.length) break;
                     _ref2 = _iterator2[_i2++];
                 } else {
-                    if (_i2 = _iterator2.next(), _i2.done) break;
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
                     _ref2 = _i2.value;
                 }
                 var _name = _ref2;
@@ -126,7 +142,9 @@
             return Boolean(version === __WEBPACK_IMPORTED_MODULE_0__config__.a.major_version || version === __WEBPACK_IMPORTED_MODULE_0__config__.a.latest_version);
         }
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js");
-        __webpack_exports__.c = isXComponent, __webpack_exports__.b = getVersion, __webpack_exports__.a = isLatest;
+        __webpack_exports__.c = isXComponent;
+        __webpack_exports__.b = getVersion;
+        __webpack_exports__.a = isLatest;
     },
     "./src/loader/config.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -165,7 +183,8 @@
                 value: !0
             });
             var __WEBPACK_IMPORTED_MODULE_0__load__ = __webpack_require__("./src/loader/load.js");
-            __webpack_exports__.onLoadCheckoutIntegration = onLoadCheckoutIntegration, module.exports.default = module.exports;
+            __webpack_exports__.onLoadCheckoutIntegration = onLoadCheckoutIntegration;
+            module.exports.default = module.exports;
         }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/harmony-module.js")(module));
     },
     "./src/loader/load.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -179,8 +198,9 @@
         }
         function getIntegrationProps() {
             var props = _extends({}, __WEBPACK_IMPORTED_MODULE_0__config__.a.script_props), query = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.a)();
-            return query.env && (props["data-env"] = query.env), query.stage && (props["data-stage"] = query.stage), 
-            props;
+            query.env && (props["data-env"] = query.env);
+            query.stage && (props["data-stage"] = query.stage);
+            return props;
         }
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js"), __WEBPACK_IMPORTED_MODULE_1__responder__ = __webpack_require__("./src/loader/responder.js"), __WEBPACK_IMPORTED_MODULE_2__component__ = __webpack_require__("./src/loader/component.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/loader/util.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -200,8 +220,8 @@
                 return err && !urls.latest ? __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(urls.major + "?t=" + Date.now(), __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, callback) : callback(err, result);
             });
         }(function(err, result) {
-            if (err && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.c)("Failed to load checkout.js", err.stack || err.toString()), 
-            err || result) return integrationResponder.respond(err, result);
+            err && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.c)("Failed to load checkout.js", err.stack || err.toString());
+            if (err || result) return integrationResponder.respond(err, result);
         });
     },
     "./src/loader/responder.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -211,10 +231,14 @@
                 if (loaded) for (;callbacks.length; ) callbacks.shift().call(null, err, res);
             }
             function respond(error, result) {
-                loaded = !0, err = error, res = result, flush();
+                loaded = !0;
+                err = error;
+                res = result;
+                flush();
             }
             function listen(callback) {
-                callbacks.push(callback), flush();
+                callbacks.push(callback);
+                flush();
             }
             var callbacks = [], loaded = !1, err = void 0, res = void 0;
             return {
@@ -231,9 +255,11 @@
             var container = document.body || document.head;
             if (!container) return callback(new Error("Can not find container to insert script into"));
             var script = document.createElement("script");
-            script.src = url, script.onload = function() {
+            script.src = url;
+            script.onload = function() {
                 return window[prop] ? callback(null, window[prop]) : callback(new Error("Expected " + prop + " to be present on window"));
-            }, script.onerror = function(err) {
+            };
+            script.onerror = function(err) {
                 return callback(err);
             };
             for (var _iterator = Object.keys(attrs), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -242,7 +268,8 @@
                     if (_i >= _iterator.length) break;
                     _ref = _iterator[_i++];
                 } else {
-                    if (_i = _iterator.next(), _i.done) break;
+                    _i = _iterator.next();
+                    if (_i.done) break;
                     _ref = _i.value;
                 }
                 var attr = _ref;
@@ -256,8 +283,8 @@
         }
         function parseQuery() {
             var queryString = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window.location.search, params = {};
-            if (queryString && 0 === queryString.indexOf("?") && (queryString = queryString.slice(1)), 
-            !queryString) return params;
+            queryString && 0 === queryString.indexOf("?") && (queryString = queryString.slice(1));
+            if (!queryString) return params;
             if (queryString.indexOf("=") === -1) throw new Error("Can not parse query string params: " + queryString);
             for (var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref2;
@@ -265,15 +292,19 @@
                     if (_i2 >= _iterator2.length) break;
                     _ref2 = _iterator2[_i2++];
                 } else {
-                    if (_i2 = _iterator2.next(), _i2.done) break;
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
                     _ref2 = _i2.value;
                 }
                 var pair = _ref2;
-                pair = pair.split("="), pair[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+                pair = pair.split("=");
+                pair[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
         }
-        __webpack_exports__.b = loadScript, __webpack_exports__.c = warn, __webpack_exports__.a = parseQuery;
+        __webpack_exports__.b = loadScript;
+        __webpack_exports__.c = warn;
+        __webpack_exports__.a = parseQuery;
     }
 }));
 //# sourceMappingURL=checkout.child.loader.js.map
