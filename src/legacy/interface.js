@@ -6,7 +6,7 @@ import * as logger from 'beaver-logger/client';
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV } from '../config';
-import { setupPostBridge } from '../compat';
+import { setupPostBridge } from './postBridge';
 import { supportsPopups, getElements, once, checkpoint, safeJSON, extendUrl, isIEIntranet } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
