@@ -11,6 +11,7 @@ import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } f
 
 import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
 import { config, ENV } from '../../config';
+import { onLegacyPaymentAuthorize } from '../../compat';
 
 function addHeader(name, value) : void {
 
@@ -318,7 +319,7 @@ export let Checkout = xcomponent.create({
             def() : Function {
                 return function(url) : SyncPromise<void> {
                     $logger.warn('fallback', { url });
-                    return window.onLegacyPaymentAuthorize(this.props.onAuthorize);
+                    return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
             }
         },
