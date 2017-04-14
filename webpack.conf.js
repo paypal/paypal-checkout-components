@@ -27,7 +27,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false }) {
+function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false, vars = {} }) {
 
     let config = {
         module: {
@@ -73,6 +73,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
                 __DEFAULT_LOG_LEVEL__: JSON.stringify('info'),
+                ...vars,
                 ...getVersionVars()
             }),
             new webpack.NamedModulesPlugin(),
@@ -98,12 +99,25 @@ let nextMinorVersion = getNextMinorVersion();
 
 module.exports.webpack_tasks = {
 
-    major: {
+    base: {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMajorVersion,
             filename: `${FILE_NAME}.js`
+        })
+    },
+
+    major: {
+        src: 'src/load.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
+            vars: {
+                __IE_POPUP_SUPPORT__: JSON.stringify(false),
+                __LEGACY_SUPPORT__: JSON.stringify(false)
+            }
         })
     },
 

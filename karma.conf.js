@@ -147,6 +147,7 @@ module.exports = function(config) {
                     __TEST__:              JSON.stringify(true),
                     __IE_POPUP_SUPPORT__:  JSON.stringify(true),
                     __POPUP_SUPPORT__:     JSON.stringify(true),
+                    __LEGACY_SUPPORT__:    JSON.stringify(true),
                     __FILE_NAME__:         JSON.stringify('checkout.js'),
                     __FILE_VERSION__:      JSON.stringify('4'),
                     __MAJOR_VERSION__:     JSON.stringify('4'),
