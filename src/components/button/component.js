@@ -267,9 +267,23 @@ export let Button = xcomponent.create({
             type: 'string',
             required: false,
             queryParam: 'locale.x',
+
             def() : string {
                 let { lang, country } = getBrowserLocale();
                 return `${lang}_${country}`;
+            },
+
+            validate(locale) {
+
+                if (!locale || !locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                    throw new Error(`Invalid locale: ${locale}`);
+                }
+
+                let [ lang, country ] = locale.split('_');
+
+                if (!config.locales[country] || config.locales[country].indexOf(lang) === -1) {
+                    throw new Error(`Invalid locale: ${locale}`);
+                }
             }
         },
 
