@@ -3,6 +3,7 @@
 import { config, LOG_LEVEL } from '../config';
 
 const BEACON_URL = 'https://www.paypal.com/xoplatform/logger/api/logger';
+const APP_NAME = 'checkoutjs';
 
 export function beacon(event : string, payload : Object = {}) {
     try {
@@ -11,6 +12,7 @@ export function beacon(event : string, payload : Object = {}) {
         payload.version = __MINOR_VERSION__;
         payload.host = window.location.host;
         payload.uid = window.pp_uid;
+        payload.appName = APP_NAME;
 
         let query = [];
 
