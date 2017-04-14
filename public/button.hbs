@@ -304,7 +304,7 @@
                     padding: 2px;
                     top: -2px;
                     left: -2px;
-                    border-radius: 20px;
+                    border-radius: 22px;
                 }
 
                 .paypal-button.paypal-shape-rect .paypal-button-content,
@@ -437,113 +437,171 @@
 
             }
 
+            /* Pay Button */
+
+            @media only screen and (max-width : 147px) {
+                .paypal-button.paypal-style-pay {
+                    display: none;
+                }
+            }
+
+            .paypal-button.paypal-style-pay {
+                min-width: 148px;
+                min-height: 42px;
+            }
+
+            /* Pay  Small */
+
+            @media only screen and (min-width: 148px) and (min-height: 42px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 11px;
+                    padding-top: 2px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img  {
+                    height: 16px;
+                    padding-top: 6px;
+                }
+            }
+
+
+            /* Pay Medium */
+
+            @media only screen and (min-width: 180px) and (min-height: 48px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 13px;
+                    padding-top: 3px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img  {
+                    height: 20px;
+                    padding-top: 7px;
+                }
+
+            }
+
+            /* Pay Large */
+
+            @media only screen and (min-width: 250px) and (min-height: 60px) {
+
+                .paypal-button.paypal-style-pay .paypal-button-content .text {
+                    font-size: 15px;
+                    padding-top: 4px;
+                }
+                .paypal-button.paypal-style-pay .paypal-button-content img {
+                    height: 28px;
+                    padding-top: 8px;
+                }
+
+            }
+
 
         </style>
     </head>
 
     <body>
-        <div id="paypal-button-container">
-            <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
-                <div class="paypal-button-content">{{{buttonConfig.logo}}}</div>
-                <div class="paypal-button-tag-content">{{buttonConfig.label_tag}}</div>
-            </button>
-        </div>
+    <div id="paypal-button-container">
+        <button class="paypal-button paypal-style-{{buttonConfig.label}} paypal-color-{{buttonConfig.color}} paypal-size-{{buttonConfig.size}} paypal-shape-{{buttonConfig.shape}} {{buttonConfig.locale}}" type="submit">
+            <div class="paypal-button-content">{{{buttonConfig.logo}}}</div>
+            <div class="paypal-button-tag-content">{{buttonConfig.label_tag}}</div>
+        </button>
+    </div>
 
-        <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
+    <script src="{{config.urls.incontextScript}}/checkout{{#if meta.version}}.{{meta.version}}{{/if}}.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="{{meta.env}}" {{#if meta.icstage}}data-stage="{{meta.icstage}}"{{/if}}></script>
 
-        <script>
-            window.angular = {
-                value: function() {}
-            };
+    <script>
+        window.angular = {
+            value: function() {}
+        };
 
-            window.meta    = {{json meta}};
-            window.cookies = {{json cookies}};
-        </script>
+        window.meta    = {{json meta}};
+        window.cookies = {{json cookies}};
+    </script>
 
-        <script>
-            (function() {
-                function getElements(selector) {
-                    return Array.prototype.slice.call(document.querySelectorAll(selector));
+    <script>
+        (function() {
+            function getElements(selector) {
+                return Array.prototype.slice.call(document.querySelectorAll(selector));
+            }
+
+            function isVisible(el) {
+                return el.style.display !== 'none';
+            }
+
+            function showElement(el, displayType) {
+                el.style.display = displayType || 'block';
+            }
+
+            function hideElement(el) {
+                el.style.display = 'none';
+            }
+
+            function makeElementVisible(el) {
+                el.style.visibility = '';
+            }
+
+            function makeElementInvisible(el) {
+                el.style.visibility = 'hidden';
+            }
+
+            function isOverflowing(el) {
+
+                if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
+                    return true;
                 }
 
-                function isVisible(el) {
-                    return el.style.display !== 'none';
+                var e = el.getBoundingClientRect();
+                var p = el.parentNode.getBoundingClientRect();
+
+                if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
+                    return true;
                 }
 
-                function showElement(el, displayType) {
-                    el.style.display = displayType || 'block';
-                }
+                return false;
+            }
 
-                function hideElement(el) {
-                    el.style.display = 'none';
-                }
+            function hideIfOverflow(selector, displayType) {
+                getElements(selector).forEach(function(el) {
 
-                function makeElementVisible(el) {
-                    el.style.visibility = '';
-                }
-
-                function makeElementInvisible(el) {
-                    el.style.visibility = 'hidden';
-                }
-
-                function isOverflowing(el) {
-
-                    if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {
-                        return true;
+                    if (isVisible(el) && isOverflowing(el)) {
+                        return hideElement(el);
                     }
 
-                    var e = el.getBoundingClientRect();
-                    var p = el.parentNode.getBoundingClientRect();
+                    makeElementInvisible(el);
+                    setTimeout(function() {
+                        showElement(el, displayType);
 
-                    if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {
-                        return true;
+                        if (isOverflowing(el)) {
+                            hideElement(el);
+                        } else {
+                            makeElementVisible(el);
+                        }
+                    }, 1);
+                });
+            }
+
+            function hideOverflowElements() {
+                hideIfOverflow('.paypal-button-tag-content', 'block');
+                hideIfOverflow('.paypal-button-content .text', 'inline-block');
+
+                getElements('.paypal-button-content img').forEach(function(img) {
+                    if (isOverflowing(img)) {
+                        getElements('.paypal-button-content .text').forEach(function(el) {
+                            hideElement(el);
+                        });
                     }
+                });
+            }
 
-                    return false;
-                }
+            hideOverflowElements();
 
-                function hideIfOverflow(selector, displayType) {
-                    getElements(selector).forEach(function(el) {
+            window.addEventListener('resize', hideOverflowElements);
+            window.addEventListener('load', hideOverflowElements);
+            document.addEventListener('DOMContentLoaded', hideOverflowElements);
+        })();
+    </script>
 
-                        if (isVisible(el) && isOverflowing(el)) {
-                            return hideElement(el);
-                        }
-
-                        makeElementInvisible(el);
-                        setTimeout(function() {
-                            showElement(el, displayType);
-
-                            if (isOverflowing(el)) {
-                                hideElement(el);
-                            } else {
-                                makeElementVisible(el);
-                            }
-                        }, 1);
-                    });
-                }
-
-                function hideOverflowElements() {
-                    hideIfOverflow('.paypal-button-tag-content', 'block');
-                    hideIfOverflow('.paypal-button-content .text', 'inline-block');
-
-                    getElements('.paypal-button-content img').forEach(function(img) {
-                        if (isOverflowing(img)) {
-                            getElements('.paypal-button-content .text').forEach(function(el) {
-                                hideElement(el);
-                            });
-                        }
-                    });
-                }
-
-                hideOverflowElements();
-
-                window.addEventListener('resize', hideOverflowElements);
-                window.addEventListener('load', hideOverflowElements);
-                document.addEventListener('DOMContentLoaded', hideOverflowElements);
-            })();
-        </script>
-
-        <script src="{{meta.configUrl}}/js/config.js" onerror="scripterror(event)"></script>
-        <script src="{{meta.staticUrl}}/js/button.js" onerror="scripterror(event)"></script>
+    <script src="{{meta.configUrl}}/js/config.js" onerror="scripterror(event)"></script>
+    <script src="{{meta.staticUrl}}/js/button.js" onerror="scripterror(event)"></script>
     </body>
 </html>
