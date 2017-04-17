@@ -15,7 +15,7 @@ let buttonConfig = {
         colors: [ 'gold', 'blue', 'silver' ],
         sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { gold: 'blue', silver: 'blue', blue: 'white' },
+        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
         label: true,
         logo: true,
         tagline: true
@@ -25,19 +25,16 @@ let buttonConfig = {
         colors: [ 'gold', 'blue', 'silver' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { gold: 'blue_nopp', silver: 'blue_nopp', blue: 'white_nopp' },
-        label: true,
-        logo: true,
+        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
         tagline: false
     },
 
     credit: {
+        contentText: '${pp}${paypal}${credit}',
         colors: [ 'creditblue' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { creditblue: 'credit' },
-        label: false,
-        logo: true,
+        logos:  { creditblue: 'white' },
         tagline: true
     },
 
@@ -45,8 +42,6 @@ let buttonConfig = {
         colors: [ 'gold' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        label: true,
-        logo: false,
         tagline: false
     }
 };
@@ -59,15 +54,21 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let [ lang, country ] = props.locale.split('_');
 
-    let content = componentContentJSON[country][lang];
-
-    let style = props.style || {};
-    let label = style.label || defaultLabel;
-    let conf  = buttonConfig[label];
+    let style   = props.style || {};
+    let label   = style.label || defaultLabel;
+    let conf    = buttonConfig[label];
 
     if (!conf) {
         throw new Error(`Unexpected button label: ${label}`);
     }
+
+    let content = componentContentJSON[country][lang];
+
+    if (!content) {
+        throw new Error(`Could not find content for ${label} for ${lang}_${country}`);
+    }
+
+    let contentText = conf.contentText || content[label];
 
     let {
         color = conf.colors[0],
@@ -87,36 +88,19 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
-    let logo = conf.logos && componentLogos[conf.logos[color]];
+    let logoColor = conf.logos[color];
 
-    let hasLabel = Boolean(content[label]);
-    let hasLogo = hasLabel && content[label].indexOf('$wordmark$') !== -1;
-
-    if (conf.label && !hasLabel) {
-        throw new Error(`Expected to have label for ${label} button for ${lang}_${country}`);
-    }
-
-    if (conf.label && !hasLogo) {
-        throw new Error(`Expected to have logo placeholder for ${label} button for ${lang}_${country}`);
-    }
-
-    let labelText;
-
-    if (conf.label) {
-        labelText = content[label].split('$').map(segment => {
-            if (segment === 'wordmark') {
-                return `<img src="data:image/svg+xml;base64,${logo}" alt="PayPal">`;
-            } else if (segment) {
-                return `<span class="text">${segment}</span>`;
-            }
-        }).join('');
-    } else if (conf.logo) {
-        labelText = `<img src="data:image/svg+xml;base64,${logo}" alt="PayPal">`;
-    } else {
-        throw new Error(`Could not build content for button`);
-    }
+    let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
+        if (name) {
+            return componentLogos[name][logoColor];
+        } else if (text) {
+            return `<span class="text">${text}</span>`;
+        }
+    });
 
     let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
+
+    console.warn(conf.tagline, `${label}_tag`, content, content[`${label}_tag`]);
 
     return `
 
@@ -128,14 +112,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
         <body>
             <div id="paypal-button-container">
-                <button class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-size-${ size } paypal-shape-${ shape }" type="submit">
+                <div class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit">
                     <div class="paypal-button-content">
                         ${ labelText }
                     </div>
                     <div class="paypal-button-tag-content">
                         ${ labelTag }
                     </div>
-                </button>
+                </div>
             </div>
 
             <script>

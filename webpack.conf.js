@@ -45,7 +45,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                     }
                 },
                 {
-                    test: /\.(html?|css|json)$/,
+                    test: /\.(html?|css|json|svg)$/,
                     loader: 'raw-loader'
                 }
             ]

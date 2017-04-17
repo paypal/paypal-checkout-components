@@ -53,8 +53,11 @@ export function componentScript() {
     function hideIfOverflow(selector : string, displayType : string) {
         getElements(selector).forEach(el => {
 
-            if (isVisible(el) && isOverflowing(el)) {
-                return hideElement(el);
+            if (isVisible(el)) {
+                if (isOverflowing(el)) {
+                    return hideElement(el);
+                }
+                return;
             }
 
             makeElementInvisible(el);

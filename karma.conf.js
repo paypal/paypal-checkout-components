@@ -133,7 +133,7 @@ module.exports = function(config) {
                     },
 
                     {
-                        test: /\.(html?|css|json)$/,
+                        test: /\.(html?|css|json|svg)$/,
                         loader: 'raw-loader'
                     }
 
