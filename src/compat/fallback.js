@@ -40,6 +40,8 @@ export function onLegacyPaymentAuthorize(method : Function) : Promise<void> {
 
 window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize;
 
+window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize;
+
 // Post-Bridge / Button
 
 window.watchForLegacyFallback = (win : any) => {
