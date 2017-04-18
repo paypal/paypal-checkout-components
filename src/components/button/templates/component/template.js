@@ -100,8 +100,6 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
 
-    console.warn(conf.tagline, `${label}_tag`, content, content[`${label}_tag`]);
-
     return `
 
         <head>

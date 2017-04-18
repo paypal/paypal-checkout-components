@@ -5,7 +5,7 @@ import * as logger from 'beaver-logger/client';
 
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
-import { config, ENV } from '../config';
+import { config, ENV, FPTI } from '../config';
 import { setupPostBridge } from './postBridge';
 import { supportsPopups, getElements, once, checkpoint, safeJSON, extendUrl, isIEIntranet } from '../lib';
 import { LOG_PREFIX } from './constants';
@@ -187,8 +187,6 @@ function initPayPalCheckout(props = {}) : Object {
 
     let paypalCheckout = Checkout.init({
 
-        uid: window.pp_uid,
-
         onAuthorize(data, actions) : SyncPromise<void> {
             $logger.info(`payment_authorized`);
             onAuthorizeListener.trigger(data.paymentToken);
@@ -323,7 +321,7 @@ function handleClickHijack(element) : void {
 
 
 
-function listenClick(container, button, clickHandler, condition) : void {
+function listenClick(container, button, clickHandler, condition, track) : void {
 
     let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
@@ -346,6 +344,7 @@ function listenClick(container, button, clickHandler, condition) : void {
     element.addEventListener('click', (event : Event) => {
 
         checkpoint('flow_buttonclick');
+        track();
 
         let eligible = isLegacyEligible();
 
@@ -466,7 +465,19 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
         if (buttonElements.length) {
             buttonElements.forEach(el => {
                 $logger.info(`listen_click_custom_button`);
-                listenClick(el, el, options.click, options.condition);
+
+                $logger.track({
+                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_RENDER
+                });
+
+                listenClick(el, el, options.click, options.condition, () => {
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                    });
+                    $logger.flush();
+                });
             });
         } else {
             $logger.warn(`button_element_not_found`, { element: JSON.stringify(options.button) });
@@ -480,7 +491,7 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
         renderButtons(id, options).then(buttons => {
             buttons.forEach(button => {
                 $logger.info(`listen_click_paypal_button`);
-                listenClick(button.container, button.button, button.click, button.condition);
+                listenClick(button.container, button.button, button.click, button.condition, button.track);
             });
         })
     ]);

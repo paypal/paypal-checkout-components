@@ -5,8 +5,8 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
-import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale } from '../../lib';
+import { config, USERS, ENV, FPTI } from '../../config';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID } from '../../lib';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
@@ -100,6 +100,15 @@ export let Button = xcomponent.create({
 
     props: {
 
+        uid: {
+            type: 'string',
+            value: getPageID(),
+            def() : string {
+                return getPageID();
+            },
+            queryParam: true
+        },
+
         env: {
             type: 'string',
             required: false,
@@ -163,6 +172,18 @@ export let Button = xcomponent.create({
         commit: {
             type: 'boolean',
             required: false
+        },
+
+        onRender: {
+            type: 'function',
+            promisify: true,
+            required: false,
+            value() {
+                $logger.track({
+                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
+                });
+            }
         },
 
         onAuth: {
@@ -260,7 +281,22 @@ export let Button = xcomponent.create({
 
         onClick: {
             type: 'function',
-            required: false
+            required: false,
+            decorate(original) : Function {
+                return function() : void {
+
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_CLICK
+                    });
+
+                    $logger.flush();
+
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
+            }
         },
 
         locale: {

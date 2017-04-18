@@ -2,7 +2,7 @@
 
 import * as $logger from 'beaver-logger/client';
 
-import { config, ENV } from './config';
+import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
 
@@ -128,6 +128,11 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
 
     $logger.debug(`current_protocol_${currentProtocol}`);
 }
+
+$logger.track({
+    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
+});
 
 if (currentScript) {
 

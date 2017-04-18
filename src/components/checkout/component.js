@@ -9,8 +9,8 @@ import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
-import { config, ENV } from '../../config';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getPageID } from '../../lib';
+import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
 function addHeader(name, value) : void {
@@ -68,6 +68,15 @@ export let Checkout = xcomponent.create({
     containerTemplate,
 
     props: {
+
+        uid: {
+            type: 'string',
+            value: getPageID(),
+            def() : string {
+                return getPageID();
+            },
+            queryParam: true
+        },
 
         env: {
             type: 'string',
@@ -262,6 +271,15 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : Function {
                 return function(data) : void {
+
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_INIT,
+                        [ FPTI.KEY.TOKEN ]: data.paymentToken,
+                        [ FPTI.KEY.CONTEXT_ID ]: data.paymentToken
+                    });
+
+                    $logger.flush();
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;

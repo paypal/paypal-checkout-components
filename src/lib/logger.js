@@ -2,7 +2,8 @@
 
 import * as postRobot from 'post-robot/src';
 import * as $logger from 'beaver-logger/client';
-import { config } from '../config';
+import { config, FPTI } from '../config';
+import { getPageID } from './util';
 
 export function initLogger() {
 
@@ -13,7 +14,7 @@ export function initLogger() {
             env: config.env,
             country: config.locale.country,
             lang: config.locale.lang,
-            uid: window.pp_uid,
+            uid: getPageID(),
             ver: __MINOR_VERSION__
         };
     });
@@ -21,6 +22,12 @@ export function initLogger() {
     $logger.addMetaBuilder(() => {
         return {
             state: config.state
+        };
+    });
+
+    $logger.addTrackingBuilder(() => {
+        return {
+            [ FPTI.KEY.UID ]: getPageID()
         };
     });
 
@@ -44,5 +51,3 @@ export function setLogLevel(logLevel : string) {
     postRobot.CONFIG.LOG_LEVEL = logLevel;
     window.LOG_LEVEL = logLevel;
 }
-
-
