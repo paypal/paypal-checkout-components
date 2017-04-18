@@ -92,7 +92,7 @@
   },
   "dependencies": {
     "Base64": "^1.0.0",
-    "beaver-logger": "^2",
+    "beaver-logger": "^3",
     "body-parser": "^1.16.1",
     "braintree": "^2.0.0",
     "cookie-parser": "^1.4.3",
