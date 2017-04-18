@@ -40,42 +40,8 @@
     __webpack_require__.p = "";
     return __webpack_require__(__webpack_require__.s = "./src/loader/index.js");
 }({
-    "./node_modules/webpack/buildin/harmony-module.js": function(module, exports) {
-        module.exports = function(originalModule) {
-            if (!originalModule.webpackPolyfill) {
-                var module = Object.create(originalModule);
-                module.children || (module.children = []);
-                Object.defineProperty(module, "loaded", {
-                    enumerable: !0,
-                    get: function() {
-                        return module.l;
-                    }
-                });
-                Object.defineProperty(module, "id", {
-                    enumerable: !0,
-                    get: function() {
-                        return module.i;
-                    }
-                });
-                Object.defineProperty(module, "exports", {
-                    enumerable: !0
-                });
-                module.webpackPolyfill = 1;
-            }
-            return module;
-        };
-    },
     "./src/lib/namespace.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function _defineProperty(obj, key, value) {
-            key in obj ? Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: !0,
-                configurable: !0,
-                writable: !0
-            }) : obj[key] = value;
-            return obj;
-        }
         function extendNamespace(xports) {
             for (var namespaces = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [], childnamespaces = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [], _iterator = namespaces, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
@@ -89,7 +55,7 @@
                 }
                 var name = _ref, namespace = window[name];
                 if (namespace) for (var _iterator3 = childnamespaces, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
+                    var _extends2, _ref3;
                     if (_isArray3) {
                         if (_i3 >= _iterator3.length) break;
                         _ref3 = _iterator3[_i3++];
@@ -100,7 +66,8 @@
                     }
                     var childname = _ref3, childnamespace = xports[childname];
                     namespace[childname] && (childnamespace = _extends({}, namespace[childname], childnamespace));
-                    xports = _extends({}, namespace, xports, _defineProperty({}, childname, childnamespace));
+                    xports = _extends({}, namespace, xports, (_extends2 = {}, _extends2[childname] = childnamespace, 
+                    _extends2));
                 }
             }
             for (var _iterator2 = namespaces, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
@@ -171,21 +138,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(__webpack_require__("./src/loader/interface.js"), [ "paypal", "PAYPAL" ], [ "apps" ]);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(__webpack_require__("./src/loader/interface.js"), [ "paypal" ]);
     },
     "./src/loader/interface.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        (function(module) {
-            function onLoadCheckoutIntegration(callback) {
-                return __WEBPACK_IMPORTED_MODULE_0__load__.a.listen(callback);
-            }
-            Object.defineProperty(__webpack_exports__, "__esModule", {
-                value: !0
-            });
-            var __WEBPACK_IMPORTED_MODULE_0__load__ = __webpack_require__("./src/loader/load.js");
-            __webpack_exports__.onLoadCheckoutIntegration = onLoadCheckoutIntegration;
-            module.exports.default = module.exports;
-        }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/harmony-module.js")(module));
+        function onLoadCheckoutIntegration(callback) {
+            return __WEBPACK_IMPORTED_MODULE_0__load__.a.listen(callback);
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__load__ = __webpack_require__("./src/loader/load.js");
+        __webpack_exports__.onLoadCheckoutIntegration = onLoadCheckoutIntegration;
     },
     "./src/loader/load.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -285,7 +249,7 @@
             var queryString = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window.location.search, params = {};
             queryString && 0 === queryString.indexOf("?") && (queryString = queryString.slice(1));
             if (!queryString) return params;
-            if (queryString.indexOf("=") === -1) throw new Error("Can not parse query string params: " + queryString);
+            if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
             for (var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref2;
                 if (_isArray2) {
