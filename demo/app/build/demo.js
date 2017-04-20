@@ -376,7 +376,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "actions.payment.execute()"), ", which invokes the PayPal REST API directly to execute the payment.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Set to 'Pay Now'\n\n                commit: true,\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Set to 'Pay Now'\n\n                commit: true,\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -406,7 +406,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "actions.payment.execute()"), ", which invokes the PayPal REST API directly to execute the payment.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <div id="confirm" class="hidden">\n            <div>Ship to:</div>\n            <div><span id="recipient"></span>, <span id="line1"></span>, <span id="city"></span></div>\n            <div><span id="state"></span>, <span id="zip"></span>, <span id="country"></span></div>\n\n            <button id="confirmButton">Complete Payment</button>\n        </div>\n\n        <div id="thanks" class="hidden">\n            Thanks, <span id="thanksname"></span>!\n        </div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Get the payment details\n\n                    return actions.payment.get().then(function(data) {\n\n                        // Display the payment details and a confirmation button\n\n                        var shipping = data.payer.payer_info.shipping_address;\n\n                        document.querySelector('#recipient').innerText = shipping.recipient_name;\n                        document.querySelector('#line1').innerText     = shipping.line1;\n                        document.querySelector('#city').innerText      = shipping.city;\n                        document.querySelector('#state').innerText     = shipping.state;\n                        document.querySelector('#zip').innerText       = shipping.postal_code;\n                        document.querySelector('#country').innerText   = shipping.country_code;\n\n                        document.querySelector('#paypal-button-container').style.display = 'none';\n                        document.querySelector('#confirm').style.display = 'block';\n\n                        // Listen for click on confirm button\n\n                        document.querySelector('#confirmButton').addEventListener('click', function() {\n\n                            // Disable the button and show a loading message\n\n                            document.querySelector('#confirm').innerText = 'Loading...';\n                            document.querySelector('#confirm').disabled = true;\n\n                            // Execute the payment\n\n                            return actions.payment.execute().then(function() {\n\n                                // Show a thank-you note\n\n                                document.querySelector('#thanksname').innerText = shipping.recipient_name;\n\n                                document.querySelector('#confirm').style.display = 'none';\n                                document.querySelector('#thanks').style.display = 'block';\n                            });\n                        });\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        <div id="paypal-button-container"></div>\n\n        <div id="confirm" class="hidden">\n            <div>Ship to:</div>\n            <div><span id="recipient"></span>, <span id="line1"></span>, <span id="city"></span></div>\n            <div><span id="state"></span>, <span id="zip"></span>, <span id="country"></span></div>\n\n            <button id="confirmButton">Complete Payment</button>\n        </div>\n\n        <div id="thanks" class="hidden">\n            Thanks, <span id="thanksname"></span>!\n        </div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Get the payment details\n\n                    return actions.payment.get().then(function(data) {\n\n                        // Display the payment details and a confirmation button\n\n                        var shipping = data.payer.payer_info.shipping_address;\n\n                        document.querySelector('#recipient').innerText = shipping.recipient_name;\n                        document.querySelector('#line1').innerText     = shipping.line1;\n                        document.querySelector('#city').innerText      = shipping.city;\n                        document.querySelector('#state').innerText     = shipping.state;\n                        document.querySelector('#zip').innerText       = shipping.postal_code;\n                        document.querySelector('#country').innerText   = shipping.country_code;\n\n                        document.querySelector('#paypal-button-container').style.display = 'none';\n                        document.querySelector('#confirm').style.display = 'block';\n\n                        // Listen for click on confirm button\n\n                        document.querySelector('#confirmButton').addEventListener('click', function() {\n\n                            // Disable the button and show a loading message\n\n                            document.querySelector('#confirm').innerText = 'Loading...';\n                            document.querySelector('#confirm').disabled = true;\n\n                            // Execute the payment\n\n                            return actions.payment.execute().then(function() {\n\n                                // Show a thank-you note\n\n                                document.querySelector('#thanksname').innerText = shipping.recipient_name;\n\n                                document.querySelector('#confirm').style.display = 'none';\n                                document.querySelector('#thanks').style.display = 'block';\n                            });\n                        });\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -434,7 +434,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "shape"), " of the button can be specified to customize the button.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: 'credit',\n                    size:  'small', // small | medium\n                    shape: 'rect'   // pill | rect\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ],\n                        \n                        payer: {\n                            payment_method: 'paypal',\n                            external_selected_funding_instrument_type: 'CREDIT'\n                        }               \n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: 'credit',\n                    size:  'small', // small | medium\n                    shape: 'rect'   // pill | rect\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ],\n                        \n                        payer: {\n                            payment_method: 'paypal',\n                            external_selected_funding_instrument_type: 'CREDIT'\n                        }               \n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -492,7 +492,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "#paypal-button-container"), " element.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <!-- Render the radio fields and button containers -->\n\n        <label>\n            <input type="radio" name="payment-option" value="paypal" checked>\n            <img src="' + ctx.baseURL + '/static/img/paypal-mark.jpg" alt="Pay with Paypal">\n        </label>\n\n        <label>\n            <input type="radio" name="payment-option" value="card">\n            <img src="' + ctx.baseURL + "/static/img/card-mark.png\" alt=\"Accepting Visa, Mastercard, Discover and American Express\">\n        </label>\n\n        <div id=\"paypal-button-container\"></div>\n        <div id=\"card-button-container\" class=\"hidden\"><button>Continue</button></div>\n\n        <script>\n\n            // Helper functions\n\n            function getElements(el) {\n                return Array.prototype.slice.call(document.querySelectorAll(el));\n            }\n\n            function hideElement(el) {\n                document.body.querySelector(el).style.display = 'none';\n            }\n\n            function showElement(el) {\n                document.body.querySelector(el).style.display = 'block';\n            }\n\n            // Listen for changes to the radio fields\n\n            getElements('input[name=payment-option]').forEach(function(el) {\n                el.addEventListener('change', function(event) {\n\n                    // If PayPal is selected, show the PayPal button\n\n                    if (event.target.value === 'paypal') {\n                        hideElement('#card-button-container');\n                        showElement('#paypal-button-container');\n                    }\n\n                    // If Card is selected, show the standard continue button\n\n                    if (event.target.value === 'card') {\n                        showElement('#card-button-container');\n                        hideElement('#paypal-button-container');\n                    }\n                });\n            });\n\n            // Hide Non-PayPal button by default\n\n            hideElement('#card-button-container');\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                env: '" + ctx.env + "',\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                payment: function() {\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        \x3c!-- Render the radio fields and button containers --\x3e\n\n        <label>\n            <input type="radio" name="payment-option" value="paypal" checked>\n            <img src="' + ctx.baseURL + '/static/img/paypal-mark.jpg" alt="Pay with Paypal">\n        </label>\n\n        <label>\n            <input type="radio" name="payment-option" value="card">\n            <img src="' + ctx.baseURL + "/static/img/card-mark.png\" alt=\"Accepting Visa, Mastercard, Discover and American Express\">\n        </label>\n\n        <div id=\"paypal-button-container\"></div>\n        <div id=\"card-button-container\" class=\"hidden\"><button>Continue</button></div>\n\n        <script>\n\n            // Helper functions\n\n            function getElements(el) {\n                return Array.prototype.slice.call(document.querySelectorAll(el));\n            }\n\n            function hideElement(el) {\n                document.body.querySelector(el).style.display = 'none';\n            }\n\n            function showElement(el) {\n                document.body.querySelector(el).style.display = 'block';\n            }\n\n            // Listen for changes to the radio fields\n\n            getElements('input[name=payment-option]').forEach(function(el) {\n                el.addEventListener('change', function(event) {\n\n                    // If PayPal is selected, show the PayPal button\n\n                    if (event.target.value === 'paypal') {\n                        hideElement('#card-button-container');\n                        showElement('#paypal-button-container');\n                    }\n\n                    // If Card is selected, show the standard continue button\n\n                    if (event.target.value === 'card') {\n                        showElement('#card-button-container');\n                        hideElement('#paypal-button-container');\n                    }\n                });\n            });\n\n            // Hide Non-PayPal button by default\n\n            hideElement('#card-button-container');\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                env: '" + ctx.env + "',\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                payment: function() {\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -520,7 +520,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "paypal.request.post()"), " to call the merchant server, which invokes the PayPal REST API to execute the payment.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a call to the merchant server to set up the payment\n\n                    return paypal.request.post('" + ctx.baseURL + "/api/paypal/payment/create/').then(function(res) {\n                        return res.payToken;\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Make a call to the merchant server to execute the payment\n\n                    return paypal.request.post('" + ctx.baseURL + "/api/paypal/payment/execute/', {\n                        payToken: data.paymentID,\n                        payerId: data.payerID\n                    }).then(function (res) {\n\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a call to the merchant server to set up the payment\n\n                    return paypal.request.post('" + ctx.baseURL + "/api/paypal/payment/create/').then(function(res) {\n                        return res.payToken;\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Make a call to the merchant server to execute the payment\n\n                    return paypal.request.post('" + ctx.baseURL + "/api/paypal/payment/execute/', {\n                        payToken: data.paymentID,\n                        payerId: data.payerID\n                    }).then(function (res) {\n\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -548,7 +548,7 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "shape"), " of the button.")),
             code: function(ctx) {
-                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: 'checkout', // checkout || credit\n                    size:  'small',    // tiny | small | medium\n                    shape: 'pill',     // pill | rect\n                    color: 'blue'      // gold | blue | silver\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"><\/script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + "', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: 'checkout', // checkout || credit\n                    size:  'small',    // tiny | small | medium\n                    shape: 'pill',     // pill | rect\n                    color: 'blue'      // gold | blue | silver\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
     },
@@ -576,9 +576,237 @@ window.ppdemo = function(modules) {
                 className: "pre"
             }, "actions.payment.execute()"), ", which invokes the PayPal REST API directly to execute the payment.")),
             code: function(ctx) {
-                return "\n        <script src=\"https://www.paypalobjects.com/api/checkout.js\"></script>\n\n        <p id=\"msg\" class=\"hidden error\">Please check the checkbox</p>\n\n        <p>\n            <label><input id=\"check\" type=\"checkbox\"> Check here to continue</label>\n        </p>\n\n        <div id=\"paypal-button-container\"></div>\n\n        <script>\n\n            function isValid() {\n                return document.querySelector('#check').checked;\n            }\n\n            function onChangeCheckbox(handler) {\n                document.querySelector('#check').addEventListener('change', handler);\n            }\n\n            function toggleValidationMessage() {\n                document.querySelector('#msg').style.display = (isValid() ? 'none' : 'block');\n            }\n\n            function toggleButton(actions) {\n                return isValid() ? actions.enable() : actions.disable();\n            }\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: '" + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    local:      'alc_client1',\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                validate: function(actions) {\n                    toggleButton(actions);\n\n                    onChangeCheckbox(function() {\n                        toggleButton(actions);\n                    });\n                },\n\n                onClick: function() {\n                    toggleValidationMessage();\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        </script>\n    ";
+                return "\n        <script src=\"https://www.paypalobjects.com/api/checkout.js\"><\/script>\n\n        <p id=\"msg\" class=\"hidden error\">Please check the checkbox</p>\n\n        <p>\n            <label><input id=\"check\" type=\"checkbox\"> Check here to continue</label>\n        </p>\n\n        <div id=\"paypal-button-container\"></div>\n\n        <script>\n\n            function isValid() {\n                return document.querySelector('#check').checked;\n            }\n\n            function onChangeCheckbox(handler) {\n                document.querySelector('#check').addEventListener('change', handler);\n            }\n\n            function toggleValidationMessage() {\n                document.querySelector('#msg').style.display = (isValid() ? 'none' : 'block');\n            }\n\n            function toggleButton(actions) {\n                return isValid() ? actions.enable() : actions.disable();\n            }\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: '" + ctx.env + "', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    local:      'alc_client1',\n                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',\n                    production: 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ'\n                },\n\n                validate: function(actions) {\n                    toggleButton(actions);\n\n                    onChangeCheckbox(function() {\n                        toggleButton(actions);\n                    });\n                },\n\n                onClick: function() {\n                    toggleValidationMessage();\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function() {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return paypal.rest.payment.create(this.props.env, this.props.client, {\n                        transactions: [\n                            {\n                                amount: { total: '0.01', currency: 'USD' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        document.querySelector('#paypal-button-container').innerText = 'Payment Complete!';\n                    });\n                }\n\n            }, '#paypal-button-container');\n\n        <\/script>\n    ";
             }
         };
+    },
+    "./node_modules/create-react-class/factory.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        (function(process) {
+            function identity(fn) {
+                return fn;
+            }
+            function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
+                function validateTypeDef(Constructor, typeDef, location) {
+                    for (var propName in typeDef) typeDef.hasOwnProperty(propName) && "production" !== process.env.NODE_ENV && warning("function" == typeof typeDef[propName], "%s: %s type `%s` is invalid; it must be a function, usually from React.PropTypes.", Constructor.displayName || "ReactClass", ReactPropTypeLocationNames[location], propName);
+                }
+                function validateMethodOverride(isAlreadyDefined, name) {
+                    var specPolicy = ReactClassInterface.hasOwnProperty(name) ? ReactClassInterface[name] : null;
+                    ReactClassMixin.hasOwnProperty(name) && _invariant("OVERRIDE_BASE" === specPolicy, "ReactClassInterface: You are attempting to override `%s` from your class specification. Ensure that your method names do not overlap with React methods.", name);
+                    isAlreadyDefined && _invariant("DEFINE_MANY" === specPolicy || "DEFINE_MANY_MERGED" === specPolicy, "ReactClassInterface: You are attempting to define `%s` on your component more than once. This conflict may be due to a mixin.", name);
+                }
+                function mixSpecIntoComponent(Constructor, spec) {
+                    if (spec) {
+                        _invariant("function" != typeof spec, "ReactClass: You're attempting to use a component class or function as a mixin. Instead, just use a regular object.");
+                        _invariant(!isValidElement(spec), "ReactClass: You're attempting to use a component as a mixin. Instead, just use a regular object.");
+                        var proto = Constructor.prototype, autoBindPairs = proto.__reactAutoBindPairs;
+                        spec.hasOwnProperty(MIXINS_KEY) && RESERVED_SPEC_KEYS.mixins(Constructor, spec.mixins);
+                        for (var name in spec) if (spec.hasOwnProperty(name) && name !== MIXINS_KEY) {
+                            var property = spec[name], isAlreadyDefined = proto.hasOwnProperty(name);
+                            validateMethodOverride(isAlreadyDefined, name);
+                            if (RESERVED_SPEC_KEYS.hasOwnProperty(name)) RESERVED_SPEC_KEYS[name](Constructor, property); else {
+                                var isReactClassMethod = ReactClassInterface.hasOwnProperty(name), isFunction = "function" == typeof property, shouldAutoBind = isFunction && !isReactClassMethod && !isAlreadyDefined && !1 !== spec.autobind;
+                                if (shouldAutoBind) {
+                                    autoBindPairs.push(name, property);
+                                    proto[name] = property;
+                                } else if (isAlreadyDefined) {
+                                    var specPolicy = ReactClassInterface[name];
+                                    _invariant(isReactClassMethod && ("DEFINE_MANY_MERGED" === specPolicy || "DEFINE_MANY" === specPolicy), "ReactClass: Unexpected spec policy %s for key %s when mixing in component specs.", specPolicy, name);
+                                    "DEFINE_MANY_MERGED" === specPolicy ? proto[name] = createMergedResultFunction(proto[name], property) : "DEFINE_MANY" === specPolicy && (proto[name] = createChainedFunction(proto[name], property));
+                                } else {
+                                    proto[name] = property;
+                                    "production" !== process.env.NODE_ENV && "function" == typeof property && spec.displayName && (proto[name].displayName = spec.displayName + "_" + name);
+                                }
+                            }
+                        }
+                    } else if ("production" !== process.env.NODE_ENV) {
+                        var typeofSpec = void 0 === spec ? "undefined" : _typeof(spec), isMixinValid = "object" === typeofSpec && null !== spec;
+                        "production" !== process.env.NODE_ENV && warning(isMixinValid, "%s: You're attempting to include a mixin that is either null or not an object. Check the mixins included by the component, as well as any mixins they include themselves. Expected object but got %s.", Constructor.displayName || "ReactClass", null === spec ? null : typeofSpec);
+                    }
+                }
+                function mixStaticSpecIntoComponent(Constructor, statics) {
+                    if (statics) for (var name in statics) {
+                        var property = statics[name];
+                        if (statics.hasOwnProperty(name)) {
+                            var isReserved = name in RESERVED_SPEC_KEYS;
+                            _invariant(!isReserved, 'ReactClass: You are attempting to define a reserved property, `%s`, that shouldn\'t be on the "statics" key. Define it as an instance property instead; it will still be accessible on the constructor.', name);
+                            var isInherited = name in Constructor;
+                            _invariant(!isInherited, "ReactClass: You are attempting to define `%s` on your component more than once. This conflict may be due to a mixin.", name);
+                            Constructor[name] = property;
+                        }
+                    }
+                }
+                function mergeIntoWithNoDuplicateKeys(one, two) {
+                    _invariant(one && two && "object" === (void 0 === one ? "undefined" : _typeof(one)) && "object" === (void 0 === two ? "undefined" : _typeof(two)), "mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.");
+                    for (var key in two) if (two.hasOwnProperty(key)) {
+                        _invariant(void 0 === one[key], "mergeIntoWithNoDuplicateKeys(): Tried to merge two objects with the same key: `%s`. This conflict may be due to a mixin; in particular, this may be caused by two getInitialState() or getDefaultProps() methods returning objects with clashing keys.", key);
+                        one[key] = two[key];
+                    }
+                    return one;
+                }
+                function createMergedResultFunction(one, two) {
+                    return function() {
+                        var a = one.apply(this, arguments), b = two.apply(this, arguments);
+                        if (null == a) return b;
+                        if (null == b) return a;
+                        var c = {};
+                        mergeIntoWithNoDuplicateKeys(c, a);
+                        mergeIntoWithNoDuplicateKeys(c, b);
+                        return c;
+                    };
+                }
+                function createChainedFunction(one, two) {
+                    return function() {
+                        one.apply(this, arguments);
+                        two.apply(this, arguments);
+                    };
+                }
+                function bindAutoBindMethod(component, method) {
+                    var boundMethod = method.bind(component);
+                    if ("production" !== process.env.NODE_ENV) {
+                        boundMethod.__reactBoundContext = component;
+                        boundMethod.__reactBoundMethod = method;
+                        boundMethod.__reactBoundArguments = null;
+                        var componentName = component.constructor.displayName, _bind = boundMethod.bind;
+                        boundMethod.bind = function(newThis) {
+                            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
+                            if (newThis !== component && null !== newThis) "production" !== process.env.NODE_ENV && warning(!1, "bind(): React component methods may only be bound to the component instance. See %s", componentName); else if (!args.length) {
+                                "production" !== process.env.NODE_ENV && warning(!1, "bind(): You are binding a component method to the component. React does this for you automatically in a high-performance way, so you can safely remove this call. See %s", componentName);
+                                return boundMethod;
+                            }
+                            var reboundMethod = _bind.apply(boundMethod, arguments);
+                            reboundMethod.__reactBoundContext = component;
+                            reboundMethod.__reactBoundMethod = method;
+                            reboundMethod.__reactBoundArguments = args;
+                            return reboundMethod;
+                        };
+                    }
+                    return boundMethod;
+                }
+                function bindAutoBindMethods(component) {
+                    for (var pairs = component.__reactAutoBindPairs, i = 0; i < pairs.length; i += 2) {
+                        var autoBindKey = pairs[i], method = pairs[i + 1];
+                        component[autoBindKey] = bindAutoBindMethod(component, method);
+                    }
+                }
+                function createClass(spec) {
+                    var Constructor = identity(function(props, context, updater) {
+                        "production" !== process.env.NODE_ENV && "production" !== process.env.NODE_ENV && warning(this instanceof Constructor, "Something is calling a React component directly. Use a factory or JSX instead. See: https://fb.me/react-legacyfactory");
+                        this.__reactAutoBindPairs.length && bindAutoBindMethods(this);
+                        this.props = props;
+                        this.context = context;
+                        this.refs = emptyObject;
+                        this.updater = updater || ReactNoopUpdateQueue;
+                        this.state = null;
+                        var initialState = this.getInitialState ? this.getInitialState() : null;
+                        "production" !== process.env.NODE_ENV && void 0 === initialState && this.getInitialState._isMockFunction && (initialState = null);
+                        _invariant("object" === (void 0 === initialState ? "undefined" : _typeof(initialState)) && !Array.isArray(initialState), "%s.getInitialState(): must return an object or null", Constructor.displayName || "ReactCompositeComponent");
+                        this.state = initialState;
+                    });
+                    Constructor.prototype = new ReactClassComponent();
+                    Constructor.prototype.constructor = Constructor;
+                    Constructor.prototype.__reactAutoBindPairs = [];
+                    injectedMixins.forEach(mixSpecIntoComponent.bind(null, Constructor));
+                    mixSpecIntoComponent(Constructor, IsMountedMixin);
+                    mixSpecIntoComponent(Constructor, spec);
+                    Constructor.getDefaultProps && (Constructor.defaultProps = Constructor.getDefaultProps());
+                    if ("production" !== process.env.NODE_ENV) {
+                        Constructor.getDefaultProps && (Constructor.getDefaultProps.isReactClassApproved = {});
+                        Constructor.prototype.getInitialState && (Constructor.prototype.getInitialState.isReactClassApproved = {});
+                    }
+                    _invariant(Constructor.prototype.render, "createClass(...): Class specification must implement a `render` method.");
+                    if ("production" !== process.env.NODE_ENV) {
+                        "production" !== process.env.NODE_ENV && warning(!Constructor.prototype.componentShouldUpdate, "%s has a method called componentShouldUpdate(). Did you mean shouldComponentUpdate()? The name is phrased as a question because the function is expected to return a value.", spec.displayName || "A component");
+                        "production" !== process.env.NODE_ENV && warning(!Constructor.prototype.componentWillRecieveProps, "%s has a method called componentWillRecieveProps(). Did you mean componentWillReceiveProps()?", spec.displayName || "A component");
+                    }
+                    for (var methodName in ReactClassInterface) Constructor.prototype[methodName] || (Constructor.prototype[methodName] = null);
+                    return Constructor;
+                }
+                var injectedMixins = [], ReactClassInterface = {
+                    mixins: "DEFINE_MANY",
+                    statics: "DEFINE_MANY",
+                    propTypes: "DEFINE_MANY",
+                    contextTypes: "DEFINE_MANY",
+                    childContextTypes: "DEFINE_MANY",
+                    getDefaultProps: "DEFINE_MANY_MERGED",
+                    getInitialState: "DEFINE_MANY_MERGED",
+                    getChildContext: "DEFINE_MANY_MERGED",
+                    render: "DEFINE_ONCE",
+                    componentWillMount: "DEFINE_MANY",
+                    componentDidMount: "DEFINE_MANY",
+                    componentWillReceiveProps: "DEFINE_MANY",
+                    shouldComponentUpdate: "DEFINE_ONCE",
+                    componentWillUpdate: "DEFINE_MANY",
+                    componentDidUpdate: "DEFINE_MANY",
+                    componentWillUnmount: "DEFINE_MANY",
+                    updateComponent: "OVERRIDE_BASE"
+                }, RESERVED_SPEC_KEYS = {
+                    displayName: function(Constructor, _displayName) {
+                        Constructor.displayName = _displayName;
+                    },
+                    mixins: function(Constructor, _mixins) {
+                        if (_mixins) for (var i = 0; i < _mixins.length; i++) mixSpecIntoComponent(Constructor, _mixins[i]);
+                    },
+                    childContextTypes: function(Constructor, _childContextTypes) {
+                        "production" !== process.env.NODE_ENV && validateTypeDef(Constructor, _childContextTypes, "childContext");
+                        Constructor.childContextTypes = _assign({}, Constructor.childContextTypes, _childContextTypes);
+                    },
+                    contextTypes: function(Constructor, _contextTypes) {
+                        "production" !== process.env.NODE_ENV && validateTypeDef(Constructor, _contextTypes, "context");
+                        Constructor.contextTypes = _assign({}, Constructor.contextTypes, _contextTypes);
+                    },
+                    getDefaultProps: function(Constructor, _getDefaultProps) {
+                        Constructor.getDefaultProps ? Constructor.getDefaultProps = createMergedResultFunction(Constructor.getDefaultProps, _getDefaultProps) : Constructor.getDefaultProps = _getDefaultProps;
+                    },
+                    propTypes: function(Constructor, _propTypes) {
+                        "production" !== process.env.NODE_ENV && validateTypeDef(Constructor, _propTypes, "prop");
+                        Constructor.propTypes = _assign({}, Constructor.propTypes, _propTypes);
+                    },
+                    statics: function(Constructor, _statics) {
+                        mixStaticSpecIntoComponent(Constructor, _statics);
+                    },
+                    autobind: function() {}
+                }, IsMountedMixin = {
+                    componentDidMount: function() {
+                        this.__isMounted = !0;
+                    },
+                    componentWillUnmount: function() {
+                        this.__isMounted = !1;
+                    }
+                }, ReactClassMixin = {
+                    replaceState: function(newState, callback) {
+                        this.updater.enqueueReplaceState(this, newState, callback);
+                    },
+                    isMounted: function() {
+                        if ("production" !== process.env.NODE_ENV) {
+                            "production" !== process.env.NODE_ENV && warning(this.__didWarnIsMounted, "%s: isMounted is deprecated. Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.", this.constructor && this.constructor.displayName || this.name || "Component");
+                            this.__didWarnIsMounted = !0;
+                        }
+                        return !!this.__isMounted;
+                    }
+                }, ReactClassComponent = function() {};
+                _assign(ReactClassComponent.prototype, ReactComponent.prototype, ReactClassMixin);
+                return createClass;
+            }
+            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            }, _assign = __webpack_require__("./node_modules/object-assign/index.js"), emptyObject = __webpack_require__("./node_modules/fbjs/lib/emptyObject.js"), _invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
+            if ("production" !== process.env.NODE_ENV) var warning = __webpack_require__("./node_modules/fbjs/lib/warning.js");
+            var ReactPropTypeLocationNames, MIXINS_KEY = "mixins";
+            ReactPropTypeLocationNames = "production" !== process.env.NODE_ENV ? {
+                prop: "prop",
+                context: "context",
+                childContext: "child context"
+            } : {};
+            module.exports = factory;
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+    },
+    "./node_modules/create-react-class/index.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        var React = __webpack_require__("./node_modules/react/react.js"), factory = __webpack_require__("./node_modules/create-react-class/factory.js"), ReactNoopUpdateQueue = new React.Component().updater;
+        module.exports = factory(React.Component, React.isValidElement, ReactNoopUpdateQueue);
     },
     "./node_modules/fbjs/lib/EventListener.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -1092,13 +1320,13 @@ window.ppdemo = function(modules) {
             return node.removeEventListener ? node.removeEventListener(event, listener, !1) : node.detachEvent("on" + event, listener);
         }, exports.supportsHistory = function() {
             var ua = window.navigator.userAgent;
-            return (ua.indexOf("Android 2.") === -1 && ua.indexOf("Android 4.0") === -1 || ua.indexOf("Mobile Safari") === -1 || ua.indexOf("Chrome") !== -1 || ua.indexOf("Windows Phone") !== -1) && (window.history && "pushState" in window.history);
+            return (-1 === ua.indexOf("Android 2.") && -1 === ua.indexOf("Android 4.0") || -1 === ua.indexOf("Mobile Safari") || -1 !== ua.indexOf("Chrome") || -1 !== ua.indexOf("Windows Phone")) && (window.history && "pushState" in window.history);
         }, exports.supportsGoWithoutReloadUsingHash = function() {
-            return window.navigator.userAgent.indexOf("Firefox") === -1;
+            return -1 === window.navigator.userAgent.indexOf("Firefox");
         }, exports.supportsPopstateOnHashchange = function() {
-            return window.navigator.userAgent.indexOf("Trident") === -1;
+            return -1 === window.navigator.userAgent.indexOf("Trident");
         }, exports.isExtraneousPopstateEvent = function(event) {
-            return void 0 === event.state && navigator.userAgent.indexOf("CriOS") === -1;
+            return void 0 === event.state && -1 === navigator.userAgent.indexOf("CriOS");
         };
     },
     "./node_modules/history/lib/ExecutionEnvironment.js": function(module, exports, __webpack_require__) {
@@ -1130,7 +1358,7 @@ window.ppdemo = function(modules) {
                 };
             }(_warning), _LocationUtils = __webpack_require__("./node_modules/history/lib/LocationUtils.js"), _DOMUtils = __webpack_require__("./node_modules/history/lib/DOMUtils.js"), _DOMStateStorage = __webpack_require__("./node_modules/history/lib/DOMStateStorage.js"), _PathUtils = __webpack_require__("./node_modules/history/lib/PathUtils.js"), getHashPath = function() {
                 var href = window.location.href, hashIndex = href.indexOf("#");
-                return hashIndex === -1 ? "" : href.substring(hashIndex + 1);
+                return -1 === hashIndex ? "" : href.substring(hashIndex + 1);
             }, pushHashPath = function(path) {
                 return window.location.hash = path;
             }, replaceHashPath = function(path) {
@@ -1262,7 +1490,7 @@ window.ppdemo = function(modules) {
                 var _parsePath = parsePath(path), pathname = _parsePath.pathname, search = _parsePath.search, hash = _parsePath.hash;
                 return createPath({
                     pathname: pathname,
-                    search: search + (search.indexOf("?") === -1 ? "?" : "&") + key + "=" + value,
+                    search: search + (-1 === search.indexOf("?") ? "?" : "&") + key + "=" + value,
                     hash: hash
                 });
             }, exports.stripQueryStringValueFromPath = function(path, key) {
@@ -1284,12 +1512,12 @@ window.ppdemo = function(modules) {
                 var pathname = extractPath(path), search = "", hash = "";
                 "production" !== process.env.NODE_ENV && (0, _warning2.default)(path === pathname, 'A path must be pathname + search + hash only, not a full URL like "%s"', path);
                 var hashIndex = pathname.indexOf("#");
-                if (hashIndex !== -1) {
+                if (-1 !== hashIndex) {
                     hash = pathname.substring(hashIndex);
                     pathname = pathname.substring(0, hashIndex);
                 }
                 var searchIndex = pathname.indexOf("?");
-                if (searchIndex !== -1) {
+                if (-1 !== searchIndex) {
                     search = pathname.substring(searchIndex);
                     pathname = pathname.substring(0, searchIndex);
                 }
@@ -1437,7 +1665,7 @@ window.ppdemo = function(modules) {
                 _ExecutionEnvironment.canUseDOM || ("production" !== process.env.NODE_ENV ? (0, 
                 _invariant2.default)(!1, "Hash history needs a DOM") : (0, _invariant2.default)(!1));
                 var queryKey = options.queryKey, hashType = options.hashType;
-                "production" !== process.env.NODE_ENV && (0, _warning2.default)(queryKey !== !1, "Using { queryKey: false } no longer works. Instead, just don't use location state if you don't want a key in your URL query string");
+                "production" !== process.env.NODE_ENV && (0, _warning2.default)(!1 !== queryKey, "Using { queryKey: false } no longer works. Instead, just don't use location state if you don't want a key in your URL query string");
                 "string" != typeof queryKey && (queryKey = "_k");
                 null == hashType && (hashType = "slash");
                 if (!(hashType in HashPathCoders)) {
@@ -1522,8 +1750,8 @@ window.ppdemo = function(modules) {
                     });
                 }, function(message) {
                     getUserConfirmation && "string" == typeof message ? getUserConfirmation(message, function(ok) {
-                        return callback(ok !== !1);
-                    }) : callback(message !== !1);
+                        return callback(!1 !== ok);
+                    }) : callback(!1 !== message);
                 });
             }, transitionTo = function(nextLocation) {
                 if (!(currentLocation && (0, _LocationUtils.locationsAreEqual)(currentLocation, nextLocation) || pendingLocation && (0, 
@@ -1537,10 +1765,10 @@ window.ppdemo = function(modules) {
                                     var prevPath = (0, _PathUtils.createPath)(currentLocation);
                                     (0, _PathUtils.createPath)(nextLocation) === prevPath && (0, _LocationUtils.statesAreEqual)(currentLocation.state, nextLocation.state) && (nextLocation.action = _Actions.REPLACE);
                                 }
-                                nextLocation.action === _Actions.POP ? updateLocation(nextLocation) : nextLocation.action === _Actions.PUSH ? pushLocation(nextLocation) !== !1 && updateLocation(nextLocation) : nextLocation.action === _Actions.REPLACE && replaceLocation(nextLocation) !== !1 && updateLocation(nextLocation);
+                                nextLocation.action === _Actions.POP ? updateLocation(nextLocation) : nextLocation.action === _Actions.PUSH ? !1 !== pushLocation(nextLocation) && updateLocation(nextLocation) : nextLocation.action === _Actions.REPLACE && !1 !== replaceLocation(nextLocation) && updateLocation(nextLocation);
                             } else if (currentLocation && nextLocation.action === _Actions.POP) {
                                 var prevIndex = allKeys.indexOf(currentLocation.key), nextIndex = allKeys.indexOf(nextLocation.key);
-                                prevIndex !== -1 && nextIndex !== -1 && go(prevIndex - nextIndex);
+                                -1 !== prevIndex && -1 !== nextIndex && go(prevIndex - nextIndex);
                             }
                         }
                     });
@@ -2020,6 +2248,306 @@ object-assign
             return 0;
         };
     },
+    "./node_modules/prop-types/checkPropTypes.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        (function(process) {
+            function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+                if ("production" !== process.env.NODE_ENV) for (var typeSpecName in typeSpecs) if (typeSpecs.hasOwnProperty(typeSpecName)) {
+                    var error;
+                    try {
+                        invariant("function" == typeof typeSpecs[typeSpecName], "%s: %s type `%s` is invalid; it must be a function, usually from React.PropTypes.", componentName || "React class", location, typeSpecName);
+                        error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+                    } catch (ex) {
+                        error = ex;
+                    }
+                    warning(!error || error instanceof Error, "%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).", componentName || "React class", location, typeSpecName, void 0 === error ? "undefined" : _typeof(error));
+                    if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+                        loggedTypeFailures[error.message] = !0;
+                        var stack = getStack ? getStack() : "";
+                        warning(!1, "Failed %s type: %s%s", location, error.message, null != stack ? stack : "");
+                    }
+                }
+            }
+            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            if ("production" !== process.env.NODE_ENV) var invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), ReactPropTypesSecret = __webpack_require__("./node_modules/prop-types/lib/ReactPropTypesSecret.js"), loggedTypeFailures = {};
+            module.exports = checkPropTypes;
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+    },
+    "./node_modules/prop-types/factory.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        var factory = __webpack_require__("./node_modules/prop-types/factoryWithTypeCheckers.js");
+        module.exports = function(isValidElement) {
+            return factory(isValidElement, !1);
+        };
+    },
+    "./node_modules/prop-types/factoryWithThrowingShims.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        var emptyFunction = __webpack_require__("./node_modules/fbjs/lib/emptyFunction.js"), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js");
+        module.exports = function() {
+            function shim() {
+                invariant(!1, "Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types");
+            }
+            function getShim() {
+                return shim;
+            }
+            shim.isRequired = shim;
+            var ReactPropTypes = {
+                array: shim,
+                bool: shim,
+                func: shim,
+                number: shim,
+                object: shim,
+                string: shim,
+                symbol: shim,
+                any: shim,
+                arrayOf: getShim,
+                element: shim,
+                instanceOf: getShim,
+                node: shim,
+                objectOf: getShim,
+                oneOf: getShim,
+                oneOfType: getShim,
+                shape: getShim
+            };
+            ReactPropTypes.checkPropTypes = emptyFunction;
+            ReactPropTypes.PropTypes = ReactPropTypes;
+            return ReactPropTypes;
+        };
+    },
+    "./node_modules/prop-types/factoryWithTypeCheckers.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        (function(process) {
+            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            }, emptyFunction = __webpack_require__("./node_modules/fbjs/lib/emptyFunction.js"), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), ReactPropTypesSecret = __webpack_require__("./node_modules/prop-types/lib/ReactPropTypesSecret.js"), checkPropTypes = __webpack_require__("./node_modules/prop-types/checkPropTypes.js");
+            module.exports = function(isValidElement, throwOnDirectAccess) {
+                function getIteratorFn(maybeIterable) {
+                    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+                    if ("function" == typeof iteratorFn) return iteratorFn;
+                }
+                function is(x, y) {
+                    return x === y ? 0 !== x || 1 / x == 1 / y : x !== x && y !== y;
+                }
+                function PropTypeError(message) {
+                    this.message = message;
+                    this.stack = "";
+                }
+                function createChainableTypeChecker(validate) {
+                    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+                        componentName = componentName || ANONYMOUS;
+                        propFullName = propFullName || propName;
+                        if (secret !== ReactPropTypesSecret) if (throwOnDirectAccess) invariant(!1, "Calling PropTypes validators directly is not supported by the `prop-types` package. Use `PropTypes.checkPropTypes()` to call them. Read more at http://fb.me/use-check-prop-types"); else if ("production" !== process.env.NODE_ENV && "undefined" != typeof console) {
+                            var cacheKey = componentName + ":" + propName;
+                            if (!manualPropTypeCallCache[cacheKey] && manualPropTypeWarningCount < 3) {
+                                warning(!1, "You are manually calling a React.PropTypes validation function for the `%s` prop on `%s`. This is deprecated and will throw in the standalone `prop-types` package. You may be seeing this warning due to a third-party PropTypes library. See https://fb.me/react-warning-dont-call-proptypes for details.", propFullName, componentName);
+                                manualPropTypeCallCache[cacheKey] = !0;
+                                manualPropTypeWarningCount++;
+                            }
+                        }
+                        return null == props[propName] ? isRequired ? new PropTypeError(null === props[propName] ? "The " + location + " `" + propFullName + "` is marked as required in `" + componentName + "`, but its value is `null`." : "The " + location + " `" + propFullName + "` is marked as required in `" + componentName + "`, but its value is `undefined`.") : null : validate(props, propName, componentName, location, propFullName);
+                    }
+                    if ("production" !== process.env.NODE_ENV) var manualPropTypeCallCache = {}, manualPropTypeWarningCount = 0;
+                    var chainedCheckType = checkType.bind(null, !1);
+                    chainedCheckType.isRequired = checkType.bind(null, !0);
+                    return chainedCheckType;
+                }
+                function createPrimitiveTypeChecker(expectedType) {
+                    function validate(props, propName, componentName, location, propFullName, secret) {
+                        var propValue = props[propName];
+                        if (getPropType(propValue) !== expectedType) return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + getPreciseType(propValue) + "` supplied to `" + componentName + "`, expected `" + expectedType + "`.");
+                        return null;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createArrayOfTypeChecker(typeChecker) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        if ("function" != typeof typeChecker) return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside arrayOf.");
+                        var propValue = props[propName];
+                        if (!Array.isArray(propValue)) {
+                            return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + getPropType(propValue) + "` supplied to `" + componentName + "`, expected an array.");
+                        }
+                        for (var i = 0; i < propValue.length; i++) {
+                            var error = typeChecker(propValue, i, componentName, location, propFullName + "[" + i + "]", ReactPropTypesSecret);
+                            if (error instanceof Error) return error;
+                        }
+                        return null;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createInstanceTypeChecker(expectedClass) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        if (!(props[propName] instanceof expectedClass)) {
+                            var expectedClassName = expectedClass.name || ANONYMOUS;
+                            return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + getClassName(props[propName]) + "` supplied to `" + componentName + "`, expected instance of `" + expectedClassName + "`.");
+                        }
+                        return null;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createEnumTypeChecker(expectedValues) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        for (var propValue = props[propName], i = 0; i < expectedValues.length; i++) if (is(propValue, expectedValues[i])) return null;
+                        return new PropTypeError("Invalid " + location + " `" + propFullName + "` of value `" + propValue + "` supplied to `" + componentName + "`, expected one of " + JSON.stringify(expectedValues) + ".");
+                    }
+                    if (!Array.isArray(expectedValues)) {
+                        "production" !== process.env.NODE_ENV && warning(!1, "Invalid argument supplied to oneOf, expected an instance of array.");
+                        return emptyFunction.thatReturnsNull;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createObjectOfTypeChecker(typeChecker) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        if ("function" != typeof typeChecker) return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside objectOf.");
+                        var propValue = props[propName], propType = getPropType(propValue);
+                        if ("object" !== propType) return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + propType + "` supplied to `" + componentName + "`, expected an object.");
+                        for (var key in propValue) if (propValue.hasOwnProperty(key)) {
+                            var error = typeChecker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
+                            if (error instanceof Error) return error;
+                        }
+                        return null;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createUnionTypeChecker(arrayOfTypeCheckers) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+                            if (null == (0, arrayOfTypeCheckers[i])(props, propName, componentName, location, propFullName, ReactPropTypesSecret)) return null;
+                        }
+                        return new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to `" + componentName + "`.");
+                    }
+                    if (!Array.isArray(arrayOfTypeCheckers)) {
+                        "production" !== process.env.NODE_ENV && warning(!1, "Invalid argument supplied to oneOfType, expected an instance of array.");
+                        return emptyFunction.thatReturnsNull;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function createShapeTypeChecker(shapeTypes) {
+                    function validate(props, propName, componentName, location, propFullName) {
+                        var propValue = props[propName], propType = getPropType(propValue);
+                        if ("object" !== propType) return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + propType + "` supplied to `" + componentName + "`, expected `object`.");
+                        for (var key in shapeTypes) {
+                            var checker = shapeTypes[key];
+                            if (checker) {
+                                var error = checker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
+                                if (error) return error;
+                            }
+                        }
+                        return null;
+                    }
+                    return createChainableTypeChecker(validate);
+                }
+                function isNode(propValue) {
+                    switch (void 0 === propValue ? "undefined" : _typeof(propValue)) {
+                      case "number":
+                      case "string":
+                      case "undefined":
+                        return !0;
+
+                      case "boolean":
+                        return !propValue;
+
+                      case "object":
+                        if (Array.isArray(propValue)) return propValue.every(isNode);
+                        if (null === propValue || isValidElement(propValue)) return !0;
+                        var iteratorFn = getIteratorFn(propValue);
+                        if (!iteratorFn) return !1;
+                        var step, iterator = iteratorFn.call(propValue);
+                        if (iteratorFn !== propValue.entries) {
+                            for (;!(step = iterator.next()).done; ) if (!isNode(step.value)) return !1;
+                        } else for (;!(step = iterator.next()).done; ) {
+                            var entry = step.value;
+                            if (entry && !isNode(entry[1])) return !1;
+                        }
+                        return !0;
+
+                      default:
+                        return !1;
+                    }
+                }
+                function isSymbol(propType, propValue) {
+                    return "symbol" === propType || ("Symbol" === propValue["@@toStringTag"] || "function" == typeof Symbol && propValue instanceof Symbol);
+                }
+                function getPropType(propValue) {
+                    var propType = void 0 === propValue ? "undefined" : _typeof(propValue);
+                    return Array.isArray(propValue) ? "array" : propValue instanceof RegExp ? "object" : isSymbol(propType, propValue) ? "symbol" : propType;
+                }
+                function getPreciseType(propValue) {
+                    var propType = getPropType(propValue);
+                    if ("object" === propType) {
+                        if (propValue instanceof Date) return "date";
+                        if (propValue instanceof RegExp) return "regexp";
+                    }
+                    return propType;
+                }
+                function getClassName(propValue) {
+                    return propValue.constructor && propValue.constructor.name ? propValue.constructor.name : ANONYMOUS;
+                }
+                var ITERATOR_SYMBOL = "function" == typeof Symbol && Symbol.iterator, FAUX_ITERATOR_SYMBOL = "@@iterator", ANONYMOUS = "<<anonymous>>", ReactPropTypes = {
+                    array: createPrimitiveTypeChecker("array"),
+                    bool: createPrimitiveTypeChecker("boolean"),
+                    func: createPrimitiveTypeChecker("function"),
+                    number: createPrimitiveTypeChecker("number"),
+                    object: createPrimitiveTypeChecker("object"),
+                    string: createPrimitiveTypeChecker("string"),
+                    symbol: createPrimitiveTypeChecker("symbol"),
+                    any: function() {
+                        return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+                    }(),
+                    arrayOf: createArrayOfTypeChecker,
+                    element: function() {
+                        function validate(props, propName, componentName, location, propFullName) {
+                            var propValue = props[propName];
+                            if (!isValidElement(propValue)) {
+                                return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + getPropType(propValue) + "` supplied to `" + componentName + "`, expected a single ReactElement.");
+                            }
+                            return null;
+                        }
+                        return createChainableTypeChecker(validate);
+                    }(),
+                    instanceOf: createInstanceTypeChecker,
+                    node: function() {
+                        function validate(props, propName, componentName, location, propFullName) {
+                            return isNode(props[propName]) ? null : new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to `" + componentName + "`, expected a ReactNode.");
+                        }
+                        return createChainableTypeChecker(validate);
+                    }(),
+                    objectOf: createObjectOfTypeChecker,
+                    oneOf: createEnumTypeChecker,
+                    oneOfType: createUnionTypeChecker,
+                    shape: createShapeTypeChecker
+                };
+                PropTypeError.prototype = Error.prototype;
+                ReactPropTypes.checkPropTypes = checkPropTypes;
+                ReactPropTypes.PropTypes = ReactPropTypes;
+                return ReactPropTypes;
+            };
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+    },
+    "./node_modules/prop-types/index.js": function(module, exports, __webpack_require__) {
+        (function(process) {
+            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            if ("production" !== process.env.NODE_ENV) {
+                var REACT_ELEMENT_TYPE = "function" == typeof Symbol && Symbol.for && Symbol.for("react.element") || 60103, isValidElement = function(object) {
+                    return "object" === (void 0 === object ? "undefined" : _typeof(object)) && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
+                };
+                module.exports = __webpack_require__("./node_modules/prop-types/factoryWithTypeCheckers.js")(isValidElement, !0);
+            } else module.exports = __webpack_require__("./node_modules/prop-types/factoryWithThrowingShims.js")();
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+    },
+    "./node_modules/prop-types/lib/ReactPropTypesSecret.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        module.exports = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
+    },
     "./node_modules/query-string/index.js": function(module, exports, __webpack_require__) {
         "use strict";
         function encoderForArrayFormat(opts) {
@@ -2057,7 +2585,7 @@ object-assign
                 return function(key, value, accumulator) {
                     result = /(\[\])$/.exec(key);
                     key = key.replace(/\[\]$/, "");
-                    result && void 0 !== accumulator[key] ? accumulator[key] = [].concat(accumulator[key], value) : accumulator[key] = value;
+                    result && void 0 !== accumulator[key] ? accumulator[key] = [].concat(accumulator[key], value) : accumulator[key] = [ value ];
                 };
 
               default:
@@ -2221,7 +2749,7 @@ object-assign
         function isFallbackCompositionEnd(topLevelType, nativeEvent) {
             switch (topLevelType) {
               case "topKeyUp":
-                return END_KEYCODES.indexOf(nativeEvent.keyCode) !== -1;
+                return -1 !== END_KEYCODES.indexOf(nativeEvent.keyCode);
 
               case "topKeyDown":
                 return nativeEvent.keyCode !== START_KEYCODE;
@@ -2668,6 +3196,15 @@ object-assign
         function getTargetInstForClickEvent(topLevelType, targetInst) {
             if ("topClick" === topLevelType) return targetInst;
         }
+        function handleControlledInputBlur(inst, node) {
+            if (null != inst) {
+                var state = inst._wrapperState || node._wrapperState;
+                if (state && state.controlled && "number" === node.type) {
+                    var value = "" + node.value;
+                    node.getAttribute("value") !== value && node.setAttribute("value", value);
+                }
+            }
+        }
         var EventPluginHub = __webpack_require__("./node_modules/react-dom/lib/EventPluginHub.js"), EventPropagators = __webpack_require__("./node_modules/react-dom/lib/EventPropagators.js"), ExecutionEnvironment = __webpack_require__("./node_modules/fbjs/lib/ExecutionEnvironment.js"), ReactDOMComponentTree = __webpack_require__("./node_modules/react-dom/lib/ReactDOMComponentTree.js"), ReactUpdates = __webpack_require__("./node_modules/react-dom/lib/ReactUpdates.js"), SyntheticEvent = __webpack_require__("./node_modules/react-dom/lib/SyntheticEvent.js"), getEventTarget = __webpack_require__("./node_modules/react-dom/lib/getEventTarget.js"), isEventSupported = __webpack_require__("./node_modules/react-dom/lib/isEventSupported.js"), isTextInputElement = __webpack_require__("./node_modules/react-dom/lib/isTextInputElement.js"), eventTypes = {
             change: {
                 phasedRegistrationNames: {
@@ -2706,6 +3243,7 @@ object-assign
                     }
                 }
                 handleEventFunc && handleEventFunc(topLevelType, targetNode, targetInst);
+                "topBlur" === topLevelType && handleControlledInputBlur(targetInst, targetNode);
             }
         };
         module.exports = ChangeEventPlugin;
@@ -2978,7 +3516,7 @@ object-assign
                 return !1;
             }
             function shouldIgnoreValue(propertyInfo, value) {
-                return null == value || propertyInfo.hasBooleanValue && !value || propertyInfo.hasNumericValue && isNaN(value) || propertyInfo.hasPositiveNumericValue && value < 1 || propertyInfo.hasOverloadedBooleanValue && value === !1;
+                return null == value || propertyInfo.hasBooleanValue && !value || propertyInfo.hasNumericValue && isNaN(value) || propertyInfo.hasPositiveNumericValue && value < 1 || propertyInfo.hasOverloadedBooleanValue && !1 === value;
             }
             var DOMProperty = __webpack_require__("./node_modules/react-dom/lib/DOMProperty.js"), ReactDOMComponentTree = __webpack_require__("./node_modules/react-dom/lib/ReactDOMComponentTree.js"), ReactInstrumentation = __webpack_require__("./node_modules/react-dom/lib/ReactInstrumentation.js"), quoteAttributeValueForBrowser = __webpack_require__("./node_modules/react-dom/lib/quoteAttributeValueForBrowser.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), VALID_ATTRIBUTE_NAME_REGEX = new RegExp("^[" + DOMProperty.ATTRIBUTE_NAME_START_CHAR + "][" + DOMProperty.ATTRIBUTE_NAME_CHAR + "]*$"), illegalAttributeNameCache = {}, validatedAttributeNameCache = {}, DOMPropertyOperations = {
                 createMarkupForID: function(id) {
@@ -2998,7 +3536,7 @@ object-assign
                     if (propertyInfo) {
                         if (shouldIgnoreValue(propertyInfo, value)) return "";
                         var attributeName = propertyInfo.attributeName;
-                        return propertyInfo.hasBooleanValue || propertyInfo.hasOverloadedBooleanValue && value === !0 ? attributeName + '=""' : attributeName + "=" + quoteAttributeValueForBrowser(value);
+                        return propertyInfo.hasBooleanValue || propertyInfo.hasOverloadedBooleanValue && !0 === value ? attributeName + '=""' : attributeName + "=" + quoteAttributeValueForBrowser(value);
                     }
                     return DOMProperty.isCustomAttribute(name) ? null == value ? "" : name + "=" + quoteAttributeValueForBrowser(value) : null;
                 },
@@ -3016,7 +3554,7 @@ object-assign
                             }
                             if (propertyInfo.mustUseProperty) node[propertyInfo.propertyName] = value; else {
                                 var attributeName = propertyInfo.attributeName, namespace = propertyInfo.attributeNamespace;
-                                namespace ? node.setAttributeNS(namespace, attributeName, "" + value) : propertyInfo.hasBooleanValue || propertyInfo.hasOverloadedBooleanValue && value === !0 ? node.setAttribute(attributeName, "") : node.setAttribute(attributeName, "" + value);
+                                namespace ? node.setAttributeNS(namespace, attributeName, "" + value) : propertyInfo.hasBooleanValue || propertyInfo.hasOverloadedBooleanValue && !0 === value ? node.setAttribute(attributeName, "") : node.setAttribute(attributeName, "" + value);
                             }
                         }
                     } else if (DOMProperty.isCustomAttribute(name)) {
@@ -3684,7 +4222,13 @@ object-assign
                 htmlFor: "for",
                 httpEquiv: "http-equiv"
             },
-            DOMPropertyNames: {}
+            DOMPropertyNames: {},
+            DOMMutationMethods: {
+                value: function(node, _value) {
+                    if (null == _value) return node.removeAttribute("value");
+                    "number" !== node.type || !1 === node.hasAttribute("value") ? node.setAttribute("value", "" + _value) : node.validity && !node.validity.badInput && node.ownerDocument.activeElement !== node && node.setAttribute("value", "" + _value);
+                }
+            }
         };
         module.exports = HTMLDOMPropertyConfig;
     },
@@ -3735,7 +4279,7 @@ object-assign
                 }
                 return "";
             }
-            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js"), React = __webpack_require__("./node_modules/react/lib/React.js"), ReactPropTypesSecret = __webpack_require__("./node_modules/react-dom/lib/ReactPropTypesSecret.js"), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), hasReadOnlyValue = {
+            var _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js"), ReactPropTypesSecret = __webpack_require__("./node_modules/react-dom/lib/ReactPropTypesSecret.js"), propTypesFactory = __webpack_require__("./node_modules/prop-types/factory.js"), React = __webpack_require__("./node_modules/react/lib/React.js"), PropTypes = propTypesFactory(React.isValidElement), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), hasReadOnlyValue = {
                 button: !0,
                 checkbox: !0,
                 image: !0,
@@ -3750,7 +4294,7 @@ object-assign
                 checked: function(props, propName, componentName) {
                     return !props[propName] || props.onChange || props.readOnly || props.disabled ? null : new Error("You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.");
                 },
-                onChange: React.PropTypes.func
+                onChange: PropTypes.func
             }, loggedTypeFailures = {}, LinkedValueUtils = {
                 checkPropTypes: function(tagName, props, owner) {
                     for (var propName in propTypes) {
@@ -4068,7 +4612,7 @@ object-assign
             function StatelessComponent(Component) {}
             function warnIfInvalidElement(Component, element) {
                 if ("production" !== process.env.NODE_ENV) {
-                    "production" !== process.env.NODE_ENV && warning(null === element || element === !1 || React.isValidElement(element), "%s(...): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", Component.displayName || Component.name || "Component");
+                    "production" !== process.env.NODE_ENV && warning(null === element || !1 === element || React.isValidElement(element), "%s(...): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", Component.displayName || Component.name || "Component");
                     "production" !== process.env.NODE_ENV && warning(!Component.childContextTypes, "%s(...): childContextTypes cannot be defined on a functional component.", Component.displayName || Component.name || "Component");
                 }
             }
@@ -4135,7 +4679,7 @@ object-assign
                     if (doConstruct || null != inst && null != inst.render) isPureComponent(Component) ? this._compositeType = CompositeTypes.PureClass : this._compositeType = CompositeTypes.ImpureClass; else {
                         renderedElement = inst;
                         warnIfInvalidElement(Component, renderedElement);
-                        null === inst || inst === !1 || React.isValidElement(inst) || ("production" !== process.env.NODE_ENV ? invariant(!1, "%s(...): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", Component.displayName || Component.name || "Component") : _prodInvariant("105", Component.displayName || Component.name || "Component"));
+                        null === inst || !1 === inst || React.isValidElement(inst) || ("production" !== process.env.NODE_ENV ? invariant(!1, "%s(...): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", Component.displayName || Component.name || "Component") : _prodInvariant("105", Component.displayName || Component.name || "Component"));
                         inst = new StatelessComponent(Component);
                         this._compositeType = CompositeTypes.StatelessFunctional;
                     }
@@ -4286,7 +4830,7 @@ object-assign
                     } else childContext = inst.getChildContext();
                     if (childContext) {
                         "object" !== _typeof(Component.childContextTypes) && ("production" !== process.env.NODE_ENV ? invariant(!1, "%s.getChildContext(): childContextTypes must be defined in order to use getChildContext().", this.getName() || "ReactCompositeComponent") : _prodInvariant("107", this.getName() || "ReactCompositeComponent"));
-                        "production" !== process.env.NODE_ENV && this._checkContextTypes(Component.childContextTypes, childContext, "childContext");
+                        "production" !== process.env.NODE_ENV && this._checkContextTypes(Component.childContextTypes, childContext, "child context");
                         for (var name in childContext) name in Component.childContextTypes || ("production" !== process.env.NODE_ENV ? invariant(!1, '%s.getChildContext(): key "%s" is not defined in childContextTypes.', this.getName() || "ReactCompositeComponent", name) : _prodInvariant("108", this.getName() || "ReactCompositeComponent", name));
                         return _assign({}, currentContext, childContext);
                     }
@@ -4404,7 +4948,7 @@ object-assign
                             ReactCurrentOwner.current = null;
                         }
                     } else renderedElement = this._renderValidatedComponentWithoutOwnerOrContext();
-                    null === renderedElement || renderedElement === !1 || React.isValidElement(renderedElement) || ("production" !== process.env.NODE_ENV ? invariant(!1, "%s.render(): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", this.getName() || "ReactCompositeComponent") : _prodInvariant("109", this.getName() || "ReactCompositeComponent"));
+                    null === renderedElement || !1 === renderedElement || React.isValidElement(renderedElement) || ("production" !== process.env.NODE_ENV ? invariant(!1, "%s.render(): A valid React element (or null) must be returned. You may have returned undefined, an array or some other invalid object.", this.getName() || "ReactCompositeComponent") : _prodInvariant("109", this.getName() || "ReactCompositeComponent"));
                     return renderedElement;
                 },
                 attachRef: function(ref, component) {
@@ -4459,12 +5003,12 @@ object-assign
             });
             if ("production" !== process.env.NODE_ENV) {
                 if (__webpack_require__("./node_modules/fbjs/lib/ExecutionEnvironment.js").canUseDOM && window.top === window.self) {
-                    if ("undefined" == typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && (navigator.userAgent.indexOf("Chrome") > -1 && navigator.userAgent.indexOf("Edge") === -1 || navigator.userAgent.indexOf("Firefox") > -1)) {
-                        var showFileUrlMessage = window.location.protocol.indexOf("http") === -1 && navigator.userAgent.indexOf("Firefox") === -1;
+                    if ("undefined" == typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && (navigator.userAgent.indexOf("Chrome") > -1 && -1 === navigator.userAgent.indexOf("Edge") || navigator.userAgent.indexOf("Firefox") > -1)) {
+                        var showFileUrlMessage = -1 === window.location.protocol.indexOf("http") && -1 === navigator.userAgent.indexOf("Firefox");
                         console.debug("Download the React DevTools " + (showFileUrlMessage ? "and use an HTTP server (instead of a file: URL) " : "") + "for a better development experience: https://fb.me/react-devtools");
                     }
                     var testFunc = function() {};
-                    "production" !== process.env.NODE_ENV && warning((testFunc.name || testFunc.toString()).indexOf("testFn") !== -1, "It looks like you're using a minified copy of the development build of React. When deploying React apps to production, make sure to use the production build which skips development warnings and is faster. See https://fb.me/react-minification for more details.");
+                    "production" !== process.env.NODE_ENV && warning(-1 !== (testFunc.name || testFunc.toString()).indexOf("testFn"), "It looks like you're using a minified copy of the development build of React. When deploying React apps to production, make sure to use the production build which skips development warnings and is faster. See https://fb.me/react-minification for more details.");
                     var ieCompatibilityMode = document.documentMode && document.documentMode < 8;
                     "production" !== process.env.NODE_ENV && warning(!ieCompatibilityMode, 'Internet Explorer is running in compatibility mode; please add the following tag to your HTML to prevent this from happening: <meta http-equiv="X-UA-Compatible" content="IE=edge" />');
                     for (var expectedFeatures = [ Array.isArray, Array.prototype.every, Array.prototype.forEach, Array.prototype.indexOf, Array.prototype.map, Date.now, Function.prototype.bind, Object.keys, String.prototype.trim ], i = 0; i < expectedFeatures.length; i++) if (!expectedFeatures[i]) {
@@ -5119,7 +5663,7 @@ object-assign
                     ReactDOMComponentTree.precacheNode(this, node);
                     return DOMLazyTree(node);
                 }
-                return transaction.renderToStaticMarkup ? "" : "<!--" + nodeValue + "-->";
+                return transaction.renderToStaticMarkup ? "" : "\x3c!--" + nodeValue + "--\x3e";
             },
             receiveComponent: function() {},
             getHostNode: function() {
@@ -5217,9 +5761,9 @@ object-assign
                         initialChecked: null != props.checked ? props.checked : props.defaultChecked,
                         initialValue: null != props.value ? props.value : defaultValue,
                         listeners: null,
-                        onChange: _handleChange.bind(inst)
+                        onChange: _handleChange.bind(inst),
+                        controlled: isControlled(props)
                     };
-                    "production" !== process.env.NODE_ENV && (inst._wrapperState.controlled = isControlled(props));
                 },
                 updateWrapper: function(inst) {
                     var props = inst._currentElement.props;
@@ -5237,10 +5781,10 @@ object-assign
                     var checked = props.checked;
                     null != checked && DOMPropertyOperations.setValueForProperty(ReactDOMComponentTree.getNodeFromInstance(inst), "checked", checked || !1);
                     var node = ReactDOMComponentTree.getNodeFromInstance(inst), value = LinkedValueUtils.getValue(props);
-                    if (null != value) {
-                        var newValue = "" + value;
-                        newValue !== node.value && (node.value = newValue);
-                    } else {
+                    if (null != value) if (0 === value && "" === node.value) node.value = "0"; else if ("number" === props.type) {
+                        var valueAsNumber = parseFloat(node.value, 10) || 0;
+                        value != valueAsNumber && (node.value = "" + value);
+                    } else value != node.value && (node.value = "" + value); else {
                         null == props.value && null != props.defaultValue && node.defaultValue !== "" + props.defaultValue && (node.defaultValue = "" + props.defaultValue);
                         null == props.checked && null != props.defaultChecked && (node.defaultChecked = !!props.defaultChecked);
                     }
@@ -5610,7 +6154,7 @@ object-assign
                         return lazyTree;
                     }
                     var escapedText = escapeTextContentForBrowser(this._stringText);
-                    return transaction.renderToStaticMarkup ? escapedText : "<!--" + openingValue + "-->" + escapedText + "<!-- /react-text -->";
+                    return transaction.renderToStaticMarkup ? escapedText : "\x3c!--" + openingValue + "--\x3e" + escapedText + "\x3c!-- /react-text --\x3e";
                 },
                 receiveComponent: function(nextText, transaction) {
                     if (nextText !== this._currentElement) {
@@ -6090,8 +6634,7 @@ object-assign
             ReactDebugTool.removeDevtool = ReactDebugTool.removeHook;
             ReactDebugTool.addHook(ReactInvalidSetStateWarningHook);
             ReactDebugTool.addHook(ReactComponentTreeHook);
-            var url = ExecutionEnvironment.canUseDOM && window.location.href || "";
-            /[?&]react_perf\b/.test(url) && ReactDebugTool.beginProfiling();
+            /[?&]react_perf\b/.test(ExecutionEnvironment.canUseDOM && window.location.href || "") && ReactDebugTool.beginProfiling();
             module.exports = ReactDebugTool;
         }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     },
@@ -6892,7 +7435,7 @@ object-assign
                 COMPOSITE: 1,
                 EMPTY: 2,
                 getType: function(node) {
-                    if (null === node || node === !1) return ReactNodeTypes.EMPTY;
+                    if (null === node || !1 === node) return ReactNodeTypes.EMPTY;
                     if (React.isValidElement(node)) return "function" == typeof node.type ? ReactNodeTypes.COMPOSITE : ReactNodeTypes.HOST;
                     "production" !== process.env.NODE_ENV ? invariant(!1, "Unexpected node: %s", node) : _prodInvariant("26", node);
                 }
@@ -7210,11 +7753,15 @@ object-assign
                         enqueueUpdate(internalInstance);
                     }
                 },
-                enqueueReplaceState: function(publicInstance, completeState) {
+                enqueueReplaceState: function(publicInstance, completeState, callback) {
                     var internalInstance = getInternalInstanceReadyForUpdate(publicInstance, "replaceState");
                     if (internalInstance) {
                         internalInstance._pendingStateQueue = [ completeState ];
                         internalInstance._pendingReplaceState = !0;
+                        if (void 0 !== callback && null !== callback) {
+                            ReactUpdateQueue.validateCallback(callback, "replaceState");
+                            internalInstance._pendingCallbacks ? internalInstance._pendingCallbacks.push(callback) : internalInstance._pendingCallbacks = [ callback ];
+                        }
                         enqueueUpdate(internalInstance);
                     }
                 },
@@ -7365,7 +7912,7 @@ object-assign
     },
     "./node_modules/react-dom/lib/ReactVersion.js": function(module, exports, __webpack_require__) {
         "use strict";
-        module.exports = "15.4.2";
+        module.exports = "15.5.4";
     },
     "./node_modules/react-dom/lib/SVGDOMPropertyConfig.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -7939,7 +8486,7 @@ object-assign
                     var normalize = Interface[propName];
                     normalize ? this[propName] = normalize(nativeEvent) : "target" === propName ? this.target = nativeEventTarget : this[propName] = nativeEvent[propName];
                 }
-                var defaultPrevented = null != nativeEvent.defaultPrevented ? nativeEvent.defaultPrevented : nativeEvent.returnValue === !1;
+                var defaultPrevented = null != nativeEvent.defaultPrevented ? nativeEvent.defaultPrevented : !1 === nativeEvent.returnValue;
                 this.isDefaultPrevented = defaultPrevented ? emptyFunction.thatReturnsTrue : emptyFunction.thatReturnsFalse;
                 this.isPropagationStopped = emptyFunction.thatReturnsFalse;
                 return this;
@@ -8015,7 +8562,7 @@ object-assign
                 apply: function(constructor, that, args) {
                     return new Proxy(constructor.apply(that, args), {
                         set: function(target, prop, value) {
-                            if ("isPersistent" !== prop && !target.constructor.Interface.hasOwnProperty(prop) && shouldBeReleasedProperties.indexOf(prop) === -1) {
+                            if ("isPersistent" !== prop && !target.constructor.Interface.hasOwnProperty(prop) && -1 === shouldBeReleasedProperties.indexOf(prop)) {
                                 "production" !== process.env.NODE_ENV && warning(didWarnForAddedNewProperty || target.isPersistent(), "This synthetic event is reused for performance reasons. If you're seeing this, you're adding a new property in the synthetic event object. The property is never released. See https://fb.me/react-event-pooling for more information.");
                                 didWarnForAddedNewProperty = !0;
                             }
@@ -8294,7 +8841,7 @@ object-assign
     "./node_modules/react-dom/lib/adler32.js": function(module, exports, __webpack_require__) {
         "use strict";
         function adler32(data) {
-            for (var a = 1, b = 0, i = 0, l = data.length, m = l & -4; i < m; ) {
+            for (var a = 1, b = 0, i = 0, l = data.length, m = -4 & l; i < m; ) {
                 for (var n = Math.min(i + 4096, m); i < n; i += 4) b += (a += data.charCodeAt(i)) + (a += data.charCodeAt(i + 1)) + (a += data.charCodeAt(i + 2)) + (a += data.charCodeAt(i + 3));
                 a %= MOD;
                 b %= MOD;
@@ -8606,14 +9153,6 @@ object-assign
         var ITERATOR_SYMBOL = "function" == typeof Symbol && Symbol.iterator, FAUX_ITERATOR_SYMBOL = "@@iterator";
         module.exports = getIteratorFn;
     },
-    "./node_modules/react-dom/lib/getNextDebugID.js": function(module, exports, __webpack_require__) {
-        "use strict";
-        function getNextDebugID() {
-            return nextDebugID++;
-        }
-        var nextDebugID = 1;
-        module.exports = getNextDebugID;
-    },
     "./node_modules/react-dom/lib/getNodeForCharacterOffset.js": function(module, exports, __webpack_require__) {
         "use strict";
         function getLeafNode(node) {
@@ -8700,7 +9239,7 @@ object-assign
             }
             function instantiateReactComponent(node, shouldHaveDebugID) {
                 var instance;
-                if (null === node || node === !1) instance = ReactEmptyComponent.create(instantiateReactComponent); else if ("object" === (void 0 === node ? "undefined" : _typeof(node))) {
+                if (null === node || !1 === node) instance = ReactEmptyComponent.create(instantiateReactComponent); else if ("object" === (void 0 === node ? "undefined" : _typeof(node))) {
                     var element = node, type = element.type;
                     if ("function" != typeof type && "string" != typeof type) {
                         var info = "";
@@ -8724,7 +9263,7 @@ object-assign
                 return typeof obj;
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            }, _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js"), _assign = __webpack_require__("./node_modules/object-assign/index.js"), ReactCompositeComponent = __webpack_require__("./node_modules/react-dom/lib/ReactCompositeComponent.js"), ReactEmptyComponent = __webpack_require__("./node_modules/react-dom/lib/ReactEmptyComponent.js"), ReactHostComponent = __webpack_require__("./node_modules/react-dom/lib/ReactHostComponent.js"), getNextDebugID = __webpack_require__("./node_modules/react-dom/lib/getNextDebugID.js"), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), ReactCompositeComponentWrapper = function(element) {
+            }, _prodInvariant = __webpack_require__("./node_modules/react-dom/lib/reactProdInvariant.js"), _assign = __webpack_require__("./node_modules/object-assign/index.js"), ReactCompositeComponent = __webpack_require__("./node_modules/react-dom/lib/ReactCompositeComponent.js"), ReactEmptyComponent = __webpack_require__("./node_modules/react-dom/lib/ReactEmptyComponent.js"), ReactHostComponent = __webpack_require__("./node_modules/react-dom/lib/ReactHostComponent.js"), getNextDebugID = __webpack_require__("./node_modules/react/lib/getNextDebugID.js"), invariant = __webpack_require__("./node_modules/fbjs/lib/invariant.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), ReactCompositeComponentWrapper = function(element) {
                 this.construct(element);
             };
             _assign(ReactCompositeComponentWrapper.prototype, ReactCompositeComponent, {
@@ -8761,7 +9300,7 @@ object-assign
             return isSupported;
         }
         var useHasFeature, ExecutionEnvironment = __webpack_require__("./node_modules/fbjs/lib/ExecutionEnvironment.js");
-        ExecutionEnvironment.canUseDOM && (useHasFeature = document.implementation && document.implementation.hasFeature && document.implementation.hasFeature("", "") !== !0);
+        ExecutionEnvironment.canUseDOM && (useHasFeature = document.implementation && document.implementation.hasFeature && !0 !== document.implementation.hasFeature("", ""));
         module.exports = isEventSupported;
     },
     "./node_modules/react-dom/lib/isTextInputElement.js": function(module, exports, __webpack_require__) {
@@ -8858,7 +9397,7 @@ object-assign
     "./node_modules/react-dom/lib/shouldUpdateReactComponent.js": function(module, exports, __webpack_require__) {
         "use strict";
         function shouldUpdateReactComponent(prevElement, nextElement) {
-            var prevEmpty = null === prevElement || prevElement === !1, nextEmpty = null === nextElement || nextElement === !1;
+            var prevEmpty = null === prevElement || !1 === prevElement, nextEmpty = null === nextElement || !1 === nextElement;
             if (prevEmpty || nextEmpty) return prevEmpty === nextEmpty;
             var prevType = void 0 === prevElement ? "undefined" : _typeof(prevElement), nextType = void 0 === nextElement ? "undefined" : _typeof(nextElement);
             return "string" === prevType || "number" === prevType ? "string" === nextType || "number" === nextType : "object" === nextType && prevElement.type === nextElement.type && prevElement.key === nextElement.key;
@@ -8961,13 +9500,13 @@ object-assign
                         tag: tag,
                         instance: instance
                     };
-                    if (inScopeTags.indexOf(tag) !== -1) {
+                    if (-1 !== inScopeTags.indexOf(tag)) {
                         ancestorInfo.aTagInScope = null;
                         ancestorInfo.buttonTagInScope = null;
                         ancestorInfo.nobrTagInScope = null;
                     }
-                    buttonScopeTags.indexOf(tag) !== -1 && (ancestorInfo.pTagInButtonScope = null);
-                    if (specialTags.indexOf(tag) !== -1 && "address" !== tag && "div" !== tag && "p" !== tag) {
+                    -1 !== buttonScopeTags.indexOf(tag) && (ancestorInfo.pTagInButtonScope = null);
+                    if (-1 !== specialTags.indexOf(tag) && "address" !== tag && "div" !== tag && "p" !== tag) {
                         ancestorInfo.listItemTagAutoclosing = null;
                         ancestorInfo.dlItemTagAutoclosing = null;
                     }
@@ -9025,7 +9564,7 @@ object-assign
 
                       case "rp":
                       case "rt":
-                        return impliedEndTags.indexOf(parentTag) === -1;
+                        return -1 === impliedEndTags.indexOf(parentTag);
 
                       case "body":
                       case "caption":
@@ -9126,7 +9665,7 @@ object-assign
                             return inst.getName() || "(unknown)";
                         }), ancestorOwnerNames = ancestorOwners.slice(deepestCommon + 1).map(function(inst) {
                             return inst.getName() || "(unknown)";
-                        }), ownerInfo = [].concat(deepestCommon !== -1 ? childOwners[deepestCommon].getName() || "(unknown)" : [], ancestorOwnerNames, ancestorTag, invalidAncestor ? [ "..." ] : [], childOwnerNames, childTag).join(" > "), warnKey = !!invalidParent + "|" + childTag + "|" + ancestorTag + "|" + ownerInfo;
+                        }), ownerInfo = [].concat(-1 !== deepestCommon ? childOwners[deepestCommon].getName() || "(unknown)" : [], ancestorOwnerNames, ancestorTag, invalidAncestor ? [ "..." ] : [], childOwnerNames, childTag).join(" > "), warnKey = !!invalidParent + "|" + childTag + "|" + ancestorTag + "|" + ownerInfo;
                         if (didWarn[warnKey]) return;
                         didWarn[warnKey] = !0;
                         var tagDisplayName = childTag, whitespaceInfo = "";
@@ -9273,28 +9812,27 @@ object-assign
                 }
             }, _ref4;
         }
-        var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+        var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
         __webpack_exports__.a = ContextProvider;
         __webpack_exports__.b = ContextSubscriber;
-        var contextProviderShape = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.shape({
-            subscribe: __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.func.isRequired,
-            eventIndex: __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.number.isRequired
+        var contextProviderShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
+            subscribe: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.func.isRequired,
+            eventIndex: __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.number.isRequired
         });
     },
     "./node_modules/react-router/es/IndexLink.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1__Link__ = __webpack_require__("./node_modules/react-router/es/Link.js"), _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__), __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__("./node_modules/react-router/es/Link.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
         };
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+        __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
             displayName: "IndexLink",
             render: function() {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Link__.a, _extends({}, this.props, {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Link__.a, _extends({}, this.props, {
                     onlyActiveOnIndex: !0
                 }));
             }
@@ -9303,23 +9841,24 @@ object-assign
     "./node_modules/react-router/es/IndexRedirect.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(process) {
-            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1__routerWarning__ = __webpack_require__("./node_modules/react-router/es/routerWarning.js"), __WEBPACK_IMPORTED_MODULE_2_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_2_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_invariant__), __WEBPACK_IMPORTED_MODULE_3__Redirect__ = __webpack_require__("./node_modules/react-router/es/Redirect.js"), __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), _React$PropTypes = __WEBPACK_IMPORTED_MODULE_0_react___default.a.PropTypes, string = _React$PropTypes.string, object = _React$PropTypes.object;
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+            var __WEBPACK_IMPORTED_MODULE_0_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_0_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_create_react_class__), __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_2__routerWarning__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__), 
+            __webpack_require__("./node_modules/react-router/es/routerWarning.js")), __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__), __WEBPACK_IMPORTED_MODULE_4__Redirect__ = __webpack_require__("./node_modules/react-router/es/Redirect.js"), __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js");
+            __WEBPACK_IMPORTED_MODULE_0_create_react_class___default()({
                 displayName: "IndexRedirect",
                 statics: {
                     createRouteFromReactElement: function(element, parentRoute) {
-                        parentRoute ? parentRoute.indexRoute = __WEBPACK_IMPORTED_MODULE_3__Redirect__.a.createRouteFromReactElement(element) : "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__routerWarning__.a)(!1, "An <IndexRedirect> does not make sense at the root of your route config");
+                        parentRoute ? parentRoute.indexRoute = __WEBPACK_IMPORTED_MODULE_4__Redirect__.a.createRouteFromReactElement(element) : "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__routerWarning__.a)(!1, "An <IndexRedirect> does not make sense at the root of your route config");
                     }
                 },
                 propTypes: {
-                    to: string.isRequired,
-                    query: object,
-                    state: object,
-                    onEnter: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.c,
-                    children: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.c
+                    to: __WEBPACK_IMPORTED_MODULE_1_prop_types__.string.isRequired,
+                    query: __WEBPACK_IMPORTED_MODULE_1_prop_types__.object,
+                    state: __WEBPACK_IMPORTED_MODULE_1_prop_types__.object,
+                    onEnter: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.c,
+                    children: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.c
                 },
                 render: function() {
-                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1, "<IndexRedirect> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1);
+                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1, "<IndexRedirect> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1);
                 }
             });
         }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
@@ -9327,23 +9866,24 @@ object-assign
     "./node_modules/react-router/es/IndexRoute.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(process) {
-            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1__routerWarning__ = __webpack_require__("./node_modules/react-router/es/routerWarning.js"), __WEBPACK_IMPORTED_MODULE_2_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_2_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_invariant__), __WEBPACK_IMPORTED_MODULE_3__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), func = __WEBPACK_IMPORTED_MODULE_0_react___default.a.PropTypes.func;
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+            var __WEBPACK_IMPORTED_MODULE_0_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_0_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_create_react_class__), __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_2__routerWarning__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__), 
+            __webpack_require__("./node_modules/react-router/es/routerWarning.js")), __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__), __WEBPACK_IMPORTED_MODULE_4__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js");
+            __WEBPACK_IMPORTED_MODULE_0_create_react_class___default()({
                 displayName: "IndexRoute",
                 statics: {
                     createRouteFromReactElement: function(element, parentRoute) {
-                        parentRoute ? parentRoute.indexRoute = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__RouteUtils__.c)(element) : "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__routerWarning__.a)(!1, "An <IndexRoute> does not make sense at the root of your route config");
+                        parentRoute ? parentRoute.indexRoute = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__RouteUtils__.c)(element) : "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__routerWarning__.a)(!1, "An <IndexRoute> does not make sense at the root of your route config");
                     }
                 },
                 propTypes: {
-                    path: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.c,
-                    component: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.a,
-                    components: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.b,
-                    getComponent: func,
-                    getComponents: func
+                    path: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.c,
+                    component: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.a,
+                    components: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.b,
+                    getComponent: __WEBPACK_IMPORTED_MODULE_1_prop_types__.func,
+                    getComponents: __WEBPACK_IMPORTED_MODULE_1_prop_types__.func
                 },
                 render: function() {
-                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1, "<IndexRoute> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1);
+                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1, "<IndexRoute> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1);
                 }
             });
         }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
@@ -9353,8 +9893,8 @@ object-assign
         function falsy(props, propName, componentName) {
             if (props[propName]) return new Error("<" + componentName + '> should not have a "' + propName + '" prop');
         }
-        var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+        var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
         __webpack_exports__.c = falsy;
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return component;
@@ -9365,14 +9905,14 @@ object-assign
         __webpack_require__.d(__webpack_exports__, "d", function() {
             return routes;
         });
-        var func = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.func, object = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.object, arrayOf = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.arrayOf, oneOfType = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.oneOfType, element = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.element, shape = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.shape, string = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.string, component = (shape({
-            listen: func.isRequired,
-            push: func.isRequired,
-            replace: func.isRequired,
-            go: func.isRequired,
-            goBack: func.isRequired,
-            goForward: func.isRequired
-        }), oneOfType([ func, string ])), components = oneOfType([ component, object ]), route = oneOfType([ object, element ]), routes = oneOfType([ route, arrayOf(route) ]);
+        var component = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.shape)({
+            listen: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            push: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            replace: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            go: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            goBack: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            goForward: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired
+        }), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.oneOfType)([ __WEBPACK_IMPORTED_MODULE_0_prop_types__.func, __WEBPACK_IMPORTED_MODULE_0_prop_types__.string ])), components = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.oneOfType)([ component, __WEBPACK_IMPORTED_MODULE_0_prop_types__.object ]), route = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.oneOfType)([ __WEBPACK_IMPORTED_MODULE_0_prop_types__.object, __WEBPACK_IMPORTED_MODULE_0_prop_types__.element ]), routes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.oneOfType)([ route, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.arrayOf)(route) ]);
     },
     "./node_modules/react-router/es/Link.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9395,25 +9935,26 @@ object-assign
             function resolveToLocation(to, router) {
                 return "function" == typeof to ? to(router.location) : to;
             }
-            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__), __WEBPACK_IMPORTED_MODULE_2__PropTypes__ = __webpack_require__("./node_modules/react-router/es/PropTypes.js"), __WEBPACK_IMPORTED_MODULE_3__ContextUtils__ = __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), _extends = Object.assign || function(target) {
+            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__), __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_3_invariant__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__), 
+            __webpack_require__("./node_modules/invariant/browser.js")), __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__), __WEBPACK_IMPORTED_MODULE_4__PropTypes__ = __webpack_require__("./node_modules/react-router/es/PropTypes.js"), __WEBPACK_IMPORTED_MODULE_5__ContextUtils__ = __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, _React$PropTypes = __WEBPACK_IMPORTED_MODULE_0_react___default.a.PropTypes, bool = _React$PropTypes.bool, object = _React$PropTypes.object, string = _React$PropTypes.string, func = _React$PropTypes.func, oneOfType = _React$PropTypes.oneOfType, Link = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+            }, Link = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
                 displayName: "Link",
-                mixins: [ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__ContextUtils__.b)("router") ],
+                mixins: [ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__ContextUtils__.b)("router") ],
                 contextTypes: {
-                    router: __WEBPACK_IMPORTED_MODULE_2__PropTypes__.a
+                    router: __WEBPACK_IMPORTED_MODULE_4__PropTypes__.a
                 },
                 propTypes: {
-                    to: oneOfType([ string, object, func ]),
-                    activeStyle: object,
-                    activeClassName: string,
-                    onlyActiveOnIndex: bool.isRequired,
-                    onClick: func,
-                    target: string
+                    to: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_prop_types__.oneOfType)([ __WEBPACK_IMPORTED_MODULE_2_prop_types__.string, __WEBPACK_IMPORTED_MODULE_2_prop_types__.object, __WEBPACK_IMPORTED_MODULE_2_prop_types__.func ]),
+                    activeStyle: __WEBPACK_IMPORTED_MODULE_2_prop_types__.object,
+                    activeClassName: __WEBPACK_IMPORTED_MODULE_2_prop_types__.string,
+                    onlyActiveOnIndex: __WEBPACK_IMPORTED_MODULE_2_prop_types__.bool.isRequired,
+                    onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__.func,
+                    target: __WEBPACK_IMPORTED_MODULE_2_prop_types__.string
                 },
                 getDefaultProps: function() {
                     return {
@@ -9425,7 +9966,7 @@ object-assign
                     this.props.onClick && this.props.onClick(event);
                     if (!event.defaultPrevented) {
                         var router = this.context.router;
-                        router || ("production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1, "<Link>s rendered outside of a router context cannot navigate.") : __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1));
+                        router || ("production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1, "<Link>s rendered outside of a router context cannot navigate.") : __WEBPACK_IMPORTED_MODULE_3_invariant___default()(!1));
                         if (!isModifiedEvent(event) && isLeftClickEvent(event) && !this.props.target) {
                             event.preventDefault();
                             router.push(resolveToLocation(this.props.to, router));
@@ -9565,42 +10106,43 @@ object-assign
     },
     "./node_modules/react-router/es/PropTypes.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+        var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js");
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return routerShape;
         });
-        var func = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.func, object = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.object, shape = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.shape, string = __WEBPACK_IMPORTED_MODULE_0_react__.PropTypes.string, routerShape = shape({
-            push: func.isRequired,
-            replace: func.isRequired,
-            go: func.isRequired,
-            goBack: func.isRequired,
-            goForward: func.isRequired,
-            setRouteLeaveHook: func.isRequired,
-            isActive: func.isRequired
+        var routerShape = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.shape)({
+            push: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            replace: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            go: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            goBack: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            goForward: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            setRouteLeaveHook: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired,
+            isActive: __WEBPACK_IMPORTED_MODULE_0_prop_types__.func.isRequired
         });
-        shape({
-            pathname: string.isRequired,
-            search: string.isRequired,
-            state: object,
-            action: string.isRequired,
-            key: string
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_prop_types__.shape)({
+            pathname: __WEBPACK_IMPORTED_MODULE_0_prop_types__.string.isRequired,
+            search: __WEBPACK_IMPORTED_MODULE_0_prop_types__.string.isRequired,
+            state: __WEBPACK_IMPORTED_MODULE_0_prop_types__.object,
+            action: __WEBPACK_IMPORTED_MODULE_0_prop_types__.string.isRequired,
+            key: __WEBPACK_IMPORTED_MODULE_0_prop_types__.string
         });
     },
     "./node_modules/react-router/es/Redirect.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(process) {
-            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__), __WEBPACK_IMPORTED_MODULE_2__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_3__PatternUtils__ = __webpack_require__("./node_modules/react-router/es/PatternUtils.js"), __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), _React$PropTypes = __WEBPACK_IMPORTED_MODULE_0_react___default.a.PropTypes, string = _React$PropTypes.string, object = _React$PropTypes.object, Redirect = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+            var __WEBPACK_IMPORTED_MODULE_0_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_0_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_create_react_class__), __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_2_invariant__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__), 
+            __webpack_require__("./node_modules/invariant/browser.js")), __WEBPACK_IMPORTED_MODULE_2_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_invariant__), __WEBPACK_IMPORTED_MODULE_3__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_4__PatternUtils__ = __webpack_require__("./node_modules/react-router/es/PatternUtils.js"), __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), Redirect = __WEBPACK_IMPORTED_MODULE_0_create_react_class___default()({
                 displayName: "Redirect",
                 statics: {
                     createRouteFromReactElement: function(element) {
-                        var route = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__RouteUtils__.c)(element);
+                        var route = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__RouteUtils__.c)(element);
                         route.from && (route.path = route.from);
                         route.onEnter = function(nextState, replace) {
                             var location = nextState.location, params = nextState.params, pathname = void 0;
-                            if ("/" === route.to.charAt(0)) pathname = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__PatternUtils__.c)(route.to, params); else if (route.to) {
+                            if ("/" === route.to.charAt(0)) pathname = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__PatternUtils__.c)(route.to, params); else if (route.to) {
                                 var routeIndex = nextState.routes.indexOf(route), parentPattern = Redirect.getRoutePattern(nextState.routes, routeIndex - 1), pattern = parentPattern.replace(/\/*$/, "/") + route.to;
-                                pathname = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__PatternUtils__.c)(pattern, params);
+                                pathname = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__PatternUtils__.c)(pattern, params);
                             } else pathname = location.pathname;
                             replace({
                                 pathname: pathname,
@@ -9620,16 +10162,16 @@ object-assign
                     }
                 },
                 propTypes: {
-                    path: string,
-                    from: string,
-                    to: string.isRequired,
-                    query: object,
-                    state: object,
-                    onEnter: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.c,
-                    children: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.c
+                    path: __WEBPACK_IMPORTED_MODULE_1_prop_types__.string,
+                    from: __WEBPACK_IMPORTED_MODULE_1_prop_types__.string,
+                    to: __WEBPACK_IMPORTED_MODULE_1_prop_types__.string.isRequired,
+                    query: __WEBPACK_IMPORTED_MODULE_1_prop_types__.object,
+                    state: __WEBPACK_IMPORTED_MODULE_1_prop_types__.object,
+                    onEnter: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.c,
+                    children: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.c
                 },
                 render: function() {
-                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1, "<Redirect> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1);
+                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1, "<Redirect> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1);
                 }
             });
             __webpack_exports__.a = Redirect;
@@ -9638,20 +10180,21 @@ object-assign
     "./node_modules/react-router/es/Route.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(process) {
-            var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__), __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__), __WEBPACK_IMPORTED_MODULE_2__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), _React$PropTypes = __WEBPACK_IMPORTED_MODULE_0_react___default.a.PropTypes, string = _React$PropTypes.string, func = _React$PropTypes.func, Route = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createClass({
+            var __WEBPACK_IMPORTED_MODULE_0_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_0_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_create_react_class__), __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_2_invariant__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__), 
+            __webpack_require__("./node_modules/invariant/browser.js")), __WEBPACK_IMPORTED_MODULE_2_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_invariant__), __WEBPACK_IMPORTED_MODULE_3__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), Route = __WEBPACK_IMPORTED_MODULE_0_create_react_class___default()({
                 displayName: "Route",
                 statics: {
-                    createRouteFromReactElement: __WEBPACK_IMPORTED_MODULE_2__RouteUtils__.c
+                    createRouteFromReactElement: __WEBPACK_IMPORTED_MODULE_3__RouteUtils__.c
                 },
                 propTypes: {
-                    path: string,
-                    component: __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__.a,
-                    components: __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__.b,
-                    getComponent: func,
-                    getComponents: func
+                    path: __WEBPACK_IMPORTED_MODULE_1_prop_types__.string,
+                    component: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.a,
+                    components: __WEBPACK_IMPORTED_MODULE_4__InternalPropTypes__.b,
+                    getComponent: __WEBPACK_IMPORTED_MODULE_1_prop_types__.func,
+                    getComponents: __WEBPACK_IMPORTED_MODULE_1_prop_types__.func
                 },
                 render: function() {
-                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1, "<Route> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_1_invariant___default()(!1);
+                    "production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1, "<Route> elements are for router configuration only and should not be rendered") : __WEBPACK_IMPORTED_MODULE_2_invariant___default()(!1);
                 }
             });
             __webpack_exports__.a = Route;
@@ -9711,28 +10254,29 @@ object-assign
                 for (var i in obj) keys.indexOf(i) >= 0 || Object.prototype.hasOwnProperty.call(obj, i) && (target[i] = obj[i]);
                 return target;
             }
-            var __WEBPACK_IMPORTED_MODULE_0_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__), __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), __WEBPACK_IMPORTED_MODULE_2__createTransitionManager__ = __webpack_require__("./node_modules/react-router/es/createTransitionManager.js"), __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), __WEBPACK_IMPORTED_MODULE_4__RouterContext__ = __webpack_require__("./node_modules/react-router/es/RouterContext.js"), __WEBPACK_IMPORTED_MODULE_5__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_6__RouterUtils__ = __webpack_require__("./node_modules/react-router/es/RouterUtils.js"), __WEBPACK_IMPORTED_MODULE_7__routerWarning__ = __webpack_require__("./node_modules/react-router/es/routerWarning.js"), _extends = Object.assign || function(target) {
+            var __WEBPACK_IMPORTED_MODULE_0_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__), __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), __WEBPACK_IMPORTED_MODULE_2_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_2_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_create_react_class__), __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__), 
+            __webpack_require__("./node_modules/react-router/es/createTransitionManager.js")), __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__ = __webpack_require__("./node_modules/react-router/es/InternalPropTypes.js"), __WEBPACK_IMPORTED_MODULE_6__RouterContext__ = __webpack_require__("./node_modules/react-router/es/RouterContext.js"), __WEBPACK_IMPORTED_MODULE_7__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), __WEBPACK_IMPORTED_MODULE_8__RouterUtils__ = __webpack_require__("./node_modules/react-router/es/RouterUtils.js"), __WEBPACK_IMPORTED_MODULE_9__routerWarning__ = __webpack_require__("./node_modules/react-router/es/routerWarning.js"), _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, _React$PropTypes = __WEBPACK_IMPORTED_MODULE_1_react___default.a.PropTypes, func = _React$PropTypes.func, object = _React$PropTypes.object, propTypes = {
-                history: object,
-                children: __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__.d,
-                routes: __WEBPACK_IMPORTED_MODULE_3__InternalPropTypes__.d,
-                render: func,
-                createElement: func,
-                onError: func,
-                onUpdate: func,
-                matchContext: object
-            }, Router = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createClass({
+            }, propTypes = {
+                history: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object,
+                children: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.d,
+                routes: __WEBPACK_IMPORTED_MODULE_5__InternalPropTypes__.d,
+                render: __WEBPACK_IMPORTED_MODULE_3_prop_types__.func,
+                createElement: __WEBPACK_IMPORTED_MODULE_3_prop_types__.func,
+                onError: __WEBPACK_IMPORTED_MODULE_3_prop_types__.func,
+                onUpdate: __WEBPACK_IMPORTED_MODULE_3_prop_types__.func,
+                matchContext: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object
+            }, Router = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
                 displayName: "Router",
                 propTypes: propTypes,
                 getDefaultProps: function() {
                     return {
                         render: function(props) {
-                            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__RouterContext__.a, props);
+                            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__RouterContext__.a, props);
                         }
                     };
                 },
@@ -9752,14 +10296,14 @@ object-assign
                     var matchContext = this.props.matchContext;
                     if (matchContext) return matchContext.router;
                     var history = this.props.history;
-                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__RouterUtils__.a)(history, this.transitionManager, state);
+                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__RouterUtils__.a)(history, this.transitionManager, state);
                 },
                 createTransitionManager: function() {
                     var matchContext = this.props.matchContext;
                     if (matchContext) return matchContext.transitionManager;
                     var history = this.props.history, _props = this.props, routes = _props.routes, children = _props.children;
                     history.getCurrentLocation || ("production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1, "You have provided a history object created with history v4.x or v2.x and earlier. This version of React Router is only compatible with v3 history objects. Please change to history v3.x.") : __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1));
-                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__createTransitionManager__.a)(history, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__RouteUtils__.b)(routes || children));
+                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__createTransitionManager__.a)(history, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__RouteUtils__.b)(routes || children));
                 },
                 componentWillMount: function() {
                     var _this = this;
@@ -9767,14 +10311,14 @@ object-assign
                     this.router = this.createRouterObject(this.state);
                     this._unlisten = this.transitionManager.listen(function(error, state) {
                         if (error) _this.handleError(error); else {
-                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__RouterUtils__.b)(_this.router, state);
+                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__RouterUtils__.b)(_this.router, state);
                             _this.setState(state, _this.props.onUpdate);
                         }
                     });
                 },
                 componentWillReceiveProps: function(nextProps) {
-                    "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__routerWarning__.a)(nextProps.history === this.props.history, "You cannot change <Router history>; it will be ignored");
-                    "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__routerWarning__.a)((nextProps.routes || nextProps.children) === (this.props.routes || this.props.children), "You cannot change <Router routes>; it will be ignored");
+                    "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__routerWarning__.a)(nextProps.history === this.props.history, "You cannot change <Router history>; it will be ignored");
+                    "production" !== process.env.NODE_ENV && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__routerWarning__.a)((nextProps.routes || nextProps.children) === (this.props.routes || this.props.children), "You cannot change <Router routes>; it will be ignored");
                 },
                 componentWillUnmount: function() {
                     this._unlisten && this._unlisten();
@@ -9801,7 +10345,8 @@ object-assign
     "./node_modules/react-router/es/RouterContext.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(process) {
-            var __WEBPACK_IMPORTED_MODULE_0_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__), __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), __WEBPACK_IMPORTED_MODULE_2__getRouteParams__ = __webpack_require__("./node_modules/react-router/es/getRouteParams.js"), __WEBPACK_IMPORTED_MODULE_3__ContextUtils__ = __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), __WEBPACK_IMPORTED_MODULE_4__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            var __WEBPACK_IMPORTED_MODULE_0_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__), __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__("./node_modules/react/react.js"), __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), __WEBPACK_IMPORTED_MODULE_2_create_react_class__ = __webpack_require__("./node_modules/create-react-class/index.js"), __WEBPACK_IMPORTED_MODULE_2_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_create_react_class__), __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__("./node_modules/prop-types/index.js"), __WEBPACK_IMPORTED_MODULE_4__getRouteParams__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__), 
+            __webpack_require__("./node_modules/react-router/es/getRouteParams.js")), __WEBPACK_IMPORTED_MODULE_5__ContextUtils__ = __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), __WEBPACK_IMPORTED_MODULE_6__RouteUtils__ = __webpack_require__("./node_modules/react-router/es/RouteUtils.js"), _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
                 return typeof obj;
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -9815,16 +10360,16 @@ object-assign
                 return void 0 === obj ? "undefined" : _typeof2(obj);
             } : function(obj) {
                 return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : void 0 === obj ? "undefined" : _typeof2(obj);
-            }, _React$PropTypes = __WEBPACK_IMPORTED_MODULE_1_react___default.a.PropTypes, array = _React$PropTypes.array, func = _React$PropTypes.func, object = _React$PropTypes.object, RouterContext = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createClass({
+            }, RouterContext = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
                 displayName: "RouterContext",
-                mixins: [ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__ContextUtils__.a)("router") ],
+                mixins: [ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__ContextUtils__.a)("router") ],
                 propTypes: {
-                    router: object.isRequired,
-                    location: object.isRequired,
-                    routes: array.isRequired,
-                    params: object.isRequired,
-                    components: array.isRequired,
-                    createElement: func.isRequired
+                    router: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object.isRequired,
+                    location: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object.isRequired,
+                    routes: __WEBPACK_IMPORTED_MODULE_3_prop_types__.array.isRequired,
+                    params: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object.isRequired,
+                    components: __WEBPACK_IMPORTED_MODULE_3_prop_types__.array.isRequired,
+                    createElement: __WEBPACK_IMPORTED_MODULE_3_prop_types__.func.isRequired
                 },
                 getDefaultProps: function() {
                     return {
@@ -9832,7 +10377,7 @@ object-assign
                     };
                 },
                 childContextTypes: {
-                    router: object.isRequired
+                    router: __WEBPACK_IMPORTED_MODULE_3_prop_types__.object.isRequired
                 },
                 getChildContext: function() {
                     return {
@@ -9846,7 +10391,7 @@ object-assign
                     var _this = this, _props = this.props, location = _props.location, routes = _props.routes, params = _props.params, components = _props.components, router = _props.router, element = null;
                     components && (element = components.reduceRight(function(element, components, index) {
                         if (null == components) return element;
-                        var route = routes[index], routeParams = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__getRouteParams__.a)(route, params), props = {
+                        var route = routes[index], routeParams = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__getRouteParams__.a)(route, params), props = {
                             location: location,
                             params: params,
                             route: route,
@@ -9854,7 +10399,7 @@ object-assign
                             routeParams: routeParams,
                             routes: routes
                         };
-                        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__RouteUtils__.a)(element)) props.children = element; else if (element) for (var prop in element) Object.prototype.hasOwnProperty.call(element, prop) && (props[prop] = element[prop]);
+                        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__RouteUtils__.a)(element)) props.children = element; else if (element) for (var prop in element) Object.prototype.hasOwnProperty.call(element, prop) && (props[prop] = element[prop]);
                         if ("object" === (void 0 === components ? "undefined" : _typeof(components))) {
                             var elements = {};
                             for (var key in components) Object.prototype.hasOwnProperty.call(components, key) && (elements[key] = _this.createElement(components[key], _extends({
@@ -9864,7 +10409,7 @@ object-assign
                         }
                         return _this.createElement(components, props);
                     }, element));
-                    null === element || element === !1 || __WEBPACK_IMPORTED_MODULE_1_react___default.a.isValidElement(element) || ("production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1, "The root route must render a single element") : __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1));
+                    null === element || !1 === element || __WEBPACK_IMPORTED_MODULE_1_react___default.a.isValidElement(element) || ("production" !== process.env.NODE_ENV ? __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1, "The root route must render a single element") : __WEBPACK_IMPORTED_MODULE_0_invariant___default()(!1));
                     return element;
                 }
             });
@@ -9901,75 +10446,81 @@ object-assign
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
         }
-        function createTransitionHook(hook, route, asyncArity, pendingHooks) {
-            var isSync = hook.length < asyncArity, transitionHook = function() {
-                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-                hook.apply(route, args);
-                if (isSync) {
-                    (0, args[args.length - 1])();
-                }
-            };
-            pendingHooks.add(transitionHook);
-            return transitionHook;
-        }
-        function getEnterHooks(routes) {
-            return routes.reduce(function(hooks, route) {
-                route.onEnter && hooks.push(createTransitionHook(route.onEnter, route, 3, enterHooks));
-                return hooks;
-            }, []);
-        }
-        function getChangeHooks(routes) {
-            return routes.reduce(function(hooks, route) {
-                route.onChange && hooks.push(createTransitionHook(route.onChange, route, 4, changeHooks));
-                return hooks;
-            }, []);
-        }
-        function runTransitionHooks(length, iter, callback) {
-            function replace(location) {
-                redirectInfo = location;
+        function getTransitionUtils() {
+            function createTransitionHook(hook, route, asyncArity, pendingHooks) {
+                var isSync = hook.length < asyncArity, transitionHook = function() {
+                    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                    hook.apply(route, args);
+                    if (isSync) {
+                        (0, args[args.length - 1])();
+                    }
+                };
+                pendingHooks.add(transitionHook);
+                return transitionHook;
             }
-            if (length) {
-                var redirectInfo = void 0;
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__AsyncUtils__.b)(length, function(index, next, done) {
-                    iter(index, replace, function(error) {
-                        error || redirectInfo ? done(error, redirectInfo) : next();
-                    });
+            function getEnterHooks(routes) {
+                return routes.reduce(function(hooks, route) {
+                    route.onEnter && hooks.push(createTransitionHook(route.onEnter, route, 3, enterHooks));
+                    return hooks;
+                }, []);
+            }
+            function getChangeHooks(routes) {
+                return routes.reduce(function(hooks, route) {
+                    route.onChange && hooks.push(createTransitionHook(route.onChange, route, 4, changeHooks));
+                    return hooks;
+                }, []);
+            }
+            function runTransitionHooks(length, iter, callback) {
+                function replace(location) {
+                    redirectInfo = location;
+                }
+                if (length) {
+                    var redirectInfo = void 0;
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__AsyncUtils__.b)(length, function(index, next, done) {
+                        iter(index, replace, function(error) {
+                            error || redirectInfo ? done(error, redirectInfo) : next();
+                        });
+                    }, callback);
+                } else callback();
+            }
+            function runEnterHooks(routes, nextState, callback) {
+                enterHooks.clear();
+                var hooks = getEnterHooks(routes);
+                return runTransitionHooks(hooks.length, function(index, replace, next) {
+                    var wrappedNext = function() {
+                        if (enterHooks.has(hooks[index])) {
+                            next.apply(void 0, arguments);
+                            enterHooks.remove(hooks[index]);
+                        }
+                    };
+                    hooks[index](nextState, replace, wrappedNext);
                 }, callback);
-            } else callback();
-        }
-        function runEnterHooks(routes, nextState, callback) {
-            enterHooks.clear();
-            var hooks = getEnterHooks(routes);
-            return runTransitionHooks(hooks.length, function(index, replace, next) {
-                var wrappedNext = function() {
-                    if (enterHooks.has(hooks[index])) {
-                        next.apply(void 0, arguments);
-                        enterHooks.remove(hooks[index]);
-                    }
-                };
-                hooks[index](nextState, replace, wrappedNext);
-            }, callback);
-        }
-        function runChangeHooks(routes, state, nextState, callback) {
-            changeHooks.clear();
-            var hooks = getChangeHooks(routes);
-            return runTransitionHooks(hooks.length, function(index, replace, next) {
-                var wrappedNext = function() {
-                    if (changeHooks.has(hooks[index])) {
-                        next.apply(void 0, arguments);
-                        changeHooks.remove(hooks[index]);
-                    }
-                };
-                hooks[index](state, nextState, replace, wrappedNext);
-            }, callback);
-        }
-        function runLeaveHooks(routes, prevState) {
-            for (var i = 0, len = routes.length; i < len; ++i) routes[i].onLeave && routes[i].onLeave.call(routes[i], prevState);
+            }
+            function runChangeHooks(routes, state, nextState, callback) {
+                changeHooks.clear();
+                var hooks = getChangeHooks(routes);
+                return runTransitionHooks(hooks.length, function(index, replace, next) {
+                    var wrappedNext = function() {
+                        if (changeHooks.has(hooks[index])) {
+                            next.apply(void 0, arguments);
+                            changeHooks.remove(hooks[index]);
+                        }
+                    };
+                    hooks[index](state, nextState, replace, wrappedNext);
+                }, callback);
+            }
+            function runLeaveHooks(routes, prevState) {
+                for (var i = 0, len = routes.length; i < len; ++i) routes[i].onLeave && routes[i].onLeave.call(routes[i], prevState);
+            }
+            var enterHooks = new PendingHooks(), changeHooks = new PendingHooks();
+            return {
+                runEnterHooks: runEnterHooks,
+                runChangeHooks: runChangeHooks,
+                runLeaveHooks: runLeaveHooks
+            };
         }
         var __WEBPACK_IMPORTED_MODULE_0__AsyncUtils__ = __webpack_require__("./node_modules/react-router/es/AsyncUtils.js");
-        __webpack_exports__.c = runEnterHooks;
-        __webpack_exports__.b = runChangeHooks;
-        __webpack_exports__.a = runLeaveHooks;
+        __webpack_exports__.a = getTransitionUtils;
         var PendingHooks = function PendingHooks() {
             var _this = this;
             _classCallCheck(this, PendingHooks);
@@ -9983,12 +10534,12 @@ object-assign
                 });
             };
             this.has = function(hook) {
-                return _this.hooks.indexOf(hook) !== -1;
+                return -1 !== _this.hooks.indexOf(hook);
             };
             this.clear = function() {
                 return _this.hooks = [];
             };
-        }, enterHooks = new PendingHooks(), changeHooks = new PendingHooks();
+        };
     },
     "./node_modules/react-router/es/applyRouterMiddleware.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -10016,7 +10567,7 @@ object-assign
                 var parentIsLeaving = !1;
                 leaveRoutes = prevRoutes.filter(function(route) {
                     if (parentIsLeaving) return !0;
-                    var isLeaving = nextRoutes.indexOf(route) === -1 || routeParamsChanged(route, prevState, nextState);
+                    var isLeaving = -1 === nextRoutes.indexOf(route) || routeParamsChanged(route, prevState, nextState);
                     isLeaving && (parentIsLeaving = !0);
                     return isLeaving;
                 });
@@ -10024,7 +10575,7 @@ object-assign
                 enterRoutes = [];
                 changeRoutes = [];
                 nextRoutes.forEach(function(route) {
-                    var isNew = prevRoutes.indexOf(route) === -1, paramsChanged = leaveRoutes.indexOf(route) !== -1;
+                    var isNew = -1 === prevRoutes.indexOf(route), paramsChanged = -1 !== leaveRoutes.indexOf(route);
                     isNew || paramsChanged ? enterRoutes.push(route) : changeRoutes.push(route);
                 });
             } else {
@@ -10095,13 +10646,13 @@ object-assign
                         error ? callback(error) : callback(null, redirectInfo);
                     }
                     var _computeChangedRoutes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__computeChangedRoutes__.a)(state, nextState), leaveRoutes = _computeChangedRoutes.leaveRoutes, changeRoutes = _computeChangedRoutes.changeRoutes, enterRoutes = _computeChangedRoutes.enterRoutes;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__TransitionUtils__.a)(leaveRoutes, state);
+                    runLeaveHooks(leaveRoutes, state);
                     leaveRoutes.filter(function(route) {
-                        return enterRoutes.indexOf(route) === -1;
+                        return -1 === enterRoutes.indexOf(route);
                     }).forEach(removeListenBeforeHooksForRoute);
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__TransitionUtils__.b)(changeRoutes, state, nextState, function(error, redirectInfo) {
+                    runChangeHooks(changeRoutes, state, nextState, function(error, redirectInfo) {
                         if (error || redirectInfo) return handleErrorOrRedirect(error, redirectInfo);
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__TransitionUtils__.c)(enterRoutes, nextState, finishEnterHooks);
+                        runEnterHooks(enterRoutes, nextState, finishEnterHooks);
                     });
                 }
                 function getRouteID(route) {
@@ -10169,7 +10720,7 @@ object-assign
                     state.location ? listener(null, state) : historyListener(history.getCurrentLocation());
                     return unsubscribe;
                 }
-                var state = {}, partialNextState = void 0, RouteGuid = 1, RouteHooks = Object.create(null), unlistenBefore = void 0, unlistenBeforeUnload = void 0;
+                var state = {}, _getTransitionUtils = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__TransitionUtils__.a)(), runEnterHooks = _getTransitionUtils.runEnterHooks, runChangeHooks = _getTransitionUtils.runChangeHooks, runLeaveHooks = _getTransitionUtils.runLeaveHooks, partialNextState = void 0, RouteGuid = 1, RouteHooks = Object.create(null), unlistenBefore = void 0, unlistenBeforeUnload = void 0;
                 return {
                     isActive: isActive,
                     match: match,
@@ -10475,7 +11026,7 @@ object-assign
     "./node_modules/react-router/es/routerWarning.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function routerWarning(falseToWarn, message) {
-            if (message.indexOf("deprecated") !== -1) {
+            if (-1 !== message.indexOf("deprecated")) {
                 if (warned[message]) return;
                 warned[message] = !0;
             }
@@ -10501,9 +11052,10 @@ object-assign
         "use strict";
         (function(process) {
             var __WEBPACK_IMPORTED_MODULE_0_invariant__ = __webpack_require__("./node_modules/invariant/browser.js"), __WEBPACK_IMPORTED_MODULE_1_react__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__), 
-            __webpack_require__("./node_modules/react/react.js")), __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), 
+            __webpack_require__("./node_modules/react/react.js")), __WEBPACK_IMPORTED_MODULE_2_create_react_class__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__), 
+            __webpack_require__("./node_modules/create-react-class/index.js")), __WEBPACK_IMPORTED_MODULE_3_hoist_non_react_statics__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_create_react_class__), 
             __webpack_require__("./node_modules/hoist-non-react-statics/index.js"));
-            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__), __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), 
+            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_hoist_non_react_statics__), __webpack_require__("./node_modules/react-router/es/ContextUtils.js"), 
             __webpack_require__("./node_modules/react-router/es/PropTypes.js"), Object.assign;
         }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
     },
@@ -10595,7 +11147,7 @@ object-assign
         (function(process) {
             var _assign = __webpack_require__("./node_modules/object-assign/index.js"), ReactChildren = __webpack_require__("./node_modules/react/lib/ReactChildren.js"), ReactComponent = __webpack_require__("./node_modules/react/lib/ReactComponent.js"), ReactPureComponent = __webpack_require__("./node_modules/react/lib/ReactPureComponent.js"), ReactClass = __webpack_require__("./node_modules/react/lib/ReactClass.js"), ReactDOMFactories = __webpack_require__("./node_modules/react/lib/ReactDOMFactories.js"), ReactElement = __webpack_require__("./node_modules/react/lib/ReactElement.js"), ReactPropTypes = __webpack_require__("./node_modules/react/lib/ReactPropTypes.js"), ReactVersion = __webpack_require__("./node_modules/react/lib/ReactVersion.js"), onlyChild = __webpack_require__("./node_modules/react/lib/onlyChild.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), createElement = ReactElement.createElement, createFactory = ReactElement.createFactory, cloneElement = ReactElement.cloneElement;
             if ("production" !== process.env.NODE_ENV) {
-                var ReactElementValidator = __webpack_require__("./node_modules/react/lib/ReactElementValidator.js");
+                var canDefineProperty = __webpack_require__("./node_modules/react/lib/canDefineProperty.js"), ReactElementValidator = __webpack_require__("./node_modules/react/lib/ReactElementValidator.js"), didWarnPropTypesDeprecated = !1;
                 createElement = ReactElementValidator.createElement;
                 createFactory = ReactElementValidator.createFactory;
                 cloneElement = ReactElementValidator.cloneElement;
@@ -10632,6 +11184,13 @@ object-assign
                 version: ReactVersion,
                 __spread: __spread
             };
+            "production" !== process.env.NODE_ENV && canDefineProperty && Object.defineProperty(React, "PropTypes", {
+                get: function() {
+                    "production" !== process.env.NODE_ENV && warning(didWarnPropTypesDeprecated, "Accessing PropTypes via the main React package is deprecated. Use the prop-types package from npm instead.");
+                    didWarnPropTypesDeprecated = !0;
+                    return ReactPropTypes;
+                }
+            });
             module.exports = React;
         }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
     },
@@ -10741,7 +11300,7 @@ object-assign
                         var property = spec[name], isAlreadyDefined = proto.hasOwnProperty(name);
                         validateMethodOverride(isAlreadyDefined, name);
                         if (RESERVED_SPEC_KEYS.hasOwnProperty(name)) RESERVED_SPEC_KEYS[name](Constructor, property); else {
-                            var isReactClassMethod = ReactClassInterface.hasOwnProperty(name), isFunction = "function" == typeof property, shouldAutoBind = isFunction && !isReactClassMethod && !isAlreadyDefined && spec.autobind !== !1;
+                            var isReactClassMethod = ReactClassInterface.hasOwnProperty(name), isFunction = "function" == typeof property, shouldAutoBind = isFunction && !isReactClassMethod && !isAlreadyDefined && !1 !== spec.autobind;
                             if (shouldAutoBind) {
                                 autoBindPairs.push(name, property);
                                 proto[name] = property;
@@ -10883,8 +11442,12 @@ object-assign
                 }
             }, ReactClassComponent = function() {};
             _assign(ReactClassComponent.prototype, ReactComponent.prototype, ReactClassMixin);
-            var ReactClass = {
+            var didWarnDeprecated = !1, ReactClass = {
                 createClass: function(spec) {
+                    if ("production" !== process.env.NODE_ENV) {
+                        "production" !== process.env.NODE_ENV && warning(didWarnDeprecated, "%s: React.createClass is deprecated and will be removed in version 16. Use plain JavaScript classes instead. If you're not yet ready to migrate, create-react-class is available on npm as a drop-in replacement.", spec && spec.displayName || "A Component");
+                        didWarnDeprecated = !0;
+                    }
                     var Constructor = identity(function(props, context, updater) {
                         "production" !== process.env.NODE_ENV && "production" !== process.env.NODE_ENV && warning(this instanceof Constructor, "Something is calling a React component directly. Use a factory or JSX instead. See: https://fb.me/react-legacyfactory");
                         this.__reactAutoBindPairs.length && bindAutoBindMethods(this);
@@ -11490,6 +12053,13 @@ object-assign
                 }
                 return "";
             }
+            function getSourceInfoErrorAddendum(elementProps) {
+                if (null !== elementProps && void 0 !== elementProps && void 0 !== elementProps.__source) {
+                    var source = elementProps.__source;
+                    return " Check your code at " + source.fileName.replace(/^.*[\\\/]/, "") + ":" + source.lineNumber + ".";
+                }
+                return "";
+            }
             function getCurrentComponentErrorInfo(parentType) {
                 var info = getDeclarationErrorAddendum();
                 if (!info) {
@@ -11537,7 +12107,9 @@ object-assign
                     if (!validType && "function" != typeof type && "string" != typeof type) {
                         var info = "";
                         (void 0 === type || "object" === (void 0 === type ? "undefined" : _typeof(type)) && null !== type && 0 === Object.keys(type).length) && (info += " You likely forgot to export your component from the file it's defined in.");
-                        info += getDeclarationErrorAddendum();
+                        var sourceInfo = getSourceInfoErrorAddendum(props);
+                        info += sourceInfo || getDeclarationErrorAddendum();
+                        info += ReactComponentTreeHook.getCurrentStackAddendum();
                         "production" !== process.env.NODE_ENV && warning(!1, "React.createElement: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s", null == type ? type : void 0 === type ? "undefined" : _typeof(type), info);
                     }
                     var element = ReactElement.createElement.apply(this, arguments);
@@ -11611,215 +12183,8 @@ object-assign
     },
     "./node_modules/react/lib/ReactPropTypes.js": function(module, exports, __webpack_require__) {
         "use strict";
-        (function(process) {
-            function is(x, y) {
-                return x === y ? 0 !== x || 1 / x == 1 / y : x !== x && y !== y;
-            }
-            function PropTypeError(message) {
-                this.message = message;
-                this.stack = "";
-            }
-            function createChainableTypeChecker(validate) {
-                function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-                    componentName = componentName || ANONYMOUS;
-                    propFullName = propFullName || propName;
-                    if ("production" !== process.env.NODE_ENV && secret !== ReactPropTypesSecret && "undefined" != typeof console) {
-                        var cacheKey = componentName + ":" + propName;
-                        if (!manualPropTypeCallCache[cacheKey]) {
-                            "production" !== process.env.NODE_ENV && warning(!1, "You are manually calling a React.PropTypes validation function for the `%s` prop on `%s`. This is deprecated and will not work in production with the next major version. You may be seeing this warning due to a third-party PropTypes library. See https://fb.me/react-warning-dont-call-proptypes for details.", propFullName, componentName);
-                            manualPropTypeCallCache[cacheKey] = !0;
-                        }
-                    }
-                    if (null == props[propName]) {
-                        var locationName = ReactPropTypeLocationNames[location];
-                        return isRequired ? new PropTypeError(null === props[propName] ? "The " + locationName + " `" + propFullName + "` is marked as required in `" + componentName + "`, but its value is `null`." : "The " + locationName + " `" + propFullName + "` is marked as required in `" + componentName + "`, but its value is `undefined`.") : null;
-                    }
-                    return validate(props, propName, componentName, location, propFullName);
-                }
-                if ("production" !== process.env.NODE_ENV) var manualPropTypeCallCache = {};
-                var chainedCheckType = checkType.bind(null, !1);
-                chainedCheckType.isRequired = checkType.bind(null, !0);
-                return chainedCheckType;
-            }
-            function createPrimitiveTypeChecker(expectedType) {
-                function validate(props, propName, componentName, location, propFullName, secret) {
-                    var propValue = props[propName];
-                    if (getPropType(propValue) !== expectedType) return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of type `" + getPreciseType(propValue) + "` supplied to `" + componentName + "`, expected `" + expectedType + "`.");
-                    return null;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createArrayOfTypeChecker(typeChecker) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    if ("function" != typeof typeChecker) return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside arrayOf.");
-                    var propValue = props[propName];
-                    if (!Array.isArray(propValue)) {
-                        return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of type `" + getPropType(propValue) + "` supplied to `" + componentName + "`, expected an array.");
-                    }
-                    for (var i = 0; i < propValue.length; i++) {
-                        var error = typeChecker(propValue, i, componentName, location, propFullName + "[" + i + "]", ReactPropTypesSecret);
-                        if (error instanceof Error) return error;
-                    }
-                    return null;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createInstanceTypeChecker(expectedClass) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    if (!(props[propName] instanceof expectedClass)) {
-                        var locationName = ReactPropTypeLocationNames[location], expectedClassName = expectedClass.name || ANONYMOUS;
-                        return new PropTypeError("Invalid " + locationName + " `" + propFullName + "` of type `" + getClassName(props[propName]) + "` supplied to `" + componentName + "`, expected instance of `" + expectedClassName + "`.");
-                    }
-                    return null;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createEnumTypeChecker(expectedValues) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    for (var propValue = props[propName], i = 0; i < expectedValues.length; i++) if (is(propValue, expectedValues[i])) return null;
-                    return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of value `" + propValue + "` supplied to `" + componentName + "`, expected one of " + JSON.stringify(expectedValues) + ".");
-                }
-                if (!Array.isArray(expectedValues)) {
-                    "production" !== process.env.NODE_ENV && warning(!1, "Invalid argument supplied to oneOf, expected an instance of array.");
-                    return emptyFunction.thatReturnsNull;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createObjectOfTypeChecker(typeChecker) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    if ("function" != typeof typeChecker) return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside objectOf.");
-                    var propValue = props[propName], propType = getPropType(propValue);
-                    if ("object" !== propType) {
-                        return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of type `" + propType + "` supplied to `" + componentName + "`, expected an object.");
-                    }
-                    for (var key in propValue) if (propValue.hasOwnProperty(key)) {
-                        var error = typeChecker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
-                        if (error instanceof Error) return error;
-                    }
-                    return null;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createUnionTypeChecker(arrayOfTypeCheckers) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-                        if (null == (0, arrayOfTypeCheckers[i])(props, propName, componentName, location, propFullName, ReactPropTypesSecret)) return null;
-                    }
-                    return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` supplied to `" + componentName + "`.");
-                }
-                if (!Array.isArray(arrayOfTypeCheckers)) {
-                    "production" !== process.env.NODE_ENV && warning(!1, "Invalid argument supplied to oneOfType, expected an instance of array.");
-                    return emptyFunction.thatReturnsNull;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function createShapeTypeChecker(shapeTypes) {
-                function validate(props, propName, componentName, location, propFullName) {
-                    var propValue = props[propName], propType = getPropType(propValue);
-                    if ("object" !== propType) {
-                        return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of type `" + propType + "` supplied to `" + componentName + "`, expected `object`.");
-                    }
-                    for (var key in shapeTypes) {
-                        var checker = shapeTypes[key];
-                        if (checker) {
-                            var error = checker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
-                            if (error) return error;
-                        }
-                    }
-                    return null;
-                }
-                return createChainableTypeChecker(validate);
-            }
-            function isNode(propValue) {
-                switch (void 0 === propValue ? "undefined" : _typeof(propValue)) {
-                  case "number":
-                  case "string":
-                  case "undefined":
-                    return !0;
-
-                  case "boolean":
-                    return !propValue;
-
-                  case "object":
-                    if (Array.isArray(propValue)) return propValue.every(isNode);
-                    if (null === propValue || ReactElement.isValidElement(propValue)) return !0;
-                    var iteratorFn = getIteratorFn(propValue);
-                    if (!iteratorFn) return !1;
-                    var step, iterator = iteratorFn.call(propValue);
-                    if (iteratorFn !== propValue.entries) {
-                        for (;!(step = iterator.next()).done; ) if (!isNode(step.value)) return !1;
-                    } else for (;!(step = iterator.next()).done; ) {
-                        var entry = step.value;
-                        if (entry && !isNode(entry[1])) return !1;
-                    }
-                    return !0;
-
-                  default:
-                    return !1;
-                }
-            }
-            function isSymbol(propType, propValue) {
-                return "symbol" === propType || ("Symbol" === propValue["@@toStringTag"] || "function" == typeof Symbol && propValue instanceof Symbol);
-            }
-            function getPropType(propValue) {
-                var propType = void 0 === propValue ? "undefined" : _typeof(propValue);
-                return Array.isArray(propValue) ? "array" : propValue instanceof RegExp ? "object" : isSymbol(propType, propValue) ? "symbol" : propType;
-            }
-            function getPreciseType(propValue) {
-                var propType = getPropType(propValue);
-                if ("object" === propType) {
-                    if (propValue instanceof Date) return "date";
-                    if (propValue instanceof RegExp) return "regexp";
-                }
-                return propType;
-            }
-            function getClassName(propValue) {
-                return propValue.constructor && propValue.constructor.name ? propValue.constructor.name : ANONYMOUS;
-            }
-            var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            }, ReactElement = __webpack_require__("./node_modules/react/lib/ReactElement.js"), ReactPropTypeLocationNames = __webpack_require__("./node_modules/react/lib/ReactPropTypeLocationNames.js"), ReactPropTypesSecret = __webpack_require__("./node_modules/react/lib/ReactPropTypesSecret.js"), emptyFunction = __webpack_require__("./node_modules/fbjs/lib/emptyFunction.js"), getIteratorFn = __webpack_require__("./node_modules/react/lib/getIteratorFn.js"), warning = __webpack_require__("./node_modules/fbjs/lib/warning.js"), ANONYMOUS = "<<anonymous>>", ReactPropTypes = {
-                array: createPrimitiveTypeChecker("array"),
-                bool: createPrimitiveTypeChecker("boolean"),
-                func: createPrimitiveTypeChecker("function"),
-                number: createPrimitiveTypeChecker("number"),
-                object: createPrimitiveTypeChecker("object"),
-                string: createPrimitiveTypeChecker("string"),
-                symbol: createPrimitiveTypeChecker("symbol"),
-                any: function() {
-                    return createChainableTypeChecker(emptyFunction.thatReturns(null));
-                }(),
-                arrayOf: createArrayOfTypeChecker,
-                element: function() {
-                    function validate(props, propName, componentName, location, propFullName) {
-                        var propValue = props[propName];
-                        if (!ReactElement.isValidElement(propValue)) {
-                            return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` of type `" + getPropType(propValue) + "` supplied to `" + componentName + "`, expected a single ReactElement.");
-                        }
-                        return null;
-                    }
-                    return createChainableTypeChecker(validate);
-                }(),
-                instanceOf: createInstanceTypeChecker,
-                node: function() {
-                    function validate(props, propName, componentName, location, propFullName) {
-                        if (!isNode(props[propName])) {
-                            return new PropTypeError("Invalid " + ReactPropTypeLocationNames[location] + " `" + propFullName + "` supplied to `" + componentName + "`, expected a ReactNode.");
-                        }
-                        return null;
-                    }
-                    return createChainableTypeChecker(validate);
-                }(),
-                objectOf: createObjectOfTypeChecker,
-                oneOf: createEnumTypeChecker,
-                oneOfType: createUnionTypeChecker,
-                shape: createShapeTypeChecker
-            };
-            PropTypeError.prototype = Error.prototype;
-            module.exports = ReactPropTypes;
-        }).call(exports, __webpack_require__("./node_modules/process/browser.js"));
+        var _require = __webpack_require__("./node_modules/react/lib/ReactElement.js"), isValidElement = _require.isValidElement, factory = __webpack_require__("./node_modules/prop-types/factory.js");
+        module.exports = factory(isValidElement);
     },
     "./node_modules/react/lib/ReactPropTypesSecret.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -11844,7 +12209,7 @@ object-assign
     },
     "./node_modules/react/lib/ReactVersion.js": function(module, exports, __webpack_require__) {
         "use strict";
-        module.exports = "15.4.2";
+        module.exports = "15.5.4";
     },
     "./node_modules/react/lib/canDefineProperty.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -11901,6 +12266,14 @@ object-assign
         }
         var ITERATOR_SYMBOL = "function" == typeof Symbol && Symbol.iterator, FAUX_ITERATOR_SYMBOL = "@@iterator";
         module.exports = getIteratorFn;
+    },
+    "./node_modules/react/lib/getNextDebugID.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        function getNextDebugID() {
+            return nextDebugID++;
+        }
+        var nextDebugID = 1;
+        module.exports = getNextDebugID;
     },
     "./node_modules/react/lib/onlyChild.js": function(module, exports, __webpack_require__) {
         "use strict";
