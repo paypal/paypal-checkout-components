@@ -208,7 +208,7 @@ module.exports = function(config) {
     } else if (browsers) {
         karmaConfig.browsers = browsers.split(',');
     } else {
-        karmaConfig.browsers = [ 'xPhantom' ];
+        karmaConfig.browsers = [ 'xChrome' ];
     }
 
 
