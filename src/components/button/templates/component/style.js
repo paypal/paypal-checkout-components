@@ -57,6 +57,14 @@ export let componentStyle = `
         border: none;
     }
 
+    .paypal-button:focus .paypal-button-content {
+        box-shadow: 0 0 9px 0 #aaa;
+        -webkit-box-shadow: 0 0 9px 0 #aaa;
+        -moz-box-shadow: 0 0 9px 0 #aaa;
+        -ms-box-shadow: 0 0 9px 0 #aaa;
+        -o-box-shadow: 0 0 9px 0 #aaa;
+    }
+
     .paypal-button .paypal-button-content .logo {
         padding: 0;
         display: inline-block;

@@ -113,7 +113,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
                 </div>
