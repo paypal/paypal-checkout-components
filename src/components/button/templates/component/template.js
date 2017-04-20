@@ -4,8 +4,11 @@ import { componentLogos } from './logos';
 import { componentStyle } from './style';
 import { componentScript } from './script';
 import componentContent from './content.json';
+import { btoa } from 'Base64';
 
-let componentContentJSON = JSON.parse(componentContent);
+let componentContentJSON = typeof componentContent === 'string'
+    ? JSON.parse(componentContent)
+    : componentContent;
 
 let defaultLabel = 'checkout';
 
@@ -30,7 +33,7 @@ let buttonConfig = {
     },
 
     credit: {
-        contentText: '${pp}${paypal}${credit}',
+        contentText: '${pp}${paypal} ${credit}',
         colors: [ 'creditblue' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
@@ -92,37 +95,36 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
         if (name) {
-            return componentLogos[name][logoColor];
-        } else if (text) {
+            return `<img class="logo logo-${name} logo-${name}-${color}"
+                        src="data:image/svg+xml;base64,${btoa(componentLogos[name][logoColor])}"
+                        alt="PayPal">`;
+        } else if (text && text.trim()) {
             return `<span class="text">${text}</span>`;
+        } else {
+            return text;
         }
     });
 
     let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
 
     return `
+        <style type="text/css">
+            ${ componentStyle }
+        </style>
 
-        <head>
-            <style type="text/css">
-                ${ componentStyle }
-            </style>
-        </head>
-
-        <body>
-            <div id="paypal-button-container">
-                <div class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit">
-                    <div class="paypal-button-content">
-                        ${ labelText }
-                    </div>
-                    <div class="paypal-button-tag-content">
-                        ${ labelTag }
-                    </div>
+        <div id="paypal-button-container">
+            <div class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit">
+                <div class="paypal-button-content">
+                    ${ labelText }
+                </div>
+                <div class="paypal-button-tag-content">
+                    ${ labelTag }
                 </div>
             </div>
+        </div>
 
-            <script>
-                (${ componentScript.toString() })();
-            </script>
-        </body>
+        <script>
+            (${ componentScript.toString() })();
+        </script>
     `;
 }

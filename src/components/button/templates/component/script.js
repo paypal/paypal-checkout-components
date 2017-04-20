@@ -6,24 +6,52 @@ export function componentScript() {
         return Array.prototype.slice.call(document.querySelectorAll(selector));
     }
 
-    function isVisible(el : HTMLElement) : boolean {
-        return el.style.display !== 'none';
+    /*
+
+    function isShown(el : HTMLElement) : boolean {
+        return window.getComputedStyle(el).display !== 'none';
     }
 
     function showElement(el, displayType) {
         el.style.display = displayType || 'block';
     }
 
+    */
+
     function hideElement(el : HTMLElement) {
         el.style.display = 'none';
     }
 
     function makeElementVisible(el : HTMLElement) {
-        el.style.visibility = '';
+        el.style.visibility = 'visible';
     }
+
+    /*
 
     function makeElementInvisible(el) {
         el.style.visibility = 'hidden';
+    }
+
+    */
+
+    function hasDimensions(el) : boolean {
+        let rect = el.getBoundingClientRect();
+        return Boolean(rect.height && rect.width);
+    }
+
+    function onDisplay(elements, method) {
+        if (elements.every(hasDimensions)) {
+            method();
+            return;
+        }
+
+        let interval = setInterval(() => {
+            if (elements.every(hasDimensions)) {
+                clearInterval(interval);
+                method();
+                return;
+            }
+        }, 5);
     }
 
     function isOverflowing(el : HTMLElement) : boolean {
@@ -47,48 +75,31 @@ export function componentScript() {
             return true;
         }
 
+        if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {
+            return true;
+        }
+
         return false;
     }
 
-    function hideIfOverflow(selector : string, displayType : string) {
-        getElements(selector).forEach(el => {
+    let images = getElements('.paypal-button-content .logo');
+    let text = getElements('.paypal-button-content .text');
+    let tagline = getElements('.paypal-button-tag-content');
 
-            if (isVisible(el)) {
-                if (isOverflowing(el)) {
-                    return hideElement(el);
-                }
-                return;
-            }
+    onDisplay(images, () => {
 
-            makeElementInvisible(el);
-            setTimeout(() => {
-                showElement(el, displayType);
+        images.forEach(makeElementVisible);
 
-                if (isOverflowing(el)) {
-                    hideElement(el);
-                } else {
-                    makeElementVisible(el);
-                }
-            }, 1);
-        });
-    }
+        if (tagline.some(isOverflowing)) {
+            tagline.forEach(hideElement);
+        } else {
+            tagline.forEach(makeElementVisible);
+        }
 
-    function hideOverflowElements() {
-        hideIfOverflow('.paypal-button-tag-content', 'block');
-        hideIfOverflow('.paypal-button-content .text', 'inline-block');
-
-        getElements('.paypal-button-content img').forEach(img => {
-            if (isOverflowing(img)) {
-                getElements('.paypal-button-content .text').forEach(el => {
-                    hideElement(el);
-                });
-            }
-        });
-    }
-
-    hideOverflowElements();
-
-    window.addEventListener('resize', hideOverflowElements);
-    window.addEventListener('load', hideOverflowElements);
-    document.addEventListener('DOMContentLoaded', hideOverflowElements);
+        if (images.some(isOverflowing) || text.some(isOverflowing)) {
+            text.forEach(hideElement);
+        } else {
+            text.forEach(makeElementVisible);
+        }
+    });
 }

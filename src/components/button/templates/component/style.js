@@ -18,7 +18,7 @@ export let componentStyle = `
         -ms-user-select: none;
         user-select: none;
     }
-    
+
 
     /* Base Button */
 
@@ -56,40 +56,36 @@ export let componentStyle = `
         box-sizing: border-box;
         border: none;
     }
-    
-    .paypal-button .paypal-button-content svg {
+
+    .paypal-button .paypal-button-content .logo {
         padding: 0;
         display: inline-block;
         background: none;
         border: none;
         width: auto;
-        vertical-align: top;
-        
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
     }
-    
-    .paypal-button .paypal-button-content svg.logo-pp {
-        height: 115%;
+
+    .paypal-button .paypal-button-content .logo.logo-pp {
         margin-right: 2px;
-    }
-    
-    .paypal-button .paypal-button-content svg.logo-paypal {
-        height: 110%;
-    }
-    
-    .paypal-button .paypal-button-content svg.logo-credit {
-        height: 100%;
     }
 
     .paypal-button .paypal-button-content .text {
         display: inline-block;
         white-space: pre;
-        
+        /* display: none; */
+    }
+
+    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {
+        vertical-align: top;
         position: relative;
         top: 50%;
         transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        text-align: left;
+        visibility: hidden;
     }
 
     .paypal-button .paypal-button-content::before {
@@ -109,7 +105,8 @@ export let componentStyle = `
         text-align: center;
         width: auto;
         font-size: 9px;
-        margin-top: 1px;
+        margin-top: 2px;
+        visibility: hidden;
     }
 
 
@@ -140,13 +137,17 @@ export let componentStyle = `
             border-radius: 9px;
             font-size: 10px;
         }
-        
-        .paypal-button .paypal-button-content svg.logo-pp {
-            height: 160%;
+
+        .paypal-button .paypal-button-content .logo.logo-pp {
+            height: 16px;
         }
-        
-        .paypal-button .paypal-button-content svg.logo-paypal {
-            height: 150%;
+
+        .paypal-button .paypal-button-content .logo.logo-paypal {
+            height: 15px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-credit {
+            height: 14px;
         }
 
         .paypal-button .paypal-button-content::before {
@@ -177,7 +178,19 @@ export let componentStyle = `
             border-radius: 12px;
             font-size: 10px;
         }
-        
+
+        .paypal-button .paypal-button-content .logo.logo-pp {
+            height: 18px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-paypal {
+            height: 17px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-credit {
+            height: 16px;
+        }
+
         .paypal-button .paypal-button-content::before {
             padding: 1px;
             top: -1px;
@@ -193,7 +206,7 @@ export let componentStyle = `
 
 
     /* Medium */
-    
+
     @media only screen and (min-width : 200px) and (min-height: 48px) {
 
         .paypal-button {
@@ -205,6 +218,18 @@ export let componentStyle = `
             max-height: 30px;
             border-radius: 15px;
             font-size: 12px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-pp {
+            height: 25px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-paypal {
+            height: 24px;
+        }
+
+        .paypal-button .paypal-button-content .logo.logo-credit {
+            height: 23px;
         }
 
         .paypal-button .paypal-button-content::before {
@@ -239,15 +264,19 @@ export let componentStyle = `
             border-radius: 20px;
             font-size: 14px;
         }
-        
-        .paypal-button .paypal-button-content svg.logo-pp {
-            height: 95%;
+
+        .paypal-button .paypal-button-content .logo.logo-pp {
+            height: 30px;
         }
-        
-        .paypal-button .paypal-button-content svg.logo-paypal {
-            height: 85%;
+
+        .paypal-button .paypal-button-content .logo.logo-paypal {
+            height: 27px;
         }
-        
+
+        .paypal-button .paypal-button-content .logo.logo-credit {
+            height: 25px;
+        }
+
         .paypal-button .paypal-button-content::before {
             padding: 2px;
             top: -2px;
@@ -350,8 +379,8 @@ export let componentStyle = `
     .paypal-button.paypal-style-credit .paypal-button-content .text {
         display: none !important;
     }
-    
-    
+
+
     /* Pay Button */
 
     @media only screen and (max-width : 147px) {
