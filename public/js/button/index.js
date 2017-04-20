@@ -269,6 +269,18 @@ function setup() {
             window.xprops.onClick();
         }
     });
+
+    button.addEventListener('keypress', event => {
+        event.preventDefault();
+
+        if (event.keyCode == 13) {
+            renderCheckout();
+
+            if (window.xprops.onClick) {
+                window.xprops.onClick();
+            }
+        }
+    });
 }
 
 setup();
