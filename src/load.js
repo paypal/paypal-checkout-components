@@ -26,7 +26,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
         let _interface = require('./index');
 
-        extendNamespace(_interface, [ 'paypal', 'PAYPAL' ], [ 'apps' ]);
+        extendNamespace(_interface, [ 'paypal', 'PAYPAL', 'ppxo' ], [ 'apps' ]);
 
     } catch (err) {
 
