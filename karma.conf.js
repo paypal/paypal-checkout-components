@@ -152,7 +152,9 @@ module.exports = function(config) {
                     __FILE_VERSION__:      JSON.stringify('4'),
                     __MAJOR_VERSION__:     JSON.stringify('4'),
                     __MINOR_VERSION__:     JSON.stringify('4.0'),
-                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : logLevel || 'error')
+                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : logLevel || 'error'),
+                    __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
+                    __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true)
                 })
             ]
         },
