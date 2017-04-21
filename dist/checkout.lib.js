@@ -2798,7 +2798,7 @@
             }
             function getDomainFromUrl(url) {
                 var domain = void 0;
-                if (!url.match(/^(https?|mock|file):\/\//)) return this.getDomain();
+                if (!url.match(/^(https?|mock|file):\/\//)) return getDomain();
                 domain = url;
                 domain = domain.split("/").slice(0, 3).join("/");
                 return domain;
@@ -7803,7 +7803,7 @@
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.57";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.58";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -8335,7 +8335,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.57";
+                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.58";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8817,7 +8817,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.57",
+                version: "4.0.58",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -8937,7 +8937,7 @@
                 },
                 loggerUri: "/webapps/hermes/api/logger",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.57");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.58");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -9513,7 +9513,7 @@
             __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
                 return destroyAll;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.57", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.58", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
@@ -10334,7 +10334,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.57";
+                    payload.version = "4.0.58";
                     payload.host = window.location.host;
                     payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                     var query = [];
@@ -10349,7 +10349,7 @@
             function checkpoint(name) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
-                    var version = "4.0.57".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                    var version = "4.0.58".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                     loggedCheckpoints.push(checkpointName);
                     logged && (checkpointName += "_dupe");
                     return beacon(checkpointName, payload);
@@ -10357,7 +10357,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.57",
+                    v: "checkout.js.4.0.58",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -10926,7 +10926,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                         uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                        ver: "4.0.57"
+                        ver: "4.0.58"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.h(function() {
