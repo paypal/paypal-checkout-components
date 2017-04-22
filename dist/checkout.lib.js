@@ -798,6 +798,7 @@
                     }
                 };
                 WeakMap.prototype.set = function(key, value) {
+                    if (!key) throw new Error("WeakMap expected key");
                     var weakmap = this.weakmap;
                     if (weakmap) try {
                         weakmap.set(key, value);
@@ -820,6 +821,7 @@
                     }
                 };
                 WeakMap.prototype.get = function(key) {
+                    if (!key) throw new Error("WeakMap expected key");
                     var weakmap = this.weakmap;
                     if (weakmap) try {
                         if (weakmap.has(key)) return weakmap.get(key);
@@ -835,6 +837,7 @@
                     if (entry && entry[0] === key) return entry[1];
                 };
                 WeakMap.prototype.delete = function(key) {
+                    if (!key) throw new Error("WeakMap expected key");
                     var weakmap = this.weakmap;
                     if (weakmap) try {
                         weakmap.delete(key);
@@ -854,6 +857,7 @@
                     }
                 };
                 WeakMap.prototype.has = function(key) {
+                    if (!key) throw new Error("WeakMap expected key");
                     var weakmap = this.weakmap;
                     if (weakmap) try {
                         return weakmap.has(key);
@@ -1580,6 +1584,7 @@
                 }
                 domain && (domain = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.C)(domain));
                 var win = windowOpen.call(this, url, name, options, last);
+                if (!win) return win;
                 url && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common__.h)(win);
                 for (var _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_3__global__.a.popupWindowsByName), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref2;
@@ -4979,10 +4984,9 @@
                             width: "100%",
                             height: "100%"
                         }
-                    };
-                    this.iframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.F)(null, options, this.element);
-                    this.window = this.iframe.contentWindow;
-                    this.iframe.addEventListener("error", function(err) {
+                    }, frame = this.iframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.F)(null, options, this.element);
+                    this.window = frame.contentWindow;
+                    frame.addEventListener("error", function(err) {
                         return _this.error(err);
                     });
                     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.y)(this.element);
@@ -4990,12 +4994,12 @@
                     if (this.component.sacrificialComponentTemplate) {
                         sacrificialIframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.F)(null, options, this.element);
                         this.componentTemplateWindow = sacrificialIframe.contentWindow;
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.y)(this.iframe);
-                        this.iframe.addEventListener("load", function() {
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.y)(frame);
+                        frame.addEventListener("load", function() {
                             setTimeout(function() {
                                 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.y)(sacrificialIframe);
                                 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.K)(sacrificialIframe);
-                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(_this.iframe);
+                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(frame);
                             }, 50);
                         });
                     }
@@ -7037,7 +7041,7 @@
                 element.style.display = "";
             }
             function hideElement(element) {
-                element.style.display = STYLE.DISPLAY.NONE;
+                element.style.setProperty("display", STYLE.DISPLAY.NONE, STYLE.IMPORTANT);
             }
             function destroyElement(element) {
                 element.parentNode && element.parentNode.removeChild(element);
@@ -7133,14 +7137,11 @@
                 }
                 return params;
             })), VENDOR_PREFIXES = [ "webkit", "moz", "ms", "o" ], CSSRule = window.CSSRule, KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE, ANIMATION_START_EVENTS = [ "animationstart", "webkitAnimationStart", "oAnimationStart", "MSAnimationStart" ], ANIMATION_END_EVENTS = [ "animationend", "webkitAnimationEnd", "oAnimationEnd", "MSAnimationEnd" ], STYLE = {
-                VISIBILITY: {
-                    VISIBLE: "visible",
-                    HIDDEN: "hidden"
-                },
                 DISPLAY: {
                     NONE: "none",
                     BLOCK: "block"
-                }
+                },
+                IMPORTANT: "important"
             };
         },
         "./node_modules/xcomponent/src/lib/fn.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -7803,7 +7804,7 @@
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.59";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.60";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -8335,7 +8336,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.59";
+                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.60";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8817,7 +8818,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.59",
+                version: "4.0.60",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -8937,7 +8938,7 @@
                 },
                 loggerUri: "/webapps/hermes/api/logger",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.59");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.60");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -9513,7 +9514,7 @@
             __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
                 return destroyAll;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.59", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.60", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
@@ -10334,7 +10335,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.59";
+                    payload.version = "4.0.60";
                     payload.host = window.location.host;
                     payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                     var query = [];
@@ -10349,7 +10350,7 @@
             function checkpoint(name) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
-                    var version = "4.0.59".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                    var version = "4.0.60".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                     loggedCheckpoints.push(checkpointName);
                     logged && (checkpointName += "_dupe");
                     return beacon(checkpointName, payload);
@@ -10357,7 +10358,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.59",
+                    v: "checkout.js.4.0.60",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -10926,7 +10927,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                         uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                        ver: "4.0.59"
+                        ver: "4.0.60"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.h(function() {
