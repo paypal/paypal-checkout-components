@@ -2,6 +2,16 @@
 
 set -e;
 
+if ! git diff-files --quiet; then
+    echo "Can not publish with unstaged uncommited changes";
+    exit 1;
+fi;
+
+if ! git diff-index --quiet --cached HEAD; then echo ok; fi;
+    echo "Can not publish with staged uncommited changes";
+    exit 1;
+fi;
+
 rm -rf node_modules/xcomponent node_modules/post-robot node_modules/sync-browser-mocks node_modules/beaver-logger node_modules/cross-domain-safe-weakmap
 npm install xcomponent post-robot sync-browser-mocks beaver-logger cross-domain-safe-weakmap
 
