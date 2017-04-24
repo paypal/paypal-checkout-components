@@ -24,6 +24,7 @@ export const LOG_LEVEL = {
 export const FPTI = {
 
     KEY: {
+        FEED: 'feed_name',
         STATE: 'state_name',
         TRANSITION: 'transition_name',
         UID: 'user_session_guid',

@@ -27,6 +27,7 @@ export function initLogger() {
 
     $logger.addTrackingBuilder(() => {
         return {
+            [ FPTI.KEY.FEED ]: 'checkoutjs',
             [ FPTI.KEY.UID ]: getPageID()
         };
     });
