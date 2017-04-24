@@ -540,15 +540,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
 
+                let paymentCalls = 0;
+
                 return window.paypal.Button.render({
 
                     test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
+                        paymentCalls += 1;
+
                         return generateECToken();
                     },
 
                     onAuthorize() : void {
+                        if (paymentCalls !== 1) {
+                            return done(new Error(`Expected payment to be called one time, got ${paymentCalls} calls`));
+                        }
+
                         return done();
                     },
 

@@ -576,16 +576,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
+                let paymentCalls = 0;
+
                 testButton.addEventListener('click', (event : Event) => {
                     return window.paypal.Checkout.render({
 
                         test: { action: 'popout' },
 
                         payment() : string | SyncPromise<string> {
+                            paymentCalls += 1;
                             return generateECToken();
                         },
 
                         onAuthorize() : void {
+                            if (paymentCalls !== 1) {
+                                return done(new Error(`Expected payment to be called one time, got ${paymentCalls} calls`));
+                            }
+
                             return done();
                         },
 
