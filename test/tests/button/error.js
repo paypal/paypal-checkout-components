@@ -19,7 +19,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        it.only('should render button, render checkout, and throw an error in payment', (done) => {
+        it('should render button, render checkout, and throw an error in payment', (done) => {
 
             return window.paypal.Button.render({
 
