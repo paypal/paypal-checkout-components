@@ -2,6 +2,9 @@
 
 set -e;
 
+rm dist/*;
+git checkout dist/;
+
 if ! git diff-files --quiet; then
     echo "Can not publish with unstaged uncommited changes";
     exit 1;
