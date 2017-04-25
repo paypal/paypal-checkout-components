@@ -125,7 +125,7 @@ if (action === 'checkout') {
 
         }).then(() => {
 
-            window.xprops.onError(new Error('something went wrong'));
+            window.xchild.error(new Error('something went wrong'));
         });
     });
 }
