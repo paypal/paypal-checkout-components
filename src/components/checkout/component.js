@@ -433,3 +433,10 @@ if (Checkout.isChild()) {
 
     awaitPopupBridgeOpener();
 }
+
+// $FlowFixMe
+Object.defineProperty(Checkout.contexts, 'lightbox', {
+    set(value) {
+        Checkout.contexts.iframe = value;
+    }
+});
