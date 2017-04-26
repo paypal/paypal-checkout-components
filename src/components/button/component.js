@@ -6,7 +6,8 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request } from '../../lib';
+import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
@@ -163,12 +164,65 @@ export let Button = xcomponent.create({
         },
 
         payment: {
-            type: 'string',
+            type: 'function',
             required: true,
-            getter: true,
             memoize: false,
             timeout: __TEST__ ? 500 : 10 * 1000,
-            alias: 'billingAgreement'
+            alias: 'billingAgreement',
+
+            decorate(original) : () => SyncPromise<string> {
+                return function payment() : SyncPromise<string> {
+                    return new SyncPromise((resolve, reject) => {
+
+                        let actions = resolve;
+
+                        actions.payment = {
+                            create: (options, experience) => {
+                                return rest.payment.create(this.props.env, this.props.client, options, experience);
+                            }
+                        };
+
+                        actions.request = request;
+
+                        let context = {
+                            props: {
+                                env: this.props.env,
+                                client: this.props.client
+                            }
+                        };
+
+                        let result;
+
+                        try {
+                            result = original.call(context, actions, reject);
+                        } catch (err) {
+                            return reject(err);
+                        }
+
+                        if (result && typeof result.then === 'function') {
+                            return result.then(resolve, reject);
+                        }
+
+                        if (result !== undefined) {
+                            return resolve(result);
+                        }
+
+                        let timeout = __TEST__ ? 500 : 10 * 1000;
+
+                        setTimeout(() => {
+                            reject(`Timed out waiting ${timeout}ms for payment`);
+                        }, timeout);
+
+                    }).then(result => {
+
+                        if (!result) {
+                            throw new Error(`No value passed to payment`);
+                        }
+
+                        return result;
+                    });
+                };
+            }
         },
 
         commit: {
