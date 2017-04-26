@@ -49,6 +49,8 @@ export let Button = xcomponent.create({
 
         let responsiveHeight = '42px';
 
+        $logger.info(`iframe_button_size_${size}`);
+
         if (size === 'responsive') {
             let width = container.offsetWidth;
 
