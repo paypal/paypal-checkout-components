@@ -162,17 +162,7 @@ module.exports.webpack_tasks = {
             modulename: `paypal`
         })
     },
-
-    demo: {
-        src: 'demo/app/client/js/index.jsx',
-        out: 'demo/app/build',
-        cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `demo.js`,
-            modulename: `ppdemo`
-        })
-    },
-
+    
     child_loader: {
         src: 'src/loader/index.js',
         out: 'dist',

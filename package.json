@@ -12,7 +12,6 @@
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
     "src/",
-    "demo/",
     "postinstall.js"
   ],
   "repository": {
@@ -93,17 +92,7 @@
   "dependencies": {
     "Base64": "^1.0.0",
     "beaver-logger": "^3",
-    "body-parser": "^1.16.1",
-    "braintree": "^2.0.0",
-    "cookie-parser": "^1.4.3",
-    "es6-iterator": "^2.0.0",
-    "es6-symbol": "^3.1.0",
-    "express": "^4.14.1",
     "post-robot": "^5.0.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-router": "^3.0.2",
-    "request": "^2.79.0",
     "xcomponent": "^2.0.0"
   }
 }
