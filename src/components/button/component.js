@@ -97,7 +97,7 @@ export let Button = xcomponent.create({
 
     autoResize: {
         width: false,
-        height: true
+        height: false
     },
 
     props: {
