@@ -90,6 +90,12 @@ export function createElement(options : Object) : HTMLElement {
         }
     }
 
+    if (options.style) {
+        for (let key of Object.keys(options.style)) {
+            element.style[key] = options.style[key];
+        }
+    }
+
     if (options.children) {
         for (let child of options.children) {
             element.appendChild(createElement(child));

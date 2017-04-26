@@ -56,9 +56,9 @@ export let Button = xcomponent.create({
 
             if (width < 100) {
                 responsiveHeight = '22px';
-            } else if (width < 180) {
+            } else if (width < 200) {
                 responsiveHeight = '42px';
-            } else if (width < 250) {
+            } else if (width < 300) {
                 responsiveHeight = '48px';
             } else {
                 responsiveHeight = '60px';
