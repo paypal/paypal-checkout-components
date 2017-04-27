@@ -170,7 +170,7 @@ export let Button = xcomponent.create({
             timeout: __TEST__ ? 500 : 10 * 1000,
             alias: 'billingAgreement',
 
-            decorate(original) : () => SyncPromise<string> {
+            decorate(original) : Function {
                 return function payment() : SyncPromise<string> {
                     return new SyncPromise((resolve, reject) => {
 
