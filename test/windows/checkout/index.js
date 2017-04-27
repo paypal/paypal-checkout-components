@@ -29,6 +29,8 @@ if (action === 'checkout') {
 
             window.xprops.onAuthorize({
                 paymentToken,
+                paymentID: paymentToken,
+                payerID: 'YYYYYYYYYYYYY',
                 cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
                 returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href

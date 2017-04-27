@@ -12,6 +12,7 @@ import { rest } from '../../api';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
 import { componentScript } from './templates/component/script';
+import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
 export let Button = xcomponent.create({
 
@@ -164,6 +165,32 @@ export let Button = xcomponent.create({
             }
         },
 
+        braintree: {
+            type: 'object',
+            required: false,
+            validate(braintree, props) {
+
+                if (!braintree.paypalCheckout) {
+                    throw new Error(`Expected Braintree paypal-checkout component to be loaded`);
+                }
+
+                if (!props.client) {
+                    throw new Error(`Expected client prop to be passed with Braintree authorization keys`);
+                }
+            },
+            decorate(braintree, props) : ?SyncPromise<BraintreePayPalClient> {
+
+                if (!braintree) {
+                    return;
+                }
+
+                let env = props.env || config.env;
+                let authorization = props.client[env];
+
+                return awaitBraintreeClient(braintree, authorization);
+            }
+        },
+
         payment: {
             type: 'function',
             required: true,
@@ -180,6 +207,18 @@ export let Button = xcomponent.create({
                         actions.payment = {
                             create: (options, experience) => {
                                 return rest.payment.create(this.props.env, this.props.client, options, experience);
+                            }
+                        };
+
+                        actions.braintree = {
+                            create: (options) => {
+                                if (!this.props.braintree) {
+                                    throw new Error(`Can not create using Braintree - no braintree client provided`);
+                                }
+
+                                return this.props.braintree.then(client => {
+                                    return client.createPayment(options);
+                                });
                             }
                         };
 
@@ -300,6 +339,14 @@ export let Button = xcomponent.create({
             decorate(original) : ?Function {
                 if (original) {
                     return function(data, actions) : void | SyncPromise<void> {
+
+                        if (this.props.braintree) {
+                            return this.props.braintree.then(client => {
+                                return client.tokenizePayment(data).then(res => {
+                                    return original.call(this, { nonce: res.nonce });
+                                });
+                            });
+                        }
 
                         let redirect = (win, url) => {
                             return SyncPromise.all([
