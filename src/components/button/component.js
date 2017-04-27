@@ -11,6 +11,7 @@ import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
+import { componentScript } from './templates/component/script';
 
 export let Button = xcomponent.create({
 
@@ -504,4 +505,12 @@ if (Button.isChild()) {
             }
         };
     }
+
+    setTimeout(() => {
+        let logo = document.querySelector('.logo-paypal');
+
+        if (logo && (logo.style.visibility === 'hidden' || window.getComputedStyle(logo).visibility === 'hidden')) {
+            componentScript();
+        }
+    }, 1);
 }
