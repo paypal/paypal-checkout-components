@@ -5344,7 +5344,7 @@
             var prop = component.props[key];
             prop.value ? value = prop.value : props.hasOwnProperty(key) && isDefined(value) || (value = getDefault(component, prop, props));
             !value && prop.alias && props[prop.alias] && (value = props[prop.alias]);
-            prop.decorate && (!isDefined(value) && prop.required || (value = prop.decorate(value)));
+            prop.decorate && (!isDefined(value) && prop.required || (value = prop.decorate(value, props)));
             if (prop.getter) {
                 if (!value) return;
                 if (value instanceof Function) value = value.bind(instance); else {
@@ -7285,7 +7285,7 @@
     },
     "./src/components/button/component.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_7__templates__ = __webpack_require__("./src/components/button/templates/index.js");
+        var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return Button;
         });
@@ -7307,11 +7307,11 @@
                 popup: !1
             },
             scrolling: !1,
-            containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
-            componentTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
+            containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
+            componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.64";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.65";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -7321,7 +7321,7 @@
                 __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.c("iframe_button_size_" + size);
                 if ("responsive" === size) {
                     var _width = container.offsetWidth;
-                    responsiveHeight = _width < 100 ? "22px" : _width < 180 ? "42px" : _width < 250 ? "48px" : "60px";
+                    responsiveHeight = _width < 100 ? "22px" : _width < 200 ? "42px" : _width < 300 ? "48px" : "60px";
                 }
                 return {
                     tiny: {
@@ -7393,12 +7393,44 @@
                     }
                 },
                 payment: {
-                    type: "string",
+                    type: "function",
                     required: !0,
-                    getter: !0,
                     memoize: !1,
                     timeout: 1e4,
-                    alias: "billingAgreement"
+                    alias: "billingAgreement",
+                    decorate: function(original) {
+                        return function() {
+                            var _this = this;
+                            return new __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__.a(function(resolve, reject) {
+                                var actions = resolve;
+                                actions.payment = {
+                                    create: function(options, experience) {
+                                        return __WEBPACK_IMPORTED_MODULE_6__api__.a.payment.create(_this.props.env, _this.props.client, options, experience);
+                                    }
+                                };
+                                actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.a;
+                                var context = {
+                                    props: {
+                                        env: _this.props.env,
+                                        client: _this.props.client
+                                    }
+                                }, result = void 0;
+                                try {
+                                    result = original.call(context, actions, reject);
+                                } catch (err) {
+                                    return reject(err);
+                                }
+                                if (result && "function" == typeof result.then) return result.then(resolve, reject);
+                                if (void 0 !== result) return resolve(result);
+                                setTimeout(function() {
+                                    reject("Timed out waiting 10000ms for payment");
+                                }, 1e4);
+                            }).then(function(result) {
+                                if (!result) throw new Error("No value passed to payment");
+                                return result;
+                            });
+                        };
+                    }
                 },
                 commit: {
                     type: "boolean",
@@ -7437,17 +7469,17 @@
                     required: !1,
                     decorate: function(original) {
                         return function() {
-                            var _this = this, _arguments = arguments;
+                            var _this2 = this, _arguments = arguments;
                             return __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__.a.try(function() {
-                                _this.onAuth = _this.onAuth || new __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__.a();
-                                if (_this.props.displayTo === __WEBPACK_IMPORTED_MODULE_4__config__.c.REMEMBERED) {
+                                _this2.onAuth = _this2.onAuth || new __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__.a();
+                                if (_this2.props.displayTo === __WEBPACK_IMPORTED_MODULE_4__config__.c.REMEMBERED) {
                                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.c("button_render_wait_for_remembered_user");
-                                    return _this.onAuth.then(function() {
+                                    return _this2.onAuth.then(function() {
                                         __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.c("button_render_got_remembered_user");
                                     });
                                 }
                             }).then(function() {
-                                if (original) return original.apply(_this, _arguments);
+                                if (original) return original.apply(_this2, _arguments);
                             });
                         };
                     }
@@ -7560,8 +7592,8 @@
                     required: !1,
                     get value() {
                         return {
-                            open: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__checkout_popupBridge__.a)(),
-                            awaitOpener: __WEBPACK_IMPORTED_MODULE_6__checkout_popupBridge__.b
+                            open: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__.a)(),
+                            awaitOpener: __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__.b
                         };
                     }
                 },
@@ -7585,7 +7617,7 @@
                 });
             }
             window.xprops.logLevel && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib__.k)(window.xprops.logLevel);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__checkout_popupBridge__.b)();
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__.b)();
             if (window.xprops.validate) {
                 var enabled = !0;
                 window.xprops.validate({
@@ -7601,6 +7633,10 @@
                     if (enabled) return renderTo.apply(this, arguments);
                 };
             }
+            setTimeout(function() {
+                var logo = document.querySelector(".logo-paypal");
+                !logo || "hidden" !== logo.style.visibility && "hidden" !== window.getComputedStyle(logo).visibility || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__templates_component_script__.a)();
+            }, 1);
         }
     },
     "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -7776,7 +7812,7 @@
         "use strict";
         function containerTemplate(_ref) {
             var props = _ref.props, CLASS = _ref.CLASS;
-            return '\n\n        <style>\n            .paypal-button-parent {\n                font-size: 0;\n                display: inline-block;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-checkout {\n                min-width: 80px;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-credit {\n                min-width: 148px;\n            }\n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + ((props.style || {}).label || "checkout") + " " + CLASS.ELEMENT + '"></div>\n\n    ';
+            return '\n\n        <style>\n            .paypal-button-parent {\n                font-size: 0;\n                display: inline-block;\n                max-width: 500px;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-checkout {\n                min-width: 80px;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-credit,\n            .paypal-button-parent.paypal-button-parent-label-buynow,\n            .paypal-button-parent.paypal-button-parent-label-pay {\n                min-width: 148px;\n            }\n            \n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + ((props.style || {}).label || "checkout") + " " + CLASS.ELEMENT + '"></div>\n\n    ';
         }
         __webpack_exports__.a = containerTemplate;
     },
@@ -7844,7 +7880,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.64";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.65";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8331,7 +8367,7 @@
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.64",
+            version: "4.0.65",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -8451,7 +8487,7 @@
             },
             loggerUri: "/webapps/hermes/api/logger",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.64");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.65");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9028,7 +9064,7 @@
         __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
             return destroyAll;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.64", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.65", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
         if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib__.e)()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
@@ -9041,7 +9077,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.64";
+                payload.version = "4.0.65";
                 payload.host = window.location.host;
                 payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                 var query = [];
@@ -9056,7 +9092,7 @@
         function checkpoint(name) {
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
-                var version = "4.0.64".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                var version = "4.0.65".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                 loggedCheckpoints.push(checkpointName);
                 logged && (checkpointName += "_dupe");
                 return beacon(checkpointName, payload);
@@ -9064,7 +9100,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.64",
+                v: "checkout.js.4.0.65",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -9536,7 +9572,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                     uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                    ver: "4.0.64"
+                    ver: "4.0.65"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i(function() {
@@ -9715,7 +9751,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon, checkpoint = _require.checkpoint;
-        if (window.paypal && "4.0.64" === window.paypal.version) {
+        if (window.paypal && "4.0.65" === window.paypal.version) {
             checkpoint("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
