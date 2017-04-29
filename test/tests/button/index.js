@@ -8,3 +8,4 @@ export * from './frame';
 export * from './popupBridge';
 export * from './displayto';
 export * from './size';
+export * from './braintree';
