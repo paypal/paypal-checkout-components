@@ -184,3 +184,8 @@ export function awaitKey(obj : Object, key : string) : SyncPromise {
         return onKey(obj, key, resolve);
     });
 }
+
+export function getPageID() : string {
+    window.pp_uid = window.pp_uid || uniqueID();
+    return window.pp_uid;
+}

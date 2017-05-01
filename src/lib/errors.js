@@ -50,4 +50,8 @@ export function checkForCommonErrors() {
     if (foo.bind({ a: 1 }).length !== 3) {
         $logger.warn(`function_bind_arrity_overwritten`);
     }
+
+    if (window.opener && window.parent !== window) {
+        $logger.warn(`window_has_opener_and_parent`);
+    }
 }

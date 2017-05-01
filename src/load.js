@@ -21,14 +21,12 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
     try {
 
         let { extendNamespace } = require('./lib/namespace');
-        let { uniqueID } = require('./lib/util');
 
-        window.pp_uid = window.pp_uid || uniqueID();
         checkpoint('load');
 
         let _interface = require('./index');
 
-        extendNamespace(_interface, [ 'paypal', 'PAYPAL' ], [ 'apps' ]);
+        extendNamespace(_interface, [ 'paypal', 'PAYPAL', 'ppxo' ], [ 'apps' ]);
 
     } catch (err) {
 

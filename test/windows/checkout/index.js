@@ -29,6 +29,8 @@ if (action === 'checkout') {
 
             window.xprops.onAuthorize({
                 paymentToken,
+                paymentID: paymentToken,
+                payerID: 'YYYYYYYYYYYYY',
                 cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
                 returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href
@@ -125,9 +127,7 @@ if (action === 'checkout') {
 
         }).then(() => {
 
-            window.xprops.onError(new Error('something went wrong'));
+            window.xchild.error(new Error('something went wrong'));
         });
     });
 }
-
-

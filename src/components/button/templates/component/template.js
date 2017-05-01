@@ -1,13 +1,14 @@
 /* @flow */
 
-import { config } from '../../../../config';
-
 import { componentLogos } from './logos';
 import { componentStyle } from './style';
 import { componentScript } from './script';
 import componentContent from './content.json';
+import { btoa } from 'Base64';
 
-let componentContentJSON = JSON.parse(componentContent);
+let componentContentJSON = typeof componentContent === 'string'
+    ? JSON.parse(componentContent)
+    : componentContent;
 
 let defaultLabel = 'checkout';
 
@@ -17,7 +18,7 @@ let buttonConfig = {
         colors: [ 'gold', 'blue', 'silver' ],
         sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { gold: 'blue', silver: 'blue', blue: 'white' },
+        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
         label: true,
         logo: true,
         tagline: true
@@ -25,21 +26,18 @@ let buttonConfig = {
 
     pay: {
         colors: [ 'gold', 'blue', 'silver' ],
-        sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
+        sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { gold: 'blue', silver: 'blue', blue: 'white' },
-        label: true,
-        logo: true,
+        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
         tagline: false
     },
 
     credit: {
+        contentText: '${pp}${paypal} ${credit}',
         colors: [ 'creditblue' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        logos:   { creditblue: 'credit' },
-        label: false,
-        logo: true,
+        logos:  { creditblue: 'white' },
         tagline: true
     },
 
@@ -47,24 +45,33 @@ let buttonConfig = {
         colors: [ 'gold' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        label: true,
-        logo: false,
         tagline: false
     }
 };
 
 export function componentTemplate({ props } : { props : Object }) : string {
 
-    let { country, lang } = config.locale;
-    let content = componentContentJSON[country][lang];
+    if (!props.locale) {
+        throw new Error(`Expected props.locale to be set`);
+    }
 
-    let style = props.style || {};
-    let label = style.label || defaultLabel;
-    let conf  = buttonConfig[label];
+    let [ lang, country ] = props.locale.split('_');
+
+    let style   = props.style || {};
+    let label   = style.label || defaultLabel;
+    let conf    = buttonConfig[label];
 
     if (!conf) {
         throw new Error(`Unexpected button label: ${label}`);
     }
+
+    let content = componentContentJSON[country][lang];
+
+    if (!content) {
+        throw new Error(`Could not find content for ${label} for ${lang}_${country}`);
+    }
+
+    let contentText = conf.contentText || content[label];
 
     let {
         color = conf.colors[0],
@@ -84,60 +91,40 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
-    let logo = conf.logos && componentLogos[conf.logos[color]];
+    let logoColor = conf.logos[color];
 
-    let hasLabel = Boolean(content[label]);
-    let hasLogo = hasLabel && content[label].indexOf('$wordmark$') !== -1;
+    let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
+        if (name) {
+            return `<img class="logo logo-${name} logo-${name}-${color}"
+                        src="data:image/svg+xml;base64,${btoa(componentLogos[name][logoColor])}"
+                        alt="PayPal">`;
+        } else if (text && text.trim()) {
+            return `<span class="text">${text}</span>`;
+        } else {
+            return text;
+        }
+    });
 
-    if (conf.label && !hasLabel) {
-        throw new Error(`Expected to have label for ${label} button for ${lang}_${country}`);
-    }
-
-    if (conf.label && !hasLogo) {
-        throw new Error(`Expected to have logo placeholder for ${label} button for ${lang}_${country}`);
-    }
-
-    let labelText;
-
-    if (conf.label) {
-        labelText = content[label].split('$').map(segment => {
-            if (segment === 'wordmark') {
-                return `<img src="data:image/svg+xml;base64,${logo}" alt="PayPal">`;
-            } else if (segment) {
-                return `<span class="text">${segment}</span>`;
-            }
-        }).join('');
-    } else if (conf.logo) {
-        labelText = `<img src="data:image/svg+xml;base64,${logo}" alt="PayPal">`;
-    } else {
-        throw new Error(`Could not build content for button`);
-    }
-
-    let labelTag = conf.tagline ? content[`${label}_tag`] : '';
+    let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
 
     return `
+        <style type="text/css">
+            ${ componentStyle }
+        </style>
 
-        <head>
-            <style type="text/css">
-                ${ componentStyle }
-            </style>
-        </head>
-
-        <body>
-            <div id="paypal-button-container">
-                <button class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-size-${ size } paypal-shape-${ shape }" type="submit">
-                    <div class="paypal-button-content">
-                        ${ labelText }
-                    </div>
-                    <div class="paypal-button-tag-content">
-                        ${ labelTag }
-                    </div>
-                </button>
+        <div id="paypal-button-container">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+                <div class="paypal-button-content">
+                    ${ labelText }
+                </div>
+                <div class="paypal-button-tag-content">
+                    ${ labelTag }
+                </div>
             </div>
+        </div>
 
-            <script>
-                (${ componentScript.toString() })();
-            </script>
-        </body>
+        <script>
+            (${ componentScript.toString() })();
+        </script>
     `;
 }

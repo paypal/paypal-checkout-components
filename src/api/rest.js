@@ -5,7 +5,7 @@ import * as postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 import * as $logger from 'beaver-logger/client';
 
-import { config } from '../config';
+import { config, FPTI } from '../config';
 import { request, memoize } from '../lib';
 
 import { Button } from '../components';
@@ -104,6 +104,11 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
 function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
+
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT
+    });
 
     env = env || config.env;
 

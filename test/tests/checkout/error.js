@@ -18,6 +18,102 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
+        it('should render checkout and throw an error in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    test: { action: 'error' },
+
+                    payment() {
+                        throw new Error('error');
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout and return a rejected promise in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    test: { action: 'error' },
+
+                    payment() : string | SyncPromise<string> {
+                        return window.paypal.Promise.reject(new Error('error'));
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout and call reject in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    test: { action: 'error' },
+
+                    payment(resolve, reject) {
+                        reject(new Error('error'));
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
         it('should render checkout, then fall back and complete the payment', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });

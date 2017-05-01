@@ -2,10 +2,9 @@
 
 import * as $logger from 'beaver-logger/client';
 
-import { config, ENV } from './config';
+import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
-import { setupPostBridge } from './compat';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
@@ -70,11 +69,10 @@ type SetupOptions = {
     state? : ?string,
     ppobjects? : ?boolean,
     lightbox? : ?boolean,
-    postBridge? : ?boolean,
     logLevel? : ?string
 };
 
-export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, postBridge, logLevel } : SetupOptions = {}) {
+export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, logLevel } : SetupOptions = {}) {
 
     checkForCommonErrors();
 
@@ -120,10 +118,6 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
         enableCheckoutIframe();
     }
 
-    if (postBridge) {
-        setupPostBridge(config.env);
-    }
-
     if (logLevel) {
         setLogLevel(logLevel);
     } else {
@@ -135,6 +129,11 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     $logger.debug(`current_protocol_${currentProtocol}`);
 }
 
+$logger.track({
+    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
+});
+
 if (currentScript) {
 
     setup({
@@ -144,7 +143,6 @@ if (currentScript) {
         paypalUrl:  currentScript.getAttribute('data-paypal-url'),
         state:      currentScript.getAttribute('data-state'),
         lightbox:   currentScript.hasAttribute('data-enable-lightbox'),
-        postBridge: currentScript.hasAttribute('data-enable-bridge'),
         logLevel:   currentScript.getAttribute('data-log-level'),
         ppobjects:  true
     });

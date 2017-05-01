@@ -30,7 +30,7 @@ export let config = {
 
     buttonStyles: {
         size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
-        label: [ 'checkout', 'credit' ]
+        label: [ 'checkout', 'credit', 'pay' ]
     },
 
     throttles: {
@@ -385,6 +385,11 @@ export let config = {
 
     get experienceApiUrl() : string {
         return `${config.apiUrl}${config.experienceApiUri}`;
+    },
+
+    defaultLocale: {
+        country: 'US',
+        lang: 'en'
     },
 
     locales: {

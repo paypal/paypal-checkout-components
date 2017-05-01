@@ -2,5 +2,4 @@
 
 import { extendNamespace } from '../lib/namespace';
 
-extendNamespace(require('./interface'), [ 'paypal', 'PAYPAL' ], [ 'apps' ]);
-
+extendNamespace(require('./interface'), [ 'paypal' ]);

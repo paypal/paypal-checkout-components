@@ -4,12 +4,15 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { enableCheckoutIframe } from '../checkout';
-import { config, USERS, ENV } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe } from '../../lib';
+import { Checkout, enableCheckoutIframe } from '../checkout';
+import { config, USERS, ENV, FPTI } from '../../config';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request } from '../../lib';
+import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
+import { componentScript } from './templates/component/script';
+import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
 export let Button = xcomponent.create({
 
@@ -49,14 +52,16 @@ export let Button = xcomponent.create({
 
         let responsiveHeight = '42px';
 
+        $logger.info(`iframe_button_size_${size}`);
+
         if (size === 'responsive') {
             let width = container.offsetWidth;
 
             if (width < 100) {
                 responsiveHeight = '22px';
-            } else if (width < 180) {
+            } else if (width < 200) {
                 responsiveHeight = '42px';
-            } else if (width < 250) {
+            } else if (width < 300) {
                 responsiveHeight = '48px';
             } else {
                 responsiveHeight = '60px';
@@ -95,10 +100,19 @@ export let Button = xcomponent.create({
 
     autoResize: {
         width: false,
-        height: true
+        height: false
     },
 
     props: {
+
+        uid: {
+            type: 'string',
+            value: getPageID(),
+            def() : string {
+                return getPageID();
+            },
+            queryParam: true
+        },
 
         env: {
             type: 'string',
@@ -151,18 +165,121 @@ export let Button = xcomponent.create({
             }
         },
 
+        braintree: {
+            type: 'object',
+            required: false,
+            validate(braintree, props) {
+
+                if (!braintree.paypalCheckout) {
+                    throw new Error(`Expected Braintree paypal-checkout component to be loaded`);
+                }
+
+                if (!props.client) {
+                    throw new Error(`Expected client prop to be passed with Braintree authorization keys`);
+                }
+            },
+            decorate(braintree, props) : ?SyncPromise<BraintreePayPalClient> {
+
+                if (!braintree) {
+                    return;
+                }
+
+                let env = props.env || config.env;
+                let authorization = props.client[env];
+
+                return awaitBraintreeClient(braintree, authorization);
+            }
+        },
+
         payment: {
-            type: 'string',
+            type: 'function',
             required: true,
-            getter: true,
             memoize: false,
             timeout: __TEST__ ? 500 : 10 * 1000,
-            alias: 'billingAgreement'
+            alias: 'billingAgreement',
+
+            decorate(original) : Function {
+                return function payment() : SyncPromise<string> {
+                    return new SyncPromise((resolve, reject) => {
+
+                        let actions = resolve;
+
+                        actions.payment = {
+                            create: (options, experience) => {
+                                return rest.payment.create(this.props.env, this.props.client, options, experience);
+                            }
+                        };
+
+                        actions.braintree = {
+                            create: (options) => {
+                                if (!this.props.braintree) {
+                                    throw new Error(`Can not create using Braintree - no braintree client provided`);
+                                }
+
+                                return this.props.braintree.then(client => {
+                                    return client.createPayment(options);
+                                });
+                            }
+                        };
+
+                        actions.request = request;
+
+                        let context = {
+                            props: {
+                                env: this.props.env,
+                                client: this.props.client
+                            }
+                        };
+
+                        let result;
+
+                        try {
+                            result = original.call(context, actions, reject);
+                        } catch (err) {
+                            return reject(err);
+                        }
+
+                        if (result && typeof result.then === 'function') {
+                            return result.then(resolve, reject);
+                        }
+
+                        if (result !== undefined) {
+                            return resolve(result);
+                        }
+
+                        let timeout = __TEST__ ? 500 : 10 * 1000;
+
+                        setTimeout(() => {
+                            reject(`Timed out waiting ${timeout}ms for payment`);
+                        }, timeout);
+
+                    }).then(result => {
+
+                        if (!result) {
+                            throw new Error(`No value passed to payment`);
+                        }
+
+                        return result;
+                    });
+                };
+            }
         },
 
         commit: {
             type: 'boolean',
             required: false
+        },
+
+        onRender: {
+            type: 'function',
+            promisify: true,
+            required: false,
+            value() {
+                $logger.track({
+                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
+                });
+            }
         },
 
         onAuth: {
@@ -223,6 +340,14 @@ export let Button = xcomponent.create({
                 if (original) {
                     return function(data, actions) : void | SyncPromise<void> {
 
+                        if (this.props.braintree) {
+                            return this.props.braintree.then(client => {
+                                return client.tokenizePayment(data).then(res => {
+                                    return original.call(this, { nonce: res.nonce });
+                                });
+                            });
+                        }
+
                         let redirect = (win, url) => {
                             return SyncPromise.all([
                                 redir(win || window.top, url || data.returnUrl),
@@ -260,13 +385,46 @@ export let Button = xcomponent.create({
 
         onClick: {
             type: 'function',
-            required: false
+            required: false,
+            decorate(original) : Function {
+                return function() : void {
+
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_CLICK
+                    });
+
+                    $logger.flush();
+
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
+            }
         },
 
         locale: {
             type: 'string',
             required: false,
-            queryParam: 'locale.x'
+            queryParam: 'locale.x',
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${lang}_${country}`;
+            },
+
+            validate(locale) {
+
+                if (!locale || !locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                    throw new Error(`Invalid locale: ${locale}`);
+                }
+
+                let [ lang, country ] = locale.split('_');
+
+                if (!config.locales[country] || config.locales[country].indexOf(lang) === -1) {
+                    throw new Error(`Invalid locale: ${locale}`);
+                }
+            }
         },
 
         style: {
@@ -300,6 +458,10 @@ export let Button = xcomponent.create({
                 if (style.label === 'credit' && style.color) {
                     throw new Error(`Custom colors for ${style.label} button are not supported`);
                 }
+
+                if (style.label === 'pay' && style.size === 'tiny') {
+                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
+                }
             }
         },
 
@@ -315,9 +477,14 @@ export let Button = xcomponent.create({
             type: 'boolean',
             required: false,
 
-            def() : boolean {
+            get value() : boolean {
                 return !hasMetaViewPort();
             }
+        },
+
+        validate: {
+            type: 'function',
+            required: false
         },
 
         logLevel: {
@@ -361,4 +528,36 @@ if (Button.isChild()) {
     }
 
     awaitPopupBridgeOpener();
+
+    if (window.xprops.validate) {
+
+        let enabled = true;
+
+        window.xprops.validate({
+
+            enable() {
+                enabled = true;
+            },
+
+            disable() {
+                enabled = false;
+            }
+        });
+
+        let renderTo = Checkout.renderTo;
+
+        Checkout.renderTo = function() : ?Promise<Object> {
+            if (enabled) {
+                return renderTo.apply(this, arguments);
+            }
+        };
+    }
+
+    setTimeout(() => {
+        let logo = document.querySelector('.logo-paypal');
+
+        if (logo && (logo.style.visibility === 'hidden' || window.getComputedStyle(logo).visibility === 'hidden')) {
+            componentScript();
+        }
+    }, 1);
 }

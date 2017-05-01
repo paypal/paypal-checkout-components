@@ -27,7 +27,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false }) {
+function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false, vars = {} }) {
 
     let config = {
         module: {
@@ -45,7 +45,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                     }
                 },
                 {
-                    test: /\.(html?|css|json)$/,
+                    test: /\.(html?|css|json|svg)$/,
                     loader: 'raw-loader'
                 }
             ]
@@ -69,9 +69,13 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 __TEST__: JSON.stringify(false),
                 __IE_POPUP_SUPPORT__: JSON.stringify(true),
                 __POPUP_SUPPORT__: JSON.stringify(true),
+                __LEGACY_SUPPORT__: JSON.stringify(true),
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
                 __DEFAULT_LOG_LEVEL__: JSON.stringify('info'),
+                __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
+                __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true),
+                ...vars,
                 ...getVersionVars()
             }),
             new webpack.NamedModulesPlugin(),
@@ -79,7 +83,10 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 test: /\.js$/,
                 beautify: !minify,
                 minimize: minify,
-                compress: { warnings: false },
+                compress: {
+                    warnings: false,
+                    sequences: minify
+                },
                 mangle: minify,
                 sourceMap: true
             })
@@ -94,12 +101,25 @@ let nextMinorVersion = getNextMinorVersion();
 
 module.exports.webpack_tasks = {
 
-    major: {
+    base: {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMajorVersion,
             filename: `${FILE_NAME}.js`
+        })
+    },
+
+    major: {
+        src: 'src/load.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
+            vars: {
+                __IE_POPUP_SUPPORT__: JSON.stringify(false),
+                __LEGACY_SUPPORT__: JSON.stringify(false)
+            }
         })
     },
 
@@ -142,17 +162,7 @@ module.exports.webpack_tasks = {
             modulename: `paypal`
         })
     },
-
-    demo: {
-        src: 'demo/app/client/js/index.jsx',
-        out: 'demo/app/build',
-        cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `demo.js`,
-            modulename: `ppdemo`
-        })
-    },
-
+    
     child_loader: {
         src: 'src/loader/index.js',
         out: 'dist',

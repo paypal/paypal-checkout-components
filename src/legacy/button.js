@@ -3,7 +3,7 @@
 import * as logger from 'beaver-logger/client';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
-import { config } from '../config';
+import { config, FPTI } from '../config';
 import { loadScript, getElements, getElement, memoize } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
@@ -28,6 +28,11 @@ let loadButtonJS = memoize(() : SyncPromise<void> => {
 
 function renderButton(id, container, options, label) : HTMLElement {
 
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.HTML_BUTTON_RENDER
+    });
+
     if (options.locale) {
         let { country, lang } = normalizeLocale(options.locale);
         options.locale = `${lang}_${country}`;
@@ -49,7 +54,7 @@ function renderButton(id, container, options, label) : HTMLElement {
 
     let el = window.paypal.button.create(id, { lc, color, shape, size }, { type, label }).el;
     container.appendChild(el);
-    
+
     try {
         let visible = Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
         $logger.info(`in_page_button_${ visible ? 'visible' : 'not_visible' }`);
@@ -91,11 +96,23 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                             continue;
                         }
 
+                        $logger.track({
+                            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_RENDER
+                        });
+
                         buttons.push({
                             container: buttonEl,
                             button:    buttonEl,
+                            condition: button.condition,
                             click:     button.click,
-                            condition: button.condition
+                            track() {
+                                $logger.track({
+                                    [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                                });
+                                $logger.flush();
+                            }
                         });
 
                     } else if (button.container && button.container.length !== 0) {
@@ -113,8 +130,15 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                                 buttons.push({
                                     container,
                                     button:    buttonEl,
+                                    condition: button.condition,
                                     click:     button.click,
-                                    condition: button.condition
+                                    track() {
+                                        $logger.track({
+                                            [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                                        });
+                                        $logger.flush();
+                                    }
                                 });
                             });
                         } else {
@@ -151,9 +175,16 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
 
                     buttons.push({
                         container,
-                        button: buttonEl,
-                        click: options.click,
-                        condition: options.condition
+                        button:    buttonEl,
+                        condition: options.condition,
+                        click:     options.click,
+                        track() {
+                            $logger.track({
+                                [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.HTML_BUTTON_CLICK
+                            });
+                            $logger.flush();
+                        }
                     });
                 });
             } else {

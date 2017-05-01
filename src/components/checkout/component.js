@@ -4,18 +4,14 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as $logger from 'beaver-logger/client';
 import * as xcomponent from 'xcomponent/src';
 
-import { containerTemplate } from './containerTemplate';
-import { componentTemplate } from './componentTemplate';
+import { containerTemplate, componentTemplate } from './templates';
 
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel } from '../../lib';
-import { config, ENV } from '../../config';
-
-import contentJSON from './content.json';
-let content = JSON.parse(contentJSON);
-
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getPageID } from '../../lib';
+import { config, ENV, FPTI } from '../../config';
+import { onLegacyPaymentAuthorize } from '../../compat';
 
 function addHeader(name, value) : void {
 
@@ -69,13 +65,18 @@ export let Checkout = xcomponent.create({
     sandboxContainer: true,
 
     componentTemplate,
-    containerTemplate(ctx = {}) : string {
-
-        ctx.content = content[config.locale.country][config.locale.lang];
-        return containerTemplate(ctx);
-    },
+    containerTemplate,
 
     props: {
+
+        uid: {
+            type: 'string',
+            value: getPageID(),
+            def() : string {
+                return getPageID();
+            },
+            queryParam: true
+        },
 
         env: {
             type: 'string',
@@ -271,6 +272,15 @@ export let Checkout = xcomponent.create({
             decorate(original) : Function {
                 return function(data) : void {
 
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_INIT,
+                        [ FPTI.KEY.TOKEN ]: data.paymentToken,
+                        [ FPTI.KEY.CONTEXT_ID ]: data.paymentToken
+                    });
+
+                    $logger.flush();
+
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
 
@@ -327,7 +337,7 @@ export let Checkout = xcomponent.create({
             def() : Function {
                 return function(url) : SyncPromise<void> {
                     $logger.warn('fallback', { url });
-                    return window.onLegacyPaymentAuthorize(this.props.onAuthorize);
+                    return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
             }
         },
@@ -423,3 +433,10 @@ if (Checkout.isChild()) {
 
     awaitPopupBridgeOpener();
 }
+
+// $FlowFixMe
+Object.defineProperty(Checkout.contexts, 'lightbox', {
+    set(value) {
+        Checkout.contexts.iframe = value;
+    }
+});

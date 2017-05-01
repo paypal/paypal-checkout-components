@@ -285,6 +285,37 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a container and click on the button, call the REST api via actions.payment to create a payment, then complete the payment', (done) => {
+
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                client: {
+                    test: 'ewgwegegwegegegeg'
+                },
+
+                payment(actions) : string | SyncPromise<string> {
+                    return actions.payment.create({
+                        transactions: [
+                            {
+                                amount: { total: '1.00', currency: 'USD' }
+                            }
+                        ]
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
             return window.paypal.Button.render({
@@ -301,6 +332,40 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     let client = this.props.client;
 
                     return window.paypal.rest.payment.create(env, client, {
+                        transactions: [
+                            {
+                                amount: { total: '1.00', currency: 'USD' }
+                            }
+                        ]
+                    }, {
+
+                        foo: 'bar'
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, call the REST api via actions.payment to create a payment with an experience profile, then complete the payment', (done) => {
+
+            return window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                client: {
+                    test: 'ewgwegegwegegegeg'
+                },
+
+                payment(actions) : string | SyncPromise<string> {
+                    return actions.payment.create({
                         transactions: [
                             {
                                 amount: { total: '1.00', currency: 'USD' }
@@ -537,18 +602,26 @@ for (let flow of [ 'popup', 'iframe' ]) {
         });
 
         if (flow === 'iframe') {
-        
+
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {
+
+                let paymentCalls = 0;
 
                 return window.paypal.Button.render({
 
                     test: { flow, action: 'popout' },
 
                     payment() : string | SyncPromise<string> {
+                        paymentCalls += 1;
+
                         return generateECToken();
                     },
 
                     onAuthorize() : void {
+                        if (paymentCalls !== 1) {
+                            return done(new Error(`Expected payment to be called one time, got ${paymentCalls} calls`));
+                        }
+
                         return done();
                     },
 

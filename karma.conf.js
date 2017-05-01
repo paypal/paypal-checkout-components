@@ -10,6 +10,7 @@ module.exports = function(config) {
     let autoWatch = Boolean(keepOpen);
     let coverage  = !Boolean(argv['disable-coverage']) && !quick;
     let browsers  = argv['browser'];
+    let logLevel  = argv['log-level'] || argv['loglevel'];
 
     let karmaConfig = {
 
@@ -71,7 +72,9 @@ module.exports = function(config) {
             xChrome: {
                 base: 'Chrome',
                 flags: [
-                    '--no-sandbox'
+                    '--no-sandbox',
+                    '--enable-precise-memory-info',
+                    '--js-flags="--expose-gc"'
                 ]
             },
 
@@ -117,30 +120,20 @@ module.exports = function(config) {
                             ],
 
                             plugins: [
-                                'transform-flow-strip-types',
-                                'transform-object-rest-spread',
-                                'syntax-object-rest-spread',
-                                'transform-es3-property-literals',
-                                'transform-es3-member-expression-literals',
-                                'transform-decorators-legacy',
-                                [
-                                    'transform-es2015-for-of', {
-                                        loose: true
-                                    }
-                                ],
-                                [
-                                    'flow-runtime', {
-                                        assert: true,
-                                        annotate: true
-                                    }
-                                ],
-
+                                [ "transform-flow-strip-types", { "loose": true } ],
+                                [ "transform-object-rest-spread", { "loose": true } ],
+                                [ "syntax-object-rest-spread", { "loose": true } ],
+                                [ "transform-es3-property-literals", { "loose": true } ],
+                                [ "transform-es3-member-expression-literals", { "loose": true } ],
+                                [ "transform-decorators-legacy", { "loose": true } ],
+                                [ "transform-es2015-for-of", { "loose": true } ],
+                                [ "flow-runtime", { "assert": true, "annotate": true } ]
                             ]
                         }
                     },
 
                     {
-                        test: /\.(html?|css|json)$/,
+                        test: /\.(html?|css|json|svg)$/,
                         loader: 'raw-loader'
                     }
 
@@ -154,11 +147,14 @@ module.exports = function(config) {
                     __TEST__:              JSON.stringify(true),
                     __IE_POPUP_SUPPORT__:  JSON.stringify(true),
                     __POPUP_SUPPORT__:     JSON.stringify(true),
+                    __LEGACY_SUPPORT__:    JSON.stringify(true),
                     __FILE_NAME__:         JSON.stringify('checkout.js'),
                     __FILE_VERSION__:      JSON.stringify('4'),
                     __MAJOR_VERSION__:     JSON.stringify('4'),
                     __MINOR_VERSION__:     JSON.stringify('4.0'),
-                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : 'error')
+                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : logLevel || 'error'),
+                    __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
+                    __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true)
                 })
             ]
         },
@@ -168,7 +164,7 @@ module.exports = function(config) {
         ],
 
         autoWatch: autoWatch,
-        logLevel: debug ? config.LOG_DEBUG : config.LOG_WARN,
+        logLevel: debug ? config.LOG_DEBUG : logLevel || config.LOG_WARN,
 
         basePath: __dirname,
 
@@ -203,11 +199,7 @@ module.exports = function(config) {
         browserDisconnectTimeout: 30 * 1000,
         browserDisconnectTolerance: 2,
         captureTimeout: 120000,
-        reportSlowerThan: 10000,
-
-        phantomjsLauncher: {
-            exitOnResourceError: true
-        }
+        reportSlowerThan: 10000
     };
 
 
@@ -216,7 +208,7 @@ module.exports = function(config) {
     } else if (browsers) {
         karmaConfig.browsers = browsers.split(',');
     } else {
-        karmaConfig.browsers = [ 'xPhantom' ];
+        karmaConfig.browsers = [ 'xChrome' ];
     }
 
 

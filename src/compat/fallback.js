@@ -25,7 +25,7 @@ if (isPayPalDomain()) {
 
 // Button / Merchant
 
-window.onLegacyPaymentAuthorize = (method : Function) => {
+export function onLegacyPaymentAuthorize(method : Function) : Promise<void> {
     onAuthorize = method;
 
     return SyncPromise.try(() => {
@@ -36,7 +36,9 @@ window.onLegacyPaymentAuthorize = (method : Function) => {
             });
         }
     });
-};
+}
+
+window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize;
 
 // Post-Bridge / Button
 
