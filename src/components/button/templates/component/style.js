@@ -133,7 +133,7 @@ export let componentStyle = `
 
     /* Tiny */
 
-    @media only screen and (min-width : 80px) and (min-height: 22px) and (max-width: 99px) {
+    @media only screen and (min-width : 80px) and (min-height: 22px) {
 
         .paypal-button {
             max-width: 100px;
@@ -174,7 +174,7 @@ export let componentStyle = `
 
     /* Small */
 
-    @media only screen and (min-width : 100px) and (min-height: 22px) {
+    @media only screen and (min-width : 100px) and (min-height: 42px) {
 
         .paypal-button {
             max-width: 200px;

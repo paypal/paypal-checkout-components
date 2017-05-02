@@ -6,17 +6,9 @@ export function componentScript() {
         return Array.prototype.slice.call(document.querySelectorAll(selector));
     }
 
-    /*
-
-    function isShown(el : HTMLElement) : boolean {
-        return window.getComputedStyle(el).display !== 'none';
-    }
-
     function showElement(el, displayType) {
         el.style.display = displayType || 'block';
     }
-
-    */
 
     function hideElement(el : HTMLElement) {
         el.style.display = 'none';
@@ -26,19 +18,15 @@ export function componentScript() {
         el.style.visibility = 'visible';
     }
 
-    /*
-
     function makeElementInvisible(el) {
         el.style.visibility = 'hidden';
     }
-
-    */
 
     function hasDimensions(el) : boolean {
         let rect = el.getBoundingClientRect();
         return Boolean(rect.height && rect.width);
     }
-
+    
     function onDisplay(elements, method) {
         if (elements.every(hasDimensions)) {
             method();
@@ -86,20 +74,35 @@ export function componentScript() {
     let text = getElements('.paypal-button-content .text');
     let tagline = getElements('.paypal-button-tag-content');
 
-    onDisplay(images, () => {
-
-        images.forEach(makeElementVisible);
-
+    function toggleTagline() {
         if (tagline.some(isOverflowing)) {
-            tagline.forEach(hideElement);
+            tagline.forEach(makeElementInvisible);
         } else {
             tagline.forEach(makeElementVisible);
         }
+    }
 
+    function showText() {
+        text.forEach(el => showElement(el, 'inline-block'));
+    }
+
+    function toggleText() {
         if (images.some(isOverflowing) || text.some(isOverflowing)) {
             text.forEach(hideElement);
         } else {
             text.forEach(makeElementVisible);
         }
+    }
+
+    onDisplay(images, () => {
+        images.forEach(makeElementVisible);
+        toggleTagline();
+        toggleText();
+
+        window.addEventListener('resize', () => {
+            toggleTagline();
+            showText();
+            toggleText();
+        });
     });
 }
