@@ -1628,9 +1628,9 @@
                     var promise = _ref;
                     promise.reject(new Error("Window cleaned up"));
                 }
+                __WEBPACK_IMPORTED_MODULE_0__global__.a.popupWindowsByWin && __WEBPACK_IMPORTED_MODULE_0__global__.a.popupWindowsByWin.delete(win);
+                __WEBPACK_IMPORTED_MODULE_0__global__.a.remoteWindows && __WEBPACK_IMPORTED_MODULE_0__global__.a.remoteWindows.delete(win);
                 __WEBPACK_IMPORTED_MODULE_0__global__.a.requestPromises.delete(win);
-                __WEBPACK_IMPORTED_MODULE_0__global__.a.popupWindowsByWin.delete(win);
-                __WEBPACK_IMPORTED_MODULE_0__global__.a.remoteWindows.delete(win);
                 __WEBPACK_IMPORTED_MODULE_0__global__.a.methods.delete(win);
                 __WEBPACK_IMPORTED_MODULE_0__global__.a.readyPromises.delete(win);
                 __WEBPACK_IMPORTED_MODULE_0__global__.a.domainMatches.delete(win);
@@ -3844,7 +3844,7 @@
                     this.clean = cleanup(this);
                 }
                 BaseComponent.prototype.addProp = function(options, name, def) {
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(options, this, name, def);
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(options, this, name, def);
                 };
                 BaseComponent.prototype.tryCatch = function(method, doOnce) {
                     var self = this, errored = !1, wrapper = function() {
@@ -3855,7 +3855,7 @@
                             return self.error(err);
                         }
                     };
-                    !1 !== doOnce && (wrapper = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(wrapper));
+                    !1 !== doOnce && (wrapper = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(wrapper));
                     return wrapper;
                 };
                 BaseComponent.prototype.listen = function(win, domain) {
@@ -4101,40 +4101,40 @@
                         width = !0;
                         height = !0;
                     }
+                    var element = void 0;
+                    autoResize.element && (element = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.j)(autoResize.element));
+                    element || (element = window.navigator.userAgent.match(/MSIE (9|10)\./) ? document.body : document.documentElement);
                     return {
                         width: width,
-                        height: height
+                        height: height,
+                        element: element
                     };
                 };
                 ChildComponent.prototype.watchForResize = function() {
-                    var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height;
-                    if ((width || height) && this.component.dimensions && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) {
-                        var el = document.documentElement;
-                        window.navigator.userAgent.match(/MSIE (9|10)\./) && (el = document.body);
-                        if (!this.watchingForResize) {
-                            this.watchingForResize = !0;
-                            return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
-                                if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.j)(el, {
+                    var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
+                    if ((width || height) && this.component.dimensions && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
+                        this.watchingForResize = !0;
+                        return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
+                            if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.k)(element, {
+                                width: width,
+                                height: height
+                            })) return _this4.resizeToElement(element, {
+                                width: width,
+                                height: height
+                            });
+                        }).then(function() {
+                            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.l)(function() {
+                                return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.m)(element, {
                                     width: width,
                                     height: height
-                                })) return _this4.resizeToElement(el, {
-                                    width: width,
-                                    height: height
-                                });
-                            }).then(function() {
-                                return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.k)(function() {
-                                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.l)(el, {
+                                }).then(function(dimensions) {
+                                    return _this4.resizeToElement(element, {
                                         width: width,
                                         height: height
-                                    }).then(function(dimensions) {
-                                        return _this4.resizeToElement(el, {
-                                            width: width,
-                                            height: height
-                                        });
                                     });
                                 });
                             });
-                        }
+                        });
                     }
                 };
                 ChildComponent.prototype.exports = function() {
@@ -4165,7 +4165,7 @@
                     var _this6 = this, width = _ref6.width, height = _ref6.height, history = [];
                     return function resize() {
                         return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
-                            for (var tracker = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.m)(el, {
+                            for (var tracker = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.n)(el, {
                                 width: width,
                                 height: height
                             }), _tracker$check = tracker.check(), dimensions = _tracker$check.dimensions, _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
@@ -4646,7 +4646,7 @@
                 uid: {
                     type: "string",
                     def: function() {
-                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib__.n)();
+                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib__.o)();
                     },
                     queryParam: !0
                 },
@@ -4912,7 +4912,7 @@
                 DelegateComponent.prototype.watchForClose = function() {
                     var _this2 = this, closeListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib__.i)(this.source, function() {
                         return _this2.destroy();
-                    }), unloadListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib__.w)(window, "beforeunload", closeListener.cancel);
+                    }), unloadListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib__.x)(window, "beforeunload", closeListener.cancel);
                     this.clean.register(function() {
                         closeListener.cancel();
                         unloadListener.cancel();
@@ -4986,7 +4986,7 @@
                 errorOnCloseDuringInit: !0,
                 open: function(element) {
                     var _this = this;
-                    if (element && !__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.F)(element)) throw this.component.error("Can not find element " + element);
+                    if (element && !__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.j)(element)) throw this.component.error("Can not find element " + element);
                     var options = {
                         attributes: {
                             name: this.childWindowName,
@@ -5001,17 +5001,17 @@
                     frame.addEventListener("error", function(err) {
                         return _this.error(err);
                     });
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(this.element);
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(this.element);
                     var sacrificialIframe = void 0;
                     if (this.component.sacrificialComponentTemplate) {
                         sacrificialIframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(null, options, this.element);
                         this.componentTemplateWindow = sacrificialIframe.contentWindow;
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(frame);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(frame);
                         frame.addEventListener("load", function() {
                             setTimeout(function() {
-                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(sacrificialIframe);
+                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(sacrificialIframe);
                                 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.L)(sacrificialIframe);
-                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(frame);
+                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.B)(frame);
                             }, 50);
                         });
                     }
@@ -5058,10 +5058,10 @@
                     height && (this.element.style.height = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.M)(height));
                 },
                 hide: function() {
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(this.element);
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.B)(this.element);
                 },
                 show: function() {
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.z)(this.element);
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.A)(this.element);
                 },
                 loadUrl: function(url) {
                     this.iframe.src = url;
@@ -5206,8 +5206,8 @@
                     return Constructor;
                 };
             }(), activeComponents = [];
-            __WEBPACK_IMPORTED_MODULE_6__lib__.r.props = __WEBPACK_IMPORTED_MODULE_6__lib__.r.props || {};
-            __WEBPACK_IMPORTED_MODULE_6__lib__.r.windows = __WEBPACK_IMPORTED_MODULE_6__lib__.r.windows || {};
+            __WEBPACK_IMPORTED_MODULE_6__lib__.s.props = __WEBPACK_IMPORTED_MODULE_6__lib__.s.props || {};
+            __WEBPACK_IMPORTED_MODULE_6__lib__.s.windows = __WEBPACK_IMPORTED_MODULE_6__lib__.s.windows || {};
             var ParentComponent = (_class = function(_BaseComponent) {
                 function ParentComponent(component, context) {
                     var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
@@ -5327,14 +5327,14 @@
                     return !!this.driver.renderedIntoContainerTemplate && (!!this.component.sandboxContainer && !!this.component.containerTemplate);
                 };
                 ParentComponent.prototype.buildChildWindowName = function() {
-                    var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$renderTo = _ref4.renderTo, renderTo = void 0 === _ref4$renderTo ? window : _ref4$renderTo, sameWindow = renderTo === window, sameDomain = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_post_robot_src_lib_windows__.isSameDomain)(renderTo), uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.n)(), tag = this.component.tag, sProps = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(this.getPropsForChild()), defaultParent = this.renderedIntoSandboxFrame() ? __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_PARENT : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.DIRECT_PARENT, parent = sameWindow ? defaultParent : window.name, renderParent = sameWindow ? defaultParent : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID, secureProps = !sameDomain, props = secureProps ? {
+                    var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$renderTo = _ref4.renderTo, renderTo = void 0 === _ref4$renderTo ? window : _ref4$renderTo, sameWindow = renderTo === window, sameDomain = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_post_robot_src_lib_windows__.isSameDomain)(renderTo), uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.o)(), tag = this.component.tag, sProps = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.t)(this.getPropsForChild()), defaultParent = this.renderedIntoSandboxFrame() ? __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_PARENT : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.DIRECT_PARENT, parent = sameWindow ? defaultParent : window.name, renderParent = sameWindow ? defaultParent : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID, secureProps = !sameDomain, props = secureProps ? {
                         type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID
                     } : {
                         type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.RAW,
                         value: sProps
                     };
-                    props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.r.props[uid] = sProps);
-                    renderParent === __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.r.windows[uid] = renderTo);
+                    props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.s.props[uid] = sProps);
+                    renderParent === __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.s.windows[uid] = renderTo);
                     return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__window__.f)(this.component.name, this.component.version, {
                         uid: uid,
                         tag: tag,
@@ -5368,7 +5368,7 @@
                             return url || _this5.component.getUrl(_this5.props.env, _this5.props);
                         }).then(function(finalUrl) {
                             query[__WEBPACK_IMPORTED_MODULE_7__constants__.XCOMPONENT] = "1";
-                            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.t)(finalUrl, {
+                            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.u)(finalUrl, {
                                 query: query
                             });
                         });
@@ -5437,7 +5437,7 @@
                     this.driver.open.call(this, element);
                 };
                 ParentComponent.prototype.elementReady = function(element) {
-                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.u)(element).then(__WEBPACK_IMPORTED_MODULE_6__lib__.v);
+                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.v)(element).then(__WEBPACK_IMPORTED_MODULE_6__lib__.w);
                 };
                 ParentComponent.prototype.delegate = function(win) {
                     var _this8 = this;
@@ -5525,12 +5525,12 @@
                         });
                     });
                     this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
-                    var onunload = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.q)(function() {
+                    var onunload = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function() {
                         _this10.component.log("navigate_away");
                         __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.f();
                         closeWindowListener.cancel();
                         _this10.destroyComponent();
-                    }), beforeUnloadWindowListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.w)(window, "beforeunload", onunload), unloadWindowListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.w)(window, "unload", onunload);
+                    }), beforeUnloadWindowListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.x)(window, "beforeunload", onunload), unloadWindowListener = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.x)(window, "unload", onunload);
                     this.clean.register("destroyBeforeUnloadWindowListener", beforeUnloadWindowListener.cancel);
                     this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
                 };
@@ -5538,8 +5538,8 @@
                     this.component.log("load_url");
                     if (window.location.href.split("#")[0] === url.split("#")[0]) {
                         var _query;
-                        url = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.t)(url, {
-                            query: (_query = {}, _query[__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.n)()] = "1", 
+                        url = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.u)(url, {
+                            query: (_query = {}, _query[__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.o)()] = "1", 
                             _query)
                         });
                     }
@@ -5599,20 +5599,20 @@
                     this.driver.resize.call(this, width, height);
                     if (waitForTransition && (this.element || this.iframe)) {
                         var overflow = void 0;
-                        this.element && (overflow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.x)(this.element, "hidden"));
-                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.y)(this.element || this.iframe).then(function() {
+                        this.element && (overflow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.y)(this.element, "hidden"));
+                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.z)(this.element || this.iframe).then(function() {
                             overflow && overflow.reset();
                         });
                     }
                 };
                 ParentComponent.prototype.hide = function() {
-                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.z)(this.container);
-                    this.containerFrame && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.z)(this.containerFrame);
+                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(this.container);
+                    this.containerFrame && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(this.containerFrame);
                     return this.driver.hide.call(this);
                 };
                 ParentComponent.prototype.show = function() {
-                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(this.container);
-                    this.containerFrame && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(this.containerFrame);
+                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.container);
+                    this.containerFrame && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.containerFrame);
                     return this.driver.show.call(this);
                 };
                 ParentComponent.prototype.userClose = function() {
@@ -5659,7 +5659,7 @@
                     }).then(function() {
                         return _this15.destroyComponent();
                     }).then(function() {
-                        _this15.childExports && _this15.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_post_robot_src_lib_windows__.isWindowClosed)(win) && _this15.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.v);
+                        _this15.childExports && _this15.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_post_robot_src_lib_windows__.isWindowClosed)(win) && _this15.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.w);
                     });
                 };
                 ParentComponent.prototype.destroyComponent = function() {
@@ -5669,8 +5669,8 @@
                 };
                 ParentComponent.prototype.showContainer = function() {
                     if (this.container) {
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_CONTAINER);
-                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_CONTAINER, this.clean.register);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_CONTAINER);
+                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.D)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_CONTAINER, this.clean.register);
                     }
                 };
                 ParentComponent.prototype.showComponent = function() {
@@ -5679,23 +5679,23 @@
                         if (_this16.props.onDisplay) return _this16.props.onDisplay();
                     }).then(function() {
                         if (_this16.element) {
-                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_COMPONENT);
-                            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_COMPONENT, _this16.clean.register);
+                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_COMPONENT);
+                            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.D)(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_COMPONENT, _this16.clean.register);
                         }
                     });
                 };
                 ParentComponent.prototype.hideContainer = function() {
                     if (this.container) {
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_CONTAINER);
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
-                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.D)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_CONTAINER, this.clean.register);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_CONTAINER);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
+                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_CONTAINER, this.clean.register);
                     }
                 };
                 ParentComponent.prototype.hideComponent = function() {
-                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
+                    this.container && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
                     if (this.element) {
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.B)(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_COMPONENT);
-                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.D)(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_COMPONENT, this.clean.register);
+                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.C)(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_COMPONENT);
+                        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_COMPONENT, this.clean.register);
                     }
                 };
                 ParentComponent.prototype.focus = function() {
@@ -5720,7 +5720,7 @@
                             });
                         }).then(function(html) {
                             var win = _this17.componentTemplateWindow || _this17.window;
-                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(win, html);
+                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(win, html);
                         });
                     });
                 };
@@ -5742,12 +5742,12 @@
                         }).then(function(html) {
                             var el = void 0;
                             if (element) {
-                                el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(element);
+                                el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.j)(element);
                                 if (!el) throw new Error("Could not find element: " + element);
                             } else el = document.body;
                             if (_this18.component.sandboxContainer) {
                                 _this18.containerFrame = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(null, {
-                                    name: "__xcomponent_container_" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.n)() + "__",
+                                    name: "__xcomponent_container_" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.o)() + "__",
                                     scrolling: "no"
                                 }, el);
                                 _this18.containerFrame.style.display = "block";
@@ -5769,7 +5769,7 @@
                                 },
                                 class: [ __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.component.tag, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.context ]
                             });
-                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.z)(_this18.container);
+                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.container);
                             el.appendChild(_this18.container);
                             if (_this18.driver.renderedIntoContainerTemplate) {
                                 _this18.element = _this18.container.getElementsByClassName(__WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.ELEMENT)[0];
@@ -5778,7 +5778,7 @@
                                     waitForTransition: !1
                                 });
                                 if (!_this18.element) throw new Error("Could not find element to render component into");
-                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.z)(_this18.element);
+                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.element);
                             }
                             var eventHandlers = [];
                             _this18.driver.focusable && eventHandlers.push(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.FOCUS, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
@@ -5802,8 +5802,8 @@
                                 }
                             });
                             _this18.clean.register("destroyContainerTemplate", function() {
-                                _this18.containerFrame && _this18.containerFrame.parentNode.removeChild(_this18.containerFrame);
-                                _this18.container && _this18.container.parentNode.removeChild(_this18.container);
+                                _this18.containerFrame && _this18.containerFrame.parentNode && _this18.containerFrame.parentNode.removeChild(_this18.containerFrame);
+                                _this18.container && _this18.container.parentNode && _this18.container.parentNode.removeChild(_this18.container);
                                 delete _this18.containerFrame;
                                 delete _this18.container;
                             });
@@ -5918,7 +5918,7 @@
                         });
                     };
                     if (prop.memoize) {
-                        var _val = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(value);
+                        var _val = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(value);
                         value = function() {
                             return _val();
                         };
@@ -5935,10 +5935,10 @@
                             component.log("call_prop_" + key);
                             return original.apply(this, arguments);
                         };
-                        prop.once && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(value));
-                        prop.memoize && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(value));
+                        prop.once && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(value));
+                        prop.memoize && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(value));
                     } else if (!value && prop.noop) {
-                        value = __WEBPACK_IMPORTED_MODULE_2__lib__.v;
+                        value = __WEBPACK_IMPORTED_MODULE_2__lib__.w;
                         prop.denodeify && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.Q)(value));
                         prop.promisify && (value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.R)(value));
                     }
@@ -6122,7 +6122,7 @@
             }
             function buildChildWindowName(name, version) {
                 var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                options.id = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.n)();
+                options.id = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)();
                 options.domain = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.d)(window);
                 var encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = __WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.encode(JSON.stringify(options)).replace(/\=/g, "").toLowerCase();
                 if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -6157,7 +6157,7 @@
                 return getParentRenderWindow;
             });
             __webpack_exports__.g = getPosition;
-            var getComponentMeta = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(function() {
+            var getComponentMeta = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(function() {
                 if (window.name) {
                     var _window$name$split = window.name.split("__"), xcomp = _window$name$split[0], name = _window$name$split[1], version = _window$name$split[2], encodedOptions = _window$name$split[3];
                     if (xcomp === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) {
@@ -6172,9 +6172,9 @@
                         return componentMeta;
                     }
                 }
-            }), isXComponentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(function() {
+            }), isXComponentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(function() {
                 return Boolean(getComponentMeta());
-            }), getParentComponentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(function() {
+            }), getParentComponentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(function() {
                 var componentMeta = getComponentMeta();
                 if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
                 var parentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_post_robot_src_lib_windows__.getAncestor)(window);
@@ -6188,7 +6188,7 @@
                 var parentFrame = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_post_robot_src_lib_windows__.findFrameByName)(parentWindow, componentMeta.parent);
                 if (!parentFrame) throw new Error("Can not find frame with name: " + componentMeta.parent);
                 return parentFrame;
-            }), getParentRenderWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.o)(function() {
+            }), getParentRenderWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.p)(function() {
                 var componentMeta = getComponentMeta();
                 if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
                 var parentWindow = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_post_robot_src_lib_windows__.getAncestor)(window);
@@ -6678,18 +6678,21 @@
                     if (document.querySelector) return document.querySelector(id);
                 }
             }
+            function isDocumentReady() {
+                return "complete" === window.document.readyState;
+            }
             function elementReady(id) {
                 return new __WEBPACK_IMPORTED_MODULE_1_sync_browser_mocks_src_promise__.a(function(resolve, reject) {
                     var el = getElement(id);
                     if (el) return resolve(el);
-                    if ("complete" === window.document.readyState) return reject(new Error("Document is ready and element " + id + " does not exist"));
+                    if (isDocumentReady()) return reject(new Error("Document is ready and element " + id + " does not exist"));
                     var interval = setInterval(function() {
                         el = getElement(id);
                         if (el) {
                             clearInterval(interval);
                             return resolve(el);
                         }
-                        if ("complete" === window.document.readyState) {
+                        if (isDocumentReady()) {
                             clearInterval(interval);
                             return reject(new Error("Document is ready and element " + id + " does not exist"));
                         }
@@ -7096,29 +7099,29 @@
                 return document.currentScript ? document.currentScript.src.split("/").slice(0, -1).join("/") : ".";
             }
             var __WEBPACK_IMPORTED_MODULE_0_post_robot_src_lib_windows__ = __webpack_require__("./node_modules/post-robot/src/lib/windows.js"), __WEBPACK_IMPORTED_MODULE_1_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_2__fn__ = __webpack_require__("./node_modules/xcomponent/src/lib/fn.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./node_modules/xcomponent/src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_4__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js");
-            __webpack_exports__.r = getElement;
-            __webpack_exports__.h = elementReady;
+            __webpack_exports__.d = getElement;
+            __webpack_exports__.i = elementReady;
             __webpack_exports__.w = popup;
             __webpack_exports__.s = iframe;
             __webpack_exports__.c = onCloseWindow;
-            __webpack_exports__.i = addEventListener;
+            __webpack_exports__.j = addEventListener;
             __webpack_exports__.t = createElement;
             __webpack_exports__.u = addEventToClass;
             __webpack_exports__.b = getDomain;
             __webpack_exports__.x = getDomainFromUrl;
-            __webpack_exports__.g = extendUrl;
-            __webpack_exports__.k = elementStoppedMoving;
-            __webpack_exports__.j = setOverflow;
-            __webpack_exports__.f = trackDimensions;
-            __webpack_exports__.e = onDimensionsChange;
-            __webpack_exports__.d = dimensionsMatchViewport;
-            __webpack_exports__.m = showElement;
-            __webpack_exports__.l = hideElement;
+            __webpack_exports__.h = extendUrl;
+            __webpack_exports__.l = elementStoppedMoving;
+            __webpack_exports__.k = setOverflow;
+            __webpack_exports__.g = trackDimensions;
+            __webpack_exports__.f = onDimensionsChange;
+            __webpack_exports__.e = dimensionsMatchViewport;
+            __webpack_exports__.n = showElement;
+            __webpack_exports__.m = hideElement;
             __webpack_exports__.v = destroyElement;
-            __webpack_exports__.o = showAndAnimate;
-            __webpack_exports__.p = animateAndHide;
-            __webpack_exports__.n = addClass;
-            __webpack_exports__.q = writeToWindow;
+            __webpack_exports__.p = showAndAnimate;
+            __webpack_exports__.q = animateAndHide;
+            __webpack_exports__.o = addClass;
+            __webpack_exports__.r = writeToWindow;
             __webpack_exports__.a = getCurrentScriptDir;
             var _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
@@ -7257,19 +7260,19 @@
             __webpack_require__.d(__webpack_exports__, "j", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.d;
             });
-            __webpack_require__.d(__webpack_exports__, "l", function() {
+            __webpack_require__.d(__webpack_exports__, "k", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.e;
             });
             __webpack_require__.d(__webpack_exports__, "m", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.f;
             });
-            __webpack_require__.d(__webpack_exports__, "t", function() {
+            __webpack_require__.d(__webpack_exports__, "n", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.g;
             });
             __webpack_require__.d(__webpack_exports__, "u", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.h;
             });
-            __webpack_require__.d(__webpack_exports__, "w", function() {
+            __webpack_require__.d(__webpack_exports__, "v", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__dom__.i;
             });
             __webpack_require__.d(__webpack_exports__, "x", function() {
@@ -7321,20 +7324,20 @@
             __webpack_require__.d(__webpack_exports__, "f", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__fn__.e;
             });
-            __webpack_require__.d(__webpack_exports__, "o", function() {
+            __webpack_require__.d(__webpack_exports__, "p", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__fn__.c;
             });
-            __webpack_require__.d(__webpack_exports__, "q", function() {
+            __webpack_require__.d(__webpack_exports__, "r", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__fn__.a;
             });
-            __webpack_require__.d(__webpack_exports__, "s", function() {
+            __webpack_require__.d(__webpack_exports__, "t", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__fn__.f;
             });
-            __webpack_require__.d(__webpack_exports__, "v", function() {
+            __webpack_require__.d(__webpack_exports__, "w", function() {
                 return __WEBPACK_IMPORTED_MODULE_1__fn__.b;
             });
             var __WEBPACK_IMPORTED_MODULE_2__promise__ = __webpack_require__("./node_modules/xcomponent/src/lib/promise.js");
-            __webpack_require__.d(__webpack_exports__, "k", function() {
+            __webpack_require__.d(__webpack_exports__, "l", function() {
                 return __WEBPACK_IMPORTED_MODULE_2__promise__.a;
             });
             __webpack_require__.d(__webpack_exports__, "P", function() {
@@ -7356,10 +7359,10 @@
             __webpack_require__.d(__webpack_exports__, "h", function() {
                 return __WEBPACK_IMPORTED_MODULE_3__util__.e;
             });
-            __webpack_require__.d(__webpack_exports__, "n", function() {
+            __webpack_require__.d(__webpack_exports__, "o", function() {
                 return __WEBPACK_IMPORTED_MODULE_3__util__.i;
             });
-            __webpack_require__.d(__webpack_exports__, "p", function() {
+            __webpack_require__.d(__webpack_exports__, "q", function() {
                 return __WEBPACK_IMPORTED_MODULE_3__util__.j;
             });
             __webpack_require__.d(__webpack_exports__, "S", function() {
@@ -7395,7 +7398,7 @@
             __webpack_require__.d(__webpack_exports__, "e", function() {
                 return __WEBPACK_IMPORTED_MODULE_6__global__.a;
             });
-            __webpack_require__.d(__webpack_exports__, "r", function() {
+            __webpack_require__.d(__webpack_exports__, "s", function() {
                 return __WEBPACK_IMPORTED_MODULE_6__global__.b;
             });
             var __WEBPACK_IMPORTED_MODULE_7__logger__ = __webpack_require__("./node_modules/xcomponent/src/lib/logger.js");
@@ -7834,9 +7837,23 @@
                 return __WEBPACK_IMPORTED_MODULE_0__fallback__.a;
             });
         },
+        "./src/components/button/braintree.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            function awaitBraintreeClient(braintree, authorization) {
+                return braintree.client.create({
+                    authorization: authorization
+                }).then(function(client) {
+                    return braintree.paypalCheckout.create({
+                        client: client
+                    });
+                });
+            }
+            __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js");
+            __webpack_exports__.a = awaitBraintreeClient;
+        },
         "./src/components/button/component.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js");
+            var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_10__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_11__dimensions__ = __webpack_require__("./src/components/button/dimensions.js");
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return Button;
             });
@@ -7862,44 +7879,20 @@
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.65";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.66";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
                 },
                 getInitialDimensions: function(props, container) {
-                    var style = props.style || {}, size = style.size || "small", responsiveHeight = "42px";
+                    var style = props.style || {}, size = style.size || "small";
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.c("iframe_button_size_" + size);
-                    if ("responsive" === size) {
-                        var _width = container.offsetWidth;
-                        responsiveHeight = _width < 100 ? "22px" : _width < 200 ? "42px" : _width < 300 ? "48px" : "60px";
-                    }
-                    return {
-                        tiny: {
-                            width: "80px",
-                            height: "22px"
-                        },
-                        small: {
-                            width: "148px",
-                            height: "42px"
-                        },
-                        medium: {
-                            width: "230px",
-                            height: "48px"
-                        },
-                        large: {
-                            width: "380px",
-                            height: "60px"
-                        },
-                        responsive: {
-                            width: "100%",
-                            height: responsiveHeight
-                        }
-                    }[size];
+                    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__dimensions__.a)(container, size);
                 },
                 autoResize: {
                     width: !1,
-                    height: !1
+                    height: !0,
+                    element: "#paypal-button-container"
                 },
                 props: {
                     uid: {
@@ -7943,6 +7936,20 @@
                             if (env === __WEBPACK_IMPORTED_MODULE_4__config__.b.STAGE || env === __WEBPACK_IMPORTED_MODULE_4__config__.b.LOCAL) return __WEBPACK_IMPORTED_MODULE_4__config__.a.stage;
                         }
                     },
+                    braintree: {
+                        type: "object",
+                        required: !1,
+                        validate: function(braintree, props) {
+                            if (!braintree.paypalCheckout) throw new Error("Expected Braintree paypal-checkout component to be loaded");
+                            if (!props.client) throw new Error("Expected client prop to be passed with Braintree authorization keys");
+                        },
+                        decorate: function(braintree, props) {
+                            if (braintree) {
+                                var env = props.env || __WEBPACK_IMPORTED_MODULE_4__config__.a.env, authorization = props.client[env];
+                                return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__braintree__.a)(braintree, authorization);
+                            }
+                        }
+                    },
                     payment: {
                         type: "function",
                         required: !0,
@@ -7957,6 +7964,14 @@
                                     actions.payment = {
                                         create: function(options, experience) {
                                             return __WEBPACK_IMPORTED_MODULE_6__api__.a.payment.create(_this.props.env, _this.props.client, options, experience);
+                                        }
+                                    };
+                                    actions.braintree = {
+                                        create: function(options) {
+                                            if (!_this.props.braintree) throw new Error("Can not create using Braintree - no braintree client provided");
+                                            return _this.props.braintree.then(function(client) {
+                                                return client.createPayment(options);
+                                            });
                                         }
                                     };
                                     actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.a;
@@ -8040,6 +8055,14 @@
                         required: !0,
                         decorate: function(original) {
                             if (original) return function(data, actions) {
+                                var _this3 = this;
+                                if (this.props.braintree) return this.props.braintree.then(function(client) {
+                                    return client.tokenizePayment(data).then(function(res) {
+                                        return original.call(_this3, {
+                                            nonce: res.nonce
+                                        });
+                                    });
+                                });
                                 var redirect = function(win, url) {
                                     return __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__.a.all([ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__lib__.h)(win || window.top, url || data.returnUrl), actions.close() ]);
                                 };
@@ -8186,9 +8209,42 @@
                 }
                 setTimeout(function() {
                     var logo = document.querySelector(".logo-paypal");
-                    !logo || "hidden" !== logo.style.visibility && "hidden" !== window.getComputedStyle(logo).visibility || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__templates_component_script__.a)();
+                    !logo || "hidden" !== logo.style.visibility && "hidden" !== window.getComputedStyle(logo).visibility || eval("(" + __WEBPACK_IMPORTED_MODULE_9__templates_component_script__.a.toString() + ")()");
                 }, 1);
             }
+        },
+        "./src/components/button/dimensions.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
+            function getDimensions(container) {
+                var size = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "small", responsiveHeight = "42px";
+                if ("responsive" === size) {
+                    var _width = container.offsetWidth;
+                    responsiveHeight = _width < 100 ? "22px" : _width < 200 ? "42px" : _width < 300 ? "48px" : "60px";
+                }
+                return {
+                    tiny: {
+                        width: "80px",
+                        height: "22px"
+                    },
+                    small: {
+                        width: "148px",
+                        height: "42px"
+                    },
+                    medium: {
+                        width: "230px",
+                        height: "48px"
+                    },
+                    large: {
+                        width: "380px",
+                        height: "60px"
+                    },
+                    responsive: {
+                        width: "100%",
+                        height: responsiveHeight
+                    }
+                }[size];
+            }
+            __webpack_exports__.a = getDimensions;
         },
         "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -8244,49 +8300,17 @@
         },
         "./src/components/button/templates/component/script.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            function componentScript() {
-                function getElements(selector) {
-                    return Array.prototype.slice.call(document.querySelectorAll(selector));
-                }
-                function hideElement(el) {
-                    el.style.display = "none";
-                }
-                function makeElementVisible(el) {
-                    el.style.visibility = "visible";
-                }
-                function hasDimensions(el) {
-                    var rect = el.getBoundingClientRect();
-                    return Boolean(rect.height && rect.width);
-                }
-                function isOverflowing(el) {
-                    if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) return !0;
-                    var parent = el.parentNode;
-                    if (!parent) return !1;
-                    var e = el.getBoundingClientRect(), p = parent.getBoundingClientRect();
-                    return e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom || (e.left < 0 || e.top < 0 || e.left + e.width > window.innerWidth || e.top + e.height > window.innerHeight);
-                }
-                var images = getElements(".paypal-button-content .logo"), text = getElements(".paypal-button-content .text"), tagline = getElements(".paypal-button-tag-content");
-                !function(elements, method) {
-                    if (elements.every(hasDimensions)) method(); else var interval = setInterval(function() {
-                        if (elements.every(hasDimensions)) {
-                            clearInterval(interval);
-                            method();
-                        }
-                    }, 5);
-                }(images, function() {
-                    images.forEach(makeElementVisible);
-                    tagline.some(isOverflowing) ? tagline.forEach(hideElement) : tagline.forEach(makeElementVisible);
-                    images.some(isOverflowing) || text.some(isOverflowing) ? text.forEach(hideElement) : text.forEach(makeElementVisible);
-                });
-            }
-            __webpack_exports__.a = componentScript;
+            __webpack_require__.d(__webpack_exports__, "a", function() {
+                return componentScript;
+            });
+            var componentScript = "\n    function componentScript() {\n\n        function getElements(selector) {\n            return Array.prototype.slice.call(document.querySelectorAll(selector));\n        }\n\n        function showElement(el, displayType) {\n            el.style.display = displayType || 'block';\n        }\n\n        function hideElement(el) {\n            el.style.display = 'none';\n        }\n\n        function makeElementVisible(el) {\n            el.style.visibility = 'visible';\n        }\n\n        function makeElementInvisible(el) {\n            el.style.visibility = 'hidden';\n        }\n\n        function hasDimensions(el) {\n            var rect = el.getBoundingClientRect();\n            return Boolean(rect.height && rect.width);\n        }\n\n        function onDisplay(elements, method) {\n            if (elements.every(hasDimensions)) {\n                method();\n                return;\n            }\n\n            var interval = setInterval(function() {\n                if (elements.every(hasDimensions)) {\n                    clearInterval(interval);\n                    method();\n                    return;\n                }\n            }, 5);\n        }\n\n        function isOverflowing(el) {\n\n            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {\n                return true;\n            }\n\n            var parent = el.parentNode;\n\n            if (!parent) {\n                return false;\n            }\n\n            var e = el.getBoundingClientRect();\n\n            // $FlowFixMe\n            var p = parent.getBoundingClientRect();\n\n            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {\n                return true;\n            }\n\n            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {\n                return true;\n            }\n\n            return false;\n        }\n\n        var images = getElements('.paypal-button-content .logo');\n        var text = getElements('.paypal-button-content .text');\n        var tagline = getElements('.paypal-button-tag-content');\n\n        function toggleTagline() {\n            if (tagline.some(isOverflowing)) {\n                tagline.forEach(makeElementInvisible);\n            } else {\n                tagline.forEach(makeElementVisible);\n            }\n        }\n\n        function showText() {\n            text.forEach(function(el) { showElement(el, 'inline-block') });\n        }\n\n        function toggleText() {\n            if (images.some(isOverflowing) || text.some(isOverflowing)) {\n                text.forEach(hideElement);\n            } else {\n                text.forEach(makeElementVisible);\n            }\n        }\n\n        onDisplay(images, function() {\n            images.forEach(makeElementVisible);\n            toggleTagline();\n            toggleText();\n\n            window.addEventListener('resize', function() {\n                toggleTagline();\n                showText();\n                toggleText();\n            });\n        });\n    }\n";
         },
         "./src/components/button/templates/component/style.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return componentStyle;
             });
-            var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 79px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 21px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n\n    /* Tiny */\n\n    @media only screen and (min-width : 80px) and (min-height: 22px) and (max-width: 99px) {\n\n        .paypal-button {\n            max-width: 100px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 18px;\n            max-height: 18px;\n            border-radius: 9px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 15px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 14px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            z-index: -1;\n            border-radius: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 3px;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 100px) and (min-height: 22px) {\n\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-pay {\n        min-width: 148px;\n        min-height: 42px;\n    }\n';
+            var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 79px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 21px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n\n    /* Tiny */\n\n    @media only screen and (min-width : 80px) and (min-height: 22px) {\n\n        .paypal-button {\n            max-width: 100px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 18px;\n            max-height: 18px;\n            border-radius: 9px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 15px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 14px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            z-index: -1;\n            border-radius: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 3px;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 100px) and (min-height: 42px) {\n\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-pay {\n        min-width: 148px;\n        min-height: 42px;\n    }\n';
         },
         "./src/components/button/templates/component/template.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -8431,7 +8455,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.65";
+                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.66";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8736,7 +8760,7 @@
                         props: props
                     }) : function() {
                         return props.payment;
-                    }, payment = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.o)(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.P)(getPayment)), onAuthorize = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.q)(props.onAuthorize), onCancel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.q)(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.v);
+                    }, payment = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.p)(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.P)(getPayment)), onAuthorize = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.r)(props.onAuthorize), onCancel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.r)(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.w);
                     return ternary(props.url, props.url, payment().then(function(token) {
                         if (token) {
                             var _extendUrl;
@@ -8918,7 +8942,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.65",
+                version: "4.0.66",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -9038,7 +9062,7 @@
                 },
                 loggerUri: "/webapps/hermes/api/logger",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.65");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.66");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -9615,7 +9639,7 @@
             __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
                 return destroyAll;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.65", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.66", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
@@ -10436,7 +10460,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.65";
+                    payload.version = "4.0.66";
                     payload.host = window.location.host;
                     payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                     var query = [];
@@ -10451,7 +10475,7 @@
             function checkpoint(name) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
-                    var version = "4.0.65".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                    var version = "4.0.66".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                     loggedCheckpoints.push(checkpointName);
                     logged && (checkpointName += "_dupe");
                     return beacon(checkpointName, payload);
@@ -10459,7 +10483,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.65",
+                    v: "checkout.js.4.0.66",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -11029,7 +11053,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                         uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                        ver: "4.0.65"
+                        ver: "4.0.66"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i(function() {
