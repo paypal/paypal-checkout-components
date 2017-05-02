@@ -13,6 +13,7 @@ import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupB
 import { containerTemplate, componentTemplate } from './templates';
 import { componentScript } from './templates/component/script';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
+import { getDimensions } from './dimensions';
 
 export let Button = xcomponent.create({
 
@@ -50,52 +51,9 @@ export let Button = xcomponent.create({
         let style = props.style || {};
         let size = style.size || 'small';
 
-        let responsiveHeight = '42px';
-
         $logger.info(`iframe_button_size_${size}`);
 
-        if (size === 'responsive') {
-            let width = container.offsetWidth;
-
-            if (width < 100) {
-                responsiveHeight = '22px';
-            } else if (width < 200) {
-                responsiveHeight = '42px';
-            } else if (width < 300) {
-                responsiveHeight = '48px';
-            } else {
-                responsiveHeight = '60px';
-            }
-        }
-
-        return {
-
-            tiny: {
-                width: '80px',
-                height: '22px'
-            },
-
-            small: {
-                width: '148px',
-                height: '42px'
-            },
-
-            medium: {
-                width: '230px',
-                height: '48px'
-            },
-
-            large: {
-                width: '380px',
-                height: '60px'
-            },
-
-            responsive: {
-                width: '100%',
-                height: responsiveHeight
-            }
-
-        }[size];
+        return getDimensions(container, size);
     },
 
     autoResize: {
