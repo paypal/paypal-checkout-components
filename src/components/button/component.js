@@ -58,7 +58,8 @@ export let Button = xcomponent.create({
 
     autoResize: {
         width: false,
-        height: false
+        height: true,
+        element: '#paypal-button-container'
     },
 
     props: {
@@ -515,7 +516,7 @@ if (Button.isChild()) {
         let logo = document.querySelector('.logo-paypal');
 
         if (logo && (logo.style.visibility === 'hidden' || window.getComputedStyle(logo).visibility === 'hidden')) {
-            componentScript();
+            eval(`(${ componentScript.toString() })()`); // eslint-disable-line
         }
     }, 1);
 }

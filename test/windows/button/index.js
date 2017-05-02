@@ -1,8 +1,15 @@
 /* @flow */
 
+import { componentTemplate } from 'src/components/button/templates';
 import { getElement, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender } = window.xprops.test;
+
+let button = componentTemplate({ props: window.xprops });
+
+if (document.body) {
+    document.body.innerHTML = button;
+}
 
 if (flow === 'iframe') {
     window.paypal.Checkout.contexts.iframe = true;
@@ -57,7 +64,7 @@ function renderCheckout() {
     });
 }
 
-getElement('#button', document).addEventListener('click', (event : Event) => {
+getElement('#paypal-button', document).addEventListener('click', (event : Event) => {
 
     if (window.xprops.onClick) {
         window.xprops.onClick();
@@ -76,17 +83,17 @@ if (action === 'auth') {
 
     if (delay) {
         setTimeout(() => {
-            getElement('#button', document).click();
+            getElement('#paypal-button', document).click();
         }, delay);
     } else {
-        getElement('#button', document).click();
+        getElement('#paypal-button', document).click();
     }
 }
 
 if (onRender) {
     onRender({
         click() {
-            getElement('#button', document).click();
+            getElement('#paypal-button', document).click();
         }
     });
 }
