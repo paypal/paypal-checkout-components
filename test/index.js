@@ -1,6 +1,5 @@
 import assert from 'assert';
-import renderer from '../index';
-import Handlebars from 'handlebars';
+import context from '../index';
 
 let locales = {
     '': [ '' ],
@@ -220,13 +219,6 @@ let shapes = [ 'rect', 'pill' ];
 
 describe('Button Configurations before rendering', () => {
 
-    before(() => {
-        Handlebars.registerHelper('json', function (obj) {
-            return new Handlebars.SafeString(JSON.stringify.apply(null, [obj, null, 4])
-                .replace(/</g, '\\u003C').replace(/>/g, '\\u003E'));
-        });
-    });
-
     for (let country of Object.keys(locales)) {
         for (let lang of locales[country]) {
             for (let label of labels) {
@@ -275,9 +267,7 @@ describe('Button Configurations before rendering', () => {
                                     }
                                 };
 
-                                let render = await renderer('./public/button.hbs');
-
-                                let html = render({ meta: {}, cookies: {} }, req);
+                                let html = context(req).buttonHTML;
 
                                 let expected =
                                     `<div id="paypal-button" class="paypal-button paypal-style-${label} paypal-color-${color} paypal-logo-color-${logocolor} paypal-size-${size} paypal-shape-${shape}"`;
