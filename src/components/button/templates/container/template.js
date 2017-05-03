@@ -57,6 +57,10 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
                 font-size: 0;
             }
 
+            #${id} .paypal-button-parent {
+                display: inline-block;
+            }
+
             #${id} .paypal-button-parent iframe {
                 max-width: 100%;
                 min-width: 100%;
