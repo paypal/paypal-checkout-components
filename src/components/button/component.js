@@ -13,7 +13,6 @@ import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupB
 import { containerTemplate, componentTemplate } from './templates';
 import { componentScript } from './templates/component/script';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
-import { getDimensions } from './dimensions';
 
 export let Button = xcomponent.create({
 
@@ -45,17 +44,7 @@ export let Button = xcomponent.create({
     get domain() : Object {
         return config.paypalDomains;
     },
-
-    getInitialDimensions(props : Object, container : HTMLElement) : ?{ width? : string, height? : string } {
-
-        let style = props.style || {};
-        let size = style.size || 'small';
-
-        $logger.info(`iframe_button_size_${size}`);
-
-        return getDimensions(container, size);
-    },
-
+    
     autoResize: {
         width: false,
         height: true,
