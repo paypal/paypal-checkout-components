@@ -1175,7 +1175,7 @@
                     _ref = _i.value;
                 }
                 var promise = _ref;
-                promise.reject(new Error("Window cleaned up"));
+                promise.reject(new Error("No response from window - cleaned up"));
             }
             __WEBPACK_IMPORTED_MODULE_0__global__.a.popupWindowsByWin && __WEBPACK_IMPORTED_MODULE_0__global__.a.popupWindowsByWin.delete(win);
             __WEBPACK_IMPORTED_MODULE_0__global__.a.remoteWindows && __WEBPACK_IMPORTED_MODULE_0__global__.a.remoteWindows.delete(win);
@@ -2027,6 +2027,7 @@
                 });
             }
             wrapper.__name__ = obj.__name__;
+            wrapper.__xdomain__ = !0;
             wrapper.source = source;
             wrapper.origin = origin;
             return wrapper;
@@ -3561,7 +3562,7 @@
             };
             ChildComponent.prototype.watchForResize = function() {
                 var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
-                if ((width || height) && this.component.dimensions && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
+                if ((width || height) && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
                     return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
                         if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.k)(element, {
@@ -3851,10 +3852,7 @@
                 _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
                 _this.props = _extends({}, __WEBPACK_IMPORTED_MODULE_5__props__.a, options.props || {});
                 options.props || (_this.looseProps = !0);
-                _this.addProp(options, "dimensions", {
-                    width: "300px",
-                    height: "150px"
-                });
+                _this.addProp(options, "dimensions");
                 _this.addProp(options, "scrolling");
                 _this.addProp(options, "version", "latest");
                 _this.addProp(options, "defaultEnv");
@@ -3872,7 +3870,7 @@
                 _this.addProp(options, "getInitialDimensions");
                 _this.addProp(options, "autoResize", !1);
                 _this.addProp(options, "containerTemplate", function(_ref) {
-                    return '<div class="' + _ref.CLASS.ELEMENT + '"></div>';
+                    return "\n            <style>\n                #" + _ref.id + ' iframe {\n                    height: 100%;\n                    width: 100%;\n                }\n            </style>\n\n            <div class="' + _ref.CLASS.ELEMENT + '"></div>\n        ';
                 });
                 _this.addProp(options, "componentTemplate");
                 _this.addProp(options, "sacrificialComponentTemplate", !1);
@@ -4440,10 +4438,6 @@
                     attributes: {
                         name: this.childWindowName,
                         scrolling: !1 === this.component.scrolling ? "no" : "yes"
-                    },
-                    style: {
-                        width: "100%",
-                        height: "100%"
                     }
                 }, frame = this.iframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(null, options, this.element);
                 this.window = frame.contentWindow;
@@ -4492,6 +4486,8 @@
                 loadUrl: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_DELEGATE,
                 hijackSubmit: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_DELEGATE,
                 getInitialDimensions: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
+                renderTemplate: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
+                openContainerFrame: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
                 open: function(original, override) {
                     return function() {
                         var _this2 = this;
@@ -4577,7 +4573,9 @@
                 createComponentTemplate: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
                 destroyComponent: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
                 resize: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
-                getInitialDimensions: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL
+                getInitialDimensions: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
+                renderTemplate: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL,
+                openContainerFrame: __WEBPACK_IMPORTED_MODULE_3__constants__.DELEGATE.CALL_ORIGINAL
             },
             loadUrl: function(url) {
                 this.window.location = url;
@@ -4635,7 +4633,13 @@
             return ParentComponent;
         });
         __webpack_exports__.a = destroyAll;
-        var _class, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var _class, _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -5161,12 +5165,7 @@
                     return _this17.getComponentTemplate();
                 }).then(function(componentTemplate) {
                     if (componentTemplate) return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
-                        return componentTemplate({
-                            id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this17.props.uid,
-                            props: _this17.props,
-                            CLASS: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES,
-                            ANIMATION: __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES
-                        });
+                        return _this17.renderTemplate(componentTemplate);
                     }).then(function(html) {
                         var win = _this17.componentTemplateWindow || _this17.window;
                         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(win, html);
@@ -5176,87 +5175,98 @@
             ParentComponent.prototype.getContainerTemplate = function() {
                 return this.component.containerTemplate;
             };
+            ParentComponent.prototype.renderTemplate = function(renderer) {
+                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                return renderer(_extends({
+                    id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + this.props.uid,
+                    props: renderer.__xdomain__ ? null : this.props,
+                    CLASS: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES,
+                    ANIMATION: __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES
+                }, options));
+            };
+            ParentComponent.prototype.openContainerFrame = function(el) {
+                var frame = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(null, {
+                    name: "__xcomponent_container_" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.o)() + "__",
+                    scrolling: "no"
+                }, el);
+                frame.style.display = "block";
+                frame.style.position = "fixed";
+                frame.style.top = "0";
+                frame.style.left = "0";
+                frame.style.width = "100%";
+                frame.style.height = "100%";
+                frame.style.zIndex = "2147483647";
+                frame.contentWindow.document.open();
+                frame.contentWindow.document.write("<body></body>");
+                frame.contentWindow.document.close();
+                return frame;
+            };
             ParentComponent.prototype.openContainer = function(element) {
-                var _this18 = this;
-                return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
-                    return _this18.getContainerTemplate();
-                }).then(function(containerTemplate) {
-                    if (containerTemplate) return __WEBPACK_IMPORTED_MODULE_3_sync_browser_mocks_src_promise__.a.try(function() {
-                        return containerTemplate({
-                            id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.props.uid,
-                            props: _this18.props,
-                            CLASS: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES,
-                            ANIMATION: __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES
-                        });
-                    }).then(function(html) {
-                        var el = void 0;
-                        if (element) {
-                            el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.j)(element);
-                            if (!el) throw new Error("Could not find element: " + element);
-                        } else el = document.body;
-                        if (_this18.component.sandboxContainer) {
-                            _this18.containerFrame = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(null, {
-                                name: "__xcomponent_container_" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.o)() + "__",
-                                scrolling: "no"
-                            }, el);
-                            _this18.containerFrame.style.display = "block";
-                            _this18.containerFrame.style.position = "fixed";
-                            _this18.containerFrame.style.top = "0";
-                            _this18.containerFrame.style.left = "0";
-                            _this18.containerFrame.style.width = "100%";
-                            _this18.containerFrame.style.height = "100%";
-                            _this18.containerFrame.style.zIndex = "2147483647";
-                            _this18.containerFrame.contentWindow.document.open();
-                            _this18.containerFrame.contentWindow.document.write("<body></body>");
-                            _this18.containerFrame.contentWindow.document.close();
-                            el = _this18.containerFrame.contentWindow.document.body;
-                        }
-                        _this18.container = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.H)("div", {
-                            html: html,
-                            attributes: {
-                                id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.props.uid
-                            },
-                            class: [ __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.component.tag, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.context ]
-                        });
-                        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.container);
-                        el.appendChild(_this18.container);
-                        if (_this18.driver.renderedIntoContainerTemplate) {
-                            _this18.element = _this18.container.getElementsByClassName(__WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.ELEMENT)[0];
-                            var _getInitialDimensions = _this18.getInitialDimensions(el), width = _getInitialDimensions.width, height = _getInitialDimensions.height;
-                            _this18.resize(width, height, {
-                                waitForTransition: !1
-                            });
-                            if (!_this18.element) throw new Error("Could not find element to render component into");
-                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.element);
-                        }
-                        var eventHandlers = [];
-                        _this18.driver.focusable && eventHandlers.push(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.FOCUS, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
-                            return _this18.focus();
-                        }));
-                        eventHandlers.push(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.CLOSE, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
-                            return _this18.userClose();
-                        }));
-                        _this18.clean.register("destroyContainerEvents", function() {
-                            for (var _iterator3 = eventHandlers, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                var _ref11;
-                                if (_isArray3) {
-                                    if (_i3 >= _iterator3.length) break;
-                                    _ref11 = _iterator3[_i3++];
-                                } else {
-                                    _i3 = _iterator3.next();
-                                    if (_i3.done) break;
-                                    _ref11 = _i3.value;
-                                }
-                                _ref11.cancel();
+                var _this18 = this, el = void 0;
+                if (element) {
+                    el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.j)(element);
+                    if (!el) throw new Error("Could not find element: " + element);
+                } else el = document.body;
+                return this.getContainerTemplate().then(function(containerTemplate) {
+                    if (containerTemplate) {
+                        var containerWidth = el.offsetWidth, containerHeight = el.offsetHeight;
+                        return _this18.renderTemplate(containerTemplate, {
+                            dimensions: {
+                                width: containerWidth,
+                                height: containerHeight
                             }
+                        }).then(function(html) {
+                            if (_this18.component.sandboxContainer) {
+                                _this18.containerFrame = _this18.openContainerFrame(el);
+                                el = _this18.containerFrame.contentWindow.document.body;
+                            }
+                            _this18.container = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.H)("div", {
+                                html: html,
+                                attributes: {
+                                    id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.props.uid
+                                },
+                                class: [ __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.component.tag, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.context ]
+                            });
+                            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.container);
+                            el.appendChild(_this18.container);
+                            if (_this18.driver.renderedIntoContainerTemplate) {
+                                _this18.element = _this18.container.getElementsByClassName(__WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.ELEMENT)[0];
+                                var _ref11 = _this18.getInitialDimensions(el) || {}, width = _ref11.width, height = _ref11.height;
+                                (width || height) && _this18.resize(width, height, {
+                                    waitForTransition: !1
+                                });
+                                if (!_this18.element) throw new Error("Could not find element to render component into");
+                                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.A)(_this18.element);
+                            }
+                            var eventHandlers = [];
+                            _this18.driver.focusable && eventHandlers.push(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.FOCUS, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
+                                return _this18.focus();
+                            }));
+                            eventHandlers.push(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.CLOSE, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
+                                return _this18.userClose();
+                            }));
+                            _this18.clean.register("destroyContainerEvents", function() {
+                                for (var _iterator3 = eventHandlers, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                                    var _ref12;
+                                    if (_isArray3) {
+                                        if (_i3 >= _iterator3.length) break;
+                                        _ref12 = _iterator3[_i3++];
+                                    } else {
+                                        _i3 = _iterator3.next();
+                                        if (_i3.done) break;
+                                        _ref12 = _i3.value;
+                                    }
+                                    _ref12.cancel();
+                                }
+                            });
+                            _this18.clean.register("destroyContainerTemplate", function() {
+                                _this18.containerFrame && _this18.containerFrame.parentNode && _this18.containerFrame.parentNode.removeChild(_this18.containerFrame);
+                                _this18.container && _this18.container.parentNode && _this18.container.parentNode.removeChild(_this18.container);
+                                delete _this18.containerFrame;
+                                delete _this18.container;
+                            });
                         });
-                        _this18.clean.register("destroyContainerTemplate", function() {
-                            _this18.containerFrame && _this18.containerFrame.parentNode && _this18.containerFrame.parentNode.removeChild(_this18.containerFrame);
-                            _this18.container && _this18.container.parentNode && _this18.container.parentNode.removeChild(_this18.container);
-                            delete _this18.containerFrame;
-                            delete _this18.container;
-                        });
-                    });
+                    }
                     if (_this18.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this18.context);
                 });
             };
@@ -5328,6 +5338,7 @@
         _applyDecoratedDescriptor(_class.prototype, "getComponentTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "getComponentTemplate"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "createComponentTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "createComponentTemplate"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "getContainerTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "getContainerTemplate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTemplate"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "openContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "error", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "error"), _class.prototype), 
         _class);
@@ -6378,6 +6389,14 @@
         function onDimensionsChange(el, _ref12) {
             var _ref12$width = _ref12.width, width = void 0 === _ref12$width || _ref12$width, _ref12$height = _ref12.height, height = void 0 === _ref12$height || _ref12$height, _ref12$delay = _ref12.delay, delay = void 0 === _ref12$delay ? 50 : _ref12$delay, _ref12$threshold = _ref12.threshold, threshold = void 0 === _ref12$threshold ? 0 : _ref12$threshold;
             return new __WEBPACK_IMPORTED_MODULE_1_sync_browser_mocks_src_promise__.a(function(resolve) {
+                function onWindowResize() {
+                    var _tracker$check2 = tracker.check(), changed = _tracker$check2.changed, dimensions = _tracker$check2.dimensions;
+                    if (changed) {
+                        tracker.reset();
+                        window.removeEventListener("resize", onWindowResize);
+                        return resolver(dimensions);
+                    }
+                }
                 var tracker = trackDimensions(el, {
                     width: width,
                     height: height,
@@ -6393,6 +6412,7 @@
                         return resolver(dimensions);
                     }
                 }, delay);
+                window.addEventListener("resize", onWindowResize);
             });
         }
         function dimensionsMatchViewport(el, _ref13) {
@@ -7302,7 +7322,7 @@
     },
     "./src/components/button/component.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_10__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_11__dimensions__ = __webpack_require__("./src/components/button/dimensions.js");
+        var __WEBPACK_IMPORTED_MODULE_0_sync_browser_mocks_src_promise__ = __webpack_require__("./node_modules/sync-browser-mocks/src/promise.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_10__braintree__ = __webpack_require__("./src/components/button/braintree.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return Button;
         });
@@ -7328,20 +7348,15 @@
             componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.66";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.67";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
             },
-            getInitialDimensions: function(props, container) {
-                var style = props.style || {}, size = style.size || "small";
-                __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.c("iframe_button_size_" + size);
-                return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__dimensions__.a)(container, size);
-            },
             autoResize: {
                 width: !1,
                 height: !0,
-                element: "#paypal-button-container"
+                element: "body"
             },
             props: {
                 uid: {
@@ -7656,44 +7671,15 @@
                     if (enabled) return renderTo.apply(this, arguments);
                 };
             }
+            var style = document.createElement("style"), css = "\n        @media only screen and (min-width : 80px)  { body { height: 22px; } }\n        @media only screen and (min-width : 100px) { body { height: 42px; } }\n        @media only screen and (min-width : 200px) { body { height: 48px; } }\n        @media only screen and (min-width : 300px) { body { height: 60px; } }\n    ";
+            style.type = "text/css";
+            style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css));
+            document.head ? document.head.appendChild(style) : document.body && document.body.appendChild(style);
             setTimeout(function() {
                 var logo = document.querySelector(".logo-paypal");
                 !logo || "hidden" !== logo.style.visibility && "hidden" !== window.getComputedStyle(logo).visibility || eval("(" + __WEBPACK_IMPORTED_MODULE_9__templates_component_script__.a.toString() + ")()");
             }, 1);
         }
-    },
-    "./src/components/button/dimensions.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        function getDimensions(container) {
-            var size = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "small", responsiveHeight = "42px";
-            if ("responsive" === size) {
-                var _width = container.offsetWidth;
-                responsiveHeight = _width < 100 ? "22px" : _width < 200 ? "42px" : _width < 300 ? "48px" : "60px";
-            }
-            return {
-                tiny: {
-                    width: "80px",
-                    height: "22px"
-                },
-                small: {
-                    width: "148px",
-                    height: "42px"
-                },
-                medium: {
-                    width: "230px",
-                    height: "48px"
-                },
-                large: {
-                    width: "380px",
-                    height: "60px"
-                },
-                responsive: {
-                    width: "100%",
-                    height: responsiveHeight
-                }
-            }[size];
-        }
-        __webpack_exports__.a = getDimensions;
     },
     "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -7713,7 +7699,7 @@
         });
     },
     "./src/components/button/templates/component/logos/credit_white.svg": function(module, exports) {
-        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" class="logo logo-credit logo-credit-white" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <style>\n        .logo-credit.logo-credit-white path {\n        fill: #ffffff;\n        }\n    </style>\n\n    <path d="M55.6 6.5C55.7 6.1 56 5.8 56.4 5.8L63.7 5.8C69.8 5.8 74 10.5 73 16.4 72.1 22.3 66.3 26.9 60.3 26.9L52.8 26.9C52.5 26.9 52.3 26.7 52.4 26.4L55.6 6.5ZM58.7 22.3L60 22.3C63.3 22.3 66.5 20.5 67.2 16.4 67.8 12.6 65.6 10.5 62 10.5L61 10.5C60.8 10.5 60.6 10.6 60.6 10.8L58.7 22.3Z"></path>\n    <path d="M46.2 11.1L45.7 14 51.5 14C51.8 14 52 14.2 52 14.5L51.4 18C51.3 18.4 51 18.6 50.6 18.6L45.6 18.6C45.2 18.6 44.9 18.9 44.8 19.3L44.3 22.3 50.5 22.3C50.8 22.3 51 22.5 50.9 22.8L50.4 26.3C50.3 26.6 50 26.9 49.6 26.9L38.5 26.9C38.2 26.9 38 26.6 38 26.4L41.2 6.5C41.3 6.1 41.7 5.8 42 5.8L53.2 5.8C53.4 5.8 53.7 6.1 53.6 6.3L53.1 9.8C53 10.2 52.7 10.4 52.3 10.4L46.9 10.4C46.5 10.5 46.2 10.7 46.2 11.1Z"></path>\n    <path d="M78 26.9L73.6 26.9C73.3 26.9 73.1 26.7 73.1 26.4L76.4 6.5C76.4 6.1 76.8 5.8 77.1 5.8L81.6 5.8C81.8 5.8 82.1 6.1 82 6.4L78.8 26.3C78.7 26.6 78.4 26.9 78 26.9Z"></path>\n    <path d="M36.5 26.9L30.7 26.9C30.4 26.9 30.2 26.8 30.1 26.6L26.3 18.8 26.2 18.8 25 26.4C24.9 26.7 24.7 26.9 24.4 26.9L19.8 26.9C19.5 26.9 19.3 26.7 19.4 26.4L22.6 6.4C22.7 6.1 22.9 5.8 23.2 5.8L31.1 5.8C35.4 5.8 38.4 7.8 37.7 12.3 37.2 15.2 35.1 17.8 31.9 18.3L36.9 26.3C37.1 26.5 36.8 26.9 36.5 26.9ZM26.8 15.3L27.3 15.3C29.2 15.3 31.3 14.9 31.7 12.6 32.1 10.4 30.9 10 28.9 10L28.1 10C27.8 10 27.6 10.2 27.6 10.4L26.8 15.3Z"></path>\n    <path d="M89.9 26.9L85.5 26.9C85.2 26.9 85 26.7 85.1 26.4L87.6 10.5 83.5 10.5C83.2 10.5 83 10.2 83.1 9.9L83.6 6.5C83.7 6.1 84 5.8 84.4 5.8L98.2 5.8C98.4 5.8 98.7 6.1 98.6 6.4L98 9.8C98 10.2 97.7 10.5 97.3 10.5L93.3 10.5 90.7 26.3C90.7 26.6 90.4 26.9 89.9 26.9Z"></path>\n    <path d="M19.6 11.8C19.6 12.2 19.1 12.4 18.8 12.1 17.8 11.1 16.4 10.6 14.9 10.6 11.4 10.6 8.7 13.2 8.1 16.4 7.6 19.7 9.6 22.1 13.1 22.1 14.5 22.1 16.1 21.6 17.3 20.7 17.7 20.5 18.2 20.8 18.1 21.2L17.3 26C17.2 26.3 17 26.5 16.7 26.6 15 27.1 13.7 27.5 12.1 27.5 2.7 27.5 1.2 19.7 1.7 16.4 3 7.1 10.8 5 15.5 5.3 17 5.3 18.4 5.5 19.7 6 20.2 6.2 20.4 6.6 20.3 7.1L19.6 11.8Z"></path>\n</svg>\n';
+        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M55.6 6.5C55.7 6.1 56 5.8 56.4 5.8L63.7 5.8C69.8 5.8 74 10.5 73 16.4 72.1 22.3 66.3 26.9 60.3 26.9L52.8 26.9C52.5 26.9 52.3 26.7 52.4 26.4L55.6 6.5ZM58.7 22.3L60 22.3C63.3 22.3 66.5 20.5 67.2 16.4 67.8 12.6 65.6 10.5 62 10.5L61 10.5C60.8 10.5 60.6 10.6 60.6 10.8L58.7 22.3Z"></path>\n    <path fill="#ffffff" d="M46.2 11.1L45.7 14 51.5 14C51.8 14 52 14.2 52 14.5L51.4 18C51.3 18.4 51 18.6 50.6 18.6L45.6 18.6C45.2 18.6 44.9 18.9 44.8 19.3L44.3 22.3 50.5 22.3C50.8 22.3 51 22.5 50.9 22.8L50.4 26.3C50.3 26.6 50 26.9 49.6 26.9L38.5 26.9C38.2 26.9 38 26.6 38 26.4L41.2 6.5C41.3 6.1 41.7 5.8 42 5.8L53.2 5.8C53.4 5.8 53.7 6.1 53.6 6.3L53.1 9.8C53 10.2 52.7 10.4 52.3 10.4L46.9 10.4C46.5 10.5 46.2 10.7 46.2 11.1Z"></path>\n    <path fill="#ffffff" d="M78 26.9L73.6 26.9C73.3 26.9 73.1 26.7 73.1 26.4L76.4 6.5C76.4 6.1 76.8 5.8 77.1 5.8L81.6 5.8C81.8 5.8 82.1 6.1 82 6.4L78.8 26.3C78.7 26.6 78.4 26.9 78 26.9Z"></path>\n    <path fill="#ffffff" d="M36.5 26.9L30.7 26.9C30.4 26.9 30.2 26.8 30.1 26.6L26.3 18.8 26.2 18.8 25 26.4C24.9 26.7 24.7 26.9 24.4 26.9L19.8 26.9C19.5 26.9 19.3 26.7 19.4 26.4L22.6 6.4C22.7 6.1 22.9 5.8 23.2 5.8L31.1 5.8C35.4 5.8 38.4 7.8 37.7 12.3 37.2 15.2 35.1 17.8 31.9 18.3L36.9 26.3C37.1 26.5 36.8 26.9 36.5 26.9ZM26.8 15.3L27.3 15.3C29.2 15.3 31.3 14.9 31.7 12.6 32.1 10.4 30.9 10 28.9 10L28.1 10C27.8 10 27.6 10.2 27.6 10.4L26.8 15.3Z"></path>\n    <path fill="#ffffff" d="M89.9 26.9L85.5 26.9C85.2 26.9 85 26.7 85.1 26.4L87.6 10.5 83.5 10.5C83.2 10.5 83 10.2 83.1 9.9L83.6 6.5C83.7 6.1 84 5.8 84.4 5.8L98.2 5.8C98.4 5.8 98.7 6.1 98.6 6.4L98 9.8C98 10.2 97.7 10.5 97.3 10.5L93.3 10.5 90.7 26.3C90.7 26.6 90.4 26.9 89.9 26.9Z"></path>\n    <path fill="#ffffff" d="M19.6 11.8C19.6 12.2 19.1 12.4 18.8 12.1 17.8 11.1 16.4 10.6 14.9 10.6 11.4 10.6 8.7 13.2 8.1 16.4 7.6 19.7 9.6 22.1 13.1 22.1 14.5 22.1 16.1 21.6 17.3 20.7 17.7 20.5 18.2 20.8 18.1 21.2L17.3 26C17.2 26.3 17 26.5 16.7 26.6 15 27.1 13.7 27.5 12.1 27.5 2.7 27.5 1.2 19.7 1.7 16.4 3 7.1 10.8 5 15.5 5.3 17 5.3 18.4 5.5 19.7 6 20.2 6.2 20.4 6.6 20.3 7.1L19.6 11.8Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -7736,16 +7722,16 @@
         };
     },
     "./src/components/button/templates/component/logos/paypal_blue.svg": function(module, exports) {
-        module.exports = '<svg width="100" height="32" class="logo logo-paypal logo-paypal-blue" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <style>\n        .logo-paypal.logo-paypal-blue path.logo-paypal-primary {\n        fill: #003087;\n        }\n\n        .logo-paypal.logo-paypal-blue path.logo-paypal-secondary {\n        fill: #009cde;\n        }\n\n        .logo-paypal.logo-paypal-blue path.logo-paypal-shadow {\n        fill: #ffffff;\n        }\n    </style>\n\n    <path class="logo-paypal-shadow" d="M 67.894 6.862 L 60.094 6.862 C 59.594 6.862 59.094 7.262 58.994 7.762 L 55.894 27.662 C 55.794 28.062 56.094 28.362 56.494 28.362 L 60.494 28.362 C 60.894 28.362 61.194 28.062 61.194 27.762 L 62.094 22.062 C 62.194 21.562 62.594 21.162 63.194 21.162 L 65.694 21.162 C 70.794 21.162 73.794 18.662 74.594 13.762 C 74.894 11.662 74.594 9.962 73.594 8.762 C 72.394 7.562 70.494 6.862 67.894 6.862 Z M 68.794 14.162 C 68.394 16.962 66.194 16.962 64.194 16.962 L 62.994 16.962 L 63.794 11.762 C 63.794 11.462 64.094 11.262 64.394 11.262 L 64.894 11.262 C 66.294 11.262 67.594 11.262 68.294 12.062 C 68.794 12.462 68.894 13.162 68.794 14.162 Z"></path>\n    <path class="logo-paypal-shadow" d="M 12.394 6.862 L 4.594 6.862 C 4.094 6.862 3.594 7.262 3.494 7.762 L 0.394 27.762 C 0.294 28.162 0.594 28.462 0.994 28.462 L 4.694 28.462 C 5.194 28.462 5.694 28.062 5.794 27.562 L 6.594 22.162 C 6.694 21.662 7.094 21.262 7.694 21.262 L 10.194 21.262 C 15.294 21.262 18.294 18.762 19.094 13.862 C 19.394 11.762 19.094 10.062 18.094 8.862 C 16.994 7.562 14.994 6.862 12.394 6.862 Z M 13.294 14.162 C 12.894 16.962 10.694 16.962 8.694 16.962 L 7.494 16.962 L 8.294 11.762 C 8.294 11.462 8.594 11.262 8.894 11.262 L 9.394 11.262 C 10.794 11.262 12.094 11.262 12.794 12.062 C 13.294 12.462 13.494 13.162 13.294 14.162 Z"></path>\n    <path class="logo-paypal-shadow" d="M 35.594 14.062 L 31.894 14.062 C 31.594 14.062 31.294 14.262 31.294 14.562 L 31.094 15.562 L 30.794 15.162 C 29.994 13.962 28.194 13.562 26.394 13.562 C 22.294 13.562 18.794 16.662 18.094 21.062 C 17.694 23.262 18.194 25.362 19.494 26.762 C 20.594 28.062 22.294 28.662 24.194 28.662 C 27.494 28.662 29.394 26.562 29.394 26.562 L 29.194 27.562 C 29.094 27.962 29.394 28.362 29.794 28.362 L 33.194 28.362 C 33.694 28.362 34.194 27.962 34.294 27.462 L 36.294 14.662 C 36.394 14.462 35.994 14.062 35.594 14.062 Z M 30.494 21.362 C 30.094 23.462 28.494 24.962 26.294 24.962 C 25.194 24.962 24.394 24.662 23.794 23.962 C 23.194 23.262 22.994 22.362 23.194 21.362 C 23.494 19.262 25.294 17.762 27.394 17.762 C 28.494 17.762 29.294 18.162 29.894 18.762 C 30.394 19.362 30.594 20.262 30.494 21.362 Z"></path>\n    <path class="logo-paypal-shadow" d="M 91.094 14.062 L 87.394 14.062 C 87.094 14.062 86.794 14.262 86.794 14.562 L 86.594 15.562 L 86.294 15.162 C 85.494 13.962 83.694 13.562 81.894 13.562 C 77.794 13.562 74.294 16.662 73.594 21.062 C 73.194 23.262 73.694 25.362 74.994 26.762 C 76.094 28.062 77.794 28.662 79.694 28.662 C 82.994 28.662 84.894 26.562 84.894 26.562 L 84.694 27.562 C 84.594 27.962 84.894 28.362 85.294 28.362 L 88.694 28.362 C 89.194 28.362 89.694 27.962 89.794 27.462 L 91.794 14.662 C 91.794 14.462 91.494 14.062 91.094 14.062 Z M 85.894 21.362 C 85.494 23.462 83.894 24.962 81.694 24.962 C 80.594 24.962 79.794 24.662 79.194 23.962 C 78.594 23.262 78.394 22.362 78.594 21.362 C 78.894 19.262 80.694 17.762 82.794 17.762 C 83.894 17.762 84.694 18.162 85.294 18.762 C 85.894 19.362 86.094 20.262 85.894 21.362 Z"></path>\n    <path class="logo-paypal-shadow" d="M 55.494 14.062 L 51.794 14.062 C 51.394 14.062 51.094 14.262 50.894 14.562 L 45.694 22.162 L 43.494 14.862 C 43.394 14.362 42.894 14.062 42.494 14.062 L 38.794 14.062 C 38.394 14.062 37.994 14.462 38.194 14.962 L 42.294 27.062 L 38.394 32.462 C 38.094 32.862 38.394 33.462 38.894 33.462 L 42.594 33.462 C 42.994 33.462 43.294 33.262 43.494 32.962 L 55.994 14.962 C 56.294 14.662 55.994 14.062 55.494 14.062 Z"></path>\n    <path class="logo-paypal-shadow" d="M 95.494 7.462 L 92.294 27.762 C 92.194 28.162 92.494 28.462 92.894 28.462 L 96.094 28.462 C 96.594 28.462 97.094 28.062 97.194 27.562 L 100.394 7.662 C 100.494 7.262 100.194 6.962 99.794 6.962 L 96.194 6.962 C 95.794 6.862 95.594 7.062 95.494 7.462 Z"></path>\n    <path class="logo-paypal-primary" d="M 12 4.917 L 4.2 4.917 C 3.7 4.917 3.2 5.317 3.1 5.817 L 0 25.817 C -0.1 26.217 0.2 26.517 0.6 26.517 L 4.3 26.517 C 4.8 26.517 5.3 26.117 5.4 25.617 L 6.2 20.217 C 6.3 19.717 6.7 19.317 7.3 19.317 L 9.8 19.317 C 14.9 19.317 17.9 16.817 18.7 11.917 C 19 9.817 18.7 8.117 17.7 6.917 C 16.6 5.617 14.6 4.917 12 4.917 Z M 12.9 12.217 C 12.5 15.017 10.3 15.017 8.3 15.017 L 7.1 15.017 L 7.9 9.817 C 7.9 9.517 8.2 9.317 8.5 9.317 L 9 9.317 C 10.4 9.317 11.7 9.317 12.4 10.117 C 12.9 10.517 13.1 11.217 12.9 12.217 Z"></path>\n    <path class="logo-paypal-primary" d="M 35.2 12.117 L 31.5 12.117 C 31.2 12.117 30.9 12.317 30.9 12.617 L 30.7 13.617 L 30.4 13.217 C 29.6 12.017 27.8 11.617 26 11.617 C 21.9 11.617 18.4 14.717 17.7 19.117 C 17.3 21.317 17.8 23.417 19.1 24.817 C 20.2 26.117 21.9 26.717 23.8 26.717 C 27.1 26.717 29 24.617 29 24.617 L 28.8 25.617 C 28.7 26.017 29 26.417 29.4 26.417 L 32.8 26.417 C 33.3 26.417 33.8 26.017 33.9 25.517 L 35.9 12.717 C 36 12.517 35.6 12.117 35.2 12.117 Z M 30.1 19.317 C 29.7 21.417 28.1 22.917 25.9 22.917 C 24.8 22.917 24 22.617 23.4 21.917 C 22.8 21.217 22.6 20.317 22.8 19.317 C 23.1 17.217 24.9 15.717 27 15.717 C 28.1 15.717 28.9 16.117 29.5 16.717 C 30 17.417 30.2 18.317 30.1 19.317 Z"></path>\n    <path class="logo-paypal-primary" d="M 55.1 12.117 L 51.4 12.117 C 51 12.117 50.7 12.317 50.5 12.617 L 45.3 20.217 L 43.1 12.917 C 43 12.417 42.5 12.117 42.1 12.117 L 38.4 12.117 C 38 12.117 37.6 12.517 37.8 13.017 L 41.9 25.117 L 38 30.517 C 37.7 30.917 38 31.517 38.5 31.517 L 42.2 31.517 C 42.6 31.517 42.9 31.317 43.1 31.017 L 55.6 13.017 C 55.9 12.717 55.6 12.117 55.1 12.117 Z"></path>\n    <path class="logo-paypal-secondary" d="M 67.5 4.917 L 59.7 4.917 C 59.2 4.917 58.7 5.317 58.6 5.817 L 55.5 25.717 C 55.4 26.117 55.7 26.417 56.1 26.417 L 60.1 26.417 C 60.5 26.417 60.8 26.117 60.8 25.817 L 61.7 20.117 C 61.8 19.617 62.2 19.217 62.8 19.217 L 65.3 19.217 C 70.4 19.217 73.4 16.717 74.2 11.817 C 74.5 9.717 74.2 8.017 73.2 6.817 C 72 5.617 70.1 4.917 67.5 4.917 Z M 68.4 12.217 C 68 15.017 65.8 15.017 63.8 15.017 L 62.6 15.017 L 63.4 9.817 C 63.4 9.517 63.7 9.317 64 9.317 L 64.5 9.317 C 65.9 9.317 67.2 9.317 67.9 10.117 C 68.4 10.517 68.5 11.217 68.4 12.217 Z"></path>\n    <path class="logo-paypal-secondary" d="M 90.7 12.117 L 87 12.117 C 86.7 12.117 86.4 12.317 86.4 12.617 L 86.2 13.617 L 85.9 13.217 C 85.1 12.017 83.3 11.617 81.5 11.617 C 77.4 11.617 73.9 14.717 73.2 19.117 C 72.8 21.317 73.3 23.417 74.6 24.817 C 75.7 26.117 77.4 26.717 79.3 26.717 C 82.6 26.717 84.5 24.617 84.5 24.617 L 84.3 25.617 C 84.2 26.017 84.5 26.417 84.9 26.417 L 88.3 26.417 C 88.8 26.417 89.3 26.017 89.4 25.517 L 91.4 12.717 C 91.4 12.517 91.1 12.117 90.7 12.117 Z M 85.5 19.317 C 85.1 21.417 83.5 22.917 81.3 22.917 C 80.2 22.917 79.4 22.617 78.8 21.917 C 78.2 21.217 78 20.317 78.2 19.317 C 78.5 17.217 80.3 15.717 82.4 15.717 C 83.5 15.717 84.3 16.117 84.9 16.717 C 85.5 17.417 85.7 18.317 85.5 19.317 Z"></path>\n    <path class="logo-paypal-secondary" d="M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"></path>\n</svg>\n';
+        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 67.894 6.862 L 60.094 6.862 C 59.594 6.862 59.094 7.262 58.994 7.762 L 55.894 27.662 C 55.794 28.062 56.094 28.362 56.494 28.362 L 60.494 28.362 C 60.894 28.362 61.194 28.062 61.194 27.762 L 62.094 22.062 C 62.194 21.562 62.594 21.162 63.194 21.162 L 65.694 21.162 C 70.794 21.162 73.794 18.662 74.594 13.762 C 74.894 11.662 74.594 9.962 73.594 8.762 C 72.394 7.562 70.494 6.862 67.894 6.862 Z M 68.794 14.162 C 68.394 16.962 66.194 16.962 64.194 16.962 L 62.994 16.962 L 63.794 11.762 C 63.794 11.462 64.094 11.262 64.394 11.262 L 64.894 11.262 C 66.294 11.262 67.594 11.262 68.294 12.062 C 68.794 12.462 68.894 13.162 68.794 14.162 Z"></path>\n    <path fill="#ffffff" d="M 12.394 6.862 L 4.594 6.862 C 4.094 6.862 3.594 7.262 3.494 7.762 L 0.394 27.762 C 0.294 28.162 0.594 28.462 0.994 28.462 L 4.694 28.462 C 5.194 28.462 5.694 28.062 5.794 27.562 L 6.594 22.162 C 6.694 21.662 7.094 21.262 7.694 21.262 L 10.194 21.262 C 15.294 21.262 18.294 18.762 19.094 13.862 C 19.394 11.762 19.094 10.062 18.094 8.862 C 16.994 7.562 14.994 6.862 12.394 6.862 Z M 13.294 14.162 C 12.894 16.962 10.694 16.962 8.694 16.962 L 7.494 16.962 L 8.294 11.762 C 8.294 11.462 8.594 11.262 8.894 11.262 L 9.394 11.262 C 10.794 11.262 12.094 11.262 12.794 12.062 C 13.294 12.462 13.494 13.162 13.294 14.162 Z"></path>\n    <path fill="#ffffff" d="M 35.594 14.062 L 31.894 14.062 C 31.594 14.062 31.294 14.262 31.294 14.562 L 31.094 15.562 L 30.794 15.162 C 29.994 13.962 28.194 13.562 26.394 13.562 C 22.294 13.562 18.794 16.662 18.094 21.062 C 17.694 23.262 18.194 25.362 19.494 26.762 C 20.594 28.062 22.294 28.662 24.194 28.662 C 27.494 28.662 29.394 26.562 29.394 26.562 L 29.194 27.562 C 29.094 27.962 29.394 28.362 29.794 28.362 L 33.194 28.362 C 33.694 28.362 34.194 27.962 34.294 27.462 L 36.294 14.662 C 36.394 14.462 35.994 14.062 35.594 14.062 Z M 30.494 21.362 C 30.094 23.462 28.494 24.962 26.294 24.962 C 25.194 24.962 24.394 24.662 23.794 23.962 C 23.194 23.262 22.994 22.362 23.194 21.362 C 23.494 19.262 25.294 17.762 27.394 17.762 C 28.494 17.762 29.294 18.162 29.894 18.762 C 30.394 19.362 30.594 20.262 30.494 21.362 Z"></path>\n    <path fill="#ffffff" d="M 91.094 14.062 L 87.394 14.062 C 87.094 14.062 86.794 14.262 86.794 14.562 L 86.594 15.562 L 86.294 15.162 C 85.494 13.962 83.694 13.562 81.894 13.562 C 77.794 13.562 74.294 16.662 73.594 21.062 C 73.194 23.262 73.694 25.362 74.994 26.762 C 76.094 28.062 77.794 28.662 79.694 28.662 C 82.994 28.662 84.894 26.562 84.894 26.562 L 84.694 27.562 C 84.594 27.962 84.894 28.362 85.294 28.362 L 88.694 28.362 C 89.194 28.362 89.694 27.962 89.794 27.462 L 91.794 14.662 C 91.794 14.462 91.494 14.062 91.094 14.062 Z M 85.894 21.362 C 85.494 23.462 83.894 24.962 81.694 24.962 C 80.594 24.962 79.794 24.662 79.194 23.962 C 78.594 23.262 78.394 22.362 78.594 21.362 C 78.894 19.262 80.694 17.762 82.794 17.762 C 83.894 17.762 84.694 18.162 85.294 18.762 C 85.894 19.362 86.094 20.262 85.894 21.362 Z"></path>\n    <path fill="#ffffff" d="M 55.494 14.062 L 51.794 14.062 C 51.394 14.062 51.094 14.262 50.894 14.562 L 45.694 22.162 L 43.494 14.862 C 43.394 14.362 42.894 14.062 42.494 14.062 L 38.794 14.062 C 38.394 14.062 37.994 14.462 38.194 14.962 L 42.294 27.062 L 38.394 32.462 C 38.094 32.862 38.394 33.462 38.894 33.462 L 42.594 33.462 C 42.994 33.462 43.294 33.262 43.494 32.962 L 55.994 14.962 C 56.294 14.662 55.994 14.062 55.494 14.062 Z"></path>\n    <path fill="#ffffff" d="M 95.494 7.462 L 92.294 27.762 C 92.194 28.162 92.494 28.462 92.894 28.462 L 96.094 28.462 C 96.594 28.462 97.094 28.062 97.194 27.562 L 100.394 7.662 C 100.494 7.262 100.194 6.962 99.794 6.962 L 96.194 6.962 C 95.794 6.862 95.594 7.062 95.494 7.462 Z"></path>\n    <path fill="#003087" d="M 12 4.917 L 4.2 4.917 C 3.7 4.917 3.2 5.317 3.1 5.817 L 0 25.817 C -0.1 26.217 0.2 26.517 0.6 26.517 L 4.3 26.517 C 4.8 26.517 5.3 26.117 5.4 25.617 L 6.2 20.217 C 6.3 19.717 6.7 19.317 7.3 19.317 L 9.8 19.317 C 14.9 19.317 17.9 16.817 18.7 11.917 C 19 9.817 18.7 8.117 17.7 6.917 C 16.6 5.617 14.6 4.917 12 4.917 Z M 12.9 12.217 C 12.5 15.017 10.3 15.017 8.3 15.017 L 7.1 15.017 L 7.9 9.817 C 7.9 9.517 8.2 9.317 8.5 9.317 L 9 9.317 C 10.4 9.317 11.7 9.317 12.4 10.117 C 12.9 10.517 13.1 11.217 12.9 12.217 Z"></path>\n    <path fill="#003087" d="M 35.2 12.117 L 31.5 12.117 C 31.2 12.117 30.9 12.317 30.9 12.617 L 30.7 13.617 L 30.4 13.217 C 29.6 12.017 27.8 11.617 26 11.617 C 21.9 11.617 18.4 14.717 17.7 19.117 C 17.3 21.317 17.8 23.417 19.1 24.817 C 20.2 26.117 21.9 26.717 23.8 26.717 C 27.1 26.717 29 24.617 29 24.617 L 28.8 25.617 C 28.7 26.017 29 26.417 29.4 26.417 L 32.8 26.417 C 33.3 26.417 33.8 26.017 33.9 25.517 L 35.9 12.717 C 36 12.517 35.6 12.117 35.2 12.117 Z M 30.1 19.317 C 29.7 21.417 28.1 22.917 25.9 22.917 C 24.8 22.917 24 22.617 23.4 21.917 C 22.8 21.217 22.6 20.317 22.8 19.317 C 23.1 17.217 24.9 15.717 27 15.717 C 28.1 15.717 28.9 16.117 29.5 16.717 C 30 17.417 30.2 18.317 30.1 19.317 Z"></path>\n    <path fill="#003087" d="M 55.1 12.117 L 51.4 12.117 C 51 12.117 50.7 12.317 50.5 12.617 L 45.3 20.217 L 43.1 12.917 C 43 12.417 42.5 12.117 42.1 12.117 L 38.4 12.117 C 38 12.117 37.6 12.517 37.8 13.017 L 41.9 25.117 L 38 30.517 C 37.7 30.917 38 31.517 38.5 31.517 L 42.2 31.517 C 42.6 31.517 42.9 31.317 43.1 31.017 L 55.6 13.017 C 55.9 12.717 55.6 12.117 55.1 12.117 Z"></path>\n    <path fill="#009cde" d="M 67.5 4.917 L 59.7 4.917 C 59.2 4.917 58.7 5.317 58.6 5.817 L 55.5 25.717 C 55.4 26.117 55.7 26.417 56.1 26.417 L 60.1 26.417 C 60.5 26.417 60.8 26.117 60.8 25.817 L 61.7 20.117 C 61.8 19.617 62.2 19.217 62.8 19.217 L 65.3 19.217 C 70.4 19.217 73.4 16.717 74.2 11.817 C 74.5 9.717 74.2 8.017 73.2 6.817 C 72 5.617 70.1 4.917 67.5 4.917 Z M 68.4 12.217 C 68 15.017 65.8 15.017 63.8 15.017 L 62.6 15.017 L 63.4 9.817 C 63.4 9.517 63.7 9.317 64 9.317 L 64.5 9.317 C 65.9 9.317 67.2 9.317 67.9 10.117 C 68.4 10.517 68.5 11.217 68.4 12.217 Z"></path>\n    <path fill="#009cde" d="M 90.7 12.117 L 87 12.117 C 86.7 12.117 86.4 12.317 86.4 12.617 L 86.2 13.617 L 85.9 13.217 C 85.1 12.017 83.3 11.617 81.5 11.617 C 77.4 11.617 73.9 14.717 73.2 19.117 C 72.8 21.317 73.3 23.417 74.6 24.817 C 75.7 26.117 77.4 26.717 79.3 26.717 C 82.6 26.717 84.5 24.617 84.5 24.617 L 84.3 25.617 C 84.2 26.017 84.5 26.417 84.9 26.417 L 88.3 26.417 C 88.8 26.417 89.3 26.017 89.4 25.517 L 91.4 12.717 C 91.4 12.517 91.1 12.117 90.7 12.117 Z M 85.5 19.317 C 85.1 21.417 83.5 22.917 81.3 22.917 C 80.2 22.917 79.4 22.617 78.8 21.917 C 78.2 21.217 78 20.317 78.2 19.317 C 78.5 17.217 80.3 15.717 82.4 15.717 C 83.5 15.717 84.3 16.117 84.9 16.717 C 85.5 17.417 85.7 18.317 85.5 19.317 Z"></path>\n    <path fill="#009cde" d="M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/paypal_white.svg": function(module, exports) {
-        module.exports = '<svg width="100" height="32" class="logo logo-paypal logo-paypal-white" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <style>\n        .logo-paypal.logo-paypal-white path.logo-paypal-primary {\n        fill: #ffffff;\n        }\n\n        .logo-paypal.logo-paypal-white path.logo-paypal-secondary {\n        fill: #ffffff;\n        }\n    </style>\n\n    <path class="logo-paypal-primary" d="M 12 5.315 L 4.2 5.315 C 3.7 5.315 3.2 5.715 3.1 6.215 L 0 26.215 C -0.1 26.615 0.2 26.915 0.6 26.915 L 4.3 26.915 C 4.8 26.915 5.3 26.515 5.4 26.015 L 6.2 20.615 C 6.3 20.115 6.7 19.715 7.3 19.715 L 9.8 19.715 C 14.9 19.715 17.9 17.215 18.7 12.315 C 19 10.215 18.7 8.515 17.7 7.315 C 16.6 6.015 14.6 5.315 12 5.315 Z M 12.9 12.615 C 12.5 15.415 10.3 15.415 8.3 15.415 L 7.1 15.415 L 7.9 10.215 C 7.9 9.915 8.2 9.715 8.5 9.715 L 9 9.715 C 10.4 9.715 11.7 9.715 12.4 10.515 C 12.9 10.915 13.1 11.615 12.9 12.615 Z"></path>\n    <path class="logo-paypal-primary" d="M 35.2 12.515 L 31.5 12.515 C 31.2 12.515 30.9 12.715 30.9 13.015 L 30.7 14.015 L 30.4 13.615 C 29.6 12.415 27.8 12.015 26 12.015 C 21.9 12.015 18.4 15.115 17.7 19.515 C 17.3 21.715 17.8 23.815 19.1 25.215 C 20.2 26.515 21.9 27.115 23.8 27.115 C 27.1 27.115 29 25.015 29 25.015 L 28.8 26.015 C 28.7 26.415 29 26.815 29.4 26.815 L 32.8 26.815 C 33.3 26.815 33.8 26.415 33.9 25.915 L 35.9 13.115 C 36 12.915 35.6 12.515 35.2 12.515 Z M 30.1 19.815 C 29.7 21.915 28.1 23.415 25.9 23.415 C 24.8 23.415 24 23.115 23.4 22.415 C 22.8 21.715 22.6 20.815 22.8 19.815 C 23.1 17.715 24.9 16.215 27 16.215 C 28.1 16.215 28.9 16.615 29.5 17.215 C 30 17.815 30.2 18.715 30.1 19.815 Z"></path>\n    <path class="logo-paypal-primary" d="M 55.1 12.515 L 51.4 12.515 C 51 12.515 50.7 12.715 50.5 13.015 L 45.3 20.615 L 43.1 13.315 C 43 12.815 42.5 12.515 42.1 12.515 L 38.4 12.515 C 38 12.515 37.6 12.915 37.8 13.415 L 41.9 25.515 L 38 30.915 C 37.7 31.315 38 31.915 38.5 31.915 L 42.2 31.915 C 42.6 31.915 42.9 31.715 43.1 31.415 L 55.6 13.415 C 55.9 13.115 55.6 12.515 55.1 12.515 Z"></path>\n    <path class="logo-paypal-secondary" d="M 67.5 5.315 L 59.7 5.315 C 59.2 5.315 58.7 5.715 58.6 6.215 L 55.5 26.115 C 55.4 26.515 55.7 26.815 56.1 26.815 L 60.1 26.815 C 60.5 26.815 60.8 26.515 60.8 26.215 L 61.7 20.515 C 61.8 20.015 62.2 19.615 62.8 19.615 L 65.3 19.615 C 70.4 19.615 73.4 17.115 74.2 12.215 C 74.5 10.115 74.2 8.415 73.2 7.215 C 72 6.015 70.1 5.315 67.5 5.315 Z M 68.4 12.615 C 68 15.415 65.8 15.415 63.8 15.415 L 62.6 15.415 L 63.4 10.215 C 63.4 9.915 63.7 9.715 64 9.715 L 64.5 9.715 C 65.9 9.715 67.2 9.715 67.9 10.515 C 68.4 10.915 68.5 11.615 68.4 12.615 Z"></path>\n    <path class="logo-paypal-secondary" d="M 90.7 12.515 L 87 12.515 C 86.7 12.515 86.4 12.715 86.4 13.015 L 86.2 14.015 L 85.9 13.615 C 85.1 12.415 83.3 12.015 81.5 12.015 C 77.4 12.015 73.9 15.115 73.2 19.515 C 72.8 21.715 73.3 23.815 74.6 25.215 C 75.7 26.515 77.4 27.115 79.3 27.115 C 82.6 27.115 84.5 25.015 84.5 25.015 L 84.3 26.015 C 84.2 26.415 84.5 26.815 84.9 26.815 L 88.3 26.815 C 88.8 26.815 89.3 26.415 89.4 25.915 L 91.4 13.115 C 91.4 12.915 91.1 12.515 90.7 12.515 Z M 85.5 19.815 C 85.1 21.915 83.5 23.415 81.3 23.415 C 80.2 23.415 79.4 23.115 78.8 22.415 C 78.2 21.715 78 20.815 78.2 19.815 C 78.5 17.715 80.3 16.215 82.4 16.215 C 83.5 16.215 84.3 16.615 84.9 17.215 C 85.5 17.815 85.7 18.715 85.5 19.815 Z"></path>\n    <path class="logo-paypal-secondary" d="M 95.1 5.915 L 91.9 26.215 C 91.8 26.615 92.1 26.915 92.5 26.915 L 95.7 26.915 C 96.2 26.915 96.7 26.515 96.8 26.015 L 100 6.115 C 100.1 5.715 99.8 5.415 99.4 5.415 L 95.8 5.415 C 95.4 5.315 95.2 5.515 95.1 5.915 Z"></path>\n</svg>\n';
+        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 12 5.315 L 4.2 5.315 C 3.7 5.315 3.2 5.715 3.1 6.215 L 0 26.215 C -0.1 26.615 0.2 26.915 0.6 26.915 L 4.3 26.915 C 4.8 26.915 5.3 26.515 5.4 26.015 L 6.2 20.615 C 6.3 20.115 6.7 19.715 7.3 19.715 L 9.8 19.715 C 14.9 19.715 17.9 17.215 18.7 12.315 C 19 10.215 18.7 8.515 17.7 7.315 C 16.6 6.015 14.6 5.315 12 5.315 Z M 12.9 12.615 C 12.5 15.415 10.3 15.415 8.3 15.415 L 7.1 15.415 L 7.9 10.215 C 7.9 9.915 8.2 9.715 8.5 9.715 L 9 9.715 C 10.4 9.715 11.7 9.715 12.4 10.515 C 12.9 10.915 13.1 11.615 12.9 12.615 Z"></path>\n    <path fill="#ffffff" d="M 35.2 12.515 L 31.5 12.515 C 31.2 12.515 30.9 12.715 30.9 13.015 L 30.7 14.015 L 30.4 13.615 C 29.6 12.415 27.8 12.015 26 12.015 C 21.9 12.015 18.4 15.115 17.7 19.515 C 17.3 21.715 17.8 23.815 19.1 25.215 C 20.2 26.515 21.9 27.115 23.8 27.115 C 27.1 27.115 29 25.015 29 25.015 L 28.8 26.015 C 28.7 26.415 29 26.815 29.4 26.815 L 32.8 26.815 C 33.3 26.815 33.8 26.415 33.9 25.915 L 35.9 13.115 C 36 12.915 35.6 12.515 35.2 12.515 Z M 30.1 19.815 C 29.7 21.915 28.1 23.415 25.9 23.415 C 24.8 23.415 24 23.115 23.4 22.415 C 22.8 21.715 22.6 20.815 22.8 19.815 C 23.1 17.715 24.9 16.215 27 16.215 C 28.1 16.215 28.9 16.615 29.5 17.215 C 30 17.815 30.2 18.715 30.1 19.815 Z"></path>\n    <path fill="#ffffff" d="M 55.1 12.515 L 51.4 12.515 C 51 12.515 50.7 12.715 50.5 13.015 L 45.3 20.615 L 43.1 13.315 C 43 12.815 42.5 12.515 42.1 12.515 L 38.4 12.515 C 38 12.515 37.6 12.915 37.8 13.415 L 41.9 25.515 L 38 30.915 C 37.7 31.315 38 31.915 38.5 31.915 L 42.2 31.915 C 42.6 31.915 42.9 31.715 43.1 31.415 L 55.6 13.415 C 55.9 13.115 55.6 12.515 55.1 12.515 Z"></path>\n    <path fill="#ffffff" d="M 67.5 5.315 L 59.7 5.315 C 59.2 5.315 58.7 5.715 58.6 6.215 L 55.5 26.115 C 55.4 26.515 55.7 26.815 56.1 26.815 L 60.1 26.815 C 60.5 26.815 60.8 26.515 60.8 26.215 L 61.7 20.515 C 61.8 20.015 62.2 19.615 62.8 19.615 L 65.3 19.615 C 70.4 19.615 73.4 17.115 74.2 12.215 C 74.5 10.115 74.2 8.415 73.2 7.215 C 72 6.015 70.1 5.315 67.5 5.315 Z M 68.4 12.615 C 68 15.415 65.8 15.415 63.8 15.415 L 62.6 15.415 L 63.4 10.215 C 63.4 9.915 63.7 9.715 64 9.715 L 64.5 9.715 C 65.9 9.715 67.2 9.715 67.9 10.515 C 68.4 10.915 68.5 11.615 68.4 12.615 Z"></path>\n    <path fill="#ffffff" d="M 90.7 12.515 L 87 12.515 C 86.7 12.515 86.4 12.715 86.4 13.015 L 86.2 14.015 L 85.9 13.615 C 85.1 12.415 83.3 12.015 81.5 12.015 C 77.4 12.015 73.9 15.115 73.2 19.515 C 72.8 21.715 73.3 23.815 74.6 25.215 C 75.7 26.515 77.4 27.115 79.3 27.115 C 82.6 27.115 84.5 25.015 84.5 25.015 L 84.3 26.015 C 84.2 26.415 84.5 26.815 84.9 26.815 L 88.3 26.815 C 88.8 26.815 89.3 26.415 89.4 25.915 L 91.4 13.115 C 91.4 12.915 91.1 12.515 90.7 12.515 Z M 85.5 19.815 C 85.1 21.915 83.5 23.415 81.3 23.415 C 80.2 23.415 79.4 23.115 78.8 22.415 C 78.2 21.715 78 20.815 78.2 19.815 C 78.5 17.715 80.3 16.215 82.4 16.215 C 83.5 16.215 84.3 16.615 84.9 17.215 C 85.5 17.815 85.7 18.715 85.5 19.815 Z"></path>\n    <path fill="#ffffff" d="M 95.1 5.915 L 91.9 26.215 C 91.8 26.615 92.1 26.915 92.5 26.915 L 95.7 26.915 C 96.2 26.915 96.7 26.515 96.8 26.015 L 100 6.115 C 100.1 5.715 99.8 5.415 99.4 5.415 L 95.8 5.415 C 95.4 5.315 95.2 5.515 95.1 5.915 Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/pp_blue.svg": function(module, exports) {
-        module.exports = '<svg width="24" height="32" class="logo logo-pp logo-pp-blue" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n  <style>\n        .logo-pp.logo-pp-blue path.logo-pp-primary {\n            fill: #003087;\n        }\n\n        .logo-pp.logo-pp-blue path.logo-pp-secondary {\n            fill: #009cde;\n        }\n\n        .logo-pp.logo-pp-blue path.logo-pp-overlap {\n            fill: #012169;\n        }\n\n        .logo-pp.logo-pp-blue path.logo-pp-shadow {\n            fill: #ffffff;\n        }\n    </style>\n\n    <path class="logo-pp-shadow" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 6.675 30.9 C 6.581 31.2 6.862 31.6 7.236 31.6 L 11.356 31.6 C 11.825 31.6 12.292 31.2 12.386 30.7 L 12.386 30.5 L 13.228 25.3 L 13.228 25 C 13.322 24.5 13.79 24.1 14.258 24.1 L 14.821 24.1 C 18.845 24.1 21.935 22.4 22.871 17.5 C 23.339 15.4 23.153 13.7 22.029 12.4 C 21.748 12 21.279 11.7 20.905 11.5 L 20.905 11.5"></path>\n    <path class="logo-pp-shadow" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 8.173 20.6 C 8.267 20 8.735 19.6 9.296 19.6 L 11.636 19.6 C 16.224 19.6 19.782 17.7 20.905 12 C 20.812 11.8 20.905 11.6 20.905 11.5"></path>\n    <path class="logo-pp-shadow" d="M 9.485 11.5 C 9.577 11.1 9.765 10.8 10.046 10.7 C 10.232 10.6 10.326 10.6 10.513 10.6 L 16.692 10.6 C 17.442 10.6 18.189 10.6 18.753 10.7 C 18.939 10.8 19.127 10.8 19.314 10.8 C 19.501 10.9 19.688 10.9 19.782 11 C 19.875 11 19.968 11.1 20.063 11.1 C 20.343 11.2 20.624 11.3 20.905 11.4 C 21.185 9.3 20.905 7.9 19.782 6.6 C 18.658 5.2 16.506 4.5 13.79 4.5 L 5.739 4.5 C 5.271 4.5 4.71 5 4.615 5.5 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 9.485 11.5 Z"></path>\n    <path class="logo-pp-secondary" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 6.675 28.9 C 6.581 29.3 6.862 29.6 7.236 29.6 L 11.356 29.6 C 11.825 29.6 12.292 29.3 12.386 28.8 L 12.386 28.5 L 13.228 23.3 L 13.228 23.1 C 13.322 22.6 13.79 22.2 14.258 22.2 L 14.821 22.2 C 18.845 22.2 21.935 20.5 22.871 15.5 C 23.339 13.4 23.153 11.7 22.029 10.5 C 21.748 10.1 21.279 9.8 20.905 9.5 L 20.905 9.5"></path>\n    <path class="logo-pp-overlap" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 8.173 18.7 C 8.267 18.1 8.735 17.7 9.296 17.7 L 11.636 17.7 C 16.224 17.7 19.782 15.7 20.905 10.1 C 20.812 9.8 20.905 9.7 20.905 9.5"></path>\n    <path class="logo-pp-primary" d="M 9.485 9.5 C 9.577 9.2 9.765 8.9 10.046 8.7 C 10.232 8.7 10.326 8.6 10.513 8.6 L 16.692 8.6 C 17.442 8.6 18.189 8.7 18.753 8.8 C 18.939 8.8 19.127 8.8 19.314 8.9 C 19.501 9 19.688 9 19.782 9.1 C 19.875 9.1 19.968 9.1 20.063 9.1 C 20.343 9.2 20.624 9.4 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.6 C 18.658 3.2 16.506 2.6 13.79 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 9.485 9.5 Z"></path>\n</svg>\n';
+        module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 6.675 30.9 C 6.581 31.2 6.862 31.6 7.236 31.6 L 11.356 31.6 C 11.825 31.6 12.292 31.2 12.386 30.7 L 12.386 30.5 L 13.228 25.3 L 13.228 25 C 13.322 24.5 13.79 24.1 14.258 24.1 L 14.821 24.1 C 18.845 24.1 21.935 22.4 22.871 17.5 C 23.339 15.4 23.153 13.7 22.029 12.4 C 21.748 12 21.279 11.7 20.905 11.5 L 20.905 11.5"></path>\n    <path fill="#ffffff" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 8.173 20.6 C 8.267 20 8.735 19.6 9.296 19.6 L 11.636 19.6 C 16.224 19.6 19.782 17.7 20.905 12 C 20.812 11.8 20.905 11.6 20.905 11.5"></path>\n    <path fill="#ffffff" d="M 9.485 11.5 C 9.577 11.1 9.765 10.8 10.046 10.7 C 10.232 10.6 10.326 10.6 10.513 10.6 L 16.692 10.6 C 17.442 10.6 18.189 10.6 18.753 10.7 C 18.939 10.8 19.127 10.8 19.314 10.8 C 19.501 10.9 19.688 10.9 19.782 11 C 19.875 11 19.968 11.1 20.063 11.1 C 20.343 11.2 20.624 11.3 20.905 11.4 C 21.185 9.3 20.905 7.9 19.782 6.6 C 18.658 5.2 16.506 4.5 13.79 4.5 L 5.739 4.5 C 5.271 4.5 4.71 5 4.615 5.5 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 9.485 11.5 Z"></path>\n    <path fill="#009cde" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 6.675 28.9 C 6.581 29.3 6.862 29.6 7.236 29.6 L 11.356 29.6 C 11.825 29.6 12.292 29.3 12.386 28.8 L 12.386 28.5 L 13.228 23.3 L 13.228 23.1 C 13.322 22.6 13.79 22.2 14.258 22.2 L 14.821 22.2 C 18.845 22.2 21.935 20.5 22.871 15.5 C 23.339 13.4 23.153 11.7 22.029 10.5 C 21.748 10.1 21.279 9.8 20.905 9.5 L 20.905 9.5"></path>\n    <path fill="#012169" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 8.173 18.7 C 8.267 18.1 8.735 17.7 9.296 17.7 L 11.636 17.7 C 16.224 17.7 19.782 15.7 20.905 10.1 C 20.812 9.8 20.905 9.7 20.905 9.5"></path>\n    <path fill="#003087" d="M 9.485 9.5 C 9.577 9.2 9.765 8.9 10.046 8.7 C 10.232 8.7 10.326 8.6 10.513 8.6 L 16.692 8.6 C 17.442 8.6 18.189 8.7 18.753 8.8 C 18.939 8.8 19.127 8.8 19.314 8.9 C 19.501 9 19.688 9 19.782 9.1 C 19.875 9.1 19.968 9.1 20.063 9.1 C 20.343 9.2 20.624 9.4 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.6 C 18.658 3.2 16.506 2.6 13.79 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 9.485 9.5 Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/pp_white.svg": function(module, exports) {
-        module.exports = '<svg width="24" height="32" class="logo logo-pp logo-pp-white" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <style>\n        .logo-pp.logo-pp-white path.logo-pp-primary {\n            fill: #ffffff;\n        }\n\n        .logo-pp.logo-pp-white path.logo-pp-secondary {\n            fill: #ffffff;\n            opacity: 0.7;\n        }\n\n        .logo-pp.logo-pp-white path.logo-pp-shadow {\n            fill: #231f20;\n        }\n    </style>\n\n    <path class="logo-pp-secondary" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path class="logo-pp-secondary" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path class="logo-pp-primary" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path class="logo-pp-shadow" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path class="logo-pp-shadow" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path class="logo-pp-shadow" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
+        module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
     },
     "./src/components/button/templates/component/script.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -7759,7 +7745,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return componentStyle;
         });
-        var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 79px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 21px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n\n    /* Tiny */\n\n    @media only screen and (min-width : 80px) and (min-height: 22px) {\n\n        .paypal-button {\n            max-width: 100px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 18px;\n            max-height: 18px;\n            border-radius: 9px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 15px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 14px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            z-index: -1;\n            border-radius: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 3px;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 100px) and (min-height: 42px) {\n\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-pay {\n        min-width: 148px;\n        min-height: 42px;\n    }\n';
+        var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 79px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 21px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 100px) {\n        body {\n            height: 42px;\n        }\n    }\n\n    @media only screen and (min-width : 100px) and (min-height: 42px) {\n\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n        body {\n            height: 48px;\n        }\n    }\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n        body {\n            height: 60px;\n        }\n    }\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-pay {\n        min-width: 148px;\n        min-height: 42px;\n    }\n';
     },
     "./src/components/button/templates/component/template.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -7834,9 +7820,25 @@
     },
     "./src/components/button/templates/container/template.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        function getInitialHeight(width) {
+            if (width) return width < 200 ? "42px" : width < 300 ? "48px" : "60px";
+        }
         function containerTemplate(_ref) {
-            var props = _ref.props, CLASS = _ref.CLASS;
-            return '\n\n        <style>\n            .paypal-button-parent {\n                font-size: 0;\n                display: inline-block;\n                max-width: 500px;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-checkout {\n                min-width: 80px;\n            }\n\n            .paypal-button-parent.paypal-button-parent-label-credit,\n            .paypal-button-parent.paypal-button-parent-label-buynow,\n            .paypal-button-parent.paypal-button-parent-label-pay {\n                min-width: 148px;\n            }\n            \n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + ((props.style || {}).label || "checkout") + " " + CLASS.ELEMENT + '"></div>\n\n    ';
+            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, dimensions = _ref.dimensions, style = props.style || {}, label = style.label || "checkout", size = style.size || "small", initialHeight = getInitialHeight(dimensions.width), sizes = {
+                small: {
+                    width: "148px",
+                    height: "42px"
+                },
+                medium: {
+                    width: "230px",
+                    height: "48px"
+                },
+                large: {
+                    width: "380px",
+                    height: "60px"
+                }
+            };
+            return "\n\n        <style>\n            #" + id + " {\n                min-width: " + sizes.small.width + ";\n                max-width: 500px;\n                font-size: 0;\n            }\n\n            #" + id + " .paypal-button-parent iframe {\n                max-width: 100%;\n                min-width: 100%;\n                max-height: 100%;\n                min-height: 100%;\n            }\n\n            #" + id + " .paypal-button-parent,\n            #" + id + " .paypal-button-parent-size-tiny,\n            #" + id + " .paypal-button-parent-size-small {\n                width:  " + sizes.small.width + ";\n                height: " + sizes.small.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-medium {\n                width:  " + sizes.medium.width + ";\n                height: " + sizes.medium.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-large {\n                width:  " + sizes.large.width + ";\n                height: " + sizes.large.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-responsive {\n                max-width: 100%;\n                min-width: 100%;\n                height: " + (initialHeight || sizes.small.height) + '\n            }\n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + label + " paypal-button-parent-size-" + size + " " + CLASS.ELEMENT + '"></div>\n    ';
         }
         __webpack_exports__.a = containerTemplate;
     },
@@ -7904,7 +7906,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.66";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.67";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8391,7 +8393,7 @@
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.66",
+            version: "4.0.67",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -8511,7 +8513,7 @@
             },
             loggerUri: "/webapps/hermes/api/logger",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.66");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.67");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9088,7 +9090,7 @@
         __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
             return destroyAll;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.66", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.67", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
         if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib__.e)()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
@@ -9101,7 +9103,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.66";
+                payload.version = "4.0.67";
                 payload.host = window.location.host;
                 payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                 var query = [];
@@ -9116,7 +9118,7 @@
         function checkpoint(name) {
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
-                var version = "4.0.66".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                var version = "4.0.67".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                 loggedCheckpoints.push(checkpointName);
                 logged && (checkpointName += "_dupe");
                 return beacon(checkpointName, payload);
@@ -9124,7 +9126,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.66",
+                v: "checkout.js.4.0.67",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -9596,7 +9598,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                     uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                    ver: "4.0.66"
+                    ver: "4.0.67"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i(function() {
@@ -9775,7 +9777,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon, checkpoint = _require.checkpoint;
-        if (window.paypal && "4.0.66" === window.paypal.version) {
+        if (window.paypal && "4.0.67" === window.paypal.version) {
             checkpoint("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
