@@ -7898,7 +7898,7 @@
             componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.67";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.68";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -8388,7 +8388,7 @@
                     height: "60px"
                 }
             };
-            return "\n\n        <style>\n            #" + id + " {\n                min-width: " + sizes.small.width + ";\n                max-width: 500px;\n                font-size: 0;\n            }\n\n            #" + id + " .paypal-button-parent iframe {\n                max-width: 100%;\n                min-width: 100%;\n                max-height: 100%;\n                min-height: 100%;\n            }\n\n            #" + id + " .paypal-button-parent,\n            #" + id + " .paypal-button-parent-size-tiny,\n            #" + id + " .paypal-button-parent-size-small {\n                width:  " + sizes.small.width + ";\n                height: " + sizes.small.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-medium {\n                width:  " + sizes.medium.width + ";\n                height: " + sizes.medium.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-large {\n                width:  " + sizes.large.width + ";\n                height: " + sizes.large.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-responsive {\n                max-width: 100%;\n                min-width: 100%;\n                height: " + (initialHeight || sizes.small.height) + '\n            }\n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + label + " paypal-button-parent-size-" + size + " " + CLASS.ELEMENT + '"></div>\n    ';
+            return "\n\n        <style>\n            #" + id + " {\n                min-width: " + sizes.small.width + ";\n                max-width: 500px;\n                font-size: 0;\n            }\n\n            #" + id + " .paypal-button-parent {\n                display: inline-block;\n            }\n\n            #" + id + " .paypal-button-parent iframe {\n                max-width: 100%;\n                min-width: 100%;\n                max-height: 100%;\n                min-height: 100%;\n            }\n\n            #" + id + " .paypal-button-parent,\n            #" + id + " .paypal-button-parent-size-tiny,\n            #" + id + " .paypal-button-parent-size-small {\n                width:  " + sizes.small.width + ";\n                height: " + sizes.small.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-medium {\n                width:  " + sizes.medium.width + ";\n                height: " + sizes.medium.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-large {\n                width:  " + sizes.large.width + ";\n                height: " + sizes.large.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-responsive {\n                max-width: 100%;\n                min-width: 100%;\n                height: " + (initialHeight || sizes.small.height) + '\n            }\n        </style>\n\n        <div class="paypal-button-parent paypal-button-parent-label-' + label + " paypal-button-parent-size-" + size + " " + CLASS.ELEMENT + '"></div>\n    ';
         }
         __webpack_exports__.a = containerTemplate;
     },
@@ -8456,7 +8456,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.67";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.68";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8943,7 +8943,7 @@
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.67",
+            version: "4.0.68",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -9063,7 +9063,7 @@
             },
             loggerUri: "/webapps/hermes/api/logger",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.67");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.68");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9640,7 +9640,7 @@
         __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
             return destroyAll;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.67", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.68", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
@@ -10461,7 +10461,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.67";
+                payload.version = "4.0.68";
                 payload.host = window.location.host;
                 payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                 var query = [];
@@ -10476,7 +10476,7 @@
         function checkpoint(name) {
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
-                var version = "4.0.67".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                var version = "4.0.68".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                 loggedCheckpoints.push(checkpointName);
                 logged && (checkpointName += "_dupe");
                 return beacon(checkpointName, payload);
@@ -10484,7 +10484,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.67",
+                v: "checkout.js.4.0.68",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -11057,7 +11057,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                     uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                    ver: "4.0.67"
+                    ver: "4.0.68"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i(function() {
@@ -11358,7 +11358,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon, checkpoint = _require.checkpoint;
-        if (window.paypal && "4.0.67" === window.paypal.version) {
+        if (window.paypal && "4.0.68" === window.paypal.version) {
             checkpoint("load_again");
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
