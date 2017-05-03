@@ -14,8 +14,8 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a tiny button', (done) => {
 
-        let expectedWidth = 80;
-        let expectedHeight = 22;
+        let expectedWidth = 148;
+        let expectedHeight = 42;
 
         return window.paypal.Button.render({
 
@@ -180,67 +180,17 @@ describe(`paypal button component sizes`, () => {
         }, '#testContainer');
     });
 
-    it('should render a responsive button in the tiny spectrum', (done) => {
-
-        let container = createElement({
-            style: {
-                width: '90px',
-                height: '100px'
-            },
-            container: '#testContainer'
-        });
-
-        let expectedWidth = 90;
-        let expectedHeight = 22;
-
-        return window.paypal.Button.render({
-
-            test: {},
-
-            style: {
-                size: 'responsive'
-            },
-
-            payment() {
-                done(new Error('Expected payment() to not be called'));
-            },
-
-            onAuthorize() {
-                done(new Error('Expected onAuthorize() to not be called'));
-            },
-
-            onEnter() {
-                setTimeout(() => {
-                    let frame = getElement('#testContainer iframe');
-                    let width = frame.offsetWidth;
-                    let height = frame.offsetHeight;
-
-                    if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
-                    }
-
-                    if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
-                    }
-
-                    return done();
-                }, 100);
-            }
-
-        }, container);
-    });
-
     it('should render a responsive button in the small spectrum', (done) => {
 
         let container = createElement({
             style: {
-                width: '140px',
+                width: '162px',
                 height: '100px'
             },
             container: '#testContainer'
         });
 
-        let expectedWidth = 140;
+        let expectedWidth = 162;
         let expectedHeight = 42;
 
         return window.paypal.Button.render({
@@ -390,8 +340,8 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 80;
-        let expectedHeight = 22;
+        let expectedWidth = 148;
+        let expectedHeight = 42;
 
         return window.paypal.Button.render({
 
@@ -482,8 +432,8 @@ describe(`paypal button component sizes`, () => {
 
     it('should render a tiny button into an element below the minimum height', (done) => {
 
-        let expectedWidth = 80;
-        let expectedHeight = 22;
+        let expectedWidth = 148;
+        let expectedHeight = 42;
 
         let container = createElement({
             style: {
@@ -690,8 +640,8 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 98;
-        let expectedHeight = 22;
+        let expectedWidth = 148;
+        let expectedHeight = 42;
 
         return window.paypal.Button.render({
 
@@ -951,6 +901,165 @@ describe(`paypal button component sizes`, () => {
             style: {
                 size: 'responsive',
                 label: 'pay'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+                    let frame = getElement('#testContainer iframe');
+                    let width = frame.offsetWidth;
+                    let height = frame.offsetHeight;
+
+                    if (width !== expectedWidth) {
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                    }
+
+                    if (height !== expectedHeight) {
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a responsive button and resize it', (done) => {
+
+        let container = createElement({
+            style: {
+                width: '162px',
+                height: '100px'
+            },
+            container: '#testContainer'
+        });
+
+        let expectedWidth = 255;
+        let expectedHeight = 42;
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'responsive'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+                    container.style.width = '255px';
+
+                    setTimeout(() => {
+                        let frame = getElement('#testContainer iframe');
+                        let width = frame.offsetWidth;
+                        let height = frame.offsetHeight;
+
+                        if (width !== expectedWidth) {
+                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        }
+
+                        if (height !== expectedHeight) {
+                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        }
+
+                        return done();
+                    }, 100);
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a responsive button in a hidden element then display it', (done) => {
+
+        let container = createElement({
+            style: {
+                width: '172px',
+                height: '100px',
+                display: 'none'
+            },
+            container: '#testContainer'
+        });
+
+        let expectedWidth = 172;
+        let expectedHeight = 42;
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'responsive'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+                    container.style.display = 'block';
+
+                    setTimeout(() => {
+                        let frame = getElement('#testContainer iframe');
+                        let width = frame.offsetWidth;
+                        let height = frame.offsetHeight;
+
+                        if (width !== expectedWidth) {
+                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        }
+
+                        if (height !== expectedHeight) {
+                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        }
+
+                        return done();
+                    }, 100);
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a responsive button in a floated div without a width', (done) => {
+
+        let container = createElement({
+            style: {
+                height: '100px',
+                float: 'right'
+            },
+            container: '#testContainer'
+        });
+
+        let expectedWidth = 148;
+        let expectedHeight = 42;
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'responsive'
             },
 
             payment() {

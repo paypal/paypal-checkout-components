@@ -46,7 +46,7 @@ export let Button = xcomponent.create({
         return config.paypalDomains;
     },
 
-    getInitialDimensions(props : Object, container : HTMLElement) : { width : string, height : string } {
+    getInitialDimensions(props : Object, container : HTMLElement) : ?{ width? : string, height? : string } {
 
         let style = props.style || {};
         let size = style.size || 'small';
@@ -59,7 +59,7 @@ export let Button = xcomponent.create({
     autoResize: {
         width: false,
         height: true,
-        element: '#paypal-button-container'
+        element: 'body'
     },
 
     props: {
@@ -510,6 +510,28 @@ if (Button.isChild()) {
                 return renderTo.apply(this, arguments);
             }
         };
+    }
+
+    let style = document.createElement('style');
+    let css = `
+        @media only screen and (min-width : 80px)  { body { height: 22px; } }
+        @media only screen and (min-width : 100px) { body { height: 42px; } }
+        @media only screen and (min-width : 200px) { body { height: 48px; } }
+        @media only screen and (min-width : 300px) { body { height: 60px; } }
+    `;
+
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        // $FlowFixMe
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+
+    if (document.head) {
+        document.head.appendChild(style);
+    } else if (document.body) {
+        document.body.appendChild(style);
     }
 
     setTimeout(() => {

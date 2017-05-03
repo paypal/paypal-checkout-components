@@ -130,49 +130,13 @@ export let componentStyle = `
         }
     }
 
+    /* Small */
 
-    /* Tiny */
-
-    @media only screen and (min-width : 80px) and (min-height: 22px) {
-
-        .paypal-button {
-            max-width: 100px;
-        }
-
-        .paypal-button .paypal-button-content {
-            height: 18px;
-            max-height: 18px;
-            border-radius: 9px;
-            font-size: 10px;
-        }
-
-        .paypal-button .paypal-button-content .logo.logo-pp {
-            height: 16px;
-        }
-
-        .paypal-button .paypal-button-content .logo.logo-paypal {
-            height: 15px;
-        }
-
-        .paypal-button .paypal-button-content .logo.logo-credit {
-            height: 14px;
-        }
-
-        .paypal-button .paypal-button-content::before {
-            padding: 1px;
-            top: -1px;
-            left: -1px;
-            z-index: -1;
-            border-radius: 10px;
-        }
-
-        .paypal-button.paypal-shape-rect .paypal-button-content,
-        .paypal-button.paypal-shape-rect .paypal-button-content::before {
-            border-radius: 3px;
+    @media only screen and (min-width : 100px) {
+        body {
+            height: 42px;
         }
     }
-
-    /* Small */
 
     @media only screen and (min-width : 100px) and (min-height: 42px) {
 
@@ -214,6 +178,12 @@ export let componentStyle = `
 
 
     /* Medium */
+
+    @media only screen and (min-width : 200px) {
+        body {
+            height: 48px;
+        }
+    }
 
     @media only screen and (min-width : 200px) and (min-height: 48px) {
 
@@ -259,6 +229,12 @@ export let componentStyle = `
 
 
     /* Large */
+
+    @media only screen and (min-width : 300px) {
+        body {
+            height: 60px;
+        }
+    }
 
     @media only screen and (min-width : 300px) and (min-height: 60px) {
 
