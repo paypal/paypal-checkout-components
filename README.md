@@ -88,6 +88,12 @@ gulp build
 ```
 
 
+To enable output of additional debugging messages to the console, set the `data-log-level` attribute of the script element to e.g. `info` (default value is `warn`):
+
+   ```html
+   <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4 data-log-level="info"></script>
+    ```
+
 ## Test Tasks
 ```
 gulp test
