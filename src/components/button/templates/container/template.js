@@ -52,9 +52,15 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
 
         <style>
             #${id} {
+
+            }
+
+            #${id} .paypal-button-container {
+                font-size: 0;
+                width: 100%;
                 min-width: ${ minWidth };
                 max-width: ${ maxWidth };
-                font-size: 0;
+                display: inline-block;
             }
 
             #${id} .paypal-button-parent {
@@ -92,6 +98,8 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
             }
         </style>
 
-        <div class="paypal-button-parent paypal-button-parent-label-${ label } paypal-button-parent-size-${ size } ${ CLASS.ELEMENT }"></div>
+        <div class="paypal-button-container">
+            <div class="paypal-button-parent paypal-button-parent-label-${ label } paypal-button-parent-size-${ size } ${ CLASS.ELEMENT }"></div>
+        </div>
     `;
 }

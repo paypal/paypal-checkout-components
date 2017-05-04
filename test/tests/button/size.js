@@ -1090,4 +1090,192 @@ describe(`paypal button component sizes`, () => {
 
         }, container);
     });
+
+    it('should render a small button centered', (done) => {
+
+        let container = createElement({
+            style: {
+                height: '100px',
+                width: '500px',
+                textAlign: 'center'
+            },
+            container: '#testContainer'
+        });
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'small'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+
+                    let c = container.getBoundingClientRect();
+                    let e = getElement('#testContainer iframe').getBoundingClientRect();
+
+                    let expectedPosition = c.left + Math.floor(c.width / 2) - Math.floor(e.width / 2);
+                    let actualPosition = e.left;
+
+                    if (expectedPosition !== actualPosition) {
+                        return done(new Error(`Expected button to have left position of ${expectedPosition}, found ${actualPosition}`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a medium button centered', (done) => {
+
+        let container = createElement({
+            style: {
+                height: '100px',
+                width: '500px',
+                textAlign: 'center'
+            },
+            container: '#testContainer'
+        });
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'medium'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+
+                    let c = container.getBoundingClientRect();
+                    let e = getElement('#testContainer iframe').getBoundingClientRect();
+
+                    let expectedPosition = c.left + Math.floor(c.width / 2) - Math.floor(e.width / 2);
+                    let actualPosition = e.left;
+
+                    if (expectedPosition !== actualPosition) {
+                        return done(new Error(`Expected button to have left position of ${expectedPosition}, found ${actualPosition}`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a large button centered', (done) => {
+
+        let container = createElement({
+            style: {
+                height: '100px',
+                width: '500px',
+                textAlign: 'center'
+            },
+            container: '#testContainer'
+        });
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'large'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+
+                    let c = container.getBoundingClientRect();
+                    let e = getElement('#testContainer iframe').getBoundingClientRect();
+
+                    let expectedPosition = c.left + Math.floor(c.width / 2) - Math.floor(e.width / 2);
+                    let actualPosition = e.left;
+
+                    if (expectedPosition !== actualPosition) {
+                        return done(new Error(`Expected button to have left position of ${expectedPosition}, found ${actualPosition}`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }, container);
+    });
+
+    it('should render a responsive button centered', (done) => {
+
+        let container = createElement({
+            style: {
+                height: '100px',
+                width: '800px',
+                textAlign: 'center'
+            },
+            container: '#testContainer'
+        });
+
+        return window.paypal.Button.render({
+
+            test: {},
+
+            style: {
+                size: 'responsive'
+            },
+
+            payment() {
+                done(new Error('Expected payment() to not be called'));
+            },
+
+            onAuthorize() {
+                done(new Error('Expected onAuthorize() to not be called'));
+            },
+
+            onEnter() {
+                setTimeout(() => {
+
+                    let c = container.getBoundingClientRect();
+                    let e = getElement('#testContainer iframe').getBoundingClientRect();
+
+                    let expectedPosition = c.left + Math.floor(c.width / 2) - Math.floor(e.width / 2);
+                    let actualPosition = e.left;
+
+                    if (expectedPosition !== actualPosition) {
+                        return done(new Error(`Expected button to have left position of ${expectedPosition}, found ${actualPosition}`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }, container);
+    });
 });
