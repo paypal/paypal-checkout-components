@@ -51,7 +51,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'auth', authed: false },
+                test: {
+                    flow,
+                    action: 'auth',
+                    authed: false,
+                    onRender() : void {
+                        if (getElement('.paypal-button-parent').style.display !== 'none') {
+                            return done(new Error(`Expected iframe to not be visible`));
+                        }
+
+                        done();
+                    }
+                },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -65,15 +76,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 onCancel() {
                     throw new Error('Expected onCancel to not be called');
-                },
-
-                onEnter() {
-
-                    if (getElement('.paypal-button-parent').style.display !== 'none') {
-                        throw new Error(`Expected iframe to not be visible`);
-                    }
-
-                    done();
                 }
 
             }, '#testContainer');
@@ -107,11 +109,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         });
 
-        it('should render a button into a container to all, with a logged out user', () => {
+        it('should render a button into a container to all, with a logged out user', (done) => {
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'auth', authed: false },
+                test: {
+                    flow,
+                    action: 'auth',
+                    authed: false,
+                    onRender() : void {
+
+                        if (getElement('.paypal-button-parent').style.display === 'none') {
+                            return done(new Error(`Expected iframe to be visible`));
+                        }
+
+                        done();
+                    }
+                },
 
                 displayTo: window.paypal.USERS.ALL,
 
@@ -127,12 +141,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     throw new Error('Expected onCancel to not be called');
                 }
 
-            }, '#testContainer').then(button => {
-
-                if (getElement('.paypal-button-parent').style.display === 'none') {
-                    throw new Error(`Expected iframe to be visible`);
-                }
-            });
+            }, '#testContainer');
         });
     });
 }

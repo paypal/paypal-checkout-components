@@ -218,15 +218,20 @@ export let Button = xcomponent.create({
             required: false
         },
 
-        onRender: {
+        onEnter: {
             type: 'function',
             promisify: true,
             required: false,
-            value() {
-                $logger.track({
-                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
-                });
+            decorate(original) : Function {
+                return function() : mixed {
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
+                    });
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
             }
         },
 

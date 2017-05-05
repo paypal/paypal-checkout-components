@@ -173,6 +173,40 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
+        if (flow === 'iframe') {
+            it('should render checkout, window.open the iframe name, then complete the payment', (done) => {
+
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+                testButton.addEventListener('click', (event : Event) => {
+                    let name;
+
+                    window.paypal.Checkout.render({
+
+                        onRender() {
+                            name = this.childWindowName;
+                        },
+
+                        payment() : string | SyncPromise<string> {
+                            return generateECToken();
+                        },
+
+                        onAuthorize() : void {
+                            return done();
+                        },
+
+                        onCancel() : void {
+                            return done(new Error('Expected onCancel to not be called'));
+                        }
+                    });
+
+                    window.open('', name);
+                });
+
+                testButton.click();
+            });
+        }
+
         if (flow === 'popup') {
             it('should render checkout without a click event and error out', (done) => {
 

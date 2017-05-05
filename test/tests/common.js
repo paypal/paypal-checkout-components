@@ -248,7 +248,7 @@ let windowOpen = window.open;
 window.open = function() : any {
 
     if (!isClick) {
-        return {
+        let win : Object = {
             closed: true,
             close() {
                 // pass
@@ -261,6 +261,11 @@ window.open = function() : any {
                 hostname: ''
             }
         };
+
+        win.parent = win.top = win;
+        win.opener = window;
+
+        return win;
     }
 
     return windowOpen.apply(this, arguments);
