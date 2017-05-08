@@ -72,7 +72,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 __LEGACY_SUPPORT__: JSON.stringify(true),
                 __FILE_NAME__: JSON.stringify(filename),
                 __FILE_VERSION__: JSON.stringify(version),
-                __DEFAULT_LOG_LEVEL__: JSON.stringify('info'),
+                __DEFAULT_LOG_LEVEL__: JSON.stringify('warn'),
                 __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
                 __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true),
                 ...vars,

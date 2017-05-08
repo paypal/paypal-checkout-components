@@ -68,7 +68,7 @@ You'll need:
 		// Pass a function to be called when the customer completes the payment
 
 		onAuthorize: function(data, actions) {
-			return actions.payment.execute().then(function() {
+			return actions.payment.execute().then(function(response) {
 				console.log('The payment was completed!');
 			});
 		},

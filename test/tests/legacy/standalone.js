@@ -257,11 +257,16 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.open = function() : window {
                         window.open = open;
 
-                        return {
+                        let win : Object = {
                             close() {
                                 done();
                             }
                         };
+
+                        win.parent = win.top = win;
+                        win.opener = window;
+
+                        return win;
                     };
                 }
 

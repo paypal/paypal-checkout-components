@@ -44,63 +44,11 @@ export let Button = xcomponent.create({
     get domain() : Object {
         return config.paypalDomains;
     },
-
-    getInitialDimensions(props : Object, container : HTMLElement) : { width : string, height : string } {
-
-        let style = props.style || {};
-        let size = style.size || 'small';
-
-        let responsiveHeight = '42px';
-
-        $logger.info(`iframe_button_size_${size}`);
-
-        if (size === 'responsive') {
-            let width = container.offsetWidth;
-
-            if (width < 100) {
-                responsiveHeight = '22px';
-            } else if (width < 200) {
-                responsiveHeight = '42px';
-            } else if (width < 300) {
-                responsiveHeight = '48px';
-            } else {
-                responsiveHeight = '60px';
-            }
-        }
-
-        return {
-
-            tiny: {
-                width: '80px',
-                height: '22px'
-            },
-
-            small: {
-                width: '148px',
-                height: '42px'
-            },
-
-            medium: {
-                width: '230px',
-                height: '48px'
-            },
-
-            large: {
-                width: '380px',
-                height: '60px'
-            },
-
-            responsive: {
-                width: '100%',
-                height: responsiveHeight
-            }
-
-        }[size];
-    },
-
+    
     autoResize: {
         width: false,
-        height: false
+        height: true,
+        element: 'body'
     },
 
     props: {
@@ -270,15 +218,20 @@ export let Button = xcomponent.create({
             required: false
         },
 
-        onRender: {
+        onEnter: {
             type: 'function',
             promisify: true,
             required: false,
-            value() {
-                $logger.track({
-                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
-                });
+            decorate(original) : Function {
+                return function() : mixed {
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
+                    });
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
             }
         },
 
@@ -553,11 +506,33 @@ if (Button.isChild()) {
         };
     }
 
+    let style = document.createElement('style');
+    let css = `
+        @media only screen and (min-width : 80px)  { body { height: 22px; } }
+        @media only screen and (min-width : 100px) { body { height: 42px; } }
+        @media only screen and (min-width : 200px) { body { height: 48px; } }
+        @media only screen and (min-width : 300px) { body { height: 60px; } }
+    `;
+
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        // $FlowFixMe
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+
+    if (document.head) {
+        document.head.appendChild(style);
+    } else if (document.body) {
+        document.body.appendChild(style);
+    }
+
     setTimeout(() => {
         let logo = document.querySelector('.logo-paypal');
 
         if (logo && (logo.style.visibility === 'hidden' || window.getComputedStyle(logo).visibility === 'hidden')) {
-            componentScript();
+            eval(`(${ componentScript.toString() })()`); // eslint-disable-line
         }
     }, 1);
 }
