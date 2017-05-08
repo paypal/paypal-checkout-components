@@ -53,9 +53,12 @@ function mapPayment(data) {
 
     return using(data, payment => ({
         id: payment.id,
+
         intent: payment.intent,
         state:  payment.state,
         cart:   payment.cart,
+
+        create_time: payment.create_time,
 
         payer: using(payment.payer, payer => ({
             payment_method: payer.payment_method,
