@@ -18,6 +18,7 @@
     "type": "git",
     "url": "git://github.paypal.com/paypal/paypal-checkout.git"
   },
+  "homepage": "https://developer.paypal.com/",
   "keywords": [
     "cross-domain",
     "cross domain",
@@ -73,21 +74,21 @@
     "karma-sinon-chai": "^1.2.0",
     "karma-slimerjs-launcher": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "0.0.26",
+    "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^2.0.3",
     "lolex": "^1.5.0",
     "mocha": "^2.5.3",
     "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
     "regenerator-runtime": "^0.10.1",
-    "sinon": "^1.17.4",
+    "sinon": "^2.2.0",
     "sinon-chai": "^2.8.0",
     "text-loader": "0.0.1",
-    "uglify-js": "^2.8.13",
-    "uglifyjs-webpack-plugin": "^0.3.0",
+    "uglify-js": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0",
-    "yargs": "^4.7.1"
+    "yargs": "^8.0.1"
   },
   "dependencies": {
     "Base64": "^1.0.0",
