@@ -134,7 +134,7 @@ You'll need:
 			// At this point, the payment has been authorized, and you will need to call your back-end to complete the
 			// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-			jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
+			jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID })
 				.done(function(data) { /* Go to a success page */ })
 				.fail(function(err)  { /* Go to an error page  */  });
 		},
