@@ -4,7 +4,7 @@ import * as logger from 'beaver-logger/client';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { config, FPTI } from '../config';
-import { loadScript, getElements, getElement, memoize } from '../lib';
+import { loadScript, getElements, getElement, memoize, isElementVisible } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
@@ -56,8 +56,7 @@ function renderButton(id, container, options, label) : HTMLElement {
     container.appendChild(el);
 
     try {
-        let visible = Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-        $logger.info(`in_page_button_${ visible ? 'visible' : 'not_visible' }`);
+        $logger.info(`in_page_button_${ isElementVisible(el) ? 'visible' : 'not_visible' }`);
 
     } catch (err) {
         // pass

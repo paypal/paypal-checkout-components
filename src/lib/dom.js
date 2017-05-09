@@ -292,3 +292,7 @@ export function getBrowserLocale() : { country : string, lang : string } {
 
     return config.defaultLocale;
 }
+
+export function isElementVisible(el : HTMLElement) : boolean {
+    return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+}
