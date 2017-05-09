@@ -4,7 +4,7 @@ import * as logger from 'beaver-logger/client';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { config, FPTI } from '../config';
-import { loadScript, getElements, getElement, memoize, isElementVisible } from '../lib';
+import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
@@ -60,6 +60,22 @@ function renderButton(id, container, options, label) : HTMLElement {
 
     } catch (err) {
         // pass
+    }
+
+    let tagContent = el.querySelector('.paypal-button-tag-content');
+
+    if (isElementVisible(el) && tagContent && tagContent.innerText && tagContent.innerText.trim()) {
+        let throttle = getThrottle('tag_content', 5000);
+
+        if (throttle.isEnabled()) {
+            tagContent.textContent = '';
+        }
+
+        throttle.logStart();
+
+        el.addEventListener('click', () => {
+            throttle.logComplete();
+        });
     }
 
     return el.childNodes[0];
