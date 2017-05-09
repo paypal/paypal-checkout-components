@@ -10,7 +10,7 @@ module.exports = function(config) {
     let autoWatch = Boolean(keepOpen);
     let coverage  = !Boolean(argv['disable-coverage']) && !quick;
     let browsers  = argv['browser'];
-    let logLevel  = argv['log-level'] || argv['loglevel'];
+    let logLevel  = argv['log-level'] || argv['loglevel'] || (keepOpen ? 'info' : '');
 
     let karmaConfig = {
 
