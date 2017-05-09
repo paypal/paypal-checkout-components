@@ -192,7 +192,7 @@ describe(`paypal button component validation`, () => {
 
         let clicks = 0;
 
-        return window.paypal.Button.render({
+        window.paypal.Button.render({
 
             test: {
                 onRender(actions) {

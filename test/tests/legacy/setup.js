@@ -528,7 +528,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
 
-            return window.paypal.checkout.setup('merchantID', {
+            window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 

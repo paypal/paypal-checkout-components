@@ -1042,7 +1042,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 ]
             });
 
-            return window.paypal.checkout.setup('merchantID', {
+            window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',
 

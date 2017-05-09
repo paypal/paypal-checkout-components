@@ -49,7 +49,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container to only remembered users, with a logged out user', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: {
                     flow,
@@ -111,7 +111,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container to all, with a logged out user', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: {
                     flow,

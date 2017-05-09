@@ -195,7 +195,7 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -208,7 +208,6 @@ describe('paypal legacy button rendering', () => {
             ]
 
         }).then(() => {
-
             paraContainer.click();
             setTimeout(() => {
                 if (!clicked) {
@@ -624,7 +623,7 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: 'customLink',
 

@@ -23,7 +23,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -44,7 +44,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -65,7 +65,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'cancel' },
 
@@ -117,7 +117,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let token = generateECToken();
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -200,7 +200,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let token = generateECToken();
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'cancel' },
 
@@ -252,7 +252,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, call the REST api to create a payment, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -287,7 +287,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, call the REST api via actions.payment to create a payment, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -318,7 +318,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -356,7 +356,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, call the REST api via actions.payment to create a payment with an experience profile, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -390,7 +390,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, call the billing api to create an agreement, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -423,7 +423,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, with an async resolved token passed, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -446,7 +446,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, with an immediately resolved token passed, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -467,7 +467,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, with a promise token passed, then complete the payment', (done) => {
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -492,7 +492,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let checkoutToken = generateECToken();
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -520,7 +520,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let paymentID = generatePaymentID();
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -548,7 +548,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let billingToken = generateBillingToken();
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -576,7 +576,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let isRestarted = false;
 
-            return window.paypal.Button.render({
+            window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -638,7 +638,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let paymentCalls = 0;
 
-                return window.paypal.Button.render({
+                window.paypal.Button.render({
 
                     test: { flow, action: 'popout' },
 
@@ -715,7 +715,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let isRestarted = false;
 
-                return window.paypal.Button.render({
+                window.paypal.Button.render({
 
                     test: { flow, action: 'checkout' },
 
