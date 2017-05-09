@@ -213,6 +213,8 @@ export let Checkout = xcomponent.create({
 
                         }).then(() => {
                             return original.call(this, data, { ...actions, close, redirect });
+                        }).catch(err => {
+                            return this.error(err);
                         }).finally(() => {
                             return this.close();
                         });

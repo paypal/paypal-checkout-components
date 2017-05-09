@@ -47,6 +47,9 @@ function renderCheckout() {
                     window.paypal.Checkout.contexts.iframe = true;
                     renderCheckout();
                 }
+
+            }).catch(err => {
+                return window.xchild.error(err);
             });
         },
 

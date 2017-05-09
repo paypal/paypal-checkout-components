@@ -18,14 +18,72 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        it('should render checkout and throw an error in payment', (done) => {
+        it('should render checkout and return a blank token in payment', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    test: { action: 'error' },
+                    payment() : string {
+                        return '';
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout and return a promise for a blank token in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    payment() : Promise<string> {
+                        return window.paypal.Promise.resolve('');
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout and throw an error in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
 
                     payment() {
                         throw new Error('error');
@@ -57,8 +115,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    test: { action: 'error' },
-
                     payment() : string | SyncPromise<string> {
                         return window.paypal.Promise.reject(new Error('error'));
                     },
@@ -89,10 +145,38 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    test: { action: 'error' },
-
                     payment(resolve, reject) {
                         reject(new Error('error'));
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout and call reject with undefined in payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    payment(resolve, reject) {
+                        reject();
                     },
 
                     onError(err) : void {
@@ -161,6 +245,100 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     onAuthorize() : void {
                         return done(new Error('Expected onCancel to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout, then throw an error in onAuthorize', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    payment() : string | SyncPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() {
+                        throw new Error('error');
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout, then return a rejected promise in onAuthorize', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    payment() : string | SyncPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : Promise<void> {
+                        return new window.paypal.Promise((resolve, reject) => {
+                            return reject(new Error('error'));
+                        });
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
+        it('should render checkout, then return an undefined rejected promise in onAuthorize', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    payment() : string | SyncPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onError(err) : void {
+                        assert.isOk(err instanceof Error);
+                        return done();
+                    },
+
+                    onAuthorize() : Promise<void> {
+                        return new window.paypal.Promise((resolve, reject) => {
+                            return reject();
+                        });
                     },
 
                     onCancel() : void {

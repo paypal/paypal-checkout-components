@@ -44,7 +44,7 @@ export let Button = xcomponent.create({
     get domain() : Object {
         return config.paypalDomains;
     },
-    
+
     autoResize: {
         width: false,
         height: true,
@@ -308,7 +308,11 @@ export let Button = xcomponent.create({
                             ]);
                         };
 
-                        return original.call(this, data, { ...actions, redirect });
+                        return SyncPromise.try(() => {
+                            return original.call(this, data, { ...actions, redirect });
+                        }).catch(err => {
+                            return this.error(err);
+                        });
                     };
                 }
             }
