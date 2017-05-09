@@ -41,10 +41,12 @@ If so, you can easily upgrade to use the Button component like so:
 <script>
 	paypal.Button.render({
 
-		payment: function(resolve) {
-			jQuery.post('/create-paypal-token', function(data) {
-				resolve(data.token);
-			});
+		payment: function() {
+            return new paypal.Promise(function(resolve, reject) {
+                jQuery.post('/create-paypal-token', function(data) {
+    				resolve(data.token);
+    			});
+            });
 		}
 
 		onAuthorize: function(data) {

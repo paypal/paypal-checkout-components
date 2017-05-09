@@ -48,8 +48,8 @@ You'll need:
 		// Pass the payment details for your transaction
 		// See https://developer.paypal.com/docs/api/payments/#payment_create for the expected json parameters
 
-		payment: function() {
-			return paypal.rest.payment.create(this.props.env, this.props.client, {
+		payment: function(actions) {
+			return actions.payment.create({
 				transactions: [
 					{
 						amount: {
@@ -109,17 +109,19 @@ You'll need:
 
 		// Set up a getter to create a Payment ID using the payments api, on your server side:
 
-		payment: function(resolve, reject) {
+		payment: function() {
+			return new paypal.Promise(function(resolve, reject) {
 
-			// Make an ajax call to get the Payment ID. This should call your back-end,
-			// which should invoke the PayPal Payment Create api to retrieve the Payment ID.
+				// Make an ajax call to get the Payment ID. This should call your back-end,
+				// which should invoke the PayPal Payment Create api to retrieve the Payment ID.
 
-			// When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
-			// Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
+				// When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
+				// Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
 
-			jQuery.post('/my-api/create-payment')
-				.done(function(data) { resolve(data.paymentID); })
-				.fail(function(err)  { reject(err); });
+				jQuery.post('/my-api/create-payment')
+					.done(function(data) { resolve(data.paymentID); })
+					.fail(function(err)  { reject(err); });
+			});
 		},
 
 		// Pass a function to be called when the customer approves the payment,

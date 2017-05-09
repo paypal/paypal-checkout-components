@@ -49,11 +49,12 @@ paypal.Button.render({
 ```javascript
 paypal.Button.render({
 
-	payment: function(resolve, reject) {
-
-		jQuery.post('/my-api/create-payment')
-			.done(function(data) { resolve(data.paymentID); })
-			.fail(function(err)  { reject(err); });
+	payment: function() {
+		return new paypal.Promise(function(resolve, reject) {
+			jQuery.post('/my-api/create-payment')
+				.done(function(data) { resolve(data.paymentID); })
+				.fail(function(err)  { reject(err); });
+		});
 	},
 
 	onAuthorize: function(data) {
@@ -80,7 +81,7 @@ paypal.Button.render({
 	},
 
 	payment: function() {
-		return paypal.rest.payment.create(this.props.env, this.props.client, {
+		return actions.payment.create({
 			transactions: [
 				{
 					amount: {
@@ -111,11 +112,12 @@ paypal.Button.render({
 ```javascript
 paypal.Button.render({
 
-	payment: function(resolve, reject) {
-
-		jQuery.post('/my-api/create-payment')
-			.done(function(data) { resolve(data.paymentID); })
-			.fail(function(err)  { reject(err); });
+	payment: function() {
+		return new paypal.Promise(function(resolve, reject) {
+			jQuery.post('/my-api/create-payment')
+				.done(function(data) { resolve(data.paymentID); })
+				.fail(function(err)  { reject(err); });
+		});
 	},
 
 	commit: true,

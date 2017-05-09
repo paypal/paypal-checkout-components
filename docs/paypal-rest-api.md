@@ -139,15 +139,16 @@ The way this works is:
    ```javascript
    paypal.Button.render({
 
-	   payment: function(resolve) {
+	   payment: function() {
+           return new paypal.Promise(function(resolve, reject) {
 
-	       // Call your server side to get the Payment ID from step 3, then pass it to the resolve callback
-	       //
+               // Call your server side to get the Payment ID from step 3, then pass it to the resolve callback
 
-		   jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
-		       .done(function(data) {
-			       resolve(data.paymentID);
-		       });
+               jQuery.post('https://www.my-paypal-store.com/my-api/payment-create')
+    		       .done(function(data) {
+    			       resolve(data.paymentID);
+    		       });
+           });
 	   },
 
 	   onAuthorize: function(data) {
