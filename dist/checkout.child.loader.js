@@ -108,10 +108,10 @@
             var version = getVersion();
             return Boolean(version === __WEBPACK_IMPORTED_MODULE_0__config__.a.major_version || version === __WEBPACK_IMPORTED_MODULE_0__config__.a.latest_version);
         }
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js");
         __webpack_exports__.c = isXComponent;
         __webpack_exports__.b = getVersion;
         __webpack_exports__.a = isLatest;
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js");
     },
     "./src/loader/config.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -148,8 +148,8 @@
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        var __WEBPACK_IMPORTED_MODULE_0__load__ = __webpack_require__("./src/loader/load.js");
         __webpack_exports__.onLoadCheckoutIntegration = onLoadCheckoutIntegration;
+        var __WEBPACK_IMPORTED_MODULE_0__load__ = __webpack_require__("./src/loader/load.js");
     },
     "./src/loader/load.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -166,11 +166,10 @@
             query.stage && (props["data-stage"] = query.stage);
             return props;
         }
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js"), __WEBPACK_IMPORTED_MODULE_1__responder__ = __webpack_require__("./src/loader/responder.js"), __WEBPACK_IMPORTED_MODULE_2__component__ = __webpack_require__("./src/loader/component.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/loader/util.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return integrationResponder;
         });
-        var _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js"), __WEBPACK_IMPORTED_MODULE_1__responder__ = __webpack_require__("./src/loader/responder.js"), __WEBPACK_IMPORTED_MODULE_2__component__ = __webpack_require__("./src/loader/component.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/loader/util.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
