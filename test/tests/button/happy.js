@@ -4,7 +4,7 @@ let SyncPromise = window.paypal.Promise;
 
 import { assert } from 'chai';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID, createElement, createTestContainer, destroyTestContainer, onHashChange } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -599,6 +599,37 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
 
             }, '#testContainer');
+        });
+
+        it('should render a button into a container before the container exists, and click on the button, then complete the payment', (done) => {
+
+            let readyState = document.readyState;
+            Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                payment() : string | SyncPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#lateContainer');
+
+            createElement({
+                id: 'lateContainer',
+                container: '#testContainer'
+            });
+
+            Object.defineProperty(document, 'readyState', { value: readyState, configurable: true });
         });
 
         if (flow === 'iframe') {
