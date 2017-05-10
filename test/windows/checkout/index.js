@@ -59,7 +59,7 @@ if (action === 'checkout') {
     testButton.addEventListener('click', (event : Event) => {
         window.xchild.hide();
 
-        window.paypal.Checkout.renderPopupTo(window.top.frames[0], {
+        window.paypal.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
 
             url:              window.location.href,
             payment:          window.xprops.payment,
