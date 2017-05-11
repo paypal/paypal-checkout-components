@@ -402,6 +402,14 @@ export let Button = xcomponent.create({
 
             validate(style) {
 
+                Object
+                    .keys(style)
+                    .forEach(key => {
+                        if (!style[key] || typeof style[key] !== 'string') {
+                            delete style[key];
+                        }
+                    });
+
                 if (style.size && config.buttonStyles.size.indexOf(style.size) === -1) {
                     throw new Error(`Invalid button size: ${style.size}`);
                 }
