@@ -276,7 +276,9 @@ export let Checkout = xcomponent.create({
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_INIT,
+                        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
                         [ FPTI.KEY.TOKEN ]: data.paymentToken,
+                        [ FPTI.KEY.SELLER_ID ]: data.merchantID,
                         [ FPTI.KEY.CONTEXT_ID ]: data.paymentToken
                     });
 

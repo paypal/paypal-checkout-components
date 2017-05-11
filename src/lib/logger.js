@@ -29,6 +29,7 @@ export function initLogger() {
         return {
             [ FPTI.KEY.FEED ]: FPTI.FEED.CHECKOUTJS,
             [ FPTI.KEY.DATA_SOURCE ]: FPTI.DATA_SOURCE.CHECKOUT,
+            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
             [ FPTI.KEY.UID ]: getPageID(),
             [ FPTI.KEY.CONTEXT_ID ]: getPageID(),
             [ FPTI.KEY.REFERER ]: window.location.host

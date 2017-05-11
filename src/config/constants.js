@@ -31,8 +31,10 @@ export const FPTI = {
         UID: 'user_guid',
         TOKEN: 'token',
         CONTEXT_ID: 'context_id',
+        CONTEXT_TYPE: 'context_type',
         REFERER: 'referer_url',
         PAY_ID: 'pay_id',
+        SELLER_ID: 'seller_id',
         DATA_SOURCE: 'serverside_data_source'
     },
 
@@ -44,6 +46,11 @@ export const FPTI = {
 
     DATA_SOURCE: {
         CHECKOUT: 'checkout'
+    },
+
+    CONTEXT_TYPE: {
+        UID: 'UID',
+        EC_TOKEN: 'EC-Token'
     },
 
     FEED: {
