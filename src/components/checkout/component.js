@@ -152,8 +152,7 @@ export let Checkout = xcomponent.create({
                 if (!value && !props.url) {
                     throw new Error(`Expected props.payment to be passed`);
                 }
-            },
-            alias: 'billingAgreement'
+            }
         },
 
         commit: {

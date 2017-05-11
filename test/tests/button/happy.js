@@ -42,27 +42,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container with billingAgreement and click on the button, then complete the payment', (done) => {
-
-            return window.paypal.Button.render({
-
-                test: { flow, action: 'checkout' },
-
-                billingAgreement() : string | SyncPromise<string> {
-                    return generateECToken();
-                },
-
-                onAuthorize() : void {
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }, '#testContainer');
-        });
-
         it('should render a button into a container and click on the button, then cancel the payment', (done) => {
 
             return window.paypal.Button.render({
