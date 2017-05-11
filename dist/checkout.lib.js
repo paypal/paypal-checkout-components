@@ -2025,10 +2025,12 @@
                         data: data
                     });
                 }, function(err) {
+                    var stack = err.stack, message = err.message, error = void 0;
+                    error = stack ? message && -1 === stack.indexOf(message) ? err.message + "\n" + err.stack : stack : message;
                     return respond({
                         type: __WEBPACK_IMPORTED_MODULE_0__conf__.a.POST_MESSAGE_TYPE.RESPONSE,
                         ack: __WEBPACK_IMPORTED_MODULE_0__conf__.a.POST_MESSAGE_ACK.ERROR,
-                        error: err.stack ? err.message + "\n" + err.stack : err.toString()
+                        error: error
                     });
                 }) ]).catch(function(err) {
                     if (options && options.handleError) return options.handleError(err);
@@ -7894,7 +7896,7 @@
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.70";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.a.ppobjects ? "4" : "4.0.71";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.a.paypalDomains;
@@ -7965,6 +7967,7 @@
                         required: !0,
                         memoize: !1,
                         timeout: 1e4,
+                        alias: "billingAgreement",
                         decorate: function(original) {
                             return function() {
                                 var _this = this;
@@ -8137,6 +8140,7 @@
                         type: "object",
                         required: !1,
                         queryParam: !0,
+                        alias: "buttonStyle",
                         def: function() {
                             return {
                                 color: "gold",
@@ -8456,7 +8460,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.70";
+                    return __WEBPACK_IMPORTED_MODULE_7__config__.a.ppobjects ? "4" : "4.0.71";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8523,7 +8527,8 @@
                         },
                         validate: function(value, props) {
                             if (!value && !props.url) throw new Error("Expected props.payment to be passed");
-                        }
+                        },
+                        alias: "billingAgreement"
                     },
                     commit: {
                         type: "boolean",
@@ -8609,7 +8614,9 @@
                                 var _$logger$track;
                                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.g((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_7__config__.d.STATE.CHECKOUT, 
                                 _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_7__config__.d.TRANSITION.CHECKOUT_INIT, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_7__config__.d.CONTEXT_TYPE.EC_TOKEN, 
                                 _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.TOKEN] = data.paymentToken, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.SELLER_ID] = data.merchantID, 
                                 _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.d.KEY.CONTEXT_ID] = data.paymentToken, 
                                 _$logger$track));
                                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.f();
@@ -8942,7 +8949,7 @@
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.70",
+                version: "4.0.71",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -9062,7 +9069,7 @@
                 },
                 loggerUri: "/webapps/hermes/api/logger",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.70");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.71");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -9461,8 +9468,10 @@
                     UID: "user_guid",
                     TOKEN: "token",
                     CONTEXT_ID: "context_id",
+                    CONTEXT_TYPE: "context_type",
                     REFERER: "referer_url",
                     PAY_ID: "pay_id",
+                    SELLER_ID: "seller_id",
                     DATA_SOURCE: "serverside_data_source"
                 },
                 BUTTON_TYPE: {
@@ -9472,6 +9481,10 @@
                 },
                 DATA_SOURCE: {
                     CHECKOUT: "checkout"
+                },
+                CONTEXT_TYPE: {
+                    UID: "UID",
+                    EC_TOKEN: "EC-Token"
                 },
                 FEED: {
                     CHECKOUTJS: "checkoutjs"
@@ -9650,7 +9663,7 @@
             __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
                 return __WEBPACK_IMPORTED_MODULE_7__lib__.d;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.70", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_sync_browser_mocks_src_promise__.a.onPossiblyUnhandledException, version = "4.0.71", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
@@ -10480,7 +10493,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.70";
+                    payload.version = "4.0.71";
                     payload.host = window.location.host;
                     payload.uid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__util__.b)();
                     var query = [];
@@ -10495,7 +10508,7 @@
             function checkpoint(name) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
-                    var version = "4.0.70".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
+                    var version = "4.0.71".replace(/[^0-9]+/g, "_"), checkpointName = version + "_" + name, logged = -1 !== loggedCheckpoints.indexOf(checkpointName);
                     loggedCheckpoints.push(checkpointName);
                     logged && (checkpointName += "_dupe");
                     return beacon(checkpointName, payload);
@@ -10503,7 +10516,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.70",
+                    v: "checkout.js.4.0.71",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -11088,7 +11101,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_2__config__.a.locale.lang,
                         uid: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(),
-                        ver: "4.0.70"
+                        ver: "4.0.71"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i(function() {
@@ -11100,6 +11113,7 @@
                     var _ref;
                     return _ref = {}, _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.FEED] = __WEBPACK_IMPORTED_MODULE_2__config__.d.FEED.CHECKOUTJS, 
                     _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.DATA_SOURCE] = __WEBPACK_IMPORTED_MODULE_2__config__.d.DATA_SOURCE.CHECKOUT, 
+                    _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_2__config__.d.CONTEXT_TYPE.UID, 
                     _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.UID] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(), 
                     _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.CONTEXT_ID] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(), 
                     _ref[__WEBPACK_IMPORTED_MODULE_2__config__.d.KEY.REFERER] = window.location.host, 
