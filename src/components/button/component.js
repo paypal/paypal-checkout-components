@@ -217,7 +217,7 @@ export let Button = xcomponent.create({
             required: false
         },
 
-        onEnter: {
+        onRender: {
             type: 'function',
             promisify: true,
             required: false,
@@ -225,7 +225,8 @@ export let Button = xcomponent.create({
                 return function() : mixed {
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_RENDER
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
+                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
                     });
                     if (original) {
                         return original.apply(this, arguments);
@@ -347,7 +348,8 @@ export let Button = xcomponent.create({
 
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.IFRAME_BUTTON_CLICK
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
                     });
 
                     $logger.flush();

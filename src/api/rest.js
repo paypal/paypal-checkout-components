@@ -105,11 +105,6 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
     $logger.info(`rest_api_create_checkout_token`);
 
-    $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT
-    });
-
     env = env || config.env;
 
     let clientID = client[env];
@@ -157,6 +152,13 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     }).then((res) : string => {
 
         if (res && res.id) {
+
+            $logger.track({
+                [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT,
+                [ FPTI.KEY.PAY_ID ]: res.id
+            });
+
             return res.id;
         }
 

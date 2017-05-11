@@ -30,7 +30,8 @@ function renderButton(id, container, options, label) : HTMLElement {
 
     $logger.track({
         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.HTML_BUTTON_RENDER
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
+        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.HTML
     });
 
     if (options.locale) {
@@ -113,7 +114,8 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
 
                         $logger.track({
                             [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_RENDER
+                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
+                            [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
                         });
 
                         buttons.push({
@@ -124,7 +126,8 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                             track() {
                                 $logger.track({
                                     [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                                    [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
                                 });
                                 $logger.flush();
                             }
@@ -150,7 +153,8 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                                     track() {
                                         $logger.track({
                                             [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                                            [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.HTML
                                         });
                                         $logger.flush();
                                     }
@@ -196,7 +200,8 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                         track() {
                             $logger.track({
                                 [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.HTML_BUTTON_CLICK
+                                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                                [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.HTML
                             });
                             $logger.flush();
                         }

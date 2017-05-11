@@ -468,13 +468,15 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
 
                 $logger.track({
                     [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_RENDER
+                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION,
+                    [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
                 });
 
                 listenClick(el, el, options.click, options.condition, () => {
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CUSTOM_BUTTON_CLICK
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
                     });
                     $logger.flush();
                 });
