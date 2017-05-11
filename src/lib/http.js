@@ -52,8 +52,28 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
         let xhr = new win.XMLHttpRequest();
 
         xhr.addEventListener('load', function() : void {
-            if (!this.status || this.status >= 400) {
-                return reject(this);
+
+            if (!this.status) {
+                return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code`));
+            }
+
+            if (this.status >= 400) {
+                let message = `Request to ${method.toLowerCase()} ${url} failed with ${this.status} error`;
+
+                if (this.responseText) {
+                    let res = this.responseText;
+
+                    try {
+                        let resJSON = JSON.parse(res);
+                        res = JSON.stringify(resJSON, null, 4);
+                    } catch (err) {
+                        // pass
+                    }
+
+                    message = `${message}\n\n${res}\n`;
+                }
+
+                return reject(new Error(message));
             }
 
             let result;
