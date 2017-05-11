@@ -262,11 +262,6 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
 
                 #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-element {
                     max-width: 450px;
-                    max-width: 450px;
-                    max-width: 450px;
-                    max-width: 450px;
-
-                    max-width: 450px;
                 }
             }
 
