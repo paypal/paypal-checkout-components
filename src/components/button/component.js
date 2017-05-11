@@ -144,6 +144,7 @@ export let Button = xcomponent.create({
             required: true,
             memoize: false,
             timeout: __TEST__ ? 500 : 10 * 1000,
+            alias: 'billingAgreement',
 
             decorate(original) : Function {
                 return function payment() : SyncPromise<string> {
@@ -389,6 +390,7 @@ export let Button = xcomponent.create({
             type: 'object',
             required: false,
             queryParam: true,
+            alias: 'buttonStyle',
             def() : Object {
                 return {
                     color: 'gold',

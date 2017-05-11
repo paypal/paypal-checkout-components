@@ -45,6 +45,31 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
+        it('should render checkout with billingAgreement, then complete the payment', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', (event : Event) => {
+                return window.paypal.Checkout.render({
+
+                    billingAgreement() : string | SyncPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() : void {
+                        return done();
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
         it('should render checkout, then cancel the payment', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
