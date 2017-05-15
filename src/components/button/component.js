@@ -374,7 +374,7 @@ export let Button = xcomponent.create({
 
             validate(locale) {
 
-                if (!locale || !locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                if (!locale || !locale.match(/^[a-z]{2}[-_][A-Z][A-Z0-9]$/)) {
                     throw new Error(`Invalid locale: ${locale}`);
                 }
 
@@ -396,12 +396,12 @@ export let Button = xcomponent.create({
                     color: 'gold',
                     shape: 'pill',
                     size:  'small',
-                    label: 'checkout'
+                    label: 'checkout',
+                    fundingicons: false
                 };
             },
 
             validate(style) {
-
                 if (style.size && config.buttonStyles.size.indexOf(style.size) === -1) {
                     throw new Error(`Invalid button size: ${style.size}`);
                 }
@@ -417,8 +417,15 @@ export let Button = xcomponent.create({
                 if (style.label === 'credit' && style.color) {
                     throw new Error(`Custom colors for ${style.label} button are not supported`);
                 }
+                if (style.label === 'credit' && style.fundingicons) {
+                    throw new Error(`Funding Instruments for ${style.label} button are not supported`);
+                }
 
                 if (style.label === 'pay' && style.size === 'tiny') {
+                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
+                }
+
+                if (style.label === 'buynow' && style.size === 'tiny') {
                     throw new Error(`Invalid ${style.label} button size: ${style.size}`);
                 }
             }
