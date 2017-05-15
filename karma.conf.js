@@ -75,7 +75,8 @@ module.exports = function(config) {
                     '--no-sandbox',
                     '--enable-precise-memory-info',
                     '--js-flags="--expose-gc"'
-                ]
+                ],
+                debug: debug
             },
 
             xPhantom: {
@@ -160,7 +161,7 @@ module.exports = function(config) {
         },
 
         reporters: [
-            quick ? 'progress' : 'spec',
+            quick ? 'progress' : 'spec'
         ],
 
         autoWatch: autoWatch,
@@ -199,7 +200,13 @@ module.exports = function(config) {
         browserDisconnectTimeout: 30 * 1000,
         browserDisconnectTolerance: 2,
         captureTimeout: 120000,
-        reportSlowerThan: 10000
+        reportSlowerThan: 10000,
+
+        browserConsoleLogOptions: {
+            level: debug ? 'debug' : 'error', 
+            format: '%b %T: %m', 
+            terminal: true
+        }
     };
 
 
