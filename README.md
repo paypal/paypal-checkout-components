@@ -106,3 +106,9 @@ gulp test
 | --debug | Debug mode.  PhantomJS, Karma, and CheckoutJS  |
 | --quick | Fastest testing.  Minimal output, no coverage |
 | --browser | Choose Browser |
+
+
+## Features
+Here is a full list of features provided by this library
+
+* <a href="docs/http.md">Http (AJAX) Helper functions</a>
