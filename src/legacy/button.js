@@ -4,7 +4,7 @@ import * as logger from 'beaver-logger/client';
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
 import { config, FPTI } from '../config';
-import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle } from '../lib';
+import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle, checkpoint } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
@@ -28,11 +28,15 @@ let loadButtonJS = memoize(() : SyncPromise<void> => {
 
 function renderButton(id, container, options, label) : HTMLElement {
 
+    checkpoint('render_html_button', { version: true });
+
     $logger.track({
         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
         [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.HTML
     });
+
+    $logger.flush();
 
     if (options.locale) {
         let { country, lang } = normalizeLocale(options.locale);
@@ -112,11 +116,15 @@ export function renderButtons(id : string, options : Object) : SyncPromise<Array
                             continue;
                         }
 
+                        checkpoint('render_custom_button', { version: true });
+
                         $logger.track({
                             [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
                             [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
                             [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
                         });
+
+                        $logger.flush();
 
                         buttons.push({
                             container: buttonEl,

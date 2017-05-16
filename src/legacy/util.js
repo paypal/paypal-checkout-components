@@ -4,7 +4,7 @@ import { SyncPromise } from 'sync-browser-mocks/src/promise';
 import * as logger from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
-import { checkpoint, urlWillRedirectPage, redirect as redir } from '../lib';
+import { urlWillRedirectPage, redirect as redir } from '../lib';
 
 import { LOG_PREFIX } from './constants';
 
@@ -20,10 +20,6 @@ export function logRedirect(location : string) {
 
     if (urlWillRedirectPage(location)) {
         redirected = true;
-    }
-
-    if (location && (location.match(/PayerID=/) || location.match(/ba_token=/))) {
-        checkpoint('flow_complete');
     }
 
     $logger.flush();

@@ -43,17 +43,21 @@ export function beacon(event : string, payload : Object = {}) {
 
 let loggedCheckpoints = [];
 
-export function checkpoint(name : string, payload : Object = {}) : void {
+export function checkpoint(name : string, payload : Object = {}, options : Object = {}) : void {
     try {
+        let checkpointName = name;
 
-        let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
-        let checkpointName = `${version}_${name}`;
+        if (options.version) {
+            let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
+            checkpointName = `${version}_${checkpointName}`;
+        }
+
         let logged = (loggedCheckpoints.indexOf(checkpointName) !== -1);
-
-        loggedCheckpoints.push(checkpointName);
 
         if (logged) {
             checkpointName = `${checkpointName}_dupe`;
+        } else {
+            loggedCheckpoints.push(checkpointName);
         }
 
         return beacon(checkpointName, payload);

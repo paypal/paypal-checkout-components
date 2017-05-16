@@ -1,10 +1,8 @@
 /* @flow */
 
-let { beacon, checkpoint } = require('./lib/beacon');
+let { beacon } = require('./lib/beacon');
 
 if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
-
-    checkpoint('load_again');
 
     let error = 'PayPal Checkout Integration Script already loaded on page';
 
@@ -21,8 +19,6 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
     try {
 
         let { extendNamespace } = require('./lib/namespace');
-
-        checkpoint('load');
 
         let _interface = require('./index');
 

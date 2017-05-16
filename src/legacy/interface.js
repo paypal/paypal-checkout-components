@@ -7,7 +7,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV, FPTI } from '../config';
 import { setupPostBridge } from './postBridge';
-import { supportsPopups, getElements, once, checkpoint, safeJSON, extendUrl, isIEIntranet } from '../lib';
+import { supportsPopups, getElements, once, safeJSON, extendUrl, isIEIntranet } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
@@ -183,8 +183,6 @@ function initPayPalCheckout(props = {}) : Object {
 
     paypalCheckoutInited = true;
 
-    checkpoint('flow_start');
-
     let paypalCheckout = Checkout.init({
 
         onAuthorize(data, actions) : SyncPromise<void> {
@@ -325,8 +323,6 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 
     let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
-    checkpoint('flow_listenclick');
-
     let isClick  = (clickHandler instanceof Function);
 
     if (element.hasAttribute('data-paypal-click-listener')) {
@@ -343,7 +339,6 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 
     element.addEventListener('click', (event : Event) => {
 
-        checkpoint('flow_buttonclick');
         track();
 
         let eligible = isLegacyEligible();
@@ -403,8 +398,6 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 let setupCalled = false;
 
 export function setup(id : string, options : Object = {}) : SyncPromise<void> {
-
-    checkpoint('flow_setup');
 
     id = id || 'merchant';
 

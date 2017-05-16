@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request, checkpoint } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -223,11 +223,13 @@ export let Button = xcomponent.create({
             required: false,
             decorate(original) : Function {
                 return function() : mixed {
+                    checkpoint('render_iframe_button', { version: true });
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
                         [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
                     });
+                    $logger.flush();
                     if (original) {
                         return original.apply(this, arguments);
                     }

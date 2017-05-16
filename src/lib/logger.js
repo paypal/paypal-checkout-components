@@ -5,10 +5,17 @@ import * as $logger from 'beaver-logger/client';
 import { config, FPTI } from '../config';
 import { getPageID } from './util';
 
+function getRefererDomain() : string {
+    return (window.xchild && window.xchild.getParentDomain)
+        ? window.xchild.getParentDomain()
+        : window.location.host;
+}
+
 export function initLogger() {
 
     $logger.addPayloadBuilder(() => {
         return {
+            referer: getRefererDomain(),
             host: window.location.host,
             path: window.location.pathname,
             env: config.env,
@@ -32,7 +39,7 @@ export function initLogger() {
             [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
             [ FPTI.KEY.UID ]: getPageID(),
             [ FPTI.KEY.CONTEXT_ID ]: getPageID(),
-            [ FPTI.KEY.REFERER ]: window.location.host
+            [ FPTI.KEY.REFERER ]: getRefererDomain()
         };
     });
 

@@ -72,12 +72,12 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
             return treatment;
         },
 
-        log(checkpointName : string, payload : { [key : string] : ?string } = {}) : Object {
+        log(checkpointName : string, payload : { [key : string] : ?string } = {}, options : Object = {}) : Object {
 
             let event = `${treatment}_${checkpointName}`;
 
             if (!logged[checkpointName]) {
-                checkpoint(event, { ...payload, expuid: uid });
+                checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
                 fpti({ ...payload, expuid: uid, eligibility_reason: event });
                 logged[checkpointName] = true;
             }
