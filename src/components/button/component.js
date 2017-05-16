@@ -242,8 +242,8 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onAuth = this.onAuth || new SyncPromise();
-                this.onAuth.resolve();
+                this.onRemember = this.onRemember || new SyncPromise();
+                this.onRemember.resolve();
 
                 enableCheckoutIframe();
             }
@@ -254,8 +254,8 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onAuth = this.onAuth || new SyncPromise();
-                this.onAuth.resolve();
+                this.onRemember = this.onRemember || new SyncPromise();
+                this.onRemember.resolve();
             }
         },
 
@@ -267,12 +267,12 @@ export let Button = xcomponent.create({
                 return function() : SyncPromise<void> {
                     return SyncPromise.try(() => {
 
-                        this.onAuth = this.onAuth || new SyncPromise();
+                        this.onRemember = this.onRemember || new SyncPromise();
 
                         if (this.props.displayTo === USERS.REMEMBERED) {
                             $logger.info(`button_render_wait_for_remembered_user`);
 
-                            return this.onAuth.then(() => {
+                            return this.onRemember.then(() => {
                                 $logger.info(`button_render_got_remembered_user`);
                             });
                         }
