@@ -10,14 +10,24 @@ type ContainerTemplateOptions = {
     }
 };
 
-function getInitialHeight(width) : ?string {
+function getInitialHeight(width, fundingIcons = false) : ?string {
     if (width) {
-        if (width < 200) {
-            return '42px';
-        } else if (width < 300) {
-            return '48px';
+        if (fundingIcons) {
+            if (width < 200) {
+                return '65px';
+            } else if (width < 300) {
+                return '75px';
+            } else {
+                return '85px';
+            }
         } else {
-            return '60px';
+            if (width < 200) {
+                return '42px';
+            } else if (width < 300) {
+                return '48px';
+            } else {
+                return '60px';
+            }
         }
     }
 }
@@ -27,8 +37,9 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
     let style = props.style || {};
     let label = style.label || 'checkout';
     let size = style.size || 'small';
+    let fundingIcons = props.style.fundingicons || false;
 
-    let initialHeight = getInitialHeight(dimensions.width);
+    let initialHeight = getInitialHeight(dimensions.width, fundingIcons);
 
     let sizes = {
         small: {
@@ -42,6 +53,21 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
         large: {
             width: '380px',
             height: '60px'
+        }
+    };
+
+    let sizesWithFunding = {
+        small: {
+            width: '148px',
+            height: '65px'
+        },
+        medium: {
+            width: '230px',
+            height: '75px'
+        },
+        large: {
+            width: '380px',
+            height: '85px'
         }
     };
 
@@ -77,18 +103,18 @@ export function containerTemplate({ id, props, CLASS, dimensions } : ContainerTe
             #${id} .paypal-button-parent,
             #${id} .paypal-button-parent-size-tiny,
             #${id} .paypal-button-parent-size-small {
-                width:  ${ sizes.small.width };
-                height: ${ sizes.small.height };
+                width:  ${ (fundingIcons ? sizesWithFunding : sizes).small.width };
+                height: ${ (fundingIcons ? sizesWithFunding : sizes).small.height };
             }
 
             #${id} .paypal-button-parent-size-medium {
-                width:  ${ sizes.medium.width };
-                height: ${ sizes.medium.height };
+                width:  ${ (fundingIcons ? sizesWithFunding : sizes).medium.width };
+                height: ${ (fundingIcons ? sizesWithFunding : sizes).medium.height };
             }
 
             #${id} .paypal-button-parent-size-large {
-                width:  ${ sizes.large.width };
-                height: ${ sizes.large.height };
+                width:  ${ (fundingIcons ? sizesWithFunding : sizes).large.width };
+                height: ${ (fundingIcons ? sizesWithFunding : sizes).large.height };
             }
 
             #${id} .paypal-button-parent-size-responsive {

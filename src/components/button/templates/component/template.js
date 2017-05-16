@@ -45,6 +45,7 @@ let buttonConfig = {
         colors: [ 'gold' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
+        label: true,
         tagline: false
     }
 };
@@ -91,7 +92,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
-    let logoColor = conf.logos[color];
+    let logoColor = conf.logos ? conf.logos[color] : '';
 
     let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
         if (name) {
@@ -105,7 +106,11 @@ export function componentTemplate({ props } : { props : Object }) : string {
         }
     });
 
-    let labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
+    let labelTag = '';
+
+    if (!props.style.fundingicons) {
+        labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
+    }
 
     return `
         <style type="text/css">
@@ -113,13 +118,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
                 </div>
                 <div class="paypal-button-tag-content">
                     ${ labelTag }
                 </div>
+               
             </div>
         </div>
 
