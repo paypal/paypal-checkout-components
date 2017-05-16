@@ -73,7 +73,7 @@ function renderButton(id, container, options, label) : HTMLElement {
         let throttle = getThrottle('tag_content', 5000);
 
         if (throttle.isEnabled()) {
-            tagContent.textContent = '';
+            tagContent.textContent = 'A safe, easy way to pay';
         }
 
         throttle.logStart();
