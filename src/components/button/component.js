@@ -11,7 +11,6 @@ import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
-import { componentScript } from './templates/component/script';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
 export let Button = xcomponent.create({
@@ -500,7 +499,6 @@ if (Button.isChild()) {
         let enabled = true;
 
         window.xprops.validate({
-
             enable() {
                 enabled = true;
             },
@@ -518,34 +516,4 @@ if (Button.isChild()) {
             }
         };
     }
-
-    let style = document.createElement('style');
-    let css = `
-        @media only screen and (min-width : 80px)  { body { height: 22px; } }
-        @media only screen and (min-width : 100px) { body { height: 42px; } }
-        @media only screen and (min-width : 200px) { body { height: 48px; } }
-        @media only screen and (min-width : 300px) { body { height: 60px; } }
-    `;
-
-    style.type = 'text/css';
-    if (style.styleSheet) {
-        // $FlowFixMe
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-
-    if (document.head) {
-        document.head.appendChild(style);
-    } else if (document.body) {
-        document.body.appendChild(style);
-    }
-
-    setTimeout(() => {
-        let logo = document.querySelector('.logo-paypal');
-
-        if (logo && (logo.style.visibility === 'hidden' || window.getComputedStyle(logo).visibility === 'hidden')) {
-            eval(`(${ componentScript.toString() })()`); // eslint-disable-line
-        }
-    }, 1);
 }
