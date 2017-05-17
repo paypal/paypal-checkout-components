@@ -161,6 +161,14 @@ export let Checkout = xcomponent.create({
             required: false
         },
 
+        experience: {
+            type: 'object',
+            required: false,
+            def() : Object {
+                return {};
+            }
+        },
+
         onAuthorize: {
             type: 'function',
             required: true,
