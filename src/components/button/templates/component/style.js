@@ -283,6 +283,10 @@ export let componentStyle = `
             left: -2px;
             border-radius: 22px;
         }
+        
+        .paypal-button .paypal-button-tag-content {
+            font-size: 11px;
+        }
 
         .paypal-button.paypal-shape-rect .paypal-button-content,
         .paypal-button.paypal-shape-rect .paypal-button-content::before {
@@ -403,6 +407,9 @@ export let componentStyle = `
             .paypal-button.paypal-style-buynow .paypal-button-content {
                 font-size: 13px;
             }
+            .paypal-button.paypal-style-buynow-branded .paypal-button-content {
+                font-size: 10px;
+            }
      }
 
 
@@ -410,11 +417,17 @@ export let componentStyle = `
             .paypal-button.paypal-style-buynow .paypal-button-content  {
                 font-size: 15px;
             }
+            .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+                font-size: 12px;
+            }
      }
 
      @media only screen and (min-width : 250px) and (min-height: 60px) {
             .paypal-button.paypal-style-buynow .paypal-button-content {
                 font-size: 20px;
+            }
+            .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+                font-size: 14px;
             }
      }
 
@@ -422,6 +435,10 @@ export let componentStyle = `
             width: 60%;
             margin: auto;
             font-weight: 900;
+     }
+       .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+            width: 100%;
+            margin: auto;
      }
 
 `;

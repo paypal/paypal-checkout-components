@@ -19,8 +19,8 @@ let buttonConfig = {
         sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
         logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
-        label: true,
         logo: true,
+        tagcontent: 'safer_tag',
         tagline: true
     },
 
@@ -38,6 +38,7 @@ let buttonConfig = {
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
         logos:  { creditblue: 'white' },
+        tagcontent: 'later_tag',
         tagline: true
     },
 
@@ -45,9 +46,11 @@ let buttonConfig = {
         colors: [ 'gold' ],
         sizes:  [ 'small', 'medium', 'large', 'responsive' ],
         shapes: [ 'pill', 'rect' ],
-        label: true,
+        logos:  { gold: 'blue' },
+        tagcontent: 'safer_tag',
         tagline: false
     }
+
 };
 
 export function componentTemplate({ props } : { props : Object }) : string {
@@ -72,6 +75,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Could not find content for ${label} for ${lang}_${country}`);
     }
 
+
     let contentText = conf.contentText || content[label];
 
     let {
@@ -92,8 +96,22 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
-    let logoColor = conf.logos ? conf.logos[color] : '';
+    let logoColor;
 
+    // button config override for branded buy now button; add logos, tag content
+    if (props.style.branded && label === 'buynow') {
+        contentText = `\$\{pp\}\$\{paypal\} ${contentText}`;
+        conf.tagline = true;
+    }
+
+    // logo for all buttons except unbranded buy  now button
+    if (!props.style.branded && label === 'buynow') {
+        logoColor = '';
+    } else {
+        logoColor = conf.logos[color];
+    }
+
+    // build up for button content
     let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
         if (name) {
             return `<img class="logo logo-${name} logo-${name}-${color}"
@@ -108,8 +126,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelTag = '';
 
+    // tag content below button allowed only if fundingicons is false
     if (!props.style.fundingicons) {
-        labelTag = conf.tagline && content[`${label}_tag`] ? content[`${label}_tag`] : '';
+        labelTag = conf.tagline && content[`${conf.tagcontent}`] ? content[`${conf.tagcontent}`] : '';
+    }
+
+    // Hack for buy now branded option to support custom css
+    if (props.style.branded && label === 'buynow') {
+        label = 'buynow-branded';
     }
 
     return `
