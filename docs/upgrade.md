@@ -21,15 +21,15 @@ You may be making an ajax call to PayPal, then redirecting to the PayPal Checkou
 
 ```html
 <div id="paymentMethods">
-	<button id="paypalButton">Pay with PayPal</button>
+    <button id="paypalButton">Pay with PayPal</button>
 </div>
 
 <script>
-	document.querySelector('#paypalButton').addEventListener('click', function(event) {
-		jQuery.post('/create-paypal-token', function(data) {
-			window.location = 'https://www.paypal.com/checkoutnow?token=' + data.token;
-		});
-	});
+    document.querySelector('#paypalButton').addEventListener('click', function(event) {
+        jQuery.post('/create-paypal-token', function(data) {
+            window.location = 'https://www.paypal.com/checkoutnow?token=' + data.token;
+        });
+    });
 </script>
 ```
 
@@ -39,21 +39,21 @@ If so, you can easily upgrade to use the Button component like so:
 <div id="paymentMethods"></div>
 
 <script>
-	paypal.Button.render({
+    paypal.Button.render({
 
-		payment: function() {
+        payment: function() {
             return new paypal.Promise(function(resolve, reject) {
                 jQuery.post('/create-paypal-token', function(data) {
-    				resolve(data.token);
-    			});
+                    resolve(data.token);
+                });
             });
-		}
+        }
 
-		onAuthorize: function(data) {
-			window.location = data.returnUrl;
-		}
+        onAuthorize: function(data) {
+            window.location = data.returnUrl;
+        }
 
-	}, '#paymentMethods');
+    }, '#paymentMethods');
 </script>
 ```
 
@@ -63,7 +63,7 @@ You may have a PayPal button in an html form, which does a 302 redirect to PayPa
 
 ```html
 <form method="post" action="/redirect-to-paypal">
-	<button id="paypalButton">Pay with PayPal</button>
+    <button id="paypalButton">Pay with PayPal</button>
 </div>
 ```
 
@@ -71,14 +71,14 @@ If so, you can easily upgrade and drop in the PayPal Button like so:
 
 ```html
 <form method="post" action="/redirect-to-paypal">
-	<script data-component="paypal-button" type="application/x-component">
-		{
-			submitForm: true,
+    <script data-component="paypal-button" type="application/x-component">
+        {
+            submitForm: true,
 
-			onAuthorize: function(data) {
-				window.location = data.returnUrl;
-			}
-		}
-	</script>
+            onAuthorize: function(data) {
+                window.location = data.returnUrl;
+            }
+        }
+    </script>
 </div>
 ```

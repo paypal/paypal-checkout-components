@@ -12,31 +12,31 @@ you want to do on the client or on the server side.
 ```javascript
 paypal.Button.render({
 
-	client: {
-		sandbox:    'xxxxxxxxx',
-		production: 'xxxxxxxxx'
-	},
+    client: {
+        sandbox:    'xxxxxxxxx',
+        production: 'xxxxxxxxx'
+    },
 
-	payment: function() {
-		return paypal.rest.payment.create(this.props.env, this.props.client, {
-			transactions: [
-				{
-					amount: {
-						total:    '1.00',
-						currency: 'USD'
-					}
-				}
-			]
-		});
-	},
+    payment: function() {
+        return paypal.rest.payment.create(this.props.env, this.props.client, {
+            transactions: [
+                {
+                    amount: {
+                        total:    '1.00',
+                        currency: 'USD'
+                    }
+                }
+            ]
+        });
+    },
 
-	commit: true,
+    commit: true,
 
-	onAuthorize: function(data) {
-		return actions.payment.execute().then(function() {
-			console.log('The payment was completed!');
-		});
-	}
+    onAuthorize: function(data) {
+        return actions.payment.execute().then(function() {
+            console.log('The payment was completed!');
+        });
+    }
 
 }, '#myContainerElement');
 ```
@@ -49,20 +49,20 @@ paypal.Button.render({
 ```javascript
 paypal.Button.render({
 
-	payment: function() {
-		return new paypal.Promise(function(resolve, reject) {
-			jQuery.post('/my-api/create-payment')
-				.done(function(data) { resolve(data.paymentID); })
-				.fail(function(err)  { reject(err); });
-		});
-	},
+    payment: function() {
+        return new paypal.Promise(function(resolve, reject) {
+            jQuery.post('/my-api/create-payment')
+                .done(function(data) { resolve(data.paymentID); })
+                .fail(function(err)  { reject(err); });
+        });
+    },
 
-	onAuthorize: function(data) {
+    onAuthorize: function(data) {
 
-		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
-			.done(function(data) { console.log('The payment was executed!'); })
-			.fail(function(err)  { console.log('There was an error!');  });
-	}
+        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
+            .done(function(data) { console.log('The payment was executed!'); })
+            .fail(function(err)  { console.log('There was an error!');  });
+    }
 
 }, '#myContainerElement');
 ```
@@ -75,30 +75,30 @@ paypal.Button.render({
 ```javascript
 paypal.Button.render({
 
-	client: {
-		sandbox:    'xxxxxxxxx',
-		production: 'xxxxxxxxx'
-	},
+    client: {
+        sandbox:    'xxxxxxxxx',
+        production: 'xxxxxxxxx'
+    },
 
-	payment: function() {
-		return actions.payment.create({
-			transactions: [
-				{
-					amount: {
-						total:    '1.00',
-						currency: 'USD'
-					}
-				}
-			]
-		});
-	},
+    payment: function() {
+        return actions.payment.create({
+            transactions: [
+                {
+                    amount: {
+                        total:    '1.00',
+                        currency: 'USD'
+                    }
+                }
+            ]
+        });
+    },
 
-	onAuthorize: function(data) {
+    onAuthorize: function(data) {
 
-		jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
-			.done(function(data) { console.log('The payment was executed!'); })
-			.fail(function(err)  { console.log('There was an error!');  });
-	}
+        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
+            .done(function(data) { console.log('The payment was executed!'); })
+            .fail(function(err)  { console.log('There was an error!');  });
+    }
 
 }, '#myContainerElement');
 ```
@@ -112,21 +112,21 @@ paypal.Button.render({
 ```javascript
 paypal.Button.render({
 
-	payment: function() {
-		return new paypal.Promise(function(resolve, reject) {
-			jQuery.post('/my-api/create-payment')
-				.done(function(data) { resolve(data.paymentID); })
-				.fail(function(err)  { reject(err); });
-		});
-	},
+    payment: function() {
+        return new paypal.Promise(function(resolve, reject) {
+            jQuery.post('/my-api/create-payment')
+                .done(function(data) { resolve(data.paymentID); })
+                .fail(function(err)  { reject(err); });
+        });
+    },
 
-	commit: true,
+    commit: true,
 
-	onAuthorize: function(data) {
-		return actions.payment.execute().then(function() {
-			console.log('The payment was completed!');
-		});
-	}
+    onAuthorize: function(data) {
+        return actions.payment.execute().then(function() {
+            console.log('The payment was completed!');
+        });
+    }
 
 }, '#myContainerElement');
 ```

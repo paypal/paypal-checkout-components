@@ -7,25 +7,25 @@ The button will appear exactly where you place it in your HTML.
 
 ```html
 <div class="myCart">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
+    <p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-	<script type="application/x-component" data-component="paypal-button">
-		{
-			client: {
-				...
-			},
+    <script type="application/x-component" data-component="paypal-button">
+        {
+            client: {
+                ...
+            },
 
-			payment: function() {
-				...
-			},
+            payment: function() {
+                ...
+            },
 
-			commit: true,
+            commit: true,
 
-			onAuthorize: function(data, actions) {
-				...
-			}
-		}
-	</script>
+            onAuthorize: function(data, actions) {
+                ...
+            }
+        }
+    </script>
 </div>
 ```
 
@@ -33,30 +33,30 @@ The button will appear exactly where you place it in your HTML.
 
 ```javascript
 var MyCartComponent = window.React.createClass({
-	render: function() {
+    render: function() {
 
-		let client = {
-			...
-		};
+        let client = {
+            ...
+        };
 
-		let payment = () => {
-			...
-		};
+        let payment = () => {
+            ...
+        };
 
-		let onAuthorize = (data, actions) => {
-			...
-		};
+        let onAuthorize = (data, actions) => {
+            ...
+        };
 
-		return (<div className='shoppingCart'>
-			<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
+        return (<div className='shoppingCart'>
+            <p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-			<paypal.Button.react
-				client={client}
-				payment={payment}
-				commit=true
-				onAuthorize={onAuthorize} />
-		</div>);
-	}
+            <paypal.Button.react
+                client={client}
+                payment={payment}
+                commit=true
+                onAuthorize={onAuthorize} />
+        </div>);
+    }
 });
 ```
 
@@ -64,36 +64,36 @@ var MyCartComponent = window.React.createClass({
 
 ```html
 <script>
-	// Add 'paypal-button' as a dependency for your angular app
+    // Add 'paypal-button' as a dependency for your angular app
 
-	angular.module('myapp', [ 'paypal-button' ])
+    angular.module('myapp', [ 'paypal-button' ])
 
-		.controller('cartController', function($scope) {
+        .controller('cartController', function($scope) {
 
-			// Add the props needed to your $scope
+            // Add the props needed to your $scope
 
-			$scope.client = {
-				...
-			};
+            $scope.client = {
+                ...
+            };
 
-			$scope.payment = function() {
-				...
-			};
+            $scope.payment = function() {
+                ...
+            };
 
-			$scope.onAuthorize = function(data) {
-				...
-			};
-		});
+            $scope.onAuthorize = function(data) {
+                ...
+            };
+        });
 </script>
 
 <div class="shoppingCart" ng-controller="cartController">
-	<p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
+    <p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
 
-	<paypal-button
-		client="client"
-		payment="payment"
-		commit="true"
-		onAuthorize="onAuthorize">
-	</paypal-button>
+    <paypal-button
+        client="client"
+        payment="payment"
+        commit="true"
+        onAuthorize="onAuthorize">
+    </paypal-button>
 </div>
 ```
