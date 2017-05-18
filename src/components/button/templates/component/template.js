@@ -98,14 +98,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let logoColor;
 
-    // button config override for branded buy now button; add logos, tag content
-    if (props.style.branded && label === 'buynow') {
+    // button config override for branded buy now button
+    if (props.style.branding && label === 'buynow') {
         contentText = `\$\{pp\}\$\{paypal\} ${contentText}`;
         conf.tagline = true;
     }
 
-    // logo for all buttons except unbranded buy  now button
-    if (!props.style.branded && label === 'buynow') {
+    // logo for all buttons except unbranded buy now button
+    if (!props.style.branding && label === 'buynow') {
         logoColor = '';
     } else {
         logoColor = conf.logos[color];
@@ -126,13 +126,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelTag = '';
 
-    // tag content below button allowed only if fundingicons is false
+    // tag content below button allowed only for checkout, branded buynow, credit button;
+    // also when style.fundingicons is false
     if (!props.style.fundingicons) {
         labelTag = conf.tagline && content[`${conf.tagcontent}`] ? content[`${conf.tagcontent}`] : '';
     }
 
     // Hack for buy now branded option to support custom css
-    if (props.style.branded && label === 'buynow') {
+    if (props.style.branding && label === 'buynow') {
         label = 'buynow-branded';
     }
 

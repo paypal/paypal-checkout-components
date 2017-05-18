@@ -391,46 +391,32 @@ export let componentStyle = `
         }
     }
 
-    .paypal-button.paypal-style-pay {
-        min-width: 148px;
-        min-height: 42px;
-    }
-
 
     /*Buy Now Button */
-
+    
      .paypal-button.paypal-style-buynow .cardIcons {
             padding-top: 3px;
         }
-
+        
      @media only screen and (min-height: 22px) and (min-width: 100px) {
             .paypal-button.paypal-style-buynow .paypal-button-content {
                 font-size: 13px;
             }
-            .paypal-button.paypal-style-buynow-branded .paypal-button-content {
-                font-size: 10px;
-            }
      }
-
-
+     
+    
      @media only screen and (min-width : 200px) and (min-height: 48px) {
             .paypal-button.paypal-style-buynow .paypal-button-content  {
                 font-size: 15px;
             }
-            .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
-                font-size: 12px;
-            }
      }
-
+     
      @media only screen and (min-width : 250px) and (min-height: 60px) {
             .paypal-button.paypal-style-buynow .paypal-button-content {
                 font-size: 20px;
-            }
-            .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
-                font-size: 14px;
-            }
+            }            
      }
-
+     
      .paypal-button.paypal-style-buynow .paypal-button-content  {
             width: 60%;
             margin: auto;
@@ -440,5 +426,25 @@ export let componentStyle = `
             width: 100%;
             margin: auto;
      }
+     
+     /* Branded Buy Now button */
+     
+     @media only screen and (min-width : 100px) and (min-height: 42px) {
+        .paypal-button.paypal-style-buynow-branded .paypal-button-content {
+                font-size: 10px;
+            }
+     }
+     
+     @media only screen and (min-width : 200px) and (min-height: 48px) {
+        .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+                font-size: 12px;
+            }
+     }
+     
+      @media only screen and (min-width : 300px) and (min-height: 60px) {
+        .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+                font-size: 14px;
+            }
+      }    
 
 `;

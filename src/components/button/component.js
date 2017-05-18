@@ -420,8 +420,8 @@ export let Button = xcomponent.create({
                     throw new Error(`Custom colors for ${style.label} button are not supported`);
                 }
 
-                if (style.label === 'credit' && style.fundingicons !== undefined) {
-                    throw new Error(`Funding icons for ${style.label} button are not supported`);
+                if (style.label === 'credit' && style.hasOwnProperty('fundingicons')) {
+                    throw new Error(`Invalid option: style.fudningicons for ${style.label} button`);
                 }
 
                 if (style.label === 'pay' && style.size === 'tiny') {
@@ -432,24 +432,16 @@ export let Button = xcomponent.create({
                     throw new Error(`Invalid ${style.label} button size: ${style.size}`);
                 }
 
-                if (style.label === 'buynow' && style.fundingicons !== undefined && style.branded !== undefined) {
-                    throw new Error(`Must use either of fundingicons or branded option for ${style.label} button`);
+                if (style.label === 'buynow' && style.hasOwnProperty('fundingicons') && style.hasOwnProperty('branding')) {
+                    throw new Error(`Must use either of style.fundingicons or style.branding option for ${style.label} button`);
                 }
 
-                if (style.label === 'buynow' && style.branded === false) {
-                    throw new Error(`Invalid option for ${style.label} button.`);
+                if (style.label !== 'buynow' && style.hasOwnProperty('branding')) {
+                    throw new Error(`style.branding option not valid for ${style.label} button`);
                 }
 
-                if (style.label === 'checkout' && style.branded !== undefined) {
-                    throw new Error(`Branded option not required for ${style.label} button`);
-                }
-
-                if (style.label === 'pay' && style.branded !== undefined) {
-                    throw new Error(`Branded option not required for ${style.label} button`);
-                }
-
-                if (style.label === 'credit' && style.branded !== undefined) {
-                    throw new Error(`Branded option not required for ${style.label} button`);
+                if (style.label === 'buynow' && style.hasOwnProperty('branding') && style.branding !== true) {
+                    throw new Error(`Invalid option: style.branding must be unspecified or true`);
                 }
             }
         },
