@@ -88,7 +88,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        it('should render a button into a container and click on the button, then complete the payment', (done) => {
+        it('should render a button into a container and click on the button, then complete the payment with actions.braintree', (done) => {
 
             window.paypal.Button.render({
 
@@ -100,7 +100,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MOCK_BRAINTREE_AUTH
                 },
 
-                payment(actions) : SyncPromise<string> {
+                payment(data, actions) : SyncPromise<string> {
                     return actions.braintree.create({
                         flow:     'checkout',
                         amount:   '1.00',

@@ -149,9 +149,10 @@ export let Button = xcomponent.create({
                 return function payment() : SyncPromise<string> {
                     return new SyncPromise((resolve, reject) => {
 
-                        let actions = resolve;
+                        let data = resolve;
+                        let actions = reject;
 
-                        actions.payment = {
+                        data.payment = actions.payment = {
                             create: (options, experience) => {
                                 return rest.payment.create(this.props.env, this.props.client, options, experience);
                             }
@@ -181,7 +182,7 @@ export let Button = xcomponent.create({
                         let result;
 
                         try {
-                            result = original.call(context, actions, reject);
+                            result = original.call(context, data, actions);
                         } catch (err) {
                             return reject(err);
                         }
