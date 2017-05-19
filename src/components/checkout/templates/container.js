@@ -25,7 +25,9 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 </div>
             </div>
 
-            <div class="${CLASS.ELEMENT} paypal-checkout-iframe-element"></div>
+            <div class="paypal-checkout-iframe-container">
+                <div class="${CLASS.ELEMENT} paypal-checkout-iframe-element"></div>
+            </div>
         </div>
 
         <style>
@@ -192,24 +194,13 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 color: white;
             }
 
-            #${id} .paypal-checkout-iframe-element {
+            #${id} .paypal-checkout-iframe-container {
                 display: none;
             }
 
-            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-element {
+            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container {
 
                 display: block;
-
-                -webkit-transition: all 0.6s ease;
-                -moz-transition: all 0.6s ease;
-                -ms-transition: all 0.6s ease;
-                -o-transition: all 0.6 ease;
-                transition: all 0.6s ease;
-
-                -webkit-animation-duration: 1s;
-                animation-duration: 1s;
-                -webkit-animation-fill-mode: both;
-                animation-fill-mode: both;
 
                 position: fixed;
 
@@ -221,6 +212,23 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 -moz-transform: translate3d(-50%, -50%, 0);
                 -o-transform: translate3d(-50%, -50%, 0);
                 -ms-transform: translate3d(-50%, -50%, 0);
+
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-element {
+
+                -webkit-transition: all 0.3s ease;
+                -moz-transition: all 0.3s ease;
+                -ms-transition: all 0.3s ease;
+                -o-transition: all 0.3 ease;
+                transition: all 0.3s ease;
+
+                -webkit-animation-duration: 0.3s;
+                animation-duration: 0.3s;
+                -webkit-animation-fill-mode: both;
+                animation-fill-mode: both;
 
                 max-height: calc(100% - 20px);
                 max-height: -webkit-calc(100% - 20px);
@@ -240,11 +248,9 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 min-width: 450px;
 
                 background-color: white;
-                border-radius: 10px;
 
                 overflow: auto;
-                -webkit-overflow-scrolling:touch;
-
+                -webkit-overflow-scrolling: touch;
             }
 
             @media screen and (max-width: 450px) {
@@ -281,109 +287,56 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
              */
 
             @-webkit-keyframes ${ANIMATION.SHOW_COMPONENT} {
-                from, 60%, 75%, 90%, to {
-                    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-                    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-                }
-
                 from {
                     opacity: 0;
-                    -webkit-transform: translate3d(0, 3000px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 3000px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                60% {
-                    opacity: 1;
-                    -webkit-transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                75% {
-                    -webkit-transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                90% {
-                    -webkit-transform: translate3d(0, -5px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -5px, 0) translate3d(-50%, -50%, 0);
+                    transform: scale3d(.3, .3, .3);
+                    -webkit-transform: scale3d(.3, .3, .3);
                 }
 
                 to {
-                    -webkit-transform: translate3d(0, 0, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 0, 0) translate3d(-50%, -50%, 0);
+                    opacity: 1;
+                    transform: scale3d(1, 1, 1);
+                    -webkit-transform: scale3d(1, 1, 1);
                 }
             }
 
             @keyframes ${ANIMATION.SHOW_COMPONENT} {
-                from, 60%, 75%, 90%, to {
-                    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-                    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-                }
-
                 from {
-                    display: block;
                     opacity: 0;
-                    -webkit-transform: translate3d(0, 3000px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 3000px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                60% {
-                    opacity: 1;
-                    -webkit-transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                75% {
-                    -webkit-transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                90% {
-                    -webkit-transform: translate3d(0, -5px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -5px, 0) translate3d(-50%, -50%, 0);
+                    transform: scale3d(.3, .3, .3);
+                    -webkit-transform: scale3d(.3, .3, .3);
                 }
 
                 to {
-                    -webkit-transform: translate3d(0, 0, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 0, 0) translate3d(-50%, -50%, 0);
+                    opacity: 1;
+                    transform: scale3d(1, 1, 1);
+                    -webkit-transform: scale3d(1, 1, 1);
                 }
             }
 
             @-webkit-keyframes ${ANIMATION.HIDE_COMPONENT} {
-                20% {
-                    -webkit-transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                40%, 45% {
-                    opacity: 1;
-                    -webkit-transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
+                from {
+                    transform: scale3d(1, 1, 1);
+                    -webkit-transform: scale3d(1, 1, 1);
                 }
 
                 to {
                     opacity: 0;
-                    -webkit-transform: translate3d(0, 2000px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 2000px, 0) translate3d(-50%, -50%, 0);
+                    transform: scale3d(.3, .3, .3);
+                    -webkit-transform: scale3d(.3, .3, .3);
                 }
             }
 
             @keyframes ${ANIMATION.HIDE_COMPONENT} {
-                20% {
-                    -webkit-transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 10px, 0) translate3d(-50%, -50%, 0);
-                }
-
-                40%, 45% {
-                    opacity: 1;
-                    -webkit-transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, -20px, 0) translate3d(-50%, -50%, 0);
+                from {
+                    transform: scale3d(1, 1, 1);
+                    -webkit-transform: scale3d(1, 1, 1);
                 }
 
                 to {
                     opacity: 0;
-                    -webkit-transform: translate3d(0, 2000px, 0) translate3d(-50%, -50%, 0);
-                    transform: translate3d(0, 2000px, 0) translate3d(-50%, -50%, 0);
+                    transform: scale3d(.3, .3, .3);
+                    -webkit-transform: scale3d(.3, .3, .3);
                 }
             }
 
