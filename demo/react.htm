@@ -7,14 +7,16 @@
 
 <div id="page"></div>
 
-<script type="text/babel">
+    <script type="text/babel">
+
+        let PayPalButton = paypal.Button.driver('react', { React, ReactDOM });
 
         class Main extends React.Component {
 
-            render() {
+            constructor() {
+                super();
 
-                let opts = {
-
+                this.state = {
                     env: 'production',
 
                     client: {
@@ -22,36 +24,35 @@
                         production: 'AVZhosFzrnZ5Mf3tiOxAD0M6NHv8pcB2IFNHAfp_h69mmbd-LElFYkJUSII3Y0FPbm7S7lxBuqWImLbl'
                     },
 
-                    payment() {
-
-                        let env    = this.props.env;
-                        let client = this.props.client;
-
-                        return paypal.rest.payment.create(env, client, {
-                            transactions: [
-                                {
-                                    amount: { total: '1.00', currency: 'USD' }
-                                }
-                            ]
-                        });
-                    },
-
-                    commit: true, // Optional: show a 'Pay Now' button in the checkout flow
-
-                    onAuthorize(data, actions) {
-
-                        // Optional: display a confirmation page here
-
-                        return actions.payment.execute().then(function() {
-                            // Show a success page to the buyer
-                        });
-                    }
+                    commit: true
                 };
+            }
 
+            payment(data, actions) {
+                return actions.payment.create({
+                    transactions: [
+                        {
+                            amount: { total: '0.01', currency: 'USD' }
+                        }
+                    ]
+                });
+            }
+
+            onAuthorize(data, actions) {
+                return actions.payment.execute().then(function(paymentData) {
+                    // Show a success page to the buyer
+                });
+            }
+
+            render() {
                 return (
-                    <div>
-                        <paypal.Button.react env={opts.env} client={opts.client} payment={opts.payment} commit={opts.commit} onAuthorize={opts.onAuthorize} />
-                    </div>
+                    <PayPalButton
+                        commit={ this.state.commit }
+                        env={ this.state.env }
+                        client={ this.state.client }
+                        payment={ (data, actions) => this.payment(data, actions) }
+                        onAuthorize={ (data, actions) => this.onAuthorize(data, actions) }
+                    />
                 );
             }
         }
