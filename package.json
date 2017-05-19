@@ -84,7 +84,7 @@
     "sinon": "^2.2.0",
     "sinon-chai": "^2.8.0",
     "text-loader": "0.0.1",
-    "uglify-js": "^3.0.5",
+    "uglify-js": "^2.8.27",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0",
