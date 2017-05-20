@@ -205,7 +205,6 @@ function renderCheckout(paymentToken) {
     Checkout.renderTo(window.top, {
 
         payment: paymentToken || window.xprops.payment,
-        billingAgreement: window.xprops.billingAgreement,
 
         locale: window.xprops.locale,
         commit: window.xprops.commit,
