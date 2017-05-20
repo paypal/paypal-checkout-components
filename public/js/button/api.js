@@ -82,7 +82,19 @@ function mapPayment(data) {
                     state:          address.state,
                     postal_code:    address.postal_code,
                     country_code:   address.country_code,
-                    phone:          address.phone
+                    phone:          address.phone,
+                    type:           address.type
+                })),
+
+                billing_address: using(payerinfo.billing_address, address => ({
+                    line1:          address.line1,
+                    line2:          address.line2,
+                    city:           address.city,
+                    state:          address.state,
+                    postal_code:    address.postal_code,
+                    country_code:   address.country_code,
+                    phone:          address.phone,
+                    type:           address.type
                 }))
             }))
         })),
