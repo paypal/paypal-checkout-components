@@ -158,7 +158,7 @@ export let Button = xcomponent.create({
                             }
                         };
 
-                        data.braintee = actions.braintree = {
+                        data.braintree = actions.braintree = {
                             create: (options) => {
                                 if (!this.props.braintree) {
                                     throw new Error(`Can not create using Braintree - no braintree client provided`);

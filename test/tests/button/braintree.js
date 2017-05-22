@@ -124,5 +124,42 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
+
+        it('should render a button into a container and click on the button, then complete the payment with data.braintree', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                braintree: mockBraintree,
+
+                client: {
+                    test: MOCK_BRAINTREE_AUTH
+                },
+
+                payment(data, actions) : SyncPromise<string> {
+                    return data.braintree.create({
+                        flow:     'checkout',
+                        amount:   '1.00',
+                        currency: 'USD',
+                        intent:   'sale'
+                    });
+                },
+
+                onAuthorize(data) : void {
+
+                    if (data.nonce !== MOCK_BRAINTREE_NONCE) {
+                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                    }
+
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
     });
 }
