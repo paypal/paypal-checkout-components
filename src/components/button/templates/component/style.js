@@ -392,59 +392,40 @@ export let componentStyle = `
     }
 
 
-    /*Buy Now Button */
+    /*Unbranded Button; eg: buynow */
     
-     .paypal-button.paypal-style-buynow .cardIcons {
-            padding-top: 3px;
-        }
-        
+       
      @media only screen and (min-height: 22px) and (min-width: 100px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content {
+            .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 13px;
             }
      }
      
     
      @media only screen and (min-width : 200px) and (min-height: 48px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content  {
+            .paypal-button.paypal-branding-false .paypal-button-content  {
                 font-size: 15px;
             }
      }
      
      @media only screen and (min-width : 250px) and (min-height: 60px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content {
+            .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 20px;
             }            
      }
      
-     .paypal-button.paypal-style-buynow .paypal-button-content  {
+     .paypal-button.paypal-branding-false .paypal-button-content  {
             width: 60%;
             margin: auto;
             font-weight: 900;
      }
-       .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
+     
+     /*Add on branding */
+         
+     .paypal-button.paypal-branding-true .paypal-button-content  {
             width: 100%;
             margin: auto;
      }
      
-     /* Branded Buy Now button */
-     
-     @media only screen and (min-width : 100px) and (min-height: 42px) {
-        .paypal-button.paypal-style-buynow-branded .paypal-button-content {
-                font-size: 10px;
-            }
-     }
-     
-     @media only screen and (min-width : 200px) and (min-height: 48px) {
-        .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
-                font-size: 12px;
-            }
-     }
-     
-      @media only screen and (min-width : 300px) and (min-height: 60px) {
-        .paypal-button.paypal-style-buynow-branded .paypal-button-content  {
-                font-size: 14px;
-            }
-      }    
 
 `;

@@ -64,6 +64,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let style   = props.style || {};
     let label   = style.label || defaultLabel;
     let conf    = buttonConfig[label];
+    let tagline = conf.tagline;
 
     if (!conf) {
         throw new Error(`Unexpected button label: ${label}`);
@@ -101,14 +102,21 @@ export function componentTemplate({ props } : { props : Object }) : string {
     // button config override for branded buy now button
     if (props.style.branding && label === 'buynow') {
         contentText = `\$\{pp\}\$\{paypal\} ${contentText}`;
-        conf.tagline = true;
+        tagline = true;
     }
+
+    let branded;
 
     // logo for all buttons except unbranded buy now button
     if (!props.style.branding && label === 'buynow') {
         logoColor = '';
+        branded = 'false';
     } else {
         logoColor = conf.logos[color];
+    }
+
+    if (props.style.branding && label === 'buynow') {
+        branded = 'true';
     }
 
     // build up for button content
@@ -126,16 +134,12 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelTag = '';
 
-    // tag content below button allowed only for checkout, branded buynow, credit button;
+    // tag content below button allowed only for checkout, branding buynow, credit button;
     // also when style.fundingicons is false
     if (!props.style.fundingicons) {
-        labelTag = conf.tagline && content[`${conf.tagcontent}`] ? content[`${conf.tagcontent}`] : '';
+        labelTag = tagline && content[`${conf.tagcontent}`] ? content[`${conf.tagcontent}`] : '';
     }
 
-    // Hack for buy now branded option to support custom css
-    if (props.style.branding && label === 'buynow') {
-        label = 'buynow-branded';
-    }
 
     return `
         <style type="text/css">
@@ -143,7 +147,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branded }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
                 </div>

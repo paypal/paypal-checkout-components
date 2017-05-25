@@ -421,7 +421,7 @@ export let Button = xcomponent.create({
                 }
 
                 if (style.label === 'credit' && style.hasOwnProperty('fundingicons')) {
-                    throw new Error(`Invalid option: style.fudningicons for ${style.label} button`);
+                    throw new Error(`Invalid option: style.fundingicons for ${style.label} button`);
                 }
 
                 if (style.label === 'pay' && style.size === 'tiny') {
