@@ -5,6 +5,7 @@ import * as $logger from 'beaver-logger/client';
 import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
+import { createPptmScript } from './lib/pptm';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
@@ -123,6 +124,8 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     } else {
         setLogLevel(config.logLevel);
     }
+
+    createPptmScript();
 
     $logger.info(`setup_${config.env}`);
 

@@ -167,6 +167,8 @@ export let config = {
 
     loggerUri: `/webapps/hermes/api/logger`,
 
+    pptmUri: `/tagmanager/pptm.js`,
+
     get postBridgeUri() : string {
         return `${config.postBridgeUris[config.env]}?xcomponent=1&version=${config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__}`;
     },
@@ -369,6 +371,10 @@ export let config = {
 
     get loggerUrl() : string {
         return `${config.paypalUrl}${config.loggerUri}`;
+    },
+
+    get pptmUrl() : string {
+        return `${config.paypalUrl}${config.pptmUri}`;
     },
 
     get authApiUrl() : string {
