@@ -29,7 +29,7 @@ let documentReady : SyncPromise<void> = new SyncPromise(resolve => {
 let documentBody : SyncPromise<HTMLElement> = documentReady.then(() => document.body);
 
 
-export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
+export function loadScript(src : string, timeout : number = 0, attrs : Object = {}) : SyncPromise<void> {
     return documentBody.then(body => {
 
         return new SyncPromise((resolve, reject) => {
@@ -56,6 +56,10 @@ export function loadScript(src : string, timeout : number = 0) : SyncPromise<voi
                 setTimeout(() => {
                     return reject(new Error('script_loading_timed_out'));
                 }, timeout);
+            }
+
+            for (let attr of Object.keys(attrs)) {
+                script.setAttribute(attr, attrs[attr]);
             }
 
             script.setAttribute('src', src);
