@@ -159,6 +159,27 @@ export function getElement(el : string | HTMLElement, container : HTMLElement | 
     return element;
 }
 
+export function getElements(selector : string | HTMLElement, container : HTMLElement | Document = document) : NodeList {
+
+    if (!selector) {
+        throw new Error(`No element passed`);
+    }
+
+    let elements;
+
+    if (typeof selector === 'string') {
+        elements = container.querySelectorAll(selector);
+
+        if (!elements) {
+            throw new Error(`Can not find element: ${selector}`);
+        }
+    } else {
+        elements = selector;
+    }
+
+    return elements;
+}
+
 
 export function createTestContainer() : HTMLElement {
     return createElement({

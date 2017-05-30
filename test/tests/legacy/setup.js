@@ -5,7 +5,7 @@ import { assert } from 'chai';
 
 
 
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement, getElements } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -20,6 +20,35 @@ for (let flow of [ 'popup', 'iframe' ]) {
             destroyTestContainer();
             window.location.hash = '';
             window.paypal.Checkout.contexts.iframe = false;
+        });
+
+        it('should download pptm.js file in an "async" script with as the "?id=`window.location.hostname`&t=xo"', () => {
+            return window.paypal.checkout.setup('merchantID', {
+                container: 'testContainer'
+            }).then(() => {
+                let el = getElement('#xo--pptm');
+
+                assert.equal(el.async, true);
+                assert.include(el.src, `pptm.js?id=${window.location.hostname}&t=xo`);
+            });
+        });
+
+        it('should not download pptm.js file twice if `setup` is called more than once', () => {
+            return window.paypal.checkout.setup('merchantID', {
+                container: 'testContainer'
+            }).then(() => {
+                return window.paypal.checkout.setup('merchantID-2', {
+                    container: 'testContainer'
+                }).then(() => {
+                    const scripts = [].slice.call(getElements('script'), 0);
+
+                    const count = scripts.reduce((prev, curr) => {
+                        return (curr.id === 'xo--pptm') ? prev + 1 : prev;
+                    }, 0);
+
+                    assert.equal(count, 1);
+                });
+            });
         });
 
         it('should render a button into a container and click on the button, then call startFlow', () => {
