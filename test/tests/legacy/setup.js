@@ -28,7 +28,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }).then(() => {
                 let el = getElement('#xo--pptm');
 
+                // $FlowFixMe
                 assert.equal(el.async, true);
+                // $FlowFixMe
                 assert.include(el.src, `pptm.js?id=${window.location.hostname}&t=xo`);
             });
         });
