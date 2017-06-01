@@ -65,7 +65,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let label   = style.label || defaultLabel;
     let conf    = buttonConfig[label];
     let tagline = conf.tagline;
-    let logoColor, branded;
+    let logoColor, branded = '';
 
     if (!conf) {
         throw new Error(`Unexpected button label: ${label}`);
