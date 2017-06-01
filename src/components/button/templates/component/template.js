@@ -65,6 +65,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let label   = style.label || defaultLabel;
     let conf    = buttonConfig[label];
     let tagline = conf.tagline;
+    let logoColor, branded;
 
     if (!conf) {
         throw new Error(`Unexpected button label: ${label}`);
@@ -97,15 +98,17 @@ export function componentTemplate({ props } : { props : Object }) : string {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
-    let logoColor;
-
     // button config override for branded buy now button
     if (props.style.branding && label === 'buynow') {
         contentText = `\$\{pp\}\$\{paypal\} ${contentText}`;
-        tagline = true;
+        branded = 'true';
+        if (props.style.fundingicons) {
+            tagline = false;
+        }
+        else {
+            tagline = true;
+        }
     }
-
-    let branded;
 
     // logo for all buttons except unbranded buy now button
     if (!props.style.branding && label === 'buynow') {
@@ -113,10 +116,6 @@ export function componentTemplate({ props } : { props : Object }) : string {
         branded = 'false';
     } else {
         logoColor = conf.logos[color];
-    }
-
-    if (props.style.branding && label === 'buynow') {
-        branded = 'true';
     }
 
     // build up for button content

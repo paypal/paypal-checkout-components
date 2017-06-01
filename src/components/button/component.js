@@ -432,10 +432,6 @@ export let Button = xcomponent.create({
                     throw new Error(`Invalid ${style.label} button size: ${style.size}`);
                 }
 
-                if (style.label === 'buynow' && style.hasOwnProperty('fundingicons') && style.hasOwnProperty('branding')) {
-                    throw new Error(`Must use either of style.fundingicons or style.branding option for ${style.label} button`);
-                }
-
                 if (style.label !== 'buynow' && style.hasOwnProperty('branding')) {
                     throw new Error(`style.branding option not valid for ${style.label} button`);
                 }
