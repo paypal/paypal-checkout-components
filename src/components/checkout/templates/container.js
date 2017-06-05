@@ -198,6 +198,13 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 display: none;
             }
 
+            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container,
+            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container > .paypal-checkout-iframe-element,
+            #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container > .paypal-checkout-iframe-element > iframe {
+                max-height: 95vh;
+                max-width: 95vw;
+            }
+
             #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container {
 
                 display: block;
@@ -206,7 +213,7 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
 
                 top: 50%;
                 left: 50%;
-                
+
                 min-width: 450px;
 
                 transform: translate3d(-50%, -50%, 0);
@@ -214,18 +221,6 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 -moz-transform: translate3d(-50%, -50%, 0);
                 -o-transform: translate3d(-50%, -50%, 0);
                 -ms-transform: translate3d(-50%, -50%, 0);
-                
-                max-height: calc(100% - 20px);
-                max-height: -webkit-calc(100% - 20px);
-                max-height: -moz-calc(100% - 20px);
-                max-height: -o-calc(100% - 20px);
-                max-height: -ms-calc(100% - 20px);
-
-                max-width: calc(100% - 20px);
-                max-width: -webkit-calc(100% - 20px);
-                max-width: -moz-calc(100% - 20px);
-                max-width: -o-calc(100% - 20px);
-                max-width: -ms-calc(100% - 20px);
 
                 border-radius: 10px;
                 overflow: hidden;
@@ -244,9 +239,6 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
                 -webkit-animation-fill-mode: both;
                 animation-fill-mode: both;
 
-                max-height: 100%;
-                max-width: 100%;
-                
                 min-width: 450px;
 
                 width: 450px;
@@ -259,7 +251,7 @@ export function containerTemplate({ id, CLASS, ANIMATION }) : string {
             }
 
             @media screen and (max-width: 450px) {
-            
+
                 #${id}.${CLASS.IFRAME} .paypal-checkout-iframe-container {
                     min-width: calc(100% - 20px);
                     min-width: -webkit-calc(100% - 20px);

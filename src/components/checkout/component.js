@@ -29,6 +29,8 @@ export let Checkout = xcomponent.create({
     tag: 'paypal-checkout',
     name: 'ppcheckout',
 
+    scrolling: true,
+
     buildUrl(props) : string | SyncPromise<string> {
         let env = props.env || config.env;
 
