@@ -70,10 +70,10 @@ function renderButton(id, container, options, label) : HTMLElement {
     let tagContent = el.querySelector('.paypal-button-tag-content');
 
     if (isElementVisible(el) && tagContent && tagContent.innerText && tagContent.innerText.trim()) {
-        let throttle = getThrottle('tag_content', 5000);
+        let throttle = getThrottle('tag_content_v2', 5000);
 
         if (throttle.isEnabled()) {
-            tagContent.textContent = 'A safe, easy way to pay';
+            // pass
         }
 
         throttle.logStart();
