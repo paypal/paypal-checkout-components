@@ -419,8 +419,9 @@ export let Button = xcomponent.create({
                 if (style.label === 'credit' && style.color) {
                     throw new Error(`Custom colors for ${style.label} button are not supported`);
                 }
-                if (style.label === 'credit' && style.fundingicons) {
-                    throw new Error(`Funding Instruments for ${style.label} button are not supported`);
+
+                if (style.label === 'credit' && style.hasOwnProperty('fundingicons')) {
+                    throw new Error(`Invalid option: style.fundingicons for ${style.label} button`);
                 }
 
                 if (style.label === 'pay' && style.size === 'tiny') {
@@ -429,6 +430,14 @@ export let Button = xcomponent.create({
 
                 if (style.label === 'buynow' && style.size === 'tiny') {
                     throw new Error(`Invalid ${style.label} button size: ${style.size}`);
+                }
+
+                if (style.label !== 'buynow' && style.hasOwnProperty('branding')) {
+                    throw new Error(`style.branding option not valid for ${style.label} button`);
+                }
+
+                if (style.label === 'buynow' && style.hasOwnProperty('branding') && style.branding !== true) {
+                    throw new Error(`Invalid option: style.branding must be unspecified or true`);
                 }
             }
         },

@@ -283,6 +283,10 @@ export let componentStyle = `
             left: -2px;
             border-radius: 22px;
         }
+        
+        .paypal-button .paypal-button-tag-content {
+            font-size: 11px;
+        }
 
         .paypal-button.paypal-shape-rect .paypal-button-content,
         .paypal-button.paypal-shape-rect .paypal-button-content::before {
@@ -387,41 +391,41 @@ export let componentStyle = `
         }
     }
 
-    .paypal-button.paypal-style-pay {
-        min-width: 148px;
-        min-height: 42px;
-    }
 
-
-    /*Buy Now Button */
-
-     .paypal-button.paypal-style-buynow .cardIcons {
-            padding-top: 3px;
-        }
-
+    /*Unbranded Button; eg: buynow */
+    
+       
      @media only screen and (min-height: 22px) and (min-width: 100px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content {
+            .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 13px;
             }
      }
-
-
+     
+    
      @media only screen and (min-width : 200px) and (min-height: 48px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content  {
+            .paypal-button.paypal-branding-false .paypal-button-content  {
                 font-size: 15px;
             }
      }
-
+     
      @media only screen and (min-width : 250px) and (min-height: 60px) {
-            .paypal-button.paypal-style-buynow .paypal-button-content {
+            .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 20px;
-            }
+            }            
      }
-
-     .paypal-button.paypal-style-buynow .paypal-button-content  {
+     
+     .paypal-button.paypal-branding-false .paypal-button-content  {
             width: 60%;
             margin: auto;
             font-weight: 900;
      }
+     
+     /*Add on branding */
+         
+     .paypal-button.paypal-branding-true .paypal-button-content  {
+            width: 100%;
+            margin: auto;
+     }
+     
 
 `;
