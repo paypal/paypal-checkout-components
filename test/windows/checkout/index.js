@@ -1,5 +1,6 @@
 /* @flow */
 
+import { isSameDomain, getFrames } from 'cross-domain-utils/src';
 import { createTestContainer, createElement } from '../../tests/common';
 
 let { action } = window.xprops.test;
@@ -93,12 +94,12 @@ if (action === 'checkout') {
 
                 win.location = '/base/test/windows/fallback/index.htm';
 
-                if (window.paypal.postRobot.winutil.isSameDomain(parent) && parent.watchForLegacyFallback) {
+                if (isSameDomain(parent) && parent.watchForLegacyFallback) {
                     return parent.watchForLegacyFallback(win);
                 }
 
-                for (let frame of window.paypal.postRobot.winutil.getFrames(parent)) {
-                    if (window.paypal.postRobot.winutil.isSameDomain(frame) && frame.watchForLegacyFallback) {
+                for (let frame of getFrames(parent)) {
+                    if (isSameDomain(frame) && frame.watchForLegacyFallback) {
                         return frame.watchForLegacyFallback(win);
                     }
                 }
