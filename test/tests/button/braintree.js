@@ -75,7 +75,7 @@ let mockBraintree = {
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button braintree tests on.only ${flow}`, () => {
+    describe(`paypal button braintree tests on ${flow}`, () => {
 
         beforeEach(() => {
             createTestContainer();
