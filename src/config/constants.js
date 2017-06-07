@@ -14,6 +14,11 @@ export const USERS = {
     REMEMBERED: 'remembered'
 };
 
+export const SOURCE = {
+    MANUAL: 'manual',
+    BUTTON_FACTORY: 'button_factory'
+};
+
 export const LOG_LEVEL = {
     DEBUG: 'debug',
     INFO:  'info',
@@ -35,7 +40,8 @@ export const FPTI = {
         REFERER: 'referer_url',
         PAY_ID: 'pay_id',
         SELLER_ID: 'seller_id',
-        DATA_SOURCE: 'serverside_data_source'
+        DATA_SOURCE: 'serverside_data_source',
+        BUTTON_SOURCE: 'button_source'
     },
 
     BUTTON_TYPE: {

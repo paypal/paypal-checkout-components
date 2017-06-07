@@ -5,7 +5,7 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
-import { config, USERS, ENV, FPTI } from '../../config';
+import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request, checkpoint } from '../../lib';
 import { rest } from '../../api';
 
@@ -95,6 +95,14 @@ export let Button = xcomponent.create({
                 if (client[env].match(/^(.)\1+$/)) {
                     throw new Error(`Invalid client ID: ${client[env]}`);
                 }
+            }
+        },
+
+        source: {
+            type: 'string',
+            required: false,
+            def() : string {
+                return SOURCE.MANUAL;
             }
         },
 
@@ -228,7 +236,8 @@ export let Button = xcomponent.create({
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
-                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
+                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
                     });
                     $logger.flush();
                     if (original) {

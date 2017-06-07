@@ -11,7 +11,7 @@ export { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
 export { rest } from './api';
 export { Button } from './components';
 export { setup } from './setup';
-export { config, ENV, USERS } from './config';
+export { config, ENV, USERS, SOURCE } from './config';
 export { request, isEligible, isWebView, forceIframe } from './lib';
 
 export let onPossiblyUnhandledException = SyncPromise.onPossiblyUnhandledException;
