@@ -122,13 +122,13 @@ export let componentStyle = `
     }
 
 
-    @media only screen and (max-width : 148px) {
+    @media only screen and (max-width : 147px) {
         .paypal-button {
             display: none;
         }
     }
 
-    @media only screen and (max-height : 42px) {
+    @media only screen and (max-height : 41px) {
         .paypal-button {
             display: none;
         }
@@ -136,7 +136,7 @@ export let componentStyle = `
 
     /* Small */
 
-    @media only screen and (min-width : 148px) {
+    @media only screen and (min-width : 147px) {
         body {
             height: 42px;
         }
@@ -146,7 +146,7 @@ export let componentStyle = `
         }
     }
 
-    @media only screen and (min-width : 148px) and (min-height: 42px) {
+    @media only screen and (min-width : 147px) and (min-height: 41px) {
 
         .paypal-button {
             display: block;
@@ -283,7 +283,7 @@ export let componentStyle = `
             left: -2px;
             border-radius: 22px;
         }
-        
+
         .paypal-button .paypal-button-tag-content {
             font-size: 11px;
         }
@@ -393,39 +393,39 @@ export let componentStyle = `
 
 
     /*Unbranded Button; eg: buynow */
-    
-       
+
+
      @media only screen and (min-height: 22px) and (min-width: 100px) {
             .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 13px;
             }
      }
-     
-    
+
+
      @media only screen and (min-width : 200px) and (min-height: 48px) {
             .paypal-button.paypal-branding-false .paypal-button-content  {
                 font-size: 15px;
             }
      }
-     
+
      @media only screen and (min-width : 250px) and (min-height: 60px) {
             .paypal-button.paypal-branding-false .paypal-button-content {
                 font-size: 20px;
-            }            
+            }
      }
-     
+
      .paypal-button.paypal-branding-false .paypal-button-content  {
             width: 60%;
             margin: auto;
             font-weight: 900;
      }
-     
+
      /*Add on branding */
-         
+
      .paypal-button.paypal-branding-true .paypal-button-content  {
             width: 100%;
             margin: auto;
      }
-     
+
 
 `;
