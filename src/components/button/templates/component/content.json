@@ -259,7 +259,7 @@
     },
     "AU": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -569,7 +569,7 @@
     },
     "BN": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -618,7 +618,7 @@
             "buynow": "Comprar agora"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -660,7 +660,7 @@
     },
     "BT": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -750,7 +750,7 @@
             "buynow": "\u7acb\u5373\u8d2d\u4e70"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -759,7 +759,7 @@
     },
     "CA": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -1095,7 +1095,7 @@
             "buynow": "Jetzt kaufen"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -1141,7 +1141,7 @@
             "buynow": "K\u00f8b nu"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -1388,7 +1388,7 @@
             "buynow": "Comprar ahora"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -1533,7 +1533,7 @@
     },
     "FM": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -1637,7 +1637,7 @@
     },
     "GB": {
         "en": {
-            "checkout": "${pp}${paypal} Check out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2063,7 +2063,7 @@
     },
     "HK": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2159,7 +2159,7 @@
     },
     "ID": {
         "id": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "Cara yang lebih mudah dan aman untuk membayar.",
 
             "later_tag": "Beli Sekarang. Bayar dalam Jangka Waktu Tertentu.",
@@ -2167,7 +2167,7 @@
             "buynow": "Beli Sekarang"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2219,7 +2219,7 @@
             "buynow": "\u05e7\u05e0\u05d4 \u05e2\u05db\u05e9\u05d9\u05d5"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2229,7 +2229,7 @@
     },
     "IN": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2257,7 +2257,7 @@
             "buynow": "Paga adesso"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2351,7 +2351,7 @@
             "buynow": "\u8cfc\u5165"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2429,7 +2429,7 @@
     },
     "KH": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2549,7 +2549,7 @@
             "buynow": "\ubc14\ub85c \uad6c\ub9e4"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2669,7 +2669,7 @@
     },
     "LA": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -2747,7 +2747,7 @@
     },
     "LK": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3109,7 +3109,7 @@
     },
     "MN": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3265,7 +3265,7 @@
     },
     "MV": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3317,7 +3317,7 @@
             "buynow": "Comprar ahora"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3327,7 +3327,7 @@
     },
     "MY": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3559,7 +3559,7 @@
             "buynow": "Nu kopen"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3577,7 +3577,7 @@
             "buynow": "Kj\u00f8p n\u00e5"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3587,7 +3587,7 @@
     },
     "NP": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3665,7 +3665,7 @@
     },
     "NZ": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3877,7 +3877,7 @@
     },
     "PH": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3895,7 +3895,7 @@
             "buynow": "Kup teraz"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -3981,7 +3981,7 @@
             "buynow": "Comprar agora"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -4195,7 +4195,7 @@
             "buynow": "\u041a\u0443\u043f\u0438\u0442\u044c \u0441\u0435\u0439\u0447\u0430\u0441"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -4356,7 +4356,7 @@
             "buynow": "K\u00f6p nu"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -4365,7 +4365,7 @@
     },
     "SG": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -4874,7 +4874,7 @@
             "buynow": "\u0e0b\u0e37\u0e49\u0e2d\u0e17\u0e31\u0e19\u0e17\u0e35"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -4994,7 +4994,7 @@
     },
     "TO": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -5012,7 +5012,7 @@
             "buynow": "Hemen Sat\u0131n Al\u0131n"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -5098,7 +5098,7 @@
             "buynow": "\u7acb\u5373\u8cfc"
         },
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
 
             "later_tag": "Buy Now. Pay Over Time.",
@@ -5218,7 +5218,7 @@
     },
     "US": {
         "en": {
-            "checkout": "${pp}${paypal} Check out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
@@ -5402,7 +5402,7 @@
     },
     "VN": {
         "en": {
-            "checkout": "${pp}${paypal} Check Out",
+            "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "A safer, faster way to pay.",
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with ${paypal}",
