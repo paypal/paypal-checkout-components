@@ -41,7 +41,9 @@ export const FPTI = {
         PAY_ID: 'pay_id',
         SELLER_ID: 'seller_id',
         DATA_SOURCE: 'serverside_data_source',
-        BUTTON_SOURCE: 'button_source'
+        BUTTON_SOURCE: 'button_source',
+        ERROR_CODE: 'ext_error_code',
+        ERROR_DESC: 'ext_error_desc'
     },
 
     BUTTON_TYPE: {
