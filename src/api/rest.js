@@ -147,17 +147,31 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    if (proxyRest.createCheckoutToken && !proxyRest.createCheckoutToken.source.closed) {
-        return proxyRest.createCheckoutToken(env, client, paymentDetails, experienceDetails);
+    let payment;
+    let experience;
+    let meta;
+
+    if (paymentDetails.payment) {
+        ({ payment, experience, meta } = paymentDetails);
+    } else {
+        [ payment, experience ] = [ paymentDetails, experienceDetails ];
     }
 
-    paymentDetails = { ...paymentDetails };
-    paymentDetails.intent = paymentDetails.intent || 'sale';
-    paymentDetails.redirect_urls = paymentDetails.redirect_urls || {};
-    paymentDetails.redirect_urls.return_url = paymentDetails.redirect_urls.return_url || `${window.location.protocol}//${window.location.host}`;
-    paymentDetails.redirect_urls.cancel_url = paymentDetails.redirect_urls.cancel_url || `${window.location.protocol}//${window.location.host}`;
-    paymentDetails.payer = paymentDetails.payer || {};
-    paymentDetails.payer.payment_method = paymentDetails.payer.payment_method || 'paypal';
+    if (!payment) {
+        throw new Error(`Expected payment details to be passed`);
+    }
+
+    if (proxyRest.createCheckoutToken && !proxyRest.createCheckoutToken.source.closed) {
+        return proxyRest.createCheckoutToken(env, client, { payment, experience, meta });
+    }
+
+    payment = { ...payment };
+    payment.intent = payment.intent || 'sale';
+    payment.redirect_urls = payment.redirect_urls || {};
+    payment.redirect_urls.return_url = payment.redirect_urls.return_url || `${window.location.protocol}//${window.location.host}`;
+    payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || `${window.location.protocol}//${window.location.host}`;
+    payment.payer = payment.payer || {};
+    payment.payer.payment_method = payment.payer.payment_method || 'paypal';
 
     return createAccessToken(env, client).then((accessToken) : SyncPromise<Object> => {
 
@@ -170,16 +184,22 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
         }).then((experienceID) : SyncPromise<Object> => {
 
             if (experienceID) {
-                paymentDetails.experience_profile_id = experienceID;
+                payment.experience_profile_id = experienceID;
+            }
+
+            let headers : Object = {
+                Authorization: `Bearer ${accessToken}`
+            };
+
+            if (meta && meta.partnerAttributionID) {
+                headers['PayPal-Partner-Attribution-Id'] = meta.partnerAttributionID;
             }
 
             return request({
                 method: `post`,
                 url: config.paymentApiUrls[env],
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-                json: paymentDetails
+                headers,
+                json: payment
             });
         });
 
