@@ -58,17 +58,24 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code`));
             }
 
+            let contentType = this.getResponseHeader('content-type');
+            let isJSON = contentType && (contentType.indexOf('application/json') === 0 || contentType.indexOf('text/json') === 0);
+            let res = this.responseText;
+
+            if (isJSON) {
+                try {
+                    res = JSON.parse(this.responseText);
+                } catch (err) {
+                    return reject(new Error(`Invalid json: ${this.responseText}`));
+                }
+            }
+
             if (this.status >= 400) {
                 let message = `Request to ${method.toLowerCase()} ${url} failed with ${this.status} error`;
 
-                if (this.responseText) {
-                    let res = this.responseText;
-
-                    try {
-                        let resJSON = JSON.parse(res);
-                        res = JSON.stringify(resJSON, null, 4);
-                    } catch (err) {
-                        // pass
+                if (res) {
+                    if (isJSON) {
+                        res = JSON.stringify(res, null, 4);
                     }
 
                     message = `${message}\n\n${res}\n`;
@@ -77,15 +84,7 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 return reject(new Error(message));
             }
 
-            let result;
-
-            try {
-                result = JSON.parse(this.responseText);
-            } catch (err) {
-                return reject(err);
-            }
-
-            return resolve(result);
+            return resolve(res);
 
         }, false);
 
