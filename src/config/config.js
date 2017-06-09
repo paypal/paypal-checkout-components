@@ -17,7 +17,7 @@ export let config = {
 
     env: __TEST__ ? ENV.TEST : ENV.PRODUCTION,
 
-    state: 'paypal_xcomponent',
+    state: 'checkoutjs',
 
     locale: {
         country: 'US',

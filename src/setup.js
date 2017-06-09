@@ -3,7 +3,7 @@
 import * as $logger from 'beaver-logger/client';
 
 import { config, ENV, FPTI } from './config';
-import { initLogger, checkForCommonErrors, beacon, setLogLevel } from './lib';
+import { initLogger, checkForCommonErrors, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
 
@@ -31,11 +31,18 @@ initLogger();
 
 SyncPromise.onPossiblyUnhandledException((err : Error) => {
 
-    beacon(`unhandled_error`, {
+    $logger.error('unhandled_error', {
         message: err ? err.toString() : 'undefined',
         stack: err.stack || err.toString(),
         errtype: ({}).toString.call(err)
     });
+
+    $logger.track({
+        [ FPTI.KEY.ERROR_CODE ]: 'checkoutjs_error',
+        [ FPTI.KEY.ERROR_DESC ]: err ? err.toString() : 'undefined'
+    });
+
+    $logger.flush();
 });
 
 

@@ -65,18 +65,10 @@ export function uniqueID() : string {
 
 export function hashStr(str : string) : number {
     let hash = 0;
-
-    if (str.length === 0) {
-        return hash;
-    }
-
     for (let i = 0; i < str.length; i++) {
-        let chr = str.charCodeAt(i);
-        hash = (hash << 5) - hash + chr; // eslint-disable-line
-        hash |= 0; // eslint-disable-line
+        hash += str[i].charCodeAt(0) * Math.pow((i % 10) + 1, 5);
     }
-
-    return Math.abs(hash);
+    return Math.floor(Math.pow(Math.sqrt(hash), 5));
 }
 
 export function match(str : string, pattern : RegExp) : ?string {

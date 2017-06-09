@@ -101,6 +101,40 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
 
 }, { time: 10 * 60 * 1000 });
 
+function logPaymentResponse(res) {
+
+    if (!res) {
+        return;
+    }
+
+    let paymentToken;
+    let paymentID;
+
+    if (res.id) {
+        paymentID = res.id;
+    }
+
+    if (res.links && res.links.length) {
+        for (let i = 0; i < res.links.length; i++) {
+            if (res.links[i].method === 'REDIRECT' && res.links[i].rel === 'approval_url') {
+                let match = res.links[i].href.match(/token=((EC-)?[A-Z0-9]{17})/);
+                if (match) {
+                    paymentToken = match[1];
+                }
+            }
+        }
+    }
+
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT,
+        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+        [ FPTI.KEY.PAY_ID ]: paymentID,
+        [ FPTI.KEY.TOKEN ]: paymentToken,
+        [ FPTI.KEY.CONTEXT_ID ]: paymentToken
+    });
+}
+
 function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
@@ -151,14 +185,9 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
     }).then((res) : string => {
 
+        logPaymentResponse(res);
+
         if (res && res.id) {
-
-            $logger.track({
-                [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT,
-                [ FPTI.KEY.PAY_ID ]: res.id
-            });
-
             return res.id;
         }
 

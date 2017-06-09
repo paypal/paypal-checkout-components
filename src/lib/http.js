@@ -9,7 +9,8 @@ type RequestOptionsType = {
     json? : Object,
     data? : { [key : string] : string },
     body? : string,
-    win? : any
+    win? : any,
+    timeout? : number
 };
 
 const HEADERS = {
@@ -19,7 +20,7 @@ const HEADERS = {
 
 let headerBuilders = [];
 
-export function request({ url, method = 'get', headers = {}, json, data, body, win = window } : RequestOptionsType) : SyncPromise<Object> {
+export function request({ url, method = 'get', headers = {}, json, data, body, win = window, timeout = 0 } : RequestOptionsType) : SyncPromise<Object> {
 
     return new SyncPromise((resolve, reject) => {
 
@@ -105,6 +106,11 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 return `${encodeURIComponent(key)}=${data ? encodeURIComponent(data[key]) : ''}`;
             }).join('&');
         }
+
+        xhr.timeout = timeout;
+        xhr.ontimeout = function () {
+            reject(new Error(`Request to ${method.toLowerCase()} ${url} has timed out`));
+        };
 
         xhr.send(body);
     });

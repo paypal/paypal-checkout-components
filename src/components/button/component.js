@@ -5,7 +5,7 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
-import { config, USERS, ENV, FPTI } from '../../config';
+import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request, checkpoint } from '../../lib';
 import { rest } from '../../api';
 
@@ -95,6 +95,14 @@ export let Button = xcomponent.create({
                 if (client[env].match(/^(.)\1+$/)) {
                     throw new Error(`Invalid client ID: ${client[env]}`);
                 }
+            }
+        },
+
+        source: {
+            type: 'string',
+            required: false,
+            def() : string {
+                return SOURCE.MANUAL;
             }
         },
 
@@ -228,7 +236,8 @@ export let Button = xcomponent.create({
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
-                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
+                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
                     });
                     $logger.flush();
                     if (original) {
@@ -419,8 +428,9 @@ export let Button = xcomponent.create({
                 if (style.label === 'credit' && style.color) {
                     throw new Error(`Custom colors for ${style.label} button are not supported`);
                 }
-                if (style.label === 'credit' && style.fundingicons) {
-                    throw new Error(`Funding Instruments for ${style.label} button are not supported`);
+
+                if (style.label === 'credit' && style.hasOwnProperty('fundingicons')) {
+                    throw new Error(`Invalid option: style.fundingicons for ${style.label} button`);
                 }
 
                 if (style.label === 'pay' && style.size === 'tiny') {
@@ -429,6 +439,14 @@ export let Button = xcomponent.create({
 
                 if (style.label === 'buynow' && style.size === 'tiny') {
                     throw new Error(`Invalid ${style.label} button size: ${style.size}`);
+                }
+
+                if (style.label !== 'buynow' && style.hasOwnProperty('branding')) {
+                    throw new Error(`style.branding option not valid for ${style.label} button`);
+                }
+
+                if (style.label === 'buynow' && style.hasOwnProperty('branding') && style.branding !== true) {
+                    throw new Error(`Invalid option: style.branding must be unspecified or true`);
                 }
             }
         },
