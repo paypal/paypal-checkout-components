@@ -347,6 +347,83 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a container and click on the button, call the REST api via actions.payment with an object to create a payment, then complete the payment', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                client: {
+                    test: 'ewgwegegwegegegeg'
+                },
+
+                payment(data, actions) : string | SyncPromise<string> {
+                    return actions.payment.create({
+                        payment: {
+                            transactions: [
+                                {
+                                    amount: { total: '1.00', currency: 'USD' }
+                                }
+                            ]
+                        }
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, call the REST api via actions.payment with an object with experience options to create a payment, then complete the payment', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                client: {
+                    test: 'ewgwegegwegegegeg'
+                },
+
+                payment(data, actions) : string | SyncPromise<string> {
+                    return actions.payment.create({
+                        payment: {
+                            transactions: [
+                                {
+                                    amount: { total: '1.00', currency: 'USD' }
+                                }
+                            ]
+                        },
+
+                        experience: {
+                            presentation: {
+                                logo_image: 'https://foo.com/bar.png'
+                            },
+                            input_fields: {
+                                no_shipping: 1,
+                                address_override: 1
+                            }
+                        }
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+
         it('should render a button into a container and click on the button, call the REST api to create a payment with an experience profile, then complete the payment', (done) => {
 
             window.paypal.Button.render({

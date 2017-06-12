@@ -62,10 +62,10 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
             let isJSON = contentType && (contentType.indexOf('application/json') === 0 || contentType.indexOf('text/json') === 0);
             let res = this.responseText;
 
-            if (isJSON) {
-                try {
-                    res = JSON.parse(this.responseText);
-                } catch (err) {
+            try {
+                res = JSON.parse(this.responseText);
+            } catch (err) {
+                if (isJSON) {
                     return reject(new Error(`Invalid json: ${this.responseText}`));
                 }
             }

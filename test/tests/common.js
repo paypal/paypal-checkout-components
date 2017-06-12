@@ -173,43 +173,136 @@ export function destroyTestContainer() : void {
 
 patchXmlHttpRequest();
 
-$mockEndpoint.register({
-    method: 'POST',
-    uri: window.paypal.config.loggerUrl,
-    data: {}
-}).listen();
+export function getLoggerApiMock(options : Object = {}) : Object {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: window.paypal.config.loggerUrl,
+        data: {},
+        ...options
+    });
+}
 
-$mockEndpoint.register({
-    method: 'POST',
-    uri: window.paypal.config.authApiUrl,
-    data: {
-        access_token: 'ABCDEFGH'
-    }
-}).listen();
+export function getAuthApiMock(options : Object = {}) : Object {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: window.paypal.config.authApiUrl,
+        handler({ headers, data }) : { access_token : string } {
 
-$mockEndpoint.register({
-    method: 'POST',
-    uri: window.paypal.config.paymentApiUrl,
-    handler: () => ({
-        id: generatePaymentID()
-    })
-}).listen();
+            if (!headers.authorization) {
+                throw new Error(`Expected authorization header for auth api request`);
+            }
 
-$mockEndpoint.register({
-    method: 'POST',
-    uri: window.paypal.config.billingApiUrl,
-    handler: () => ({
-        token_id: generateBillingToken()
-    })
-}).listen();
+            if (!headers.authorization.match(/^Basic .+$/)) {
+                throw new Error(`Expected authorization header to be Basic XXXX, got "${headers.authorization}"`);
+            }
 
-$mockEndpoint.register({
-    method: 'POST',
-    uri: window.paypal.config.experienceApiUrl,
-    handler: () => ({
-        id: generateExperienceToken()
-    })
-}).listen();
+            if (!data.grant_type === 'client_credentials') {
+                throw new Error(`Expected grant_type to be client_credentials, got "${data.grant_type}"`);
+            }
+
+            return {
+                access_token: 'ABCDEFGH'
+            };
+        },
+        ...options
+    });
+}
+
+export function getPaymentApiMock(options : Object = {}) : Object {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: window.paypal.config.paymentApiUrl,
+        handler({ data, headers }) : { id : string } {
+
+            if (!headers.authorization) {
+                throw new Error(`Expected authorization header for auth api request`);
+            }
+
+            if (!headers.authorization.match(/^Bearer .+$/)) {
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+            }
+
+            if (!data.intent) {
+                throw new Error(`Expected data.intent to be passed`);
+            }
+
+            if (!data.redirect_urls) {
+                throw new Error(`Expected data.redirect_urls to be passed`);
+            }
+
+            if (!data.redirect_urls.return_url) {
+                throw new Error(`Expected data.redirect_urls.return_url to be passed`);
+            }
+
+            if (!data.redirect_urls.cancel_url) {
+                throw new Error(`Expected data.redirect_urls.cancel_url to be passed`);
+            }
+
+            if (!data.payer) {
+                throw new Error(`Expected data.payer to be passed`);
+            }
+
+            if (!data.payer.payment_method) {
+                throw new Error(`Expected data.payer.payment_method to be passed`);
+            }
+
+            return {
+                id: generatePaymentID()
+            };
+        },
+        ...options
+    });
+}
+
+export function getBillingApiMock(options : Object = {}) : Object {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: window.paypal.config.billingApiUrl,
+        handler({ data, headers }) : { token_id : string } {
+
+            if (!headers.authorization) {
+                throw new Error(`Expected authorization header for auth api request`);
+            }
+
+            if (!headers.authorization.match(/^Bearer .+$/)) {
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+            }
+
+            return {
+                token_id: generateBillingToken()
+            };
+        },
+        ...options
+    });
+}
+
+export function getExperienceApiMock(options : Object = {}) : Object {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: window.paypal.config.experienceApiUrl,
+        handler({ data, headers }) : { id : string } {
+
+            if (!headers.authorization) {
+                throw new Error(`Expected authorization header for auth api request`);
+            }
+
+            if (!headers.authorization.match(/^Bearer .+$/)) {
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+            }
+
+            return {
+                id: generateExperienceToken()
+            };
+        },
+        ...options
+    });
+}
+
+getLoggerApiMock().listen();
+getAuthApiMock().listen();
+getPaymentApiMock().listen();
+getBillingApiMock().listen();
+getExperienceApiMock().listen();
 
 
 window.karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);

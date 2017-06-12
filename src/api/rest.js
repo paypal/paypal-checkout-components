@@ -177,8 +177,8 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
         return SyncPromise.try(() => {
 
-            if (experienceDetails) {
-                return createExperienceProfile(env, client, experienceDetails);
+            if (experience) {
+                return createExperienceProfile(env, client, experience);
             }
 
         }).then((experienceID) : SyncPromise<Object> => {
@@ -191,8 +191,8 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
                 Authorization: `Bearer ${accessToken}`
             };
 
-            if (meta && meta.partnerAttributionID) {
-                headers['PayPal-Partner-Attribution-Id'] = meta.partnerAttributionID;
+            if (meta && meta.partner_attribution_id) {
+                headers['PayPal-Partner-Attribution-Id'] = meta.partner_attribution_id;
             }
 
             return request({
