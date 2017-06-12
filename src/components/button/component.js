@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getPageID, request, checkpoint } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getSessionID, request, checkpoint } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -54,9 +54,9 @@ export let Button = xcomponent.create({
 
         uid: {
             type: 'string',
-            value: getPageID(),
+            value: getSessionID(),
             def() : string {
-                return getPageID();
+                return getSessionID();
             },
             queryParam: true
         },

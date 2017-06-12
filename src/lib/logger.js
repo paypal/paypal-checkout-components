@@ -3,7 +3,7 @@
 import * as postRobot from 'post-robot/src';
 import * as $logger from 'beaver-logger/client';
 import { config, FPTI } from '../config';
-import { getPageID } from './util';
+import { getSessionID } from './util';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -21,7 +21,7 @@ export function initLogger() {
             env: config.env,
             country: config.locale.country,
             lang: config.locale.lang,
-            uid: getPageID(),
+            uid: getSessionID(),
             ver: __MINOR_VERSION__
         };
     });
@@ -37,8 +37,8 @@ export function initLogger() {
             [ FPTI.KEY.FEED ]: FPTI.FEED.CHECKOUTJS,
             [ FPTI.KEY.DATA_SOURCE ]: FPTI.DATA_SOURCE.CHECKOUT,
             [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
-            [ FPTI.KEY.UID ]: getPageID(),
-            [ FPTI.KEY.CONTEXT_ID ]: getPageID(),
+            [ FPTI.KEY.UID ]: getSessionID(),
+            [ FPTI.KEY.CONTEXT_ID ]: getSessionID(),
             [ FPTI.KEY.REFERER ]: getRefererDomain()
         };
     });
