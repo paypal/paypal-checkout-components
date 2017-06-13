@@ -11,6 +11,7 @@ import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
+import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
 export let Button = xcomponent.create({
@@ -383,18 +384,7 @@ export let Button = xcomponent.create({
                 return `${lang}_${country}`;
             },
 
-            validate(locale) {
-
-                if (!locale || !locale.match(/^[a-z]{2}[-_][A-Z][A-Z0-9]$/)) {
-                    throw new Error(`Invalid locale: ${locale}`);
-                }
-
-                let [ lang, country ] = locale.split('_');
-
-                if (!config.locales[country] || config.locales[country].indexOf(lang) === -1) {
-                    throw new Error(`Invalid locale: ${locale}`);
-                }
-            }
+            validate: validateButtonLocale
         },
 
         style: {
@@ -402,6 +392,7 @@ export let Button = xcomponent.create({
             required: false,
             queryParam: true,
             alias: 'buttonStyle',
+
             def() : Object {
                 return {
                     color: 'gold',
@@ -412,43 +403,7 @@ export let Button = xcomponent.create({
                 };
             },
 
-            validate(style) {
-                if (style.size && config.buttonStyles.size.indexOf(style.size) === -1) {
-                    throw new Error(`Invalid button size: ${style.size}`);
-                }
-
-                if (style.label && config.buttonStyles.label.indexOf(style.label) === -1) {
-                    throw new Error(`Invalid button label: ${style.label}`);
-                }
-
-                if (style.label === 'credit' && style.size === 'tiny') {
-                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
-                }
-
-                if (style.label === 'credit' && style.color) {
-                    throw new Error(`Custom colors for ${style.label} button are not supported`);
-                }
-
-                if (style.label === 'credit' && style.hasOwnProperty('fundingicons')) {
-                    throw new Error(`Invalid option: style.fundingicons for ${style.label} button`);
-                }
-
-                if (style.label === 'pay' && style.size === 'tiny') {
-                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
-                }
-
-                if (style.label === 'buynow' && style.size === 'tiny') {
-                    throw new Error(`Invalid ${style.label} button size: ${style.size}`);
-                }
-
-                if (style.label !== 'buynow' && style.hasOwnProperty('branding')) {
-                    throw new Error(`style.branding option not valid for ${style.label} button`);
-                }
-
-                if (style.label === 'buynow' && style.hasOwnProperty('branding') && style.branding !== true) {
-                    throw new Error(`Invalid option: style.branding must be unspecified or true`);
-                }
-            }
+            validate: validateButtonStyle
         },
 
         displayTo: {
