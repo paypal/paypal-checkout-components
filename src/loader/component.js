@@ -2,13 +2,21 @@
 
 import { config } from './config';
 
-export function isXComponent() : boolean {
-    return Boolean(window.name && window.name.split(config.name_separator)[0] === config.xcomponent);
+export function isCheckoutXComponent() : boolean {
+    if (window.name) {
+        let seg = window.name.split(config.name_separator);
+
+        if (seg[0] === config.xcomponent && seg[1] === config.ppcheckout) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 export function getVersion() : string {
 
-    if (!isXComponent()) {
+    if (!isCheckoutXComponent()) {
         throw new Error(`Can not get version for non-xcomponent`);
     }
 
@@ -17,7 +25,7 @@ export function getVersion() : string {
 
 export function isLatest() : boolean {
 
-    if (!isXComponent()) {
+    if (!isCheckoutXComponent()) {
         return false;
     }
 

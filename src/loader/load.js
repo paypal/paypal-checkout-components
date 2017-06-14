@@ -2,10 +2,14 @@
 
 import { config } from './config';
 import { responder } from './responder';
-import { isLatest, getVersion, isXComponent } from './component';
+import { isLatest, getVersion, isCheckoutXComponent } from './component';
 import { loadScript, warn, parseQuery } from './util';
 
-export let integrationResponder = responder();
+let integrationResponder = responder();
+
+export function onLoadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => void) : void {
+    return integrationResponder.listen(callback);
+}
 
 function getIntegrationURLs() : { latest : boolean, major : string, minor : string } {
 
@@ -35,7 +39,7 @@ function getIntegrationProps() : Object {
 
 function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => void) : void {
 
-    if (!isXComponent()) {
+    if (!isCheckoutXComponent()) {
         return callback(null, null);
     }
 
