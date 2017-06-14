@@ -375,8 +375,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     window.paypal.checkout.initXO();
 
-                    assert.isOk(window.paypal.checkout.win, 'Expectedwindow.paypal.ceheckout.win to be present');
-                    assert.isOk(!window.paypal.checkout.win.closed, 'Expectedwindow.paypal.ceheckout.win to not be closed');
+                    assert.isOk(window.paypal.checkout.win, 'Expected window.paypal.checkout.win to be present');
+                    assert.isOk(!window.paypal.checkout.win.closed, 'Expected window.paypal.checkout.win to not be closed');
 
                     setTimeout(() => {
                         window.paypal.checkout.startFlow(token);
