@@ -6,6 +6,7 @@ import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
+import { isPayPalDomain } from './lib';
 
 import { SyncPromise } from 'sync-browser-mocks/src/promise';
 
@@ -132,7 +133,9 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
         setLogLevel(config.logLevel);
     }
 
-    createPptmScript();
+    if (!isPayPalDomain()) {
+        createPptmScript();
+    }
 
     $logger.info(`setup_${config.env}`);
 
