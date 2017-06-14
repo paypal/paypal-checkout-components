@@ -22,7 +22,7 @@ const destroyPptmScripts = () => {
         });
 };
 
-describe.only('pptm script creation', () => {
+describe('pptm script creation', () => {
     let oldMockDomain;
 
     beforeEach(() => {
