@@ -84,6 +84,7 @@
     "regenerator-runtime": "^0.10.1",
     "sinon": "^2.2.0",
     "sinon-chai": "^2.8.0",
+    "sync-browser-mocks": "^1.0.43",
     "text-loader": "0.0.1",
     "uglify-js": "^2.8.27",
     "uglifyjs-webpack-plugin": "^0.4.3",

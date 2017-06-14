@@ -3,123 +3,13 @@
 import { componentLogos } from './logos';
 import { componentStyle } from './style';
 import { componentScript } from './script';
-import componentContent from './content.json';
+import { componentContent } from './content';
+import { getButtonConfig } from './config';
+import { validateButtonProps } from './validate';
 import { btoa } from 'Base64';
 
-let componentContentJSON = typeof componentContent === 'string'
-    ? JSON.parse(componentContent)
-    : componentContent;
-
-let defaultLabel = 'checkout';
-
-let buttonConfig = {
-
-    checkout: {
-        colors: [ 'gold', 'blue', 'silver' ],
-        sizes:  [ 'small', 'medium', 'large', 'tiny', 'responsive' ],
-        shapes: [ 'pill', 'rect' ],
-        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
-        logo: true,
-        tagcontent: 'safer_tag',
-        tagline: true
-    },
-
-    pay: {
-        colors: [ 'gold', 'blue', 'silver' ],
-        sizes:  [ 'small', 'medium', 'large', 'responsive' ],
-        shapes: [ 'pill', 'rect' ],
-        logos:  { gold: 'blue', silver: 'blue', blue: 'white' },
-        tagline: false
-    },
-
-    credit: {
-        contentText: '${pp}${paypal} ${credit}',
-        colors: [ 'creditblue' ],
-        sizes:  [ 'small', 'medium', 'large', 'responsive' ],
-        shapes: [ 'pill', 'rect' ],
-        logos:  { creditblue: 'white' },
-        tagcontent: 'later_tag',
-        tagline: true
-    },
-
-    buynow: {
-        colors: [ 'gold' ],
-        sizes:  [ 'small', 'medium', 'large', 'responsive' ],
-        shapes: [ 'pill', 'rect' ],
-        logos:  { gold: 'blue' },
-        tagcontent: 'safer_tag',
-        tagline: false
-    }
-
-};
-
-export function componentTemplate({ props } : { props : Object }) : string {
-
-    if (!props.locale) {
-        throw new Error(`Expected props.locale to be set`);
-    }
-
-    let [ lang, country ] = props.locale.split('_');
-
-    let style   = props.style || {};
-    let label   = style.label || defaultLabel;
-    let conf    = buttonConfig[label];
-    let tagline = conf.tagline;
-    let logoColor, branded = '';
-
-    if (!conf) {
-        throw new Error(`Unexpected button label: ${label}`);
-    }
-
-    let content = componentContentJSON[country][lang];
-
-    if (!content) {
-        throw new Error(`Could not find content for ${label} for ${lang}_${country}`);
-    }
-
-
-    let contentText = conf.contentText || content[label];
-
-    let {
-        color = conf.colors[0],
-        shape = conf.shapes[0],
-        size  = conf.sizes[0]
-    } = style;
-
-    if (conf.colors.indexOf(color) === -1) {
-        throw new Error(`Unexpected color for ${label} button: ${color}`);
-    }
-
-    if (conf.shapes.indexOf(shape) === -1) {
-        throw new Error(`Unexpected shape for ${label} button: ${shape}`);
-    }
-
-    if (conf.sizes.indexOf(size) === -1) {
-        throw new Error(`Unexpected size for ${label} button: ${size}`);
-    }
-
-    // button config override for branded buy now button
-    if (props.style.branding && label === 'buynow') {
-        contentText = `\$\{pp\}\$\{paypal\} ${contentText}`;
-        branded = 'true';
-        if (props.style.fundingicons) {
-            tagline = false;
-        }
-        else {
-            tagline = true;
-        }
-    }
-
-    // logo for all buttons except unbranded buy now button
-    if (!props.style.branding && label === 'buynow') {
-        logoColor = '';
-        branded = 'false';
-    } else {
-        logoColor = conf.logos[color];
-    }
-
-    // build up for button content
-    let labelText = contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
+function expandContentText(contentText : string, { color, logoColor } : { color : string, logoColor : string }) : string {
+    return contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
         if (name) {
             return `<img class="logo logo-${name} logo-${name}-${color}"
                         src="data:image/svg+xml;base64,${btoa(componentLogos[name][logoColor])}"
@@ -130,15 +20,43 @@ export function componentTemplate({ props } : { props : Object }) : string {
             return text;
         }
     });
+}
 
-    let labelTag = '';
+function removeBranding(contentText : string) : string {
+    return contentText.replace('${pp}', '').replace('${paypal}', '').replace(/ +/g, '');
+}
 
-    // tag content below button allowed only for checkout, branding buynow, credit button;
-    // also when style.fundingicons is false
-    if (!props.style.fundingicons) {
-        labelTag = tagline && content[`${conf.tagcontent}`] ? content[`${conf.tagcontent}`] : '';
+export function componentTemplate({ props } : { props : Object }) : string {
+
+    validateButtonProps(props);
+
+    let { locale = getButtonConfig('defaultLocale'), style = {} } = props;
+
+    let [ lang, country ] = locale.split('_');
+    let content = componentContent[country][lang];
+
+    let label = style.label || getButtonConfig('default', 'defaultLabel');
+
+    let {
+        color        = getButtonConfig(label, 'defaultColor'),
+        shape        = getButtonConfig(label, 'defaultShape'),
+        size         = getButtonConfig(label, 'defaultSize'),
+        branding     = getButtonConfig(label, 'defaultBranding'),
+        fundingicons = getButtonConfig(label, 'defaultFundingIcons')
+    } = style;
+
+    let contentText = getButtonConfig(label, 'label') || content[label];
+    let logoColor   = getButtonConfig(label, 'logoColors')[color];
+
+    let labelText = expandContentText(contentText, { color, logoColor });
+
+    let allowTagline = (branding && !fundingicons);
+    let tagline      = allowTagline ? getButtonConfig(label, 'tagline') : false;
+    let tagcontent   = content[getButtonConfig(label, 'tagkey')] || '';
+
+    if (!branding) {
+        contentText = removeBranding(contentText);
     }
-
 
     return `
         <style type="text/css">
@@ -146,14 +64,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branded }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
                 </div>
                 <div class="paypal-button-tag-content">
-                    ${ labelTag }
+                    ${ tagline ? tagcontent : '' }
                 </div>
-               
+
             </div>
         </div>
 

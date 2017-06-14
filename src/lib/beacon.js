@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config, LOG_LEVEL } from '../config';
-import { getPageID } from './util';
+import { getSessionID } from './util';
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
@@ -11,7 +11,7 @@ export function beacon(event : string, payload : Object = {}) {
         payload.event = `ppxo_${event}`;
         payload.version = __MINOR_VERSION__;
         payload.host = window.location.host;
-        payload.uid = getPageID();
+        payload.uid = getSessionID();
 
         let query = [];
 

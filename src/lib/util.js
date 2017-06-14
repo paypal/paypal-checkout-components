@@ -177,7 +177,25 @@ export function awaitKey(obj : Object, key : string) : SyncPromise {
     });
 }
 
-export function getPageID() : string {
-    window.pp_uid = window.pp_uid || uniqueID();
+export function getSessionID() : string {
+
+    if (!window.pp_uid && window.sessionStorage) {
+        try {
+            window.pp_uid = window.sessionStorage.getItem('__pp_uid__');
+        } catch (err) {
+            // pass
+        }
+    }
+
+    if (!window.pp_uid) {
+        window.pp_uid = uniqueID();
+
+        try {
+            window.sessionStorage.setItem('__pp_uid__', window.pp_uid);
+        } catch (err) {
+            // pass
+        }
+    }
+
     return window.pp_uid;
 }
