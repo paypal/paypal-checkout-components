@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise';
 import { config } from '../config';
 
 export function isPayPalDomain() : boolean {
@@ -171,8 +171,8 @@ export function onKey(obj : Object, key : string, callback : Function) {
     }
 }
 
-export function awaitKey(obj : Object, key : string) : SyncPromise {
-    return new SyncPromise(resolve => {
+export function awaitKey(obj : Object, key : string) : ZalgoPromise {
+    return new ZalgoPromise(resolve => {
         return onKey(obj, key, resolve);
     });
 }

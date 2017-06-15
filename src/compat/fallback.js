@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as postRobot from 'post-robot/src';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise';
 
 import { isPayPalDomain, noop } from '../lib';
 import { config } from '../config';
@@ -28,7 +28,7 @@ if (isPayPalDomain()) {
 export function onLegacyPaymentAuthorize(method : Function) : Promise<void> {
     onAuthorize = method;
 
-    return SyncPromise.try(() => {
+    return ZalgoPromise.try(() => {
         if (!isPayPalDomain()) {
             return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
                 return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })

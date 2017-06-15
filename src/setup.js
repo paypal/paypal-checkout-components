@@ -6,7 +6,7 @@ import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel } from './lib';
 import { enableCheckoutIframe } from './components';
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -28,7 +28,7 @@ setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
 initLogger();
 
-SyncPromise.onPossiblyUnhandledException((err : Error) => {
+ZalgoPromise.onPossiblyUnhandledException((err : Error) => {
 
     $logger.error('unhandled_error', {
         message: err ? err.toString() : 'undefined',

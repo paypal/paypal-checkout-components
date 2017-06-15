@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as logger from 'beaver-logger/client';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise';
 
 import { config, FPTI } from '../config';
 import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle, checkpoint } from '../lib';
@@ -10,7 +10,7 @@ import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
-let loadButtonJS = memoize(() : SyncPromise<void> => {
+let loadButtonJS = memoize(() : ZalgoPromise<void> => {
 
     $logger.debug(`buttonjs_load`);
 
@@ -86,7 +86,7 @@ function renderButton(id, container, options, label) : HTMLElement {
     return el.childNodes[0];
 }
 
-export function renderButtons(id : string, options : Object) : SyncPromise<Array<Object>> {
+export function renderButtons(id : string, options : Object) : ZalgoPromise<Array<Object>> {
 
     return loadButtonJS().then(() => {
 

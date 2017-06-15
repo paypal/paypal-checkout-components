@@ -3,7 +3,7 @@
 import { assert } from 'chai';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement } from '../common';
-let SyncPromise = window.paypal.Promise;
+let ZalgoPromise = window.paypal.Promise;
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -27,7 +27,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -52,7 +52,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    billingAgreement() : string | SyncPromise<string> {
+                    billingAgreement() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -79,7 +79,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'cancel' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -106,15 +106,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window);
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window);
                     }
 
@@ -137,11 +137,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
@@ -165,15 +165,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window, '#successUrl');
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window, '#cancelUrl');
                     }
 
@@ -198,15 +198,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'cancel' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window);
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window);
                     }
 
@@ -231,7 +231,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'cancel' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
@@ -239,7 +239,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onAuthorize to not be called'));
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
@@ -261,15 +261,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'cancel' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window, '#successUrl');
                     },
 
-                    onCancel(data, actions) : SyncPromise<void> {
+                    onCancel(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window, '#cancelUrl');
                     }
 
@@ -294,7 +294,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() : SyncPromise<string> {
+                    payment() : ZalgoPromise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -332,7 +332,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -373,7 +373,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         test: 'ewgwegegwegegegeg'
                     },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
 
                         let env    = this.props.env;
                         let client = this.props.client;
@@ -457,8 +457,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
-                        return new SyncPromise(resolve => {
+                    payment() : string | ZalgoPromise<string> {
+                        return new ZalgoPromise(resolve => {
                             return resolve(generateECToken());
                         });
                     },
@@ -485,7 +485,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return checkoutToken;
                     },
 
@@ -516,7 +516,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return paymentID;
                     },
 
@@ -547,7 +547,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return billingToken;
                     },
 
@@ -583,7 +583,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                         test: { action: 'popout' },
 
-                        payment() : string | SyncPromise<string> {
+                        payment() : string | ZalgoPromise<string> {
                             paymentCalls += 1;
                             return generateECToken();
                         },
@@ -616,11 +616,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                         test: { action: 'popout' },
 
-                        payment() : string | SyncPromise<string> {
+                        payment() : string | ZalgoPromise<string> {
                             return token;
                         },
 
-                        onAuthorize(data, actions) : SyncPromise<void> {
+                        onAuthorize(data, actions) : ZalgoPromise<void> {
                             return actions.redirect(window);
                         }
                     });
@@ -644,11 +644,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                         test: { action: 'popout' },
 
-                        payment() : string | SyncPromise<string> {
+                        payment() : string | ZalgoPromise<string> {
                             return token;
                         },
 
-                        onAuthorize(data, actions) : SyncPromise<void> {
+                        onAuthorize(data, actions) : ZalgoPromise<void> {
                             return actions.redirect(window).then(() => {
                                 done();
                             });

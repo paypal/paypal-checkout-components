@@ -96,6 +96,7 @@
     "Base64": "^1.0.0",
     "beaver-logger": "^3",
     "post-robot": "^6.0.0",
-    "xcomponent": "^2.0.0"
+    "xcomponent": "^2.0.0",
+    "zalgo-promise": "^1.0.3"
   }
 }
