@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 import * as $logger from 'beaver-logger/client';
@@ -10,9 +10,9 @@ import { request, memoize } from '../lib';
 
 import { Button } from '../components';
 
-let proxyRest : { [key : string] : () => SyncPromise<string> } = {};
+let proxyRest : { [key : string] : () => ZalgoPromise<string> } = {};
 
-let createAccessToken = memoize((env : string, client : { [key : string] : string }) : SyncPromise<string> => {
+let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 
     $logger.info(`rest_api_create_access_token`);
 
@@ -56,7 +56,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
 
 }, { time: 10 * 60 * 1000 });
 
-let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : SyncPromise<string> => {
+let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : ZalgoPromise<string> => {
 
     $logger.info(`rest_api_create_experience_profile`);
 
@@ -75,7 +75,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
     experienceDetails.temporary = true;
     experienceDetails.name = experienceDetails.name ? `${experienceDetails.name}_${Math.random().toString()}` : Math.random().toString();
 
-    return createAccessToken(env, client).then((accessToken) : SyncPromise<Object> => {
+    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
         return request({
             method: `post`,
@@ -135,7 +135,7 @@ function logPaymentResponse(res) {
     });
 }
 
-function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : ZalgoPromise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -173,15 +173,15 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     payment.payer = payment.payer || {};
     payment.payer.payment_method = payment.payer.payment_method || 'paypal';
 
-    return createAccessToken(env, client).then((accessToken) : SyncPromise<Object> => {
+    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        return SyncPromise.try(() => {
+        return ZalgoPromise.try(() => {
 
             if (experience) {
                 return createExperienceProfile(env, client, experience);
             }
 
-        }).then((experienceID) : SyncPromise<Object> => {
+        }).then((experienceID) : ZalgoPromise<Object> => {
 
             if (experienceID) {
                 payment.experience_profile_id = experienceID;
@@ -215,7 +215,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     });
 }
 
-export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : ?Object) : SyncPromise<string> {
+export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : ?Object) : ZalgoPromise<string> {
 
     $logger.info(`rest_api_create_billing_token`);
 
@@ -240,15 +240,15 @@ export function createBillingToken(env : string, client : { [key : string] : str
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
 
-    return createAccessToken(env, client).then((accessToken) : SyncPromise<Object> => {
+    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
-        return SyncPromise.try(() => {
+        return ZalgoPromise.try(() => {
 
             if (experienceDetails) {
                 return createExperienceProfile(env, client, experienceDetails);
             }
 
-        }).then((experienceID) : SyncPromise<Object> => {
+        }).then((experienceID) : ZalgoPromise<Object> => {
 
             if (experienceID) {
                 billingDetails.experience_profile_id = experienceID;

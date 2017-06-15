@@ -1,6 +1,6 @@
 /* @flow */
 
-let SyncPromise = window.paypal.Promise;
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { assert } from 'chai';
 
@@ -27,7 +27,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -48,7 +48,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                billingAgreement() : string | SyncPromise<string> {
+                billingAgreement() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -69,7 +69,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -92,15 +92,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window);
                 },
 
-                onCancel(data, actions) : SyncPromise<void> {
+                onCancel(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window);
                 }
 
@@ -121,11 +121,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window).then(() => {
                         return done();
                     }).catch(done);
@@ -146,15 +146,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window, '#successUrl');
                 },
 
-                onCancel(data, actions) : SyncPromise<void> {
+                onCancel(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
@@ -175,15 +175,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window);
                 },
 
-                onCancel(data, actions) : SyncPromise<void> {
+                onCancel(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window);
                 }
 
@@ -204,7 +204,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
@@ -212,7 +212,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onAuthorize to not be called'));
                 },
 
-                onCancel(data, actions) : SyncPromise<void> {
+                onCancel(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window).then(() => {
                         return done();
                     }).catch(done);
@@ -229,15 +229,15 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'cancel' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return token;
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window, '#successUrl');
                 },
 
-                onCancel(data, actions) : SyncPromise<void> {
+                onCancel(data, actions) : ZalgoPromise<void> {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
@@ -260,7 +260,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -295,7 +295,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment(data) : string | SyncPromise<string> {
+                payment(data) : string | ZalgoPromise<string> {
                     return data.payment.create({
                         transactions: [
                             {
@@ -326,7 +326,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment(data, actions) : string | SyncPromise<string> {
+                payment(data, actions) : string | ZalgoPromise<string> {
                     return actions.payment.create({
                         transactions: [
                             {
@@ -357,7 +357,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment(data, actions) : string | SyncPromise<string> {
+                payment(data, actions) : string | ZalgoPromise<string> {
                     return actions.payment.create({
                         payment: {
                             transactions: [
@@ -390,7 +390,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment(data, actions) : string | SyncPromise<string> {
+                payment(data, actions) : string | ZalgoPromise<string> {
                     return actions.payment.create({
                         payment: {
                             transactions: [
@@ -434,7 +434,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -472,7 +472,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment(actions) : string | SyncPromise<string> {
+                payment(actions) : string | ZalgoPromise<string> {
                     return actions.payment.create({
                         transactions: [
                             {
@@ -506,7 +506,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: 'ewgwegegwegegegeg'
                 },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
 
                     let env    = this.props.env;
                     let client = this.props.client;
@@ -579,8 +579,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
-                    return new SyncPromise(resolve => {
+                payment() : string | ZalgoPromise<string> {
+                    return new ZalgoPromise(resolve => {
                         return resolve(generateECToken());
                     });
                 },
@@ -604,7 +604,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return checkoutToken;
                 },
 
@@ -632,7 +632,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return paymentID;
                 },
 
@@ -660,7 +660,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return billingToken;
                 },
 
@@ -688,11 +688,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
-                onAuthorize(data, actions) : SyncPromise<void> {
+                onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                     if (isRestarted) {
                         return done();
@@ -718,7 +718,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -750,7 +750,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         paymentCalls += 1;
 
                         return generateECToken();
@@ -779,11 +779,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window);
                     }
 
@@ -791,7 +791,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-                });
+                }).toPromise();
             });
 
             it('should render checkout, popout, then redirect and await the promise', (done) => {
@@ -802,11 +802,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'popout' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return token;
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window).then(() => {
                             done();
                         });
@@ -827,11 +827,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { flow, action: 'checkout' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
-                    onAuthorize(data, actions) : SyncPromise<void> {
+                    onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                         if (isRestarted) {
                             return done();

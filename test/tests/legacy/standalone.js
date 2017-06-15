@@ -2,9 +2,6 @@
 
 import { assert } from 'chai';
 
-
-
-
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
          createTestContainer, destroyTestContainer } from '../common';
 
@@ -37,7 +34,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-            });
+            }).toPromise();
         });
 
         it('should call startFlow, with a cancel', () => {
@@ -56,7 +53,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             return onHashChange().then(urlHash => {
                 window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                 assert.equal(urlHash, `#cancel?token=${token}`);
-            });
+            }).toPromise();
         });
 
         it('should call startFlow with a url', () => {
@@ -73,7 +70,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-            });
+            }).toPromise();
         });
 
         it('should call startFlow with a url with no token', () => {
@@ -90,7 +87,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and then startFlow', () => {
@@ -111,7 +108,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and then startFlow with a url', () => {
@@ -133,7 +130,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and then startFlow with a url with no token', () => {
@@ -154,7 +151,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and immediately startFlow', () => {
@@ -172,7 +169,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and then closeFlow', (done) => {
@@ -233,7 +230,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#closeFlowUrl`);
-            });
+            }).toPromise();
         });
 
         it('should call initXO and then closeFlow immediately', (done) => {

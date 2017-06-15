@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
 window.angular.module('app', ['paypal-button']);
@@ -33,7 +34,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         null,
                         window.React.createElement(window.paypal.Button.react, {
 
-                            payment() : string | SyncPromise<string> {
+                            payment() : string | ZalgoPromise<string> {
                                 return generateECToken();
                             },
 
@@ -73,7 +74,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             $scope.opts = {
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 

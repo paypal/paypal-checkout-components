@@ -1,15 +1,15 @@
 /* @flow */
 
 import { getter, memoize, once, noop } from 'xcomponent/src/lib';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as $logger from 'beaver-logger/client';
 
-import { extendUrl, redirect, awaitKey } from '../../lib';
+import { extendUrl, redirect, awaitKey, stringifyError } from '../../lib';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { config } from '../../config';
 
-function ternary(condition, truthyResult, falsyResult) : SyncPromise<*> {
-    return SyncPromise.resolve(condition).then(result => {
+function ternary(condition, truthyResult, falsyResult) : ZalgoPromise<*> {
+    return ZalgoPromise.resolve(condition).then(result => {
         return result ? truthyResult : falsyResult;
     });
 }
@@ -36,7 +36,7 @@ export function getPopupBridgeOpener(popupBridge : ?Object = window.popupBridge)
     }
 }
 
-export function awaitPopupBridgeOpener() : SyncPromise<Function> {
+export function awaitPopupBridgeOpener() : ZalgoPromise<Function> {
 
     if (window.xprops && window.xprops.popupBridge) {
         return window.xprops.popupBridge.awaitOpener().then(opener => {
@@ -49,12 +49,18 @@ export function awaitPopupBridgeOpener() : SyncPromise<Function> {
     }
 
     return awaitKey(window, 'popupBridge').then(popupBridge => {
-        return getPopupBridgeOpener(popupBridge);
+        let opener = getPopupBridgeOpener(popupBridge);
+
+        if (opener) {
+            return opener;
+        }
+
+        throw new Error(`Expected opener to be present`);
     });
 }
 
-function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncPromise<void> {
-    return SyncPromise.try(() => {
+function renderThroughPopupBridge(props : Object, openBridge : Function) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
 
         if (!props.payment && !props.url) {
             throw new Error(`Expected props.payment or props.url to be passed`);
@@ -90,7 +96,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncP
 
         return awaitUrl.then(url => {
 
-            return new SyncPromise((resolve, reject) => {
+            return new ZalgoPromise((resolve, reject) => {
                 openBridge(url, (err, payload) => {
 
                     if (err) {
@@ -120,7 +126,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncP
 
                         data.returnUrl = query.redirect_uri;
 
-                        actions.redirect = (win : any = window, redirectUrl : string = data.returnUrl) : SyncPromise<void> => {
+                        actions.redirect = (win : any = window, redirectUrl : string = data.returnUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
 
@@ -131,7 +137,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncP
 
                         data.cancelUrl = query.redirect_uri;
 
-                        actions.redirect = (win : any = window, redirectUrl : string = data.cancelUrl) : SyncPromise<void> => {
+                        actions.redirect = (win : any = window, redirectUrl : string = data.cancelUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
 
@@ -151,21 +157,21 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : SyncP
 
 export function setupPopupBridgeProxy(Checkout : Object) {
 
-    function doRender(props, original) : SyncPromise<void> {
+    function doRender(props, original) : ZalgoPromise<void> {
         let openBridge = getPopupBridgeOpener();
         return openBridge ? renderThroughPopupBridge(props, openBridge).catch((err) => {
-            $logger.error(`popup_bridge_error`, { err: err.stack || err.toString() });
+            $logger.error(`popup_bridge_error`, { err: stringifyError(err) });
             return original();
         }) : original();
     }
 
     let render = Checkout.render;
-    Checkout.render = function(props : Object) : SyncPromise<void> {
+    Checkout.render = function(props : Object) : ZalgoPromise<void> {
         return doRender(props, () => render.apply(this, arguments));
     };
 
     let renderTo = Checkout.renderTo;
-    Checkout.renderTo = function(win : any, props : Object) : SyncPromise<void> {
+    Checkout.renderTo = function(win : any, props : Object) : ZalgoPromise<void> {
         return doRender(props, () => renderTo.apply(this, arguments));
     };
 
@@ -174,12 +180,12 @@ export function setupPopupBridgeProxy(Checkout : Object) {
         let instance = init.apply(this, arguments);
 
         let _render = instance.render;
-        instance.render = function() : SyncPromise<void> {
+        instance.render = function() : ZalgoPromise<void> {
             return doRender(props, () => _render.apply(this, arguments));
         };
 
         let _renderTo = instance.renderTo;
-        instance.renderTo = function() : SyncPromise<void> {
+        instance.renderTo = function() : ZalgoPromise<void> {
             return doRender(props, () => _renderTo.apply(this, arguments));
         };
 

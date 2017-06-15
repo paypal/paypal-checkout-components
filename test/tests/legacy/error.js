@@ -37,7 +37,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 assert.equal(urlHash, `#redirectUrl?token=${token}`);
-            });
+            }).toPromise();
         });
 
         it('should call standalone startFlow with a url and redirect to full-page if there is an error on the page', () => {
@@ -57,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                 assert.equal(urlHash, `#fullpageRedirect?url=${extendUrl(window.paypal.config.checkoutUrl, { token })}`);
-            });
+            }).toPromise();
         });
 
         it('should call startFlow and redirect to full-page if the window.open fails with immediate startFlow', () => {

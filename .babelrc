@@ -19,6 +19,7 @@
         [ "transform-flow-strip-types", { "loose": true } ],
         [ "transform-object-rest-spread", { "loose": true } ],
         [ "syntax-object-rest-spread", { "loose": true } ],
+        [ "transform-class-properties", { "loose": true } ],
         [ "transform-es3-property-literals", { "loose": true } ],
         [ "transform-es3-member-expression-literals", { "loose": true } ],
         [ "transform-decorators-legacy", { "loose": true } ],
