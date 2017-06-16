@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getSessionID, request, checkpoint } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getSessionID, request, checkpoint, isIEIntranet } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -49,6 +49,12 @@ export let Button = xcomponent.create({
         width: false,
         height: true,
         element: 'body'
+    },
+
+    validateProps(component, props, required = true) {
+        if (isIEIntranet()) {
+            throw new Error(`Can not render button in IE intranet mode`);
+        }
     },
 
     props: {
