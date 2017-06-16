@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { config } from '../config';
 
 export function isPayPalDomain() : boolean {
@@ -171,8 +171,8 @@ export function onKey(obj : Object, key : string, callback : Function) {
     }
 }
 
-export function awaitKey(obj : Object, key : string) : SyncPromise {
-    return new SyncPromise(resolve => {
+export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T> {
+    return new ZalgoPromise(resolve => {
         return onKey(obj, key, resolve);
     });
 }
@@ -198,4 +198,21 @@ export function getSessionID() : string {
     }
 
     return window.pp_uid;
+}
+
+export function stringifyError(err : mixed) : string {
+
+    if (!err) {
+        return `<unknown error: ${Object.prototype.toString.call(err)}>`;
+    }
+
+    if (err instanceof Error) {
+        return err.stack;
+    }
+
+    if (typeof err.toString === 'function') {
+        return err.toString();
+    }
+
+    return Object.prototype.toString.call(err);
 }

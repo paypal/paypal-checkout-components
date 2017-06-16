@@ -1,6 +1,6 @@
 /* @flow */
 
-let SyncPromise = window.paypal.Promise;
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { createTestContainer, destroyTestContainer, generatePaymentID } from '../common';
 
@@ -10,8 +10,8 @@ const MOCK_BRAINTREE_NONCE = 'MOCK_BRAINTREE_NONCE';
 let mockBraintree = {
 
     client: {
-        create(options) : SyncPromise<mixed> {
-            return SyncPromise.try(() => {
+        create(options) : ZalgoPromise<mixed> {
+            return ZalgoPromise.try(() => {
                 if (!options || typeof options !== 'object') {
                     throw new Error(`Braintree expected options to be passed as an object`);
                 }
@@ -26,8 +26,8 @@ let mockBraintree = {
     },
 
     paypalCheckout: {
-        create(options) : SyncPromise<mixed> {
-            return SyncPromise.try(() => {
+        create(options) : ZalgoPromise<mixed> {
+            return ZalgoPromise.try(() => {
 
                 if (!options || typeof options !== 'object') {
                     throw new Error(`Braintree expected options to be passed as an object`);
@@ -39,8 +39,8 @@ let mockBraintree = {
 
                 return {
 
-                    createPayment(paymentOptions) : SyncPromise<string> {
-                        return SyncPromise.try(() => {
+                    createPayment(paymentOptions) : ZalgoPromise<string> {
+                        return ZalgoPromise.try(() => {
 
                             if (!options || typeof options !== 'object') {
                                 throw new Error(`Braintree expected payment options to be passed as an object`);
@@ -50,8 +50,8 @@ let mockBraintree = {
                         });
                     },
 
-                    tokenizePayment(data) : SyncPromise<{ nonce : string }> {
-                        return SyncPromise.try(() => {
+                    tokenizePayment(data) : ZalgoPromise<{ nonce : string }> {
+                        return ZalgoPromise.try(() => {
 
                             if (!data || typeof data !== 'object') {
                                 throw new Error(`Braintree expected tokenize data to be passed as an object`);
@@ -100,7 +100,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MOCK_BRAINTREE_AUTH
                 },
 
-                payment(data, actions) : SyncPromise<string> {
+                payment(data, actions) : ZalgoPromise<string> {
                     return actions.braintree.create({
                         flow:     'checkout',
                         amount:   '1.00',
@@ -137,7 +137,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MOCK_BRAINTREE_AUTH
                 },
 
-                payment(data, actions) : SyncPromise<string> {
+                payment(data, actions) : ZalgoPromise<string> {
                     return data.braintree.create({
                         flow:     'checkout',
                         amount:   '1.00',

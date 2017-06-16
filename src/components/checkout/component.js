@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as $logger from 'beaver-logger/client';
 import * as xcomponent from 'xcomponent/src';
 
@@ -31,7 +31,7 @@ export let Checkout = xcomponent.create({
 
     scrolling: true,
 
-    buildUrl(props) : string | SyncPromise<string> {
+    buildUrl(props) : string | ZalgoPromise<string> {
         let env = props.env || config.env;
 
         return props.payment().then(token => {
@@ -178,10 +178,10 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) : SyncPromise<void> {
+                    return function(data, actions = {}) : ZalgoPromise<void> {
 
                         let close = () => {
-                            return SyncPromise.try(() => {
+                            return ZalgoPromise.try(() => {
                                 if (actions.close) {
                                     return actions.close();
                                 }
@@ -191,13 +191,13 @@ export let Checkout = xcomponent.create({
                         };
 
                         let redirect = (win, url) => {
-                            return SyncPromise.all([
+                            return ZalgoPromise.all([
                                 redir(win || window.top, url || data.returnUrl),
                                 close()
                             ]);
                         };
 
-                        return SyncPromise.try(() => {
+                        return ZalgoPromise.try(() => {
 
                             try {
                                 let isButton = window.location.href.indexOf('/webapps/hermes/button') !== -1;
@@ -247,10 +247,10 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) : SyncPromise<void> {
+                    return function(data, actions = {}) : ZalgoPromise<void> {
 
                         let close = () => {
-                            return SyncPromise.try(() => {
+                            return ZalgoPromise.try(() => {
                                 if (actions.close) {
                                     return actions.close();
                                 }
@@ -260,13 +260,13 @@ export let Checkout = xcomponent.create({
                         };
 
                         let redirect = (win, url) => {
-                            return SyncPromise.all([
+                            return ZalgoPromise.all([
                                 redir(win || window.top, url || data.cancelUrl),
                                 close()
                             ]);
                         };
 
-                        return SyncPromise.try(() => {
+                        return ZalgoPromise.try(() => {
                             return original.call(this, data, { ...actions, close, redirect });
                         }).finally(() => {
                             this.close();
@@ -349,7 +349,7 @@ export let Checkout = xcomponent.create({
             once: true,
 
             def() : Function {
-                return function(url) : SyncPromise<void> {
+                return function(url) : ZalgoPromise<void> {
                     $logger.warn('fallback', { url });
                     return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };

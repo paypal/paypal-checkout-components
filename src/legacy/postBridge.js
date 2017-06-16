@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as $logger from 'beaver-logger/client';
 import * as postRobot from 'post-robot/src';
 
@@ -28,8 +28,8 @@ postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
     }
 });
 
-export function setupPostBridge(env : string) : SyncPromise<void> {
-    return SyncPromise.try(() => {
+export function setupPostBridge(env : string) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
 
         let postBridgeUrl : string = config.postBridgeUrls[env];
         let postBridgeDomain : string = config.paypalDomains[env];

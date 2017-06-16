@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as logger from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
@@ -25,8 +25,8 @@ export function logRedirect(location : string) {
     $logger.flush();
 }
 
-export function redirect(url : string) : SyncPromise<void> {
-    return SyncPromise.try(() => {
+export function redirect(url : string) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
 
         if (!url) {
             throw new Error(`Redirect url undefined`);

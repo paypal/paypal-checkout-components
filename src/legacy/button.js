@@ -1,27 +1,27 @@
 /* @flow */
 
 import * as logger from 'beaver-logger/client';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, FPTI } from '../config';
-import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle, checkpoint } from '../lib';
+import { loadScript, getElements, getElement, memoize, isElementVisible, getThrottle, checkpoint, stringifyError } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
-let loadButtonJS = memoize(() : SyncPromise<void> => {
+let loadButtonJS = memoize(() : ZalgoPromise<void> => {
 
     $logger.debug(`buttonjs_load`);
 
     return loadScript(config.buttonJSUrl).catch(err => {
-        $logger.info(`buttonjs_load_error_retry`, { error: err.stack || err.toString() });
+        $logger.info(`buttonjs_load_error_retry`, { error: stringifyError(err) });
         return loadScript(config.buttonJSUrl);
     }).then(result => {
         $logger.debug(`buttonjs_load_success`);
         return result;
     }).catch(err => {
-        $logger.error(`buttonjs_load_error`, { error: err.stack || err.toString() });
+        $logger.error(`buttonjs_load_error`, { error: stringifyError(err) });
         throw err;
     });
 });
@@ -86,7 +86,7 @@ function renderButton(id, container, options, label) : HTMLElement {
     return el.childNodes[0];
 }
 
-export function renderButtons(id : string, options : Object) : SyncPromise<Array<Object>> {
+export function renderButtons(id : string, options : Object) : ZalgoPromise<Array<Object>> {
 
     return loadButtonJS().then(() => {
 

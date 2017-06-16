@@ -124,11 +124,12 @@ module.exports = function(config) {
                                 [ "transform-flow-strip-types", { "loose": true } ],
                                 [ "transform-object-rest-spread", { "loose": true } ],
                                 [ "syntax-object-rest-spread", { "loose": true } ],
+                                [ "transform-class-properties", { "loose": true } ],
                                 [ "transform-es3-property-literals", { "loose": true } ],
                                 [ "transform-es3-member-expression-literals", { "loose": true } ],
                                 [ "transform-decorators-legacy", { "loose": true } ],
-                                [ "transform-es2015-for-of", { "loose": true } ],
-                                [ "flow-runtime", { "assert": true, "annotate": true } ]
+                                [ "transform-es2015-for-of", { "loose": true } ]
+                                // [ "flow-runtime", { "assert": true, "annotate": true } ]
                             ]
                         }
                     },

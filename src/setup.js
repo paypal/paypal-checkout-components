@@ -3,10 +3,10 @@
 import * as $logger from 'beaver-logger/client';
 
 import { config, ENV, FPTI } from './config';
-import { initLogger, checkForCommonErrors, setLogLevel } from './lib';
+import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
 import { enableCheckoutIframe } from './components';
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -28,17 +28,16 @@ setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
 initLogger();
 
-SyncPromise.onPossiblyUnhandledException((err : Error) => {
+ZalgoPromise.onPossiblyUnhandledException(err => {
 
     $logger.error('unhandled_error', {
-        message: err ? err.toString() : 'undefined',
-        stack: err.stack || err.toString(),
+        stack: stringifyError(err),
         errtype: ({}).toString.call(err)
     });
 
     $logger.track({
         [ FPTI.KEY.ERROR_CODE ]: 'checkoutjs_error',
-        [ FPTI.KEY.ERROR_DESC ]: err ? err.toString() : 'undefined'
+        [ FPTI.KEY.ERROR_DESC ]: stringifyError(err)
     });
 
     $logger.flush();

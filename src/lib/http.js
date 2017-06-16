@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 type RequestOptionsType = {
     url : string,
@@ -20,9 +20,9 @@ const HEADERS = {
 
 let headerBuilders = [];
 
-export function request({ url, method = 'get', headers = {}, json, data, body, win = window, timeout = 0 } : RequestOptionsType) : SyncPromise<Object> {
+export function request({ url, method = 'get', headers = {}, json, data, body, win = window, timeout = 0 } : RequestOptionsType) : ZalgoPromise<Object> {
 
-    return new SyncPromise((resolve, reject) => {
+    return new ZalgoPromise((resolve, reject) => {
 
         if (json && data || json && body || data && json) {
             throw new Error(`Only options.json or options.data or options.body should be passed`);

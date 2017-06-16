@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { componentTemplate } from 'src/components/button/templates';
 import { getElement, errorOnWindowOpen } from '../../tests/common';
 
@@ -23,7 +24,7 @@ function renderCheckout() {
     window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
         payment: window.xprops.payment,
-        onAuthorize(data, actions) : void | SyncPromise<void> {
+        onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
             return window.xprops.onAuthorize({
                 ...data,

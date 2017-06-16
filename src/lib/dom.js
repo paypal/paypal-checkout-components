@@ -1,7 +1,7 @@
 /* @flow */
 
 import * as $logger from 'beaver-logger/client';
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config } from '../config';
 
@@ -12,7 +12,7 @@ function isDocumentReady() : boolean {
     return Boolean(document.body) && document.readyState === 'complete';
 }
 
-let documentReady : SyncPromise<void> = new SyncPromise(resolve => {
+let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
 
     if (isDocumentReady()) {
         return resolve();
@@ -26,13 +26,19 @@ let documentReady : SyncPromise<void> = new SyncPromise(resolve => {
     }, 10);
 });
 
-let documentBody : SyncPromise<HTMLElement> = documentReady.then(() => document.body);
+let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
+    if (document.body) {
+        return document.body;
+    }
+
+    throw new Error('Document ready but document.body not present');
+});
 
 
-export function loadScript(src : string, timeout : number = 0) : SyncPromise<void> {
+export function loadScript(src : string, timeout : number = 0) : ZalgoPromise<void> {
     return documentBody.then(body => {
 
-        return new SyncPromise((resolve, reject) => {
+        return new ZalgoPromise((resolve, reject) => {
             let script = document.createElement('script');
 
             script.onload = function () {
@@ -135,7 +141,7 @@ export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | 
     return [];
 }
 
-export function onDocumentReady(method : () => void) : SyncPromise<void> {
+export function onDocumentReady(method : () => void) : ZalgoPromise<void> {
     return documentReady.then(method);
 }
 
@@ -225,8 +231,8 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
     return newUrl;
 }
 
-export function redirect(win : any = window, url : string) : SyncPromise<void> {
-    return new SyncPromise(resolve => {
+export function redirect(win : any = window, url : string) : ZalgoPromise<void> {
+    return new ZalgoPromise(resolve => {
 
         $logger.info(`redirect`, { url });
 

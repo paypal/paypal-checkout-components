@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
@@ -134,7 +134,7 @@ export let Button = xcomponent.create({
                     throw new Error(`Expected client prop to be passed with Braintree authorization keys`);
                 }
             },
-            decorate(braintree, props) : ?SyncPromise<BraintreePayPalClient> {
+            decorate(braintree, props) : ?ZalgoPromise<BraintreePayPalClient> {
 
                 if (!braintree) {
                     return;
@@ -155,8 +155,8 @@ export let Button = xcomponent.create({
             alias: 'billingAgreement',
 
             decorate(original) : Function {
-                return function payment() : SyncPromise<string> {
-                    return new SyncPromise((resolve, reject) => {
+                return function payment() : ZalgoPromise<string> {
+                    return new ZalgoPromise((resolve, reject) => {
 
                         let data = resolve;
                         let actions = reject;
@@ -253,7 +253,7 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onRemember = this.onRemember || new SyncPromise();
+                this.onRemember = this.onRemember || new ZalgoPromise();
                 this.onRemember.resolve();
 
                 enableCheckoutIframe();
@@ -265,7 +265,7 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onRemember = this.onRemember || new SyncPromise();
+                this.onRemember = this.onRemember || new ZalgoPromise();
                 this.onRemember.resolve();
             }
         },
@@ -275,10 +275,10 @@ export let Button = xcomponent.create({
             required: false,
 
             decorate(original) : Function {
-                return function() : SyncPromise<void> {
-                    return SyncPromise.try(() => {
+                return function() : ZalgoPromise<void> {
+                    return ZalgoPromise.try(() => {
 
-                        this.onRemember = this.onRemember || new SyncPromise();
+                        this.onRemember = this.onRemember || new ZalgoPromise();
 
                         if (this.props.displayTo === USERS.REMEMBERED) {
                             $logger.info(`button_render_wait_for_remembered_user`);
@@ -304,7 +304,7 @@ export let Button = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) : void | SyncPromise<void> {
+                    return function(data, actions) : void | ZalgoPromise<void> {
 
                         if (this.props.braintree) {
                             return this.props.braintree.then(client => {
@@ -315,13 +315,13 @@ export let Button = xcomponent.create({
                         }
 
                         let redirect = (win, url) => {
-                            return SyncPromise.all([
+                            return ZalgoPromise.all([
                                 redir(win || window.top, url || data.returnUrl),
                                 actions.close()
                             ]);
                         };
 
-                        return SyncPromise.try(() => {
+                        return ZalgoPromise.try(() => {
                             return original.call(this, data, { ...actions, redirect });
                         }).catch(err => {
                             return this.error(err);
@@ -338,10 +338,10 @@ export let Button = xcomponent.create({
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions) : void | SyncPromise<void> {
+                    return function(data, actions) : void | ZalgoPromise<void> {
 
                         let redirect = (win, url) => {
-                            return SyncPromise.all([
+                            return ZalgoPromise.all([
                                 redir(win || window.top, url || data.cancelUrl),
                                 actions.close()
                             ]);
