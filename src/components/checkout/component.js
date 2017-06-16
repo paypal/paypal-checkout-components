@@ -394,7 +394,7 @@ export let Checkout = xcomponent.create({
         if (isDevice()) {
             return {
                 width: '100%',
-                height: '100%'
+                height: '535px'
             };
         }
 
