@@ -150,8 +150,7 @@ if (currentScript) {
         state:      currentScript.getAttribute('data-state'),
         lightbox:   currentScript.hasAttribute('data-enable-lightbox'),
         logLevel:   currentScript.getAttribute('data-log-level'),
-        ppobjects:  true
-    });
+        ppobjects:  true });
 
     let scriptProtocol = currentScript.src.split(':')[0];
 
