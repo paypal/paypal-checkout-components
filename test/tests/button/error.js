@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
@@ -25,7 +26,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return '';
                 },
 
@@ -51,7 +52,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return window.paypal.Promise.resolve('');
                 },
 
@@ -77,7 +78,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     throw new Error('error');
                 },
 
@@ -103,7 +104,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return window.paypal.Promise.reject(new Error('error'));
                 },
 
@@ -181,7 +182,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'fallback' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -203,7 +204,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'error' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -229,7 +230,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -255,7 +256,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -283,7 +284,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: { flow, action: 'checkout' },
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 

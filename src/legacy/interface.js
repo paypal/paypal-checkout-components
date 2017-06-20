@@ -1,13 +1,13 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as logger from 'beaver-logger/client';
 
 import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV, FPTI } from '../config';
 import { setupPostBridge } from './postBridge';
-import { supportsPopups, getElements, once, safeJSON, extendUrl, isIEIntranet } from '../lib';
+import { supportsPopups, getElements, once, safeJSON, extendUrl, isIEIntranet, noop } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { normalizeLocale } from './common';
@@ -128,9 +128,9 @@ function checkUrlAgainstEnv(url : string) {
     global methods.
 */
 
-function awaitPaymentTokenAndUrl() : { url : SyncPromise<string>, paymentToken : SyncPromise<?string> } {
+function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken : ZalgoPromise<?string> } {
 
-    let paymentTokenAndUrl = new SyncPromise((resolve, reject) => {
+    let paymentTokenAndUrl = new ZalgoPromise((resolve, reject) => {
 
         checkout.initXO = () => {
             $logger.warn(`gettoken_initxo`);
@@ -185,20 +185,20 @@ function initPayPalCheckout(props = {}) : Object {
 
     let paypalCheckout = Checkout.init({
 
-        onAuthorize(data, actions) : SyncPromise<void> {
+        onAuthorize(data, actions) : ZalgoPromise<void> {
             $logger.info(`payment_authorized`);
             onAuthorizeListener.trigger(data.paymentToken);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },
 
-        onCancel(data, actions) : SyncPromise<void> {
+        onCancel(data, actions) : ZalgoPromise<void> {
             $logger.info(`payment_canceled`);
             logRedirect(data.cancelUrl);
             return actions.redirect(window);
         },
 
-        fallback(url) : SyncPromise<void> {
+        fallback(url) : ZalgoPromise<void> {
             $logger.error(`fallback_handler`, { url });
             this.destroy();
             return redirect(url);
@@ -225,11 +225,11 @@ function initPayPalCheckout(props = {}) : Object {
     return paypalCheckout;
 }
 
-function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : SyncPromise<Object> {
+function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : ZalgoPromise<Object> {
 
-    let urlProp = SyncPromise.resolve(props.url);
+    let urlProp = ZalgoPromise.resolve(props.url);
 
-    let paymentToken = new SyncPromise(resolve => {
+    let paymentToken = new ZalgoPromise(resolve => {
         props.init = (data) => {
             resolve(data.paymentToken);
         };
@@ -314,7 +314,7 @@ function handleClickHijack(element) : void {
         token = result;
     });
 
-    renderPayPalCheckout({ url, payment: () => SyncPromise.resolve(token) }, targetElement);
+    renderPayPalCheckout({ url, payment: () => ZalgoPromise.resolve(token) }, targetElement);
 }
 
 
@@ -397,7 +397,7 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 
 let setupCalled = false;
 
-export function setup(id : string, options : Object = {}) : SyncPromise<void> {
+export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     id = id || 'merchant';
 
@@ -479,7 +479,7 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
         }
     }
 
-    return SyncPromise.all([
+    return ZalgoPromise.all([
 
         !isIEIntranet() ? setupPostBridge(config.env) : null,
 
@@ -489,7 +489,8 @@ export function setup(id : string, options : Object = {}) : SyncPromise<void> {
                 listenClick(button.container, button.button, button.click, button.condition, button.track);
             });
         })
-    ]);
+
+    ]).then(noop);
 }
 
 checkout.setup = setup;

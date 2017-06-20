@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
 
 import { generateECToken } from '../common';
@@ -20,7 +21,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with payment and no onAuthorize, and error out', () => {
 
         return window.paypal.Checkout.render({
-            payment() : string | SyncPromise<string> {
+            payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             }
         }).then(() => {
@@ -46,7 +47,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with an invalid size, and error out', () => {
 
         return window.paypal.Checkout.render({
-            payment() : string | SyncPromise<string> {
+            payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -65,7 +66,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with no client id, and error out', () => {
 
         return window.paypal.Checkout.render({
-            payment() : string | SyncPromise<string> {
+            payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {
@@ -84,7 +85,7 @@ describe(`paypal checkout component validation`, () => {
     it('should attempt to render checkout with an invalid client id, and error out', () => {
 
         return window.paypal.Checkout.render({
-            payment() : string | SyncPromise<string> {
+            payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             },
             onAuthorize() {

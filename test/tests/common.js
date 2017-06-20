@@ -1,6 +1,6 @@
 /* @flow */
 
-let SyncPromise = window.paypal.Promise;
+import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 
 window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
@@ -27,8 +27,8 @@ for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     };
 }
 
-export function onHashChange() : SyncPromise<string> {
-    return new SyncPromise((resolve, reject) => {
+export function onHashChange() : ZalgoPromise<string> {
+    return new ZalgoPromise((resolve, reject) => {
         let currentHash = window.location.hash;
 
         function listener() {
@@ -42,8 +42,8 @@ export function onHashChange() : SyncPromise<string> {
     });
 }
 
-export function delay(time : number) : SyncPromise<void> {
-    return new SyncPromise(resolve => {
+export function delay(time : number) : ZalgoPromise<void> {
+    return new ZalgoPromise(resolve => {
         setTimeout(resolve, time);
     });
 }

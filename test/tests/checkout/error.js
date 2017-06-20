@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
 
 import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
@@ -115,7 +116,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return window.paypal.Promise.reject(new Error('error'));
                     },
 
@@ -207,7 +208,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'fallback' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -234,7 +235,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: { action: 'error' },
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -264,7 +265,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -294,7 +295,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -326,7 +327,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.addEventListener('click', (event : Event) => {
                 return window.paypal.Checkout.render({
 
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 
@@ -365,7 +366,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                             name = this.childWindowName;
                         },
 
-                        payment() : string | SyncPromise<string> {
+                        payment() : string | ZalgoPromise<string> {
                             return generateECToken();
                         },
 
@@ -389,7 +390,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             it('should render checkout without a click event and error out', (done) => {
 
                 return window.paypal.Checkout.render({
-                    payment() : string | SyncPromise<string> {
+                    payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
 

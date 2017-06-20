@@ -1,6 +1,6 @@
 /* @flow */
 
-let SyncPromise = window.paypal.Promise;
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
 
@@ -27,7 +27,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -66,7 +66,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -89,7 +89,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 displayTo: window.paypal.USERS.ALL,
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 
@@ -129,7 +129,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 displayTo: window.paypal.USERS.ALL,
 
-                payment() : string | SyncPromise<string> {
+                payment() : string | ZalgoPromise<string> {
                     return generateECToken();
                 },
 

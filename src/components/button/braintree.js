@@ -1,6 +1,6 @@
 /* @flow */
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 export type Braintree = {
     client : {
@@ -16,7 +16,7 @@ export type BraintreePayPalClient = {
     tokenizePayment : Function
 };
 
-export function awaitBraintreeClient(braintree : Braintree, authorization : string) : SyncPromise<BraintreePayPalClient> {
+export function awaitBraintreeClient(braintree : Braintree, authorization : string) : ZalgoPromise<BraintreePayPalClient> {
     return braintree.client.create({ authorization }).then(client => {
         return braintree.paypalCheckout.create({ client });
     });

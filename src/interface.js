@@ -5,8 +5,8 @@ export let postRobot = _postRobot;
 
 export { PopupOpenError } from 'xcomponent/src';
 
-import { SyncPromise } from 'sync-browser-mocks/src/promise';
-export { SyncPromise as Promise } from 'sync-browser-mocks/src/promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
+export { ZalgoPromise as Promise } from 'zalgo-promise';
 
 export { rest } from './api';
 export { Button } from './components';
@@ -14,7 +14,7 @@ export { setup } from './setup';
 export { config, ENV, USERS, SOURCE } from './config';
 export { request, isEligible, isWebView, forceIframe } from './lib';
 
-export let onPossiblyUnhandledException = SyncPromise.onPossiblyUnhandledException;
+export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 
 export let version = __MINOR_VERSION__;
 

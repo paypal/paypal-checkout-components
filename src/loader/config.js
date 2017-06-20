@@ -5,6 +5,7 @@ export let config = {
     major_version:  '4',
     latest_version: 'latest',
     xcomponent:     'xcomponent',
+    ppcheckout:     'ppcheckout',
     xchild_global:  'xchild',
     name_separator: '__',
 

@@ -1,5 +1,6 @@
 /* @flow */
 
+import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
@@ -1002,7 +1003,7 @@ describe(`paypal button component validation`, () => {
                 }
             },
 
-            payment() : string | SyncPromise<string> {
+            payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             },
 
