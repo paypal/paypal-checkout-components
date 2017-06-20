@@ -89,7 +89,8 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 },
                 mangle: minify,
                 sourceMap: true
-            })
+            }),
+            new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
 
@@ -109,7 +110,7 @@ module.exports.webpack_tasks = {
             filename: `${FILE_NAME}.js`
         })
     },
-
+    
     major: {
         src: 'src/load.js',
         out: 'dist',
@@ -117,12 +118,12 @@ module.exports.webpack_tasks = {
             version: nextMajorVersion,
             filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
             vars: {
-                __IE_POPUP_SUPPORT__: JSON.stringify(false),
-                __LEGACY_SUPPORT__: JSON.stringify(false)
+                // __IE_POPUP_SUPPORT__: JSON.stringify(false),
+                // __LEGACY_SUPPORT__: JSON.stringify(false)
             }
         })
     },
-
+    
     minor: {
         src: 'src/load.js',
         out: 'dist',
@@ -152,16 +153,18 @@ module.exports.webpack_tasks = {
         })
     },
 
+    
     lib: {
         src: 'src/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
             version: nextMajorVersion,
             filename: `${FILE_NAME}.lib.js`,
-            target: `umd`,
-            modulename: `paypal`
+            // target: `umd`,
+            // modulename: `paypal`
         })
     },
+    
     
     child_loader: {
         src: 'src/loader/index.js',
