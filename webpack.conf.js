@@ -119,7 +119,7 @@ module.exports.webpack_tasks = {
             filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
             vars: {
                 // __IE_POPUP_SUPPORT__: JSON.stringify(false),
-                // __LEGACY_SUPPORT__: JSON.stringify(false)
+                __LEGACY_SUPPORT__: JSON.stringify(false)
             }
         })
     },
