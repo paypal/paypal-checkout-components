@@ -51,7 +51,7 @@ export let Button = xcomponent.create({
         element: 'body'
     },
 
-    validateProps(component, props, required = true) {
+    validate() {
         if (isIEIntranet()) {
             throw new Error(`Can not render button in IE intranet mode`);
         }
