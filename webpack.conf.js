@@ -118,7 +118,7 @@ module.exports.webpack_tasks = {
             version: nextMajorVersion,
             filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
             vars: {
-                // __IE_POPUP_SUPPORT__: JSON.stringify(false),
+                __IE_POPUP_SUPPORT__: JSON.stringify(false),
                 __LEGACY_SUPPORT__: JSON.stringify(false)
             }
         })
@@ -160,8 +160,8 @@ module.exports.webpack_tasks = {
         cfg: getWebpackConfig({
             version: nextMajorVersion,
             filename: `${FILE_NAME}.lib.js`,
-            // target: `umd`,
-            // modulename: `paypal`
+            target: `umd`,
+            modulename: `paypal`
         })
     },
     
