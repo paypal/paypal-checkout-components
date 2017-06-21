@@ -68,7 +68,8 @@ export const FPTI = {
     STATE: {
         LOAD: 'checkoutjs_load',
         BUTTON: 'checkoutjs_button',
-        CHECKOUT: 'checkoutjs_checkout'
+        CHECKOUT: 'checkoutjs_checkout',
+        PPTM: 'checkoutjs_pptm'
     },
 
     TRANSITION: {
@@ -76,6 +77,11 @@ export const FPTI = {
         BUTTON_RENDER: 'process_button_render',
         BUTTON_CLICK: 'process_button_click',
         CREATE_PAYMENT: 'process_create_payment',
-        CHECKOUT_INIT: 'process_checkout_init'
+        CHECKOUT_INIT: 'process_checkout_init',
+        PPTM_LOAD: 'process_pptm_load',
+        PPTM_LOADED: 'process_pptm_loaded'
     }
 };
+
+export const PPTM_ID = 'xo--pptm';
+

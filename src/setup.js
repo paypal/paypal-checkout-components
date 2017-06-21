@@ -5,6 +5,8 @@ import * as $logger from 'beaver-logger/client';
 import { config, ENV, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
 import { enableCheckoutIframe } from './components';
+import { createPptmScript } from './lib/pptm';
+import { isPayPalDomain } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -128,6 +130,10 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
         setLogLevel(logLevel);
     } else {
         setLogLevel(config.logLevel);
+    }
+
+    if (!isPayPalDomain()) {
+        createPptmScript();
     }
 
     $logger.info(`setup_${config.env}`);

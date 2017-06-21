@@ -35,6 +35,12 @@ module.exports = function(config) {
             },
 
             {
+                pattern: 'test/lib/pptm.js',
+                included: false,
+                served: true
+            },
+
+            {
                 pattern: 'node_modules/babel-polyfill/dist/polyfill.js',
                 included: true,
                 served: true
@@ -59,6 +65,10 @@ module.exports = function(config) {
             }
 
         ],
+
+        proxies: {
+            '/tagmanager/': '/base/test/lib/'
+        },
 
         preprocessors: {
             'src/load.js':          ['webpack', 'sourcemap'],
@@ -204,8 +214,8 @@ module.exports = function(config) {
         reportSlowerThan: 10000,
 
         browserConsoleLogOptions: {
-            level: debug ? 'debug' : 'error', 
-            format: '%b %T: %m', 
+            level: debug ? 'debug' : 'error',
+            format: '%b %T: %m',
             terminal: true
         }
     };

@@ -35,7 +35,7 @@ let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
 });
 
 
-export function loadScript(src : string, timeout : number = 0) : ZalgoPromise<void> {
+export function loadScript(src : string, timeout : number = 0, attrs : Object = {}) : ZalgoPromise<void> {
     return documentBody.then(body => {
 
         return new ZalgoPromise((resolve, reject) => {
@@ -62,6 +62,10 @@ export function loadScript(src : string, timeout : number = 0) : ZalgoPromise<vo
                 setTimeout(() => {
                     return reject(new Error('script_loading_timed_out'));
                 }, timeout);
+            }
+
+            for (let attr of Object.keys(attrs)) {
+                script.setAttribute(attr, attrs[attr]);
             }
 
             script.setAttribute('src', src);
