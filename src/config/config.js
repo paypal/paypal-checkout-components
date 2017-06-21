@@ -48,6 +48,8 @@ export let config = {
         Opera: 23
     },
 
+    session_uid_lifetime: 5 * 60 * 1000,
+
     _apiStage: '',
 
     get apiStage() : string {

@@ -179,25 +179,43 @@ export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T>
 
 export function getSessionID() : string {
 
-    if (!window.pp_uid && window.sessionStorage) {
-        try {
-            window.pp_uid = window.sessionStorage.getItem('__pp_uid__');
-        } catch (err) {
-            // pass
+    if (window.xprops && window.xprops.uid) {
+        return window.xprops.uid;
+    }
+
+    let session;
+    let guid;
+
+    try {
+        session = window.localStorage.getItem('__pp_session__');
+
+        if (session) {
+            session = JSON.parse(session);
+        }
+    } catch (err) {
+        session = null;
+    }
+
+    let now = Date.now();
+
+    if (session) {
+        if ((now - session.created) <= config.session_uid_lifetime) {
+            guid = session.guid;
         }
     }
 
-    if (!window.pp_uid) {
-        window.pp_uid = uniqueID();
-
-        try {
-            window.sessionStorage.setItem('__pp_uid__', window.pp_uid);
-        } catch (err) {
-            // pass
-        }
+    if (!guid) {
+        guid = uniqueID();
     }
 
-    return window.pp_uid;
+    try {
+        let newSession = { guid, created: now };
+        window.localStorage.setItem('__pp_session__', JSON.stringify(newSession));
+    } catch (err) {
+        // pass
+    }
+
+    return guid;
 }
 
 export function stringifyError(err : mixed) : string {
