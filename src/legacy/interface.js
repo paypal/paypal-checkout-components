@@ -435,13 +435,24 @@ export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     setupPostBridge(config.env);
 
-    return renderButtons(id, options.buttons).then(buttons => {
+    return ZalgoPromise.try(() => {
 
-        buttons.forEach(button => {
-            instrumentButtonRender(button.type);
+        // If there are no buttons passed, can only assume there's a custom paypal button with a custom listener
 
-            listenClick(button.container, button.element, button.click, button.condition, () => {
-                instrumentButtonClick(button.type);
+        if (!options.buttons.length) {
+            return instrumentButtonRender(FPTI.BUTTON_TYPE.CUSTOM);
+        }
+
+        // Otherwise render whatever buttons we were asked to, and listen for them to be clicked
+
+        return renderButtons(id, options.buttons).then(buttons => {
+
+            buttons.forEach(button => {
+                instrumentButtonRender(button.type);
+
+                listenClick(button.container, button.element, button.click, button.condition, () => {
+                    instrumentButtonClick(button.type);
+                });
             });
         });
     });
