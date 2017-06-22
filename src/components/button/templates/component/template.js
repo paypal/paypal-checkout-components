@@ -23,7 +23,7 @@ function expandContentText(contentText : string, { color, logoColor } : { color 
 }
 
 function removeBranding(contentText : string) : string {
-    return contentText.replace('${pp}', '').replace('${paypal}', '').replace(/ +/g, '');
+    return contentText.replace('${pp}', '').trim().replace('${paypal}', '').replace(/ +/g, ' ');
 }
 
 export function componentTemplate({ props } : { props : Object }) : string {
@@ -48,8 +48,6 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let contentText = getButtonConfig(label, 'label') || content[label];
     let logoColor   = getButtonConfig(label, 'logoColors')[color];
 
-    let labelText = expandContentText(contentText, { color, logoColor });
-
     let allowTagline = (branding && !fundingicons);
     let tagline      = allowTagline ? getButtonConfig(label, 'tagline') : false;
     let tagcontent   = content[getButtonConfig(label, 'tagkey')] || '';
@@ -58,13 +56,15 @@ export function componentTemplate({ props } : { props : Object }) : string {
         contentText = removeBranding(contentText);
     }
 
+    let labelText = expandContentText(contentText, { color, logoColor });
+
     return `
         <style type="text/css">
             ${ componentStyle }
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding ? 'true' : 'false' }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
                 </div>

@@ -64,11 +64,11 @@ export let buttonConfig = {
 };
 
 export function getButtonConfig(type : string, key : string) : mixed {
-    let result = buttonConfig[type][key];
+    let config = buttonConfig[type];
 
-    if (typeof result !== 'undefined') {
-        return result;
+    if (config.hasOwnProperty(key)) {
+        return config[key];
     }
-
+    
     return buttonConfig.default[key];
 }
