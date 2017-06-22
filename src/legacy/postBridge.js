@@ -6,6 +6,7 @@ import * as postRobot from 'post-robot/src';
 
 import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
+import { isIEIntranet } from '../lib';
 
 postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
 
@@ -31,6 +32,12 @@ postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
 export function setupPostBridge(env : string) : ZalgoPromise<void> {
     return ZalgoPromise.try(() => {
 
+        // No point even trying to set up bridge for intranet mode -- iframes don't work
+
+        if (isIEIntranet()) {
+            return;
+        }
+
         let postBridgeUrl : string = config.postBridgeUrls[env];
         let postBridgeDomain : string = config.paypalDomains[env];
 
@@ -39,7 +46,7 @@ export function setupPostBridge(env : string) : ZalgoPromise<void> {
         }
 
         $logger.debug(`setup_post_bridge`, { env });
-        
+
         return postRobot.bridge.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
 
             // Post-Bridge is best-effort for everything but IE

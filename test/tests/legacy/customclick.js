@@ -66,6 +66,56 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         });
 
+        it('should render a button into a form container without passing container and click on the button, with a custom listener and immediate startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            let testButton = createElement({
+                tag: 'button',
+                container: 'testForm'
+            });
+
+            return window.paypal.checkout.setup('merchantID', {
+
+                click() {
+                    // pass
+                }
+
+            }).then(() => {
+
+                testButton.addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    window.paypal.checkout.startFlow(token);
+                });
+
+                testButton.click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
         it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow', () => {
 
             let token = generateECToken();
@@ -110,6 +160,60 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 });
 
                 getElement('button', testForm).click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
+
+        it('should render a button into a form container without passing container and click on the button, with a custom listener, initXO and startFlow', () => {
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            createElement({
+                tag: 'form',
+                container: 'testContainer',
+                id: 'testForm',
+                props: {
+                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                },
+
+                children: [
+                    {
+                        tag: 'input',
+                        props: {
+                            name: 'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            let testButton = createElement({
+                tag: 'button',
+                container: 'testForm'
+            });
+
+            return window.paypal.checkout.setup('merchantID', {
+
+                click() {
+                    // pass
+                }
+
+            }).then(() => {
+
+                testButton.addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    window.paypal.checkout.initXO();
+
+                    setTimeout(() => {
+                        window.paypal.checkout.startFlow(token);
+                    }, 50);
+                });
+
+                testButton.click();
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);

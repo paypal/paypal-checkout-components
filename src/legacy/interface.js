@@ -7,12 +7,12 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV, FPTI } from '../config';
 import { setupPostBridge } from './postBridge';
-import { supportsPopups, getElements, once, safeJSON, extendUrl, isIEIntranet, noop } from '../lib';
+import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
-import { normalizeLocale } from './common';
 import { redirect, logRedirect, parseToken } from './util';
 import { onAuthorizeListener } from './listener';
+import { normalizeOptions, setupConfig } from './options';
 
 let $logger = logger.prefix(LOG_PREFIX);
 
@@ -383,6 +383,23 @@ function listenClick(container, button, clickHandler, condition, track) : void {
     });
 }
 
+function instrumentButtonRender(type : string) {
+    $logger.track({
+        [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
+        [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_RENDER,
+        [ FPTI.KEY.BUTTON_TYPE ]: type
+    });
+}
+
+function instrumentButtonClick(type : string) {
+    $logger.track({
+        [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
+        [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_CLICK,
+        [ FPTI.KEY.BUTTON_TYPE ]: type
+    });
+    $logger.flush();
+}
+
 
 /*  Setup
     -----
@@ -413,84 +430,21 @@ export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     setupCalled = true;
 
-    if (options.environment) {
+    setupConfig(options);
+    normalizeOptions(options);
 
-        if (options.environment === 'live') {
-            options.environment = ENV.PRODUCTION;
-        }
+    setupPostBridge(config.env);
 
-        if (config.paypalUrls[options.environment]) {
-            config.env = options.environment;
-        } else {
-            options.environment = config.env;
-            $logger.warn('invalid_env', { badenv: options.environment });
-        }
-    }
+    return renderButtons(id, options.buttons).then(buttons => {
 
-    if (options.locale) {
-        config.locale = normalizeLocale(options.locale);
-        config.customCountry = true;
-    }
+        buttons.forEach(button => {
+            instrumentButtonRender(button.type);
 
-    if (options.buttons) {
-        if (getElements(options.buttons).length) {
-            options.button = options.buttons;
-            delete options.buttons;
-        }
-    }
-
-    if (options.button && options.button.length !== 0) {
-
-        if (options.container) {
-            $logger.warn(`button_and_container_passed`, { button: options.button, container: options.container });
-
-            if (Array.isArray(options.button)) {
-                options.button = options.button.concat(options.container);
-            } else {
-                options.button = [ options.button ].concat(options.container);
-            }
-
-            delete options.container;
-        }
-
-        let buttonElements = getElements(options.button);
-
-        if (buttonElements.length) {
-            buttonElements.forEach(el => {
-                $logger.info(`listen_click_custom_button`);
-
-                $logger.track({
-                    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION,
-                    [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
-                });
-
-                listenClick(el, el, options.click, options.condition, () => {
-                    $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
-                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.CUSTOM
-                    });
-                    $logger.flush();
-                });
+            listenClick(button.container, button.element, button.click, button.condition, () => {
+                instrumentButtonClick(button.type);
             });
-        } else {
-            $logger.warn(`button_element_not_found`, { element: JSON.stringify(options.button) });
-        }
-    }
-
-    return ZalgoPromise.all([
-
-        !isIEIntranet() ? setupPostBridge(config.env) : null,
-
-        renderButtons(id, options).then(buttons => {
-            buttons.forEach(button => {
-                $logger.info(`listen_click_paypal_button`);
-                listenClick(button.container, button.button, button.click, button.condition, button.track);
-            });
-        })
-
-    ]).then(noop);
+        });
+    });
 }
 
 checkout.setup = setup;

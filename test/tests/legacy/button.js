@@ -625,7 +625,7 @@ describe('paypal legacy button rendering', () => {
 
         window.paypal.checkout.setup('merchantID', {
 
-            container: 'customLink',
+            container: 'testButton',
 
             click(event) {
                 clicked = true;
