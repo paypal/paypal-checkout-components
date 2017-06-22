@@ -89,8 +89,8 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 },
                 mangle: minify,
                 sourceMap: true
-            }),
-            new webpack.optimize.ModuleConcatenationPlugin()
+            })
+            // new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
 
