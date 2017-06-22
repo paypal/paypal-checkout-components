@@ -288,7 +288,7 @@ export let rest = {
 
 const PROXY_REST = `proxy_rest`;
 
-if (postRobot.bridge.isBridge() || Button.isChild()) {
+if ((postRobot.bridge && postRobot.bridge.isBridge()) || Button.isChild()) {
     postRobot.sendToParent(PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
