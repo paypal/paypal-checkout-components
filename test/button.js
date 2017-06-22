@@ -286,8 +286,8 @@ describe('Button Configurations before rendering', () => {
                     }
                 }
             }
+            break;
         }
     }
 
 });
-
