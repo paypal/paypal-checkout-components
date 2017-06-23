@@ -41,7 +41,7 @@ export function setupPostBridge(env : string) : ZalgoPromise<void> {
         let postBridgeUrl : string = config.postBridgeUrls[env];
         let postBridgeDomain : string = config.paypalDomains[env];
 
-        if (!postRobot.bridge.needsBridgeForDomain(postBridgeDomain)) {
+        if (!postRobot.bridge || !postRobot.bridge.needsBridgeForDomain(postBridgeDomain)) {
             return $logger.debug(`post_bridge_not_required`, { env });
         }
 

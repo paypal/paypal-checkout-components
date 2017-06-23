@@ -2,7 +2,7 @@
 
 import * as $logger from 'beaver-logger/client';
 
-import { config, ENV, FPTI } from './config';
+import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
 import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
@@ -96,10 +96,6 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     if (stage) {
         delete config.stage;
         config.stage = stage;
-        if (!env) {
-            delete config.env;
-            config.env = ENV.STAGE;
-        }
     }
 
     if (apiStage) {

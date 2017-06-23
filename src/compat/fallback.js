@@ -29,7 +29,7 @@ export function onLegacyPaymentAuthorize(method : Function) : ZalgoPromise<void>
     onAuthorize = method;
 
     return ZalgoPromise.try(() => {
-        if (!isPayPalDomain()) {
+        if (postRobot.bridge && !isPayPalDomain()) {
             return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
                 return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);

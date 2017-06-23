@@ -295,6 +295,7 @@ if ((postRobot.bridge && postRobot.bridge.isBridge()) || Button.isChild()) {
         });
 
 } else {
+    // $FlowFixMe
     postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
         proxyRest = data;
     });

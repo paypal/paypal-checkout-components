@@ -96,7 +96,7 @@
   "dependencies": {
     "Base64": "^1.0.0",
     "beaver-logger": "^3.0.6",
-    "post-robot": "^6.0.7",
+    "post-robot": "^7.0.1",
     "xcomponent": "^2.0.60",
     "zalgo-promise": "^1.0.10"
   }
