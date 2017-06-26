@@ -9,7 +9,7 @@ import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getSessionID } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getCommonSessionID } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -73,9 +73,9 @@ export let Checkout = xcomponent.create({
 
         uid: {
             type: 'string',
-            value: getSessionID(),
+            value: getCommonSessionID(),
             def() : string {
-                return getSessionID();
+                return getCommonSessionID();
             },
             queryParam: true
         },

@@ -34,7 +34,7 @@ export let config = {
     },
 
     throttles: {
-        v4_mobile_device: 1000
+        v4_mobile_device: 0
     },
 
     customCountry: false,

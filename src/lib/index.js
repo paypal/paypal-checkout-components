@@ -10,3 +10,4 @@ export * from './http';
 export * from './beacon';
 export * from './throttle';
 export * from './namespace';
+export * from './session';

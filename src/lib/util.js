@@ -177,47 +177,6 @@ export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T>
     });
 }
 
-export function getSessionID() : string {
-
-    if (window.xprops && window.xprops.uid) {
-        return window.xprops.uid;
-    }
-
-    let session;
-    let guid;
-
-    try {
-        session = window.localStorage.getItem('__pp_session__');
-
-        if (session) {
-            session = JSON.parse(session);
-        }
-    } catch (err) {
-        session = null;
-    }
-
-    let now = Date.now();
-
-    if (session) {
-        if ((now - session.created) <= config.session_uid_lifetime) {
-            guid = session.guid;
-        }
-    }
-
-    if (!guid) {
-        guid = uniqueID();
-    }
-
-    try {
-        let newSession = { guid, created: now };
-        window.localStorage.setItem('__pp_session__', JSON.stringify(newSession));
-    } catch (err) {
-        // pass
-    }
-
-    return guid;
-}
-
 export function stringifyError(err : mixed) : string {
 
     if (!err) {
@@ -233,4 +192,34 @@ export function stringifyError(err : mixed) : string {
     }
 
     return Object.prototype.toString.call(err);
+}
+
+export function getLocalStorage(key : string) : any {
+
+    try {
+        if (!window.localStorage) {
+            return;
+        }
+
+        let result = window.localStorage.getItem(key);
+
+        if (result) {
+            return JSON.parse(result);
+        }
+    } catch (err) {
+        // pass
+    }
+}
+
+export function setLocalStorage(key : string, value : mixed) {
+
+    try {
+        if (!window.localStorage) {
+            return;
+        }
+
+        window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (err) {
+        // pass
+    }
 }

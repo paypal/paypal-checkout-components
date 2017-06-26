@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getSessionID, request, checkpoint, isIEIntranet } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getThrottle } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -55,15 +55,23 @@ export let Button = xcomponent.create({
         if (isIEIntranet()) {
             throw new Error(`Can not render button in IE intranet mode`);
         }
+
+        let throttle = getThrottle('checkthrottle', 5000);
+
+        throttle.logStart();
+
+        setTimeout(() => {
+            checkpoint(`ppxo_checkthrottle_${ throttle.isEnabled() ? 'test' : 'control' }_check`);
+        }, 5000);
     },
 
     props: {
 
         uid: {
             type: 'string',
-            value: getSessionID(),
+            value: getCommonSessionID(),
             def() : string {
-                return getSessionID();
+                return getCommonSessionID();
             },
             queryParam: true
         },

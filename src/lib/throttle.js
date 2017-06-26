@@ -1,46 +1,25 @@
 /* @flow */
 
 import { checkpoint, fpti } from './beacon';
-import { uniqueID, hashStr, match } from './util';
+import { hashStr, match } from './util';
+import { getCommonSessionID, getSessionState } from './session';
 
-let uids = {};
+function isBeaconUnique(name : string) : boolean {
+    return getSessionState(state => {
+        state.loggedBeacons = state.loggedBeacons || [];
 
-function getUID(name, uid) : string {
-
-    if (!uid) {
-        if (uids[name]) {
-            uid = uids[name];
-        } else {
-            try {
-                if (window.sessionStorage) {
-                    uid = window.sessionStorage.getItem(`__throttle_uid_${name}__`);
-                }
-            } catch (err) {
-                // pass
-            }
+        if (state.loggedBeacons.indexOf(name) === -1) {
+            state.loggedBeacons.push(name);
+            return true;
         }
-    }
 
-    if (!uid) {
-        uid = uniqueID();
-    }
-
-    uids[name] = uid;
-
-    try {
-        if (window.sessionStorage) {
-            window.sessionStorage.setItem(`__throttle_uid_${name}__`, uid);
-        }
-    } catch (err) {
-        // pass
-    }
-
-    return uid;
+        return false;
+    });
 }
 
 export function getThrottle(name : string, sample : number, id? : string) : Object {
 
-    let uid = getUID(name, id);
+    let uid = id || getCommonSessionID();
 
     let throttle = hashStr(`${name}_${uid}`) % 10000;
 
@@ -55,8 +34,6 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
     }
 
     let treatment = `${name}_${group}`;
-
-    let logged : { [key : string] : boolean } = {};
 
     return {
 
@@ -76,10 +53,9 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
             let event = `${treatment}_${checkpointName}`;
 
-            if (!logged[checkpointName]) {
+            if (isBeaconUnique(event)) {
                 checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
                 fpti({ ...payload, expuid: uid, eligibility_reason: event });
-                logged[checkpointName] = true;
             }
 
             return this;

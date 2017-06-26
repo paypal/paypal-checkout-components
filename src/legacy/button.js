@@ -70,13 +70,18 @@ function renderButton(id, { container, locale, type, color, shape, size }) : HTM
         let tagContent = el.querySelector('.paypal-button-tag-content');
 
         if (isElementVisible(el) && tagContent && tagContent.innerText && tagContent.innerText.trim()) {
-            let throttle = getThrottle('tag_content_v2', 5000);
+            let throttle = getThrottle('tag_content_v3', 5000);
 
             if (throttle.isEnabled()) {
                 // pass
             }
 
             throttle.logStart();
+
+            setTimeout(() => {
+                checkpoint(`ppxo_tag_content_v3_${ throttle.isEnabled() ? 'test' : 'control' }_check1`);
+                throttle.log(`ppxo_tag_content_v3_${ throttle.isEnabled() ? 'test' : 'control' }_check2`);
+            }, 5000);
 
             el.addEventListener('click', () => {
                 throttle.logComplete();
