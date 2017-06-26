@@ -6,7 +6,7 @@ export let postRobot = _postRobot;
 export { PopupOpenError } from 'xcomponent/src';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-export { ZalgoPromise as Promise } from 'zalgo-promise';
+export { ZalgoPromise as Promise } from 'zalgo-promise/src';
 
 export { rest } from './api';
 export { Button } from './components';

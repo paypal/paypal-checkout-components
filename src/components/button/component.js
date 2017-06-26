@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise';
+import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
