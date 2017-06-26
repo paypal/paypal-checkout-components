@@ -179,7 +179,7 @@ export function normalizeOptions(options : Object) {
 export function setupConfig(options : Object) {
 
     if (options.environment && config.paypalUrls[options.environment]) {
-        options.environment = config.env;
+        config.env = options.environment;
     }
 
     if (options.locale) {

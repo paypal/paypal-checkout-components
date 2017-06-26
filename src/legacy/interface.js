@@ -430,8 +430,8 @@ export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     setupCalled = true;
 
-    setupConfig(options);
     normalizeOptions(options);
+    setupConfig(options);
 
     setupPostBridge(config.env);
 
