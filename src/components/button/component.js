@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getThrottle } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getThrottle, getPageRenderTime } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -472,6 +472,17 @@ export let Button = xcomponent.create({
 });
 
 if (Button.isChild()) {
+
+    getPageRenderTime().then(pageRenderTime => {
+        $logger.track({
+            [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_LOAD,
+            [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
+        });
+
+        $logger.flush();
+    });
 
     if (forceIframe()) {
         $logger.info('force_enable_iframe');

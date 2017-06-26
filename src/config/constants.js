@@ -44,7 +44,8 @@ export const FPTI = {
         DATA_SOURCE: 'serverside_data_source',
         BUTTON_SOURCE: 'button_source',
         ERROR_CODE: 'ext_error_code',
-        ERROR_DESC: 'ext_error_desc'
+        ERROR_DESC: 'ext_error_desc',
+        PAGE_LOAD_TIME: 'page_load_time'
     },
 
     BUTTON_TYPE: {
@@ -75,14 +76,17 @@ export const FPTI = {
 
     TRANSITION: {
         SCRIPT_LOAD: 'process_script_load',
+
         BUTTON_RENDER: 'process_button_render',
+        BUTTON_LOAD: 'process_button_load',
         BUTTON_CLICK: 'process_button_click',
+
         CREATE_PAYMENT: 'process_create_payment',
         CHECKOUT_INIT: 'process_checkout_init',
+
         PPTM_LOAD: 'process_pptm_load',
         PPTM_LOADED: 'process_pptm_loaded'
     }
 };
 
 export const PPTM_ID = 'xo--pptm';
-

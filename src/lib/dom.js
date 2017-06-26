@@ -306,3 +306,25 @@ export function getBrowserLocale() : { country : string, lang : string } {
 export function isElementVisible(el : HTMLElement) : boolean {
     return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 }
+
+export let enablePerformance = memoize(() : boolean => {
+    return Boolean(
+        window.performance &&
+        performance.now &&
+        performance.timing &&
+        performance.timing.connectEnd &&
+        performance.timing.navigationStart &&
+        (Math.abs(performance.now() - Date.now()) > 1000) &&
+        (performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart)) > 0
+    );
+});
+
+export function getPageRenderTime() : ZalgoPromise<?number> {
+    return documentReady.then(() => {
+        let timing = window.performance.timing;
+
+        if (timing.connectEnd && timing.domInteractive) {
+            return timing.domInteractive - timing.connectEnd;
+        }
+    });
+}
