@@ -7,13 +7,11 @@ export function isPayPalDomain() : boolean {
     return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
-type FunctionProxy<T : Function> = (method : T) => T;
-
-export let memoize : FunctionProxy<*> = <R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) => {
+export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
 
     let cache : { [key : string] : R } = {};
 
-    return function() : R {
+    return function(...args : Array<any>) : R {
 
         let key : string;
 
@@ -37,7 +35,7 @@ export let memoize : FunctionProxy<*> = <R>(method : (...args : Array<any>) => R
 
         return cache[key];
     };
-};
+}
 
 export function noop() {
     // pass

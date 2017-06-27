@@ -26,7 +26,7 @@ let loadButtonJS = memoize(() : ZalgoPromise<void> => {
     });
 });
 
-function renderButton(id, { container, locale, type, color, shape, size }) : HTMLElement {
+function renderButton(id, { container, locale, type, color, shape, size }) : ZalgoPromise<HTMLElement> {
 
     return loadButtonJS().then(() => {
 
