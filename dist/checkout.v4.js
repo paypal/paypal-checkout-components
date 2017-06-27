@@ -2822,29 +2822,6 @@
         }
         module.exports = g;
     },
-    "./node_modules/webpack/buildin/module.js": function(module, exports) {
-        module.exports = function(module) {
-            if (!module.webpackPolyfill) {
-                module.deprecate = function() {};
-                module.paths = [];
-                module.children || (module.children = []);
-                Object.defineProperty(module, "loaded", {
-                    enumerable: !0,
-                    get: function() {
-                        return module.l;
-                    }
-                });
-                Object.defineProperty(module, "id", {
-                    enumerable: !0,
-                    get: function() {
-                        return module.i;
-                    }
-                });
-                module.webpackPolyfill = 1;
-            }
-            return module;
-        };
-    },
     "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function _classCallCheck(instance, Constructor) {
@@ -6745,340 +6722,6 @@
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
         }, objectIDs = new __WEBPACK_IMPORTED_MODULE_0_cross_domain_safe_weakmap_src__.a();
     },
-    "./node_modules/zalgo-promise/dist/zalgo-promise.js": function(module, exports, __webpack_require__) {
-        (function(module) {
-            var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                return typeof obj;
-            } : function(obj) {
-                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-            !function(root, factory) {
-                "object" == _typeof(exports) && "object" == _typeof(module) ? module.exports = factory() : (__WEBPACK_AMD_DEFINE_ARRAY__ = [], 
-                __WEBPACK_AMD_DEFINE_FACTORY__ = factory, void 0 !== (__WEBPACK_AMD_DEFINE_RESULT__ = "function" == typeof __WEBPACK_AMD_DEFINE_FACTORY__ ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-            }(0, function() {
-                return function(modules) {
-                    function __webpack_require__(moduleId) {
-                        if (installedModules[moduleId]) return installedModules[moduleId].exports;
-                        var module = installedModules[moduleId] = {
-                            i: moduleId,
-                            l: !1,
-                            exports: {}
-                        };
-                        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-                        module.l = !0;
-                        return module.exports;
-                    }
-                    var installedModules = {};
-                    __webpack_require__.m = modules;
-                    __webpack_require__.c = installedModules;
-                    __webpack_require__.i = function(value) {
-                        return value;
-                    };
-                    __webpack_require__.d = function(exports, name, getter) {
-                        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
-                            configurable: !1,
-                            enumerable: !0,
-                            get: getter
-                        });
-                    };
-                    __webpack_require__.n = function(module) {
-                        var getter = module && module.__esModule ? function() {
-                            return module.default;
-                        } : function() {
-                            return module;
-                        };
-                        __webpack_require__.d(getter, "a", getter);
-                        return getter;
-                    };
-                    __webpack_require__.o = function(object, property) {
-                        return Object.prototype.hasOwnProperty.call(object, property);
-                    };
-                    __webpack_require__.p = "";
-                    return __webpack_require__(__webpack_require__.s = "./src/export.js");
-                }({
-                    "./src/exceptions.js": function(module, exports, __webpack_require__) {
-                        "use strict";
-                        function dispatchPossiblyUnhandledError(err) {
-                            if (-1 === dispatchedErrors.indexOf(err)) {
-                                dispatchedErrors.push(err);
-                                setTimeout(function() {
-                                    throw err;
-                                }, 1);
-                                for (var j = 0; j < possiblyUnhandledPromiseHandlers.length; j++) possiblyUnhandledPromiseHandlers[j](err);
-                            }
-                        }
-                        function onPossiblyUnhandledException(handler) {
-                            possiblyUnhandledPromiseHandlers.push(handler);
-                            return {
-                                cancel: function() {
-                                    possiblyUnhandledPromiseHandlers.splice(possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
-                                }
-                            };
-                        }
-                        Object.defineProperty(exports, "__esModule", {
-                            value: !0
-                        });
-                        exports.dispatchPossiblyUnhandledError = dispatchPossiblyUnhandledError;
-                        exports.onPossiblyUnhandledException = onPossiblyUnhandledException;
-                        var possiblyUnhandledPromiseHandlers = [], dispatchedErrors = [];
-                    },
-                    "./src/export.js": function(module, exports, __webpack_require__) {
-                        "use strict";
-                        module.exports = __webpack_require__("./src/promise.js").ZalgoPromise;
-                        module.exports.ZalgoPromise = __webpack_require__("./src/promise.js").ZalgoPromise;
-                    },
-                    "./src/promise.js": function(module, exports, __webpack_require__) {
-                        "use strict";
-                        function _classCallCheck(instance, Constructor) {
-                            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-                        }
-                        Object.defineProperty(exports, "__esModule", {
-                            value: !0
-                        });
-                        exports.ZalgoPromise = void 0;
-                        var _createClass = function() {
-                            function defineProperties(target, props) {
-                                for (var i = 0; i < props.length; i++) {
-                                    var descriptor = props[i];
-                                    descriptor.enumerable = descriptor.enumerable || !1;
-                                    descriptor.configurable = !0;
-                                    "value" in descriptor && (descriptor.writable = !0);
-                                    Object.defineProperty(target, descriptor.key, descriptor);
-                                }
-                            }
-                            return function(Constructor, protoProps, staticProps) {
-                                protoProps && defineProperties(Constructor.prototype, protoProps);
-                                staticProps && defineProperties(Constructor, staticProps);
-                                return Constructor;
-                            };
-                        }(), _utils = __webpack_require__("./src/utils.js"), _exceptions = __webpack_require__("./src/exceptions.js"), ZalgoPromise = function() {
-                            function ZalgoPromise(handler) {
-                                var _this = this;
-                                _classCallCheck(this, ZalgoPromise);
-                                this.resolved = !1;
-                                this.rejected = !1;
-                                this.errorHandled = !1;
-                                this.handlers = [];
-                                if (handler) {
-                                    var _result = void 0, _error = void 0, resolved = !1, rejected = !1, isAsync = !1;
-                                    try {
-                                        handler(function(res) {
-                                            if (isAsync) _this.resolve(res); else {
-                                                resolved = !0;
-                                                _result = res;
-                                            }
-                                        }, function(err) {
-                                            if (isAsync) _this.reject(err); else {
-                                                rejected = !0;
-                                                _error = err;
-                                            }
-                                        });
-                                    } catch (err) {
-                                        this.reject(err);
-                                        return;
-                                    }
-                                    isAsync = !0;
-                                    resolved ? this.resolve(_result) : rejected && this.reject(_error);
-                                }
-                            }
-                            _createClass(ZalgoPromise, [ {
-                                key: "resolve",
-                                value: function(result) {
-                                    if (this.resolved || this.rejected) return this;
-                                    if ((0, _utils.isPromise)(result)) throw new Error("Can not resolve promise with another promise");
-                                    this.resolved = !0;
-                                    this.value = result;
-                                    this.dispatch();
-                                    return this;
-                                }
-                            }, {
-                                key: "reject",
-                                value: function(error) {
-                                    var _this2 = this;
-                                    if (this.resolved || this.rejected) return this;
-                                    if ((0, _utils.isPromise)(error)) throw new Error("Can not reject promise with another promise");
-                                    if (!error) {
-                                        var _err = error && "function" == typeof error.toString ? error.toString() : Object.prototype.toString.call(error);
-                                        error = new Error("Expected reject to be called with Error, got " + _err);
-                                    }
-                                    this.rejected = !0;
-                                    this.error = error;
-                                    this.errorHandled || setTimeout(function() {
-                                        _this2.errorHandled || (0, _exceptions.dispatchPossiblyUnhandledError)(error);
-                                    }, 1);
-                                    this.dispatch();
-                                    return this;
-                                }
-                            }, {
-                                key: "asyncReject",
-                                value: function(error) {
-                                    this.errorHandled = !0;
-                                    this.reject(error);
-                                }
-                            }, {
-                                key: "dispatch",
-                                value: function() {
-                                    var _this3 = this, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                                    if (resolved || rejected) for (;handlers.length; ) !function() {
-                                        var _handlers$shift = handlers.shift(), onSuccess = _handlers$shift.onSuccess, onError = _handlers$shift.onError, promise = _handlers$shift.promise, result = void 0;
-                                        if (resolved) try {
-                                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
-                                        } catch (err) {
-                                            promise.reject(err);
-                                            return "continue";
-                                        } else if (rejected) {
-                                            if (!onError) {
-                                                promise.reject(_this3.error);
-                                                return "continue";
-                                            }
-                                            try {
-                                                result = onError(_this3.error);
-                                            } catch (err) {
-                                                promise.reject(err);
-                                                return "continue";
-                                            }
-                                        }
-                                        (0, _utils.isPromise)(result) ? result.then(function(res) {
-                                            promise.resolve(res);
-                                        }, function(err) {
-                                            promise.reject(err);
-                                        }) : promise.resolve(result);
-                                    }();
-                                }
-                            }, {
-                                key: "then",
-                                value: function(onSuccess, onError) {
-                                    if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
-                                    if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
-                                    var promise = new ZalgoPromise();
-                                    this.handlers.push({
-                                        promise: promise,
-                                        onSuccess: onSuccess,
-                                        onError: onError
-                                    });
-                                    this.errorHandled = !0;
-                                    this.dispatch();
-                                    return promise;
-                                }
-                            }, {
-                                key: "catch",
-                                value: function(onError) {
-                                    return this.then(void 0, onError);
-                                }
-                            }, {
-                                key: "finally",
-                                value: function(handler) {
-                                    return this.then(function(result) {
-                                        return ZalgoPromise.try(handler).then(function() {
-                                            return result;
-                                        });
-                                    }, function(err) {
-                                        return ZalgoPromise.try(handler).then(function() {
-                                            throw err;
-                                        });
-                                    });
-                                }
-                            }, {
-                                key: "toPromise",
-                                value: function() {
-                                    if (!window.Promise) throw new Error("Could not find window.Promise");
-                                    return window.Promise.resolve(this);
-                                }
-                            } ], [ {
-                                key: "resolve",
-                                value: function(_value) {
-                                    return (0, _utils.isPromise)(_value) || _value instanceof ZalgoPromise ? _value : new ZalgoPromise().resolve(_value);
-                                }
-                            }, {
-                                key: "reject",
-                                value: function(error) {
-                                    return new ZalgoPromise().reject(error);
-                                }
-                            }, {
-                                key: "all",
-                                value: function(promises) {
-                                    var promise = new ZalgoPromise(), count = promises.length, results = [];
-                                    if (!count) {
-                                        promise.resolve(results);
-                                        return promise;
-                                    }
-                                    for (var i = 0; i < promises.length; i++) !function(i) {
-                                        ZalgoPromise.resolve(promises[i]).then(function(result) {
-                                            results[i] = result;
-                                            count -= 1;
-                                            0 === count && promise.resolve(results);
-                                        }, function(err) {
-                                            promise.reject(err);
-                                        });
-                                    }(i);
-                                    return promise;
-                                }
-                            }, {
-                                key: "onPossiblyUnhandledException",
-                                value: function(handler) {
-                                    return (0, _exceptions.onPossiblyUnhandledException)(handler);
-                                }
-                            }, {
-                                key: "try",
-                                value: function(method) {
-                                    return ZalgoPromise.resolve().then(method);
-                                }
-                            }, {
-                                key: "delay",
-                                value: function(_delay) {
-                                    return new ZalgoPromise(function(resolve) {
-                                        setTimeout(resolve, _delay);
-                                    });
-                                }
-                            }, {
-                                key: "hash",
-                                value: function(obj) {
-                                    var results = {}, promises = [];
-                                    for (var key in obj) !function(key) {
-                                        obj.hasOwnProperty(key) && promises.push(ZalgoPromise.resolve(obj[key]).then(function(result) {
-                                            results[key] = result;
-                                        }));
-                                    }(key);
-                                    return ZalgoPromise.all(promises).then(function() {
-                                        return results;
-                                    });
-                                }
-                            } ]);
-                            return ZalgoPromise;
-                        }();
-                        exports.ZalgoPromise = ZalgoPromise;
-                        new ZalgoPromise().resolve(void 0);
-                    },
-                    "./src/utils.js": function(module, exports, __webpack_require__) {
-                        "use strict";
-                        function isPromise(item) {
-                            try {
-                                if (!item) return !1;
-                                if (window.Window && item instanceof window.Window) return !1;
-                                if (window.constructor && item instanceof window.constructor) return !1;
-                                if (toString) {
-                                    var name = toString.call(item);
-                                    if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
-                                }
-                                if (item && item.then instanceof Function) return !0;
-                            } catch (err) {
-                                return !1;
-                            }
-                            return !1;
-                        }
-                        Object.defineProperty(exports, "__esModule", {
-                            value: !0
-                        });
-                        exports.isPromise = isPromise;
-                        var toString = {}.toString;
-                    }
-                });
-            });
-        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
-    },
-    "./node_modules/zalgo-promise/index.js": function(module, exports, __webpack_require__) {
-        module.exports = __webpack_require__("./node_modules/zalgo-promise/dist/zalgo-promise.js");
-    },
     "./node_modules/zalgo-promise/src/exceptions.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function dispatchPossiblyUnhandledError(err) {
@@ -7176,33 +6819,41 @@
                 this.reject(error);
             };
             ZalgoPromise.prototype.dispatch = function() {
-                var _this3 = this, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
-                if (resolved || rejected) for (;handlers.length; ) {
-                    (function() {
-                        var _handlers$shift = handlers.shift(), onSuccess = _handlers$shift.onSuccess, onError = _handlers$shift.onError, promise = _handlers$shift.promise, result = void 0;
-                        if (resolved) try {
-                            result = onSuccess ? onSuccess(_this3.value) : _this3.value;
-                        } catch (err) {
-                            promise.reject(err);
-                            return "continue";
-                        } else if (rejected) {
-                            if (!onError) {
-                                promise.reject(_this3.error);
-                                return "continue";
-                            }
-                            try {
-                                result = onError(_this3.error);
+                var _this3 = this, dispatching = this.dispatching, resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                if (!dispatching && (resolved || rejected)) {
+                    this.dispatching = !0;
+                    for (var i = 0; i < handlers.length; i++) {
+                        (function(i) {
+                            var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise, result = void 0;
+                            if (resolved) try {
+                                result = onSuccess ? onSuccess(_this3.value) : _this3.value;
                             } catch (err) {
                                 promise.reject(err);
                                 return "continue";
+                            } else if (rejected) {
+                                if (!onError) {
+                                    promise.reject(_this3.error);
+                                    return "continue";
+                                }
+                                try {
+                                    result = onError(_this3.error);
+                                } catch (err) {
+                                    promise.reject(err);
+                                    return "continue";
+                                }
                             }
-                        }
-                        __WEBPACK_IMPORTED_MODULE_0__utils__.a(result) ? result.then(function(res) {
-                            promise.resolve(res);
-                        }, function(err) {
-                            promise.reject(err);
-                        }) : promise.resolve(result);
-                    })();
+                            if (result instanceof ZalgoPromise && (result.resolved || result.rejected)) {
+                                result.resolved ? promise.resolve(result.value) : promise.reject(result.error);
+                                result.errorHandled = !0;
+                            } else __WEBPACK_IMPORTED_MODULE_0__utils__.a(result) ? result.then(function(res) {
+                                promise.resolve(res);
+                            }, function(err) {
+                                promise.reject(err);
+                            }) : promise.resolve(result);
+                        })(i);
+                    }
+                    handlers.length = 0;
+                    this.dispatching = !1;
                 }
             };
             ZalgoPromise.prototype.then = function(onSuccess, onError) {
@@ -7237,7 +6888,7 @@
                 return window.Promise.resolve(this);
             };
             ZalgoPromise.resolve = function(value) {
-                return __WEBPACK_IMPORTED_MODULE_0__utils__.a(value) || value instanceof ZalgoPromise ? value : new ZalgoPromise().resolve(value);
+                return value instanceof ZalgoPromise || __WEBPACK_IMPORTED_MODULE_0__utils__.a(value) ? value : new ZalgoPromise().resolve(value);
             };
             ZalgoPromise.reject = function(error) {
                 return new ZalgoPromise().reject(error);
@@ -7262,8 +6913,14 @@
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return __WEBPACK_IMPORTED_MODULE_1__exceptions__.b(handler);
             };
-            ZalgoPromise.try = function(method) {
-                return ZalgoPromise.resolve().then(method);
+            ZalgoPromise.try = function(method, context, args) {
+                var result = void 0;
+                try {
+                    result = method.apply(context, args || []);
+                } catch (err) {
+                    return ZalgoPromise.reject(err);
+                }
+                return ZalgoPromise.resolve(result);
             };
             ZalgoPromise.delay = function(_delay) {
                 return new ZalgoPromise(function(resolve) {
@@ -7598,8 +7255,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return Button;
         });
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__ = __webpack_require__("./node_modules/zalgo-promise/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_zalgo_promise__), 
-        __webpack_require__("./node_modules/xcomponent/src/index.js")), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_10__braintree__ = __webpack_require__("./src/components/button/braintree.js"), _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_9__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_10__braintree__ = __webpack_require__("./src/components/button/braintree.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -7621,7 +7277,7 @@
             componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.87";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.88";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -7633,11 +7289,6 @@
             },
             validate: function() {
                 if (__WEBPACK_IMPORTED_MODULE_5__lib__.n()) throw new Error("Can not render button in IE intranet mode");
-                var throttle = __WEBPACK_IMPORTED_MODULE_5__lib__.i("checkthrottle", 5e3);
-                throttle.logStart();
-                setTimeout(function() {
-                    __WEBPACK_IMPORTED_MODULE_5__lib__.c("ppxo_checkthrottle_" + (throttle.isEnabled() ? "test" : "control") + "_check");
-                }, 5e3);
             },
             props: {
                 uid: {
@@ -7711,7 +7362,7 @@
                     decorate: function(original) {
                         return function() {
                             var _this = this;
-                            return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise(function(resolve, reject) {
+                            return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve, reject) {
                                 var data = resolve, actions = reject;
                                 data.payment = actions.payment = {
                                     create: function(options, experience) {
@@ -7778,7 +7429,7 @@
                     type: "function",
                     required: !1,
                     value: function() {
-                        this.onRemember = this.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise();
+                        this.onRemember = this.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
                         this.onRemember.resolve();
                         __WEBPACK_IMPORTED_MODULE_3__checkout__.b();
                     }
@@ -7787,7 +7438,7 @@
                     type: "function",
                     required: !1,
                     value: function() {
-                        this.onRemember = this.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise();
+                        this.onRemember = this.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
                         this.onRemember.resolve();
                     }
                 },
@@ -7797,8 +7448,8 @@
                     decorate: function(original) {
                         return function() {
                             var _this2 = this, _arguments = arguments;
-                            return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise.try(function() {
-                                _this2.onRemember = _this2.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise();
+                            return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
+                                _this2.onRemember = _this2.onRemember || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
                                 if (_this2.props.displayTo === __WEBPACK_IMPORTED_MODULE_4__config__.f.REMEMBERED) {
                                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_render_wait_for_remembered_user");
                                     return _this2.onRemember.then(function() {
@@ -7825,9 +7476,9 @@
                                 });
                             });
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.t(win || window.top, url || data.returnUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.t(win || window.top, url || data.returnUrl), actions.close() ]);
                             };
-                            return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise.try(function() {
+                            return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 return original.call(_this3, data, _extends({}, actions, {
                                     redirect: redirect
                                 }));
@@ -7844,7 +7495,7 @@
                     decorate: function(original) {
                         if (original) return function(data, actions) {
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise__.ZalgoPromise.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.t(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.t(win || window.top, url || data.cancelUrl), actions.close() ]);
                             };
                             return original.call(this, data, _extends({}, actions, {
                                 redirect: redirect
@@ -7940,6 +7591,15 @@
             }
         });
         if (Button.isChild()) {
+            __WEBPACK_IMPORTED_MODULE_5__lib__.h().then(function(pageRenderTime) {
+                var _$logger$track3;
+                __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.k((_$logger$track3 = {}, _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.STATE.BUTTON, 
+                _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_4__config__.b.TRANSITION.BUTTON_LOAD, 
+                _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.BUTTON_TYPE.IFRAME, 
+                _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
+                _$logger$track3));
+                __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
+            });
             if (__WEBPACK_IMPORTED_MODULE_5__lib__.e()) {
                 __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("force_enable_iframe");
                 __WEBPACK_IMPORTED_MODULE_3__checkout__.b({
@@ -8263,7 +7923,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.87";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.88";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
@@ -8326,7 +7986,7 @@
                         return __WEBPACK_IMPORTED_MODULE_4__util__.a(value);
                     },
                     childDef: function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.h("token");
+                        return __WEBPACK_IMPORTED_MODULE_6__lib__.i("token");
                     },
                     validate: function(value, props) {
                         if (!value && !props.url) throw new Error("Expected props.payment to be passed");
@@ -8760,7 +8420,7 @@
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.87",
+            version: "4.0.88",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -8882,7 +8542,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.87");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.88");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9301,7 +8961,8 @@
                 DATA_SOURCE: "serverside_data_source",
                 BUTTON_SOURCE: "button_source",
                 ERROR_CODE: "ext_error_code",
-                ERROR_DESC: "ext_error_desc"
+                ERROR_DESC: "ext_error_desc",
+                PAGE_LOAD_TIME: "page_load_time"
             },
             BUTTON_TYPE: {
                 IFRAME: "iframe",
@@ -9327,6 +8988,7 @@
             TRANSITION: {
                 SCRIPT_LOAD: "process_script_load",
                 BUTTON_RENDER: "process_button_render",
+                BUTTON_LOAD: "process_button_load",
                 BUTTON_CLICK: "process_button_click",
                 CREATE_PAYMENT: "process_create_payment",
                 CHECKOUT_INIT: "process_checkout_init",
@@ -9465,53 +9127,52 @@
         __webpack_require__.d(__webpack_exports__, "PopupOpenError", function() {
             return __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.b;
         });
-        var __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_zalgo_promise__ = __webpack_require__("./node_modules/zalgo-promise/index.js");
-        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_zalgo_promise__);
-        __webpack_require__.o(__WEBPACK_IMPORTED_MODULE_3_zalgo_promise__, "ZalgoPromise") && __webpack_require__.d(__webpack_exports__, "Promise", function() {
-            return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise__.ZalgoPromise;
+        var __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
+        __webpack_require__.d(__webpack_exports__, "Promise", function() {
+            return __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_4__api__ = __webpack_require__("./src/api/index.js");
+        var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js");
         __webpack_require__.d(__webpack_exports__, "rest", function() {
-            return __WEBPACK_IMPORTED_MODULE_4__api__.a;
+            return __WEBPACK_IMPORTED_MODULE_3__api__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_5__components__ = __webpack_require__("./src/components/index.js");
+        var __WEBPACK_IMPORTED_MODULE_4__components__ = __webpack_require__("./src/components/index.js");
         __webpack_require__.d(__webpack_exports__, "Button", function() {
-            return __WEBPACK_IMPORTED_MODULE_5__components__.a;
+            return __WEBPACK_IMPORTED_MODULE_4__components__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_6__setup__ = __webpack_require__("./src/setup.js");
+        var __WEBPACK_IMPORTED_MODULE_5__setup__ = __webpack_require__("./src/setup.js");
         __webpack_require__.d(__webpack_exports__, "setup", function() {
-            return __WEBPACK_IMPORTED_MODULE_6__setup__.a;
+            return __WEBPACK_IMPORTED_MODULE_5__setup__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_7__config__ = __webpack_require__("./src/config/index.js");
+        var __WEBPACK_IMPORTED_MODULE_6__config__ = __webpack_require__("./src/config/index.js");
         __webpack_require__.d(__webpack_exports__, "config", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.g;
+            return __WEBPACK_IMPORTED_MODULE_6__config__.g;
         });
         __webpack_require__.d(__webpack_exports__, "ENV", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.a;
+            return __WEBPACK_IMPORTED_MODULE_6__config__.a;
         });
         __webpack_require__.d(__webpack_exports__, "USERS", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.f;
+            return __WEBPACK_IMPORTED_MODULE_6__config__.f;
         });
         __webpack_require__.d(__webpack_exports__, "SOURCE", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.e;
+            return __WEBPACK_IMPORTED_MODULE_6__config__.e;
         });
-        var __WEBPACK_IMPORTED_MODULE_8__lib__ = __webpack_require__("./src/lib/index.js");
+        var __WEBPACK_IMPORTED_MODULE_7__lib__ = __webpack_require__("./src/lib/index.js");
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__lib__.u;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.u;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__lib__.m;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.m;
         });
         __webpack_require__.d(__webpack_exports__, "isWebView", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__lib__.p;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.p;
         });
         __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__lib__.e;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.e;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.87", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
-        if (__WEBPACK_IMPORTED_MODULE_8__lib__.o()) {
-            Checkout = __WEBPACK_IMPORTED_MODULE_5__components__.b;
-            PayPalCheckout = __WEBPACK_IMPORTED_MODULE_5__components__.b;
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.88", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
+        if (__WEBPACK_IMPORTED_MODULE_7__lib__.o()) {
+            Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
+            PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             destroyAll = __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.d;
         }
     },
@@ -9521,7 +9182,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.87";
+                payload.version = "4.0.88";
                 payload.host = window.location.host;
                 payload.uid = __WEBPACK_IMPORTED_MODULE_1__session__.a();
                 var query = [];
@@ -9533,20 +9194,30 @@
                 }, 1);
             } catch (err) {}
         }
+        function isCheckpointUnique(name) {
+            return __WEBPACK_IMPORTED_MODULE_1__session__.b(function(state) {
+                state.loggedBeacons = state.loggedBeacons || [];
+                if (-1 === state.loggedBeacons.indexOf(name)) {
+                    state.loggedBeacons.push(name);
+                    return !0;
+                }
+                return !1;
+            });
+        }
         function checkpoint(name) {
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.87".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.88".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
-                -1 !== loggedCheckpoints.indexOf(checkpointName) ? checkpointName += "_dupe" : loggedCheckpoints.push(checkpointName);
+                if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
             } catch (err) {}
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.87",
+                v: "checkout.js.4.0.88",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -9579,7 +9250,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger", loggedCheckpoints = [], FPTI_URL = "https://t.paypal.com/ts";
+        }, BEACON_URL = "https://www.paypal.com/webapps/hermes/api/logger", FPTI_URL = "https://t.paypal.com/ts";
     },
     "./src/lib/device.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9795,13 +9466,20 @@
             }
             return __WEBPACK_IMPORTED_MODULE_2__config__.g.defaultLocale;
         }
-        __webpack_exports__.f = loadScript;
+        function getPageRenderTime() {
+            return documentReady.then(function() {
+                var timing = window.performance.timing;
+                if (timing.connectEnd && timing.domInteractive) return timing.domInteractive - timing.connectEnd;
+            });
+        }
+        __webpack_exports__.g = loadScript;
         __webpack_exports__.c = getElement;
-        __webpack_exports__.d = getQueryParam;
+        __webpack_exports__.e = getQueryParam;
         __webpack_exports__.a = extendUrl;
-        __webpack_exports__.g = redirect;
-        __webpack_exports__.e = hasMetaViewPort;
+        __webpack_exports__.h = redirect;
+        __webpack_exports__.f = hasMetaViewPort;
         __webpack_exports__.b = getBrowserLocale;
+        __webpack_exports__.d = getPageRenderTime;
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_4__device__ = __webpack_require__("./src/lib/device.js"), documentReady = new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
             if (isDocumentReady()) return resolve();
             var interval = setInterval(function() {
@@ -9832,6 +9510,9 @@
                 pair[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
             return params;
+        });
+        __WEBPACK_IMPORTED_MODULE_3__util__.f(function() {
+            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
         });
     },
     "./src/lib/eligibility.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -10053,11 +9734,14 @@
         __webpack_require__.d(__webpack_exports__, "h", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.e;
         });
+        __webpack_require__.d(__webpack_exports__, "j", function() {
+            return __WEBPACK_IMPORTED_MODULE_5__dom__.f;
+        });
         __webpack_require__.d(__webpack_exports__, "t", function() {
-            return __WEBPACK_IMPORTED_MODULE_5__dom__.g;
+            return __WEBPACK_IMPORTED_MODULE_5__dom__.h;
         });
         var __WEBPACK_IMPORTED_MODULE_6__http__ = __webpack_require__("./src/lib/http.js");
         __webpack_require__.d(__webpack_exports__, "u", function() {
@@ -10067,12 +9751,8 @@
         __webpack_require__.d(__webpack_exports__, "c", function() {
             return __WEBPACK_IMPORTED_MODULE_7__beacon__.checkpoint;
         });
-        var __WEBPACK_IMPORTED_MODULE_8__throttle__ = __webpack_require__("./src/lib/throttle.js");
-        __webpack_require__.d(__webpack_exports__, "i", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__throttle__.a;
-        });
-        var __WEBPACK_IMPORTED_MODULE_10__session__ = (__webpack_require__("./src/lib/namespace.js"), 
-        __webpack_require__("./src/lib/session.js"));
+        var __WEBPACK_IMPORTED_MODULE_10__session__ = (__webpack_require__("./src/lib/throttle.js"), 
+        __webpack_require__("./src/lib/namespace.js"), __webpack_require__("./src/lib/session.js"));
         __webpack_require__.d(__webpack_exports__, "g", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.a;
         });
@@ -10092,7 +9772,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.lang,
                     uid: __WEBPACK_IMPORTED_MODULE_3__session__.a(),
-                    ver: "4.0.87"
+                    ver: "4.0.88"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
@@ -10195,7 +9875,7 @@
                 _$logger$track[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_0__config__.b.TRANSITION.PPTM_LOAD, 
                 _$logger$track));
                 var fullUrl = __WEBPACK_IMPORTED_MODULE_0__config__.g.pptmUrl + "?id=" + window.location.hostname + "&t=xo";
-                __WEBPACK_IMPORTED_MODULE_1__lib_dom__.f(fullUrl, 0, {
+                __WEBPACK_IMPORTED_MODULE_1__lib_dom__.g(fullUrl, 0, {
                     async: !0,
                     id: __WEBPACK_IMPORTED_MODULE_0__config__.d
                 }).then(function() {
@@ -10247,68 +9927,31 @@
     },
     "./src/lib/throttle.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function isBeaconUnique(name) {
-            return __WEBPACK_IMPORTED_MODULE_2__session__.b(function(state) {
-                state.loggedBeacons = state.loggedBeacons || [];
-                if (-1 === state.loggedBeacons.indexOf(name)) {
-                    state.loggedBeacons.push(name);
-                    return !0;
-                }
-                return !1;
-            });
-        }
-        function getThrottle(name, sample, id) {
-            var uid = id || __WEBPACK_IMPORTED_MODULE_2__session__.a(), throttle = __WEBPACK_IMPORTED_MODULE_1__util__.c(name + "_" + uid) % 1e4, group = void 0;
-            group = throttle < sample ? "test" : sample >= 5e3 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle";
-            var treatment = name + "_" + group;
-            return {
-                isEnabled: function() {
-                    return "test" === group;
-                },
-                isDisabled: function() {
-                    return "test" !== group;
-                },
-                getTreatment: function() {
-                    return treatment;
-                },
-                log: function(checkpointName) {
-                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, event = treatment + "_" + checkpointName;
-                    if (isBeaconUnique(event)) {
-                        __WEBPACK_IMPORTED_MODULE_0__beacon__.checkpoint(event, _extends({}, payload, {
-                            expuid: uid
-                        }), {
-                            version: options.version
-                        });
-                        __WEBPACK_IMPORTED_MODULE_0__beacon__.fpti(_extends({}, payload, {
-                            expuid: uid,
-                            eligibility_reason: event
-                        }));
-                    }
-                    return this;
-                },
-                logStart: function() {
-                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return this.log("start", payload);
-                },
-                logComplete: function() {
-                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return this.log("complete", payload);
-                }
-            };
-        }
-        __webpack_exports__.a = getThrottle;
-        var __WEBPACK_IMPORTED_MODULE_0__beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_2__session__ = __webpack_require__("./src/lib/session.js"), _extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-            }
-            return target;
-        };
+        __webpack_require__("./src/lib/beacon.js"), __webpack_require__("./src/lib/util.js"), 
+        __webpack_require__("./src/lib/session.js"), Object.assign;
     },
     "./src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function isPayPalDomain() {
             return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_1__config__.g.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        }
+        function memoize(method) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
+            return function() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                var key = void 0;
+                try {
+                    key = JSON.stringify(arguments);
+                } catch (err) {
+                    throw new Error("Arguments not serializable -- can not be used to memoize");
+                }
+                if (cache.hasOwnProperty(key)) return cache[key];
+                cache[key] = method.apply(this, arguments);
+                options.time && setTimeout(function() {
+                    delete cache[key];
+                }, options.time);
+                return cache[key];
+            };
         }
         function noop() {}
         function uniqueID() {
@@ -10353,22 +9996,21 @@
             return err ? err instanceof Error ? err.stack : "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err) : "<unknown error: " + Object.prototype.toString.call(err) + ">";
         }
         function getLocalStorage(key) {
-            try {
-                if (!window.localStorage) return;
-                var result = window.localStorage.getItem(key);
-                if (result) return JSON.parse(result);
-            } catch (err) {}
+            if (!isLocalStorageEnabled()) {
+                window.__pp_localstorage__ = window.__pp_localstorage__ || {};
+                return window.__pp_localstorage__[key];
+            }
+            var result = window.localStorage.getItem(key);
+            if (result) return JSON.parse(result);
         }
         function setLocalStorage(key, value) {
-            try {
-                if (!window.localStorage) return;
-                window.localStorage.setItem(key, JSON.stringify(value));
-            } catch (err) {}
+            if (isLocalStorageEnabled()) window.localStorage.setItem(key, JSON.stringify(value)); else {
+                window.__pp_localstorage__ = window.__pp_localstorage__ || {};
+                window.__pp_localstorage__[key] = value;
+            }
         }
         __webpack_exports__.d = isPayPalDomain;
-        __webpack_require__.d(__webpack_exports__, "f", function() {
-            return memoize;
-        });
+        __webpack_exports__.f = memoize;
         __webpack_exports__.g = noop;
         __webpack_exports__.j = uniqueID;
         __webpack_exports__.c = hashStr;
@@ -10377,28 +10019,23 @@
         __webpack_exports__.i = stringifyError;
         __webpack_exports__.b = getLocalStorage;
         __webpack_exports__.h = setLocalStorage;
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), memoize = ("function" == typeof Symbol && Symbol.iterator, 
-        function(method) {
-            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
-            return function() {
-                var key = void 0;
-                try {
-                    key = JSON.stringify(arguments);
-                } catch (err) {
-                    throw new Error("Arguments not serializable -- can not be used to memoize");
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), isLocalStorageEnabled = ("function" == typeof Symbol && Symbol.iterator, 
+        function() {
+            try {
+                if (window.localStorage) {
+                    var value = Math.random().toString();
+                    window.localStorage.setItem("__test__localStorage__", value);
+                    var result = window.localStorage.getItem("__test__localStorage__");
+                    window.localStorage.removeItem("__test__localStorage__");
+                    if (value === result) return !0;
                 }
-                if (cache.hasOwnProperty(key)) return cache[key];
-                cache[key] = method.apply(this, arguments);
-                options.time && setTimeout(function() {
-                    delete cache[key];
-                }, options.time);
-                return cache[key];
-            };
+            } catch (err) {}
+            return !1;
         });
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon;
-        if (window.paypal && "4.0.87" === window.paypal.version) {
+        if (window.paypal && "4.0.88" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
