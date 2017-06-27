@@ -69,22 +69,19 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
 
         let tagContent = el.querySelector('.paypal-button-tag-content');
 
-        if (isElementVisible(el) && tagContent && tagContent.innerText && tagContent.innerText.trim()) {
+        if (isElementVisible(el) && tagContent && tagContent.innerText &&
+            tagContent.innerText.trim() && tagContent.innerText.trim() === 'The safer, easier way to pay') {
 
-            let throttle = getThrottle('tag_content_v4', 5000);
-            let randomThrottle = Boolean(Math.random() < 0.5);
+            let throttle = getThrottle('tag_content_v5', 5000);
+
+            if (throttle.isEnabled()) {
+                tagContent.textContent = 'A safe, easy way to pay';
+            }
 
             throttle.logStart();
-            checkpoint(`verifythrottle_${ randomThrottle ? 'test' : 'control' }_start`);
-
-            setTimeout(() => {
-                throttle.log(`check1`);
-                checkpoint(`verifythrottle_${ randomThrottle ? 'test' : 'control' }_check1`);
-            }, 5000);
 
             el.addEventListener('click', () => {
                 throttle.logComplete();
-                checkpoint(`verifythrottle_${ randomThrottle ? 'test' : 'control' }_complete`);
             });
         }
 
