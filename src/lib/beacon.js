@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config, LOG_LEVEL } from '../config';
-import { getCommonSessionID } from './session';
+import { getCommonSessionID, getSessionState } from './session';
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 
@@ -41,7 +41,18 @@ export function beacon(event : string, payload : Object = {}) {
     }
 }
 
-let loggedCheckpoints = [];
+function isCheckpointUnique(name : string) : boolean {
+    return getSessionState(state => {
+        state.loggedBeacons = state.loggedBeacons || [];
+
+        if (state.loggedBeacons.indexOf(name) === -1) {
+            state.loggedBeacons.push(name);
+            return true;
+        }
+
+        return false;
+    });
+}
 
 export function checkpoint(name : string, payload : Object = {}, options : Object = {}) : void {
     try {
@@ -52,14 +63,10 @@ export function checkpoint(name : string, payload : Object = {}, options : Objec
             checkpointName = `${version}_${checkpointName}`;
         }
 
-        let logged = (loggedCheckpoints.indexOf(checkpointName) !== -1);
-
-        if (logged) {
-            checkpointName = `${checkpointName}_dupe`;
-        } else {
-            loggedCheckpoints.push(checkpointName);
+        if (!isCheckpointUnique(checkpointName)) {
+            return;
         }
-
+        
         return beacon(checkpointName, payload);
 
     } catch (err) {

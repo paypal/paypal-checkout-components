@@ -2,20 +2,7 @@
 
 import { checkpoint, fpti } from './beacon';
 import { hashStr, match } from './util';
-import { getCommonSessionID, getSessionState } from './session';
-
-function isBeaconUnique(name : string) : boolean {
-    return getSessionState(state => {
-        state.loggedBeacons = state.loggedBeacons || [];
-
-        if (state.loggedBeacons.indexOf(name) === -1) {
-            state.loggedBeacons.push(name);
-            return true;
-        }
-
-        return false;
-    });
-}
+import { getCommonSessionID } from './session';
 
 export function getThrottle(name : string, sample : number, id? : string) : Object {
 
@@ -53,10 +40,8 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
             let event = `${treatment}_${checkpointName}`;
 
-            if (isBeaconUnique(event)) {
-                checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
-                fpti({ ...payload, expuid: uid, eligibility_reason: event });
-            }
+            checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
+            fpti({ ...payload, expuid: uid, eligibility_reason: event });
 
             return this;
         },

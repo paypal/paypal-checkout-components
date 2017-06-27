@@ -192,32 +192,44 @@ export function stringifyError(err : mixed) : string {
     return Object.prototype.toString.call(err);
 }
 
-export function getLocalStorage(key : string) : any {
-
+let isLocalStorageEnabled = () => {
     try {
-        if (!window.localStorage) {
-            return;
-        }
-
-        let result = window.localStorage.getItem(key);
-
-        if (result) {
-            return JSON.parse(result);
+        if (window.localStorage) {
+            let value = Math.random().toString();
+            window.localStorage.setItem('__test__localStorage__', value);
+            let result = window.localStorage.getItem('__test__localStorage__');
+            window.localStorage.removeItem('__test__localStorage__');
+            if (value === result) {
+                return true;
+            }
         }
     } catch (err) {
         // pass
+    }
+    return false;
+};
+
+export function getLocalStorage(key : string) : any {
+
+    if (!isLocalStorageEnabled()) {
+        window.__pp_localstorage__ = window.__pp_localstorage__ || {};
+        return window.__pp_localstorage__[key];
+    }
+
+    let result = window.localStorage.getItem(key);
+
+    if (result) {
+        return JSON.parse(result);
     }
 }
 
 export function setLocalStorage(key : string, value : mixed) {
 
-    try {
-        if (!window.localStorage) {
-            return;
-        }
-
-        window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (err) {
-        // pass
+    if (!isLocalStorageEnabled()) {
+        window.__pp_localstorage__ = window.__pp_localstorage__ || {};
+        window.__pp_localstorage__[key] = value;
+        return;
     }
+
+    window.localStorage.setItem(key, JSON.stringify(value));
 }
