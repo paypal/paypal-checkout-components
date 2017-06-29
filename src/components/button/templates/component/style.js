@@ -415,7 +415,9 @@ export let componentStyle = `
      }
 
      .paypal-button.paypal-branding-false .paypal-button-content  {
-            width: 60%;
+            width: auto;
+            display: inline-block;
+            max-width: 100%;
             margin: auto;
             font-weight: 900;
      }
