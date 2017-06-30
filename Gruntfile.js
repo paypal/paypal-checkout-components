@@ -40,6 +40,7 @@ module.exports = function (grunt) {
             module: [
                 'lib/*.js',
                 'test/*.js',
+                'public/**/*.js',
                 'index.js'
             ]
         },

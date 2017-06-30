@@ -19,7 +19,6 @@ export let $localeApi = new $Api({
     uri: '/api/locale'
 });
 
-
 export function getLocale() {
     return $localeApi.retrieve({
         params: {
@@ -35,22 +34,7 @@ export function getAuth() {
     return $authApi.retrieve().then(res => res.data);
 }
 
-function using(data, method, def) {
-    if (data) {
-        return method(data);
-    }
-    return def;
-}
-
-function map(data, method, def) {
-    if (data) {
-        return data.map(method);
-    }
-    return def;
-}
-
 export function getPayment(paymentID) {
-
     return $paymentApi.retrieve({
         model: {
             id: paymentID
@@ -61,9 +45,6 @@ export function getPayment(paymentID) {
 }
 
 export function executePayment(paymentID, payerID) {
-
-    // TODO: Execute payment for WPS (inventory, etc.)
-
     return $paymentApi.action('execute', {
 
         model: {
@@ -75,7 +56,6 @@ export function executePayment(paymentID, payerID) {
         }
 
     }).then(res => {
-
         return res.data;
     });
 }
