@@ -239,6 +239,11 @@ export let Checkout = xcomponent.create({
             sameDomain: true
         },
 
+        accessToken: {
+            type: 'function',
+            required: false
+        },
+
         onCancel: {
             type: 'function',
             required: false,
