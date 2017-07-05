@@ -32,14 +32,17 @@ if (__LEGACY_SUPPORT__) {
 
 import { isPayPalDomain } from './lib';
 import { Checkout as CheckoutComponent } from './components';
+import { Login as LoginComponent } from './components';
 import * as xcomponent from 'xcomponent/src';
 
 export let Checkout;
 export let PayPalCheckout;
+export let Login;
 export let destroyAll;
 
 if (isPayPalDomain() || __TEST__) {
     Checkout = CheckoutComponent;
     PayPalCheckout = CheckoutComponent;
+    Login = LoginComponent;
     destroyAll = xcomponent.destroyAll;
 }

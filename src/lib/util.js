@@ -192,7 +192,7 @@ export function stringifyError(err : mixed) : string {
     return Object.prototype.toString.call(err);
 }
 
-let isLocalStorageEnabled = () => {
+let isLocalStorageEnabled = memoize(() : boolean => {
     try {
         if (window.localStorage) {
             let value = Math.random().toString();
@@ -207,7 +207,7 @@ let isLocalStorageEnabled = () => {
         // pass
     }
     return false;
-};
+});
 
 export function getLocalStorage(key : string) : any {
 

@@ -167,6 +167,8 @@ export let config = {
         return config.buttonJSUrls[config.env];
     },
 
+    loginUri: `/signin/`,
+
     loggerUri: `/webapps/hermes/api/logger`,
 
     pptmUri: `/tagmanager/pptm.js`,
@@ -218,6 +220,19 @@ export let config = {
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.buttonUris.production}`,
             [ ENV.TEST ]:       `${paypalUrls.test}${config.buttonUris.test}`
+        };
+    },
+
+    get loginUrls() : Object {
+
+        let paypalUrls = config.paypalUrls;
+
+        return {
+            [ ENV.LOCAL ]:      `${paypalUrls.stage}${config.loginUri}`,
+            [ ENV.STAGE ]:      `${paypalUrls.stage}${config.loginUri}`,
+            [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.loginUri}`,
+            [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.loginUri}`,
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.loginUri}`
         };
     },
 

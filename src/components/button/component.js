@@ -113,6 +113,11 @@ export let Button = xcomponent.create({
             }
         },
 
+        prefetchLogin: {
+            type: 'boolean',
+            required: false
+        },
+
         stage: {
             type: 'string',
             required: false,
