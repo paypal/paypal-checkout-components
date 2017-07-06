@@ -44,15 +44,15 @@ export let componentStyle = `
         box-sizing: border-box;
         outline: none;
     }
+    
+    
 
     .paypal-button .paypal-button-content {
         padding: 4px 8px 4px;
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;
-
         width: 100%;
-
         box-sizing: border-box;
         border: none;
     }
@@ -112,13 +112,21 @@ export let componentStyle = `
         max-width: 100%;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: normal;
-        color: #003366;
+        
         display: block;
         text-align: center;
         width: auto;
         font-size: 9px;
         margin-top: 2px;
         visibility: hidden;
+    }
+    
+    .paypal-button .paypal-button-tag-content.paypal-tagline-color-blue {
+        color: #003366;
+    }
+    
+    .paypal-button .paypal-button-tag-content.paypal-tagline-color-black {
+        color: #000;
     }
 
 
@@ -166,6 +174,11 @@ export let componentStyle = `
 
         .paypal-button .paypal-button-content .logo.logo-paypal {
             height: 17px;
+        }
+        
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo{
+            height: 13px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-credit {
@@ -217,7 +230,12 @@ export let componentStyle = `
         .paypal-button .paypal-button-content .logo.logo-paypal {
             height: 24px;
         }
-
+        
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {
+            height: 19px;
+        }
+        
         .paypal-button .paypal-button-content .logo.logo-credit {
             height: 23px;
         }
@@ -272,7 +290,12 @@ export let componentStyle = `
         .paypal-button .paypal-button-content .logo.logo-paypal {
             height: 27px;
         }
-
+        
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,
+        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {
+            height: 22px;
+        }
+        
         .paypal-button .paypal-button-content .logo.logo-credit {
             height: 25px;
         }
@@ -299,13 +322,13 @@ export let componentStyle = `
 
     /* Gold */
 
-    .paypal-button.paypal-color-gold .paypal-button-content {
+    .paypal-button .paypal-button-content.paypal-color-gold {
         background: #ffc439;
         color: #000;
         text-shadow: 0px 1px 0 #ffdc88;
     }
 
-    .paypal-button.paypal-color-gold .paypal-button-content::before {
+    .paypal-button .paypal-button-content.paypal-color-gold::before {
         background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;
         background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;
         background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;
@@ -316,12 +339,12 @@ export let componentStyle = `
 
     /* Blue */
 
-    .paypal-button.paypal-color-blue .paypal-button-content {
+    .paypal-button .paypal-button-content.paypal-color-blue {
         background: #009cde;
         color: #fff;
         text-shadow: 0px -1px 0 #0d86bb;
     }
-    .paypal-button.paypal-color-blue .paypal-button-content::before {
+    .paypal-button .paypal-button-content.paypal-color-blue::before {
         background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;
         background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;
         background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;
@@ -332,40 +355,56 @@ export let componentStyle = `
 
     /* Silver */
 
-    .paypal-button.paypal-color-silver .paypal-button-content {
+    .paypal-button .paypal-button-content.paypal-color-silver {
         background: #eee;
         color: #000;
         text-shadow: 0px -1px 0 #ccc;
     }
 
-    .paypal-button.paypal-color-silver .paypal-button-content::before {
+    .paypal-button .paypal-button-content.paypal-color-silver::before {
         background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
         background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
     }
+    
+     /* Black */
+
+    .paypal-button .paypal-button-content.paypal-color-black {
+        background: #2C2E2F;
+        color: #fff;
+        text-shadow: 0px 1px 0 #6C7378;
+    }
+
+    .paypal-button .paypal-button-content.paypal-color-black::before {
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
+        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
+        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
+    }
+    
+    
 
 
-    /* Credit Blue */
+     /* Credit Button */
 
-    .paypal-button.paypal-style-credit .paypal-button-content {
+    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue {
         background: #003087;
         color: #fff;
         text-shadow: 0px -1px 0 #0d86bb;
     }
 
-    .paypal-button.paypal-style-credit .paypal-button-content::before {
+    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue::before {
         background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;
         background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
         background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;
     }
-
-
-
-    /* Credit Button */
+    
+   
 
     @media only screen and (max-width : 147px) {
         .paypal-button.paypal-style-credit {
@@ -395,39 +434,47 @@ export let componentStyle = `
     /*Unbranded Button; eg: buynow */
 
 
-     @media only screen and (min-height: 22px) and (min-width: 100px) {
-            .paypal-button.paypal-branding-false .paypal-button-content {
-                font-size: 13px;
-            }
-     }
+    @media only screen and (min-height: 22px) and (min-width: 100px) {
+        .paypal-button.paypal-branding-false .paypal-button-content {
+            font-size: 13px;
+        }
+    }
 
 
-     @media only screen and (min-width : 200px) and (min-height: 48px) {
-            .paypal-button.paypal-branding-false .paypal-button-content  {
-                font-size: 15px;
-            }
-     }
+    @media only screen and (min-width : 200px) and (min-height: 48px) {
+        .paypal-button.paypal-branding-false .paypal-button-content  {
+            font-size: 15px;
+        }
+    }
 
-     @media only screen and (min-width : 250px) and (min-height: 60px) {
-            .paypal-button.paypal-branding-false .paypal-button-content {
-                font-size: 20px;
-            }
-     }
+    @media only screen and (min-width : 250px) and (min-height: 60px) {
+        .paypal-button.paypal-branding-false .paypal-button-content {
+            font-size: 20px;
+        }
+    }
 
-     .paypal-button.paypal-branding-false .paypal-button-content  {
-            width: auto;
-            display: inline-block;
-            max-width: 100%;
-            margin: auto;
-            font-weight: 900;
-     }
+    .paypal-button.paypal-branding-false .paypal-button-content  {
+        width: 60%;
+        margin: auto;
+        font-weight: 900;
+    }
 
-     /*Add on branding */
+    /*Add on branding */
 
-     .paypal-button.paypal-branding-true .paypal-button-content  {
-            width: 100%;
-            margin: auto;
-     }
+    .paypal-button.paypal-branding-true .paypal-button-content  {
+        width: 100%;
 
+        margin: auto;
+    }
+
+    /*Dual button */
+    
+    .paypal-button.paypal-dual-true .paypal-button-content {
+        width: 47%;
+        display: inline-block;
+        margin-right: 2px;
+    }
+    
+ 
 
 `;
