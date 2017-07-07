@@ -42,7 +42,21 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
         [ FPTI.KEY.ERROR_DESC ]: stringifyError(err)
     });
 
-    $logger.flush();
+    $logger.flush().catch(err2 => {
+        if (window.console) {
+            try {
+                if (window.console.error) {
+                    window.console.error('Error flushing:', err2.stack || err2.toString());
+                } else if (window.console.log) {
+                    window.console.log('Error flushing:', err2.stack || err2.toString());
+                }
+            } catch (err3) {
+                setTimeout(() => {
+                    throw err3;
+                }, 1);
+            }
+        }
+    });
 });
 
 
