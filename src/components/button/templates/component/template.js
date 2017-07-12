@@ -13,7 +13,7 @@ function expandContentText(contentText : string, { color, logoColor } : { color 
         if (name) {
             return `<img class="logo logo-${name} logo-${name}-${color}"
                         src="data:image/svg+xml;base64,${btoa(componentLogos[name][logoColor])}"
-                        alt="PayPal">`;
+                        alt="${name}">`;
         } else if (text && text.trim()) {
             return `<span class="text">${text}</span>`;
         } else {
