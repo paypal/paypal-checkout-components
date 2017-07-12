@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp test",
     "postinstall": "node postinstall.js",
-    "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install"
+    "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install",
+    "demo": "serve . --port 1337"
   },
   "files": [
     "dist/checkout.lib.js",
@@ -83,6 +84,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
     "regenerator-runtime": "^0.10.1",
+    "serve": "^6.0.2",
     "sinon": "^2.3.5",
     "sinon-chai": "^2.11.0",
     "sync-browser-mocks": "^1.0.43",

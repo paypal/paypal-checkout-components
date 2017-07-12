@@ -66,7 +66,8 @@ export let config = {
             [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
-            [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`,
+            [ ENV.DEMO ]:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -76,7 +77,8 @@ export let config = {
             [ ENV.STAGE ]:      `https://www.${config.stage}.qa.paypal.com`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
-            [ ENV.TEST ]:       `mock://www.paypal.com`
+            [ ENV.TEST ]:       `mock://www.paypal.com`,
+            [ ENV.DEMO ]:       `${window.location.protocol}//${window.location.host}`
         };
     },
 
@@ -120,7 +122,8 @@ export let config = {
         [ ENV.STAGE ]:      `/webapps/hermes`,
         [ ENV.SANDBOX ]:    `/checkoutnow`,
         [ ENV.PRODUCTION ]: `/checkoutnow`,
-        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
+        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
     },
 
     billingUris: {
@@ -128,7 +131,8 @@ export let config = {
         [ ENV.STAGE ]:      `/webapps/hermes/agreements`,
         [ ENV.SANDBOX ]:    `/agreements/approve`,
         [ ENV.PRODUCTION ]: `/agreements/approve`,
-        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?billingurl=true`
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?billingurl=true`,
+        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
     },
 
     buttonUris: {
@@ -136,7 +140,8 @@ export let config = {
         [ ENV.STAGE ]:      `/webapps/hermes/button`,
         [ ENV.SANDBOX ]:    `/webapps/hermes/button`,
         [ ENV.PRODUCTION ]: `/webapps/hermes/button`,
-        [ ENV.TEST ]:       `/base/test/windows/button/index.htm`
+        [ ENV.TEST ]:       `/base/test/windows/button/index.htm`,
+        [ ENV.DEMO ]:       `/demo/dev/button.htm`
     },
 
     postBridgeUris: {
@@ -144,7 +149,8 @@ export let config = {
         [ ENV.STAGE ]:      `/webapps/hermes/component-meta`,
         [ ENV.SANDBOX ]:    `/webapps/hermes/component-meta`,
         [ ENV.PRODUCTION ]: `/webapps/hermes/component-meta`,
-        [ ENV.TEST ]:       `/base/test/windows/component-meta/index.htm`
+        [ ENV.TEST ]:       `/base/test/windows/component-meta/index.htm`,
+        [ ENV.DEMO ]:       `/demo/dev/bridge.htm`
     },
 
     legacyCheckoutUris: {
@@ -193,7 +199,8 @@ export let config = {
             [ ENV.STAGE ]:      `${paypalUrls.stage}${config.checkoutUris.stage}`,
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.checkoutUris.sandbox}`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.checkoutUris.production}`,
-            [ ENV.TEST ]:       `${paypalUrls.test}${config.checkoutUris.test}`
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.checkoutUris.test}`,
+            [ ENV.DEMO ]:       `${paypalUrls.test}${config.checkoutUris.demo}`
         };
     },
 
@@ -206,7 +213,8 @@ export let config = {
             [ ENV.STAGE ]:      `${paypalUrls.stage}${config.billingUris.stage}`,
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.billingUris.sandbox}`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.billingUris.production}`,
-            [ ENV.TEST ]:       `${paypalUrls.test}${config.billingUris.test}`
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.billingUris.test}`,
+            [ ENV.DEMO ]:       `${paypalUrls.test}${config.billingUris.demo}`
         };
     },
 
@@ -219,7 +227,8 @@ export let config = {
             [ ENV.STAGE ]:      `${paypalUrls.stage}${config.buttonUris.stage}`,
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.buttonUris.production}`,
-            [ ENV.TEST ]:       `${paypalUrls.test}${config.buttonUris.test}`
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.buttonUris.test}`,
+            [ ENV.DEMO ]:       `${paypalUrls.test}${config.buttonUris.demo}`
         };
     },
 
@@ -258,7 +267,8 @@ export let config = {
             [ ENV.STAGE ]:      `${paypalUrls.stage}${config.postBridgeUri}&env=stage&stage=${config.stage}`,
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.postBridgeUri}&env=sandbox`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.postBridgeUri}&env=production`,
-            [ ENV.TEST ]:       `${paypalUrls.test}${config.postBridgeUri}&env=test`
+            [ ENV.TEST ]:       `${paypalUrls.test}${config.postBridgeUri}&env=test`,
+            [ ENV.DEMO ]:       `${paypalUrls.demo}${config.postBridgeUri}&env=demo`
         };
     },
 

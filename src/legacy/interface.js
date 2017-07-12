@@ -99,7 +99,7 @@ function checkUrlAgainstEnv(url : string) {
     for (let env of Object.keys(paypalUrls)) {
         let paypalUrl = paypalUrls[env];
 
-        if (env === ENV.TEST) {
+        if (env === ENV.TEST || env === ENV.DEMO) {
             continue;
         }
 

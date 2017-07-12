@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../dist/checkout.js" data-paypal-checkout></script>
+</head>
+
+<body>
+    <button id="paypal-button-popup">popup</button>
+    <button id="paypal-button-iframe">iframe</button>
+
+    <script>
+        function renderCheckout() {
+            paypal.Checkout.renderTo(window.top, {
+                env: window.xprops.env,
+                payment: window.xprops.payment,
+                onAuthorize: window.xprops.onAuthorize
+            });
+        }
+
+        document.querySelector('#paypal-button-popup').addEventListener('click', function() {
+            paypal.Checkout.contexts.iframe = false;
+            renderCheckout();
+        });
+
+        document.querySelector('#paypal-button-iframe').addEventListener('click', function() {
+            paypal.Checkout.contexts.iframe = true;
+            renderCheckout();
+        });
+    </script>
+</body>

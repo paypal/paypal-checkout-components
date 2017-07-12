@@ -5,7 +5,8 @@ export const ENV = {
     STAGE:      'stage',
     SANDBOX:    'sandbox',
     PRODUCTION: 'production',
-    TEST:       'test'
+    TEST:       'test',
+    DEMO:       'demo'
 };
 
 

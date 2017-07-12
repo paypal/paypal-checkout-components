@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../../dist/checkout.js" data-paypal-checkout></script>
+</head>
+
+<body>
+    <div id="paypal-button-container"></div>
+
+    <script>
+        paypal.Button.render({
+
+            env: 'demo',
+
+            payment: function() {
+                return new paypal.Promise(function(resolve) {
+                    setTimeout(function() {
+                        resolve('PAY-XXXXXXXXXXXXXXXX');
+                    }, 500);
+                });
+            },
+
+            onAuthorize: function(data, actions) {
+                actions.close();
+
+                return new paypal.Promise(function(resolve) {
+                    setTimeout(resolve, 500);
+                });
+            }
+        }, '#paypal-button-container');
+    </script>
+</body>
