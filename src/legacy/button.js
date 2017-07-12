@@ -72,10 +72,10 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
         if (isElementVisible(el) && tagContent && tagContent.innerText &&
             tagContent.innerText.trim() && tagContent.innerText.trim() === 'The safer, easier way to pay') {
 
-            let throttle = getThrottle('tag_content_v5', 5000);
+            let throttle = getThrottle('tag_content_v6', 5000);
 
             if (throttle.isEnabled()) {
-                tagContent.textContent = 'A safe, easy way to pay';
+                tagContent.textContent = '';
             }
 
             throttle.logStart();
