@@ -9,7 +9,7 @@ import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getCommonSessionID } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getCommonSessionID, getBrowserLocale } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -64,8 +64,6 @@ export let Checkout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    sandboxContainer: true,
-
     componentTemplate,
     containerTemplate,
 
@@ -113,7 +111,13 @@ export let Checkout = xcomponent.create({
         locale: {
             type: 'string',
             required: false,
-            queryParam: 'locale.x'
+            queryParam: 'locale.x',
+            allowDelegate: true,
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${lang}_${country}`;
+            }
         },
 
 
@@ -251,33 +255,33 @@ export let Checkout = xcomponent.create({
             noop: true,
 
             decorate(original) : ?Function {
-                if (original) {
-                    return function(data, actions = {}) : ZalgoPromise<void> {
+                return function(data, actions = {}) : ZalgoPromise<void> {
 
-                        let close = () => {
-                            return ZalgoPromise.try(() => {
-                                if (actions.close) {
-                                    return actions.close();
-                                }
-                            }).then(() => {
-                                return this.closeComponent();
-                            });
-                        };
-
-                        let redirect = (win, url) => {
-                            return ZalgoPromise.all([
-                                redir(win || window.top, url || data.cancelUrl),
-                                close()
-                            ]);
-                        };
-
+                    let close = () => {
                         return ZalgoPromise.try(() => {
-                            return original.call(this, data, { ...actions, close, redirect });
-                        }).finally(() => {
-                            this.close();
+                            if (actions.close) {
+                                return actions.close();
+                            }
+                        }).then(() => {
+                            return this.closeComponent();
                         });
                     };
-                }
+
+                    let redirect = (win, url) => {
+                        return ZalgoPromise.all([
+                            redir(win || window.top, url || data.cancelUrl),
+                            close()
+                        ]);
+                    };
+
+                    return ZalgoPromise.try(() => {
+                        if (original) {
+                            return original.call(this, data, { ...actions, close, redirect });
+                        }
+                    }).finally(() => {
+                        this.close();
+                    });
+                };
             }
         },
 

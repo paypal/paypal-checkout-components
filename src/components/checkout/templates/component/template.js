@@ -1,15 +1,9 @@
+/* @flow */
 
-export function componentTemplate({}) : string {
+export function componentTemplate() : string {
 
     return `
-
-        <!DOCTYPE html>
-
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-
-            <title>PayPal</title>
-
+        <div id="preloaderSpinner" class="preloader spinner">
             <style>
                 body {
                     width: 100%;
@@ -102,16 +96,10 @@ export function componentTemplate({}) : string {
                 }
             </style>
 
-        </head>
-
-        <body>
-            <div id="preloaderSpinner" class="preloader spinner">
-                <div class="spinWrap">
-                    <p class="spinnerImage"></p>
-                    <p class="loader"></p>
-                </div>
+            <div class="spinWrap">
+                <p class="spinnerImage"></p>
+                <p class="loader"></p>
             </div>
-        </body>
-
+        </div>
     `;
 }

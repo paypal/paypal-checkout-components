@@ -109,14 +109,15 @@ module.exports = function(config) {
                 modules: [
                     __dirname,
                     'node_modules'
-                ]
+                ],
+                extensions: [ '.js', '.jsx' ]
             },
 
             module: {
                 rules: [
 
                     {
-                        test: /\.js$/,
+                        test: /\.jsx?$/,
                         exclude: /(dist|chai)/,
                         loader: 'babel-loader',
                         query: {
@@ -124,10 +125,19 @@ module.exports = function(config) {
 
                             presets: [
                                 [
-                                    'es2015', {
-                                        modules: false
+                                    "env", {
+                                        "targets": {
+                                            "ie": 9,
+                                            "chrome": 27,
+                                            "firefox": 30,
+                                            "safari": 5,
+                                            "opera": 23
+                                        },
+                                        "modules": false,
+                                        "loose": true
                                     }
-                                ]
+                                ],
+                                "react"
                             ],
 
                             plugins: [
@@ -138,7 +148,8 @@ module.exports = function(config) {
                                 [ "transform-es3-property-literals", { "loose": true } ],
                                 [ "transform-es3-member-expression-literals", { "loose": true } ],
                                 [ "transform-decorators-legacy", { "loose": true } ],
-                                [ "transform-es2015-for-of", { "loose": true } ]
+                                [ "transform-es2015-for-of", { "loose": true } ],
+                                [ "babel-plugin-transform-react-jsx", { "pragma": "jsxDom" } ]
                                 // [ "flow-runtime", { "assert": true, "annotate": true } ]
                             ]
                         }

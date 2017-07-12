@@ -59,11 +59,12 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let labelText = expandContentText(contentText, { color, logoColor });
 
     return `
-        <style type="text/css">
-            ${ componentStyle }
-        </style>
-
         <div id="paypal-button-container">
+
+            <style type="text/css">
+                ${ componentStyle }
+            </style>
+
             <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding ? 'true' : 'false' }  paypal-color-${ color } paypal-logo-color-${logoColor} paypal-size-${ size } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content">
                     ${ labelText }
@@ -71,12 +72,11 @@ export function componentTemplate({ props } : { props : Object }) : string {
                 <div class="paypal-button-tag-content">
                     ${ tagline ? tagcontent : '' }
                 </div>
-
             </div>
-        </div>
 
-        <script>
-            (${ componentScript.toString() })();
-        </script>
+            <script>
+                (${ componentScript.toString() })();
+            </script>
+        </div>
     `;
 }
