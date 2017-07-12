@@ -9,7 +9,17 @@ export let buttonConfig = {
         logoColors:  {
             gold:   'blue',
             silver: 'blue',
-            blue:   'white'
+            blue:   'white',
+            black: 'white',
+            creditblue: 'white'
+        },
+
+        defaultTagLineColors:  {
+            gold:   'blue',
+            silver: 'blue',
+            blue:   'blue',
+            black: 'black',
+            creditblue: 'blue'
         },
 
         defaultLocale: 'en_US',
@@ -19,6 +29,7 @@ export let buttonConfig = {
         defaultShape:        'pill',
         defaultBranding:     true,
         defaultFundingIcons: false,
+        defaultTagLineColor: 'blue',
 
         allowUnbranded: false,
         allowFundingIcons: true
@@ -32,7 +43,8 @@ export let buttonConfig = {
     },
 
     pay: {
-        tagline: false
+        tagline: false,
+        colors: [ 'gold', 'blue', 'silver', 'black']
     },
 
     credit: {
@@ -41,11 +53,7 @@ export let buttonConfig = {
         tagline: true,
         tagkey:  'later_tag',
 
-        colors: [ 'creditblue' ],
-
-        logoColors:  {
-            creditblue: 'white'
-        },
+        colors: [ 'creditblue','black'],
 
         allowFundingIcons: false,
 
@@ -53,13 +61,26 @@ export let buttonConfig = {
     },
 
     buynow: {
-        tagline: false,
+        tagline: true,
         tagkey:  'safer_tag',
 
         defaultBranding:     undefined,
         defaultFundingIcons: true,
 
         allowUnbranded: true
+    },
+
+    generic: {
+        tagline: true,
+        tagkey: 'safer_tag',
+        label: '${pp}${paypal}'
+
+    },
+
+    dual: {
+        tagline: true,
+        tagkey: 'dual_tag',
+        label: '${pp}${paypal}'
     }
 };
 
