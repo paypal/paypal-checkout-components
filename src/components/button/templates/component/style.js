@@ -44,17 +44,24 @@ export let componentStyle = `
         box-sizing: border-box;
         outline: none;
     }
+    
+    
 
     .paypal-button .paypal-button-content {
         padding: 4px 8px 4px;
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;
-
         width: 100%;
-
         box-sizing: border-box;
         border: none;
+        
+        -webkit-transition-property: width ;
+        -webkit-transition-duration: 1s;
+        -webkit-transition-timing-function: ease-out;
+        transition-property: width ;
+        transition-duration: 1s;
+        transition-timing-function: ease-out;
     }
 
     .paypal-button:hover .paypal-button-content {
@@ -181,7 +188,7 @@ export let componentStyle = `
         }
 
         .paypal-button .paypal-button-content .logo.logo-venmo {
-            height: 11px;
+            height: 9px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-credit {
@@ -235,11 +242,11 @@ export let componentStyle = `
         }
         
         .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal {
-            height: 15px;
+            height: 19px;
         }
         
         .paypal-button .paypal-button-content .logo.logo-venmo {
-            height: 12px;
+            height: 13px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-credit {
@@ -298,11 +305,11 @@ export let componentStyle = `
         }
         
         .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal {
-            height: 17px;
+            height: 22px;
         }
         
         .paypal-button .paypal-button-content .logo.logo-venmo {
-            height: 13px;
+            height: 15px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-credit {
@@ -479,8 +486,11 @@ export let componentStyle = `
     /*Dual button */
     
     .paypal-button.paypal-dual-true .paypal-button-content {
-        width: 49%;
+        width: 47%;
         display: inline-block;
+        margin-right: 2px;
     }
+    
+ 
 
 `;

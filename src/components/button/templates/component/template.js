@@ -34,6 +34,7 @@ function getSecondBtnHtml (color : string) : string {
         blue: 'blue',
         silver: 'white'
     };
+
     let contentText = '${venmo}';
     let venmoBtnColor = colormapper[color];
     let venmoLogoColor = logocolormapper[color];
@@ -61,6 +62,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let label = style.label || getButtonConfig('default', 'defaultLabel');
 
+
+
     let {
         color        = getButtonConfig(label, 'defaultColor'),
         shape        = getButtonConfig(label, 'defaultShape'),
@@ -68,13 +71,18 @@ export function componentTemplate({ props } : { props : Object }) : string {
         fundingicons = getButtonConfig(label, 'defaultFundingIcons')
     } = style;
 
+    let enableDualBtn;
+    if(dual) {
+        enableDualBtn = (!(label === 'credit' || !branding || color === 'black'));
+    }
+
     let logoColor   = getButtonConfig(label, 'logoColors')[color];
     let taglineColor = getButtonConfig(label, 'defaultTagLineColors')[color];
 
-    let contentText = dual ? getButtonConfig('dual', 'label') : (getButtonConfig(label, 'label') || content[label]);
+    let contentText = enableDualBtn ? getButtonConfig('dual', 'label') : (getButtonConfig(label, 'label') || content[label]);
     let allowTagline = (branding && !fundingicons);
-    let tagline      = dual ? true : (allowTagline ? getButtonConfig(label, 'tagline') : false);
-    let tagcontent   = dual ? content[getButtonConfig('dual', 'tagkey')] : (content[getButtonConfig(label, 'tagkey')] || '');
+    let tagline      = enableDualBtn ? true : (allowTagline ? getButtonConfig(label, 'tagline') : false);
+    let tagcontent   = enableDualBtn ? content[getButtonConfig('dual', 'tagkey')] : (content[getButtonConfig(label, 'tagkey')] || '');
 
     if (!branding) {
         contentText = removeBranding(contentText);
@@ -82,7 +90,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let labelText = expandContentText(contentText, { color, logoColor });
 
-    let secondButtonHtml = dual ? getSecondBtnHtml(color) : '';
+    let secondButtonHtml = enableDualBtn ? getSecondBtnHtml(color) : '';
 
     return `
         <style type="text/css">
@@ -90,7 +98,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         </style>
 
         <div id="paypal-button-container">
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding ? 'true' : 'false' } paypal-dual-${ dual ? 'true' : 'false' } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
+            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding ? 'true' : 'false' } paypal-dual-${ enableDualBtn ? 'true' : 'false' } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
                 <div class="paypal-button-content paypal-color-${ color } paypal-logo-color-${logoColor}">
                     ${ labelText }
                 </div>
