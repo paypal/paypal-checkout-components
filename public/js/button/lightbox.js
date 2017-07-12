@@ -1,5 +1,5 @@
 
-let { Checkout } = window.paypal;
+let { Checkout, Promise } = window.paypal;
 import { $util } from 'squid-core/dist/util';
 
 import { isLoggedIn } from './user';
