@@ -40,11 +40,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -82,11 +82,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -124,11 +124,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -166,11 +166,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -216,11 +216,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -266,11 +266,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -316,11 +316,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -366,11 +366,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -416,11 +416,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -466,11 +466,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -516,11 +516,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -566,11 +566,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -616,11 +616,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -666,11 +666,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -716,11 +716,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -766,11 +766,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -816,11 +816,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -867,11 +867,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -918,11 +918,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
@@ -971,11 +971,11 @@ describe(`paypal button component sizes`, () => {
                         let height = frame.offsetHeight;
 
                         if (width !== expectedWidth) {
-                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                         }
 
                         if (height !== expectedHeight) {
-                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                         }
 
                         return done();
@@ -1026,11 +1026,11 @@ describe(`paypal button component sizes`, () => {
                         let height = frame.offsetHeight;
 
                         if (width !== expectedWidth) {
-                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                            return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                         }
 
                         if (height !== expectedHeight) {
-                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                            return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                         }
 
                         return done();
@@ -1077,11 +1077,11 @@ describe(`paypal button component sizes`, () => {
                     let height = frame.offsetHeight;
 
                     if (width !== expectedWidth) {
-                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}`));
+                        return done(new Error(`Expected button to have width of ${expectedWidth}px, got ${width}px`));
                     }
 
                     if (height !== expectedHeight) {
-                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}`));
+                        return done(new Error(`Expected button to have height of ${expectedHeight}px, got ${height}px`));
                     }
 
                     return done();
