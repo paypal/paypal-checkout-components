@@ -44,100 +44,108 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
     let size = style.size || 'small';
     let fundingIcons = props.style.fundingicons || false;
 
-    let initialHeight = getInitialHeight(dimensions.width, fundingIcons);
+    let sizes = fundingIcons
 
-    let sizes = {
-        small: {
-            width: '148px',
-            height: '42px'
-        },
-        medium: {
-            width: '230px',
-            height: '48px'
-        },
-        large: {
-            width: '380px',
-            height: '60px'
+        ? {
+            small: {
+                width: '148px',
+                height: '65px'
+            },
+            medium: {
+                width: '230px',
+                height: '75px'
+            },
+            large: {
+                width: '380px',
+                height: '85px'
+            }
         }
-    };
 
-    let sizesWithFunding = {
-        small: {
-            width: '148px',
-            height: '65px'
-        },
-        medium: {
-            width: '230px',
-            height: '75px'
-        },
-        large: {
-            width: '380px',
-            height: '85px'
-        }
-    };
+        : {
+            small: {
+                width: '148px',
+                height: '42px'
+            },
+            medium: {
+                width: '230px',
+                height: '48px'
+            },
+            large: {
+                width: '380px',
+                height: '60px'
+            }
+        };
+
+    let defaultSize = sizes.small;
 
     let minWidth = sizes.small.width;
     let maxWidth = '500px';
 
+    let initialHeight = getInitialHeight(dimensions.width, fundingIcons) || sizes.small.height;
+
     return (
-        <div id={ id } class={ `${ tag } ${ tag }-context-${ context }` }>
+        <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size }` }>
 
             <style>
                 {`
                     #${ id } {
                         font-size: 0;
                         width: 100%;
+                    }
+
+                    #${ id }.paypal-button-size-responsive {
                         text-align: center;
                     }
 
-                    #${ id } .paypal-button-parent {
-                        min-height: 42px;
+                    #${ id } > .${ CLASS.OUTLET } {
                         display: inline-block;
                         min-width: ${ minWidth };
                         max-width: ${ maxWidth };
+                    }
+
+                    #${ id },
+                    #${ id } > .${ CLASS.OUTLET },
+                    #${ id } > .${ CLASS.OUTLET } > iframe {
+                        min-height: ${ sizes.small.height };
+                        max-height: ${ sizes.large.height };
+                    }
+
+                    #${ id } > .${ CLASS.OUTLET } {
+                        width:  ${ defaultSize.width };
+                        height: ${ defaultSize.height };
+                    }
+
+                    #${ id }.paypal-button-size-tiny > .${ CLASS.OUTLET },
+                    #${ id }.paypal-button-size-small > .${ CLASS.OUTLET } {
+                        width:  ${ sizes.small.width };
+                        height: ${ sizes.small.height };
+                    }
+
+                    #${ id }.paypal-button-size-medium > .${ CLASS.OUTLET } {
+                        width:  ${ sizes.medium.width };
+                        height: ${ sizes.medium.height };
+                    }
+
+                    #${ id }.paypal-button-size-large > .${ CLASS.OUTLET } {
+                        width:  ${ sizes.large.width };
+                        height: ${ sizes.large.height };
+                    }
+
+                    #${ id }.paypal-button-size-responsive > .${ CLASS.OUTLET } {
                         width: 100%;
+                        height: ${ initialHeight }
                     }
 
-                    #${ id } .paypal-button-parent .${ CLASS.OUTLET } {
-                        display: inline-block;
-                        width: 100%;
-                    }
-
-                    #${ id } .paypal-button-parent iframe {
-                        max-width: 100%;
+                    #${ id } > .${ CLASS.OUTLET } > iframe {
                         min-width: 100%;
-                        max-height: 100%;
-                        min-height: 100%;
-                    }
-
-                    #${ id } .paypal-button-parent .${ CLASS.OUTLET },
-                    #${ id } .paypal-button-parent-size-tiny .${ CLASS.OUTLET },
-                    #${ id } .paypal-button-parent-size-small .${ CLASS.OUTLET } {
-                        width:  ${ (fundingIcons ? sizesWithFunding : sizes).small.width };
-                        height: ${ (fundingIcons ? sizesWithFunding : sizes).small.height };
-                    }
-
-                    #${ id } .paypal-button-parent-size-medium .${ CLASS.OUTLET } {
-                        width:  ${ (fundingIcons ? sizesWithFunding : sizes).medium.width };
-                        height: ${ (fundingIcons ? sizesWithFunding : sizes).medium.height };
-                    }
-
-                    #${ id } .paypal-button-parent-size-large .${ CLASS.OUTLET } {
-                        width:  ${ (fundingIcons ? sizesWithFunding : sizes).large.width };
-                        height: ${ (fundingIcons ? sizesWithFunding : sizes).large.height };
-                    }
-
-                    #${ id } .paypal-button-parent-size-responsive .${ CLASS.OUTLET } {
                         max-width: 100%;
-                        min-width: 100%;
-                        height: ${ initialHeight || sizes.small.height }
+                        width: ${ defaultSize.width };
+                        height: 100%;
                     }
                 `}
             </style>
 
-            <div class={ `paypal-button-parent paypal-button-parent-label-${ label } paypal-button-parent-size-${ size }` }>
-                { outlet }
-            </div>
+            { outlet }
         </div>
     );
 }
