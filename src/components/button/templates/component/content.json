@@ -5221,6 +5221,7 @@
             "checkout": "${pp}${paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
             "later_tag": "Buy Now. Pay Over Time.",
+            "dual_tag": "Two easy ways to pay",
             "pay": "Pay with ${paypal}",
             "buynow": "${pp}${paypal} Buy Now"
         },
