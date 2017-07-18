@@ -47,7 +47,7 @@ var MyCartComponent = window.React.createClass({
             ...
         };
 		
-		let PayPalButton = paypal.Button.driver('react', { React, ReactDOM });
+        let PayPalButton = paypal.Button.driver('react', { React, ReactDOM });
 
         return (<div className='shoppingCart'>
             <p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
