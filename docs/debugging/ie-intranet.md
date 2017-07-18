@@ -9,7 +9,7 @@ This is because these modes cripples the script from interfacing correctly with 
 
 Open up your developer tools in IE, and check for the following error in the console:
 
-[IE Error Console](./ie-intranet-1.png)
+![IE Error Console](./ie-intranet-1.png)
 
 You can also detect in code when it's not possible to render PayPal, and provide a fall-back experience:
 
@@ -23,23 +23,23 @@ if (!paypal.isEligible()) {
 
 Load up internet options in IE:
 
-[IE Internet Options](./ie-intranet-2.png)
+![IE Internet Options](./ie-intranet-2.png)
 
 Navigate to the security panel, select 'Local intranet' then click on the 'Sites' button:
 
-[IE Internet Options Security](./ie-intranet-3.png)
+![IE Internet Options Security](./ie-intranet-3.png)
 
 Make sure all of the options on this panel are disabled, then click on the 'Advanced' Button
 
-[IE Internet Options Intranet](./ie-intranet-4.png)
+![IE Internet Options Intranet](./ie-intranet-4.png)
 
 Remove any websites from the list:
 
-[IE Internet Options Intranet Sites](./ie-intranet-5.png)
+![IE Internet Options Intranet Sites](./ie-intranet-5.png)
 
 Repeat for 'trusted' sites:
 
-[IE Internet Options Trusted Sites](./ie-intranet-6.png)
+![IE Internet Options Trusted Sites](./ie-intranet-6.png)
 
 ## Escaping from IE intranet mode with /etc/hosts
 
