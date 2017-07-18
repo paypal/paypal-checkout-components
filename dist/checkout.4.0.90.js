@@ -1063,6 +1063,9 @@
                 }
             }
         }
+        function isTop(win) {
+            return win === getTop(win);
+        }
         function isWindowClosed(win) {
             var allowMock = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
             try {
@@ -1197,6 +1200,21 @@
                 }
             }
         }
+        function getDistanceFromTop() {
+            for (var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, distance = 0; win; ) {
+                win = getParent(win);
+                win && (distance += 1);
+            }
+            return distance;
+        }
+        function getNthParent(win) {
+            for (var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1, i = 0; i < n; i++) win = getParent(win);
+            return win;
+        }
+        function getNthParentFromTop(win) {
+            var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            return getNthParent(win, getDistanceFromTop(win) - n);
+        }
         function isSameTopWindow(win1, win2) {
             var top1 = getTop(win1), top2 = getTop(win2);
             try {
@@ -1225,25 +1243,29 @@
             return domain;
         }
         __webpack_exports__.b = getActualDomain;
-        __webpack_exports__.e = getDomain;
-        __webpack_exports__.l = isActuallySameDomain;
-        __webpack_exports__.q = isSameDomain;
-        __webpack_exports__.j = getParent;
-        __webpack_exports__.i = getOpener;
-        __webpack_exports__.h = getFrames;
+        __webpack_exports__.f = getDomain;
+        __webpack_exports__.o = isActuallySameDomain;
+        __webpack_exports__.t = isSameDomain;
+        __webpack_exports__.l = getParent;
+        __webpack_exports__.k = getOpener;
+        __webpack_exports__.i = getFrames;
         __webpack_exports__.c = getAllFramesInWindow;
-        __webpack_exports__.s = isWindowClosed;
-        __webpack_exports__.k = getUserAgent;
-        __webpack_exports__.g = getFrameByName;
+        __webpack_exports__.m = getTop;
+        __webpack_exports__.v = isTop;
+        __webpack_exports__.w = isWindowClosed;
+        __webpack_exports__.n = getUserAgent;
+        __webpack_exports__.h = getFrameByName;
         __webpack_exports__.a = findFrameByName;
-        __webpack_exports__.o = isOpener;
+        __webpack_exports__.r = isOpener;
         __webpack_exports__.d = getAncestor;
-        __webpack_exports__.m = isAncestor;
-        __webpack_exports__.p = isPopup;
-        __webpack_exports__.n = isIframe;
-        __webpack_exports__.r = isSameTopWindow;
-        __webpack_exports__.t = matchDomain;
-        __webpack_exports__.f = getDomainFromUrl;
+        __webpack_exports__.p = isAncestor;
+        __webpack_exports__.s = isPopup;
+        __webpack_exports__.q = isIframe;
+        __webpack_exports__.e = getDistanceFromTop;
+        __webpack_exports__.j = getNthParentFromTop;
+        __webpack_exports__.u = isSameTopWindow;
+        __webpack_exports__.x = matchDomain;
+        __webpack_exports__.g = getDomainFromUrl;
         var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/cross-domain-utils/src/util.js"), CONSTANTS = {
             MOCK_PROTOCOL: "mock:",
             FILE_PROTOCOL: "file:",
@@ -1573,7 +1595,7 @@
                     deleteTunnelWindow(key);
                     continue;
                 }
-                __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(tunnelWindow.source) && deleteTunnelWindow(key);
+                __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(tunnelWindow.source) && deleteTunnelWindow(key);
             }
         }
         function addTunnelWindow(_ref2) {
@@ -1596,7 +1618,7 @@
         __WEBPACK_IMPORTED_MODULE_4__global__.a.tunnelWindows = __WEBPACK_IMPORTED_MODULE_4__global__.a.tunnelWindows || {};
         __WEBPACK_IMPORTED_MODULE_4__global__.a.tunnelWindowId = 0;
         __WEBPACK_IMPORTED_MODULE_4__global__.a.openTunnelToParent = function(_ref3) {
-            var name = _ref3.name, source = _ref3.source, canary = _ref3.canary, sendMessage = _ref3.sendMessage, parentWindow = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.j(window);
+            var name = _ref3.name, source = _ref3.source, canary = _ref3.canary, sendMessage = _ref3.sendMessage, parentWindow = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.l(window);
             if (!parentWindow) throw new Error("No parent window found to open tunnel to");
             var id = addTunnelWindow({
                 name: name,
@@ -1614,7 +1636,7 @@
                         deleteTunnelWindow(id);
                         return;
                     }
-                    if (tunnelWindow && tunnelWindow.source && !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(tunnelWindow.source)) {
+                    if (tunnelWindow && tunnelWindow.source && !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(tunnelWindow.source)) {
                         try {
                             tunnelWindow.canary();
                         } catch (err) {
@@ -1632,7 +1654,7 @@
         "use strict";
         function openTunnelToOpener() {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                var opener = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.i(window);
+                var opener = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.k(window);
                 if (opener && __WEBPACK_IMPORTED_MODULE_5__common__.e({
                     win: opener
                 })) {
@@ -1669,7 +1691,7 @@
         __webpack_exports__.a = openTunnelToOpener;
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__conf__ = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./node_modules/post-robot/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__drivers__ = __webpack_require__("./node_modules/post-robot/src/drivers/index.js"), __WEBPACK_IMPORTED_MODULE_5__common__ = __webpack_require__("./node_modules/post-robot/src/bridge/common.js"), awaitRemoteBridgeForWindow = __WEBPACK_IMPORTED_MODULE_3__lib__.r(function(win) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                for (var _iterator = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.h(win), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                for (var _iterator = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.i(win), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
                     if (_isArray) {
                         if (_i >= _iterator.length) break;
@@ -1681,18 +1703,18 @@
                     }
                     var _frame = _ref;
                     try {
-                        if (_frame && _frame !== window && __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q(_frame) && _frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) return _frame;
+                        if (_frame && _frame !== window && __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(_frame) && _frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) return _frame;
                     } catch (err) {
                         continue;
                     }
                 }
                 try {
-                    var frame = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.g(win, __WEBPACK_IMPORTED_MODULE_5__common__.c(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.e()));
+                    var frame = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.h(win, __WEBPACK_IMPORTED_MODULE_5__common__.c(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f()));
                     if (!frame) return;
-                    return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] ? frame : new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
+                    return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] ? frame : new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
                         var interval = void 0;
                         interval = setInterval(function() {
-                            if (__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) {
+                            if (__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) {
                                 clearInterval(interval);
                                 clearTimeout(void 0);
                                 return resolve(frame);
@@ -1712,25 +1734,25 @@
     "./node_modules/post-robot/src/bridge/common.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function needsBridgeForBrowser() {
-            return !!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.k(window).match(/MSIE|trident|edge/i) || !__WEBPACK_IMPORTED_MODULE_3__conf__.a.ALLOW_POSTMESSAGE_POPUP;
+            return !!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.n(window).match(/MSIE|trident|edge/i) || !__WEBPACK_IMPORTED_MODULE_3__conf__.a.ALLOW_POSTMESSAGE_POPUP;
         }
         function needsBridgeForWin(win) {
-            return (!win || !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.r(window, win)) && (!win || !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.q(win));
+            return (!win || !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u(window, win)) && (!win || !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(win));
         }
         function needsBridgeForDomain(domain) {
-            return !domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.e() !== __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f(domain);
+            return !domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f() !== __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(domain);
         }
         function needsBridge(_ref) {
             var win = _ref.win, domain = _ref.domain;
             return needsBridgeForBrowser() && needsBridgeForWin(win) && needsBridgeForDomain(domain);
         }
         function getBridgeName(domain) {
-            domain = domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f(domain);
+            domain = domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(domain);
             var sanitizedDomain = domain.replace(/[^a-zA-Z0-9]+/g, "_");
             return __WEBPACK_IMPORTED_MODULE_3__conf__.b.BRIDGE_NAME_PREFIX + "_" + sanitizedDomain;
         }
         function isBridge() {
-            return Boolean(window.name && window.name === getBridgeName(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.e()));
+            return Boolean(window.name && window.name === getBridgeName(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f()));
         }
         function registerRemoteWindow(win) {
             arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : __WEBPACK_IMPORTED_MODULE_3__conf__.a.BRIDGE_TIMEOUT;
@@ -1746,7 +1768,7 @@
             if (!remoteWindow) throw new Error("Window not found to register sendMessage to");
             var sendMessageWrapper = function(remoteWin, message, remoteDomain) {
                 if (remoteWin !== win) throw new Error("Remote window does not match window");
-                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(remoteDomain, domain)) throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
+                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x(remoteDomain, domain)) throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
                 sendMessage(message);
             };
             remoteWindow.sendMessagePromise.resolve(sendMessageWrapper);
@@ -1758,7 +1780,7 @@
             remoteWindow.sendMessagePromise.asyncReject(err);
         }
         function sendBridgeMessage(win, message, domain) {
-            var messagingChild = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.o(window, win), messagingParent = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.o(win, window);
+            var messagingChild = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.r(window, win), messagingParent = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.r(win, window);
             if (!messagingChild && !messagingParent) throw new Error("Can only send messages to and from parent and popup windows");
             var remoteWindow = findRemoteWindow(win);
             if (!remoteWindow) throw new Error("Window not found to send message to");
@@ -1935,12 +1957,12 @@
             return iframe;
         }
         function openBridge(url, domain) {
-            domain = domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f(url);
+            domain = domain || __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(url);
             if (__WEBPACK_IMPORTED_MODULE_5__global__.a.bridges[domain]) return __WEBPACK_IMPORTED_MODULE_5__global__.a.bridges[domain];
             __WEBPACK_IMPORTED_MODULE_5__global__.a.bridges[domain] = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.e() === domain) throw new Error("Can not open bridge on the same domain as current domain: " + domain);
+                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f() === domain) throw new Error("Can not open bridge on the same domain as current domain: " + domain);
                 var name = __WEBPACK_IMPORTED_MODULE_8__common__.c(domain);
-                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(window, name)) throw new Error("Frame with name " + name + " already exists on page");
+                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.h(window, name)) throw new Error("Frame with name " + name + " already exists on page");
                 var iframe = openBridgeFrame(name, url);
                 return __WEBPACK_IMPORTED_MODULE_8__common__.a.then(function(body) {
                     return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
@@ -1965,7 +1987,7 @@
         function linkUrl(win, url) {
             var winOptions = __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByWin.get(win);
             if (winOptions) {
-                winOptions.domain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f(url);
+                winOptions.domain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(url);
                 __WEBPACK_IMPORTED_MODULE_8__common__.j(win);
             }
         }
@@ -1983,7 +2005,7 @@
                 domain = _url$split[0];
                 url = _url$split[1];
             }
-            domain && (domain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f(domain));
+            domain && (domain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g(domain));
             var win = windowOpen.call(this, url, name, options, last);
             if (!win) return win;
             url && __WEBPACK_IMPORTED_MODULE_8__common__.j(win);
@@ -1998,7 +2020,7 @@
                     _ref2 = _i.value;
                 }
                 var winName = _ref2;
-                __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(__WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName].win) && delete __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName];
+                __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(__WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName].win) && delete __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName];
             }
             if (name && win) {
                 var winOptions = __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByWin.get(win) || __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[name] || {};
@@ -2040,7 +2062,7 @@
     "./node_modules/post-robot/src/compat/ie.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function emulateIERestrictions(sourceWindow, targetWindow) {
-            if (!__WEBPACK_IMPORTED_MODULE_1__conf__.a.ALLOW_POSTMESSAGE_POPUP && !1 === __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.r(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
+            if (!__WEBPACK_IMPORTED_MODULE_1__conf__.a.ALLOW_POSTMESSAGE_POPUP && !1 === __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
         }
         __webpack_exports__.a = emulateIERestrictions;
         var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__conf__ = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
@@ -2202,7 +2224,7 @@
                             _ref3 = _i3.value;
                         }
                         var _ref4 = _ref3, regex = _ref4.regex, listener = _ref4.listener;
-                        if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(regex, domain)) return listener;
+                        if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x(regex, domain)) return listener;
                     }
                 }
             }
@@ -2364,7 +2386,7 @@
                     var level = void 0;
                     level = -1 !== __WEBPACK_IMPORTED_MODULE_1__conf__.c.indexOf(message.name) || message.type === __WEBPACK_IMPORTED_MODULE_1__conf__.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
                     __WEBPACK_IMPORTED_MODULE_2__lib__.i.logLevel(level, [ "\n\n\t", "#receive", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", origin, "\n\n", message ]);
-                    if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.s(source)) __WEBPACK_IMPORTED_MODULE_2__lib__.i.debug("Source window is closed - can not send " + message.type + " " + message.name); else {
+                    if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w(source)) __WEBPACK_IMPORTED_MODULE_2__lib__.i.debug("Source window is closed - can not send " + message.type + " " + message.name); else {
                         message.data && (message.data = __WEBPACK_IMPORTED_MODULE_2__lib__.b(source, origin, message.data));
                         __WEBPACK_IMPORTED_MODULE_4__types__.a[message.type](source, origin, message);
                     }
@@ -2416,11 +2438,11 @@
         }, RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[__WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.ACK] = function(source, origin, message) {
             var options = __WEBPACK_IMPORTED_MODULE_5__listeners__.e(message.hash);
             if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain);
+            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain);
             options.ack = !0;
         }, _RECEIVE_MESSAGE_TYPE[__WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
             function respond(data) {
-                return message.fireAndForget || __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.s(source) ? __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve() : __WEBPACK_IMPORTED_MODULE_4__send__.a(source, _extends({
+                return message.fireAndForget || __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.w(source) ? __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve() : __WEBPACK_IMPORTED_MODULE_4__send__.a(source, _extends({
                     target: message.originalSource,
                     hash: message.hash,
                     name: message.name
@@ -2435,7 +2457,7 @@
                 type: __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.ACK
             }), __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain);
+                if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain);
                 var data = message.data;
                 return options.handler({
                     source: source,
@@ -2466,7 +2488,7 @@
         }, _RECEIVE_MESSAGE_TYPE[__WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
             var options = __WEBPACK_IMPORTED_MODULE_5__listeners__.e(message.hash);
             if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + options.domain);
+            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + options.domain);
             __WEBPACK_IMPORTED_MODULE_5__listeners__.c(message.hash);
             if (message.ack === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_ACK.ERROR) return options.respond(new Error(message.error), null);
             if (message.ack === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_ACK.SUCCESS) {
@@ -2482,7 +2504,7 @@
     "./node_modules/post-robot/src/drivers/send/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function buildMessage(win, message) {
-            var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = __WEBPACK_IMPORTED_MODULE_3__lib__.q(), type = __WEBPACK_IMPORTED_MODULE_3__lib__.c(), sourceDomain = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.e(window);
+            var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = __WEBPACK_IMPORTED_MODULE_3__lib__.q(), type = __WEBPACK_IMPORTED_MODULE_3__lib__.c(), sourceDomain = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f(window);
             return _extends({}, message, options, {
                 sourceDomain: sourceDomain,
                 id: message.id || id,
@@ -2500,7 +2522,7 @@
                 level = -1 !== __WEBPACK_IMPORTED_MODULE_2__conf__.c.indexOf(message.name) || message.type === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
                 __WEBPACK_IMPORTED_MODULE_3__lib__.i.logLevel(level, [ "\n\n\t", "#send", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", domain || __WEBPACK_IMPORTED_MODULE_2__conf__.b.WILDCARD, "\n\n", message ]);
                 if (win === window) throw new Error("Attemping to send message to self");
-                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.s(win)) throw new Error("Window is closed");
+                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w(win)) throw new Error("Window is closed");
                 __WEBPACK_IMPORTED_MODULE_3__lib__.i.debug("Running send message strategies", message);
                 var messages = [], serializedMessage = __WEBPACK_IMPORTED_MODULE_3__lib__.g((_jsonStringify = {}, 
                 _jsonStringify[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] = message, 
@@ -2549,7 +2571,7 @@
             domains = domains.map(function(dom) {
                 if (0 === dom.indexOf(__WEBPACK_IMPORTED_MODULE_1__conf__.b.MOCK_PROTOCOL)) {
                     if (window.location.protocol === __WEBPACK_IMPORTED_MODULE_1__conf__.b.FILE_PROTOCOL) return __WEBPACK_IMPORTED_MODULE_1__conf__.b.WILDCARD;
-                    if (!__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.l(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
+                    if (!__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.o(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
                     return __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.b(win);
                 }
                 return 0 === dom.indexOf(__WEBPACK_IMPORTED_MODULE_1__conf__.b.FILE_PROTOCOL) ? __WEBPACK_IMPORTED_MODULE_1__conf__.b.WILDCARD : dom;
@@ -2560,18 +2582,18 @@
         };
         var sendBridgeMessage = __webpack_require__("./node_modules/post-robot/src/bridge/index.js").sendBridgeMessage;
         SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
-            if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.q(win)) throw new Error("Post message through bridge disabled between same domain windows");
-            if (!1 !== __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.r(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
+            if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t(win)) throw new Error("Post message through bridge disabled between same domain windows");
+            if (!1 !== __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
             return sendBridgeMessage(win, serializedMessage, domain);
         };
         SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage, domain) {
-            if (!__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.q(win)) throw new Error("Post message through global disabled between different domain windows");
-            if (!1 !== __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.r(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
+            if (!__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t(win)) throw new Error("Post message through global disabled between different domain windows");
+            if (!1 !== __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
             var foreignGlobal = win[__WEBPACK_IMPORTED_MODULE_1__conf__.b.WINDOW_PROPS.POSTROBOT];
             if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
             return foreignGlobal.receiveMessage({
                 source: window,
-                origin: __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.e(),
+                origin: __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f(),
                 data: serializedMessage
             });
         };
@@ -2946,7 +2968,7 @@
                 if (!methods) throw new Error("Could not find any methods this window has privileges to call");
                 var meth = methods[data.id];
                 if (!meth) throw new Error("Could not find method with id: " + data.id);
-                if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
+                if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
                 __WEBPACK_IMPORTED_MODULE_6__log__.a.debug("Call local method", data.name, data.args);
                 return __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.try(function() {
                     return meth.method.apply({
@@ -3073,7 +3095,7 @@
             return "[object RegExp]" === Object.prototype.toString.call(item);
         }
         function getWindowType() {
-            return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.p() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.POPUP : __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.n() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.IFRAME : __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.FULLPAGE;
+            return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.s() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.POPUP : __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.IFRAME : __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.FULLPAGE;
         }
         function jsonStringify(obj, replacer, indent) {
             var objectToJSON = void 0, arrayToJSON = void 0;
@@ -3163,14 +3185,14 @@
                 if (!win) throw new Error("Expected options.window to be a window object, iframe, or iframe element id.");
                 domain = options.domain || __WEBPACK_IMPORTED_MODULE_3__conf__.b.WILDCARD;
                 var hash = options.name + "_" + __WEBPACK_IMPORTED_MODULE_5__lib__.q();
-                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(win)) throw new Error("Target window is closed");
+                if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(win)) throw new Error("Target window is closed");
                 var hasResult = !1, requestPromises = __WEBPACK_IMPORTED_MODULE_6__global__.a.requestPromises.get(win);
                 if (!requestPromises) {
                     requestPromises = [];
                     __WEBPACK_IMPORTED_MODULE_6__global__.a.requestPromises.set(win, requestPromises);
                 }
                 var requestPromise = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                    if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.m(window, win)) return __WEBPACK_IMPORTED_MODULE_5__lib__.k(win);
+                    if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.p(window, win)) return __WEBPACK_IMPORTED_MODULE_5__lib__.k(win);
                 }).then(function() {
                     return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
                         var responseListener = {
@@ -3196,7 +3218,7 @@
                         if (options.fireAndForget) return resolve();
                         var ackTimeout = __WEBPACK_IMPORTED_MODULE_3__conf__.a.ACK_TIMEOUT, resTimeout = options.timeout || __WEBPACK_IMPORTED_MODULE_3__conf__.a.RES_TIMEOUT, interval = __WEBPACK_IMPORTED_MODULE_5__lib__.n(function() {
                             if (responseListener.ack && hasResult) return interval.cancel();
-                            if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(win)) {
+                            if (__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(win)) {
                                 interval.cancel();
                                 return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
                             }
@@ -3339,7 +3361,7 @@
                 });
             }
             if (listenerOptions.window && options.errorOnClose) var interval = __WEBPACK_IMPORTED_MODULE_2__lib__.n(function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.s(listenerOptions.window)) {
+                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w(listenerOptions.window)) {
                     interval.cancel();
                     listenerOptions.handleError(new Error("Post message target window is closed"));
                 }
@@ -3428,11 +3450,11 @@
                     }
                 },
                 register: function(name, method) {
-                    if (cleaned) return method();
                     if (!method) {
                         method = name;
                         name = void 0;
                     }
+                    if (cleaned) return method();
                     tasks.push({
                         complete: !1,
                         name: name,
@@ -3480,9 +3502,13 @@
             function BaseComponent() {
                 _classCallCheck(this, BaseComponent);
                 this.clean = cleanup(this);
+                this.event = __WEBPACK_IMPORTED_MODULE_2__lib__.q();
             }
             BaseComponent.prototype.addProp = function(options, name, def) {
                 __WEBPACK_IMPORTED_MODULE_2__lib__.e(options, this, name, def);
+            };
+            BaseComponent.prototype.on = function(eventName, handler) {
+                return this.event.on(eventName, handler);
             };
             BaseComponent.prototype.tryCatch = function(method, doOnce) {
                 var self = this, errored = !1, wrapper = function() {
@@ -3493,7 +3519,7 @@
                         return self.error(err);
                     }
                 };
-                !1 !== doOnce && (wrapper = __WEBPACK_IMPORTED_MODULE_2__lib__.O(wrapper));
+                !1 !== doOnce && (wrapper = __WEBPACK_IMPORTED_MODULE_2__lib__.P(wrapper));
                 return wrapper;
             };
             BaseComponent.prototype.listen = function(win, domain) {
@@ -3587,7 +3613,7 @@
                 _this.component.log("construct_child");
                 _this.onPropHandlers = [];
                 _this.setProps(_this.getInitialProps(), __WEBPACK_IMPORTED_MODULE_5__window__.d());
-                __WEBPACK_IMPORTED_MODULE_6__lib__.U(_this.props.logLevel);
+                _this.props.logLevel && __WEBPACK_IMPORTED_MODULE_6__lib__.W(_this.props.logLevel);
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.onInit = _this.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.INIT, {
@@ -3607,7 +3633,7 @@
             }
             _inherits(ChildComponent, _BaseComponent);
             ChildComponent.prototype.hasValidParentDomain = function() {
-                return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(this.component.allowedParentDomains, this.getParentDomain());
+                return __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x(this.component.allowedParentDomains, this.getParentDomain());
             };
             ChildComponent.prototype.init = function() {
                 return this.onInit;
@@ -3631,25 +3657,27 @@
                     if (props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.RAW) props = props.value; else {
                         if (props.type !== __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID) throw new Error("Unrecognized props type: " + props.type);
                         var parentComponentWindow = __WEBPACK_IMPORTED_MODULE_5__window__.c();
-                        if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q(parentComponentWindow)) {
+                        if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(parentComponentWindow)) {
                             if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                             throw new Error("Parent component window is on a different domain - expected " + __WEBPACK_IMPORTED_MODULE_6__lib__.w() + " - can not retrieve props");
                         }
                         props = __WEBPACK_IMPORTED_MODULE_6__lib__.C(parentComponentWindow).props[componentMeta.uid];
                     }
                     if (!props) throw new Error("Initial props not found");
-                    return __WEBPACK_IMPORTED_MODULE_6__lib__.k(props, function(_ref2) {
+                    return __WEBPACK_IMPORTED_MODULE_6__lib__.i(props, function(_ref2) {
                         var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
                         return _this2.onInit.then(function() {
-                            return __WEBPACK_IMPORTED_MODULE_6__lib__.u(_this2.props, fullKey).apply(self, args);
+                            return __WEBPACK_IMPORTED_MODULE_6__lib__.t(_this2.props, fullKey).apply(self, args);
                         });
                     });
                 }
             };
             ChildComponent.prototype.setProps = function() {
                 var props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, origin = arguments[1], required = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                window.xprops = this.props = this.props || {};
-                __WEBPACK_IMPORTED_MODULE_6__lib__.s(this.props, __WEBPACK_IMPORTED_MODULE_8__props__.a(this.component, props, origin, required));
+                this.props = this.props || {};
+                props = __WEBPACK_IMPORTED_MODULE_8__props__.a(this.component, props, origin, required);
+                __WEBPACK_IMPORTED_MODULE_6__lib__.r(this.props, props);
+                window.xprops = this.props;
                 for (var _iterator = this.onPropHandlers, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref3;
                     if (_isArray) {
@@ -3680,7 +3708,7 @@
             };
             ChildComponent.prototype.sendLogsToOpener = function() {
                 try {
-                    var opener = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.i(window);
+                    var opener = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.k(window);
                     if (!opener || !window.console) return;
                     _loop2: for (var _iterator2 = __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.c(opener), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                         var _ref4, _ret2 = function() {
@@ -3693,7 +3721,7 @@
                                 _ref4 = _i2.value;
                             }
                             var frame = _ref4;
-                            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q(frame) || !frame.console || frame === window) return "continue";
+                            if (!__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t(frame) || !frame.console || frame === window) return "continue";
                             for (var _arr = [ "log", "debug", "info", "warn", "error" ], _i3 = 0; _i3 < _arr.length; _i3++) {
                                 (function() {
                                     var level = _arr[_i3], original = window.console[level];
@@ -3727,7 +3755,7 @@
             };
             ChildComponent.prototype.watchForClose = function() {
                 var _this3 = this;
-                __WEBPACK_IMPORTED_MODULE_6__lib__.M(__WEBPACK_IMPORTED_MODULE_5__window__.c(), function() {
+                __WEBPACK_IMPORTED_MODULE_6__lib__.N(__WEBPACK_IMPORTED_MODULE_5__window__.c(), function() {
                     _this3.component.log("parent_window_closed");
                     if (_this3.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) return _this3.destroy();
                 });
@@ -3763,9 +3791,9 @@
                 if ((width || height) && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.n;
+                        return __WEBPACK_IMPORTED_MODULE_6__lib__.l;
                     }).then(function() {
-                        if (!__WEBPACK_IMPORTED_MODULE_6__lib__.m(element, {
+                        if (!__WEBPACK_IMPORTED_MODULE_6__lib__.k(element, {
                             width: width,
                             height: height
                         })) return _this4.resizeToElement(element, {
@@ -3773,8 +3801,8 @@
                             height: height
                         });
                     }).then(function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.g(function() {
-                            return __WEBPACK_IMPORTED_MODULE_6__lib__.N(element, {
+                        return __WEBPACK_IMPORTED_MODULE_6__lib__.f(function() {
+                            return __WEBPACK_IMPORTED_MODULE_6__lib__.O(element, {
                                 width: width,
                                 height: height
                             }).then(function(dimensions) {
@@ -3815,7 +3843,7 @@
                 var _this6 = this, width = _ref6.width, height = _ref6.height, history = [];
                 return function resize() {
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        for (var tracker = __WEBPACK_IMPORTED_MODULE_6__lib__.Z(el, {
+                        for (var tracker = __WEBPACK_IMPORTED_MODULE_6__lib__._1(el, {
                             width: width,
                             height: height
                         }), _tracker$check = tracker.check(), dimensions = _tracker$check.dimensions, _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
@@ -3949,9 +3977,10 @@
                     _ref = _i.value;
                 }
                 var _key = _ref, prop = component.props[_key], value = props[_key];
-                if (prop && prop.sameDomain && origin !== __WEBPACK_IMPORTED_MODULE_1__lib__.w(window)) return;
-                result[_key] = normalizeChildProp(component, props, _key, value);
-                prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
+                if (!prop || !prop.sameDomain || origin === __WEBPACK_IMPORTED_MODULE_1__lib__.w(window)) {
+                    result[_key] = normalizeChildProp(component, props, _key, value);
+                    prop && prop.alias && !result[prop.alias] && (result[prop.alias] = value);
+                }
             }
             if (required) for (var _iterator2 = Object.keys(component.props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref2;
@@ -4019,16 +4048,8 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return Component;
         });
-        __webpack_exports__.d = getByTag;
-        var __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__base__ = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), __WEBPACK_IMPORTED_MODULE_2__child__ = __webpack_require__("./node_modules/xcomponent/src/component/child/index.js"), __WEBPACK_IMPORTED_MODULE_3__parent__ = __webpack_require__("./node_modules/xcomponent/src/component/parent/index.js"), __WEBPACK_IMPORTED_MODULE_4__delegate__ = __webpack_require__("./node_modules/xcomponent/src/component/delegate/index.js"), __WEBPACK_IMPORTED_MODULE_5__props__ = __webpack_require__("./node_modules/xcomponent/src/component/component/props.js"), __WEBPACK_IMPORTED_MODULE_6__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_8__validate__ = __webpack_require__("./node_modules/xcomponent/src/component/component/validate.js"), __WEBPACK_IMPORTED_MODULE_9__templates_container__ = __webpack_require__("./node_modules/xcomponent/src/component/component/templates/container.js");
-        __webpack_require__.d(__webpack_exports__, "c", function() {
-            return __WEBPACK_IMPORTED_MODULE_9__templates_container__.a;
-        });
-        var __WEBPACK_IMPORTED_MODULE_10__templates_component__ = __webpack_require__("./node_modules/xcomponent/src/component/component/templates/component.js");
-        __webpack_require__.d(__webpack_exports__, "b", function() {
-            return __WEBPACK_IMPORTED_MODULE_10__templates_component__.a;
-        });
-        var _class, __WEBPACK_IMPORTED_MODULE_11__drivers__ = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), __WEBPACK_IMPORTED_MODULE_12__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        __webpack_exports__.b = getByTag;
+        var _class, __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__base__ = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), __WEBPACK_IMPORTED_MODULE_2__child__ = __webpack_require__("./node_modules/xcomponent/src/component/child/index.js"), __WEBPACK_IMPORTED_MODULE_3__parent__ = __webpack_require__("./node_modules/xcomponent/src/component/parent/index.js"), __WEBPACK_IMPORTED_MODULE_4__delegate__ = __webpack_require__("./node_modules/xcomponent/src/component/delegate/index.js"), __WEBPACK_IMPORTED_MODULE_5__props__ = __webpack_require__("./node_modules/xcomponent/src/component/component/props.js"), __WEBPACK_IMPORTED_MODULE_6__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_8__validate__ = __webpack_require__("./node_modules/xcomponent/src/component/component/validate.js"), __WEBPACK_IMPORTED_MODULE_9__templates__ = __webpack_require__("./node_modules/xcomponent/src/component/component/templates/index.js"), __WEBPACK_IMPORTED_MODULE_10__drivers__ = __webpack_require__("./node_modules/xcomponent/src/drivers/index.js"), __WEBPACK_IMPORTED_MODULE_11__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -4046,7 +4067,7 @@
                 _this.addProp(options, "tag");
                 _this.addProp(options, "defaultLogLevel", "info");
                 _this.addProp(options, "allowedParentDomains", __WEBPACK_IMPORTED_MODULE_7__constants__.WILDCARD);
-                __WEBPACK_IMPORTED_MODULE_12__lib__.U(_this.defaultLogLevel);
+                __WEBPACK_IMPORTED_MODULE_11__lib__.W(_this.defaultLogLevel);
                 if (components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
                 _this.validate(options);
                 _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
@@ -4057,7 +4078,6 @@
                 _this.addProp(options, "version", "latest");
                 _this.addProp(options, "defaultEnv");
                 _this.addProp(options, "buildUrl");
-                _this.addProp(options, "sandboxContainer", !1);
                 _this.addProp(options, "url");
                 _this.addProp(options, "domain");
                 _this.addProp(options, "bridgeUrl");
@@ -4069,11 +4089,8 @@
                 _this.addProp(options, "defaultContext");
                 _this.addProp(options, "getInitialDimensions");
                 _this.addProp(options, "autoResize", !1);
-                _this.addProp(options, "containerTemplate", function(_ref) {
-                    var id = _ref.id, CLASS = _ref.CLASS;
-                    return "\n            <style>\n                #" + id + " ." + CLASS.ELEMENT + " {\n                    height: 150px;\n                    width: 300px;\n                }\n\n                #" + id + " ." + CLASS.ELEMENT + ' iframe {\n                    height: 100%;\n                    width: 100%;\n                }\n            </style>\n\n            <div class="' + CLASS.ELEMENT + '"></div>\n        ';
-                });
-                _this.addProp(options, "componentTemplate");
+                _this.addProp(options, "containerTemplate", __WEBPACK_IMPORTED_MODULE_9__templates__.b);
+                _this.addProp(options, "componentTemplate", __WEBPACK_IMPORTED_MODULE_9__templates__.a);
                 _this.addProp(options, "sacrificialComponentTemplate", !1);
                 _this.addProp(options, "validate");
                 components[_this.tag] = _this;
@@ -4085,23 +4102,23 @@
             _inherits(Component, _BaseComponent);
             Component.prototype.registerDrivers = function() {
                 this.driverCache = {};
-                for (var _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_11__drivers__), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                    var _ref2;
+                for (var _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_10__drivers__), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
                     if (_isArray) {
                         if (_i >= _iterator.length) break;
-                        _ref2 = _iterator[_i++];
+                        _ref = _iterator[_i++];
                     } else {
                         _i = _iterator.next();
                         if (_i.done) break;
-                        _ref2 = _i.value;
+                        _ref = _i.value;
                     }
-                    var driverName = _ref2, driver = __WEBPACK_IMPORTED_MODULE_11__drivers__[driverName], glob = driver.global();
+                    var driverName = _ref, driver = __WEBPACK_IMPORTED_MODULE_10__drivers__[driverName], glob = driver.global();
                     glob && this.driver(driverName, glob);
                 }
             };
             Component.prototype.driver = function(name, glob) {
-                if (!__WEBPACK_IMPORTED_MODULE_11__drivers__[name]) throw new Error("Could not find driver for framework: " + name);
-                this.driverCache[name] || (this.driverCache[name] = __WEBPACK_IMPORTED_MODULE_11__drivers__[name].register(this, glob));
+                if (!__WEBPACK_IMPORTED_MODULE_10__drivers__[name]) throw new Error("Could not find driver for framework: " + name);
+                this.driverCache[name] || (this.driverCache[name] = __WEBPACK_IMPORTED_MODULE_10__drivers__[name].register(this, glob));
                 return this.driverCache[name];
             };
             Component.prototype.registerChild = function() {
@@ -4114,8 +4131,8 @@
             };
             Component.prototype.listenDelegate = function() {
                 var _this2 = this;
-                __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
-                    var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this2.getDomain(null, {
+                __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref2) {
+                    var source = _ref2.source, origin = _ref2.origin, data = _ref2.data, domain = _this2.getDomain(null, {
                         env: data.env || _this2.defaultEnv
                     });
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
@@ -4131,30 +4148,30 @@
             };
             Component.prototype.getValidDomain = function(url) {
                 if (url) {
-                    var domain = __WEBPACK_IMPORTED_MODULE_12__lib__.x(url);
+                    var domain = __WEBPACK_IMPORTED_MODULE_11__lib__.x(url);
                     if ("string" == typeof this.domain && domain === this.domain) return domain;
                     if (this.domain && "object" === _typeof(this.domain)) for (var _iterator2 = Object.keys(this.domain), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                        var _ref4;
+                        var _ref3;
                         if (_isArray2) {
                             if (_i2 >= _iterator2.length) break;
-                            _ref4 = _iterator2[_i2++];
+                            _ref3 = _iterator2[_i2++];
                         } else {
                             _i2 = _iterator2.next();
                             if (_i2.done) break;
-                            _ref4 = _i2.value;
+                            _ref3 = _i2.value;
                         }
-                        var env = _ref4;
+                        var env = _ref3;
                         if ("test" !== env && domain === this.domain[env]) return domain;
                     }
                 }
             };
             Component.prototype.getDomain = function(url) {
-                var props = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, domain = this.getValidDomain(url);
+                var props = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, domain = this.getForEnv(this.domain, props.env);
                 if (domain) return domain;
-                domain = this.getForEnv(this.domain, props.env);
+                domain = this.getValidDomain(url);
                 if (domain) return domain;
                 var envUrl = this.getForEnv(this.url, props.env);
-                return envUrl ? __WEBPACK_IMPORTED_MODULE_12__lib__.x(envUrl) : url ? __WEBPACK_IMPORTED_MODULE_12__lib__.x(url) : void 0;
+                return envUrl ? __WEBPACK_IMPORTED_MODULE_11__lib__.x(envUrl) : url ? __WEBPACK_IMPORTED_MODULE_11__lib__.x(url) : void 0;
             };
             Component.prototype.getBridgeUrl = function(env) {
                 return this.getForEnv(this.bridgeUrl, env);
@@ -4170,7 +4187,7 @@
                 var bridgeDomain = this.getForEnv(this.bridgeDomain, env);
                 if (bridgeDomain) return bridgeDomain;
                 var bridgeUrl = this.getBridgeUrl(env);
-                return bridgeUrl ? __WEBPACK_IMPORTED_MODULE_12__lib__.x(bridgeUrl) : void 0;
+                return bridgeUrl ? __WEBPACK_IMPORTED_MODULE_11__lib__.x(bridgeUrl) : void 0;
             };
             Component.prototype.getUrl = function(env, props) {
                 var url = this.getForEnv(this.url, env);
@@ -4254,6 +4271,28 @@
                     props: props
                 }).renderTo(win);
             };
+            Component.prototype.prerender = function(props, element) {
+                var instance = new __WEBPACK_IMPORTED_MODULE_3__parent__.a(this, this.getRenderContext(element), {
+                    props: props
+                });
+                instance.prefetch();
+                return {
+                    render: function(innerProps, innerElement) {
+                        innerProps && instance.updateProps(innerProps);
+                        return instance.render(innerElement);
+                    },
+                    renderTo: function(win, innerProps, innerElement) {
+                        innerProps && instance.updateProps(innerProps);
+                        return instance.renderTo(win, innerElement);
+                    },
+                    get html() {
+                        return instance.html;
+                    },
+                    set html(value) {
+                        instance.html = value;
+                    }
+                };
+            };
             Component.prototype.getByTag = function(tag) {
                 return components[tag];
             };
@@ -4262,21 +4301,21 @@
             };
             Component.prototype.log = function(event) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                __WEBPACK_IMPORTED_MODULE_12__lib__.F(this.name, event, payload);
+                __WEBPACK_IMPORTED_MODULE_11__lib__.F(this.name, event, payload);
             };
             Component.prototype.logWarning = function(event, payload) {
-                __WEBPACK_IMPORTED_MODULE_12__lib__._2(this.name, event, payload);
+                __WEBPACK_IMPORTED_MODULE_11__lib__._4(this.name, event, payload);
             };
             Component.prototype.logError = function(event, payload) {
-                __WEBPACK_IMPORTED_MODULE_12__lib__.r(this.name, event, payload);
+                __WEBPACK_IMPORTED_MODULE_11__lib__.p(this.name, event, payload);
             };
             return Component;
-        }(__WEBPACK_IMPORTED_MODULE_1__base__.a), _applyDecoratedDescriptor(_class.prototype, "render", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderIframe", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderIframe"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderPopup", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderPopup"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderTo", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTo"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderIframeTo", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderIframeTo"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderPopupTo", [ __WEBPACK_IMPORTED_MODULE_12__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderPopupTo"), _class.prototype), 
+        }(__WEBPACK_IMPORTED_MODULE_1__base__.a), _applyDecoratedDescriptor(_class.prototype, "render", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderIframe", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "renderIframe"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderPopup", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "renderPopup"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderTo", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTo"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderIframeTo", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "renderIframeTo"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderPopupTo", [ __WEBPACK_IMPORTED_MODULE_11__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "renderPopupTo"), _class.prototype), 
         _class);
     },
     "./node_modules/xcomponent/src/component/component/props.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -4296,7 +4335,7 @@
             uid: {
                 type: "string",
                 def: function() {
-                    return __WEBPACK_IMPORTED_MODULE_0__lib__._0();
+                    return __WEBPACK_IMPORTED_MODULE_0__lib__._2();
                 },
                 queryParam: !0
             },
@@ -4321,6 +4360,7 @@
                 required: !1,
                 noop: !0,
                 promisify: !0,
+                memoize: !0,
                 sendToChild: !1
             },
             onEnter: {
@@ -4375,24 +4415,34 @@
             }
         };
     },
-    "./node_modules/xcomponent/src/component/component/templates/component.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/xcomponent/src/component/component/templates/component.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function _objectDestructuringEmpty(obj) {
-            if (null == obj) throw new TypeError("Cannot destructure undefined");
+        function defaultComponentTemplate(_ref) {
+            return (0, _ref.jsxDom)("div", null);
         }
-        function componentTemplate(_ref) {
-            _objectDestructuringEmpty(_ref);
-            return "";
-        }
-        __webpack_exports__.a = componentTemplate;
+        __webpack_exports__.a = defaultComponentTemplate;
     },
-    "./node_modules/xcomponent/src/component/component/templates/container.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./node_modules/xcomponent/src/component/component/templates/container.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function containerTemplate(_ref) {
-            var id = _ref.id, CLASS = _ref.CLASS;
-            return '\n        <div class="' + CLASS.XCOMPONENT + "-overlay " + CLASS.FOCUS + '">\n            <a href="#' + CLASS.CLOSE + '" class="' + CLASS.CLOSE + '"></a>\n\n            <div class="' + CLASS.ELEMENT + '"></div>\n        </div>\n\n        <style>\n            #' + id + " ." + CLASS.XCOMPONENT + "-overlay {\n                position: absolute;\n                top: 0;\n                left: 0;\n                width: 100%;\n                height: 100%;\n                background-color: rgba(0, 0, 0, 0.8);\n            }\n\n            #" + id + "." + CLASS.POPUP + " ." + CLASS.XCOMPONENT + "-overlay {\n                cursor: pointer;\n            }\n\n            #" + id + "." + CLASS.IFRAME + " ." + CLASS.ELEMENT + " {\n                box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.4);\n                position: fixed;\n\n                top: 50%;\n                left: 50%;\n\n                transform: translate3d(-50%, -50%, 0);\n                -webkit-transform: translate3d(-50%, -50%, 0);\n                -moz-transform: translate3d(-50%, -50%, 0);\n                -o-transform: translate3d(-50%, -50%, 0);\n                -ms-transform: translate3d(-50%, -50%, 0);\n            }\n\n            #" + id + "." + CLASS.IFRAME + " iframe {\n                height: 100%;\n                width: 100%;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + " {\n                position: absolute;\n                right: 16px;\n                top: 16px;\n                width: 16px;\n                height: 16px;\n                opacity: 0.6;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":hover {\n                opacity: 1;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":before,\n            #" + id + "  ." + CLASS.CLOSE + ":after {\n                position: absolute;\n                left: 8px;\n                content: ' ';\n                height: 16px;\n                width: 2px;\n                background-color: white;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":before {\n                transform: rotate(45deg);\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":after {\n                transform: rotate(-45deg);\n            }\n        </style>\n    ";
+        function defaultContainerTemplate(_ref) {
+            var id = _ref.id, tag = _ref.tag, context = _ref.context, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom;
+            return jsxDom("div", {
+                id: id,
+                class: CLASS.XCOMPONENT + " " + CLASS.XCOMPONENT + "-tag-" + tag + " " + CLASS.XCOMPONENT + "-context-" + context
+            }, jsxDom("style", null, "\n                    #" + id + " {\n                        height: 150px;\n                        width: 300px;\n                    }\n\n                    #" + id + " iframe {\n                        height: 100%;\n                        width: 100%;\n                    }\n                "), outlet);
         }
-        __webpack_exports__.a = containerTemplate;
+        __webpack_exports__.a = defaultContainerTemplate;
+    },
+    "./node_modules/xcomponent/src/component/component/templates/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var __WEBPACK_IMPORTED_MODULE_0__container__ = __webpack_require__("./node_modules/xcomponent/src/component/component/templates/container.jsx");
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__container__.a;
+        });
+        var __WEBPACK_IMPORTED_MODULE_1__component__ = __webpack_require__("./node_modules/xcomponent/src/component/component/templates/component.jsx");
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return __WEBPACK_IMPORTED_MODULE_1__component__.a;
+        });
     },
     "./node_modules/xcomponent/src/component/component/validate.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -4531,12 +4581,7 @@
                     onClose: options.props.onClose,
                     onDisplay: options.props.onDisplay
                 };
-                _this.focus = options.overrides.focus;
-                _this.userClose = options.overrides.userClose;
-                _this.getDomain = options.overrides.getDomain;
-                _this.getContainerTemplate = options.overrides.getContainerTemplate;
-                _this.getComponentTemplate = options.overrides.getComponentTemplate;
-                for (var delegateOverrides = __WEBPACK_IMPORTED_MODULE_2__parent_drivers__.a[options.context].delegateOverrides, _iterator = Object.keys(delegateOverrides), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                for (var _iterator = Object.keys(_this.component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
                     if (_isArray) {
                         if (_i >= _iterator.length) break;
@@ -4546,7 +4591,25 @@
                         if (_i.done) break;
                         _ref = _i.value;
                     }
-                    var key = _ref;
+                    var propName = _ref;
+                    _this.component.props[propName].allowDelegate && (_this.props[propName] = options.props[propName]);
+                }
+                _this.focus = options.overrides.focus;
+                _this.userClose = options.overrides.userClose;
+                _this.getDomain = options.overrides.getDomain;
+                _this.error = options.overrides.error;
+                _this.on = options.overrides.on;
+                for (var delegateOverrides = __WEBPACK_IMPORTED_MODULE_2__parent_drivers__.a[options.context].delegateOverrides, _iterator2 = Object.keys(delegateOverrides), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var key = _ref2;
                     _this[key] = __WEBPACK_IMPORTED_MODULE_1__parent__.a.prototype[key];
                 }
                 _this.childWindowName = options.childWindowName;
@@ -4556,7 +4619,7 @@
             }
             _inherits(DelegateComponent, _BaseComponent);
             DelegateComponent.prototype.watchForClose = function() {
-                var _this2 = this, closeListener = __WEBPACK_IMPORTED_MODULE_3__lib__.M(this.source, function() {
+                var _this2 = this, closeListener = __WEBPACK_IMPORTED_MODULE_3__lib__.N(this.source, function() {
                     return _this2.destroy();
                 }), unloadListener = __WEBPACK_IMPORTED_MODULE_3__lib__.b(window, "unload", closeListener.cancel);
                 this.clean.register(function() {
@@ -4565,18 +4628,18 @@
                 });
             };
             DelegateComponent.prototype.getOverrides = function(context) {
-                for (var delegateOverrides = __WEBPACK_IMPORTED_MODULE_2__parent_drivers__.a[context].delegateOverrides, overrides = {}, self = this, _iterator2 = Object.keys(delegateOverrides), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref2;
+                for (var delegateOverrides = __WEBPACK_IMPORTED_MODULE_2__parent_drivers__.a[context].delegateOverrides, overrides = {}, self = this, _iterator3 = Object.keys(delegateOverrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
                     if ("break" === function() {
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) return "break";
-                            _ref2 = _iterator2[_i2++];
+                        if (_isArray3) {
+                            if (_i3 >= _iterator3.length) return "break";
+                            _ref3 = _iterator3[_i3++];
                         } else {
-                            _i2 = _iterator2.next();
-                            if (_i2.done) return "break";
-                            _ref2 = _i2.value;
+                            _i3 = _iterator3.next();
+                            if (_i3.done) return "break";
+                            _ref3 = _i3.value;
                         }
-                        var key = _ref2;
+                        var key = _ref3;
                         overrides[key] = function() {
                             return __WEBPACK_IMPORTED_MODULE_1__parent__.a.prototype[key].apply(self, arguments);
                         };
@@ -4603,17 +4666,11 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return __WEBPACK_IMPORTED_MODULE_0__component__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "b", function() {
+        __webpack_require__.d(__webpack_exports__, "c", function() {
             return __WEBPACK_IMPORTED_MODULE_0__component__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.c;
-        });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.d;
-        });
         var __WEBPACK_IMPORTED_MODULE_1__parent__ = __webpack_require__("./node_modules/xcomponent/src/component/parent/index.js");
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "b", function() {
             return __WEBPACK_IMPORTED_MODULE_1__parent__.b;
         });
         __webpack_require__("./node_modules/xcomponent/src/component/child/index.js");
@@ -4623,7 +4680,13 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return RENDER_DRIVERS;
         });
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), RENDER_DRIVERS = {};
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, RENDER_DRIVERS = {};
         RENDER_DRIVERS[__WEBPACK_IMPORTED_MODULE_4__constants__.CONTEXT_TYPES.IFRAME] = {
             renderedIntoContainerTemplate: !0,
             allowResize: !0,
@@ -4637,42 +4700,43 @@
                         name: this.childWindowName,
                         scrolling: this.component.scrolling ? "yes" : "no"
                     }
-                }, frame = this.iframe = __WEBPACK_IMPORTED_MODULE_3__lib__.E(null, options, this.element);
-                this.window = frame.contentWindow;
-                var detectClose = function() {
-                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                        return _this.props.onClose(__WEBPACK_IMPORTED_MODULE_4__constants__.CLOSE_REASONS.CLOSE_DETECTED);
-                    }).finally(function() {
-                        return _this.destroy();
-                    });
-                }, iframeWatcher = __WEBPACK_IMPORTED_MODULE_3__lib__._3(this.iframe, detectClose), elementWatcher = __WEBPACK_IMPORTED_MODULE_3__lib__._3(this.element, detectClose);
-                frame.addEventListener("error", function(err) {
-                    return _this.error(err);
-                });
-                __WEBPACK_IMPORTED_MODULE_3__lib__.D(this.element);
-                var sacrificialIframe = void 0;
+                }, frame = this.iframe = __WEBPACK_IMPORTED_MODULE_3__lib__.E(options, this.element), sacrificialIframe = void 0;
                 if (this.component.sacrificialComponentTemplate) {
-                    sacrificialIframe = __WEBPACK_IMPORTED_MODULE_3__lib__.E(null, options, this.element);
-                    this.componentTemplateWindow = sacrificialIframe.contentWindow;
+                    sacrificialIframe = __WEBPACK_IMPORTED_MODULE_3__lib__.E(_extends({}, options, {
+                        name: "__sacrificial__" + options.name
+                    }), this.element);
                     __WEBPACK_IMPORTED_MODULE_3__lib__.D(frame);
                     frame.addEventListener("load", function() {
                         setTimeout(function() {
                             __WEBPACK_IMPORTED_MODULE_3__lib__.D(sacrificialIframe);
-                            __WEBPACK_IMPORTED_MODULE_3__lib__.l(sacrificialIframe);
-                            __WEBPACK_IMPORTED_MODULE_3__lib__.X(frame);
+                            __WEBPACK_IMPORTED_MODULE_3__lib__.j(sacrificialIframe);
+                            __WEBPACK_IMPORTED_MODULE_3__lib__.Z(frame);
                         }, 50);
                     });
                 }
-                this.clean.register("destroyWindow", function() {
-                    iframeWatcher.cancel();
-                    elementWatcher.cancel();
-                    __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.cleanUpWindow(_this.window);
-                    delete _this.window;
-                    sacrificialIframe && __WEBPACK_IMPORTED_MODULE_3__lib__.l(sacrificialIframe);
-                    if (_this.iframe) {
-                        __WEBPACK_IMPORTED_MODULE_3__lib__.l(_this.iframe);
-                        delete _this.iframe;
-                    }
+                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ frame.awaitWindow, sacrificialIframe && sacrificialIframe.awaitWindow ]).then(function(_ref) {
+                    var frameWindow = _ref[0], sacrificialFrameWindow = _ref[1];
+                    _this.window = frameWindow;
+                    _this.componentTemplateWindow = sacrificialFrameWindow;
+                    var detectClose = function() {
+                        return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
+                            return _this.props.onClose(__WEBPACK_IMPORTED_MODULE_4__constants__.CLOSE_REASONS.CLOSE_DETECTED);
+                        }).finally(function() {
+                            return _this.destroy();
+                        });
+                    }, iframeWatcher = __WEBPACK_IMPORTED_MODULE_3__lib__._5(_this.iframe, detectClose), elementWatcher = __WEBPACK_IMPORTED_MODULE_3__lib__._5(_this.element, detectClose);
+                    __WEBPACK_IMPORTED_MODULE_3__lib__.D(_this.element);
+                    _this.clean.register("destroyWindow", function() {
+                        iframeWatcher.cancel();
+                        elementWatcher.cancel();
+                        __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.cleanUpWindow(_this.window);
+                        delete _this.window;
+                        sacrificialIframe && __WEBPACK_IMPORTED_MODULE_3__lib__.j(sacrificialIframe);
+                        if (_this.iframe) {
+                            __WEBPACK_IMPORTED_MODULE_3__lib__.j(_this.iframe);
+                            delete _this.iframe;
+                        }
+                    });
                 });
             },
             delegateOverrides: {
@@ -4694,6 +4758,7 @@
                 getInitialDimensions: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
                 renderTemplate: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
                 openContainerFrame: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
+                getOutlet: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
                 open: function(original, override) {
                     return function() {
                         var _this2 = this;
@@ -4705,11 +4770,11 @@
                 }
             },
             resize: function(width, height) {
-                width && (this.element.style.width = __WEBPACK_IMPORTED_MODULE_3__lib__.Y(width));
-                height && (this.element.style.height = __WEBPACK_IMPORTED_MODULE_3__lib__.Y(height));
+                width && (this.element.style.width = __WEBPACK_IMPORTED_MODULE_3__lib__._0(width));
+                height && (this.element.style.height = __WEBPACK_IMPORTED_MODULE_3__lib__._0(height));
             },
             show: function() {
-                __WEBPACK_IMPORTED_MODULE_3__lib__.X(this.element);
+                __WEBPACK_IMPORTED_MODULE_3__lib__.Z(this.element);
             },
             hide: function() {
                 __WEBPACK_IMPORTED_MODULE_3__lib__.D(this.element);
@@ -4726,15 +4791,15 @@
             errorOnCloseDuringInit: !1,
             open: function() {
                 var _this3 = this, _getInitialDimensions = this.getInitialDimensions(), width = _getInitialDimensions.width, height = _getInitialDimensions.height, x = _getInitialDimensions.x, y = _getInitialDimensions.y;
-                width = __WEBPACK_IMPORTED_MODULE_3__lib__.L(width, window.outerWidth);
-                height = __WEBPACK_IMPORTED_MODULE_3__lib__.L(height, window.outerWidth);
+                width = __WEBPACK_IMPORTED_MODULE_3__lib__.M(width, window.outerWidth);
+                height = __WEBPACK_IMPORTED_MODULE_3__lib__.M(height, window.outerWidth);
                 var pos = __WEBPACK_IMPORTED_MODULE_5__window__.f({
                     width: width,
                     height: height,
                     x: x,
                     y: y
                 });
-                this.window = __WEBPACK_IMPORTED_MODULE_3__lib__.P("", {
+                this.window = __WEBPACK_IMPORTED_MODULE_3__lib__.Q("", {
                     name: this.childWindowName,
                     width: width,
                     height: height,
@@ -4780,7 +4845,8 @@
                 resize: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
                 getInitialDimensions: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
                 renderTemplate: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
-                openContainerFrame: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL
+                openContainerFrame: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL,
+                getOutlet: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL
             },
             loadUrl: function(url) {
                 this.window.location = url;
@@ -4875,7 +4941,7 @@
                 _this.validateParentDomain();
                 _this.context = context;
                 _this.setProps(options.props || {});
-                __WEBPACK_IMPORTED_MODULE_6__lib__.U(_this.props.logLevel);
+                __WEBPACK_IMPORTED_MODULE_6__lib__.W(_this.props.logLevel);
                 _this.childWindowName = _this.buildChildWindowName({
                     renderTo: window
                 });
@@ -4917,12 +4983,14 @@
                     tasks.showContainer = tasks.openContainer.then(function() {
                         return _this2.showContainer();
                     });
-                    tasks.createComponentTemplate = tasks.open.then(function() {
-                        return _this2.createComponentTemplate();
-                    });
-                    tasks.showComponent = tasks.createComponentTemplate.then(function() {
-                        return _this2.showComponent();
-                    });
+                    if (!_this2.html) {
+                        tasks.createComponentTemplate = tasks.open.then(function() {
+                            return _this2.createComponentTemplate();
+                        });
+                        tasks.showComponent = tasks.createComponentTemplate.then(function() {
+                            return _this2.showComponent();
+                        });
+                    }
                     tasks.linkDomain = __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ tasks.getDomain, tasks.open ]).then(function(_ref) {
                         var domain = _ref[0];
                         if (__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge) return __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.linkUrl(_this2.window, domain);
@@ -4934,9 +5002,11 @@
                     tasks.watchForClose = tasks.open.then(function() {
                         return _this2.watchForClose();
                     });
-                    if (loadUrl) {
+                    if (_this2.html) tasks.loadHTML = tasks.open.then(function() {
+                        return _this2.loadHTML();
+                    }); else if (loadUrl) {
                         tasks.buildUrl = _this2.buildUrl();
-                        tasks.loadUrl = __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ tasks.buildUrl, tasks.validateParentDomain, tasks.linkDomain, tasks.listen, tasks.openBridge, tasks.createComponentTemplate ]).then(function(_ref3) {
+                        tasks.loadUrl = __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ tasks.buildUrl, tasks.open, tasks.linkDomain, tasks.listen, tasks.open, tasks.openBridge, tasks.createComponentTemplate ]).then(function(_ref3) {
                             var url = _ref3[0];
                             return _this2.loadUrl(url);
                         });
@@ -4949,14 +5019,20 @@
                     return _this2.props.onEnter();
                 });
             };
+            ParentComponent.prototype.getOutlet = function() {
+                this.outlet = document.createElement("div");
+                __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.outlet, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.OUTLET);
+                return this.outlet;
+            };
             ParentComponent.prototype.validateParentDomain = function() {
                 var domain = __WEBPACK_IMPORTED_MODULE_6__lib__.w();
-                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(this.component.allowedParentDomains, domain)) throw new __WEBPACK_IMPORTED_MODULE_11__error__.c("Can not be rendered by domain: " + domain);
+                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x(this.component.allowedParentDomains, domain)) throw new __WEBPACK_IMPORTED_MODULE_11__error__.c("Can not be rendered by domain: " + domain);
             };
             ParentComponent.prototype.renderTo = function(win, element) {
                 var _this3 = this;
                 return this.tryInit(function() {
                     if (win === window) return _this3.render(element);
+                    if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u(window, win)) throw new Error("Can only renderTo an adjacent frame");
                     if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : _typeof(element)) + " " + element);
                     _this3.checkAllowRenderTo(win);
                     _this3.component.log("render_" + _this3.context + "_to_win", {
@@ -4970,37 +5046,75 @@
                     return _this3.render(element, _this3.context);
                 });
             };
+            ParentComponent.prototype.prefetch = function() {
+                this.html = this.buildUrl().then(function(url) {
+                    return __WEBPACK_IMPORTED_MODULE_6__lib__.R(url).then(function(html) {
+                        return '\n                    <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                    ' + html + "\n\n                    <script>\n                        if (window.history && window.history.pushState) {\n                            window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                        }\n                    <\/script>\n                ";
+                    });
+                });
+            };
+            ParentComponent.prototype.loadHTML = function() {
+                var _this4 = this;
+                return this.html.then(function(html) {
+                    return __WEBPACK_IMPORTED_MODULE_6__lib__._7(_this4.window, html);
+                });
+            };
             ParentComponent.prototype.checkAllowRenderTo = function(win) {
                 if (!win) throw this.component.error("Must pass window to renderTo");
-                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.q(win)) {
+                if (!__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(win)) {
                     var origin = __WEBPACK_IMPORTED_MODULE_6__lib__.w(), domain = this.component.getDomain(null, this.props);
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
                     if (domain !== origin) throw new Error("Can not render remotely to " + domain + " - can only render to " + origin);
                 }
             };
             ParentComponent.prototype.registerActiveComponent = function() {
-                var _this4 = this;
+                var _this5 = this;
                 activeComponents.push(this);
                 this.clean.register(function() {
-                    activeComponents.splice(activeComponents.indexOf(_this4), 1);
+                    activeComponents.splice(activeComponents.indexOf(_this5), 1);
                 });
             };
-            ParentComponent.prototype.renderedIntoSandboxFrame = function() {
-                return !!this.driver.renderedIntoContainerTemplate && (!!this.component.sandboxContainer && !!this.component.containerTemplate);
+            ParentComponent.prototype.getComponentParentRef = function() {
+                var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
+                if (this.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) return {
+                    ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.OPENER
+                };
+                if (renderToWindow === window) return __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.v(window) ? {
+                    ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.TOP
+                } : {
+                    ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT,
+                    distance: __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.e(window)
+                };
+                var uid = __WEBPACK_IMPORTED_MODULE_6__lib__._2();
+                __WEBPACK_IMPORTED_MODULE_6__lib__.B.windows[uid] = window;
+                return {
+                    ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.GLOBAL,
+                    uid: uid
+                };
+            };
+            ParentComponent.prototype.getRenderParentRef = function() {
+                var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
+                if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
+                var uid = __WEBPACK_IMPORTED_MODULE_6__lib__._2();
+                __WEBPACK_IMPORTED_MODULE_6__lib__.B.windows[uid] = renderToWindow;
+                return {
+                    ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.GLOBAL,
+                    uid: uid
+                };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$renderTo = _ref4.renderTo, renderTo = void 0 === _ref4$renderTo ? window : _ref4$renderTo, sameWindow = renderTo === window, sameDomain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.q(renderTo), uid = __WEBPACK_IMPORTED_MODULE_6__lib__._0(), tag = this.component.tag, sProps = __WEBPACK_IMPORTED_MODULE_6__lib__.T(this.getPropsForChild()), defaultParent = this.renderedIntoSandboxFrame() ? __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_PARENT : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.DIRECT_PARENT, parent = sameWindow ? defaultParent : window.name, renderParent = sameWindow ? defaultParent : __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID, secureProps = !sameDomain, props = secureProps ? {
-                    type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID
+                var _ref4 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref4$renderTo = _ref4.renderTo, renderTo = void 0 === _ref4$renderTo ? window : _ref4$renderTo, sameDomain = __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t(renderTo), uid = __WEBPACK_IMPORTED_MODULE_6__lib__._2(), tag = this.component.tag, sProps = __WEBPACK_IMPORTED_MODULE_6__lib__.V(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain, props = secureProps ? {
+                    type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID,
+                    uid: uid
                 } : {
                     type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.RAW,
                     value: sProps
                 };
                 props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.B.props[uid] = sProps);
-                renderParent === __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT_UID && (__WEBPACK_IMPORTED_MODULE_6__lib__.B.windows[uid] = renderTo);
                 return __WEBPACK_IMPORTED_MODULE_5__window__.a(this.component.name, this.component.version, {
                     uid: uid,
                     tag: tag,
-                    parent: parent,
+                    componentParent: componentParent,
                     renderParent: renderParent,
                     props: props
                 });
@@ -5018,35 +5132,35 @@
                 props.version = this.component.version;
                 __WEBPACK_IMPORTED_MODULE_9__validate__.c(this.component, props, required);
                 this.component.validate && this.component.validate(this.component, props);
-                __WEBPACK_IMPORTED_MODULE_6__lib__.s(this.props, __WEBPACK_IMPORTED_MODULE_10__props__.a(this.component, this, props));
+                __WEBPACK_IMPORTED_MODULE_6__lib__.r(this.props, __WEBPACK_IMPORTED_MODULE_10__props__.a(this.component, this, props));
             };
             ParentComponent.prototype.buildUrl = function() {
-                var _this5 = this;
+                var _this6 = this;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.hash({
                     url: this.props.url,
                     query: __WEBPACK_IMPORTED_MODULE_10__props__.b(this.component.props, this.props)
                 }).then(function(_ref5) {
                     var url = _ref5.url, query = _ref5.query;
-                    return url && !_this5.component.getValidDomain(url) ? url : __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        return url || _this5.component.getUrl(_this5.props.env, _this5.props);
+                    return url && !_this6.component.getValidDomain(url) ? url : __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
+                        return url || _this6.component.getUrl(_this6.props.env, _this6.props);
                     }).then(function(finalUrl) {
                         query[__WEBPACK_IMPORTED_MODULE_7__constants__.XCOMPONENT] = "1";
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.t(finalUrl, {
+                        return __WEBPACK_IMPORTED_MODULE_6__lib__.s(finalUrl, {
                             query: query
                         });
                     });
                 });
             };
             ParentComponent.prototype.getDomain = function() {
-                var _this6 = this;
+                var _this7 = this;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    return _this6.props.url;
+                    return _this7.props.url;
                 }).then(function(url) {
-                    var domain = _this6.component.getDomain(url, _this6.props);
-                    return domain || (_this6.component.buildUrl ? __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        return _this6.component.buildUrl(_this6.props);
+                    var domain = _this7.component.getDomain(url, _this7.props);
+                    return domain || (_this7.component.buildUrl ? __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
+                        return _this7.component.buildUrl(_this7.props);
                     }).then(function(builtUrl) {
-                        return _this6.component.getDomain(builtUrl, _this6.props);
+                        return _this7.component.getDomain(builtUrl, _this7.props);
                     }) : void 0);
                 }).then(function(domain) {
                     if (!domain) throw new Error("Could not determine domain");
@@ -5070,10 +5184,10 @@
                 return result;
             };
             ParentComponent.prototype.updateProps = function() {
-                var _this7 = this, props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                var _this8 = this, props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 this.setProps(props, !1);
                 return this.onInit.then(function() {
-                    return _this7.childExports.updateProps(_this7.getPropsForChild());
+                    return _this8.childExports.updateProps(_this8.getPropsForChild());
                 });
             };
             ParentComponent.prototype.openBridge = function() {
@@ -5094,70 +5208,83 @@
                     element: __WEBPACK_IMPORTED_MODULE_6__lib__.z(element),
                     windowName: this.childWindowName
                 });
-                this.driver.open.call(this, element);
+                return this.driver.open.call(this, element);
             };
             ParentComponent.prototype.elementReady = function(element) {
-                return __WEBPACK_IMPORTED_MODULE_6__lib__.p(element).then(__WEBPACK_IMPORTED_MODULE_6__lib__.K);
+                return __WEBPACK_IMPORTED_MODULE_6__lib__.n(element).then(__WEBPACK_IMPORTED_MODULE_6__lib__.L);
             };
             ParentComponent.prototype.delegate = function(win) {
-                var _this8 = this;
+                var _this9 = this;
                 this.component.log("delegate_" + this.context);
+                for (var props = {
+                    uid: this.props.uid,
+                    dimensions: this.props.dimensions,
+                    onClose: this.props.onClose,
+                    onDisplay: this.props.onDisplay
+                }, _iterator2 = Object.keys(this.component.props), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref7;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref7 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref7 = _i2.value;
+                    }
+                    var propName = _ref7;
+                    this.component.props[propName].allowDelegate && (props[propName] = this.props[propName]);
+                }
                 var delegate = __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send(win, __WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.DELEGATE + "_" + this.component.name, {
                     context: this.context,
                     env: this.props.env,
                     options: {
                         context: this.context,
                         childWindowName: this.childWindowName,
-                        props: {
-                            uid: this.props.uid,
-                            dimensions: this.props.dimensions,
-                            onClose: this.props.onClose,
-                            onDisplay: this.props.onDisplay
-                        },
+                        props: props,
                         overrides: {
                             focus: function() {
-                                return _this8.focus();
+                                return _this9.focus();
                             },
                             userClose: function() {
-                                return _this8.userClose();
+                                return _this9.userClose();
                             },
                             getDomain: function() {
-                                return _this8.getDomain();
+                                return _this9.getDomain();
                             },
-                            getContainerTemplate: function() {
-                                return _this8.getContainerTemplate();
+                            error: function(err) {
+                                return _this9.error(err);
                             },
-                            getComponentTemplate: function() {
-                                return _this8.getComponentTemplate();
+                            on: function(eventName, handler) {
+                                return _this9.on(eventName, handler);
                             }
                         }
                     }
-                }).then(function(_ref7) {
-                    var data = _ref7.data;
-                    _this8.clean.register(data.destroy);
+                }).then(function(_ref8) {
+                    var data = _ref8.data;
+                    _this9.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
                     throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + err.stack);
                 }), overrides = this.driver.delegateOverrides;
-                _loop2: for (var _iterator2 = Object.keys(overrides), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                    var _ref8, _ret = function() {
-                        if (_isArray2) {
-                            if (_i2 >= _iterator2.length) return "break";
-                            _ref8 = _iterator2[_i2++];
+                _loop2: for (var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref9, _ret = function() {
+                        if (_isArray3) {
+                            if (_i3 >= _iterator3.length) return "break";
+                            _ref9 = _iterator3[_i3++];
                         } else {
-                            _i2 = _iterator2.next();
-                            if (_i2.done) return "break";
-                            _ref8 = _i2.value;
+                            _i3 = _iterator3.next();
+                            if (_i3.done) return "break";
+                            _ref9 = _i3.value;
                         }
-                        var key = _ref8, val = overrides[key];
+                        var key = _ref9, val = overrides[key];
                         if (val === __WEBPACK_IMPORTED_MODULE_7__constants__.DELEGATE.CALL_ORIGINAL) return "continue";
-                        var original = _this8[key];
-                        _this8[key] = function() {
-                            var _this9 = this, _arguments = arguments;
+                        var original = _this9[key];
+                        _this9[key] = function() {
+                            var _this10 = this, _arguments = arguments;
                             return delegate.then(function(data) {
                                 var override = data.overrides[key];
-                                if (val === __WEBPACK_IMPORTED_MODULE_7__constants__.DELEGATE.CALL_DELEGATE) return override.apply(_this9, _arguments);
-                                if (val instanceof Function) return val(original, override).apply(_this9, _arguments);
+                                if (val === __WEBPACK_IMPORTED_MODULE_7__constants__.DELEGATE.CALL_DELEGATE) return override.apply(_this10, _arguments);
+                                if (val instanceof Function) return val(original, override).apply(_this10, _arguments);
                                 throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
                             });
                         };
@@ -5175,21 +5302,21 @@
                 return this.component.getInitialDimensions ? this.component.getInitialDimensions(this.props, el) : this.component.dimensions ? this.component.dimensions : {};
             };
             ParentComponent.prototype.watchForClose = function() {
-                var _this10 = this, closeWindowListener = __WEBPACK_IMPORTED_MODULE_6__lib__.M(this.window, function() {
-                    _this10.component.log("detect_close_child");
-                    _this10.driver.errorOnCloseDuringInit && _this10.onInit.reject(new Error("Detected close during init"));
+                var _this11 = this, closeWindowListener = __WEBPACK_IMPORTED_MODULE_6__lib__.N(this.window, function() {
+                    _this11.component.log("detect_close_child");
+                    _this11.driver.errorOnCloseDuringInit && _this11.onInit.reject(new Error("Detected close during init"));
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        return _this10.props.onClose(__WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.CLOSE_DETECTED);
+                        return _this11.props.onClose(__WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.CLOSE_DETECTED);
                     }).finally(function() {
-                        return _this10.destroy();
+                        return _this11.destroy();
                     });
                 });
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
-                var onunload = __WEBPACK_IMPORTED_MODULE_6__lib__.O(function() {
-                    _this10.component.log("navigate_away");
+                var onunload = __WEBPACK_IMPORTED_MODULE_6__lib__.P(function() {
+                    _this11.component.log("navigate_away");
                     __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g();
                     closeWindowListener.cancel();
-                    _this10.destroyComponent();
+                    _this11.destroyComponent();
                 }), unloadWindowListener = __WEBPACK_IMPORTED_MODULE_6__lib__.b(window, "unload", onunload);
                 this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
             };
@@ -5197,8 +5324,8 @@
                 this.component.log("load_url");
                 if (window.location.href.split("#")[0] === url.split("#")[0]) {
                     var _query;
-                    url = __WEBPACK_IMPORTED_MODULE_6__lib__.t(url, {
-                        query: (_query = {}, _query[__WEBPACK_IMPORTED_MODULE_6__lib__._0()] = "1", _query)
+                    url = __WEBPACK_IMPORTED_MODULE_6__lib__.s(url, {
+                        query: (_query = {}, _query[__WEBPACK_IMPORTED_MODULE_6__lib__._2()] = "1", _query)
                     });
                 }
                 return this.driver.loadUrl.call(this, url);
@@ -5207,25 +5334,25 @@
                 targetElement.target = this.childWindowName;
             };
             ParentComponent.prototype.runTimeout = function() {
-                var _this11 = this;
+                var _this12 = this;
                 if (this.props.timeout) {
                     this.timeout = setTimeout(function() {
-                        _this11.component.log("timed_out", {
-                            timeout: _this11.props.timeout
+                        _this12.component.log("timed_out", {
+                            timeout: _this12.props.timeout
                         });
-                        var error = _this11.component.error("Loading component timed out after " + _this11.props.timeout + " milliseconds");
-                        _this11.onInit.reject(error);
-                        _this11.props.onTimeout(error);
+                        var error = _this12.component.error("Loading component timed out after " + _this12.props.timeout + " milliseconds");
+                        _this12.onInit.reject(error);
+                        _this12.props.onTimeout(error);
                     }, this.props.timeout);
                     this.clean.register(function() {
-                        clearTimeout(_this11.timeout);
-                        delete _this11.timeout;
+                        clearTimeout(_this12.timeout);
+                        delete _this12.timeout;
                     });
                 }
             };
             ParentComponent.prototype.listeners = function() {
-                var _ref9;
-                return _ref9 = {}, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.INIT] = function(source, data) {
+                var _ref10;
+                return _ref10 = {}, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.INIT] = function(source, data) {
                     this.childExports = data.exports;
                     this.onInit.resolve(this);
                     this.timeout && clearTimeout(this.timeout);
@@ -5233,20 +5360,20 @@
                         props: this.getPropsForChild(),
                         context: this.context
                     };
-                }, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.CLOSE] = function(source, data) {
+                }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.CLOSE] = function(source, data) {
                     this.close(data.reason);
-                }, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.RESIZE] = function(source, data) {
+                }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.RESIZE] = function(source, data) {
                     if (this.driver.allowResize) return this.resize(data.width, data.height);
-                }, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.HIDE] = function(source, data) {
+                }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.HIDE] = function(source, data) {
                     this.hide();
-                }, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.SHOW] = function(source, data) {
+                }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.SHOW] = function(source, data) {
                     this.show();
-                }, _ref9[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.ERROR] = function(source, data) {
+                }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.ERROR] = function(source, data) {
                     this.error(new Error(data.error));
-                }, _ref9;
+                }, _ref10;
             };
             ParentComponent.prototype.resize = function(width, height) {
-                var _ref10 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref10$waitForTransit = _ref10.waitForTransition, waitForTransition = void 0 === _ref10$waitForTransit || _ref10$waitForTransit;
+                var _ref11 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref11$waitForTransit = _ref11.waitForTransition, waitForTransition = void 0 === _ref11$waitForTransit || _ref11$waitForTransit;
                 this.component.log("resize", {
                     height: height,
                     width: width
@@ -5254,46 +5381,46 @@
                 this.driver.resize.call(this, width, height);
                 if (waitForTransition && (this.element || this.iframe)) {
                     var overflow = void 0;
-                    this.element && (overflow = __WEBPACK_IMPORTED_MODULE_6__lib__.V(this.element, "hidden"));
-                    return __WEBPACK_IMPORTED_MODULE_6__lib__.q(this.element || this.iframe).then(function() {
+                    this.element && (overflow = __WEBPACK_IMPORTED_MODULE_6__lib__.X(this.element, "hidden"));
+                    return __WEBPACK_IMPORTED_MODULE_6__lib__.o(this.element || this.iframe).then(function() {
                         overflow && overflow.reset();
                     });
                 }
             };
             ParentComponent.prototype.hide = function() {
                 this.container && __WEBPACK_IMPORTED_MODULE_6__lib__.D(this.container);
-                this.containerFrame && __WEBPACK_IMPORTED_MODULE_6__lib__.D(this.containerFrame);
                 return this.driver.hide.call(this);
             };
             ParentComponent.prototype.show = function() {
-                this.container && __WEBPACK_IMPORTED_MODULE_6__lib__.X(this.container);
-                this.containerFrame && __WEBPACK_IMPORTED_MODULE_6__lib__.X(this.containerFrame);
+                this.container && __WEBPACK_IMPORTED_MODULE_6__lib__.Z(this.container);
                 return this.driver.show.call(this);
             };
             ParentComponent.prototype.userClose = function() {
                 return this.close(__WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.USER_CLOSED);
             };
             ParentComponent.prototype.close = function() {
-                var _this12 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
+                var _this13 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    _this12.component.log("close", {
+                    _this13.component.log("close", {
                         reason: reason
                     });
-                    return _this12.props.onClose(reason);
+                    _this13.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_7__constants__.EVENTS.CLOSE);
+                    return _this13.props.onClose(reason);
                 }).then(function() {
-                    return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ _this12.closeComponent(), _this12.closeContainer() ]);
+                    return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ _this13.closeComponent(), _this13.closeContainer() ]);
                 }).then(function() {
-                    return _this12.destroy();
+                    return _this13.destroy();
                 });
             };
             ParentComponent.prototype.closeContainer = function() {
-                var _this13 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
+                var _this14 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    return _this13.props.onClose(reason);
+                    _this14.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_7__constants__.EVENTS.CLOSE);
+                    return _this14.props.onClose(reason);
                 }).then(function() {
-                    return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ _this13.closeComponent(reason), _this13.hideContainer() ]);
+                    return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.all([ _this14.closeComponent(reason), _this14.hideContainer() ]);
                 }).then(function() {
-                    return _this13.destroyContainer();
+                    return _this14.destroyContainer();
                 });
             };
             ParentComponent.prototype.destroyContainer = function() {
@@ -5301,20 +5428,21 @@
                 this.clean.run("destroyContainerTemplate");
             };
             ParentComponent.prototype.closeComponent = function() {
-                var _this14 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
+                var _this15 = this, reason = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.PARENT_CALL;
                 this.clean.run("destroyCloseWindowListener");
                 this.clean.run("destroyUnloadWindowListener");
                 var win = this.window;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    return _this14.cancelContainerEvents();
+                    return _this15.cancelContainerEvents();
                 }).then(function() {
-                    return _this14.props.onClose(reason);
+                    _this15.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_7__constants__.EVENTS.CLOSE);
+                    return _this15.props.onClose(reason);
                 }).then(function() {
-                    return _this14.hideComponent();
+                    return _this15.hideComponent();
                 }).then(function() {
-                    return _this14.destroyComponent();
+                    return _this15.destroyComponent();
                 }).then(function() {
-                    _this14.childExports && _this14.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s(win) && _this14.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.K);
+                    _this15.childExports && _this15.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w(win) && _this15.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.L);
                 });
             };
             ParentComponent.prototype.destroyComponent = function() {
@@ -5323,196 +5451,135 @@
                 this.clean.run("destroyWindow");
             };
             ParentComponent.prototype.showContainer = function() {
-                var _this15 = this;
-                if (this.container) {
-                    __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_CONTAINER);
-                    return __WEBPACK_IMPORTED_MODULE_6__lib__.i().then(function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.W(_this15.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_CONTAINER, _this15.clean.register);
-                    });
-                }
-            };
-            ParentComponent.prototype.showComponent = function() {
                 var _this16 = this;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
                     if (_this16.props.onDisplay) return _this16.props.onDisplay();
                 }).then(function() {
-                    if (_this16.element) {
-                        __WEBPACK_IMPORTED_MODULE_6__lib__.a(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.SHOW_COMPONENT);
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.i().then(function() {
-                            return __WEBPACK_IMPORTED_MODULE_6__lib__.W(_this16.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_COMPONENT, _this16.clean.register);
-                        });
-                    }
+                    if (_this16.container) return __WEBPACK_IMPORTED_MODULE_6__lib__.Y(_this16.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_CONTAINER, _this16.clean.register);
+                });
+            };
+            ParentComponent.prototype.showComponent = function() {
+                var _this17 = this;
+                return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
+                    if (_this17.props.onDisplay) return _this17.props.onDisplay();
+                }).then(function() {
+                    if (_this17.element) return __WEBPACK_IMPORTED_MODULE_6__lib__.Y(_this17.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.SHOW_COMPONENT, _this17.clean.register);
                 });
             };
             ParentComponent.prototype.hideContainer = function() {
-                if (this.container) {
-                    __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_CONTAINER);
-                    __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
-                    return __WEBPACK_IMPORTED_MODULE_6__lib__.d(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_CONTAINER, this.clean.register);
-                }
+                if (this.container) return __WEBPACK_IMPORTED_MODULE_6__lib__.c(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_CONTAINER, this.clean.register);
             };
             ParentComponent.prototype.hideComponent = function() {
-                this.container && __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.LOADING);
-                if (this.element) {
-                    __WEBPACK_IMPORTED_MODULE_6__lib__.a(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.HIDE_COMPONENT);
-                    return __WEBPACK_IMPORTED_MODULE_6__lib__.d(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_COMPONENT, this.clean.register);
-                }
+                if (this.element) return __WEBPACK_IMPORTED_MODULE_6__lib__.c(this.element, __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES.HIDE_COMPONENT, this.clean.register);
             };
             ParentComponent.prototype.focus = function() {
                 if (!this.window) throw new Error("No window to focus");
                 this.component.log("focus");
                 this.window.focus();
             };
-            ParentComponent.prototype.getComponentTemplate = function() {
-                return this.component.componentTemplate;
-            };
             ParentComponent.prototype.createComponentTemplate = function() {
-                var _this17 = this;
-                return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    return _this17.getComponentTemplate();
-                }).then(function(componentTemplate) {
-                    if (componentTemplate) return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        return _this17.renderTemplate(componentTemplate);
-                    }).then(function(html) {
-                        var win = _this17.componentTemplateWindow || _this17.window;
-                        __WEBPACK_IMPORTED_MODULE_6__lib__._4(win, html);
-                    });
-                });
-            };
-            ParentComponent.prototype.getContainerTemplate = function() {
-                return this.component.containerTemplate;
+                if (this.component.componentTemplate) {
+                    var win = this.componentTemplateWindow || this.window, html = this.renderTemplate(this.component.componentTemplate, {
+                        jsxDom: __WEBPACK_IMPORTED_MODULE_6__lib__.I.bind(win.document),
+                        document: win.document
+                    }), el = __WEBPACK_IMPORTED_MODULE_6__lib__.v(html, win.document);
+                    __WEBPACK_IMPORTED_MODULE_6__lib__._6(win, el);
+                }
             };
             ParentComponent.prototype.renderTemplate = function(renderer) {
-                var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                var _this18 = this, options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return renderer(_extends({
-                    id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + this.props.uid,
+                    id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
+                    tag: this.component.tag,
+                    context: this.context,
+                    outlet: this.getOutlet(),
                     CLASS: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES,
-                    ANIMATION: __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES
+                    ANIMATION: __WEBPACK_IMPORTED_MODULE_7__constants__.ANIMATION_NAMES,
+                    CONTEXT: __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES,
+                    EVENT: __WEBPACK_IMPORTED_MODULE_7__constants__.EVENTS,
+                    actions: {
+                        close: function() {
+                            return _this18.userClose();
+                        },
+                        focus: function() {
+                            return _this18.focus();
+                        }
+                    },
+                    on: function(eventName, handler) {
+                        return _this18.on(eventName, handler);
+                    },
+                    jsxDom: __WEBPACK_IMPORTED_MODULE_6__lib__.I,
+                    document: document
                 }, options));
             };
-            ParentComponent.prototype.openContainerFrame = function(el) {
-                var frame = __WEBPACK_IMPORTED_MODULE_6__lib__.E(null, {
-                    name: "__xcomponent_container_" + __WEBPACK_IMPORTED_MODULE_6__lib__._0() + "__",
-                    scrolling: "no"
-                }, el);
-                frame.style.display = "block";
-                frame.style.position = "fixed";
-                frame.style.top = "0";
-                frame.style.left = "0";
-                frame.style.width = "100%";
-                frame.style.height = "100%";
-                frame.style.zIndex = "2147483647";
-                frame.contentWindow.document.open();
-                frame.contentWindow.document.write("<body></body>");
-                frame.contentWindow.document.close();
-                return frame;
-            };
             ParentComponent.prototype.openContainer = function(element) {
-                var _this18 = this, el = void 0;
+                var _this19 = this, el = void 0;
                 if (element) {
                     el = __WEBPACK_IMPORTED_MODULE_6__lib__.y(element);
                     if (!el) throw new Error("Could not find element: " + element);
                 } else el = document.body;
-                return this.getContainerTemplate().then(function(containerTemplate) {
-                    if (containerTemplate) {
-                        var containerWidth = el.offsetWidth, containerHeight = el.offsetHeight;
-                        return _this18.renderTemplate(containerTemplate, {
-                            dimensions: {
-                                width: containerWidth,
-                                height: containerHeight
-                            }
-                        }).then(function(html) {
-                            if (_this18.component.sandboxContainer) {
-                                _this18.containerFrame = _this18.openContainerFrame(el);
-                                el = _this18.containerFrame.contentWindow.document.body;
-                            }
-                            _this18.container = __WEBPACK_IMPORTED_MODULE_6__lib__.f("div", {
-                                html: html,
-                                attributes: {
-                                    id: __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.props.uid
-                                },
-                                class: [ __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.component.tag, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.XCOMPONENT + "-" + _this18.context ]
-                            });
-                            __WEBPACK_IMPORTED_MODULE_6__lib__.D(_this18.container);
-                            el.appendChild(_this18.container);
-                            if (_this18.driver.renderedIntoContainerTemplate) {
-                                _this18.element = _this18.container.getElementsByClassName(__WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.ELEMENT)[0];
-                                var _ref11 = _this18.getInitialDimensions(el) || {}, width = _ref11.width, height = _ref11.height;
-                                (width || height) && _this18.resize(width, height, {
-                                    waitForTransition: !1
-                                });
-                                if (!_this18.element) throw new Error("Could not find element to render component into");
-                                __WEBPACK_IMPORTED_MODULE_6__lib__.D(_this18.element);
-                            }
-                            var eventHandlers = [];
-                            _this18.driver.focusable && eventHandlers.push(__WEBPACK_IMPORTED_MODULE_6__lib__.c(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.FOCUS, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
-                                return _this18.focus();
-                            }));
-                            eventHandlers.push(__WEBPACK_IMPORTED_MODULE_6__lib__.c(_this18.container, __WEBPACK_IMPORTED_MODULE_7__constants__.CLASS_NAMES.CLOSE, __WEBPACK_IMPORTED_MODULE_7__constants__.EVENT_NAMES.CLICK, function(event) {
-                                return _this18.userClose();
-                            }));
-                            _this18.clean.register("destroyContainerEvents", function() {
-                                for (var _iterator3 = eventHandlers, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                                    var _ref12;
-                                    if (_isArray3) {
-                                        if (_i3 >= _iterator3.length) break;
-                                        _ref12 = _iterator3[_i3++];
-                                    } else {
-                                        _i3 = _iterator3.next();
-                                        if (_i3.done) break;
-                                        _ref12 = _i3.value;
-                                    }
-                                    _ref12.cancel();
-                                }
-                            });
-                            _this18.clean.register("destroyContainerTemplate", function() {
-                                _this18.containerFrame && _this18.containerFrame.parentNode && _this18.containerFrame.parentNode.removeChild(_this18.containerFrame);
-                                _this18.container && _this18.container.parentNode && _this18.container.parentNode.removeChild(_this18.container);
-                                delete _this18.containerFrame;
-                                delete _this18.container;
-                            });
+                if (this.component.containerTemplate) {
+                    var containerWidth = el.offsetWidth, containerHeight = el.offsetHeight, html = this.renderTemplate(this.component.containerTemplate, {
+                        dimensions: {
+                            width: containerWidth,
+                            height: containerHeight
+                        }
+                    });
+                    this.container = __WEBPACK_IMPORTED_MODULE_6__lib__.v(html);
+                    __WEBPACK_IMPORTED_MODULE_6__lib__.D(this.container);
+                    __WEBPACK_IMPORTED_MODULE_6__lib__.d(el, this.container);
+                    if (this.driver.renderedIntoContainerTemplate) {
+                        this.element = this.getOutlet();
+                        var _ref12 = this.getInitialDimensions(el) || {}, width = _ref12.width, height = _ref12.height;
+                        (width || height) && this.resize(width, height, {
+                            waitForTransition: !1
                         });
+                        if (!this.element) throw new Error("Could not find element to render component into");
+                        __WEBPACK_IMPORTED_MODULE_6__lib__.D(this.element);
                     }
-                    if (_this18.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this18.context);
-                });
+                    this.clean.register("destroyContainerTemplate", function() {
+                        _this19.container && _this19.container.parentNode && _this19.container.parentNode.removeChild(_this19.container);
+                        delete _this19.container;
+                    });
+                } else if (this.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + this.context);
             };
             ParentComponent.prototype.cancelContainerEvents = function() {
                 this.clean.run("destroyContainerEvents");
             };
             ParentComponent.prototype.destroy = function() {
-                var _this19 = this;
+                var _this20 = this;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                    if (_this19.clean.hasTasks()) {
-                        _this19.component.log("destroy");
+                    if (_this20.clean.hasTasks()) {
+                        _this20.component.log("destroy");
                         __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g();
-                        return _this19.clean.all();
+                        return _this20.clean.all();
                     }
                 });
             };
             ParentComponent.prototype.tryInit = function(method) {
-                var _this20 = this;
+                var _this21 = this;
                 return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(method).catch(function(err) {
-                    _this20.onInit.reject(err);
+                    _this21.onInit.reject(err);
                     throw err;
                 }).then(function() {
-                    return _this20.onInit;
+                    return _this21.onInit;
                 });
             };
             ParentComponent.prototype.error = function(err) {
-                var _this21 = this;
+                var _this22 = this;
                 this.handledErrors = this.handledErrors || [];
                 if (-1 === this.handledErrors.indexOf(err)) {
                     this.handledErrors.push(err);
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
-                        _this21.onInit.reject(err);
-                        return _this21.destroy();
+                        _this22.onInit.reject(err);
+                        return _this22.destroy();
                     }).then(function() {
-                        if (_this21.props.onError) return _this21.props.onError(err);
+                        if (_this22.props.onError) return _this22.props.onError(err);
                     }).catch(function(errErr) {
                         throw new Error("An error was encountered while handling error:\n\n " + err.stack + "\n\n" + errErr.stack);
                     }).then(function() {
-                        if (!_this21.props.onError) throw err;
+                        if (!_this22.props.onError) throw err;
                     });
                 }
             };
@@ -5524,27 +5591,28 @@
                 }
             } ]);
             return ParentComponent;
-        }(__WEBPACK_IMPORTED_MODULE_4__base__.a), _applyDecoratedDescriptor(_class.prototype, "render", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "getDomain", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "getDomain"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "updateProps", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "updateProps"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openBridge", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "openBridge"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "open", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "loadUrl", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "loadUrl"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "resize", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "resize"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "close", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "getComponentTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "getComponentTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "createComponentTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "createComponentTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "getContainerTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "getContainerTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.J, __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "error", [ __WEBPACK_IMPORTED_MODULE_6__lib__.Q ], Object.getOwnPropertyDescriptor(_class.prototype, "error"), _class.prototype), 
+        }(__WEBPACK_IMPORTED_MODULE_4__base__.a), _applyDecoratedDescriptor(_class.prototype, "render", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "getOutlet", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "getDomain", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "getDomain"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "updateProps", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "updateProps"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openBridge", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "openBridge"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "open", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadUrl", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "loadUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "resize", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "resize"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "close", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "createComponentTemplate", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "createComponentTemplate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ __WEBPACK_IMPORTED_MODULE_6__lib__.K, __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "error", [ __WEBPACK_IMPORTED_MODULE_6__lib__.S ], Object.getOwnPropertyDescriptor(_class.prototype, "error"), _class.prototype), 
         _class);
     },
     "./node_modules/xcomponent/src/component/parent/props.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -5582,7 +5650,7 @@
                     });
                 };
                 if (prop.memoize) {
-                    var _val = __WEBPACK_IMPORTED_MODULE_2__lib__.I(value);
+                    var _val = __WEBPACK_IMPORTED_MODULE_2__lib__.J(value);
                     value = function() {
                         return _val();
                     };
@@ -5592,19 +5660,19 @@
             if ("boolean" === prop.type) value = Boolean(value); else if ("function" === prop.type) {
                 if (value) {
                     value = value.bind(instance);
-                    prop.denodeify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.j(value));
-                    prop.promisify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.R(value));
+                    prop.denodeify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.h(value));
+                    prop.promisify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.T(value));
                     var original = value;
                     value = function() {
                         component.log("call_prop_" + key);
                         return original.apply(this, arguments);
                     };
-                    prop.once && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.O(value));
-                    prop.memoize && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.I(value));
+                    prop.once && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.P(value));
+                    prop.memoize && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.J(value));
                 } else if (!value && prop.noop) {
-                    value = __WEBPACK_IMPORTED_MODULE_2__lib__.K;
-                    prop.denodeify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.j(value));
-                    prop.promisify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.R(value));
+                    value = __WEBPACK_IMPORTED_MODULE_2__lib__.L;
+                    prop.denodeify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.h(value));
+                    prop.promisify && (value = __WEBPACK_IMPORTED_MODULE_2__lib__.T(value));
                 }
             } else "string" === prop.type || "object" === prop.type || "number" === prop.type && void 0 !== value && (value = parseInt(value, 10));
             return value;
@@ -5663,7 +5731,7 @@
                                 if ("function" == typeof value) return;
                                 if ("object" === (void 0 === value ? "undefined" : _typeof(value))) {
                                     if ("json" !== prop.serialization) {
-                                        result = __WEBPACK_IMPORTED_MODULE_2__lib__.o(value, key);
+                                        result = __WEBPACK_IMPORTED_MODULE_2__lib__.m(value, key);
                                         for (var dotkey in result) params[dotkey] = result[dotkey];
                                         return;
                                     }
@@ -5785,7 +5853,7 @@
         }
         function buildChildWindowName(name, version) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            options.id = __WEBPACK_IMPORTED_MODULE_2__lib__._0();
+            options.id = __WEBPACK_IMPORTED_MODULE_2__lib__._2();
             options.domain = __WEBPACK_IMPORTED_MODULE_2__lib__.w(window);
             var encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = __WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.encode(JSON.stringify(options)).replace(/\=/g, "").toLowerCase();
             if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -5794,6 +5862,29 @@
         }
         function getParentDomain() {
             return getComponentMeta().domain;
+        }
+        function getGlobal(win) {
+            if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t(win)) return win[__WEBPACK_IMPORTED_MODULE_3__constants__.__XCOMPONENT__];
+        }
+        function getWindowByRef(_ref) {
+            var ref = _ref.ref, uid = _ref.uid, distance = _ref.distance;
+            if (ref === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.OPENER) return __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.k(window);
+            if (ref === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.TOP) return __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.m(window);
+            if (ref === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.PARENT) return distance ? __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.j(window, distance) : __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.l(window);
+            if (ref === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.GLOBAL) for (var _iterator = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.c(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.d(window)), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref2 = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref2 = _i.value;
+                }
+                var frame = _ref2, global = getGlobal(frame);
+                if (global && global.windows && global.windows[uid]) return global.windows[uid];
+            }
+            throw new Error("Unable to find window by ref");
         }
         function getPosition(options) {
             var width = options.width, height = options.height, left = void 0, top = void 0;
@@ -5819,7 +5910,7 @@
             return getParentRenderWindow;
         });
         __webpack_exports__.f = getPosition;
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), getComponentMeta = __WEBPACK_IMPORTED_MODULE_2__lib__.I(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), getComponentMeta = __WEBPACK_IMPORTED_MODULE_2__lib__.J(function() {
             if (window.name) {
                 var _window$name$split = window.name.split("__"), xcomp = _window$name$split[0], name = _window$name$split[1], version = _window$name$split[2], encodedOptions = _window$name$split[3];
                 if (xcomp === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) {
@@ -5827,46 +5918,23 @@
                     try {
                         componentMeta = JSON.parse(__WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.decode(encodedOptions.toUpperCase()));
                     } catch (err) {
-                        return;
+                        throw new Error("Can not decode component-meta");
                     }
                     componentMeta.name = name;
                     componentMeta.version = version.replace(/_/g, ".");
                     return componentMeta;
                 }
             }
-        }), isXComponentWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.I(function() {
+        }), isXComponentWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.J(function() {
             return Boolean(getComponentMeta());
-        }), getParentComponentWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.I(function() {
+        }), getParentComponentWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.J(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
-            var parentWindow = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.d(window);
-            if (!parentWindow) throw new Error("Can not find parent window");
-            if (componentMeta.parent === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.DIRECT_PARENT) return parentWindow;
-            if (componentMeta.parent === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.PARENT_PARENT) {
-                parentWindow = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.d(parentWindow);
-                if (!parentWindow) throw new Error("Can not find parent component window");
-                return parentWindow;
-            }
-            var parentFrame = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.a(parentWindow, componentMeta.parent);
-            if (!parentFrame) throw new Error("Can not find frame with name: " + componentMeta.parent);
-            return parentFrame;
-        }), getParentRenderWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.I(function() {
+            return getWindowByRef(componentMeta.componentParent);
+        }), getParentRenderWindow = __WEBPACK_IMPORTED_MODULE_2__lib__.J(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
-            var parentWindow = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.d(window);
-            if (!parentWindow) throw new Error("Can not find parent window");
-            if (componentMeta.renderParent === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.DIRECT_PARENT) return parentWindow;
-            if (componentMeta.renderParent === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.PARENT_PARENT) {
-                parentWindow = __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.d(parentWindow);
-                if (!parentWindow) throw new Error("Can not find parent render window");
-                return parentWindow;
-            }
-            if (componentMeta.renderParent === __WEBPACK_IMPORTED_MODULE_3__constants__.WINDOW_REFERENCES.PARENT_UID) {
-                parentWindow = getParentComponentWindow()[__WEBPACK_IMPORTED_MODULE_3__constants__.__XCOMPONENT__].windows[componentMeta.uid];
-                if (!parentWindow) throw new Error("Can not find parent render window");
-                return parentWindow;
-            }
-            throw new Error("Unrecognized renderParent reference: " + componentMeta.renderParent);
+            return getWindowByRef(componentMeta.renderParent);
         });
     },
     "./node_modules/xcomponent/src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -5900,6 +5968,12 @@
         });
         __webpack_require__.d(__webpack_exports__, "CLASS_NAMES", function() {
             return CLASS_NAMES;
+        });
+        __webpack_require__.d(__webpack_exports__, "EVENTS", function() {
+            return EVENTS;
+        });
+        __webpack_require__.d(__webpack_exports__, "ATTRIBUTES", function() {
+            return ATTRIBUTES;
         });
         __webpack_require__.d(__webpack_exports__, "ANIMATION_NAMES", function() {
             return ANIMATION_NAMES;
@@ -5940,25 +6014,20 @@
             RAW: "raw",
             UID: "uid"
         }, WINDOW_REFERENCES = {
-            DIRECT_PARENT: "__direct_parent__",
-            PARENT_PARENT: "__parent_parent__",
-            PARENT_UID: "__parent_uid__"
-        }, PROP_TYPES_LIST = __WEBPACK_IMPORTED_MODULE_0__lib__._1(PROP_TYPES), CONTEXT_TYPES = {
+            OPENER: "opener",
+            TOP: "top",
+            PARENT: "parent",
+            GLOBAL: "global"
+        }, PROP_TYPES_LIST = __WEBPACK_IMPORTED_MODULE_0__lib__._3(PROP_TYPES), CONTEXT_TYPES = {
             IFRAME: "iframe",
             POPUP: "popup"
         }, CLASS_NAMES = {
             XCOMPONENT: "" + XCOMPONENT,
-            COMPONENT: XCOMPONENT + "-component",
-            CLOSE: XCOMPONENT + "-close",
-            FOCUS: XCOMPONENT + "-focus",
-            ELEMENT: XCOMPONENT + "-element",
-            IFRAME: XCOMPONENT + "-iframe",
-            POPUP: XCOMPONENT + "-popup",
-            LOADING: XCOMPONENT + "-loading",
-            SHOW_CONTAINER: XCOMPONENT + "-show-container",
-            SHOW_COMPONENT: XCOMPONENT + "-show-component",
-            HIDE_CONTAINER: XCOMPONENT + "-hide-container",
-            HIDE_COMPONENT: XCOMPONENT + "-hide-component"
+            OUTLET: XCOMPONENT + "-outlet"
+        }, EVENTS = {
+            CLOSE: XCOMPONENT + "-close"
+        }, ATTRIBUTES = {
+            IFRAME_PLACEHOLDER: "data-xcomponent-" + XCOMPONENT + "-placeholder"
         }, ANIMATION_NAMES = {
             SHOW_CONTAINER: XCOMPONENT + "-show-container",
             SHOW_COMPONENT: XCOMPONENT + "-show-component",
@@ -5972,7 +6041,7 @@
             CLOSE_DETECTED: "close_detected",
             USER_CLOSED: "user_closed",
             PARENT_CLOSE_DETECTED: "parent_close_detected"
-        }, CONTEXT_TYPES_LIST = __WEBPACK_IMPORTED_MODULE_0__lib__._1(CONTEXT_TYPES), DELEGATE = {
+        }, CONTEXT_TYPES_LIST = __WEBPACK_IMPORTED_MODULE_0__lib__._3(CONTEXT_TYPES), DELEGATE = {
             CALL_ORIGINAL: "call_original",
             CALL_DELEGATE: "call_delegate"
         }, WILDCARD = "*";
@@ -5987,7 +6056,7 @@
                 return window.angular;
             },
             register: function(component, ng) {
-                ng.module(component.tag, []).directive(__WEBPACK_IMPORTED_MODULE_0__lib__.h(component.tag), function() {
+                ng.module(component.tag, []).directive(__WEBPACK_IMPORTED_MODULE_0__lib__.g(component.tag), function() {
                     for (var scope = {}, _iterator = Object.keys(component.props), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                         var _ref;
                         if (_isArray) {
@@ -6030,7 +6099,7 @@
                                         scopeProps[key] = $scope[key];
                                     }
                                 }
-                                scopeProps = __WEBPACK_IMPORTED_MODULE_0__lib__.S(scopeProps, function(value, key, fullKey) {
+                                scopeProps = __WEBPACK_IMPORTED_MODULE_0__lib__.U(scopeProps, function(value, key, fullKey) {
                                     if ("function" == typeof value) return function() {
                                         var result = value.apply(this, arguments);
                                         safeApply();
@@ -6050,6 +6119,55 @@
                     };
                 });
                 return component;
+            }
+        };
+    },
+    "./node_modules/xcomponent/src/drivers/angular2.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return angular2;
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), angular2 = {
+            global: function() {
+                return !1;
+            },
+            register: function(xcomponent, _ref) {
+                function getProps(component) {
+                    return __WEBPACK_IMPORTED_MODULE_0__lib__.U(component.props, function(value, key, fullKey) {
+                        if ("function" == typeof value) return function() {
+                            var _this = this, _arguments = arguments;
+                            return component.zone.run(function() {
+                                return value.apply(_this, _arguments);
+                            });
+                        };
+                    });
+                }
+                var Component = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
+                xcomponent.log("initializing angular2 component");
+                var Angular2Component = Component({
+                    selector: xcomponent.tag,
+                    template: "<div></div>",
+                    inputs: [ "props" ]
+                }).Class({
+                    constructor: [ ElementRef, NgZone, function(elementRef, zone) {
+                        this.elementRef = elementRef;
+                        this.zone = zone;
+                    } ],
+                    ngOnInit: function() {
+                        var targetElement = this.elementRef.nativeElement, parent = xcomponent.init(getProps(this), null, targetElement);
+                        parent.render(targetElement);
+                        this.parent = parent;
+                    },
+                    ngOnChanges: function() {
+                        this.parent && this.parent.updateProps(getProps(this));
+                    }
+                });
+                return NgModule({
+                    declarations: [ Angular2Component ],
+                    exports: [ Angular2Component ]
+                }).Class({
+                    constructor: function() {}
+                });
             }
         };
     },
@@ -6129,6 +6247,10 @@
         __webpack_require__.d(__webpack_exports__, "glimmer", function() {
             return __WEBPACK_IMPORTED_MODULE_4__glimmer__.a;
         });
+        var __WEBPACK_IMPORTED_MODULE_5__angular2__ = __webpack_require__("./node_modules/xcomponent/src/drivers/angular2.js");
+        __webpack_require__.d(__webpack_exports__, "angular2", function() {
+            return __WEBPACK_IMPORTED_MODULE_5__angular2__.a;
+        });
     },
     "./node_modules/xcomponent/src/drivers/react.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -6151,14 +6273,14 @@
                     },
                     componentDidMount: function() {
                         component.log("instantiate_react_component");
-                        var el = ReactDOM.findDOMNode(this), parent = component.init(__WEBPACK_IMPORTED_MODULE_0__lib__.s({}, this.props), null, el);
+                        var el = ReactDOM.findDOMNode(this), parent = component.init(__WEBPACK_IMPORTED_MODULE_0__lib__.r({}, this.props), null, el);
                         this.setState({
                             parent: parent
                         });
                         parent.render(el);
                     },
                     componentDidUpdate: function() {
-                        this.state && this.state.parent && this.state.parent.updateProps(__WEBPACK_IMPORTED_MODULE_0__lib__.s({}, this.props));
+                        this.state && this.state.parent && this.state.parent.updateProps(__WEBPACK_IMPORTED_MODULE_0__lib__.r({}, this.props));
                     }
                 });
                 return component.react;
@@ -6249,36 +6371,33 @@
             value: !0
         });
         __webpack_exports__.create = create;
+        __webpack_require__.d(__webpack_exports__, "postRobot", function() {
+            return postRobot;
+        });
         __webpack_require__.d(__webpack_exports__, "CONSTANTS", function() {
             return CONSTANTS;
         });
         var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__("./node_modules/xcomponent/src/component/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js");
         __webpack_require__.d(__webpack_exports__, "getCurrentScriptDir", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__lib__.v;
+            return __WEBPACK_IMPORTED_MODULE_1__lib__.u;
         });
         __webpack_require__.d(__webpack_exports__, "getByTag", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.e;
-        });
-        __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.d;
-        });
-        __webpack_require__.d(__webpack_exports__, "componentTemplate", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.b;
-        });
-        __webpack_require__.d(__webpack_exports__, "containerTemplate", function() {
             return __WEBPACK_IMPORTED_MODULE_0__component__.c;
         });
-        var __WEBPACK_IMPORTED_MODULE_2__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js");
+        __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__component__.b;
+        });
+        var __WEBPACK_IMPORTED_MODULE_2_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js");
         __webpack_require__.d(__webpack_exports__, "PopupOpenError", function() {
-            return __WEBPACK_IMPORTED_MODULE_2__error__.b;
+            return __WEBPACK_IMPORTED_MODULE_3__error__.b;
         });
         __webpack_require__.d(__webpack_exports__, "IntegrationError", function() {
-            return __WEBPACK_IMPORTED_MODULE_2__error__.a;
+            return __WEBPACK_IMPORTED_MODULE_3__error__.a;
         });
         __webpack_require__.d(__webpack_exports__, "RenderError", function() {
-            return __WEBPACK_IMPORTED_MODULE_2__error__.c;
+            return __WEBPACK_IMPORTED_MODULE_3__error__.c;
         });
-        var __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), CONSTANTS = __WEBPACK_IMPORTED_MODULE_3__constants__;
+        var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, CONSTANTS = __WEBPACK_IMPORTED_MODULE_4__constants__;
     },
     "./node_modules/xcomponent/src/lib/css.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -6320,15 +6439,14 @@
                 this.__memoized__.hasOwnProperty(name) || (this.__memoized__[name] = method.apply(this, arguments));
                 return this.__memoized__[name];
             };
+            descriptor.value.displayName = name + ":memoized";
         }
         function promise(target, name, descriptor) {
             var method = descriptor.value;
             descriptor.value = function() {
-                var _this = this, _arguments = arguments;
-                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                    return method.apply(_this, _arguments);
-                });
+                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method, this, arguments);
             };
+            descriptor.value.displayName = name + ":promisified";
         }
         __webpack_exports__.a = memoized;
         __webpack_exports__.b = promise;
@@ -6336,8 +6454,14 @@
     },
     "./node_modules/xcomponent/src/lib/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        function appendChild(container, child) {
+            container.appendChild(child);
+        }
         function isElement(element) {
             return element instanceof window.Element || "object" === (void 0 === element ? "undefined" : _typeof(element)) && 1 === element.nodeType && "object" === _typeof(element.style) && "object" === _typeof(element.ownerDocument);
+        }
+        function querySelectorAll(el, selector) {
+            return Array.prototype.slice.call(el.querySelectorAll(selector));
         }
         function getElement(id) {
             if (isElement(id)) return id;
@@ -6372,15 +6496,44 @@
             var params = Object.keys(options).map(function(key) {
                 if (options[key]) return key + "=" + options[key];
             }).filter(Boolean).join(","), win = window.open(url, options.name, params, !0);
-            if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.s(win)) {
+            if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w(win)) {
                 throw new __WEBPACK_IMPORTED_MODULE_4__error__.b("Can not open popup window - blocked");
             }
             return win;
         }
-        function iframe(url) {
-            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, container = arguments[2];
-            container = getElement(container);
-            var frame = document.createElement("iframe");
+        function writeToWindow(win, html) {
+            try {
+                win.document.open();
+                win.document.write(html);
+                win.document.close();
+            } catch (err) {
+                try {
+                    win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
+                } catch (err2) {}
+            }
+        }
+        function writeElementToWindow(win, el) {
+            var doc = win.document, docElement = doc.documentElement, body = doc.body;
+            if (!docElement) {
+                docElement = doc.createElement("html");
+                doc.appendChild(docElement);
+            }
+            if (!body) {
+                body = doc.createElement("body");
+                docElement.appendChild(body);
+            }
+            appendChild(body, el);
+        }
+        function setStyle(el, styleText) {
+            var doc = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : window.document;
+            el.styleSheet ? el.styleSheet.cssText = styleText : el.appendChild(doc.createTextNode(styleText));
+        }
+        function createElement() {
+            var tag = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "div", options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, container = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
+            tag = tag.toLowerCase();
+            var element = document.createElement(tag);
+            options.style && __WEBPACK_IMPORTED_MODULE_3__util__.f(element.style, options.style);
+            options.class && (element.className = options.class.join(" "));
             if (options.attributes) for (var _iterator = Object.keys(options.attributes), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 if (_isArray) {
@@ -6392,36 +6545,56 @@
                     _ref = _i.value;
                 }
                 var key = _ref;
-                frame[key] = options.attributes[key];
+                element.setAttribute(key, options.attributes[key]);
             }
-            if (options.style) for (var _iterator2 = Object.keys(options.style), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
-                }
-                var _key = _ref2;
-                frame.style[_key] = options.style[_key];
-            }
-            frame.frameBorder = "0";
-            frame.allowTransparency = "true";
-            frame.style.backgroundColor = "transparent";
-            container && container.appendChild(frame);
+            options.styleSheet && setStyle(element, options.styleSheet);
+            container && appendChild(container, element);
+            if (options.html) if ("iframe" === tag) {
+                if (!container || !element.contentWindow) throw new Error("Iframe html can not be written unless container provided and iframe in DOM");
+                writeToWindow(element.contentWindow, options.html);
+            } else element.innerHTML = options.html;
+            return element;
+        }
+        function awaitFrameWindow(frame) {
+            return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
+                frame.addEventListener("load", function() {
+                    return resolve(frame.contentWindow);
+                });
+                frame.addEventListener("error", function(err) {
+                    return frame.contentWindow ? resolve(frame.contentWindow) : reject(err);
+                });
+            }).then(function(win) {
+                if (!win) throw new Error("Could not find window in iframe");
+                return win;
+            });
+        }
+        function iframe() {
+            var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, container = arguments[1];
+            container = getElement(container);
+            var attributes = options.attributes || {}, style = options.style || {}, frame = createElement("iframe", {
+                attributes: _extends({
+                    frameBorder: "0",
+                    allowTransparency: "true"
+                }, attributes),
+                style: _extends({
+                    backgroundColor: "transparent"
+                }, style),
+                html: options.html
+            });
+            frame.awaitWindow = awaitFrameWindow(frame);
+            container.appendChild(frame);
+            options.url && (iframe.src = options.url);
             return frame;
         }
         function onCloseWindow(win, callback) {
             callback = __WEBPACK_IMPORTED_MODULE_2__fn__.e(callback);
             var interval = void 0, checkWindowClosed = function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.s(win, !1)) {
+                if (__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w(win, !1)) {
                     interval.cancel();
                     return callback();
                 }
             };
-            interval = __WEBPACK_IMPORTED_MODULE_3__util__.i(checkWindowClosed, 50);
+            interval = __WEBPACK_IMPORTED_MODULE_3__util__.j(checkWindowClosed, 50);
             checkWindowClosed();
             return {
                 cancel: function() {
@@ -6435,68 +6608,6 @@
             return {
                 cancel: function() {
                     obj.removeEventListener(event, handler);
-                }
-            };
-        }
-        function createElement() {
-            var tag = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "div", options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, element = (arguments.length > 2 && void 0 !== arguments[2] && arguments[2], 
-            document.createElement(tag));
-            options.style && __WEBPACK_IMPORTED_MODULE_3__util__.e(element.style, options.style);
-            options.html && (element.innerHTML = options.html);
-            options.class && (element.className = options.class.join(" "));
-            if (options.attributes) for (var _iterator3 = Object.keys(options.attributes), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref3 = _i3.value;
-                }
-                var key = _ref3;
-                element.setAttribute(key, options.attributes[key]);
-            }
-            options.styleSheet && (element.styleSheet ? element.styleSheet.cssText = options.styleSheet : element.appendChild(document.createTextNode(options.styleSheet)));
-            return element;
-        }
-        function addEventToClass(element, className, eventName, handler) {
-            for (var handlers = [], _iterator4 = Array.prototype.slice.call(element.getElementsByClassName(className)), _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                var _ref4;
-                if (_isArray4) {
-                    if (_i4 >= _iterator4.length) break;
-                    _ref4 = _iterator4[_i4++];
-                } else {
-                    _i4 = _iterator4.next();
-                    if (_i4.done) break;
-                    _ref4 = _i4.value;
-                }
-                var el = _ref4, eventHandler = function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    handler();
-                };
-                handlers.push({
-                    el: el,
-                    eventHandler: eventHandler
-                });
-                el.addEventListener(eventName, eventHandler);
-            }
-            return {
-                cancel: function() {
-                    for (var _iterator5 = handlers, _isArray5 = Array.isArray(_iterator5), _i5 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                        var _ref6;
-                        if (_isArray5) {
-                            if (_i5 >= _iterator5.length) break;
-                            _ref6 = _iterator5[_i5++];
-                        } else {
-                            _i5 = _iterator5.next();
-                            if (_i5.done) break;
-                            _ref6 = _i5.value;
-                        }
-                        var _ref7 = _ref6, el = _ref7.el, eventHandler = _ref7.eventHandler;
-                        el.removeEventListener(eventName, eventHandler);
-                    }
                 }
             };
         }
@@ -6516,7 +6627,7 @@
             return Object.keys(obj).filter(function(key) {
                 return "string" == typeof obj[key];
             }).map(function(key) {
-                return __WEBPACK_IMPORTED_MODULE_3__util__.k(key) + "=" + __WEBPACK_IMPORTED_MODULE_3__util__.k(obj[key]);
+                return __WEBPACK_IMPORTED_MODULE_3__util__.l(key) + "=" + __WEBPACK_IMPORTED_MODULE_3__util__.l(obj[key]);
             }).join("&");
         }
         function extendQuery(originalQuery) {
@@ -6572,12 +6683,12 @@
                 }
             };
         }
-        function dimensionsDiff(one, two, _ref10) {
-            var _ref10$width = _ref10.width, width = void 0 === _ref10$width || _ref10$width, _ref10$height = _ref10.height, height = void 0 === _ref10$height || _ref10$height, _ref10$threshold = _ref10.threshold, threshold = void 0 === _ref10$threshold ? 0 : _ref10$threshold;
+        function dimensionsDiff(one, two, _ref4) {
+            var _ref4$width = _ref4.width, width = void 0 === _ref4$width || _ref4$width, _ref4$height = _ref4.height, height = void 0 === _ref4$height || _ref4$height, _ref4$threshold = _ref4.threshold, threshold = void 0 === _ref4$threshold ? 0 : _ref4$threshold;
             return !!(width && Math.abs(one.width - two.width) > threshold) || !!(height && Math.abs(one.height - two.height) > threshold);
         }
-        function trackDimensions(el, _ref11) {
-            var _ref11$width = _ref11.width, width = void 0 === _ref11$width || _ref11$width, _ref11$height = _ref11.height, height = void 0 === _ref11$height || _ref11$height, _ref11$threshold = _ref11.threshold, threshold = void 0 === _ref11$threshold ? 0 : _ref11$threshold, currentDimensions = getCurrentDimensions(el);
+        function trackDimensions(el, _ref5) {
+            var _ref5$width = _ref5.width, width = void 0 === _ref5$width || _ref5$width, _ref5$height = _ref5.height, height = void 0 === _ref5$height || _ref5$height, _ref5$threshold = _ref5.threshold, threshold = void 0 === _ref5$threshold ? 0 : _ref5$threshold, currentDimensions = getCurrentDimensions(el);
             return {
                 check: function() {
                     var newDimensions = getCurrentDimensions(el);
@@ -6595,8 +6706,8 @@
                 }
             };
         }
-        function onDimensionsChange(el, _ref12) {
-            var _ref12$width = _ref12.width, width = void 0 === _ref12$width || _ref12$width, _ref12$height = _ref12.height, height = void 0 === _ref12$height || _ref12$height, _ref12$delay = _ref12.delay, delay = void 0 === _ref12$delay ? 50 : _ref12$delay, _ref12$threshold = _ref12.threshold, threshold = void 0 === _ref12$threshold ? 0 : _ref12$threshold;
+        function onDimensionsChange(el, _ref6) {
+            var _ref6$width = _ref6.width, width = void 0 === _ref6$width || _ref6$width, _ref6$height = _ref6.height, height = void 0 === _ref6$height || _ref6$height, _ref6$delay = _ref6.delay, delay = void 0 === _ref6$delay ? 50 : _ref6$delay, _ref6$threshold = _ref6.threshold, threshold = void 0 === _ref6$threshold ? 0 : _ref6$threshold;
             return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
                 function onWindowResize() {
                     var _tracker$check2 = tracker.check(), changed = _tracker$check2.changed, dimensions = _tracker$check2.dimensions;
@@ -6624,38 +6735,38 @@
                 window.addEventListener("resize", onWindowResize);
             });
         }
-        function dimensionsMatchViewport(el, _ref13) {
-            var width = _ref13.width, height = _ref13.height, dimensions = getCurrentDimensions(el);
+        function dimensionsMatchViewport(el, _ref7) {
+            var width = _ref7.width, height = _ref7.height, dimensions = getCurrentDimensions(el);
             return (!width || dimensions.width === window.innerWidth) && (!height || dimensions.height === window.innerHeight);
         }
         function bindEvents(element, eventNames, handler) {
             handler = __WEBPACK_IMPORTED_MODULE_2__fn__.e(handler);
-            for (var _iterator8 = eventNames, _isArray8 = Array.isArray(_iterator8), _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
-                var _ref14;
-                if (_isArray8) {
-                    if (_i8 >= _iterator8.length) break;
-                    _ref14 = _iterator8[_i8++];
+            for (var _iterator4 = eventNames, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref8;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref8 = _iterator4[_i4++];
                 } else {
-                    _i8 = _iterator8.next();
-                    if (_i8.done) break;
-                    _ref14 = _i8.value;
+                    _i4 = _iterator4.next();
+                    if (_i4.done) break;
+                    _ref8 = _i4.value;
                 }
-                var eventName = _ref14;
+                var eventName = _ref8;
                 element.addEventListener(eventName, handler);
             }
             return {
                 cancel: __WEBPACK_IMPORTED_MODULE_2__fn__.e(function() {
-                    for (var _iterator9 = eventNames, _isArray9 = Array.isArray(_iterator9), _i9 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                        var _ref15;
-                        if (_isArray9) {
-                            if (_i9 >= _iterator9.length) break;
-                            _ref15 = _iterator9[_i9++];
+                    for (var _iterator5 = eventNames, _isArray5 = Array.isArray(_iterator5), _i5 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                        var _ref9;
+                        if (_isArray5) {
+                            if (_i5 >= _iterator5.length) break;
+                            _ref9 = _iterator5[_i5++];
                         } else {
-                            _i9 = _iterator9.next();
-                            if (_i9.done) break;
-                            _ref15 = _i9.value;
+                            _i5 = _iterator5.next();
+                            if (_i5.done) break;
+                            _ref9 = _i5.value;
                         }
-                        var eventName = _ref15;
+                        var eventName = _ref9;
                         element.removeEventListener(eventName, handler);
                     }
                 })
@@ -6663,17 +6774,17 @@
         }
         function setVendorCSS(element, name, value) {
             element.style[name] = value;
-            for (var capitalizedName = __WEBPACK_IMPORTED_MODULE_3__util__.a(name), _iterator10 = VENDOR_PREFIXES, _isArray10 = Array.isArray(_iterator10), _i10 = 0, _iterator10 = _isArray10 ? _iterator10 : _iterator10[Symbol.iterator](); ;) {
-                var _ref16;
-                if (_isArray10) {
-                    if (_i10 >= _iterator10.length) break;
-                    _ref16 = _iterator10[_i10++];
+            for (var capitalizedName = __WEBPACK_IMPORTED_MODULE_3__util__.a(name), _iterator6 = VENDOR_PREFIXES, _isArray6 = Array.isArray(_iterator6), _i6 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
+                var _ref10;
+                if (_isArray6) {
+                    if (_i6 >= _iterator6.length) break;
+                    _ref10 = _iterator6[_i6++];
                 } else {
-                    _i10 = _iterator10.next();
-                    if (_i10.done) break;
-                    _ref16 = _i10.value;
+                    _i6 = _iterator6.next();
+                    if (_i6.done) break;
+                    _ref10 = _i6.value;
                 }
-                var prefix = _ref16;
+                var prefix = _ref10;
                 element.style["" + prefix + capitalizedName] = value;
             }
         }
@@ -6755,17 +6866,6 @@
         function addClass(element, name) {
             element.classList ? element.classList.add(name) : -1 === element.className.split(/\s+/).indexOf(name) && (element.className += " " + name);
         }
-        function writeToWindow(win, html) {
-            try {
-                win.document.open();
-                win.document.write(html);
-                win.document.close();
-            } catch (err) {
-                try {
-                    win.location = "javascript: document.open(); document.write(" + JSON.stringify(html) + "); document.close();";
-                } catch (err2) {}
-            }
-        }
         function getCurrentScriptDir() {
             console.warn("Do not use xcomponent.getCurrentScriptDir() in production -- browser support is limited");
             return document.currentScript ? document.currentScript.src.split("/").slice(0, -1).join("/") : ".";
@@ -6783,7 +6883,7 @@
         function watchElementForClose(element, handler) {
             handler = __WEBPACK_IMPORTED_MODULE_2__fn__.e(handler);
             var interval = void 0;
-            isElementClosed(element) ? handler() : interval = __WEBPACK_IMPORTED_MODULE_3__util__.i(function() {
+            isElementClosed(element) ? handler() : interval = __WEBPACK_IMPORTED_MODULE_3__util__.j(function() {
                 if (isElementClosed(element)) {
                     interval.cancel();
                     handler();
@@ -6795,35 +6895,105 @@
                 }
             };
         }
+        function getHttpType(contentType, url) {
+            return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
+                var req = new window.XMLHttpRequest();
+                req.open("GET", url);
+                req.setRequestHeader("Accept", contentType);
+                req.send(null);
+                req.onload = function() {
+                    resolve(req.responseText);
+                };
+                req.onerror = function() {
+                    return reject(new Error("prefetch failed"));
+                };
+            });
+        }
+        function getHTML(url) {
+            return getHttpType("text/html", url);
+        }
+        function prefetchPage(url) {
+            return getHTML(url);
+        }
+        function getDOMElement(item) {
+            var doc = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : document;
+            if (item && item.ownerDocument) return item;
+            if ("string" == typeof item) {
+                var div = doc.createElement("div");
+                div.innerHTML = item;
+                if (1 !== div.children.length) throw new Error("Expected 1 child from html, found " + div.children.length);
+                for (var el = div.children[0], _iterator7 = querySelectorAll(el, "script"), _isArray7 = Array.isArray(_iterator7), _i7 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+                    var _ref11;
+                    if (_isArray7) {
+                        if (_i7 >= _iterator7.length) break;
+                        _ref11 = _iterator7[_i7++];
+                    } else {
+                        _i7 = _iterator7.next();
+                        if (_i7.done) break;
+                        _ref11 = _i7.value;
+                    }
+                    var script = _ref11, newScript = doc.createElement("script");
+                    newScript.text = script.textContent;
+                    script.parentNode.replaceChild(newScript, script);
+                }
+                return el;
+            }
+            throw new Error("Expected HTMLElement or string, got " + (void 0 === item ? "undefined" : _typeof(item)));
+        }
+        function jsxDom(name, props, content) {
+            name = name.toLowerCase();
+            var doc = this && this.createElement ? this : window.document, el = doc.createElement(name);
+            for (var prop in props) prop in JSX_EVENTS ? el.addEventListener(JSX_EVENTS[prop], props[prop]) : el.setAttribute(prop, props[prop]);
+            if ("style" === name) {
+                if ("string" != typeof content) throw new Error("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : _typeof(content)));
+                if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
+                setStyle(el, content, doc);
+            } else if ("iframe" === name) {
+                if (arguments.length > 3) throw new Error("Expected only single child node for iframe");
+                el.addEventListener("load", function() {
+                    var win = el.contentWindow;
+                    if (!win) throw new Error("Expected frame to have contentWindow");
+                    "string" == typeof content ? writeToWindow(win, content) : writeElementToWindow(win, content);
+                });
+            } else if ("script" === name) {
+                if ("string" != typeof content) throw new Error("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : _typeof(content)));
+                if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
+                el.text = content;
+            } else for (var i = 2; i < arguments.length; i++) "string" == typeof arguments[i] ? el.textContent = arguments[i] : appendChild(el, arguments[i]);
+            return el;
+        }
+        __webpack_exports__.d = appendChild;
         __webpack_exports__.o = getElement;
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return documentReady;
         });
-        __webpack_exports__.i = elementReady;
-        __webpack_exports__.u = popup;
+        __webpack_exports__.h = elementReady;
+        __webpack_exports__.v = popup;
+        __webpack_exports__.D = writeToWindow;
+        __webpack_exports__.C = writeElementToWindow;
         __webpack_exports__.r = iframe;
-        __webpack_exports__.s = onCloseWindow;
+        __webpack_exports__.t = onCloseWindow;
         __webpack_exports__.b = addEventListener;
-        __webpack_exports__.e = createElement;
-        __webpack_exports__.c = addEventToClass;
         __webpack_exports__.m = getDomain;
         __webpack_exports__.n = getDomainFromUrl;
-        __webpack_exports__.k = extendUrl;
-        __webpack_exports__.j = elementStoppedMoving;
-        __webpack_exports__.v = setOverflow;
-        __webpack_exports__.y = trackDimensions;
-        __webpack_exports__.t = onDimensionsChange;
-        __webpack_exports__.g = dimensionsMatchViewport;
-        __webpack_exports__.x = showElement;
+        __webpack_exports__.j = extendUrl;
+        __webpack_exports__.i = elementStoppedMoving;
+        __webpack_exports__.x = setOverflow;
+        __webpack_exports__.A = trackDimensions;
+        __webpack_exports__.u = onDimensionsChange;
+        __webpack_exports__.f = dimensionsMatchViewport;
+        __webpack_exports__.z = showElement;
         __webpack_exports__.q = hideElement;
-        __webpack_exports__.f = destroyElement;
-        __webpack_exports__.w = showAndAnimate;
-        __webpack_exports__.d = animateAndHide;
+        __webpack_exports__.e = destroyElement;
+        __webpack_exports__.y = showAndAnimate;
+        __webpack_exports__.c = animateAndHide;
         __webpack_exports__.a = addClass;
-        __webpack_exports__.A = writeToWindow;
-        __webpack_exports__.l = getCurrentScriptDir;
+        __webpack_exports__.k = getCurrentScriptDir;
         __webpack_exports__.p = getElementName;
-        __webpack_exports__.z = watchElementForClose;
+        __webpack_exports__.B = watchElementForClose;
+        __webpack_exports__.w = prefetchPage;
+        __webpack_exports__.l = getDOMElement;
+        __webpack_exports__.s = jsxDom;
         var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__fn__ = __webpack_require__("./node_modules/xcomponent/src/lib/fn.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./node_modules/xcomponent/src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_4__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
@@ -6846,17 +7016,17 @@
             var params = {};
             if (!queryString) return params;
             if (-1 === queryString.indexOf("=")) throw new Error("Can not parse query string params: " + queryString);
-            for (var _iterator6 = queryString.split("&"), _isArray6 = Array.isArray(_iterator6), _i6 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
-                var _ref8;
-                if (_isArray6) {
-                    if (_i6 >= _iterator6.length) break;
-                    _ref8 = _iterator6[_i6++];
+            for (var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
                 } else {
-                    _i6 = _iterator6.next();
-                    if (_i6.done) break;
-                    _ref8 = _i6.value;
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
                 }
-                var pair = _ref8;
+                var pair = _ref2;
                 pair = pair.split("=");
                 pair[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
             }
@@ -6867,6 +7037,8 @@
                 BLOCK: "block"
             },
             IMPORTANT: "important"
+        }, JSX_EVENTS = {
+            onClick: "click"
         };
     },
     "./node_modules/xcomponent/src/lib/fn.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -6887,7 +7059,7 @@
                 var cacheKey = void 0;
                 try {
                     cacheKey = JSON.stringify(Array.prototype.slice.call(arguments), function(key, val) {
-                        return "function" == typeof val ? "xcomponent:memoize[" + __WEBPACK_IMPORTED_MODULE_0__util__.g(val) + "]" : val;
+                        return "function" == typeof val ? "xcomponent:memoize[" + __WEBPACK_IMPORTED_MODULE_0__util__.h(val) + "]" : val;
                     });
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -6907,14 +7079,14 @@
             };
         }
         function serializeFunctions(obj) {
-            return __WEBPACK_IMPORTED_MODULE_0__util__.h(obj, function(value, key, fullKey) {
+            return __WEBPACK_IMPORTED_MODULE_0__util__.i(obj, function(value, key, fullKey) {
                 if (value instanceof Function) return {
                     __type__: "__function__"
                 };
             });
         }
         function deserializeFunctions(obj, handler) {
-            return __WEBPACK_IMPORTED_MODULE_0__util__.h(obj, function(value, key, fullKey) {
+            return __WEBPACK_IMPORTED_MODULE_0__util__.i(obj, function(value, key, fullKey) {
                 if (value && "__function__" === value.__type__) return function() {
                     return handler({
                         key: key,
@@ -6960,25 +7132,25 @@
         __webpack_require__.d(__webpack_exports__, "d", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "f", function() {
+        __webpack_require__.d(__webpack_exports__, "j", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.g;
         });
         __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.k;
         });
         __webpack_require__.d(__webpack_exports__, "v", function() {
@@ -7002,89 +7174,98 @@
         __webpack_require__.d(__webpack_exports__, "E", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.r;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.s;
         });
         __webpack_require__.d(__webpack_exports__, "N", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.t;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.u;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.v;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.w;
         });
         __webpack_require__.d(__webpack_exports__, "X", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.x;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.y;
         });
-        __webpack_require__.d(__webpack_exports__, "_3", function() {
+        __webpack_require__.d(__webpack_exports__, "Z", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.z;
         });
-        __webpack_require__.d(__webpack_exports__, "_4", function() {
+        __webpack_require__.d(__webpack_exports__, "_1", function() {
             return __WEBPACK_IMPORTED_MODULE_0__dom__.A;
         });
+        __webpack_require__.d(__webpack_exports__, "_5", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__dom__.B;
+        });
+        __webpack_require__.d(__webpack_exports__, "_6", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__dom__.C;
+        });
+        __webpack_require__.d(__webpack_exports__, "_7", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__dom__.D;
+        });
         var __WEBPACK_IMPORTED_MODULE_1__fn__ = __webpack_require__("./node_modules/xcomponent/src/lib/fn.js");
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "i", function() {
             return __WEBPACK_IMPORTED_MODULE_1__fn__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return __WEBPACK_IMPORTED_MODULE_1__fn__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return __WEBPACK_IMPORTED_MODULE_1__fn__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return __WEBPACK_IMPORTED_MODULE_1__fn__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return __WEBPACK_IMPORTED_MODULE_1__fn__.f;
         });
         var __WEBPACK_IMPORTED_MODULE_2__promise__ = __webpack_require__("./node_modules/xcomponent/src/lib/promise.js");
-        __webpack_require__.d(__webpack_exports__, "g", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return __WEBPACK_IMPORTED_MODULE_2__promise__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "i", function() {
+        __webpack_require__.d(__webpack_exports__, "h", function() {
             return __WEBPACK_IMPORTED_MODULE_2__promise__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return __WEBPACK_IMPORTED_MODULE_2__promise__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return __WEBPACK_IMPORTED_MODULE_2__promise__.d;
-        });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
-            return __WEBPACK_IMPORTED_MODULE_2__promise__.e;
         });
         var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./node_modules/xcomponent/src/lib/util.js");
         __webpack_require__.d(__webpack_exports__, "e", function() {
             return __WEBPACK_IMPORTED_MODULE_3__util__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "h", function() {
+        __webpack_require__.d(__webpack_exports__, "g", function() {
             return __WEBPACK_IMPORTED_MODULE_3__util__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return __WEBPACK_IMPORTED_MODULE_3__util__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return __WEBPACK_IMPORTED_MODULE_3__util__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return __WEBPACK_IMPORTED_MODULE_3__util__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__util__.h;
+        __webpack_require__.d(__webpack_exports__, "t", function() {
+            return __WEBPACK_IMPORTED_MODULE_3__util__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__util__.j;
+        __webpack_require__.d(__webpack_exports__, "U", function() {
+            return __WEBPACK_IMPORTED_MODULE_3__util__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__util__.l;
+        __webpack_require__.d(__webpack_exports__, "_2", function() {
+            return __WEBPACK_IMPORTED_MODULE_3__util__.k;
+        });
+        __webpack_require__.d(__webpack_exports__, "_3", function() {
+            return __WEBPACK_IMPORTED_MODULE_3__util__.m;
         });
         var __WEBPACK_IMPORTED_MODULE_4__css__ = __webpack_require__("./node_modules/xcomponent/src/lib/css.js");
         __webpack_require__.d(__webpack_exports__, "G", function() {
@@ -7093,17 +7274,17 @@
         __webpack_require__.d(__webpack_exports__, "H", function() {
             return __WEBPACK_IMPORTED_MODULE_4__css__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return __WEBPACK_IMPORTED_MODULE_4__css__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "_0", function() {
             return __WEBPACK_IMPORTED_MODULE_4__css__.d;
         });
         var __WEBPACK_IMPORTED_MODULE_5__decorators__ = __webpack_require__("./node_modules/xcomponent/src/lib/decorators.js");
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return __WEBPACK_IMPORTED_MODULE_5__decorators__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return __WEBPACK_IMPORTED_MODULE_5__decorators__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_6__global__ = __webpack_require__("./node_modules/xcomponent/src/lib/global.js");
@@ -7114,16 +7295,16 @@
             return __WEBPACK_IMPORTED_MODULE_6__global__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_7__logger__ = __webpack_require__("./node_modules/xcomponent/src/lib/logger.js");
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return __WEBPACK_IMPORTED_MODULE_7__logger__.a;
         });
         __webpack_require__.d(__webpack_exports__, "F", function() {
             return __WEBPACK_IMPORTED_MODULE_7__logger__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return __WEBPACK_IMPORTED_MODULE_7__logger__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "_2", function() {
+        __webpack_require__.d(__webpack_exports__, "_4", function() {
             return __WEBPACK_IMPORTED_MODULE_7__logger__.d;
         });
     },
@@ -7188,21 +7369,14 @@
                 });
             };
         }
-        function delay() {
-            var time = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1;
-            return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
-                setTimeout(resolve, time);
-            });
-        }
         function cycle(method) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(method).then(function() {
                 return cycle(method);
             });
         }
-        __webpack_exports__.c = denodeify;
-        __webpack_exports__.e = promisify;
-        __webpack_exports__.d = getter;
-        __webpack_exports__.b = delay;
+        __webpack_exports__.b = denodeify;
+        __webpack_exports__.d = promisify;
+        __webpack_exports__.c = getter;
         __webpack_exports__.a = cycle;
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
     },
@@ -7292,18 +7466,66 @@
             }
             return uid;
         }
-        __webpack_exports__.k = urlEncode;
+        function eventEmitter() {
+            var triggered = {}, handlers = {};
+            return {
+                on: function(eventName, handler) {
+                    var handlerList = handlers[eventName] = handlers[eventName] || [];
+                    handlerList.push(handler);
+                    var cancelled = !1;
+                    return {
+                        cancel: function() {
+                            if (!cancelled) {
+                                cancelled = !0;
+                                handlerList.splice(handlerList.indexOf(handler), 1);
+                            }
+                        }
+                    };
+                },
+                once: function(eventName, handler) {
+                    var listener = this.on(eventName, function() {
+                        listener.cancel();
+                        handler();
+                    });
+                    return listener;
+                },
+                trigger: function(eventName) {
+                    var handlerList = handlers[eventName];
+                    if (handlerList) for (var _iterator = handlerList, _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i2 >= _iterator.length) break;
+                            _ref = _iterator[_i2++];
+                        } else {
+                            _i2 = _iterator.next();
+                            if (_i2.done) break;
+                            _ref = _i2.value;
+                        }
+                        var handler = _ref;
+                        handler();
+                    }
+                },
+                triggerOnce: function(eventName) {
+                    if (!triggered[eventName]) {
+                        triggered[eventName] = !0;
+                        this.trigger(eventName);
+                    }
+                }
+            };
+        }
+        __webpack_exports__.l = urlEncode;
         __webpack_exports__.c = dasherizeToCamel;
-        __webpack_exports__.e = extend;
-        __webpack_exports__.l = values;
-        __webpack_exports__.j = uniqueID;
+        __webpack_exports__.f = extend;
+        __webpack_exports__.m = values;
+        __webpack_exports__.k = uniqueID;
         __webpack_exports__.a = capitalizeFirstLetter;
-        __webpack_exports__.f = get;
-        __webpack_exports__.i = safeInterval;
-        __webpack_exports__.h = replaceObject;
+        __webpack_exports__.g = get;
+        __webpack_exports__.j = safeInterval;
+        __webpack_exports__.i = replaceObject;
         __webpack_exports__.b = copyProp;
         __webpack_exports__.d = dotify;
-        __webpack_exports__.g = getObjectID;
+        __webpack_exports__.h = getObjectID;
+        __webpack_exports__.e = eventEmitter;
         var __WEBPACK_IMPORTED_MODULE_0_cross_domain_safe_weakmap_src__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
@@ -7865,7 +8087,7 @@
             componentTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects, "4.0.89";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects, "4.0.90";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -7917,6 +8139,10 @@
                     def: function() {
                         return __WEBPACK_IMPORTED_MODULE_4__config__.e.MANUAL;
                     }
+                },
+                prefetchLogin: {
+                    type: "boolean",
+                    required: !1
                 },
                 stage: {
                     type: "string",
@@ -8342,14 +8568,14 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return componentStyle;
         });
-        var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:hover .paypal-button-content {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 41px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 147px) {\n        body {\n            height: 42px;\n        }\n\n        body.fundingicons {\n            height: 65px;\n        }\n    }\n\n    @media only screen and (min-width : 147px) and (min-height: 41px) {\n\n        .paypal-button {\n            display: block;\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n        body {\n            height: 48px;\n        }\n        body.fundingicons {\n            height: 75px;\n        }\n    }\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n        body {\n            height: 60px;\n\n        }\n        body.fundingicons {\n            height: 85px;\n        }\n    }\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 11px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n\n    /*Unbranded Button; eg: buynow */\n\n\n     @media only screen and (min-height: 22px) and (min-width: 100px) {\n            .paypal-button.paypal-branding-false .paypal-button-content {\n                font-size: 13px;\n            }\n     }\n\n\n     @media only screen and (min-width : 200px) and (min-height: 48px) {\n            .paypal-button.paypal-branding-false .paypal-button-content  {\n                font-size: 15px;\n            }\n     }\n\n     @media only screen and (min-width : 250px) and (min-height: 60px) {\n            .paypal-button.paypal-branding-false .paypal-button-content {\n                font-size: 20px;\n            }\n     }\n\n     .paypal-button.paypal-branding-false .paypal-button-content  {\n            width: 60%;\n            margin: auto;\n            font-weight: 900;\n     }\n\n     /*Add on branding */\n\n     .paypal-button.paypal-branding-true .paypal-button-content  {\n            width: 100%;\n            margin: auto;\n     }\n\n\n';
+        var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 80px;\n        min-height: 22px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n\n        width: 100%;\n\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:hover .paypal-button-content {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        color: #003366;\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    @media only screen and (max-height : 41px) {\n        .paypal-button {\n            display: none;\n        }\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 147px) {\n        body {\n            height: 42px;\n        }\n\n        body.fundingicons {\n            height: 65px;\n        }\n    }\n\n    @media only screen and (min-width : 147px) and (min-height: 41px) {\n\n        .paypal-button {\n            display: block;\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n        body {\n            height: 48px;\n        }\n        body.fundingicons {\n            height: 75px;\n        }\n    }\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n        body {\n            height: 60px;\n\n        }\n        body.fundingicons {\n            height: 85px;\n        }\n    }\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 11px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button.paypal-color-gold .paypal-button-content {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button.paypal-color-gold .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button.paypal-color-blue .paypal-button-content {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button.paypal-color-blue .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button.paypal-color-silver .paypal-button-content {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button.paypal-color-silver .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n    /* Credit Blue */\n\n    .paypal-button.paypal-style-credit .paypal-button-content {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n    /* Credit Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit {\n        min-width: 148px;\n        min-height: 42px;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n\n    /*Unbranded Button; eg: buynow */\n\n\n     @media only screen and (min-height: 22px) and (min-width: 100px) {\n            .paypal-button.paypal-branding-false .paypal-button-content {\n                font-size: 13px;\n            }\n     }\n\n\n     @media only screen and (min-width : 200px) and (min-height: 48px) {\n            .paypal-button.paypal-branding-false .paypal-button-content  {\n                font-size: 15px;\n            }\n     }\n\n     @media only screen and (min-width : 250px) and (min-height: 60px) {\n            .paypal-button.paypal-branding-false .paypal-button-content {\n                font-size: 20px;\n            }\n     }\n\n     .paypal-button.paypal-branding-false .paypal-button-content  {\n            width: auto;\n            display: inline-block;\n            max-width: 100%;\n            margin: auto;\n            font-weight: 900;\n     }\n\n     /*Add on branding */\n\n     .paypal-button.paypal-branding-true .paypal-button-content  {\n            width: 100%;\n            margin: auto;\n     }\n\n\n';
     },
     "./src/components/button/templates/component/template.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function expandContentText(contentText, _ref) {
             var color = _ref.color, logoColor = _ref.logoColor;
             return contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, function(match, name, text) {
-                return name ? '<img class="logo logo-' + name + " logo-" + name + "-" + color + '"\n                        src="data:image/svg+xml;base64,' + __WEBPACK_IMPORTED_MODULE_6_Base64__.btoa(__WEBPACK_IMPORTED_MODULE_0__logos__.a[name][logoColor]) + '"\n                        alt="PayPal">' : text && text.trim() ? '<span class="text">' + text + "</span>" : text;
+                return name ? '<img class="logo logo-' + name + " logo-" + name + "-" + color + '"\n                        src="data:image/svg+xml;base64,' + __WEBPACK_IMPORTED_MODULE_6_Base64__.btoa(__WEBPACK_IMPORTED_MODULE_0__logos__.a[name][logoColor]) + '"\n                        alt="' + name + '">' : text && text.trim() ? '<span class="text">' + text + "</span>" : text;
             });
         }
         function removeBranding(contentText) {
@@ -8364,7 +8590,7 @@
                 color: color,
                 logoColor: logoColor
             });
-            return '\n        <style type="text/css">\n            ' + __WEBPACK_IMPORTED_MODULE_1__style__.a + '\n        </style>\n\n        <div id="paypal-button-container">\n            <div id="paypal-button" class="paypal-button paypal-style-' + label + " paypal-branding-" + (branding ? "true" : "false") + "  paypal-color-" + color + " paypal-logo-color-" + logoColor + " paypal-size-" + size + " paypal-shape-" + shape + '" type="submit" role="button" tabindex="0">\n                <div class="paypal-button-content">\n                    ' + labelText + '\n                </div>\n                <div class="paypal-button-tag-content">\n                    ' + (tagline ? tagcontent : "") + "\n                </div>\n\n            </div>\n        </div>\n\n        <script>\n            (" + __WEBPACK_IMPORTED_MODULE_2__script__.a.toString() + ")();\n        <\/script>\n    ";
+            return '\n        <div id="paypal-button-container">\n\n            <style type="text/css">\n                ' + __WEBPACK_IMPORTED_MODULE_1__style__.a + '\n            </style>\n\n            <div id="paypal-button" class="paypal-button paypal-style-' + label + " paypal-branding-" + (branding ? "true" : "false") + "  paypal-color-" + color + " paypal-logo-color-" + logoColor + " paypal-size-" + size + " paypal-shape-" + shape + '" type="submit" role="button" tabindex="0">\n                <div class="paypal-button-content">\n                    ' + labelText + '\n                </div>\n                <div class="paypal-button-tag-content">\n                    ' + (tagline ? tagcontent : "") + "\n                </div>\n            </div>\n\n            <script>\n                (" + __WEBPACK_IMPORTED_MODULE_2__script__.a.toString() + ")();\n            <\/script>\n        </div>\n    ";
         }
         __webpack_exports__.a = componentTemplate;
         var __WEBPACK_IMPORTED_MODULE_0__logos__ = __webpack_require__("./src/components/button/templates/component/logos/index.js"), __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("./src/components/button/templates/component/style.js"), __WEBPACK_IMPORTED_MODULE_2__script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_3__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/components/button/templates/component/config.js"), __WEBPACK_IMPORTED_MODULE_5__validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_6_Base64__ = __webpack_require__("./node_modules/Base64/base64.js");
@@ -8404,32 +8630,19 @@
     },
     "./src/components/button/templates/container/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0__template__ = __webpack_require__("./src/components/button/templates/container/template.js");
+        var __WEBPACK_IMPORTED_MODULE_0__template__ = __webpack_require__("./src/components/button/templates/container/template.jsx");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return __WEBPACK_IMPORTED_MODULE_0__template__.a;
         });
     },
-    "./src/components/button/templates/container/template.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./src/components/button/templates/container/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function getInitialHeight(width) {
             var fundingIcons = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
             if (width) return fundingIcons ? width < 200 ? "65px" : width < 300 ? "75px" : "85px" : width < 200 ? "42px" : width < 300 ? "48px" : "60px";
         }
         function containerTemplate(_ref) {
-            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, dimensions = _ref.dimensions, style = props.style || {}, label = style.label || "checkout", size = style.size || "small", fundingIcons = props.style.fundingicons || !1, initialHeight = getInitialHeight(dimensions.width, fundingIcons), sizes = {
-                small: {
-                    width: "148px",
-                    height: "42px"
-                },
-                medium: {
-                    width: "230px",
-                    height: "48px"
-                },
-                large: {
-                    width: "380px",
-                    height: "60px"
-                }
-            }, sizesWithFunding = {
+            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, dimensions = _ref.dimensions, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, style = props.style || {}, label = style.label || "checkout", size = style.size || "small", fundingIcons = props.style.fundingicons || !1, sizes = fundingIcons ? {
                 small: {
                     width: "148px",
                     height: "65px"
@@ -8442,8 +8655,24 @@
                     width: "380px",
                     height: "85px"
                 }
-            };
-            return "\n\n        <style>\n            #" + id + " {\n\n            }\n\n            #" + id + " .paypal-button-container {\n                font-size: 0;\n                width: 100%;\n                min-width: " + sizes.small.width + ";\n                max-width: 500px;\n                display: inline-block;\n            }\n\n            #" + id + " .paypal-button-parent {\n                display: inline-block;\n            }\n\n            #" + id + " .paypal-button-parent iframe {\n                max-width: 100%;\n                min-width: 100%;\n                max-height: 100%;\n                min-height: 100%;\n            }\n\n            #" + id + " .paypal-button-parent,\n            #" + id + " .paypal-button-parent-size-tiny,\n            #" + id + " .paypal-button-parent-size-small {\n                width:  " + (fundingIcons ? sizesWithFunding : sizes).small.width + ";\n                height: " + (fundingIcons ? sizesWithFunding : sizes).small.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-medium {\n                width:  " + (fundingIcons ? sizesWithFunding : sizes).medium.width + ";\n                height: " + (fundingIcons ? sizesWithFunding : sizes).medium.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-large {\n                width:  " + (fundingIcons ? sizesWithFunding : sizes).large.width + ";\n                height: " + (fundingIcons ? sizesWithFunding : sizes).large.height + ";\n            }\n\n            #" + id + " .paypal-button-parent-size-responsive {\n                max-width: 100%;\n                min-width: 100%;\n                height: " + (initialHeight || sizes.small.height) + '\n            }\n        </style>\n\n        <div class="paypal-button-container">\n            <div class="paypal-button-parent paypal-button-parent-label-' + label + " paypal-button-parent-size-" + size + " " + CLASS.ELEMENT + '"></div>\n        </div>\n    ';
+            } : {
+                small: {
+                    width: "148px",
+                    height: "42px"
+                },
+                medium: {
+                    width: "230px",
+                    height: "48px"
+                },
+                large: {
+                    width: "380px",
+                    height: "60px"
+                }
+            }, defaultSize = sizes.small, minWidth = sizes.small.width, initialHeight = getInitialHeight(dimensions.width, fundingIcons) || sizes.small.height;
+            return jsxDom("div", {
+                id: id,
+                class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size
+            }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + ".paypal-button-size-responsive {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + minWidth + ";\n                        max-width: 500px;\n                    }\n\n                    #" + id + ",\n                    #" + id + " > ." + CLASS.OUTLET + ",\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-height: " + sizes.small.height + ";\n                        max-height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultSize.width + ";\n                        height: " + defaultSize.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-tiny > ." + CLASS.OUTLET + ",\n                    #" + id + ".paypal-button-size-small > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.small.width + ";\n                        height: " + sizes.small.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-medium > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.medium.width + ";\n                        height: " + sizes.medium.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-large > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.large.width + ";\n                        height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-responsive > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                        height: " + initialHeight + "\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + defaultSize.width + ";\n                        height: 100%;\n                    }\n                "), outlet);
         }
         __webpack_exports__.a = containerTemplate;
     },
@@ -8511,9 +8740,8 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects, "4.0.89";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects, "4.0.90";
             },
-            sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.b,
             props: {
@@ -8548,7 +8776,12 @@
                 locale: {
                     type: "string",
                     required: !1,
-                    queryParam: "locale.x"
+                    queryParam: "locale.x",
+                    allowDelegate: !0,
+                    def: function() {
+                        var _getBrowserLocale = __WEBPACK_IMPORTED_MODULE_6__lib__.g();
+                        return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
+                    }
                 },
                 client: {
                     type: "object",
@@ -8636,13 +8869,17 @@
                     required: !1,
                     sameDomain: !0
                 },
+                accessToken: {
+                    type: "function",
+                    required: !1
+                },
                 onCancel: {
                     type: "function",
                     required: !1,
                     once: !0,
                     noop: !0,
                     decorate: function(original) {
-                        if (original) return function(data) {
+                        return function(data) {
                             var _this2 = this, actions = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, close = function() {
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                     if (actions.close) return actions.close();
@@ -8653,7 +8890,7 @@
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_6__lib__.C(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                                return original.call(_this2, data, _extends({}, actions, {
+                                if (original) return original.call(_this2, data, _extends({}, actions, {
                                     close: close,
                                     redirect: redirect
                                 }));
@@ -8829,7 +9066,7 @@
                     props: props
                 }) : function() {
                     return props.payment;
-                }, payment = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.I(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.A(getPayment)), onAuthorize = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.O(props.onAuthorize), onCancel = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.O(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.K);
+                }, payment = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.J(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.A(getPayment)), onAuthorize = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.P(props.onAuthorize), onCancel = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.P(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.L);
                 return ternary(props.url, props.url, payment().then(function(token) {
                     if (token) {
                         var _extendUrl;
@@ -8921,43 +9158,111 @@
         __webpack_exports__.c = setupPopupBridgeProxy;
         var __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js");
     },
-    "./src/components/checkout/templates/component.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./src/components/checkout/templates/component/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function _objectDestructuringEmpty(obj) {
-            if (null == obj) throw new TypeError("Cannot destructure undefined");
-        }
+        var __WEBPACK_IMPORTED_MODULE_0__template__ = __webpack_require__("./src/components/checkout/templates/component/template.jsx");
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__template__.a;
+        });
+    },
+    "./src/components/checkout/templates/component/style.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return checkoutComponentStyle;
+        });
+        var checkoutComponentStyle = "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        -webkit-animation: rotation .7s infinite linear;\n        -moz-animation: rotation .7s infinite linear;\n        -o-animation: rotation .7s infinite linear;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @-webkit-keyframes rotation {\n        from {\n            -webkit-transform: rotate(0deg)\n        }\n        to {\n            -webkit-transform: rotate(359deg)\n        }\n    }\n    @-moz-keyframes rotation {\n        from {\n            -moz-transform: rotate(0deg)\n        }\n        to {\n            -moz-transform: rotate(359deg)\n        }\n    }\n    @-o-keyframes rotation {\n        from {\n            -o-transform: rotate(0deg)\n        }\n        to {\n            -o-transform: rotate(359deg)\n        }\n    }\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n";
+    },
+    "./src/components/checkout/templates/component/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
         function componentTemplate(_ref) {
-            _objectDestructuringEmpty(_ref);
-            return '\n\n        <!DOCTYPE html>\n\n        <head>\n            <meta name="viewport" content="width=device-width, initial-scale=1">\n\n            <title>PayPal</title>\n\n            <style>\n                body {\n                    width: 100%;\n                    height: 100%;\n                    overflow: hidden;\n                    position: fixed;\n                    top: 0;\n                    left: 0;\n                    margin: 0;\n                }\n\n                .spinner {\n                    height: 100%;\n                    width: 100%;\n                    position: absolute;\n                    z-index: 10\n                }\n\n                .spinner .spinWrap {\n                    width: 200px;\n                    height: 100px;\n                    position: absolute;\n                    top: 50%;\n                    left: 50%;\n                    margin-left: -100px;\n                    margin-top: -50px\n                }\n\n                .spinner .loader,\n                .spinner .spinnerImage {\n                    height: 100px;\n                    width: 100px;\n                    position: absolute;\n                    top: 0;\n                    left: 50%;\n                    opacity: 1;\n                    filter: alpha(opacity=100)\n                }\n\n                .spinner .spinnerImage {\n                    margin: 28px 0 0 -25px;\n                    background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n                }\n\n                .spinner .loader {\n                    margin: 0 0 0 -55px;\n                    background-color: transparent;\n                    -webkit-animation: rotation .7s infinite linear;\n                    -moz-animation: rotation .7s infinite linear;\n                    -o-animation: rotation .7s infinite linear;\n                    animation: rotation .7s infinite linear;\n                    border-left: 5px solid #cbcbca;\n                    border-right: 5px solid #cbcbca;\n                    border-bottom: 5px solid #cbcbca;\n                    border-top: 5px solid #2380be;\n                    border-radius: 100%\n                }\n\n                @-webkit-keyframes rotation {\n                    from {\n                        -webkit-transform: rotate(0deg)\n                    }\n                    to {\n                        -webkit-transform: rotate(359deg)\n                    }\n                }\n                @-moz-keyframes rotation {\n                    from {\n                        -moz-transform: rotate(0deg)\n                    }\n                    to {\n                        -moz-transform: rotate(359deg)\n                    }\n                }\n                @-o-keyframes rotation {\n                    from {\n                        -o-transform: rotate(0deg)\n                    }\n                    to {\n                        -o-transform: rotate(359deg)\n                    }\n                }\n                @keyframes rotation {\n                    from {\n                        transform: rotate(0deg)\n                    }\n                    to {\n                        transform: rotate(359deg)\n                    }\n                }\n            </style>\n\n        </head>\n\n        <body>\n            <div id="preloaderSpinner" class="preloader spinner">\n                <div class="spinWrap">\n                    <p class="spinnerImage"></p>\n                    <p class="loader"></p>\n                </div>\n            </div>\n        </body>\n\n    ';
+            var jsxDom = _ref.jsxDom;
+            return jsxDom("div", {
+                class: "preloader spinner"
+            }, jsxDom("style", null, __WEBPACK_IMPORTED_MODULE_0__style__.a), jsxDom("div", {
+                class: "spinWrap"
+            }, jsxDom("p", {
+                class: "spinnerImage"
+            }), jsxDom("p", {
+                class: "loader"
+            })));
         }
         __webpack_exports__.a = componentTemplate;
+        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/checkout/templates/component/style.js");
     },
-    "./src/components/checkout/templates/container.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./src/components/checkout/templates/container/content.json": function(module, exports) {
+        module.exports = '\n{\n    "AT": {\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZW": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "YT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "YE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "WS": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "WF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "VU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "VG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "VE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "VC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "VA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "UY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "UG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "TT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "TO": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "TN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "TM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "TD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "TC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "SZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "ST": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "SO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "SM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "SB": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "SA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "RW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "RS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "RE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "QA": {\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        },\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PY": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "PW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "PA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "OM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "NU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NP": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "NG": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "NC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MV": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "MU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MT": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "MR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MQ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "ML": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "MK": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "MG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ME": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MD": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MC": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "MA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "LS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LK": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "LI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "LA": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "KW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "KN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "KM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "KI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KH": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "JO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "JM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "IS": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HR": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "GY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "GP": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "GM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "GI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "FO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "FM": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "FK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "FJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "ET": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ER": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "EG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "EC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "DZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "DO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "DM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "DJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CY": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CM": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CI": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "BY": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BT": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "BS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "BN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "BM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "BG": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BB": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BA": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AL": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AE": {\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        },\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        }\n    },\n    "GB": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AR": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "US": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "VN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.  ",\n            "continue": "Continue"\n        }\n    },\n    "UA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TW": {\n        "zh": {\n            "windowMessage": "\\u770B\\u4E0D\\u5230\\u5B89\\u5168\\u9023\\u7DDA\\u7684 PayPal \\u700F\\u89BD\\u5668\\uFF1F\\u6211\\u5011\\u5C07\\u6703\\u91CD\\u65B0\\u555F\\u52D5\\u8996\\u7A97\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7E7C\\u7E8C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TR": {\n        "tr": {\n            "windowMessage": "G\\u00FCvenli PayPal taray\\u0131c\\u0131s\\u0131n\\u0131 g\\u00F6rm\\u00FCyor musunuz? Al\\u0131\\u015Fveri\\u015Finizi tamamlamak i\\u00E7in pencereyi yeniden ba\\u015Flatman\\u0131za yard\\u0131mc\\u0131 olaca\\u011F\\u0131z.\\u00A0 ",\n            "continue": "Devam"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TH": {\n        "th": {\n            "windowMessage": "\\u0E16\\u0E49\\u0E32\\u0E04\\u0E38\\u0E13\\u0E44\\u0E21\\u0E48\\u0E40\\u0E2B\\u0E47\\u0E19\\u0E40\\u0E1A\\u0E23\\u0E32\\u0E27\\u0E4C\\u0E40\\u0E0B\\u0E2D\\u0E23\\u0E4C\\u0E17\\u0E35\\u0E48\\u0E21\\u0E35\\u0E23\\u0E30\\u0E1A\\u0E1A\\u0E04\\u0E27\\u0E32\\u0E21\\u0E1B\\u0E25\\u0E2D\\u0E14\\u0E20\\u0E31\\u0E22\\u0E02\\u0E2D\\u0E07 PayPal \\u0E40\\u0E23\\u0E32\\u0E08\\u0E30\\u0E0A\\u0E48\\u0E27\\u0E22\\u0E04\\u0E38\\u0E13\\u0E40\\u0E1B\\u0E34\\u0E14\\u0E2B\\u0E19\\u0E49\\u0E32\\u0E15\\u0E48\\u0E32\\u0E07\\u0E2D\\u0E35\\u0E01\\u0E04\\u0E23\\u0E31\\u0E49\\u0E07\\u0E40\\u0E1E\\u0E37\\u0E48\\u0E2D\\u0E0A\\u0E33\\u0E23\\u0E30\\u0E40\\u0E07\\u0E34\\u0E19\\u0E43\\u0E2B\\u0E49\\u0E40\\u0E23\\u0E35\\u0E22\\u0E1A\\u0E23\\u0E49\\u0E2D\\u0E22 ",\n            "continue": "\\u0E14\\u0E33\\u0E40\\u0E19\\u0E34\\u0E19\\u0E01\\u0E32\\u0E23\\u0E15\\u0E48\\u0E2D"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SG": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SE": {\n        "sv": {\n            "windowMessage": "Ser du inte den s\\u00E4kra PayPal-webbl\\u00E4saren? Vi hj\\u00E4lper dig att starta om f\\u00F6nstret f\\u00F6r att slutf\\u00F6ra ditt k\\u00F6p. ",\n            "continue": "Forts\\u00E4tt"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "RU": {\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "RO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PT": {\n        "pt": {\n            "windowMessage": "N\\u00E3o v\\u00EA a indica\\u00E7\\u00E3o de sess\\u00E3o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PL": {\n        "pl": {\n            "windowMessage": "Nie widzisz bezpiecznej przegl\\u0105darki PayPal? Pomo\\u017Cemy Ci ponownie uruchomi\\u0107 to okno w celu dokonania zakupu.\\u00A0 ",\n            "continue": "Kontynuuj"\n        },\n        "en": {\n            "windowMessage": "You don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PH": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre paiement.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar su pago.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NO": {\n        "no": {\n            "windowMessage": "Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med \\u00E5 starte vinduet p\\u00E5 nytt s\\u00E5 du kan fullf\\u00F8re kj\\u00F8pet.\\u00A0 ",\n            "continue": "Fortsett"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NL": {\n        "nl": {\n            "windowMessage": "Ziet u geen beveiligde PayPal-browser? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.\\u00A0 ",\n            "continue": "Doorgaan"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MY": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MX": {\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "LV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Das PayPal-Fenster wird nicht angezeigt?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "LT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KR": {\n        "ko": {\n            "windowMessage": "\\uBCF4\\uC548 PayPal \\uBE0C\\uB77C\\uC6B0\\uC800\\uAC00 \\uBCF4\\uC774\\uC9C0 \\uC54A\\uC73C\\uC2E0\\uAC00\\uC694? \\uCC3D\\uC744 \\uB2E4\\uC2DC \\uC2E4\\uD589\\uD558\\uC5EC \\uACB0\\uC81C\\uB97C \\uC644\\uB8CC\\uD560 \\uC218 \\uC788\\uB3C4\\uB85D \\uB3C4\\uC640\\uB4DC\\uB9AC\\uACA0\\uC2B5\\uB2C8\\uB2E4.\\u00A0 ",\n            "continue": "\\uACC4\\uC18D"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "JP": {\n        "ja": {\n            "windowMessage": "\\u30BB\\u30AD\\u30E5\\u30A2\\u306A\\u30D6\\u30E9\\u30A6\\u30B6\\u304C\\u8868\\u793A\\u3055\\u308C\\u306A\\u3044\\u5834\\u5408\\u306F\\u3001\\u30A6\\u30A3\\u30F3\\u30C9\\u30A6\\u3092\\u518D\\u8D77\\u52D5\\u3057\\u3066\\u3001\\u652F\\u6255\\u3044\\u3092\\u5B8C\\u4E86\\u3067\\u304D\\u308B\\u3088\\u3046\\u304A\\u624B\\u4F1D\\u3044\\u3044\\u305F\\u3057\\u307E\\u3059\\u3002",\n            "continue": "\\u7D9A\\u884C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.  ",\n            "continue": "Continue"\n        }\n    },\n    "IT": {\n        "it": {\n            "windowMessage": "Non vedi la pagina sicura di PayPal? Ti aiuteremo a riaprire la finestra per completare l\'acquisto.\\u00A0 ",\n            "continue": "Continua"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IL": {\n        "he": {\n            "windowMessage": "\\u05DC\\u05D0 \\u05E8\\u05D5\\u05D0\\u05D4 \\u05D0\\u05EA \\u05D3\\u05E4\\u05D3\\u05E4\\u05DF PayPal \\u05D4\\u05DE\\u05D0\\u05D5\\u05D1\\u05D8\\u05D7? \\u05E0\\u05E2\\u05D6\\u05D5\\u05E8 \\u05DC\\u05DA \\u05DC\\u05E4\\u05EA\\u05D5\\u05D7 \\u05DE\\u05D7\\u05D3\\u05E9 \\u05D0\\u05EA \\u05D4\\u05D7\\u05DC\\u05D5\\u05DF \\u05DB\\u05D3\\u05D9 \\u05DC\\u05D4\\u05E9\\u05DC\\u05D9\\u05DD \\u05D0\\u05EA \\u05D4\\u05E7\\u05E0\\u05D9\\u05D9\\u05D4 \\u05E9\\u05DC\\u05DA.\\u00A0 ",\n            "continue": "\\u05D4\\u05DE\\u05E9\\u05DA"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ID": {\n        "id": {\n            "windowMessage": "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembayaran Anda.\\u00A0 ",\n            "continue": "Lanjutkan"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HK": {\n        "zh": {\n            "windowMessage": "\\u770B\\u4E0D\\u5230\\u5B89\\u5168\\u7684 PayPal \\u700F\\u89BD\\u5668\\u8996\\u7A97\\uFF1F\\u6211\\u5011\\u6703\\u52A9\\u4F60\\u91CD\\u65B0\\u958B\\u555F\\u8996\\u7A97\\uFF0C\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002",\n            "continue": "\\u7E7C\\u7E8C"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GROUP-LATAM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GROUP-EMEA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "pt": {\n            "windowMessage": "N\\u00E3o v\\u00EA a indica\\u00E7\\u00E3o de sess\\u00E3o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "GROUP-APAC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ko": {\n            "windowMessage": "\\uBCF4\\uC548 PayPal \\uBE0C\\uB77C\\uC6B0\\uC800\\uAC00 \\uBCF4\\uC774\\uC9C0 \\uC54A\\uC73C\\uC2E0\\uAC00\\uC694? \\uCC3D\\uC744 \\uB2E4\\uC2DC \\uC2E4\\uD589\\uD558\\uC5EC \\uAD6C\\uB9E4\\uB97C \\uC644\\uB8CC\\uD560 \\uC218 \\uC788\\uB3C4\\uB85D \\uB3C4\\uC640\\uB4DC\\uB9AC\\uACA0\\uC2B5\\uB2C8\\uB2E4. ",\n            "continue": "\\uACC4\\uC18D"\n        },\n        "id": {\n            "windowMessage": "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembelian Anda. ",\n            "continue": "Lanjutkan"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "GR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "FR": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ES": {\n        "es": {\n            "windowMessage": "\\u00BFNo ve el s\\u00EDmbolo de navegaci\\u00F3n segura de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar la compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "FI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "EE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "DK": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "CZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "DE": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "CH": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "CA": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 de PayPal\\u00A0? Nous vous aiderons \\u00E0 relancer la fen\\u00EAtre afin d\'effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you relaunch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "C2": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BE": {\n        "nl": {\n            "windowMessage": "Ziet u de beveiligde PayPal-browser niet? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.\\u00A0 ",\n            "continue": "Doorgaan"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BR": {\n        "pt": {\n            "windowMessage": "N\\u00E3o est\\u00E1 vendo o navegador seguro do PayPal? Ajudaremos voc\\u00EA a reabrir a janela para concluir a compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AU": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    }\n}\n';
+    },
+    "./src/components/checkout/templates/container/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var __WEBPACK_IMPORTED_MODULE_0__template__ = __webpack_require__("./src/components/checkout/templates/container/template.jsx");
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__template__.a;
+        });
+    },
+    "./src/components/checkout/templates/container/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function containerTemplate(_ref) {
-            var id = _ref.id, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, content = componentContent[__WEBPACK_IMPORTED_MODULE_0__config__.g.locale.country][__WEBPACK_IMPORTED_MODULE_0__config__.g.locale.lang];
-            return '\n\n        <div class="paypal-checkout-overlay ' + CLASS.FOCUS + '">\n            <a href="#' + CLASS.CLOSE + '" class="' + CLASS.CLOSE + '"></a>\n            <div class="paypal-checkout-modal">\n                <div class="paypal-checkout-logo"></div>\n                <div class="paypal-checkout-message">\n                    ' + content.windowMessage + '\n                </div>\n                <div class="paypal-checkout-continue">\n                    <a href="#' + CLASS.FOCUS + '" class="' + CLASS.FOCUS + '">' + content.continue + '</a>\n                </div>\n                <div class="paypal-checkout-loading">\n                    <div class="paypal-spinner"></div>\n                </div>\n            </div>\n\n            <div class="paypal-checkout-iframe-container">\n                <div class="' + CLASS.ELEMENT + ' paypal-checkout-iframe-element"></div>\n            </div>\n        </div>\n\n        <style>\n\n            #' + id + " {\n                position: fixed;\n                z-index: 2147483647;\n                top: 0;\n                left: 0;\n                width: 100%;\n                height: 100%;\n\n                -webkit-animation-duration: 1s;\n                animation-duration: 1s;\n\n                animation-fill-mode:forwards;\n                animation-iteration-count: 1;\n\n                -webkit-animation-fill-mode:forwards;\n                -webkit-animation-iteration-count: 1;\n            }\n\n            #" + id + " .paypal-checkout-overlay {\n\n                position: absolute;\n\n                top: 0;\n                left: 0;\n                width: 100%;\n                height: 100%;\n\n                background-color: black;\n\n                background-color: rgba(0, 0, 0, 0.8);\n\n                background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n                background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n                background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n                background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n                -webkit-transform: translate3d(0, 0, 0);\n                -moz-transform: translate3d(0, 0, 0);\n                -ms-transform: translate3d(0, 0, 0);\n                -o-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0);\n            }\n\n            #" + id + "." + CLASS.POPUP + " .paypal-checkout-overlay {\n                cursor: pointer;\n            }\n\n            #" + id + "." + CLASS.POPUP + " .paypal-checkout-overlay {\n                cursor: pointer;\n            }\n\n            #" + id + ' .paypal-checkout-overlay .paypal-checkout-modal {\n                font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n                font-size: 14px;\n                text-align: center;\n                color: #fff;\n                -webkit-box-sizing: border-box;\n                -moz-box-sizing: border-box;\n                -ms-box-sizing: border-box;\n                box-sizing: border-box;\n                width: 350px;\n                top: 50%;\n                left: 50%;\n                position: fixed;\n                margin-left: -165px;\n                margin-top: -80px;\n                cursor: pointer;\n                text-align: center;\n            }\n\n            #' + id + "." + CLASS.LOADING + " .paypal-checkout-message, #" + id + "." + CLASS.LOADING + " .paypal-checkout-continue {\n                display: none;\n            }\n\n            .paypal-checkout-loading {\n                display: none;\n            }\n\n            #" + id + "." + CLASS.LOADING + " .paypal-checkout-loading {\n                display: block;\n            }\n\n            #" + id + ' .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n                background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n                width: 132px;\n                height: 36px;\n                cursor: pointer;\n                margin-bottom: 30px;\n                display: inline-block;\n            }\n\n            @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n                #' + id + ' .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-logo {\n                    background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n                    background-size: 200px 200px;\n                }\n            }\n\n            #' + id + " .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-message {\n                font-size: 15px;\n                line-height: 1.5;\n                padding: 10px 0;\n            }\n\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-message, #" + id + "." + CLASS.IFRAME + " .paypal-checkout-continue {\n                display: none;\n            }\n\n            #" + id + " .paypal-checkout-overlay .paypal-checkout-modal .paypal-checkout-continue {\n                font-size: 15px;\n                line-height: 1.35;\n                padding: 10px 0;\n                text-decoration: underline;\n                font-weight: bold;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + " {\n                position: absolute;\n                right: 16px;\n                top: 16px;\n                width: 16px;\n                height: 16px;\n                opacity: 0.6;\n            }\n\n            #" + id + "." + CLASS.LOADING + " ." + CLASS.CLOSE + " {\n                display: none;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":hover {\n                opacity: 1;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":before, ." + CLASS.CLOSE + ":after {\n                position: absolute;\n                left: 8px;\n                content: ' ';\n                height: 16px;\n                width: 2px;\n                background-color: white;\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":before {\n                transform: rotate(45deg);\n                -webkit-transform: rotate(45deg);\n                -moz-transform: rotate(45deg);\n                -o-transform: rotate(45deg);\n                -ms-transform: rotate(45deg);\n            }\n\n            #" + id + " ." + CLASS.CLOSE + ":after {\n                transform: rotate(-45deg);\n                -webkit-transform: rotate(-45deg);\n                -moz-transform: rotate(-45deg);\n                -o-transform: rotate(-45deg);\n                -ms-transform: rotate(-45deg);\n            }\n\n            #" + id + " a {\n                color: white;\n            }\n\n            #" + id + " .paypal-checkout-iframe-container {\n                display: none;\n            }\n\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-container > .paypal-checkout-iframe-element,\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-container > .paypal-checkout-iframe-element > iframe {\n                max-height: 95vh;\n                max-width: 95vw;\n            }\n\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-container {\n\n                display: block;\n\n                position: fixed;\n\n                top: 50%;\n                left: 50%;\n\n                min-width: 450px;\n\n                transform: translate3d(-50%, -50%, 0);\n                -webkit-transform: translate3d(-50%, -50%, 0);\n                -moz-transform: translate3d(-50%, -50%, 0);\n                -o-transform: translate3d(-50%, -50%, 0);\n                -ms-transform: translate3d(-50%, -50%, 0);\n\n                border-radius: 10px;\n                overflow: hidden;\n            }\n\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-element {\n\n                -webkit-transition: all 0.3s ease;\n                -moz-transition: all 0.3s ease;\n                -ms-transition: all 0.3s ease;\n                -o-transition: all 0.3 ease;\n                transition: all 0.3s ease;\n\n                -webkit-animation-duration: 0.3s;\n                animation-duration: 0.3s;\n                -webkit-animation-fill-mode: both;\n                animation-fill-mode: both;\n\n                min-width: 450px;\n\n                width: 450px;\n                height: 535px;\n\n                background-color: white;\n\n                overflow: auto;\n                -webkit-overflow-scrolling: touch;\n            }\n\n            @media screen and (max-width: 450px) {\n\n                #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-container {\n                    min-width: calc(100% - 20px);\n                    min-width: -webkit-calc(100% - 20px);\n                    min-width: -moz-calc(100% - 20px);\n                    min-width: -o-calc(100% - 20px);\n                    min-width: -ms-calc(100% - 20px);\n                }\n\n                #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-element {\n                    min-width: 100%;\n                }\n            }\n\n            @media screen and (min-width: 490px) {\n\n                #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-element {\n                    max-width: 450px;\n                }\n            }\n\n            #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-element iframe {\n\n                width: 100%;\n                height: 100%;\n            }\n\n\n            /*!\n             * animate.css -http://daneden.me/animate\n             * Version - 3.5.1\n             * Licensed under the MIT license - http://opensource.org/licenses/MIT\n             *\n             * Copyright (c) 2016 Daniel Eden\n             */\n\n            @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n                from {\n                    opacity: 0;\n                    transform: scale3d(.3, .3, .3);\n                    -webkit-transform: scale3d(.3, .3, .3);\n                }\n\n                to {\n                    opacity: 1;\n                    transform: scale3d(1, 1, 1);\n                    -webkit-transform: scale3d(1, 1, 1);\n                }\n            }\n\n            @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n                from {\n                    opacity: 0;\n                    transform: scale3d(.3, .3, .3);\n                    -webkit-transform: scale3d(.3, .3, .3);\n                }\n\n                to {\n                    opacity: 1;\n                    transform: scale3d(1, 1, 1);\n                    -webkit-transform: scale3d(1, 1, 1);\n                }\n            }\n\n            @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n                from {\n                    transform: scale3d(1, 1, 1);\n                    -webkit-transform: scale3d(1, 1, 1);\n                }\n\n                to {\n                    opacity: 0;\n                    transform: scale3d(.3, .3, .3);\n                    -webkit-transform: scale3d(.3, .3, .3);\n                }\n            }\n\n            @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n                from {\n                    transform: scale3d(1, 1, 1);\n                    -webkit-transform: scale3d(1, 1, 1);\n                }\n\n                to {\n                    opacity: 0;\n                    transform: scale3d(.3, .3, .3);\n                    -webkit-transform: scale3d(.3, .3, .3);\n                }\n            }\n\n            @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n                from {\n                    opacity: 0;\n                }\n\n                to {\n                    opacity: 1;\n                }\n            }\n\n            @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n                from {\n                    opacity: 0;\n                }\n\n                to {\n                    opacity: 1;\n                }\n            }\n\n            @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n                from {\n                    opacity: 1;\n                }\n\n                50% {\n                    opacity: 1;\n                }\n\n                to {\n                    opacity: 0;\n                }\n            }\n\n            @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n                from {\n                    opacity: 1;\n                }\n\n                50% {\n                    opacity: 1;\n                }\n\n                to {\n                    opacity: 0;\n                }\n            }\n\n\n\n            .paypal-spinner {\n                height: 30px;\n                width: 30px;\n                display: inline-block;\n                box-sizing: content-box;\n                opacity: 1;\n                filter: alpha(opacity=100);\n                -webkit-animation: rotation .7s infinite linear;\n                -moz-animation: rotation .7s infinite linear;\n                -o-animation: rotation .7s infinite linear;\n                animation: rotation .7s infinite linear;\n                border-left: 8px solid rgba(0, 0, 0, .2);\n                border-right: 8px solid rgba(0, 0, 0, .2);\n                border-bottom: 8px solid rgba(0, 0, 0, .2);\n                border-top: 8px solid #fff;\n                border-radius: 100%\n            }\n\n            @-webkit-keyframes rotation {\n                from {\n                    -webkit-transform: rotate(0deg)\n                }\n                to {\n                    -webkit-transform: rotate(359deg)\n                }\n            }\n            @-moz-keyframes rotation {\n                from {\n                    -moz-transform: rotate(0deg)\n                }\n                to {\n                    -moz-transform: rotate(359deg)\n                }\n            }\n            @-o-keyframes rotation {\n                from {\n                    -o-transform: rotate(0deg)\n                }\n                to {\n                    -o-transform: rotate(359deg)\n                }\n            }\n            @keyframes rotation {\n                from {\n                    transform: rotate(0deg)\n                }\n                to {\n                    transform: rotate(359deg)\n                }\n            }\n        </style>\n\n        \x3c!--[if IE 9 ]>\n            <style>\n                #" + id + "." + CLASS.IFRAME + " .paypal-checkout-iframe-element {\n\n                    transform: none;\n                    -ms-transform: none;\n\n                    transform: translateX(-50%) translateY(-50%);\n                    -ms-transform:  translateX(-50%) translateY(-50%);\n                }\n            </style>\n        <![endif]--\x3e\n\n    ";
+            function close(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                actions.close();
+            }
+            function focus(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                actions.focus();
+            }
+            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], sandboxStyle = "\n        #" + id + ".paypal-checkout-sandbox {\n            display: block;\n            position: fixed;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            zIndex: 2147483647;\n\n            -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n\n            animation-fill-mode:forwards;\n            animation-iteration-count: 1;\n\n            -webkit-animation-fill-mode:forwards;\n            -webkit-animation-iteration-count: 1;\n        }\n\n        #" + id + ".paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {\n            display: block;\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n    ", containerStyle = "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.8);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n            color: #fff;\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            margin-left: -165px;\n            margin-top: -80px;\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n            background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n            width: 132px;\n            height: 36px;\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n            #' + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n                background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n                background-size: 200px 200px;\n            }\n        }\n\n        #' + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            text-decoration: underline;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n            background-color: white;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " a {\n            color: white;\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        @media screen and (max-width: 450px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n            }\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n            }\n        }\n\n        @media screen and (min-width: 490px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                max-width: 450px;\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ", container = jsxDom("div", {
+                id: id,
+                onClick: focus,
+                class: tag + "-context-" + context + " paypal-checkout-overlay"
+            }, jsxDom("a", {
+                href: "#",
+                class: "paypal-checkout-close",
+                onClick: close
+            }), jsxDom("div", {
+                class: "paypal-checkout-modal"
+            }, jsxDom("div", {
+                class: "paypal-checkout-logo"
+            }), jsxDom("div", {
+                class: "paypal-checkout-message"
+            }, content.windowMessage), jsxDom("div", {
+                class: "paypal-checkout-continue"
+            }, jsxDom("a", {
+                onClick: focus,
+                href: "#"
+            }, content.continue)), jsxDom("div", {
+                class: "paypal-checkout-loader"
+            }, jsxDom("div", {
+                class: "paypal-spinner"
+            }))), jsxDom("div", {
+                class: "paypal-checkout-iframe-container"
+            }, outlet), jsxDom("style", null, containerStyle));
+            on(EVENT.CLOSE, function() {
+                container.className += " " + tag + "-loading";
+            });
+            return jsxDom("div", {
+                id: id,
+                class: "paypal-checkout-sandbox"
+            }, jsxDom("style", null, sandboxStyle), jsxDom("iframe", {
+                name: "__paypal_checkout_sandbox_" + id + "__",
+                scrolling: "no",
+                class: "paypal-checkout-sandbox-iframe"
+            }, container));
         }
         __webpack_exports__.a = containerTemplate;
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__content_json__ = __webpack_require__("./src/components/checkout/templates/content.json"), __WEBPACK_IMPORTED_MODULE_1__content_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__content_json__), componentContent = JSON.parse(__WEBPACK_IMPORTED_MODULE_1__content_json___default.a);
-    },
-    "./src/components/checkout/templates/content.json": function(module, exports) {
-        module.exports = '\n{\n    "AT": {\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZW": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ZA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "YT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "YE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "WS": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "WF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "VU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "VG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "VE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "VC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "VA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "UY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "UG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "TT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "TO": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "TN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "TM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "TD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "TC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "SZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "ST": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "SO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "SM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "SB": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "SA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "RW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "RS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "RE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "QA": {\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        },\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PY": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "PW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "PF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "PA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "OM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "NU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NP": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "NG": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "NE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "NC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MV": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "MU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MT": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "MR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MQ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "ML": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "MK": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "MG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ME": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MD": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MC": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "MA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "LS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LK": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "LI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "LA": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "KW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "KN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "KM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "KI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KH": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "KG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "JO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "JM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "IS": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HR": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "GY": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "GP": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "GM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "GI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "FO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "FM": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "FK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "FJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "ET": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ER": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "EG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "EC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "DZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "DO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "DM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "DJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CY": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CM": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CL": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "CK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CI": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "CG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "BY": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BT": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "BS": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "BN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "BM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BJ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BH": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "BG": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BF": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        }\n    },\n    "BB": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "BA": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AW": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AL": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AG": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "AE": {\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        },\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AD": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "CN": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        }\n    },\n    "GB": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AR": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        }\n    },\n    "US": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "VN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.  ",\n            "continue": "Continue"\n        }\n    },\n    "UA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TW": {\n        "zh": {\n            "windowMessage": "\\u770B\\u4E0D\\u5230\\u5B89\\u5168\\u9023\\u7DDA\\u7684 PayPal \\u700F\\u89BD\\u5668\\uFF1F\\u6211\\u5011\\u5C07\\u6703\\u91CD\\u65B0\\u555F\\u52D5\\u8996\\u7A97\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7E7C\\u7E8C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TR": {\n        "tr": {\n            "windowMessage": "G\\u00FCvenli PayPal taray\\u0131c\\u0131s\\u0131n\\u0131 g\\u00F6rm\\u00FCyor musunuz? Al\\u0131\\u015Fveri\\u015Finizi tamamlamak i\\u00E7in pencereyi yeniden ba\\u015Flatman\\u0131za yard\\u0131mc\\u0131 olaca\\u011F\\u0131z.\\u00A0 ",\n            "continue": "Devam"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "TH": {\n        "th": {\n            "windowMessage": "\\u0E16\\u0E49\\u0E32\\u0E04\\u0E38\\u0E13\\u0E44\\u0E21\\u0E48\\u0E40\\u0E2B\\u0E47\\u0E19\\u0E40\\u0E1A\\u0E23\\u0E32\\u0E27\\u0E4C\\u0E40\\u0E0B\\u0E2D\\u0E23\\u0E4C\\u0E17\\u0E35\\u0E48\\u0E21\\u0E35\\u0E23\\u0E30\\u0E1A\\u0E1A\\u0E04\\u0E27\\u0E32\\u0E21\\u0E1B\\u0E25\\u0E2D\\u0E14\\u0E20\\u0E31\\u0E22\\u0E02\\u0E2D\\u0E07 PayPal \\u0E40\\u0E23\\u0E32\\u0E08\\u0E30\\u0E0A\\u0E48\\u0E27\\u0E22\\u0E04\\u0E38\\u0E13\\u0E40\\u0E1B\\u0E34\\u0E14\\u0E2B\\u0E19\\u0E49\\u0E32\\u0E15\\u0E48\\u0E32\\u0E07\\u0E2D\\u0E35\\u0E01\\u0E04\\u0E23\\u0E31\\u0E49\\u0E07\\u0E40\\u0E1E\\u0E37\\u0E48\\u0E2D\\u0E0A\\u0E33\\u0E23\\u0E30\\u0E40\\u0E07\\u0E34\\u0E19\\u0E43\\u0E2B\\u0E49\\u0E40\\u0E23\\u0E35\\u0E22\\u0E1A\\u0E23\\u0E49\\u0E2D\\u0E22 ",\n            "continue": "\\u0E14\\u0E33\\u0E40\\u0E19\\u0E34\\u0E19\\u0E01\\u0E32\\u0E23\\u0E15\\u0E48\\u0E2D"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SK": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SG": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "SE": {\n        "sv": {\n            "windowMessage": "Ser du inte den s\\u00E4kra PayPal-webbl\\u00E4saren? Vi hj\\u00E4lper dig att starta om f\\u00F6nstret f\\u00F6r att slutf\\u00F6ra ditt k\\u00F6p. ",\n            "continue": "Forts\\u00E4tt"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "RU": {\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "RO": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PT": {\n        "pt": {\n            "windowMessage": "N\\u00E3o v\\u00EA a indica\\u00E7\\u00E3o de sess\\u00E3o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PL": {\n        "pl": {\n            "windowMessage": "Nie widzisz bezpiecznej przegl\\u0105darki PayPal? Pomo\\u017Cemy Ci ponownie uruchomi\\u0107 to okno w celu dokonania zakupu.\\u00A0 ",\n            "continue": "Kontynuuj"\n        },\n        "en": {\n            "windowMessage": "You don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "PH": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre paiement.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar su pago.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NO": {\n        "no": {\n            "windowMessage": "Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med \\u00E5 starte vinduet p\\u00E5 nytt s\\u00E5 du kan fullf\\u00F8re kj\\u00F8pet.\\u00A0 ",\n            "continue": "Fortsett"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "NL": {\n        "nl": {\n            "windowMessage": "Ziet u geen beveiligde PayPal-browser? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.\\u00A0 ",\n            "continue": "Doorgaan"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MY": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "MX": {\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "LV": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "LU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Das PayPal-Fenster wird nicht angezeigt?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "LT": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "KR": {\n        "ko": {\n            "windowMessage": "\\uBCF4\\uC548 PayPal \\uBE0C\\uB77C\\uC6B0\\uC800\\uAC00 \\uBCF4\\uC774\\uC9C0 \\uC54A\\uC73C\\uC2E0\\uAC00\\uC694? \\uCC3D\\uC744 \\uB2E4\\uC2DC \\uC2E4\\uD589\\uD558\\uC5EC \\uACB0\\uC81C\\uB97C \\uC644\\uB8CC\\uD560 \\uC218 \\uC788\\uB3C4\\uB85D \\uB3C4\\uC640\\uB4DC\\uB9AC\\uACA0\\uC2B5\\uB2C8\\uB2E4.\\u00A0 ",\n            "continue": "\\uACC4\\uC18D"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "JP": {\n        "ja": {\n            "windowMessage": "\\u30BB\\u30AD\\u30E5\\u30A2\\u306A\\u30D6\\u30E9\\u30A6\\u30B6\\u304C\\u8868\\u793A\\u3055\\u308C\\u306A\\u3044\\u5834\\u5408\\u306F\\u3001\\u30A6\\u30A3\\u30F3\\u30C9\\u30A6\\u3092\\u518D\\u8D77\\u52D5\\u3057\\u3066\\u3001\\u652F\\u6255\\u3044\\u3092\\u5B8C\\u4E86\\u3067\\u304D\\u308B\\u3088\\u3046\\u304A\\u624B\\u4F1D\\u3044\\u3044\\u305F\\u3057\\u307E\\u3059\\u3002",\n            "continue": "\\u7D9A\\u884C"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.  ",\n            "continue": "Continue"\n        }\n    },\n    "IT": {\n        "it": {\n            "windowMessage": "Non vedi la pagina sicura di PayPal? Ti aiuteremo a riaprire la finestra per completare l\'acquisto.\\u00A0 ",\n            "continue": "Continua"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IN": {\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IL": {\n        "he": {\n            "windowMessage": "\\u05DC\\u05D0 \\u05E8\\u05D5\\u05D0\\u05D4 \\u05D0\\u05EA \\u05D3\\u05E4\\u05D3\\u05E4\\u05DF PayPal \\u05D4\\u05DE\\u05D0\\u05D5\\u05D1\\u05D8\\u05D7? \\u05E0\\u05E2\\u05D6\\u05D5\\u05E8 \\u05DC\\u05DA \\u05DC\\u05E4\\u05EA\\u05D5\\u05D7 \\u05DE\\u05D7\\u05D3\\u05E9 \\u05D0\\u05EA \\u05D4\\u05D7\\u05DC\\u05D5\\u05DF \\u05DB\\u05D3\\u05D9 \\u05DC\\u05D4\\u05E9\\u05DC\\u05D9\\u05DD \\u05D0\\u05EA \\u05D4\\u05E7\\u05E0\\u05D9\\u05D9\\u05D4 \\u05E9\\u05DC\\u05DA.\\u00A0 ",\n            "continue": "\\u05D4\\u05DE\\u05E9\\u05DA"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "IE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HU": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ID": {\n        "id": {\n            "windowMessage": "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembayaran Anda.\\u00A0 ",\n            "continue": "Lanjutkan"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "HK": {\n        "zh": {\n            "windowMessage": "\\u770B\\u4E0D\\u5230\\u5B89\\u5168\\u7684 PayPal \\u700F\\u89BD\\u5668\\u8996\\u7A97\\uFF1F\\u6211\\u5011\\u6703\\u52A9\\u4F60\\u91CD\\u65B0\\u958B\\u555F\\u8996\\u7A97\\uFF0C\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002",\n            "continue": "\\u7E7C\\u7E8C"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "GROUP-LATAM": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u770B\\u5230PayPal\\u4ED8\\u6B3E\\u9875\\u9762\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo puede ver la p\\u00E1gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the PayPal payment page? We\\u2019ll help you re-launch the window to complete your purchase.",\n            "continue": "Continue"\n        }\n    },\n    "GROUP-EMEA": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "pt": {\n            "windowMessage": "N\\u00E3o v\\u00EA a indica\\u00E7\\u00E3o de sess\\u00E3o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",\n            "continue": "Continuar"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        },\n        "ar": {\n            "windowMessage": "\\u0644\\u0627 \\u062A\\u0631\\u0649 \\u0645\\u062A\\u0635\\u0641\\u062D PayPal \\u0627\\u0644\\u0622\\u0645\\u0646\\u061F \\u0633\\u0646\\u0633\\u0627\\u0639\\u062F\\u0643 \\u0641\\u064A \\u0625\\u0639\\u0627\\u062F\\u0629 \\u0641\\u062A\\u062D \\u0627\\u0644\\u0646\\u0627\\u0641\\u0630\\u0629 \\u0644\\u0627\\u0633\\u062A\\u0643\\u0645\\u0627\\u0644 \\u0645\\u0634\\u062A\\u0631\\u064A\\u0627\\u062A\\u0643. \\u00A0 ",\n            "continue": "\\u0645\\u062A\\u0627\\u0628\\u0639\\u0629"\n        }\n    },\n    "GROUP-APAC": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ko": {\n            "windowMessage": "\\uBCF4\\uC548 PayPal \\uBE0C\\uB77C\\uC6B0\\uC800\\uAC00 \\uBCF4\\uC774\\uC9C0 \\uC54A\\uC73C\\uC2E0\\uAC00\\uC694? \\uCC3D\\uC744 \\uB2E4\\uC2DC \\uC2E4\\uD589\\uD558\\uC5EC \\uAD6C\\uB9E4\\uB97C \\uC644\\uB8CC\\uD560 \\uC218 \\uC788\\uB3C4\\uB85D \\uB3C4\\uC640\\uB4DC\\uB9AC\\uACA0\\uC2B5\\uB2C8\\uB2E4. ",\n            "continue": "\\uACC4\\uC18D"\n        },\n        "id": {\n            "windowMessage": "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembelian Anda. ",\n            "continue": "Lanjutkan"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat. ",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\\u2019t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.  ",\n            "continue": "Continue"\n        }\n    },\n    "GR": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "FR": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "ES": {\n        "es": {\n            "windowMessage": "\\u00BFNo ve el s\\u00EDmbolo de navegaci\\u00F3n segura de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar la compra. ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "FI": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "EE": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "ru": {\n            "windowMessage": "\\u041D\\u0435 \\u043E\\u0442\\u043E\\u0431\\u0440\\u0430\\u0436\\u0430\\u0435\\u0442\\u0441\\u044F \\u0431\\u0435\\u0437\\u043E\\u043F\\u0430\\u0441\\u043D\\u0430\\u044F \\u0441\\u0442\\u0440\\u0430\\u043D\\u0438\\u0446\\u0430 PayPal \\u0432 \\u0431\\u0440\\u0430\\u0443\\u0437\\u0435\\u0440\\u0435? \\u041C\\u044B \\u043F\\u043E\\u043C\\u043E\\u0436\\u0435\\u043C \\u0432\\u0430\\u043C \\u043F\\u043E\\u0432\\u0442\\u043E\\u0440\\u043D\\u043E \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044C \\u043E\\u043A\\u043D\\u043E, \\u0447\\u0442\\u043E\\u0431\\u044B \\u0437\\u0430\\u0432\\u0435\\u0440\\u0448\\u0438\\u0442\\u044C \\u043F\\u043E\\u043A\\u0443\\u043F\\u043A\\u0443.\\u00A0 ",\n            "continue": "\\u041F\\u0440\\u043E\\u0434\\u043E\\u043B\\u0436\\u0438\\u0442\\u044C"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "DK": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "da": {\n            "windowMessage": "Kan du ikke se PayPals sikre browser? Vi hj\\u00E6lper dig med at genstarte vinduet, s\\u00E5 du kan betale.",\n            "continue": "Forts\\u00E6t"\n        }\n    },\n    "CZ": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u8D2D\\u7269\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "fr": {\n            "windowMessage": "Le navigateur s\\u00E9curis\\u00E9 de PayPal n\'appara\\u00EEt pas\\u00A0? Nous allons vous aider \\u00E0 rouvrir la fen\\u00EAtre pour finaliser votre achat.",\n            "continue": "Continuer"\n        },\n        "es": {\n            "windowMessage": "\\u00BFNo ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "DE": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "CH": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        },\n        "de": {\n            "windowMessage": "Sie sehen das sichere Browserfenster von PayPal nicht?  k\\u00F6nnen Sie es wieder \\u00F6ffnen und Ihren Einkauf abschlie\\u00DFen.",\n            "continue": "Weiter"\n        }\n    },\n    "CA": {\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 de PayPal\\u00A0? Nous vous aiderons \\u00E0 relancer la fen\\u00EAtre afin d\'effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you relaunch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "C2": {\n        "zh": {\n            "windowMessage": "\\u6CA1\\u6709\\u627E\\u5230\\u5B89\\u5168\\u7684PayPal\\u6D4F\\u89C8\\u5668\\uFF1F\\u6211\\u4EEC\\u5C06\\u5E2E\\u52A9\\u60A8\\u91CD\\u542F\\u7A97\\u53E3\\u4EE5\\u5B8C\\u6210\\u4ED8\\u6B3E\\u3002\\u00A0 ",\n            "continue": "\\u7EE7\\u7EED"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your payment.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BE": {\n        "nl": {\n            "windowMessage": "Ziet u de beveiligde PayPal-browser niet? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.\\u00A0 ",\n            "continue": "Doorgaan"\n        },\n        "fr": {\n            "windowMessage": "Vous ne voyez pas le navigateur s\\u00E9curis\\u00E9 PayPal\\u00A0? Nous allons vous aider \\u00E0 relancer la fen\\u00EAtre pour effectuer votre achat.\\u00A0 ",\n            "continue": "Continuer"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "BR": {\n        "pt": {\n            "windowMessage": "N\\u00E3o est\\u00E1 vendo o navegador seguro do PayPal? Ajudaremos voc\\u00EA a reabrir a janela para concluir a compra.\\u00A0 ",\n            "continue": "Continuar"\n        },\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\\u2019ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    },\n    "AU": {\n        "en": {\n            "windowMessage": "Don\'t see the secure PayPal browser? We\'ll help you re-launch the window to complete your purchase.\\u00A0 ",\n            "continue": "Continue"\n        }\n    }\n}\n';
+        var __WEBPACK_IMPORTED_MODULE_0__content_json__ = __webpack_require__("./src/components/checkout/templates/container/content.json"), __WEBPACK_IMPORTED_MODULE_0__content_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__content_json__), componentContent = JSON.parse(__WEBPACK_IMPORTED_MODULE_0__content_json___default.a);
     },
     "./src/components/checkout/templates/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__("./src/components/checkout/templates/component.js");
+        var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__("./src/components/checkout/templates/component/index.js");
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return __WEBPACK_IMPORTED_MODULE_0__component__.a;
         });
-        var __WEBPACK_IMPORTED_MODULE_1__container__ = __webpack_require__("./src/components/checkout/templates/container.js");
+        var __WEBPACK_IMPORTED_MODULE_1__container__ = __webpack_require__("./src/components/checkout/templates/container/index.js");
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return __WEBPACK_IMPORTED_MODULE_1__container__.a;
         });
-        __webpack_require__("./src/components/checkout/templates/parent.js");
-    },
-    "./src/components/checkout/templates/parent.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
     },
     "./src/components/checkout/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -8995,9 +9300,155 @@
         __webpack_require__.d(__webpack_exports__, "b", function() {
             return __WEBPACK_IMPORTED_MODULE_1__checkout__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "c", function() {
+        __webpack_require__.d(__webpack_exports__, "d", function() {
             return __WEBPACK_IMPORTED_MODULE_1__checkout__.b;
         });
+        var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__("./src/components/login/index.js");
+        __webpack_require__.d(__webpack_exports__, "c", function() {
+            return __WEBPACK_IMPORTED_MODULE_2__login__.a;
+        });
+    },
+    "./src/components/login/component.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return Login;
+        });
+        var __WEBPACK_IMPORTED_MODULE_0_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__checkout_templates__ = __webpack_require__("./src/components/checkout/templates/index.js"), __WEBPACK_IMPORTED_MODULE_4__lib__ = __webpack_require__("./src/lib/index.js"), Login = __WEBPACK_IMPORTED_MODULE_0_xcomponent_src__.c({
+            tag: "paypal-checkout-login",
+            scrolling: !0,
+            get url() {
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.loginUrls;
+            },
+            get bridgeUrl() {
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.postBridgeUrls;
+            },
+            get bridgeDomain() {
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.paypalDomains;
+            },
+            defaultEnv: __WEBPACK_IMPORTED_MODULE_2__config__.a.PRODUCTION,
+            contexts: {
+                iframe: !1,
+                popup: !0
+            },
+            dimensions: {
+                width: "450px",
+                height: "535px"
+            },
+            get version() {
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects, "4.0.90";
+            },
+            sandboxContainer: !0,
+            componentTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
+            containerTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.b,
+            props: {
+                uid: {
+                    type: "string",
+                    value: __WEBPACK_IMPORTED_MODULE_4__lib__.h(),
+                    def: function() {
+                        return __WEBPACK_IMPORTED_MODULE_4__lib__.h();
+                    },
+                    queryParam: !0
+                },
+                env: {
+                    type: "string",
+                    required: !1,
+                    queryParam: !0,
+                    def: function() {
+                        return __WEBPACK_IMPORTED_MODULE_2__config__.g.env;
+                    },
+                    validate: function(env) {
+                        if (!__WEBPACK_IMPORTED_MODULE_2__config__.g.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                    }
+                },
+                stage: {
+                    type: "string",
+                    required: !1,
+                    queryParam: !0,
+                    def: function(props) {
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_2__config__.g.env;
+                        if (env === __WEBPACK_IMPORTED_MODULE_2__config__.a.STAGE || env === __WEBPACK_IMPORTED_MODULE_2__config__.a.LOCAL) return __WEBPACK_IMPORTED_MODULE_2__config__.g.stage;
+                    }
+                },
+                locale: {
+                    type: "string",
+                    required: !1,
+                    queryParam: "locale.x"
+                },
+                onAuthenticate: {
+                    type: "function",
+                    required: !0,
+                    decorate: function(original) {
+                        if (original) return function(data) {
+                            var _this = this;
+                            return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
+                                return original.call(_this, data);
+                            }).catch(function(err) {
+                                return _this.error(err);
+                            }).finally(function() {
+                                return _this.close();
+                            });
+                        };
+                    }
+                },
+                onCancel: {
+                    type: "function",
+                    required: !1,
+                    once: !0,
+                    noop: !0,
+                    decorate: function(original) {
+                        if (original) return function(data) {
+                            var _this2 = this;
+                            return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
+                                return original.call(_this2, data);
+                            }).catch(function(err) {
+                                return _this2.error(err);
+                            }).finally(function() {
+                                _this2.close();
+                            });
+                        };
+                    }
+                },
+                logLevel: {
+                    type: "string",
+                    required: !1,
+                    get value() {
+                        return __WEBPACK_IMPORTED_MODULE_2__config__.g.logLevel;
+                    }
+                },
+                test: {
+                    type: "object",
+                    required: !1,
+                    def: function() {
+                        return {
+                            action: "login"
+                        };
+                    }
+                }
+            },
+            autoResize: {
+                width: !1,
+                height: !1
+            }
+        });
+    },
+    "./src/components/login/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__("./src/components/login/component.js");
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__component__.a;
+        });
+        __webpack_require__("./src/components/login/prerender.js");
+    },
+    "./src/components/login/prerender.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__component__ = __webpack_require__("./src/components/login/component.js"), prerender = __WEBPACK_IMPORTED_MODULE_1__component__.a.prerender;
+        __WEBPACK_IMPORTED_MODULE_1__component__.a.prerender = function(props) {
+            var component = prerender.apply(this, arguments), env = props && props.env || __WEBPACK_IMPORTED_MODULE_0__config__.g.env;
+            component.html = component.html.then(function(html) {
+                return "\n            " + html + '\n\n            <script src="' + __WEBPACK_IMPORTED_MODULE_0__config__.g.scriptUrl + "\" async><\/script>\n\n            <script>\n                (function() {\n\n                    function ajaxifyForms() {\n                        Array.prototype.slice.call(document.querySelectorAll('form')).forEach(function(form) {\n                            form.addEventListener('submit', function(event) {\n                                event.preventDefault();\n\n                                var data = {};\n\n                                Array.prototype.slice.call(form.elements).forEach(function(el) {\n\n                                    if (el.disabled || !el.name) {\n                                        return;\n                                    }\n\n                                    if (['file', 'reset', 'submit', 'button'].indexOf(el.type) !== -1) {\n                                        return;\n                                    }\n\n                                    var value;\n\n                                    if (['checkbox', 'radio'].indexOf(el.type) !== -1 && el.checked) {\n                                        value = 'on';\n                                    } else {\n                                        value = el.value;\n                                    }\n\n                                    data[el.name] = value;\n                                });\n\n                                var serializedData = Object.keys(data).map(function(key) {\n                                    return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])\n                                }).join('&').replace(/%20/g, '+');\n\n                                var req = new XMLHttpRequest();\n                                req.open(form.method || 'GET', '" + __WEBPACK_IMPORTED_MODULE_0__config__.g.paypalUrls[env] + "' + form.getAttribute('action'));\n                                req.setRequestHeader('Accept', 'application/json');\n                                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\n                                req.setRequestHeader('x-csrf-token', data._csrf);\n                                req.setRequestHeader('is-inline-ul', 'true');\n                                req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');\n                                req.send(serializedData);\n\n                                req.onload = function() {\n                                    if (req.status !== 200) {\n                                        return window.xchild.error(new Error('Login returned status: ' + req.status));\n                                    }\n\n                                    var data;\n\n                                    try {\n                                        data = JSON.parse(req.responseText);\n                                    } catch (err) {\n                                        return window.xchild.error(err + '\\n\\n' + req.responseText);\n                                    }\n\n                                    if (data.htmlResponse) {\n                                        document.write(data.htmlResponse);\n                                        return setTimeout(ajaxifyForms);\n                                    }\n\n                                    if (!data || !data.accessToken) {\n                                        return window.xchild.error('Could not find access token: \\n\\n' + JSON.stringify(data, null, 2));\n                                    }\n\n                                    window.xprops.onAuthenticate({\n                                        accessToken: data.accessToken\n                                    });\n                                };\n\n                                req.onerror = function() {\n                                    return window.xchild.error(new Error('Login error'));\n                                };\n                            });\n                        });\n                    }\n\n                    ajaxifyForms();\n\n                })();\n            <\/script>\n        ";
+            });
+            return component;
+        };
     },
     "./src/config/config.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9005,10 +9456,10 @@
             return config;
         });
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.89.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.90.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.89",
+            version: "4.0.90",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -9050,6 +9501,7 @@
                 _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "https://www.sandbox.paypal.com", 
                 _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "https://www.paypal.com", 
                 _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = window.location.protocol + "//" + window.location.host, 
+                _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = window.location.protocol + "//" + window.location.host, 
                 _ref;
             },
             get paypalDomains() {
@@ -9059,6 +9511,7 @@
                 _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "https://www.sandbox.paypal.com", 
                 _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "https://www.paypal.com", 
                 _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "mock://www.paypal.com", 
+                _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = window.location.protocol + "//" + window.location.host, 
                 _ref2;
             },
             get wwwApiUrls() {
@@ -9093,24 +9546,28 @@
             _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "/checkoutnow", 
             _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "/checkoutnow", 
             _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "/demo/dev/checkout.htm", 
             _checkoutUris),
             billingUris: (_billingUris = {}, _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "/webapps/hermes/agreements?ul=0", 
             _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "/webapps/hermes/agreements", 
             _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "/agreements/approve", 
             _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "/agreements/approve", 
             _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
+            _billingUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "/demo/dev/checkout.htm", 
             _billingUris),
             buttonUris: (_buttonUris = {}, _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "/webapps/hermes/button", 
             _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "/webapps/hermes/button", 
             _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "/webapps/hermes/button", 
             _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "/webapps/hermes/button", 
             _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "/base/test/windows/button/index.htm", 
+            _buttonUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "/demo/dev/button.htm", 
             _buttonUris),
             postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "/webapps/hermes/component-meta", 
             _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "/webapps/hermes/component-meta", 
             _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "/webapps/hermes/component-meta", 
             _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "/webapps/hermes/component-meta", 
             _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "/base/test/windows/component-meta/index.htm", 
+            _postBridgeUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "/demo/dev/bridge.htm", 
             _postBridgeUris),
             legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
             _legacyCheckoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
@@ -9127,11 +9584,12 @@
             get buttonJSUrl() {
                 return config.buttonJSUrls[config.env];
             },
+            loginUri: "/signin/",
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.89");
+                "4.0.90");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -9145,6 +9603,7 @@
                 _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
                 _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
                 _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.checkoutUris.test, 
+                _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
                 _ref6;
             },
             get billingUrls() {
@@ -9154,6 +9613,7 @@
                 _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
                 _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
                 _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.billingUris.test, 
+                _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                 _ref7;
             },
             get buttonUrls() {
@@ -9163,70 +9623,81 @@
                 _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
                 _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
                 _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.buttonUris.test, 
+                _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "" + paypalUrls.test + config.buttonUris.demo, 
                 _ref8;
             },
-            get paymentsStandardUrls() {
+            get loginUrls() {
                 var _ref9, paypalUrls = config.paypalUrls;
-                return _ref9 = {}, _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, 
-                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.paymentStandardUri, 
+                return _ref9 = {}, _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.loginUri, 
+                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.loginUri, 
+                _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.loginUri, 
                 _ref9;
             },
-            get postBridgeUrls() {
+            get paymentsStandardUrls() {
                 var _ref10, paypalUrls = config.paypalUrls;
-                return _ref10 = {}, _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                return _ref10 = {}, _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, 
+                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.paymentStandardUri, 
                 _ref10;
             },
-            get legacyCheckoutUrls() {
+            get postBridgeUrls() {
                 var _ref11, paypalUrls = config.paypalUrls;
-                return _ref11 = {}, _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+                return _ref11 = {}, _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.a.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
                 _ref11;
             },
-            get authApiUrls() {
-                var _ref12, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                return _ref12 = {}, _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + authApiUri, 
-                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + authApiUri, 
-                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + authApiUri, 
-                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + authApiUri, 
+            get legacyCheckoutUrls() {
+                var _ref12, paypalUrls = config.paypalUrls;
+                return _ref12 = {}, _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
                 _ref12;
             },
-            get paymentApiUrls() {
-                var _ref13, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                return _ref13 = {}, _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + paymentApiUri, 
-                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, 
-                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + paymentApiUri, 
+            get authApiUrls() {
+                var _ref13, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
+                return _ref13 = {}, _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + authApiUri, 
+                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + authApiUri, 
+                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + authApiUri, 
                 _ref13;
             },
-            get billingApiUrls() {
-                var _ref14, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                return _ref14 = {}, _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + billingApiUri, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + billingApiUri, 
+            get paymentApiUrls() {
+                var _ref14, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
+                return _ref14 = {}, _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + paymentApiUri, 
+                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, 
+                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + paymentApiUri, 
                 _ref14;
             },
-            get experienceApiUrls() {
-                var _ref15, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                return _ref15 = {}, _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + experienceApiUri, 
-                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
-                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + experienceApiUri, 
+            get billingApiUrls() {
+                var _ref15, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
+                return _ref15 = {}, _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + billingApiUri, 
+                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, 
+                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + billingApiUri, 
                 _ref15;
+            },
+            get experienceApiUrls() {
+                var _ref16, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
+                return _ref16 = {}, _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.a.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.a.STAGE] = "" + apiUrls.stage + experienceApiUri, 
+                _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.a.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
+                _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.a.TEST] = "" + apiUrls.test + experienceApiUri, 
+                _ref16;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -9521,7 +9992,8 @@
             STAGE: "stage",
             SANDBOX: "sandbox",
             PRODUCTION: "production",
-            TEST: "test"
+            TEST: "test",
+            DEMO: "demo"
         }, USERS = {
             ALL: "all",
             REMEMBERED: "remembered"
@@ -9678,6 +10150,9 @@
         __webpack_require__.d(__webpack_exports__, "PayPalCheckout", function() {
             return __WEBPACK_IMPORTED_MODULE_0__interface__.PayPalCheckout;
         });
+        __webpack_require__.d(__webpack_exports__, "Login", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__interface__.Login;
+        });
         __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
             return __WEBPACK_IMPORTED_MODULE_0__interface__.destroyAll;
         });
@@ -9708,6 +10183,9 @@
         });
         __webpack_require__.d(__webpack_exports__, "PayPalCheckout", function() {
             return PayPalCheckout;
+        });
+        __webpack_require__.d(__webpack_exports__, "Login", function() {
+            return Login;
         });
         __webpack_require__.d(__webpack_exports__, "destroyAll", function() {
             return destroyAll;
@@ -9758,13 +10236,14 @@
         __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
             return __WEBPACK_IMPORTED_MODULE_7__lib__.f;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.89", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.90", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
-        var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0;
+        var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0;
         if (__WEBPACK_IMPORTED_MODULE_7__lib__.t()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
+            Login = __WEBPACK_IMPORTED_MODULE_4__components__.c;
             destroyAll = __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.d;
         }
     },
@@ -9811,8 +10290,8 @@
                 } catch (err) {}
                 var tagContent = el.querySelector(".paypal-button-tag-content");
                 if (__WEBPACK_IMPORTED_MODULE_3__lib__.q(el) && tagContent && tagContent.innerText && tagContent.innerText.trim() && "The safer, easier way to pay" === tagContent.innerText.trim()) {
-                    var throttle = __WEBPACK_IMPORTED_MODULE_3__lib__.m("tag_content_v5", 5e3);
-                    throttle.isEnabled() && (tagContent.textContent = "A safe, easy way to pay");
+                    var throttle = __WEBPACK_IMPORTED_MODULE_3__lib__.m("tag_content_v6", 5e3);
+                    throttle.isEnabled() && (tagContent.textContent = "");
                     throttle.logStart();
                     el.addEventListener("click", function() {
                         throttle.logComplete();
@@ -10059,7 +10538,7 @@
                     _ref = _i.value;
                 }
                 var env = _ref, paypalUrl = paypalUrls[env];
-                if (env !== __WEBPACK_IMPORTED_MODULE_4__config__.a.TEST && (env !== __WEBPACK_IMPORTED_MODULE_4__config__.g.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
+                if (env !== __WEBPACK_IMPORTED_MODULE_4__config__.a.TEST && env !== __WEBPACK_IMPORTED_MODULE_4__config__.a.DEMO && (env !== __WEBPACK_IMPORTED_MODULE_4__config__.g.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
                     $logger.warn("mismatched_env_startflow_url", {
                         env: __WEBPACK_IMPORTED_MODULE_4__config__.g.env,
                         url: url
@@ -10484,7 +10963,7 @@
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_2_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__("./src/components/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js");
         __WEBPACK_IMPORTED_MODULE_2_post_robot_src__.on("meta", function(_ref) {
             var data = (_ref.source, _ref.data);
-            data.iframeEligible && __WEBPACK_IMPORTED_MODULE_3__components__.c();
+            data.iframeEligible && __WEBPACK_IMPORTED_MODULE_3__components__.d();
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.h(data.iframeEligible ? "lightbox_eligible_" + data.iframeEligibleReason : "lightbox_ineligible_" + data.iframeEligibleReason);
             if (__WEBPACK_IMPORTED_MODULE_4__config__.g.locales[data.locale.country] && !__WEBPACK_IMPORTED_MODULE_4__config__.g.customCountry) {
                 __WEBPACK_IMPORTED_MODULE_4__config__.g.locale.country = data.locale.country;
@@ -10581,7 +11060,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.89";
+                payload.version = "4.0.90";
                 payload.host = window.location.host;
                 payload.uid = __WEBPACK_IMPORTED_MODULE_1__session__.a();
                 var query = [];
@@ -10608,7 +11087,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.89".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.90".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -10616,7 +11095,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.89",
+                v: "checkout.js.4.0.90",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -11233,7 +11712,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.lang,
                     uid: __WEBPACK_IMPORTED_MODULE_3__session__.a(),
-                    ver: "4.0.89"
+                    ver: "4.0.90"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
@@ -11589,7 +12068,7 @@
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, isLocalStorageEnabled = function() {
+        }, isLocalStorageEnabled = memoize(function() {
             try {
                 if (window.localStorage) {
                     var value = Math.random().toString();
@@ -11600,11 +12079,11 @@
                 }
             } catch (err) {}
             return !1;
-        };
+        });
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon;
-        if (window.paypal && "4.0.89" === window.paypal.version) {
+        if (window.paypal && "4.0.90" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -11665,7 +12144,7 @@
                 __WEBPACK_IMPORTED_MODULE_1__config__.g.state = state;
             }
             ppobjects && (__WEBPACK_IMPORTED_MODULE_1__config__.g.ppobjects = !0);
-            lightbox && __WEBPACK_IMPORTED_MODULE_3__components__.c();
+            lightbox && __WEBPACK_IMPORTED_MODULE_3__components__.d();
             logLevel ? __WEBPACK_IMPORTED_MODULE_2__lib__.F(logLevel) : __WEBPACK_IMPORTED_MODULE_2__lib__.F(__WEBPACK_IMPORTED_MODULE_1__config__.g.logLevel);
             __WEBPACK_IMPORTED_MODULE_2__lib__.t() || __WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a();
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.h("setup_" + __WEBPACK_IMPORTED_MODULE_1__config__.g.env);
@@ -11684,7 +12163,15 @@
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.l((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.ERROR_CODE] = "checkoutjs_error", 
             _$logger$track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.ERROR_DESC] = __WEBPACK_IMPORTED_MODULE_2__lib__.G(err), 
             _$logger$track));
-            __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g();
+            __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g().catch(function(err2) {
+                if (window.console) try {
+                    window.console.error ? window.console.error("Error flushing:", err2.stack || err2.toString()) : window.console.log && window.console.log("Error flushing:", err2.stack || err2.toString());
+                } catch (err3) {
+                    setTimeout(function() {
+                        throw err3;
+                    }, 1);
+                }
+            });
         });
         var currentScript = function() {
             for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _iterator2 = scripts, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
@@ -11698,7 +12185,7 @@
                     _ref2 = _i2.value;
                 }
                 var script = _ref2;
-                if (script.src && script.src.replace(/^https?:/, "").split("?")[0] === __WEBPACK_IMPORTED_MODULE_1__config__.g.scriptUrl || script.hasAttribute("data-paypal-checkout")) return script;
+                if (script.src && script.getAttribute("src") === __WEBPACK_IMPORTED_MODULE_1__config__.g.scriptUrl || script.hasAttribute("data-paypal-checkout")) return script;
                 if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
             }
             document.currentScript && __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_script_not_recognized", {
@@ -11730,4 +12217,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.89.js.map
+//# sourceMappingURL=checkout.4.0.90.js.map
