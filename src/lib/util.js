@@ -69,6 +69,15 @@ export function hashStr(str : string) : number {
     return Math.floor(Math.pow(Math.sqrt(hash), 5));
 }
 
+export function strHashStr(str : string) : string {
+    let hash = hashStr(str).toString();
+    let result = '';
+    for (let i = 0; i < hash.length; i += 2) {
+        result += String.fromCharCode(97 + parseInt(hash.slice(i, i + 2), 10) % 26);
+    }
+    return result;
+}
+
 export function match(str : string, pattern : RegExp) : ?string {
     let regmatch = str.match(pattern);
     if (regmatch) {
@@ -232,4 +241,15 @@ export function setLocalStorage(key : string, value : mixed) {
     }
 
     window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getDomainSetting(name : string) : ?mixed {
+    if (config.domain_settings) {
+        let hash = strHashStr(`${window.location.protocol}//${window.location.host}`);
+        let settings = config.domain_settings[hash];
+
+        if (settings) {
+            return settings[name];
+        }
+    }
 }
