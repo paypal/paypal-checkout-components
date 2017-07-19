@@ -6,7 +6,7 @@ import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
 import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
-import { isPayPalDomain } from './lib';
+import { isPayPalDomain, isEligible } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -95,6 +95,11 @@ type SetupOptions = {
 };
 
 export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, logLevel } : SetupOptions = {}) {
+
+    if (!isEligible()) {
+        $logger.warn('ineligible');
+        return;
+    }
 
     checkForCommonErrors();
 
