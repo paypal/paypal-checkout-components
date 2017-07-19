@@ -33,7 +33,16 @@ export let Button = xcomponent.create({
     scrolling: false,
 
     containerTemplate,
-    componentTemplate,
+    componentTemplate({ props, htmlDom } : { props : Object, htmlDom : Function }) : HTMLElement {
+
+        let template = htmlDom(componentTemplate({ props }));
+
+        template.addEventListener('click', () => {
+            $logger.warn('button_pre_template_click');
+        });
+
+        return template;
+    },
 
     sacrificialComponentTemplate: true,
 
