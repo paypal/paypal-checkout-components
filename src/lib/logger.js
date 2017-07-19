@@ -4,6 +4,7 @@ import * as postRobot from 'post-robot/src';
 import * as $logger from 'beaver-logger/client';
 import { config, FPTI } from '../config';
 import { getCommonSessionID } from './session';
+import { getDomainSetting } from './util';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -43,11 +44,17 @@ export function initLogger() {
         };
     });
 
+    let prefix = 'ppxo';
+
+    if (getDomainSetting('log_domain_prefix')) {
+        prefix = `${ prefix }_${ window.location.host.replace(/[^a-zA-Z0-9_]/g, '_') }`;
+    }
+
     $logger.init({
         uri: config.loggerUrl,
         heartbeat: false,
         logPerformance: false,
-        prefix: `ppxo`,
+        prefix,
         logLevel: __DEFAULT_LOG_LEVEL__
     });
 }

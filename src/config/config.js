@@ -37,6 +37,12 @@ export let config = {
         v4_mobile_device: 0
     },
 
+    domain_settings: {
+        kjalrclisa: {
+            log_domain_prefix: true
+        }
+    },
+
     customCountry: false,
 
     SUPPORTED_AGENTS: {
