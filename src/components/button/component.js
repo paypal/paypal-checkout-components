@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getPageRenderTime } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getPageRenderTime, isEligible } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -54,6 +54,10 @@ export let Button = xcomponent.create({
     validate() {
         if (isIEIntranet()) {
             throw new Error(`Can not render button in IE intranet mode`);
+        }
+
+        if (!isEligible()) {
+            throw new Error(`Can not render PayPal button in ineligible browser`);
         }
     },
 
