@@ -381,6 +381,8 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function() : void {
 
+                    $logger.info('button_click');
+
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
