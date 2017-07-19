@@ -358,20 +358,29 @@ export let Button = xcomponent.create({
             required: false,
             noop: true,
 
-            decorate(original) : ?Function {
-                if (original) {
-                    return function(data, actions) : void | ZalgoPromise<void> {
+            decorate(original) : Function {
+                return function(data, actions) : void | ZalgoPromise<void> {
 
-                        let redirect = (win, url) => {
-                            return ZalgoPromise.all([
-                                redir(win || window.top, url || data.cancelUrl),
-                                actions.close()
-                            ]);
-                        };
+                    $logger.info('checkout_cancel');
 
-                        return original.call(this, data, { ...actions, redirect });
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_CANCEL
+                    });
+
+                    $logger.flush();
+
+                    let redirect = (win, url) => {
+                        return ZalgoPromise.all([
+                            redir(win || window.top, url || data.cancelUrl),
+                            actions.close()
+                        ]);
                     };
-                }
+
+                    if (original) {
+                        return original.call(this, data, { ...actions, redirect });
+                    }
+                };
             }
         },
 
