@@ -317,32 +317,39 @@ export let Button = xcomponent.create({
             type: 'function',
             required: true,
 
-            decorate(original) : ?Function {
-                if (original) {
-                    return function(data, actions) : void | ZalgoPromise<void> {
+            decorate(original) : Function {
+                return function(data, actions) : void | ZalgoPromise<void> {
 
-                        if (this.props.braintree) {
-                            return this.props.braintree.then(client => {
-                                return client.tokenizePayment(data).then(res => {
-                                    return original.call(this, { nonce: res.nonce });
-                                });
+                    $logger.info('checkout_authorize');
+
+                    $logger.track({
+                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
+                    });
+
+                    $logger.flush();
+
+                    if (this.props.braintree) {
+                        return this.props.braintree.then(client => {
+                            return client.tokenizePayment(data).then(res => {
+                                return original.call(this, { nonce: res.nonce });
                             });
-                        }
-
-                        let redirect = (win, url) => {
-                            return ZalgoPromise.all([
-                                redir(win || window.top, url || data.returnUrl),
-                                actions.close()
-                            ]);
-                        };
-
-                        return ZalgoPromise.try(() => {
-                            return original.call(this, data, { ...actions, redirect });
-                        }).catch(err => {
-                            return this.error(err);
                         });
+                    }
+
+                    let redirect = (win, url) => {
+                        return ZalgoPromise.all([
+                            redir(win || window.top, url || data.returnUrl),
+                            actions.close()
+                        ]);
                     };
-                }
+
+                    return ZalgoPromise.try(() => {
+                        return original.call(this, data, { ...actions, redirect });
+                    }).catch(err => {
+                        return this.error(err);
+                    });
+                };
             }
         },
 

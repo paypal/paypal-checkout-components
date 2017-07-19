@@ -84,6 +84,7 @@ export const FPTI = {
 
         CREATE_PAYMENT: 'process_create_payment',
         CHECKOUT_INIT: 'process_checkout_init',
+        CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
 
         PPTM_LOAD: 'process_pptm_load',
         PPTM_LOADED: 'process_pptm_loaded'
