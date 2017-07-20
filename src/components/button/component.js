@@ -341,6 +341,10 @@ export let Button = xcomponent.create({
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
                     });
 
+                    if (!isEligible()) {
+                        $logger.info('button_authorize_ineligible');
+                    }
+
                     $logger.flush();
 
                     if (this.props.braintree) {
