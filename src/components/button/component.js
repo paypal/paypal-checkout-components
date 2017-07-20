@@ -14,6 +14,8 @@ import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
+let buttonClicked = false;
+
 export let Button = xcomponent.create({
 
     tag: 'paypal-button',
@@ -401,6 +403,10 @@ export let Button = xcomponent.create({
 
                     $logger.info('button_click');
 
+                    if (buttonClicked) {
+                        $logger.info('button_click_multiple');
+                    }
+
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
@@ -408,6 +414,8 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.flush();
+
+                    buttonClicked = true;
 
                     if (original) {
                         return original.apply(this, arguments);
