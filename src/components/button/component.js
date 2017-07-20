@@ -594,6 +594,32 @@ if (Button.isChild()) {
 
     awaitPopupBridgeOpener();
 
+    let debounce = false;
+    let renderTo = Checkout.renderTo;
+
+    Checkout.renderTo = function(win, props) : ?Promise<Object> {
+
+        if (debounce) {
+            $logger.warn('button_mutliple_click_debounce');
+            return;
+        }
+
+        debounce = true;
+
+        for (let methodName of [ 'onAuthorize', 'onCancel', 'onClose' ]) {
+            let original = props[methodName];
+            props[methodName] = function() : mixed {
+                debounce = false;
+                if (original) {
+                    return original.apply(this, arguments);
+                }
+            };
+        }
+
+        return renderTo.apply(this, arguments);
+    };
+
+
     if (window.xprops.validate) {
 
         let enabled = true;
@@ -608,11 +634,11 @@ if (Button.isChild()) {
             }
         });
 
-        let renderTo = Checkout.renderTo;
+        let renderTo2 = Checkout.renderTo;
 
         Checkout.renderTo = function() : ?Promise<Object> {
             if (enabled) {
-                return renderTo.apply(this, arguments);
+                return renderTo2.apply(this, arguments);
             }
         };
     }
