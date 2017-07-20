@@ -71,7 +71,7 @@ export let Button = xcomponent.create({
         }
 
         if (!isEligible()) {
-            throw new Error(`Can not render PayPal button in ineligible browser`);
+            $logger.warn('button_render_ineligible');
         }
     },
 
