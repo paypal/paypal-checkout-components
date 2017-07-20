@@ -39,7 +39,8 @@ export let config = {
 
     domain_settings: {
         kjalrclisa: {
-            log_domain_prefix: true
+            log_domain_prefix: true,
+            custom_button_selector: '.paypal-payment-option'
         }
     },
 

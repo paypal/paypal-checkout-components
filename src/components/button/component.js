@@ -6,7 +6,10 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getPageRenderTime, isEligible, getSessionState } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe,
+         getBrowserLocale, getCommonSessionID, request, checkpoint,
+         isIEIntranet, getPageRenderTime, isEligible, getSessionState,
+         getDomainSetting } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -19,6 +22,22 @@ getSessionState(session => {
     session.buttonCancelled = false;
     session.buttonAuthorized = false;
 });
+
+let customButtonSelector = getDomainSetting('custom_button_selector');
+if (customButtonSelector) {
+    setInterval(() => {
+        let el = window.document.querySelector(customButtonSelector);
+
+        if (el && !el.hasAttribute('ppxo-merchant-custom-click-listener')) {
+
+            el.setAttribute('ppxo-merchant-custom-click-listener', '');
+            el.addEventListener('click', () => {
+                $logger.info('custom_merchant_button_click');
+                $logger.flush();
+            });
+        }
+    }, 500);
+}
 
 export let Button = xcomponent.create({
 
