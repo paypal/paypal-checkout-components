@@ -46,7 +46,9 @@ export const FPTI = {
         BUTTON_SOURCE: 'button_source',
         ERROR_CODE: 'ext_error_code',
         ERROR_DESC: 'ext_error_desc',
-        PAGE_LOAD_TIME: 'page_load_time'
+        PAGE_LOAD_TIME: 'page_load_time',
+        EXPERIMENT_NAME: 'pxp_exp_id',
+        TREATMENT_NAME: 'pxp_trtmnt_id'
     },
 
     BUTTON_TYPE: {
@@ -87,6 +89,8 @@ export const FPTI = {
         CHECKOUT_AUTHORIZE: 'process_checkout_authorize',
         CHECKOUT_CANCEL: 'process_checkout_cancel',
         CHECKOUT_ERROR: 'process_checkout_error',
+
+        EXTERNAL_EXPERIMENT: 'process_external_experiment',
 
         PPTM_LOAD: 'process_pptm_load',
         PPTM_LOADED: 'process_pptm_loaded'

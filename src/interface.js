@@ -12,7 +12,7 @@ export { rest } from './api';
 export { Button } from './components';
 export { setup } from './setup';
 export { config, ENV, USERS, SOURCE } from './config';
-export { request, isEligible, isWebView, forceIframe } from './lib';
+export { request, isEligible, isWebView, forceIframe, logExperimentTreatment } from './lib';
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 

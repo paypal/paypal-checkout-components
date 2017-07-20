@@ -70,3 +70,20 @@ export function setLogLevel(logLevel : string) {
     postRobot.CONFIG.LOG_LEVEL = logLevel;
     window.LOG_LEVEL = logLevel;
 }
+
+export function logExperimentTreatment(experiment : string, treatment : string, token : string) {
+
+    $logger.info(`experiment_group_${experiment}_${treatment}`);
+
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.EXTERNAL_EXPERIMENT,
+        [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
+        [ FPTI.KEY.TREATMENT_NAME ]: treatment,
+        [ FPTI.KEY.TOKEN ]: token,
+        [ FPTI.KEY.CONTEXT_ID ]: token,
+        [ FPTI.KEY.CONTEXT_TYPE ]: token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
+    });
+
+    $logger.flush();
+}
