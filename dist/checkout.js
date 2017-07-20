@@ -7840,7 +7840,7 @@
                         Authorization: "Bearer " + accessToken
                     };
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                    return __WEBPACK_IMPORTED_MODULE_5__lib__.E({
+                    return __WEBPACK_IMPORTED_MODULE_5__lib__.F({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_4__config__.g.paymentApiUrls[env],
                         headers: headers,
@@ -7870,7 +7870,7 @@
                     if (experienceDetails) return createExperienceProfile(env, client, experienceDetails);
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return __WEBPACK_IMPORTED_MODULE_5__lib__.E({
+                    return __WEBPACK_IMPORTED_MODULE_5__lib__.F({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_4__config__.g.billingApiUrls[env],
                         headers: {
@@ -7894,14 +7894,14 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, proxyRest = {}, createAccessToken = __WEBPACK_IMPORTED_MODULE_5__lib__.y(function(env, client) {
+        }, proxyRest = {}, createAccessToken = __WEBPACK_IMPORTED_MODULE_5__lib__.z(function(env, client) {
             __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.h("rest_api_create_access_token");
             env = env || __WEBPACK_IMPORTED_MODULE_4__config__.g.env;
             var clientID = client[env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = __WEBPACK_IMPORTED_MODULE_2_Base64__.btoa(clientID + ":");
-            return __WEBPACK_IMPORTED_MODULE_5__lib__.E({
+            return __WEBPACK_IMPORTED_MODULE_5__lib__.F({
                 method: "post",
                 url: __WEBPACK_IMPORTED_MODULE_4__config__.g.authApiUrls[env],
                 headers: {
@@ -7917,7 +7917,7 @@
             });
         }, {
             time: 6e5
-        }), createExperienceProfile = __WEBPACK_IMPORTED_MODULE_5__lib__.y(function(env, client) {
+        }), createExperienceProfile = __WEBPACK_IMPORTED_MODULE_5__lib__.z(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.h("rest_api_create_experience_profile");
             env = env || __WEBPACK_IMPORTED_MODULE_4__config__.g.env;
@@ -7926,7 +7926,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return __WEBPACK_IMPORTED_MODULE_5__lib__.E({
+                return __WEBPACK_IMPORTED_MODULE_5__lib__.F({
                     method: "post",
                     url: __WEBPACK_IMPORTED_MODULE_4__config__.g.experienceApiUrls[env],
                     headers: {
@@ -7973,18 +7973,18 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !__WEBPACK_IMPORTED_MODULE_2__lib__.u()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeDomain).then(function(postBridge) {
+                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !__WEBPACK_IMPORTED_MODULE_2__lib__.v()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeDomain).then(function(postBridge) {
                     return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: __WEBPACK_IMPORTED_MODULE_3__config__.g.paypalDomain
-                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.z);
+                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.A);
                 });
             });
         }
         __webpack_exports__.a = onLegacyPaymentAuthorize;
         var __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), onAuthorize = void 0;
-        __WEBPACK_IMPORTED_MODULE_2__lib__.u() && __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on("onLegacyPaymentAuthorize", {
+        __WEBPACK_IMPORTED_MODULE_2__lib__.v() && __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on("onLegacyPaymentAuthorize", {
             window: window.parent
         }, function(_ref) {
             var data = _ref.data;
@@ -8016,7 +8016,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.z);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.A);
                                 }
                             } catch (err) {
                                 return;
@@ -8078,7 +8078,7 @@
             }
             return target;
         };
-        __WEBPACK_IMPORTED_MODULE_5__lib__.m(function(session) {
+        __WEBPACK_IMPORTED_MODULE_5__lib__.n(function(session) {
             session.buttonClicked = !1;
             session.buttonCancelled = !1;
         });
@@ -8106,7 +8106,7 @@
             },
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.93";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.94";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -8117,8 +8117,8 @@
                 element: "body"
             },
             validate: function() {
-                if (__WEBPACK_IMPORTED_MODULE_5__lib__.t()) throw new Error("Can not render button in IE intranet mode");
-                __WEBPACK_IMPORTED_MODULE_5__lib__.s() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.m("button_render_ineligible");
+                if (__WEBPACK_IMPORTED_MODULE_5__lib__.u()) throw new Error("Can not render button in IE intranet mode");
+                __WEBPACK_IMPORTED_MODULE_5__lib__.t() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.m("button_render_ineligible");
             },
             props: {
                 uid: {
@@ -8211,7 +8211,7 @@
                                         });
                                     }
                                 };
-                                actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.E;
+                                actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.F;
                                 var context = {
                                     props: {
                                         env: _this.props.env,
@@ -8306,7 +8306,7 @@
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.l((_$logger$track2 = {}, _$logger$track2[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.STATE.CHECKOUT, 
                             _$logger$track2[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_4__config__.b.TRANSITION.CHECKOUT_AUTHORIZE, 
                             _$logger$track2));
-                            __WEBPACK_IMPORTED_MODULE_5__lib__.s() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_authorize_ineligible");
+                            __WEBPACK_IMPORTED_MODULE_5__lib__.t() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_authorize_ineligible");
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
                             if (this.props.braintree) return this.props.braintree.then(function(client) {
                                 return client.tokenizePayment(data).then(function(res) {
@@ -8316,7 +8316,7 @@
                                 });
                             });
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.D(win || window.top, url || data.returnUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.E(win || window.top, url || data.returnUrl), actions.close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 return original.call(_this3, data, _extends({}, actions, {
@@ -8340,11 +8340,11 @@
                             _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_4__config__.b.TRANSITION.CHECKOUT_CANCEL, 
                             _$logger$track3));
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
-                            __WEBPACK_IMPORTED_MODULE_5__lib__.m(function(session) {
+                            __WEBPACK_IMPORTED_MODULE_5__lib__.n(function(session) {
                                 session.buttonCancelled = !0;
                             });
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.D(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_5__lib__.E(win || window.top, url || data.cancelUrl), actions.close() ]);
                             };
                             if (original) return original.call(this, data, _extends({}, actions, {
                                 redirect: redirect
@@ -8359,10 +8359,10 @@
                         return function() {
                             var _$logger$track4;
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_click");
-                            __WEBPACK_IMPORTED_MODULE_5__lib__.m(function(session) {
+                            __WEBPACK_IMPORTED_MODULE_5__lib__.n(function(session) {
                                 return session.buttonClicked;
                             }) && __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_click_multiple");
-                            __WEBPACK_IMPORTED_MODULE_5__lib__.m(function(session) {
+                            __WEBPACK_IMPORTED_MODULE_5__lib__.n(function(session) {
                                 return session.buttonCancelled;
                             }) && __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.h("button_click_after_cancel");
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.l((_$logger$track4 = {}, _$logger$track4[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.STATE.BUTTON, 
@@ -8370,7 +8370,7 @@
                             _$logger$track4[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.BUTTON_TYPE.IFRAME, 
                             _$logger$track4));
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
-                            __WEBPACK_IMPORTED_MODULE_5__lib__.m(function(session) {
+                            __WEBPACK_IMPORTED_MODULE_5__lib__.n(function(session) {
                                 session.buttonClicked = !0;
                             });
                             if (original) return original.apply(this, arguments);
@@ -8414,7 +8414,7 @@
                     type: "boolean",
                     required: !1,
                     get value() {
-                        return !__WEBPACK_IMPORTED_MODULE_5__lib__.o();
+                        return !__WEBPACK_IMPORTED_MODULE_5__lib__.p();
                     }
                 },
                 validate: {
@@ -8450,7 +8450,7 @@
             }
         });
         if (Button.isChild()) {
-            __WEBPACK_IMPORTED_MODULE_5__lib__.j().then(function(pageRenderTime) {
+            __WEBPACK_IMPORTED_MODULE_5__lib__.k().then(function(pageRenderTime) {
                 var _$logger$track5;
                 __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.l((_$logger$track5 = {}, _$logger$track5[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.STATE.BUTTON, 
                 _$logger$track5[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_4__config__.b.TRANSITION.BUTTON_LOAD, 
@@ -8466,7 +8466,7 @@
                     time: 18e5
                 });
             }
-            window.xprops.logLevel && __WEBPACK_IMPORTED_MODULE_5__lib__.G(window.xprops.logLevel);
+            window.xprops.logLevel && __WEBPACK_IMPORTED_MODULE_5__lib__.H(window.xprops.logLevel);
             __WEBPACK_IMPORTED_MODULE_7__checkout_popupBridge__.a();
             if (window.xprops.validate) {
                 var enabled = !0;
@@ -8783,7 +8783,7 @@
             if (window.$Api) return window.$Api.addHeader ? window.$Api.addHeader(name, value) : void 0;
         }
         function allowCheckoutIframe() {
-            return !__WEBPACK_IMPORTED_MODULE_6__lib__.q() && !!__WEBPACK_IMPORTED_MODULE_6__lib__.o();
+            return !__WEBPACK_IMPORTED_MODULE_6__lib__.r() && !!__WEBPACK_IMPORTED_MODULE_6__lib__.p();
         }
         function enableCheckoutIframe() {
             var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$force = _ref.force, force = void 0 !== _ref$force && _ref$force, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 3e5 : _ref$timeout;
@@ -8830,7 +8830,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.93";
+                return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.94";
             },
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.b,
@@ -8897,7 +8897,7 @@
                         return __WEBPACK_IMPORTED_MODULE_4__util__.a(value);
                     },
                     childDef: function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__lib__.k("token");
+                        return __WEBPACK_IMPORTED_MODULE_6__lib__.l("token");
                     },
                     validate: function(value, props) {
                         if (!value && !props.url) throw new Error("Expected props.payment to be passed");
@@ -8928,12 +8928,12 @@
                                     return _this.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_6__lib__.D(win || window.top, url || data.returnUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_6__lib__.E(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return __WEBPACK_IMPORTED_MODULE_6__lib__.E({
+                                    if (isButton && isGuest) return __WEBPACK_IMPORTED_MODULE_6__lib__.F({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/hermes/api/auth"
@@ -8977,7 +8977,7 @@
                                     return _this2.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_6__lib__.D(win || window.top, url || data.cancelUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ __WEBPACK_IMPORTED_MODULE_6__lib__.E(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 if (original) return original.call(_this2, data, _extends({}, actions, {
@@ -9084,7 +9084,7 @@
                 height: !1
             },
             get dimensions() {
-                return __WEBPACK_IMPORTED_MODULE_6__lib__.q() ? {
+                return __WEBPACK_IMPORTED_MODULE_6__lib__.r() ? {
                     width: "100%",
                     height: "535px"
                 } : {
@@ -9096,7 +9096,7 @@
         __WEBPACK_IMPORTED_MODULE_5__popupBridge__.c(Checkout);
         var enableCheckoutIframeTimeout = void 0;
         if (Checkout.isChild()) {
-            window.xprops.logLevel && __WEBPACK_IMPORTED_MODULE_6__lib__.G(window.xprops.logLevel);
+            window.xprops.logLevel && __WEBPACK_IMPORTED_MODULE_6__lib__.H(window.xprops.logLevel);
             __WEBPACK_IMPORTED_MODULE_5__popupBridge__.a();
         }
         Object.defineProperty(Checkout.contexts, "lightbox", {
@@ -9181,7 +9181,7 @@
                                 data.returnUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.returnUrl;
-                                    return __WEBPACK_IMPORTED_MODULE_3__lib__.D(win, redirectUrl);
+                                    return __WEBPACK_IMPORTED_MODULE_3__lib__.E(win, redirectUrl);
                                 };
                                 onAuthorize(data, actions);
                                 resolve();
@@ -9190,7 +9190,7 @@
                                 data.cancelUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.cancelUrl;
-                                    return __WEBPACK_IMPORTED_MODULE_3__lib__.D(win, redirectUrl);
+                                    return __WEBPACK_IMPORTED_MODULE_3__lib__.E(win, redirectUrl);
                                 };
                                 onCancel(data, actions);
                                 resolve();
@@ -9205,7 +9205,7 @@
                 var openBridge = getPopupBridgeOpener();
                 return openBridge ? renderThroughPopupBridge(props, openBridge).catch(function(err) {
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.f("popup_bridge_error", {
-                        err: __WEBPACK_IMPORTED_MODULE_3__lib__.H(err)
+                        err: __WEBPACK_IMPORTED_MODULE_3__lib__.I(err)
                     });
                     return original();
                 }) : original();
@@ -9302,7 +9302,7 @@
                 event.stopPropagation();
                 actions.focus();
             }
-            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], sandboxStyle = "\n        #" + id + ".paypal-checkout-sandbox {\n            display: block;\n            position: fixed;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            zIndex: 2147483647;\n\n            -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n\n            animation-fill-mode:forwards;\n            animation-iteration-count: 1;\n\n            -webkit-animation-fill-mode:forwards;\n            -webkit-animation-iteration-count: 1;\n        }\n\n        #" + id + ".paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {\n            display: block;\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n    ", containerStyle = "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.8);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n            color: #fff;\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            margin-left: -165px;\n            margin-top: -80px;\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n            background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n            width: 132px;\n            height: 36px;\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n            #' + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n                background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n                background-size: 200px 200px;\n            }\n        }\n\n        #' + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            text-decoration: underline;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n            background-color: white;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " a {\n            color: white;\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        @media screen and (max-width: 450px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n            }\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n            }\n        }\n\n        @media screen and (min-width: 490px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                max-width: 450px;\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ", container = jsxDom("div", {
+            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], sandboxStyle = "\n        #" + id + ".paypal-checkout-sandbox {\n            display: block;\n            position: fixed;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            z-index: 2147483647;\n\n            -webkit-animation-duration: 1s;\n            animation-duration: 1s;\n\n            animation-fill-mode:forwards;\n            animation-iteration-count: 1;\n\n            -webkit-animation-fill-mode:forwards;\n            -webkit-animation-iteration-count: 1;\n        }\n\n        #" + id + ".paypal-checkout-sandbox .paypal-checkout-sandbox-iframe {\n            display: block;\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_CONTAINER + " {\n            from {\n                opacity: 0;\n            }\n\n            to {\n                opacity: 1;\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_CONTAINER + " {\n            from {\n                opacity: 1;\n            }\n\n            50% {\n                opacity: 1;\n            }\n\n            to {\n                opacity: 0;\n            }\n        }\n    ", containerStyle = "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.8);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n            color: #fff;\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            margin-left: -165px;\n            margin-top: -80px;\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n            background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;\n            width: 132px;\n            height: 36px;\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {\n            #' + id + ' .paypal-checkout-modal .paypal-checkout-logo {\n                background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");\n                background-size: 200px 200px;\n            }\n        }\n\n        #' + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            text-decoration: underline;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n            background-color: white;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " a {\n            color: white;\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: 95vh;\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        @media screen and (max-width: 450px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n            }\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n            }\n        }\n\n        @media screen and (min-width: 490px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                max-width: 450px;\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ", container = jsxDom("div", {
                 id: id,
                 onClick: focus,
                 class: tag + "-context-" + context + " paypal-checkout-overlay"
@@ -9425,7 +9425,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.93";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.94";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -9549,7 +9549,7 @@
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             legacyScriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.93",
+            version: "4.0.94",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -9683,7 +9683,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.93");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.94");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -10322,22 +10322,22 @@
         });
         var __WEBPACK_IMPORTED_MODULE_7__lib__ = __webpack_require__("./src/lib/index.js");
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.E;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.F;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.s;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.t;
         });
         __webpack_require__.d(__webpack_exports__, "isWebView", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.v;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.w;
         });
         __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
             return __WEBPACK_IMPORTED_MODULE_7__lib__.f;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.93", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.94", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0;
-        if (__WEBPACK_IMPORTED_MODULE_7__lib__.u()) {
+        if (__WEBPACK_IMPORTED_MODULE_7__lib__.v()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             Login = __WEBPACK_IMPORTED_MODULE_4__components__.c;
@@ -10383,11 +10383,11 @@
                 }).el;
                 container.appendChild(el);
                 try {
-                    $logger.info("in_page_button_" + (__WEBPACK_IMPORTED_MODULE_3__lib__.r(el) ? "visible" : "not_visible"));
+                    $logger.info("in_page_button_" + (__WEBPACK_IMPORTED_MODULE_3__lib__.s(el) ? "visible" : "not_visible"));
                 } catch (err) {}
                 var tagContent = el.querySelector(".paypal-button-tag-content");
-                if (__WEBPACK_IMPORTED_MODULE_3__lib__.r(el) && tagContent && tagContent.innerText && tagContent.innerText.trim() && "The safer, easier way to pay" === tagContent.innerText.trim()) {
-                    var throttle = __WEBPACK_IMPORTED_MODULE_3__lib__.n("tag_content_v6", 5e3);
+                if (__WEBPACK_IMPORTED_MODULE_3__lib__.s(el) && tagContent && tagContent.innerText && tagContent.innerText.trim() && "The safer, easier way to pay" === tagContent.innerText.trim()) {
+                    var throttle = __WEBPACK_IMPORTED_MODULE_3__lib__.o("tag_content_v6", 5e3);
                     throttle.isEnabled() && (tagContent.textContent = "");
                     throttle.logStart();
                     el.addEventListener("click", function() {
@@ -10444,19 +10444,19 @@
         }
         __webpack_exports__.b = renderButtons;
         __webpack_exports__.a = getHijackTargetElement;
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_5__common__ = __webpack_require__("./src/legacy/common.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k(__WEBPACK_IMPORTED_MODULE_4__constants__.c), loadButtonJS = __WEBPACK_IMPORTED_MODULE_3__lib__.y(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_5__common__ = __webpack_require__("./src/legacy/common.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k(__WEBPACK_IMPORTED_MODULE_4__constants__.c), loadButtonJS = __WEBPACK_IMPORTED_MODULE_3__lib__.z(function() {
             $logger.debug("buttonjs_load");
-            return __WEBPACK_IMPORTED_MODULE_3__lib__.w(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl).catch(function(err) {
+            return __WEBPACK_IMPORTED_MODULE_3__lib__.x(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl).catch(function(err) {
                 $logger.info("buttonjs_load_error_retry", {
-                    error: __WEBPACK_IMPORTED_MODULE_3__lib__.H(err)
+                    error: __WEBPACK_IMPORTED_MODULE_3__lib__.I(err)
                 });
-                return __WEBPACK_IMPORTED_MODULE_3__lib__.w(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl);
+                return __WEBPACK_IMPORTED_MODULE_3__lib__.x(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl);
             }).then(function(result) {
                 $logger.debug("buttonjs_load_success");
                 return result;
             }).catch(function(err) {
                 $logger.error("buttonjs_load_error", {
-                    error: __WEBPACK_IMPORTED_MODULE_3__lib__.H(err)
+                    error: __WEBPACK_IMPORTED_MODULE_3__lib__.I(err)
                 });
                 throw err;
             });
@@ -10514,24 +10514,24 @@
     "./src/legacy/eligibility.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function isLegacyEligible() {
-            if (!__WEBPACK_IMPORTED_MODULE_1__lib__.s()) return !1;
-            if (!__WEBPACK_IMPORTED_MODULE_1__lib__.I()) return !1;
-            if (__WEBPACK_IMPORTED_MODULE_1__lib__.q()) {
+            if (!__WEBPACK_IMPORTED_MODULE_1__lib__.t()) return !1;
+            if (!__WEBPACK_IMPORTED_MODULE_1__lib__.J()) return !1;
+            if (__WEBPACK_IMPORTED_MODULE_1__lib__.r()) {
                 throttle.logStart();
                 return throttle.isEnabled();
             }
             return !0;
         }
         __webpack_exports__.a = isLegacyEligible;
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2__listener__ = __webpack_require__("./src/legacy/listener.js"), throttle = __WEBPACK_IMPORTED_MODULE_1__lib__.n("v4_mobile_device", __WEBPACK_IMPORTED_MODULE_0__config__.g.throttles.v4_mobile_device);
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2__listener__ = __webpack_require__("./src/legacy/listener.js"), throttle = __WEBPACK_IMPORTED_MODULE_1__lib__.o("v4_mobile_device", __WEBPACK_IMPORTED_MODULE_0__config__.g.throttles.v4_mobile_device);
         !function() {
-            if (__WEBPACK_IMPORTED_MODULE_1__lib__.q()) {
+            if (__WEBPACK_IMPORTED_MODULE_1__lib__.r()) {
                 __WEBPACK_IMPORTED_MODULE_2__listener__.a.once(function(token) {
                     throttle.log("authorize", {
                         fltk: token
                     });
                 });
-                var token = __WEBPACK_IMPORTED_MODULE_1__lib__.l();
+                var token = __WEBPACK_IMPORTED_MODULE_1__lib__.m();
                 token && throttle.logComplete({
                     fltk: token
                 });
@@ -10650,7 +10650,7 @@
                 checkout.initXO = function() {
                     $logger.warn("gettoken_initxo");
                 };
-                checkout.startFlow = __WEBPACK_IMPORTED_MODULE_6__lib__.C(function(item, opts) {
+                checkout.startFlow = __WEBPACK_IMPORTED_MODULE_6__lib__.D(function(item, opts) {
                     $logger.debug("gettoken_startflow", {
                         item: item
                     });
@@ -10716,7 +10716,7 @@
                 props.init = function(data) {
                     resolve(data.paymentToken);
                 };
-            }), errorHandler = __WEBPACK_IMPORTED_MODULE_6__lib__.C(function(err) {
+            }), errorHandler = __WEBPACK_IMPORTED_MODULE_6__lib__.D(function(err) {
                 $logger.error("component_error", {
                     error: err.stack || err.toString()
                 });
@@ -10784,7 +10784,7 @@
             element.addEventListener("click", function(event) {
                 track();
                 var eligible = __WEBPACK_IMPORTED_MODULE_3__eligibility__.a();
-                if (__WEBPACK_IMPORTED_MODULE_6__lib__.I()) {
+                if (__WEBPACK_IMPORTED_MODULE_6__lib__.J()) {
                     $logger.debug("click_popups_supported");
                     eligible || $logger.debug("click_popups_supported_but_ineligible");
                 } else {
@@ -10821,7 +10821,7 @@
             $logger.info("setup", {
                 id: id,
                 env: options.environment,
-                options: __WEBPACK_IMPORTED_MODULE_6__lib__.F(options)
+                options: __WEBPACK_IMPORTED_MODULE_6__lib__.G(options)
             });
             setupCalled && $logger.debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -10931,7 +10931,7 @@
                 $logger.info("options_button_single_button_passed");
                 options.button = [ options.button ];
             }
-            if (options.buttons && __WEBPACK_IMPORTED_MODULE_2__lib__.i(options.buttons).length) {
+            if (options.buttons && __WEBPACK_IMPORTED_MODULE_2__lib__.j(options.buttons).length) {
                 $logger.info("options_buttons_with_elements_passed");
                 options.button = options.buttons;
                 delete options.buttons;
@@ -10949,7 +10949,7 @@
                 delete options.container;
             }
             if (options.button) {
-                var button = __WEBPACK_IMPORTED_MODULE_2__lib__.i(options.button);
+                var button = __WEBPACK_IMPORTED_MODULE_2__lib__.j(options.button);
                 if (button.length) options.button = button; else {
                     $logger.warn("options_button_element_not_found", {
                         element: JSON.stringify(options.button)
@@ -10976,7 +10976,7 @@
                             options: options.container,
                             button: button.container
                         });
-                        __WEBPACK_IMPORTED_MODULE_2__lib__.i(button.container || button.button).forEach(function(element) {
+                        __WEBPACK_IMPORTED_MODULE_2__lib__.j(button.container || button.button).forEach(function(element) {
                             var _buttons$push;
                             buttons.push((_buttons$push = {}, _buttons$push[button.container ? "container" : "button"] = element, 
                             _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -10998,7 +10998,7 @@
                 buttons.length && (options.buttons = buttons);
             } else if (options.container && !Array.isArray(options.buttons)) {
                 var _buttons = [];
-                __WEBPACK_IMPORTED_MODULE_2__lib__.i(options.container).forEach(function(container, i) {
+                __WEBPACK_IMPORTED_MODULE_2__lib__.j(options.container).forEach(function(container, i) {
                     _buttons.push({
                         container: container,
                         click: options.click,
@@ -11039,7 +11039,7 @@
         "use strict";
         function setupPostBridge(env) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                if (!__WEBPACK_IMPORTED_MODULE_5__lib__.t()) {
+                if (!__WEBPACK_IMPORTED_MODULE_5__lib__.u()) {
                     var postBridgeUrl = __WEBPACK_IMPORTED_MODULE_4__config__.g.postBridgeUrls[env], postBridgeDomain = __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains[env];
                     if (!__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge || !__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge.needsBridgeForDomain(postBridgeDomain)) return __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.e("post_bridge_not_required", {
                         env: env
@@ -11071,7 +11071,7 @@
     "./src/legacy/ready.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function invokeReady(method) {
-            __WEBPACK_IMPORTED_MODULE_1__lib__.A(function() {
+            __WEBPACK_IMPORTED_MODULE_1__lib__.B(function() {
                 $logger.debug("paypal_checkout_ready");
                 setTimeout(function() {
                     window.paypal || $logger.error("paypal_checkout_ready_no_window_paypal");
@@ -11080,7 +11080,7 @@
             });
         }
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_4__interface__ = __webpack_require__("./src/legacy/interface.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.k(__WEBPACK_IMPORTED_MODULE_3__constants__.c);
-        __WEBPACK_IMPORTED_MODULE_1__lib__.B(window, "paypalCheckoutReady", function(method) {
+        __WEBPACK_IMPORTED_MODULE_1__lib__.C(window, "paypalCheckoutReady", function(method) {
             if ("function" == typeof method) {
                 var oneTimeReady = function() {
                     if (!method.called) {
@@ -11092,7 +11092,7 @@
                 return oneTimeReady;
             }
         });
-        __WEBPACK_IMPORTED_MODULE_1__lib__.A(function() {
+        __WEBPACK_IMPORTED_MODULE_1__lib__.B(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_3__constants__.a.BUTTON + "]"));
             if (buttons && buttons.length) {
                 $logger.debug("data_paypal_button", {
@@ -11125,15 +11125,15 @@
         "use strict";
         function logRedirect(location) {
             redirected && $logger.warn("multiple_redirects");
-            __WEBPACK_IMPORTED_MODULE_3__lib__.J(location) && (redirected = !0);
+            __WEBPACK_IMPORTED_MODULE_3__lib__.K(location) && (redirected = !0);
             $logger.flush();
         }
         function redirect(url) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.g.env === __WEBPACK_IMPORTED_MODULE_2__config__.a.TEST && __WEBPACK_IMPORTED_MODULE_3__lib__.J(url)) return __WEBPACK_IMPORTED_MODULE_3__lib__.D(window, "#fullpageRedirect?url=" + url);
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.g.env === __WEBPACK_IMPORTED_MODULE_2__config__.a.TEST && __WEBPACK_IMPORTED_MODULE_3__lib__.K(url)) return __WEBPACK_IMPORTED_MODULE_3__lib__.E(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return __WEBPACK_IMPORTED_MODULE_3__lib__.D(window, url);
+                return __WEBPACK_IMPORTED_MODULE_3__lib__.E(window, url);
             });
         }
         function parseToken(token) {
@@ -11157,7 +11157,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.93";
+                payload.version = "4.0.94";
                 payload.host = window.location.host;
                 payload.uid = __WEBPACK_IMPORTED_MODULE_1__session__.a();
                 var query = [];
@@ -11184,7 +11184,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.93".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.94".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -11192,7 +11192,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.93",
+                v: "checkout.js.4.0.94",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -11678,16 +11678,16 @@
     "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./src/lib/device.js");
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.h;
         });
         var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js");
@@ -11697,42 +11697,42 @@
         __webpack_require__.d(__webpack_exports__, "d", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.n;
         });
         var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./src/lib/logger.js");
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_3__eligibility__ = __webpack_require__("./src/lib/eligibility.js");
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_4__errors__ = __webpack_require__("./src/lib/errors.js");
@@ -11747,34 +11747,37 @@
             return __WEBPACK_IMPORTED_MODULE_5__dom__.b;
         });
         __webpack_require__.d(__webpack_exports__, "i", function() {
-            return __WEBPACK_IMPORTED_MODULE_5__dom__.d;
+            return __WEBPACK_IMPORTED_MODULE_5__dom__.c;
         });
         __webpack_require__.d(__webpack_exports__, "j", function() {
-            return __WEBPACK_IMPORTED_MODULE_5__dom__.e;
+            return __WEBPACK_IMPORTED_MODULE_5__dom__.d;
         });
         __webpack_require__.d(__webpack_exports__, "k", function() {
+            return __WEBPACK_IMPORTED_MODULE_5__dom__.e;
+        });
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.l;
         });
         var __WEBPACK_IMPORTED_MODULE_6__http__ = __webpack_require__("./src/lib/http.js");
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return __WEBPACK_IMPORTED_MODULE_6__http__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_7__beacon__ = __webpack_require__("./src/lib/beacon.js");
@@ -11782,10 +11785,10 @@
             return __WEBPACK_IMPORTED_MODULE_7__beacon__.checkpoint;
         });
         var __WEBPACK_IMPORTED_MODULE_8__throttle__ = __webpack_require__("./src/lib/throttle.js");
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return __WEBPACK_IMPORTED_MODULE_8__throttle__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return __WEBPACK_IMPORTED_MODULE_8__throttle__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_10__session__ = (__webpack_require__("./src/lib/namespace.js"), 
@@ -11793,7 +11796,7 @@
         __webpack_require__.d(__webpack_exports__, "h", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.b;
         });
     },
@@ -11812,7 +11815,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_2__config__.g.locale.lang,
                     uid: __WEBPACK_IMPORTED_MODULE_3__session__.a(),
-                    ver: "4.0.93"
+                    ver: "4.0.94"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
@@ -11912,12 +11915,12 @@
         "use strict";
         function createPptmScript() {
             var _$logger$track;
-            if (window.location.hostname) if (__WEBPACK_IMPORTED_MODULE_1__lib_dom__.c(__WEBPACK_IMPORTED_MODULE_0__config__.d)) __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.m("pptm_tried_loading_twice"); else {
+            if (window.location.hostname) if (__WEBPACK_IMPORTED_MODULE_1__lib__.i(__WEBPACK_IMPORTED_MODULE_0__config__.d)) __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.m("pptm_tried_loading_twice"); else {
                 __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.l((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_0__config__.b.STATE.PPTM, 
                 _$logger$track[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_0__config__.b.TRANSITION.PPTM_LOAD, 
                 _$logger$track));
                 var fullUrl = __WEBPACK_IMPORTED_MODULE_0__config__.g.pptmUrl + "?id=" + window.location.hostname + "&t=xo";
-                __WEBPACK_IMPORTED_MODULE_1__lib_dom__.i(fullUrl, 0, {
+                __WEBPACK_IMPORTED_MODULE_1__lib__.x(fullUrl, 0, {
                     async: !0,
                     id: __WEBPACK_IMPORTED_MODULE_0__config__.d
                 }).then(function() {
@@ -11925,11 +11928,15 @@
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.l((_$logger$track2 = {}, _$logger$track2[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_0__config__.b.STATE.PPTM, 
                     _$logger$track2[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_0__config__.b.TRANSITION.PPTM_LOADED, 
                     _$logger$track2));
+                }).catch(function(err) {
+                    __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.f("pptm_script_error", {
+                        error: __WEBPACK_IMPORTED_MODULE_1__lib__.I(err)
+                    });
                 });
             }
         }
         __webpack_exports__.a = createPptmScript;
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib_dom__ = __webpack_require__("./src/lib/dom.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js");
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js");
     },
     "./src/lib/session.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -12196,7 +12203,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon;
-        if (window.paypal && "4.0.93" === window.paypal.version) {
+        if (window.paypal && "4.0.94" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -12233,50 +12240,49 @@
         }
         function setup() {
             var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref3.env, stage = _ref3.stage, apiStage = _ref3.apiStage, paypalUrl = _ref3.paypalUrl, state = _ref3.state, ppobjects = _ref3.ppobjects, lightbox = _ref3.lightbox, logLevel = _ref3.logLevel;
-            if (__WEBPACK_IMPORTED_MODULE_2__lib__.s()) {
-                __WEBPACK_IMPORTED_MODULE_2__lib__.b();
-                if (env) {
-                    if (!__WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrls[env]) throw new Error("Invalid env: " + env);
-                    delete __WEBPACK_IMPORTED_MODULE_1__config__.g.env;
-                    __WEBPACK_IMPORTED_MODULE_1__config__.g.env = env;
-                }
-                if (stage) {
-                    delete __WEBPACK_IMPORTED_MODULE_1__config__.g.stage;
-                    __WEBPACK_IMPORTED_MODULE_1__config__.g.stage = stage;
-                }
-                if (apiStage) {
-                    delete __WEBPACK_IMPORTED_MODULE_1__config__.g.apiStage;
-                    __WEBPACK_IMPORTED_MODULE_1__config__.g.apiStage = apiStage;
-                }
-                if (paypalUrl) {
-                    delete __WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl;
-                    __WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl = paypalUrl;
-                    setDomainEnv(__WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl);
-                }
-                if (state) {
-                    delete __WEBPACK_IMPORTED_MODULE_1__config__.g.state;
-                    __WEBPACK_IMPORTED_MODULE_1__config__.g.state = state;
-                }
-                ppobjects && (__WEBPACK_IMPORTED_MODULE_1__config__.g.ppobjects = !0);
-                lightbox && __WEBPACK_IMPORTED_MODULE_3__components__.d();
-                logLevel ? __WEBPACK_IMPORTED_MODULE_2__lib__.G(logLevel) : __WEBPACK_IMPORTED_MODULE_2__lib__.G(__WEBPACK_IMPORTED_MODULE_1__config__.g.logLevel);
-                __WEBPACK_IMPORTED_MODULE_2__lib__.u() || __WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a();
-                __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.h("setup_" + __WEBPACK_IMPORTED_MODULE_1__config__.g.env);
-                __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_protocol_" + currentProtocol);
-            } else __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m("ineligible");
+            __WEBPACK_IMPORTED_MODULE_2__lib__.t() || __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m("ineligible");
+            __WEBPACK_IMPORTED_MODULE_2__lib__.b();
+            if (env) {
+                if (!__WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                delete __WEBPACK_IMPORTED_MODULE_1__config__.g.env;
+                __WEBPACK_IMPORTED_MODULE_1__config__.g.env = env;
+            }
+            if (stage) {
+                delete __WEBPACK_IMPORTED_MODULE_1__config__.g.stage;
+                __WEBPACK_IMPORTED_MODULE_1__config__.g.stage = stage;
+            }
+            if (apiStage) {
+                delete __WEBPACK_IMPORTED_MODULE_1__config__.g.apiStage;
+                __WEBPACK_IMPORTED_MODULE_1__config__.g.apiStage = apiStage;
+            }
+            if (paypalUrl) {
+                delete __WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl;
+                __WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl = paypalUrl;
+                setDomainEnv(__WEBPACK_IMPORTED_MODULE_1__config__.g.paypalUrl);
+            }
+            if (state) {
+                delete __WEBPACK_IMPORTED_MODULE_1__config__.g.state;
+                __WEBPACK_IMPORTED_MODULE_1__config__.g.state = state;
+            }
+            ppobjects && (__WEBPACK_IMPORTED_MODULE_1__config__.g.ppobjects = !0);
+            lightbox && __WEBPACK_IMPORTED_MODULE_3__components__.d();
+            logLevel ? __WEBPACK_IMPORTED_MODULE_2__lib__.H(logLevel) : __WEBPACK_IMPORTED_MODULE_2__lib__.H(__WEBPACK_IMPORTED_MODULE_1__config__.g.logLevel);
+            __WEBPACK_IMPORTED_MODULE_2__lib__.v() || __WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a();
+            __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.h("setup_" + __WEBPACK_IMPORTED_MODULE_1__config__.g.env);
+            __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_protocol_" + currentProtocol);
         }
         __webpack_exports__.a = setup;
         var _$logger$track2, __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__("./src/components/index.js"), __WEBPACK_IMPORTED_MODULE_4__lib_pptm__ = __webpack_require__("./src/lib/pptm.js"), __WEBPACK_IMPORTED_MODULE_5_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js");
         setDomainEnv(window.location.protocol + "//" + window.location.host);
-        __WEBPACK_IMPORTED_MODULE_2__lib__.p();
+        __WEBPACK_IMPORTED_MODULE_2__lib__.q();
         __WEBPACK_IMPORTED_MODULE_5_zalgo_promise_src__.a.onPossiblyUnhandledException(function(err) {
             var _$logger$track;
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.f("unhandled_error", {
-                stack: __WEBPACK_IMPORTED_MODULE_2__lib__.H(err),
+                stack: __WEBPACK_IMPORTED_MODULE_2__lib__.I(err),
                 errtype: {}.toString.call(err)
             });
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.l((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _$logger$track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.ERROR_DESC] = __WEBPACK_IMPORTED_MODULE_2__lib__.H(err), 
+            _$logger$track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.ERROR_DESC] = __WEBPACK_IMPORTED_MODULE_2__lib__.I(err), 
             _$logger$track));
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g().catch(function(err2) {
                 if (window.console) try {
