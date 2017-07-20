@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout, enableCheckoutIframe } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getPageRenderTime, isEligible } from '../../lib';
+import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe, getBrowserLocale, getCommonSessionID, request, checkpoint, isIEIntranet, getPageRenderTime, isEligible, getSessionState } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -14,7 +14,10 @@ import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 
-let buttonClicked = false;
+getSessionState(session => {
+    session.buttonClicked = false;
+    session.buttonCancelled = false;
+});
 
 export let Button = xcomponent.create({
 
@@ -381,6 +384,10 @@ export let Button = xcomponent.create({
 
                     $logger.flush();
 
+                    getSessionState(session => {
+                        session.buttonCancelled = true;
+                    });
+
                     let redirect = (win, url) => {
                         return ZalgoPromise.all([
                             redir(win || window.top, url || data.cancelUrl),
@@ -403,8 +410,12 @@ export let Button = xcomponent.create({
 
                     $logger.info('button_click');
 
-                    if (buttonClicked) {
+                    if (getSessionState(session => session.buttonClicked)) {
                         $logger.info('button_click_multiple');
+                    }
+
+                    if (getSessionState(session => session.buttonCancelled)) {
+                        $logger.info('button_click_after_cancel');
                     }
 
                     $logger.track({
@@ -415,7 +426,9 @@ export let Button = xcomponent.create({
 
                     $logger.flush();
 
-                    buttonClicked = true;
+                    getSessionState(session => {
+                        session.buttonClicked = true;
+                    });
 
                     if (original) {
                         return original.apply(this, arguments);
