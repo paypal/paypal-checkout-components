@@ -98,7 +98,6 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
 
     if (!isEligible()) {
         $logger.warn('ineligible');
-        return;
     }
 
     checkForCommonErrors();
