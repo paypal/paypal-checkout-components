@@ -17,6 +17,7 @@ import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
 getSessionState(session => {
     session.buttonClicked = false;
     session.buttonCancelled = false;
+    session.buttonAuthorized = false;
 });
 
 export let Button = xcomponent.create({
@@ -336,6 +337,20 @@ export let Button = xcomponent.create({
 
                     $logger.info('checkout_authorize');
 
+                    if (getSessionState(session => session.buttonAuthorized)) {
+                        $logger.info('checkout_authorize_multiple');
+                    } else {
+                        $logger.info('checkout_authorize_unique');
+                    }
+
+                    if (getSessionState(session => session.buttonCancelled)) {
+                        $logger.info('checkout_authorize_after_cancel');
+                    }
+
+                    getSessionState(session => {
+                        session.buttonAuthorized = true;
+                    });
+
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
@@ -381,16 +396,26 @@ export let Button = xcomponent.create({
 
                     $logger.info('checkout_cancel');
 
+                    if (getSessionState(session => session.buttonCancelled)) {
+                        $logger.info('checkout_cancel_multiple');
+                    } else {
+                        $logger.info('checkout_cancel_unique');
+                    }
+
+                    if (getSessionState(session => session.buttonCancelled)) {
+                        $logger.info('checkout_cancel_after_cancel');
+                    }
+
+                    getSessionState(session => {
+                        session.buttonCancelled = true;
+                    });
+
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_CANCEL
                     });
 
                     $logger.flush();
-
-                    getSessionState(session => {
-                        session.buttonCancelled = true;
-                    });
 
                     let redirect = (win, url) => {
                         return ZalgoPromise.all([
@@ -416,11 +441,17 @@ export let Button = xcomponent.create({
 
                     if (getSessionState(session => session.buttonClicked)) {
                         $logger.info('button_click_multiple');
+                    } else {
+                        $logger.info('button_click_unique');
                     }
 
                     if (getSessionState(session => session.buttonCancelled)) {
                         $logger.info('button_click_after_cancel');
                     }
+
+                    getSessionState(session => {
+                        session.buttonClicked = true;
+                    });
 
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
@@ -429,10 +460,6 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.flush();
-
-                    getSessionState(session => {
-                        session.buttonClicked = true;
-                    });
 
                     if (original) {
                         return original.apply(this, arguments);
