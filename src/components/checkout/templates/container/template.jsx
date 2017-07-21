@@ -36,8 +36,14 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             position: fixed;
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
+
             z-index: 2147483647;
 
             -webkit-animation-duration: 1s;
