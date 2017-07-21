@@ -408,7 +408,12 @@ export let config = {
     },
 
     get pptmUrl() : string {
-        return `${config.paypalUrl}${config.pptmUri}`;
+
+        let paypalUrl = config.env === ENV.LOCAL
+            ? config.paypalUrls[ENV.STAGE]
+            : config.paypalUrl;
+
+        return `${paypalUrl}${config.pptmUri}`;
     },
 
     get authApiUrl() : string {
