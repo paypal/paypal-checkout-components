@@ -28,8 +28,6 @@ function setDomainEnv(domain : string) {
 
 setDomainEnv(`${window.location.protocol}//${window.location.host}`);
 
-initLogger();
-
 ZalgoPromise.onPossiblyUnhandledException(err => {
 
     $logger.error('unhandled_error', {
@@ -149,6 +147,8 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     if (!isPayPalDomain()) {
         createPptmScript();
     }
+
+    initLogger();
 
     $logger.info(`setup_${config.env}`);
 

@@ -2,8 +2,11 @@
 
 import * as postRobot from 'post-robot/src';
 import * as $logger from 'beaver-logger/client';
+import { getParent } from 'cross-domain-utils/src';
+
 import { config, FPTI } from '../config';
 import { getCommonSessionID } from './session';
+import { proxyMethod } from './proxy';
 import { getDomainSetting } from './util';
 
 function getRefererDomain() : string {
@@ -87,3 +90,5 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
 
     $logger.flush();
 }
+
+$logger.setTransport(proxyMethod('log', getParent(window), $logger.getTransport()));
