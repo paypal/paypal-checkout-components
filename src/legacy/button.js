@@ -4,7 +4,7 @@ import * as logger from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, FPTI } from '../config';
-import { loadScript, memoize, isElementVisible, getThrottle, checkpoint, stringifyError } from '../lib';
+import { loadScript, memoize, isElementVisible, checkpoint, stringifyError } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
@@ -65,24 +65,6 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
 
         } catch (err) {
             // pass
-        }
-
-        let tagContent = el.querySelector('.paypal-button-tag-content');
-
-        if (isElementVisible(el) && tagContent && tagContent.innerText &&
-            tagContent.innerText.trim() && tagContent.innerText.trim() === 'The safer, easier way to pay') {
-
-            let throttle = getThrottle('tag_content_v6', 5000);
-
-            if (throttle.isEnabled()) {
-                tagContent.textContent = '';
-            }
-
-            throttle.logStart();
-
-            el.addEventListener('click', () => {
-                throttle.logComplete();
-            });
         }
 
         return el.childNodes[0];
