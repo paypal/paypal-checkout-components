@@ -606,7 +606,7 @@ if (Button.isChild()) {
 
         debounce = true;
 
-        for (let methodName of [ 'onAuthorize', 'onCancel', 'onClose' ]) {
+        for (let methodName of [ 'onAuthorize', 'onCancel', 'onClose', 'onError' ]) {
             let original = props[methodName];
             props[methodName] = function() : mixed {
                 debounce = false;
