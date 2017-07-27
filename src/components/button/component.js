@@ -670,4 +670,25 @@ if (Button.isChild()) {
             }
         };
     }
+
+    if (isIE() && getDomainSetting('ie_full_page')) {
+        Checkout.renderTo = (win, props) => {
+            $logger.info('force_ie_full_page');
+            $logger.flush();
+
+            let checkout = Checkout.init({
+                onAuthorize: noop
+            });
+
+            checkout.delegate(win);
+            checkout.openContainer().then(() => {
+                checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
+                checkout.showContainer();
+            });
+
+            window.xprops.payment().then(token => {
+                window.top.location = extendUrl(config.checkoutUrl, { token });
+            });
+        };
+    }
 }
