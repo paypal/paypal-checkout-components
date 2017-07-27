@@ -1,6 +1,8 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { getDomain } from 'cross-domain-utils/src';
+
 import { config } from '../config';
 
 export function isPayPalDomain() : boolean {
@@ -244,8 +246,13 @@ export function setLocalStorage(key : string, value : mixed) {
 }
 
 export function getDomainSetting(name : string) : ?mixed {
+
+    let domain = window.xchild
+        ? window.xchild.getParentDomain()
+        : getDomain();
+
     if (config.domain_settings) {
-        let hash = strHashStr(`${window.location.protocol}//${window.location.host}`);
+        let hash = strHashStr(domain);
         let settings = config.domain_settings[hash];
 
         if (settings) {
