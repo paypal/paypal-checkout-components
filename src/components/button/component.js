@@ -225,7 +225,16 @@ export let Button = xcomponent.create({
                 return function payment() : ZalgoPromise<string> {
                     return new ZalgoPromise((resolve, reject) => {
 
-                        let data = resolve;
+                        let _resolve = (token) => {
+                            this.memoizedToken = token;
+                            return resolve(token);
+                        };
+
+                        if (getDomainSetting('memoize_payment') && this.memoizedToken) {
+                            return resolve(this.memoizedToken);
+                        }
+
+                        let data = _resolve;
                         let actions = reject;
 
                         data.payment = actions.payment = {
@@ -264,11 +273,12 @@ export let Button = xcomponent.create({
                         }
 
                         if (result && typeof result.then === 'function') {
-                            return result.then(resolve, reject);
+                            return result.then(_resolve, reject);
                         }
 
                         if (result !== undefined) {
-                            return resolve(result);
+                            this.memoizedToken = result;
+                            return _resolve(result);
                         }
 
                         let timeout = __TEST__ ? 500 : 10 * 1000;
