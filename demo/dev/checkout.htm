@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="../../dist/checkout.js" data-paypal-checkout></script>
+    <script src="../../dist/checkout.js" data-paypal-checkout data-env="demo"></script>
 </head>
 
 <body>
@@ -12,15 +12,24 @@
     <button id="paypal-popout">Popout</button><br />
 
     <script>
+        window.xprops.init({
+            paymentToken: 'EC-XXXXXXXXXXXXXXXXX',
+            cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
+        });
+
         document.querySelector('#paypal-pay').addEventListener('click', function() {
             window.xprops.onAuthorize({
-                paymentID: 'PAY-XXXXXXXXXXXXXXXX'
+                paymentID: 'PAY-XXXXXXXXXXXXXXXX',
+                returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
+                cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
             });
         });
 
         document.querySelector('#paypal-cancel').addEventListener('click', function() {
             window.xprops.onCancel({
-                paymentID: 'PAY-XXXXXXXXXXXXXXXX'
+                paymentID: 'PAY-XXXXXXXXXXXXXXXX',
+                returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
+                cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
             });
         });
 

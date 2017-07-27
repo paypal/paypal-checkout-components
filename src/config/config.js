@@ -173,7 +173,8 @@ export let config = {
         [ ENV.STAGE ]:      `https://www.paypalobjects.com/api/button.js`,
         [ ENV.SANDBOX ]:    `https://www.paypalobjects.com/api/button.js`,
         [ ENV.PRODUCTION ]: `https://www.paypalobjects.com/api/button.js`,
-        [ ENV.TEST ]:       `/base/test/lib/button.js`
+        [ ENV.TEST ]:       `/base/test/lib/button.js`,
+        [ ENV.DEMO ]:       `https://www.paypalobjects.com/api/button.js`
     },
 
     get buttonJSUrl() : string {
