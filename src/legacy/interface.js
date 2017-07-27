@@ -7,7 +7,7 @@ import { Checkout } from '../components';
 import { isLegacyEligible } from './eligibility';
 import { config, ENV, FPTI } from '../config';
 import { setupPostBridge } from './postBridge';
-import { supportsPopups, once, safeJSON, extendUrl, getThrottle } from '../lib';
+import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { redirect, logRedirect, parseToken } from './util';
@@ -183,26 +183,9 @@ function initPayPalCheckout(props = {}) : Object {
 
     paypalCheckoutInited = true;
 
-    let lightboxThrottle;
-
-    if (Checkout.contexts.iframe) {
-        lightboxThrottle = getThrottle('lightbox_throttle_v1', 5000);
-
-        lightboxThrottle.logStart();
-
-        if (lightboxThrottle.isEnabled()) {
-            Checkout.contexts.iframe = false;
-        }
-    }
-
     let paypalCheckout = Checkout.init({
 
         onAuthorize(data, actions) : ZalgoPromise<void> {
-
-            if (lightboxThrottle) {
-                lightboxThrottle.logComplete();
-            }
-
             $logger.info(`payment_authorized`);
             onAuthorizeListener.trigger(data.paymentToken);
             logRedirect(data.returnUrl);
