@@ -79,7 +79,16 @@ export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
 }
 
 export function isIE() : boolean {
-    return Boolean(window.document.documentMode);
+    
+    if (window.document.documentMode) {
+        return true;
+    }
+
+    return Boolean(
+        window.navigator &&
+        window.navigator.userAgent &&
+        (/Edge|MSIE/i).test(window.navigator.userAgent)
+    );
 }
 
 export function isIECompHeader() : boolean {
