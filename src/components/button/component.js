@@ -64,6 +64,24 @@ export let Button = xcomponent.create({
 
         template.addEventListener('click', () => {
             $logger.warn('button_pre_template_click');
+
+            if (getDomainSetting('pre_click_full_page')) {
+                $logger.info('pre_template_force_full_page');
+                $logger.flush();
+
+                let checkout = Checkout.init({
+                    onAuthorize: noop
+                });
+
+                checkout.openContainer().then(() => {
+                    checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
+                    checkout.showContainer();
+                });
+
+                this.props.payment().then(token => {
+                    window.top.location = extendUrl(config.checkoutUrl, { token });
+                });
+            }
         });
 
         return template;
