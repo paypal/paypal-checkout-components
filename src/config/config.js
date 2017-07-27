@@ -236,7 +236,7 @@ export let config = {
             [ ENV.SANDBOX ]:    `${paypalUrls.sandbox}${config.buttonUris.sandbox}`,
             [ ENV.PRODUCTION ]: `${paypalUrls.production}${config.buttonUris.production}`,
             [ ENV.TEST ]:       `${paypalUrls.test}${config.buttonUris.test}`,
-            [ ENV.DEMO ]:       `${paypalUrls.test}${config.buttonUris.demo}`
+            [ ENV.DEMO ]:       `${paypalUrls.demo}${config.buttonUris.demo}`
         };
     },
 
