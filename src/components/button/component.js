@@ -4,12 +4,12 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { Checkout, enableCheckoutIframe } from '../checkout';
+import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, forceIframe,
+import { redirect as redir, hasMetaViewPort, setLogLevel,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-         getDomainSetting } from '../../lib';
+         getDomainSetting, isIE, extendUrl, noop } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -333,7 +333,7 @@ export let Button = xcomponent.create({
                 this.onRemember = this.onRemember || new ZalgoPromise();
                 this.onRemember.resolve();
 
-                enableCheckoutIframe();
+                // enableCheckoutIframe();
             }
         },
 
@@ -611,11 +611,6 @@ if (Button.isChild()) {
         $logger.flush();
     });
 
-    if (forceIframe()) {
-        $logger.info('force_enable_iframe');
-        enableCheckoutIframe({ force: true, time: 30 * 60 * 1000 });
-    }
-
     if (window.xprops.logLevel) {
         setLogLevel(window.xprops.logLevel);
     }
@@ -691,4 +686,24 @@ if (Button.isChild()) {
             });
         };
     }
+
+    let checkoutRendered = false;
+    let iframeEnabled = false;
+
+    // $FlowFixMe
+    Object.defineProperty(Checkout.contexts, 'iframe', {
+        get() : boolean {
+            return iframeEnabled;
+        },
+        set(value) {
+            iframeEnabled = (checkoutRendered || __TEST__) ? value : false;
+        }
+    });
+
+    let renderTo3 = Checkout.renderTo;
+
+    Checkout.renderTo = function() : ?Promise<Object> {
+        checkoutRendered = true;
+        return renderTo3.apply(this, arguments);
+    };
 }

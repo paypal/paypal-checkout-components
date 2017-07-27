@@ -9,7 +9,8 @@ import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort, setLogLevel, getCommonSessionID, getBrowserLocale } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort,
+         setLogLevel, getCommonSessionID, getBrowserLocale, forceIframe } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -431,9 +432,14 @@ function allowCheckoutIframe() : boolean {
     return true;
 }
 
-export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } : { force? : boolean, timeout? : number } = {}) {
+export function enableCheckoutIframe({ timeout = 5 * 60 * 1000 } : { force? : boolean, timeout? : number } = {}) {
 
-    if (!force && !allowCheckoutIframe()) {
+    if (forceIframe()) {
+        Checkout.contexts.iframe = true;
+        return;
+    }
+
+    if (!allowCheckoutIframe()) {
         return;
     }
 
@@ -446,6 +452,11 @@ export function enableCheckoutIframe({ force = false, timeout = 5 * 60 * 1000 } 
     enableCheckoutIframeTimeout = setTimeout(() => {
         Checkout.contexts.iframe = false;
     }, timeout);
+}
+
+if (forceIframe()) {
+    $logger.info('force_enable_iframe');
+    enableCheckoutIframe({ time: 30 * 60 * 1000 });
 }
 
 if (Checkout.isChild()) {

@@ -4,14 +4,14 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as $logger from 'beaver-logger/client';
 import * as postRobot from 'post-robot/src';
 
-import { enableCheckoutIframe } from '../components';
+// import { enableCheckoutIframe } from '../components';
 import { config } from '../config';
 import { isIEIntranet } from '../lib';
 
 postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
 
     if (data.iframeEligible) {
-        enableCheckoutIframe();
+        // enableCheckoutIframe();
     }
 
     $logger.info(data.iframeEligible ?
