@@ -72,12 +72,19 @@ export function hashStr(str : string) : number {
 }
 
 export function strHashStr(str : string) : string {
-    let hash = hashStr(str).toString();
-    let result = '';
-    for (let i = 0; i < hash.length; i += 2) {
-        result += String.fromCharCode(97 + parseInt(hash.slice(i, i + 2), 10) % 26);
+    let hash = '';
+
+    for (let i = 0; i < str.length; i++) {
+        let total = (str[i].charCodeAt(0) * i);
+
+        if (str[i + 1]) {
+            total += (str[i + 1].charCodeAt(0) * (i - 1));
+        }
+
+        hash += String.fromCharCode(97 + (Math.abs(total) % 26));
     }
-    return result;
+
+    return hash;
 }
 
 export function match(str : string, pattern : RegExp) : ?string {
