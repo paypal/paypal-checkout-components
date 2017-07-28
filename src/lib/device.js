@@ -79,7 +79,7 @@ export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
 }
 
 export function isIE() : boolean {
-    
+
     if (window.document.documentMode) {
         return true;
     }
@@ -102,27 +102,29 @@ export function isIECompHeader() : boolean {
 
 export function isIEIntranet() : boolean {
 
-    if (!isIE()) {
-        return false;
-    }
+    // This status check only works for older versions of IE with document.documentMode set
 
-    try {
-        let status = window.status;
+    if (window.document.documentMode) {
+        try {
+            let status = window.status;
 
-        window.status = 'testIntranetMode';
+            window.status = 'testIntranetMode';
 
-        if (window.status === 'testIntranetMode') {
-            window.status = status;
+            if (window.status === 'testIntranetMode') {
+                window.status = status;
 
-            return true;
+                return true;
+            }
+
+            return false;
+
+        } catch (err) {
+
+            return false;
         }
-
-        return false;
-
-    } catch (err) {
-
-        return false;
     }
+
+    return false;
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
