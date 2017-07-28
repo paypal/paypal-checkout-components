@@ -80,6 +80,8 @@ export let Button = xcomponent.create({
 
                 this.props.payment().then(token => {
                     window.top.location = extendUrl(config.checkoutUrl, { token });
+                }).catch(err => {
+                    checkout.error(err);
                 });
             }
         });
@@ -683,6 +685,8 @@ if (Button.isChild()) {
 
             window.xprops.payment().then(token => {
                 window.top.location = extendUrl(config.checkoutUrl, { token });
+            }).catch(err => {
+                checkout.error(err);
             });
         };
     }
