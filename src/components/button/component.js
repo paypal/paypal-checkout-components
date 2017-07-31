@@ -9,7 +9,7 @@ import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-         getDomainSetting, isIE, extendUrl, noop } from '../../lib';
+         getDomainSetting, isIE, extendUrl, noop, forceIframe } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -109,7 +109,7 @@ export let Button = xcomponent.create({
         if (!isEligible()) {
             $logger.warn('button_render_ineligible');
         }
-        
+
         if (isIEIntranet()) {
             throw new Error(`Can not render button in IE intranet mode`);
         }
@@ -697,7 +697,7 @@ if (Button.isChild()) {
     // $FlowFixMe
     Object.defineProperty(Checkout.contexts, 'iframe', {
         get() : boolean {
-            return iframeEnabled;
+            return forceIframe() ? true : iframeEnabled;
         },
         set(value) {
             iframeEnabled = (checkoutRendered || __TEST__) ? value : false;
