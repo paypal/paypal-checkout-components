@@ -41,7 +41,7 @@ export let config = {
         mmgukkxdrvsgzjrdmykehng: {
             log_domain_prefix: true,
             custom_button_selector: '.paypal-payment-option',
-            ie_full_page: true,
+            ie_full_page: false,
             pre_click_full_page: true,
             memoize_payment: true
         },
