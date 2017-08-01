@@ -74,7 +74,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 __FILE_VERSION__: JSON.stringify(version),
                 __DEFAULT_LOG_LEVEL__: JSON.stringify('warn'),
                 __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
-                __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true),
+                __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(false),
                 ...vars,
                 ...getVersionVars()
             }),
