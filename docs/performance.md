@@ -62,7 +62,7 @@ If your app is client-side rendered, or there is a user action on the page befor
     </script>
     ```
 
-2. Call `paypal.Button.render()` on the client-side render, user-action which triggers the button being displayed
+2. Call `paypal.Button.render()` on the client-side render, route-change, or user-action which triggers the button being displayed
 
    ```html
    <div id="paypal-button-container"></div>
