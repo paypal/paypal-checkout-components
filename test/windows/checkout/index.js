@@ -3,13 +3,20 @@
 import { isSameDomain, getFrames } from 'cross-domain-utils/src';
 import { createTestContainer, createElement } from '../../tests/common';
 
-let { action } = window.xprops.test;
+let { action, onRender, onInit } = window.xprops.test;
+
+let actions = {
+    close() {
+        console.error('close test window');
+        window.close();
+    }
+};
+
+let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
 if (action === 'checkout') {
 
     window.xprops.payment().then(paymentToken => {
-
-        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
         return window.paypal.Promise.try(() => {
 
@@ -42,8 +49,6 @@ if (action === 'checkout') {
 } else if (action === 'cancel') {
 
     window.xprops.payment().then(paymentToken => {
-
-        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
 
         window.xprops.onCancel({
             paymentToken,
@@ -114,9 +119,7 @@ if (action === 'checkout') {
 } else if (action === 'error') {
 
     window.xprops.payment().then(paymentToken => {
-
-        let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
-
+        
         return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
@@ -131,4 +134,23 @@ if (action === 'checkout') {
             window.xchild.error(new Error('something went wrong'));
         });
     });
+} else if (action === 'init') {
+
+    window.xprops.payment().then(paymentToken => {
+        if (window.xprops.init) {
+            return window.xprops.init({
+                paymentToken,
+                cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+            }).then(() => {
+
+                if (onInit) {
+                    return onInit(actions);
+                }
+            });
+        }
+    });
+}
+
+if (onRender) {
+    onRender(actions);
 }

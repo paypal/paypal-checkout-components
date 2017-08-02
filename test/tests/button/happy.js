@@ -740,6 +740,38 @@ for (let flow of [ 'popup', 'iframe' ]) {
             Object.defineProperty(document, 'readyState', { value: readyState, configurable: true });
         });
 
+        if (flow === 'popup') {
+            it('should render a button into a container and click on the button, then cancel the payment by closing the window', (done) => {
+
+                window.paypal.Button.render({
+
+                    test: {
+                        flow,
+                        action: 'checkout',
+                        checkout: {
+                            action: 'init',
+                            onInit(actions) {
+                                actions.close();
+                            }
+                        }
+                    },
+
+                    payment() : string | ZalgoPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onAuthorize to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done();
+                    }
+
+                });
+            });
+        }
+
         if (flow === 'iframe') {
 
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {

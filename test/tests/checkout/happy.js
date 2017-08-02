@@ -570,6 +570,41 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
+        if (flow === 'popup') {
+            it('should render checkout, then cancel the payment by closing the window', (done) => {
+
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+                testButton.addEventListener('click', (event : Event) => {
+                    return window.paypal.Checkout.render({
+
+                        test: {
+                            flow,
+                            action: 'init',
+                            onInit(actions) {
+                                actions.close();
+                            }
+                        },
+
+                        payment() : string | ZalgoPromise<string> {
+                            return generateECToken();
+                        },
+
+                        onAuthorize() : void {
+                            return done(new Error('Expected onAuthorize to not be called'));
+                        },
+
+                        onCancel() : void {
+                            return done();
+                        }
+
+                    });
+                });
+
+                testButton.click();
+            });
+        }
+
         if (flow === 'iframe') {
 
             it('should render checkout, popout, then complete the payment', (done) => {
