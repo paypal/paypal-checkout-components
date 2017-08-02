@@ -7,7 +7,7 @@ import { getParent } from 'cross-domain-utils/src';
 import { config, FPTI } from '../config';
 import { getCommonSessionID } from './session';
 import { proxyMethod } from './proxy';
-import { getDomainSetting } from './util';
+import { getDomainSetting, once } from './util';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -15,7 +15,13 @@ function getRefererDomain() : string {
         : window.location.host;
 }
 
+let setupProxyLogTransport = once(() => {
+    $logger.setTransport(proxyMethod('log', getParent(window), $logger.getTransport()));
+});
+
 export function initLogger() {
+
+    setupProxyLogTransport();
 
     $logger.addPayloadBuilder(() => {
         return {
@@ -88,7 +94,5 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
         [ FPTI.KEY.CONTEXT_TYPE ]: token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
     });
 
-    $logger.flush();
+    $logger.immediateFlush();
 }
-
-$logger.setTransport(proxyMethod('log', getParent(window), $logger.getTransport()));
