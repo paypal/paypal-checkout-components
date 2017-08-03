@@ -43,12 +43,15 @@ export let config = {
             custom_button_selector: '.paypal-payment-option',
             ie_full_page: false,
             pre_click_full_page: true,
-            memoize_payment: true
+            memoize_payment: true,
+            force_bridge: true
         },
+
         mmgkjhtnrjqajdxjmwdbowxnegxd: {
             ie_full_page: true,
             pre_click_full_page: true,
-            memoize_payment: true
+            memoize_payment: true,
+            force_bridge: true
         }
     },
 

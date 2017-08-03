@@ -1,12 +1,13 @@
 /* @flow */
 
 import * as $logger from 'beaver-logger/client';
+import { bridge } from 'post-robot/src';
 
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
 import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
-import { isPayPalDomain, isEligible } from './lib';
+import { isPayPalDomain, isEligible, getDomainSetting } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -149,6 +150,10 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     }
 
     initLogger();
+
+    if (getDomainSetting('force_bridge') && bridge) {
+        bridge.openBridge(config.postBridgeUrls[env], config.paypalDomains[env]);
+    }
 
     $logger.info(`setup_${config.env}`);
 
