@@ -152,7 +152,7 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     initLogger();
 
     if (getDomainSetting('force_bridge') && bridge) {
-        bridge.openBridge(config.postBridgeUrls[env], config.paypalDomains[env]);
+        bridge.openBridge(config.postBridgeUrls[config.env], config.paypalDomains[config.env]);
     }
 
     $logger.info(`setup_${config.env}`);
