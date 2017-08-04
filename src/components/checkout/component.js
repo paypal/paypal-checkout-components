@@ -321,26 +321,43 @@ export let Checkout = xcomponent.create({
             once: true,
             promisify: true,
 
-            def() : Function {
-                return function(reason) : void {
+            decorate(original) : Function {
+                return function(reason) : ZalgoPromise<void> {
+
+                    let onClose = original
+                        ? original.apply(this, arguments)
+                        : ZalgoPromise.resolve();
+
                     let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
 
-                    if (this.props.onCancel && [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1) {
+                    let shouldCancel =
+                        this.props.onCancel &&
+                        [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
 
-                        if (this.paymentToken && this.cancelUrl) {
+                    let hasDetails =
+                        this.paymentToken &&
+                        this.cancelUrl;
 
-                            $logger.info(`close_trigger_cancel`);
+                    if (shouldCancel && !hasDetails) {
+                        $logger.warn(`close_no_token_cancelurl`);
+                        return onClose;
+                    }
 
-                            return this.props.onCancel({
+                    if (shouldCancel) {
+                        $logger.info(`close_trigger_cancel`);
+                        return ZalgoPromise.all([
+                            onClose,
+                            this.props.onCancel({
                                 paymentToken: this.paymentToken,
                                 cancelUrl:    this.cancelUrl
-                            });
-
-                        } else {
-
-                            $logger.warn(`close_no_token_cancelurl`);
-                        }
+                            })
+                        ]).then(() => {
+                            // $FlowFixMe
+                            return onClose;
+                        });
                     }
+
+                    return onClose;
                 };
             }
         },
