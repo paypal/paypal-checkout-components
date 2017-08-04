@@ -83,10 +83,10 @@ module.exports = function(config) {
                 base: 'Chrome',
                 flags: [
                     '--no-sandbox',
-                    // '--headless',
-                    // '--disable-gpu',
-                    // '--remote-debugging-port=9222',
-                    // '--remote-debugging-address=0.0.0.0',
+                    '--headless',
+                    '--disable-gpu',
+                    '--remote-debugging-port=9222',
+                    '--remote-debugging-address=0.0.0.0',
                     // '--auto-open-devtools-for-tabs',
                     '--enable-precise-memory-info',
                     '--js-flags="--expose-gc"'
