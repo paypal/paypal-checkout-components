@@ -91,6 +91,7 @@ export const FPTI = {
         CHECKOUT_ERROR: 'process_checkout_error',
 
         EXTERNAL_EXPERIMENT: 'process_external_experiment',
+        EXTERNAL_EXPERIMENT_COMPLETE: 'process_external_experiment_complete',
 
         PPTM_LOAD: 'process_pptm_load',
         PPTM_LOADED: 'process_pptm_loaded'

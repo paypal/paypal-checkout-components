@@ -9,13 +9,15 @@ import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-         getDomainSetting, isIE, extendUrl, noop, forceIframe } from '../../lib';
+         getDomainSetting, isIE, extendUrl, noop, forceIframe, eventEmitter } from '../../lib';
 import { rest } from '../../api';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
+
+export let onAuthorizeListener = eventEmitter();
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -425,6 +427,10 @@ export let Button = xcomponent.create({
                             actions.close()
                         ]);
                     };
+
+                    onAuthorizeListener.trigger({
+                        paymentToken: data.paymentToken
+                    });
 
                     return ZalgoPromise.try(() => {
                         return original.call(this, data, { ...actions, redirect });

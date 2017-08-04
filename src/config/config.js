@@ -44,14 +44,16 @@ export let config = {
             ie_full_page: false,
             pre_click_full_page: true,
             memoize_payment: true,
-            force_bridge: true
+            force_bridge: true,
+            log_authorize: true
         },
 
         mmgkjhtnrjqajdxjmwdbowxnegxd: {
             ie_full_page: true,
             pre_click_full_page: true,
             memoize_payment: true,
-            force_bridge: true
+            force_bridge: true,
+            log_authorize: true
         }
     },
 
