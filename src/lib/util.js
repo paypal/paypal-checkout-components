@@ -210,6 +210,26 @@ export function stringifyError(err : mixed) : string {
     return Object.prototype.toString.call(err);
 }
 
+export function stringifyErrorMessage(err : mixed) : string {
+
+    let defaultMessage = `<unknown error: ${Object.prototype.toString.call(err)}>`;
+
+    if (!err) {
+        return defaultMessage;
+    }
+
+    if (err instanceof Error) {
+        return err.message || defaultMessage;
+    }
+
+    if (typeof err.message === 'string') {
+        return err.message || defaultMessage;
+    }
+
+    return defaultMessage;
+}
+
+
 let isLocalStorageEnabled = memoize(() : boolean => {
     try {
         if (window.localStorage) {

@@ -4,7 +4,7 @@ import * as $logger from 'beaver-logger/client';
 import { bridge } from 'post-robot/src';
 
 import { config, FPTI } from './config';
-import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
+import { initLogger, checkForCommonErrors, setLogLevel, stringifyError, stringifyErrorMessage } from './lib';
 import { createPptmScript } from './lib/pptm';
 import { isPayPalDomain, isEligible, getDomainSetting, once } from './lib';
 
@@ -37,7 +37,7 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
 
     $logger.track({
         [ FPTI.KEY.ERROR_CODE ]: 'checkoutjs_error',
-        [ FPTI.KEY.ERROR_DESC ]: stringifyError(err)
+        [ FPTI.KEY.ERROR_DESC ]: stringifyErrorMessage(err)
     });
 
     $logger.flush().catch(err2 => {
