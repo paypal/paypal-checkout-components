@@ -5,9 +5,8 @@ import { bridge } from 'post-robot/src';
 
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError } from './lib';
-import { enableCheckoutIframe } from './components';
 import { createPptmScript } from './lib/pptm';
-import { isPayPalDomain, isEligible, getDomainSetting } from './lib';
+import { isPayPalDomain, isEligible, getDomainSetting, once } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -81,24 +80,17 @@ function getCurrentScript() : ? HTMLScriptElement {
 let currentScript = getCurrentScript();
 let currentProtocol = window.location.protocol.split(':')[0];
 
-type SetupOptions = {
+
+type ConfigOptions = {
     env? : ?string,
     stage? : ?string,
     apiStage? : ?string,
-    paypalUrl? : ?string,
     state? : ?string,
     ppobjects? : ?boolean,
-    lightbox? : ?boolean,
     logLevel? : ?string
 };
 
-export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, lightbox, logLevel } : SetupOptions = {}) {
-
-    if (!isEligible()) {
-        $logger.warn('ineligible');
-    }
-
-    checkForCommonErrors();
+function configure({ env, stage, apiStage, paypalUrl, state, ppobjects, logLevel } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -128,15 +120,20 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
         config.ppobjects = true;
     }
 
-    if (lightbox) {
-        enableCheckoutIframe();
-    }
-
     if (logLevel) {
         setLogLevel(logLevel);
     } else {
         setLogLevel(config.logLevel);
     }
+}
+
+export let init = once(() => {
+
+    if (!isEligible()) {
+        $logger.warn('ineligible');
+    }
+
+    checkForCommonErrors();
 
     if (!isPayPalDomain()) {
         createPptmScript();
@@ -151,12 +148,17 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     $logger.info(`setup_${config.env}`);
 
     $logger.debug(`current_protocol_${currentProtocol}`);
-}
+});
 
 $logger.track({
     [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
     [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
 });
+
+export function setup(options : ConfigOptions = {}) {
+    configure(options);
+    init();
+}
 
 if (currentScript) {
 
@@ -165,7 +167,6 @@ if (currentScript) {
         stage:      currentScript.getAttribute('data-stage'),
         apiStage:   currentScript.getAttribute('data-api-stage'),
         state:      currentScript.getAttribute('data-state'),
-        lightbox:   currentScript.hasAttribute('data-enable-lightbox'),
         logLevel:   currentScript.getAttribute('data-log-level'),
         ppobjects:  true
     });
@@ -181,4 +182,6 @@ if (currentScript) {
     if (document.currentScript) {
         $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
     }
+
+    setup();
 }
