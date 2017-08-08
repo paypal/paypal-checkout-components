@@ -63,10 +63,11 @@ If your app is client-side rendered, or there is a user action on the page befor
 
                 var script = document.createElement('script');
                 script.setAttribute('src', PAYPAL_SCRIPT);
-                container.appendChild(script);
 
                 script.onload = function() { callback() };
                 script.onerror = function(err) { callback(err) };
+					 
+					 container.appendChild(script);
             }
 
             loadPayPalCheckout();
