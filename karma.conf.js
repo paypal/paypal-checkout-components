@@ -11,6 +11,7 @@ module.exports = function(config) {
     let coverage  = !Boolean(argv['disable-coverage']) && !quick;
     let browsers  = argv['browser'];
     let logLevel  = argv['log-level'] || argv['loglevel'] || (keepOpen ? 'info' : '');
+    let headless  = !keepOpen;
 
     let karmaConfig = {
 
@@ -83,7 +84,6 @@ module.exports = function(config) {
                 base: 'Chrome',
                 flags: [
                     '--no-sandbox',
-                    '--headless',
                     '--disable-gpu',
                     '--remote-debugging-port=9222',
                     '--remote-debugging-address=0.0.0.0',
@@ -275,6 +275,10 @@ module.exports = function(config) {
                 }
             ]
         };
+    }
+
+    if (headless) {
+        karmaConfig.customLaunchers.xChrome.flags.push('--headless');
     }
 
     config.set(karmaConfig);
