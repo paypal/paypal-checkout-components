@@ -54,8 +54,10 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         xhr.addEventListener('load', function() : void {
 
+            let corrID = this.getResponseHeader('paypal-debug-id');
+
             if (!this.status) {
-                return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code`));
+                return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code. Correlation id: ${corrID}`));
             }
 
             let contentType = this.getResponseHeader('content-type');
@@ -66,12 +68,12 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 res = JSON.parse(this.responseText);
             } catch (err) {
                 if (isJSON) {
-                    return reject(new Error(`Invalid json: ${this.responseText}`));
+                    return reject(new Error(`Invalid json: ${this.responseText}. Correlation id: ${corrID}`));
                 }
             }
 
             if (this.status >= 400) {
-                let message = `Request to ${method.toLowerCase()} ${url} failed with ${this.status} error`;
+                let message = `Request to ${method.toLowerCase()} ${url} failed with ${this.status} error. Correlation id: ${corrID}`;
 
                 if (res) {
                     if (isJSON) {
@@ -88,8 +90,9 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         }, false);
 
-        xhr.addEventListener('error', (evt) => {
-            reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: ${evt.toString()}`));
+        xhr.addEventListener('error', function(evt) {
+            let corrID = this.getResponseHeader('paypal-debug-id');
+            reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: ${evt.toString()}. Correlation id: ${corrID}`));
         }, false);
 
         xhr.open(method, url, true);
