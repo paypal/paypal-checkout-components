@@ -352,7 +352,6 @@ export let Checkout = xcomponent.create({
                                 cancelUrl:    this.cancelUrl
                             })
                         ]).then(() => {
-                            // $FlowFixMe
                             return onClose;
                         });
                     }

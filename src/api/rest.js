@@ -178,7 +178,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
         return ZalgoPromise.try(() => {
 
             if (experience) {
-                return createExperienceProfile(env, client, experience);
+                return ZalgoPromise.resolve(createExperienceProfile(env, client, experience));
             }
 
         }).then((experienceID) : ZalgoPromise<Object> => {
@@ -245,7 +245,7 @@ export function createBillingToken(env : string, client : { [key : string] : str
         return ZalgoPromise.try(() => {
 
             if (experienceDetails) {
-                return createExperienceProfile(env, client, experienceDetails);
+                return ZalgoPromise.resolve(createExperienceProfile(env, client, experienceDetails));
             }
 
         }).then((experienceID) : ZalgoPromise<Object> => {
