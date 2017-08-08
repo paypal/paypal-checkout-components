@@ -98,4 +98,4 @@ export const FPTI = {
     }
 };
 
-export const PPTM_ID = 'xo--pptm';
+export const PPTM_ID = 'xo-pptm';

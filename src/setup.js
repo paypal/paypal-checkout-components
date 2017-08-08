@@ -81,7 +81,6 @@ function getCurrentScript() : ? HTMLScriptElement {
 let currentScript = getCurrentScript();
 let currentProtocol = window.location.protocol.split(':')[0];
 
-
 type SetupOptions = {
     env? : ?string,
     stage? : ?string,
@@ -118,12 +117,6 @@ export function setup({ env, stage, apiStage, paypalUrl, state, ppobjects, light
     if (apiStage) {
         delete config.apiStage;
         config.apiStage = apiStage;
-    }
-
-    if (paypalUrl) {
-        delete config.paypalUrl;
-        config.paypalUrl = paypalUrl;
-        setDomainEnv(config.paypalUrl);
     }
 
     if (state) {
@@ -171,7 +164,6 @@ if (currentScript) {
         env:        currentScript.getAttribute('data-env'),
         stage:      currentScript.getAttribute('data-stage'),
         apiStage:   currentScript.getAttribute('data-api-stage'),
-        paypalUrl:  currentScript.getAttribute('data-paypal-url'),
         state:      currentScript.getAttribute('data-state'),
         lightbox:   currentScript.hasAttribute('data-enable-lightbox'),
         logLevel:   currentScript.getAttribute('data-log-level'),

@@ -26,7 +26,7 @@ let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
     }, 10);
 });
 
-let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
+export let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
     if (document.body) {
         return document.body;
     }
@@ -36,42 +36,41 @@ let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
 
 
 export function loadScript(src : string, timeout : number = 0, attrs : Object = {}) : ZalgoPromise<void> {
-    return documentBody.then(body => {
+    return new ZalgoPromise((resolve, reject) => {
+        let script = document.createElement('script');
 
-        return new ZalgoPromise((resolve, reject) => {
-            let script = document.createElement('script');
+        script.onload = function () {
+            resolve();
+        };
 
-            script.onload = function () {
+        // For Internet explorer 8 support
+        script.onreadystatechange = function () {
+            if (this.readyState === 'complete' || this.readyState === 'loaded') {
                 resolve();
-            };
-
-            // For Internet explorer 8 support
-            script.onreadystatechange = function () {
-                if (this.readyState === 'complete' || this.readyState === 'loaded') {
-                    resolve();
-                }
-            };
-
-            let scriptLoadError = new Error('script_loading_error');
-
-            script.onerror = (event : Event) => {
-                return reject(scriptLoadError);
-            };
-
-            if (timeout) {
-                setTimeout(() => {
-                    return reject(new Error('script_loading_timed_out'));
-                }, timeout);
             }
+        };
 
-            for (let attr of Object.keys(attrs)) {
-                script.setAttribute(attr, attrs[attr]);
-            }
+        let scriptLoadError = new Error('script_loading_error');
 
-            script.setAttribute('src', src);
+        script.onerror = (event : Event) => {
+            return reject(scriptLoadError);
+        };
 
-            body.appendChild(script);
-        });
+        if (timeout) {
+            setTimeout(() => {
+                return reject(new Error('script_loading_timed_out'));
+            }, timeout);
+        }
+
+        for (let attr of Object.keys(attrs)) {
+            script.setAttribute(attr, attrs[attr]);
+        }
+
+        script.setAttribute('src', src);
+
+        let head = document.getElementsByTagName('head')[0];
+
+        head.appendChild(script);
     });
 }
 

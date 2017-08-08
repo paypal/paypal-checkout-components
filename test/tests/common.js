@@ -138,6 +138,29 @@ export function destroyElement(element : string | ?HTMLElement) {
     }
 }
 
+export function createFrame(options : Object) : HTMLIFrameElement {
+
+    let html;
+
+    if (options.html) {
+        html = options.html;
+        delete options.html;
+    }
+
+    let frame = createElement({
+        tag: 'iframe',
+        ...options
+    });
+
+    if (html) {
+        // $FlowFixMe
+        frame.contentWindow.document.write(html);
+    }
+
+    // $FlowFixMe
+    return frame;
+}
+
 export function getElement(el : string | HTMLElement, container : HTMLElement | Document = document) : HTMLElement {
 
     if (!el) {

@@ -4,8 +4,9 @@ import { ENV } from './constants';
 
 export let config = {
 
-    scriptUrl: `//www.paypalobjects.com/api/${__FILE_NAME__}`,
-    legacyScriptUrl: `//www.paypalobjects.com/api/checkout.js`,
+    scriptUrl: __TEST__
+        ? `//${window.location.host}/base/src/load.js`
+        : `//www.paypalobjects.com/api/${__FILE_NAME__}`,
 
     paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
@@ -15,7 +16,9 @@ export let config = {
 
     cors: true,
 
-    env: __TEST__ ? ENV.TEST : ENV.PRODUCTION,
+    env: __TEST__
+        ? ENV.TEST
+        : ENV.PRODUCTION,
 
     state: 'checkoutjs',
 
