@@ -1,28 +1,74 @@
 /* @flow */
 
-import { getAgent, supportsPopups, getUserAgent, isIEIntranet } from './device';
+import * as $logger from 'beaver-logger/client';
+
+import { supportsPopups, isIEIntranet } from './device';
+import { once } from './util';
 import { config } from '../config';
 
-export function isUnsupportedIE() : boolean {
-    return Boolean(getUserAgent().match(/MSIE (5|6|7|8)\./i));
+function getBowser({ clearCache = false } = {}) : Object {
+
+    if (clearCache) {
+        delete require.cache[require.resolve('bowser/bowser.min')];
+    }
+
+    return require('bowser/bowser.min');
 }
 
-export function isEligible() : boolean {
+function isBrowserEligible() : boolean {
 
-    if (isUnsupportedIE() || isIEIntranet()) {
+    if (isIEIntranet()) {
         return false;
     }
 
-    let currentAgent = getAgent();
+    let bowser = getBowser({ clearCache: true });
 
-    if (typeof currentAgent === 'object' && currentAgent.length === 2) {
-        if (parseFloat(currentAgent[1]) < config.SUPPORTED_AGENTS[currentAgent[0]]) {
-            return false;
+    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
+        if (bowser[browser]) {
+            if (bowser[browser] && bowser.version < config.SUPPORTED_BROWSERS[browser]) {
+                return false;
+            }
         }
     }
 
     return true;
 }
+
+let eligibilityResults = {};
+
+export function isEligible() : boolean {
+
+    if (isIEIntranet()) {
+        return false;
+    }
+
+    let userAgent = window.navigator.userAgent;
+
+    if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) {
+        return eligibilityResults[userAgent];
+    }
+
+    let result = isBrowserEligible();
+
+    eligibilityResults[userAgent] = result;
+
+    return result;
+}
+
+export let checkRecognizedBrowser = once(() => {
+
+    let bowser = getBowser();
+
+    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
+        if (bowser[browser]) {
+            return;
+        }
+    }
+
+    let { name, version, mobile, android, ios } = bowser;
+    $logger.info('unrecognized_browser', { name, version, mobile, android, ios });
+    $logger.flush();
+});
 
 export function forceIframe() : boolean {
     return !supportsPopups();

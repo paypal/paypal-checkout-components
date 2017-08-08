@@ -1,10 +1,6 @@
 /* @flow */
 
 import { assert } from 'chai';
-
-
-
-
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
@@ -71,7 +67,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', () => {
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
             delete window.paypal.config.checkoutUrl;
@@ -101,7 +100,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow in an ineligible browser in Intranet Mode', () => {
 
-            window.navigator.mockUserAgent = IE11_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE11_USER_AGENT,
+                configurable: true
+            });
             window.document.documentMode = 11;
 
             let checkoutUrl = Object.getOwnPropertyDescriptor(window.paypal.config, 'checkoutUrl');
@@ -298,7 +300,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url in an ineligible browser', () => {
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
+
             let token = generateECToken();
 
             return window.paypal.checkout.setup('merchantID', {
@@ -343,7 +349,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call startFlow with a url with no token in an ineligible browser', () => {
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             return window.paypal.checkout.setup('merchantID', {
 
@@ -423,7 +432,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO, then startFlow in an ineligible browser', () => {
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let token = generateECToken();
 

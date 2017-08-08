@@ -19,6 +19,7 @@ function getMemory() {
 }
 
 let startMem;
+let originalUserAgent;
 
 beforeEach(() => {
     if (memoryReported) {
@@ -29,10 +30,17 @@ beforeEach(() => {
     window.onerror = () => {
         // pass
     };
+
+    originalUserAgent = window.navigator.userAgent;
 });
 
 afterEach(() => {
-    delete window.navigator.mockUserAgent;
+
+    Object.defineProperty(window.navigator, 'userAgent', {
+        value: originalUserAgent,
+        configurable: true
+    });
+    
     delete window.document.documentMode;
 
     if (window.gc) {

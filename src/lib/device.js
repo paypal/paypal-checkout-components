@@ -20,27 +20,6 @@ export function isWebView() : boolean {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
-export function getAgent(agent? : ?string) : Array<string> {
-    let ua = getUserAgent();
-    let tem;
-    let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-    if (/trident/i.test(M[1])) {
-        tem = (/\brv[ :]+(\d+)/g).exec(ua) || [];
-        return ['IE', tem[1] || ''];
-    }
-    if (M[1] === 'Chrome') {
-        tem = ua.match(/\bOPR\/(\d+)/);
-        if (tem) {
-            return ['Opera', tem[1]];
-        }
-    }
-    M = M[2] ? [M[1], M[2]] : [window.navigator.appName, window.navigator.appVersion, '-?'];
-    if ((tem = ua.match(/version\/(\d+(\.\d{1,2}))/i))) {
-        M.splice(1, 1, tem[1]);
-    }
-    return M;
-}
-
 export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
 }

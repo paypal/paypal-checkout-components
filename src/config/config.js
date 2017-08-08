@@ -62,13 +62,13 @@ export let config = {
 
     customCountry: false,
 
-    SUPPORTED_AGENTS: {
-        Chrome: 27,
-        IE: 9,
-        MSIE: 9,
-        Firefox: 30,
-        Safari: 5.1,
-        Opera: 23
+    SUPPORTED_BROWSERS: {
+        msie: '9',
+        firefox: '30',
+        chrome: '27',
+        safari: '5.1',
+        opera: '16',
+        msedge: '12'
     },
 
     session_uid_lifetime: 5 * 60 * 1000,

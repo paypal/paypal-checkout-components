@@ -273,7 +273,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let testForm = createElement({
                 tag: 'form',
@@ -406,7 +409,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let testForm = createElement({
                 tag: 'form',
@@ -544,7 +550,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let testForm = createElement({
                 tag: 'form',
@@ -635,7 +644,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url with no token in an ineligible browser', () => {
 
-            window.navigator.mockUserAgent = IE8_USER_AGENT;
+            Object.defineProperty(window.navigator, 'userAgent', {
+                value: IE8_USER_AGENT,
+                configurable: true
+            });
 
             let token = generateECToken();
             let hash = uniqueID();
@@ -677,7 +689,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
-                    delete window.navigator.mockUserAgent;
                 });
             });
         });
