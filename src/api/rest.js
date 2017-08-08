@@ -10,7 +10,7 @@ import { request, memoize } from '../lib';
 
 import { Button } from '../components';
 
-let proxyRest : { [key : string] : () => ZalgoPromise<string> } = {};
+let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<string> } = {};
 
 let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 

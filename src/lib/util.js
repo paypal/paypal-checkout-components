@@ -39,7 +39,7 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
     };
 }
 
-export function noop() {
+export function noop(...args : Array<mixed>) {
     // pass
 }
 
@@ -116,7 +116,7 @@ type Listener = {
         cancel : () => void
     },
     once : (method : Function) => void,
-    trigger : () => void
+    trigger : (...args : Array<mixed>) => void
 };
 
 export function eventEmitter() : Listener {
@@ -141,9 +141,9 @@ export function eventEmitter() : Listener {
             });
         },
 
-        trigger() {
+        trigger(...args : Array<mixed>) {
             for (let listener of listeners) {
-                listener.apply(null, arguments);
+                listener(...args);
             }
         }
     };

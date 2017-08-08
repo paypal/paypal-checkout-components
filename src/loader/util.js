@@ -35,8 +35,8 @@ export function loadScript(url : string, prop : string, attrs : Object, callback
     container.appendChild(script);
 }
 
-export function warn() {
-    let message = Array.prototype.slice.call(arguments).join(' ');
+export function warn(...args : Array<string>) {
+    let message = args.join(' ');
 
     if (window.console && window.console.warn) {
         window.console.warn(message);
