@@ -139,7 +139,8 @@
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        __webpack_require__("./src/lib/namespace.js").a(__webpack_require__("./src/loader/interface.js"), [ "paypal" ]);
+        var __WEBPACK_IMPORTED_MODULE_0__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
+        Object(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(__webpack_require__("./src/loader/interface.js"), [ "paypal" ]);
     },
     "./src/loader/interface.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -162,13 +163,13 @@
         }
         function getIntegrationURLs() {
             return {
-                latest: __WEBPACK_IMPORTED_MODULE_2__component__.c(),
+                latest: Object(__WEBPACK_IMPORTED_MODULE_2__component__.c)(),
                 major: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", ""),
-                minor: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", "." + __WEBPACK_IMPORTED_MODULE_2__component__.a())
+                minor: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", "." + Object(__WEBPACK_IMPORTED_MODULE_2__component__.a)())
             };
         }
         function getIntegrationProps() {
-            var props = _extends({}, __WEBPACK_IMPORTED_MODULE_0__config__.a.script_props), query = __WEBPACK_IMPORTED_MODULE_3__util__.b();
+            var props = _extends({}, __WEBPACK_IMPORTED_MODULE_0__config__.a.script_props), query = Object(__WEBPACK_IMPORTED_MODULE_3__util__.b)();
             query.env && (props["data-env"] = query.env);
             query.stage && (props["data-stage"] = query.stage);
             return props;
@@ -180,15 +181,15 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, integrationResponder = __WEBPACK_IMPORTED_MODULE_1__responder__.a();
+        }, integrationResponder = Object(__WEBPACK_IMPORTED_MODULE_1__responder__.a)();
         !function(callback) {
-            if (!__WEBPACK_IMPORTED_MODULE_2__component__.b()) return callback(null, null);
+            if (!Object(__WEBPACK_IMPORTED_MODULE_2__component__.b)()) return callback(null, null);
             var urls = getIntegrationURLs(), props = getIntegrationProps();
-            __WEBPACK_IMPORTED_MODULE_3__util__.a(urls.latest ? urls.major : urls.minor, __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, function(err, result) {
-                return err && !urls.latest ? __WEBPACK_IMPORTED_MODULE_3__util__.a(urls.major + "?t=" + Date.now(), __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, callback) : callback(err, result);
+            Object(__WEBPACK_IMPORTED_MODULE_3__util__.a)(urls.latest ? urls.major : urls.minor, __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, function(err, result) {
+                return err && !urls.latest ? Object(__WEBPACK_IMPORTED_MODULE_3__util__.a)(urls.major + "?t=" + Date.now(), __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, callback) : callback(err, result);
             });
         }(function(err, result) {
-            err && __WEBPACK_IMPORTED_MODULE_3__util__.c("Failed to load checkout.js", err.stack || err.toString());
+            err && Object(__WEBPACK_IMPORTED_MODULE_3__util__.c)("Failed to load checkout.js", err.stack || err.toString());
             if (err || result) return integrationResponder.respond(err, result);
         });
     },
@@ -246,7 +247,8 @@
             container.appendChild(script);
         }
         function warn() {
-            var message = Array.prototype.slice.call(arguments).join(" ");
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+            var message = args.join(" ");
             window.console && window.console.warn ? window.console.warn(message) : window.console && window.console.log && window.console.log(message);
         }
         function parseQuery() {
