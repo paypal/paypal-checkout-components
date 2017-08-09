@@ -185,6 +185,8 @@ export let Checkout = xcomponent.create({
                 if (original) {
                     return function(data, actions = {}) : ZalgoPromise<void> {
 
+                        Checkout.contexts.iframe = false;
+
                         let close = () => {
                             return ZalgoPromise.try(() => {
                                 if (actions.close) {
@@ -257,6 +259,8 @@ export let Checkout = xcomponent.create({
 
             decorate(original) : ?Function {
                 return function(data, actions = {}) : ZalgoPromise<void> {
+
+                    Checkout.contexts.iframe = false;
 
                     let close = () => {
                         return ZalgoPromise.try(() => {
