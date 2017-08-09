@@ -8462,7 +8462,7 @@
                 },
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.107";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.108";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -9259,7 +9259,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.107";
+                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.108";
                 },
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.b,
@@ -9871,7 +9871,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.107";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.108";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -9994,7 +9994,7 @@
             var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.107",
+                version: "4.0.108",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10038,8 +10038,10 @@
                     safari: "5.1",
                     opera: "16",
                     msedge: "12",
-                    samsungBrowser: "4.0",
-                    silk: "59.3"
+                    samsungBrowser: "2.1",
+                    silk: "59.3",
+                    ucbrowser: "10.0.0.488",
+                    vivaldi: "1.91"
                 },
                 session_uid_lifetime: 3e5,
                 _apiStage: "",
@@ -10144,7 +10146,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.107");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.108");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -10876,7 +10878,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.107", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.108", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0;
@@ -11691,7 +11693,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.107";
+                    payload.version = "4.0.108";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                     var query = [];
@@ -11718,7 +11720,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.107".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.108".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -11726,7 +11728,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.107",
+                    v: "checkout.js.4.0.108",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -12049,7 +12051,7 @@
                         _ref2 = _i.value;
                     }
                     var browser = _ref2;
-                    if (bowser[browser] && bowser[browser] && -1 === bowser.compareVersions([ bowser.version, __WEBPACK_IMPORTED_MODULE_3__config__.g.SUPPORTED_BROWSERS[browser] ])) return !1;
+                    if (bowser[browser] && bowser.version && bowser[browser] && -1 === bowser.compareVersions([ bowser.version, __WEBPACK_IMPORTED_MODULE_3__config__.g.SUPPORTED_BROWSERS[browser] ])) return !1;
                 }
                 return !0;
             }
@@ -12388,7 +12390,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                        ver: "4.0.107"
+                        ver: "4.0.108"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
