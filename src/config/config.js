@@ -68,7 +68,9 @@ export let config = {
         chrome: '27',
         safari: '5.1',
         opera: '16',
-        msedge: '12'
+        msedge: '12',
+        samsungBrowser: '4.0',
+        silk: '59.3'
     },
 
     session_uid_lifetime: 5 * 60 * 1000,
