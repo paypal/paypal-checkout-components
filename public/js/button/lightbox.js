@@ -41,7 +41,7 @@ export function detectLightboxEligibility() {
 
     return isLightboxEligible().then(eligible => {
         if (eligible) {
-            enableLightbox();
+            // enableLightbox();
 
             if (window.xprops.onAuth) {
                 window.xprops.onAuth();
