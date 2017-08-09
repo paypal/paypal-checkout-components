@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        window.demoPayPalDomain = 'http://localhost.paypal.com:' + window.location.port;
+    </script>
+    <script src="../../dist/checkout.js" data-paypal-checkout data-env="demo"></script>
+</head>
+
+<body>
+    <div id="paypal-button-container"></div>
+
+    <script>
+        paypal.checkout.setup('merchant', {
+            container: 'paypal-button-container',
+            click: function() {
+                paypal.checkout.initXO();
+
+                setTimeout(function() {
+                    paypal.checkout.startFlow('EC-XXXXXXXXXXXXXXXXX');
+                }, 500);
+            }
+        });
+    </script>
+</body>
