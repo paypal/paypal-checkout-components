@@ -1,5 +1,5 @@
 
-let { Checkout } = window.paypal;
+let { Checkout, Promise } = window.paypal;
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
 import { memoize } from './util';
@@ -11,7 +11,8 @@ function buildActions(checkout, data, actions, intent) {
     let restartFlow = () => {
         return checkout.close().then(() => {
             enableLightbox();
-            return renderCheckout({ payment: () => data.paymentToken });
+            renderCheckout({ payment: () => data.paymentToken });
+            return new Promise();
         });
     };
 
