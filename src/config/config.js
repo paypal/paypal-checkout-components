@@ -70,7 +70,9 @@ export let config = {
         opera: '16',
         msedge: '12',
         samsungBrowser: '4.0',
-        silk: '59.3'
+        silk: '59.3',
+        ucbrowser: '10.0.0.488',
+        vivaldi: '1.91'
     },
 
     session_uid_lifetime: 5 * 60 * 1000,
