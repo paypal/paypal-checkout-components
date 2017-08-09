@@ -40,6 +40,10 @@ export function getPayment(paymentID) {
             id: paymentID
         }
     }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Execute payment failed');
+        }
+        
         return res.data;
     });
 }
@@ -56,6 +60,10 @@ export function executePayment(paymentID, payerID) {
         }
 
     }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Execute payment failed');
+        }
+
         return res.data;
     });
 }
