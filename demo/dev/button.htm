@@ -11,11 +11,38 @@
     <button id="paypal-button-iframe">iframe</button>
 
     <script>
+        function restartFlow(checkout) {
+            return checkout.close().then(() => {
+                paypal.Checkout.contexts.iframe = true;
+                renderCheckout();
+                return new paypal.Promise();
+            });
+        }
+
         function renderCheckout() {
             paypal.Checkout.renderTo(window.top, {
                 env: window.xprops.env,
                 payment: window.xprops.payment,
-                onAuthorize: window.xprops.onAuthorize
+                onAuthorize: function(data, actions) {
+
+                    let self = this;
+
+                    function restart() {
+                        return restartFlow(self);
+                    }
+
+                    var payment = {
+                        execute: function() {
+                            return paypal.Promise.resolve({
+                                id: 'foo',
+                                intent: 'sale',
+                                state: 'authorized'
+                            });
+                        }
+                    };
+
+                    window.xprops.onAuthorize(data, { ...actions, restart, payment })
+                }
             });
         }
 
