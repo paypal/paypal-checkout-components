@@ -430,12 +430,31 @@ export let Button = xcomponent.create({
                         ]);
                     };
 
+                    let restart = () => {
+                        return actions.restart().then(() => {
+                            return new ZalgoPromise();
+                        });
+                    };
+
+                    let execute = actions.payment.execute;
+                    actions.payment.execute = () => {
+                        return execute().then(result => {
+
+                            if (!result || !result.id || !result.intent || !result.state) {
+                                $logger.warn(`execute_result_missing_data`);
+                                return new ZalgoPromise();
+                            }
+
+                            return result;
+                        });
+                    };
+
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
 
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, redirect });
+                        return original.call(this, data, { ...actions, redirect, restart });
                     }).catch(err => {
                         return this.error(err);
                     });
