@@ -55,7 +55,7 @@ export function isEligible() : boolean {
     return result;
 }
 
-export let checkRecognizedBrowser = once(() => {
+export let checkRecognizedBrowser = once((state : string) => {
 
     let bowser = getBowser();
 
@@ -66,7 +66,7 @@ export let checkRecognizedBrowser = once(() => {
     }
 
     let { name, version, mobile, android, ios } = bowser;
-    $logger.info('unrecognized_browser', { name, version, mobile, android, ios });
+    $logger.info(`unrecognized_browser_${state}`, { name, version, mobile, android, ios });
     $logger.flush();
 });
 

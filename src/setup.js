@@ -6,7 +6,7 @@ import { bridge } from 'post-robot/src';
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError, stringifyErrorMessage } from './lib';
 import { createPptmScript } from './lib/pptm';
-import { isPayPalDomain, isEligible, getDomainSetting, once, checkRecognizedBrowser } from './lib';
+import { isPayPalDomain, isEligible, getDomainSetting, once } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -132,8 +132,6 @@ export let init = once(() => {
     if (!isEligible()) {
         $logger.warn('ineligible');
     }
-
-    checkRecognizedBrowser();
 
     checkForCommonErrors();
 

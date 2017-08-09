@@ -6,7 +6,7 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel,
+import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
          getDomainSetting, isIE, extendUrl, noop, forceIframe, eventEmitter } from '../../lib';
@@ -410,6 +410,8 @@ export let Button = xcomponent.create({
                     if (!isEligible()) {
                         $logger.info('button_authorize_ineligible');
                     }
+
+                    checkRecognizedBrowser('authorize');
 
                     $logger.flush();
 
