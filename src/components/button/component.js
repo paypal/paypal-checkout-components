@@ -291,13 +291,23 @@ export let Button = xcomponent.create({
                             reject(`Timed out waiting ${timeout}ms for payment`);
                         }, timeout);
 
-                    }).then(result => {
+                    }).then(token => {
 
-                        if (!result) {
+                        if (!token) {
                             throw new Error(`No value passed to payment`);
                         }
 
-                        return result;
+                        $logger.track({
+                            [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.RECIEVE_PAYMENT,
+                            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+                            [ FPTI.KEY.TOKEN ]: token,
+                            [ FPTI.KEY.CONTEXT_ID ]: token
+                        });
+
+                        $logger.flush();
+
+                        return token;
                     });
                 };
             }
