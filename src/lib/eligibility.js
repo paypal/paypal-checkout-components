@@ -24,7 +24,7 @@ function isBrowserEligible() : boolean {
     let bowser = getBowser({ clearCache: true });
 
     for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
-        if (bowser[browser]) {
+        if (bowser[browser] && bowser.version) {
             if (bowser[browser] && bowser.compareVersions([ bowser.version, config.SUPPORTED_BROWSERS[browser] ]) === -1) {
                 return false;
             }

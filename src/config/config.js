@@ -69,7 +69,7 @@ export let config = {
         safari: '5.1',
         opera: '16',
         msedge: '12',
-        samsungBrowser: '4.0',
+        samsungBrowser: '2.1',
         silk: '59.3',
         ucbrowser: '10.0.0.488',
         vivaldi: '1.91'
