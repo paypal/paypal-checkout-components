@@ -309,7 +309,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             animation-fill-mode: both;
 
             min-width: 450px;
-
+            max-width: 450px;
             width: 450px;
             height: 535px;
 
@@ -319,25 +319,23 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
             -webkit-overflow-scrolling: touch;
         }
 
-        @media screen and (max-width: 450px) {
+        @media screen and (max-width: 470px) {
 
+            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .paypal-checkout-iframe-container,
             #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
+                min-width: 100%;
                 min-width: calc(100% - 20px);
                 min-width: -webkit-calc(100% - 20px);
                 min-width: -moz-calc(100% - 20px);
                 min-width: -o-calc(100% - 20px);
                 min-width: -ms-calc(100% - 20px);
-            }
 
-            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
-                min-width: 100%;
-            }
-        }
-
-        @media screen and (min-width: 490px) {
-
-            #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
-                max-width: 450px;
+                max-width: 100%;
+                max-width: calc(100% - 20px);
+                max-width: -webkit-calc(100% - 20px);
+                max-width: -moz-calc(100% - 20px);
+                max-width: -o-calc(100% - 20px);
+                max-width: -ms-calc(100% - 20px);
             }
         }
 
