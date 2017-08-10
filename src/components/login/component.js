@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, ENV } from '../../config';
 import { containerTemplate, componentTemplate } from '../checkout/templates';
-import { getCommonSessionID } from '../../lib';
+import { getCommonSessionID, getBrowserLocale } from '../../lib';
 
 export let Login = xcomponent.create({
 
@@ -75,6 +75,18 @@ export let Login = xcomponent.create({
             }
         },
 
+        locale: {
+            type: 'string',
+            required: false,
+            queryParam: 'locale.x',
+            allowDelegate: true,
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${lang}_${country}`;
+            }
+        },
+
         stage: {
             type: 'string',
             required: false,
@@ -87,12 +99,6 @@ export let Login = xcomponent.create({
                     return config.stage;
                 }
             }
-        },
-
-        locale: {
-            type: 'string',
-            required: false,
-            queryParam: 'locale.x'
         },
 
         onAuthenticate: {
