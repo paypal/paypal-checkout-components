@@ -12,7 +12,7 @@
 
     <script>
         function restartFlow(checkout) {
-            return checkout.close().then(() => {
+            return checkout.close().then(function() {
                 paypal.Checkout.contexts.iframe = true;
                 renderCheckout();
                 return new paypal.Promise();
@@ -25,7 +25,7 @@
                 payment: window.xprops.payment,
                 onAuthorize: function(data, actions) {
 
-                    let self = this;
+                    var self = this;
 
                     function restart() {
                         return restartFlow(self);
@@ -41,7 +41,12 @@
                         }
                     };
 
-                    window.xprops.onAuthorize(data, { ...actions, restart, payment })
+                    actions = {
+                        payment: payment,
+                        restart: restart
+                    };
+
+                    window.xprops.onAuthorize(data, actions);
                 }
             });
         }
