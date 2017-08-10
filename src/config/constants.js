@@ -48,7 +48,8 @@ export const FPTI = {
         ERROR_DESC: 'ext_error_desc',
         PAGE_LOAD_TIME: 'page_load_time',
         EXPERIMENT_NAME: 'pxp_exp_id',
-        TREATMENT_NAME: 'pxp_trtmnt_id'
+        TREATMENT_NAME: 'pxp_trtmnt_id',
+        TRANSITION_TIME: 'transition_time'
     },
 
     BUTTON_TYPE: {

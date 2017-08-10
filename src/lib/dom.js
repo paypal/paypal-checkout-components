@@ -320,7 +320,7 @@ export let enablePerformance = memoize(() : boolean => {
 
 export function getPageRenderTime() : ZalgoPromise<?number> {
     return documentReady.then(() => {
-        
+
         if (!enablePerformance()) {
             return;
         }
@@ -331,4 +331,25 @@ export function getPageRenderTime() : ZalgoPromise<?number> {
             return timing.domInteractive - timing.connectEnd;
         }
     });
+}
+
+export function getResourceLoadTime(url : string) : ?number {
+
+    if (!enablePerformance()) {
+        return;
+    }
+
+    if (!window.performance || typeof window.performance.getEntries !== 'function') {
+        return;
+    }
+
+    let entries = window.performance.getEntries();
+
+    for (let i = 0; i < entries.length; i++) {
+        let entry = entries[i];
+
+        if (entry && entry.name === url && entry.duration) {
+            return Math.floor(entry.duration);
+        }
+    }
 }

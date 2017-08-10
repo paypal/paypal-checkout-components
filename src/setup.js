@@ -4,7 +4,7 @@ import * as $logger from 'beaver-logger/client';
 import { bridge } from 'post-robot/src';
 
 import { config, FPTI } from './config';
-import { initLogger, checkForCommonErrors, setLogLevel, stringifyError, stringifyErrorMessage } from './lib';
+import { initLogger, checkForCommonErrors, setLogLevel, stringifyError, stringifyErrorMessage, getResourceLoadTime } from './lib';
 import { createPptmScript } from './lib/pptm';
 import { isPayPalDomain, isEligible, getDomainSetting, once } from './lib';
 
@@ -150,11 +150,6 @@ export let init = once(() => {
     $logger.debug(`current_protocol_${currentProtocol}`);
 });
 
-$logger.track({
-    [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-    [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
-});
-
 export function setup(options : ConfigOptions = {}) {
     configure(options);
     init();
@@ -173,10 +168,28 @@ if (currentScript) {
 
     let scriptProtocol = currentScript.src.split(':')[0];
 
+    let loadTime = getResourceLoadTime(currentScript.src);
+
     $logger.debug(`current_script_protocol_${scriptProtocol}`);
     $logger.debug(`current_script_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }_protocol`);
 
+    if (loadTime && !isPayPalDomain()) {
+        $logger.debug(`current_script_time`, { loadTime });
+        $logger.debug(`current_script_time_${ Math.floor(loadTime / 1000) }`);
+    }
+
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD,
+        [ FPTI.KEY.TRANSITION_TIME ]: loadTime
+    });
+
 } else {
+    $logger.track({
+        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
+    });
+
     $logger.debug(`no_current_script`);
 
     if (document.currentScript) {
