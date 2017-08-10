@@ -298,6 +298,8 @@ export let Checkout = xcomponent.create({
             decorate(original) : Function {
                 return function(data) : void {
 
+                    $logger.info('checkout_init');
+
                     $logger.track({
                         [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_INIT,
