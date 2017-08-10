@@ -35,7 +35,7 @@ gulp.task('typecheck', [ 'lint' ], function() {
 gulp.task('lint', ['lint-src', 'lint-test']);
 
 gulp.task('lint-src', function() {
-    return gulp.src([ 'src/**/*.js' ]).pipe(gulpEslint({
+    return gulp.src([ 'src/**/*.{js,jsx}' ]).pipe(gulpEslint({
         fix: Boolean(yargs.argv['fix'])
     }))
         .pipe(gulpEslint.format())
@@ -43,7 +43,7 @@ gulp.task('lint-src', function() {
 });
 
 gulp.task('lint-test', function() {
-    return gulp.src([ 'test/{tests,windows}/**/*.js' ]).pipe(gulpEslint({
+    return gulp.src([ 'test/{tests,windows}/**/*.{js,jsx}' ]).pipe(gulpEslint({
         fix: Boolean(yargs.argv['fix'])
     }))
         .pipe(gulpEslint.format())
