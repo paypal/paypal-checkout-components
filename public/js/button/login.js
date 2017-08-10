@@ -17,8 +17,6 @@ export function setupLoginPreRender() {
     return isLoggedIn().then(loggedIn => {
         if (!loggedIn) {
             let login = window.paypal.Login.prerender({
-                env: 'stage',
-
                 onAuthenticate(data) {
                     throw new Error(`Called unimplemented onAuthenticate`);
                 }
