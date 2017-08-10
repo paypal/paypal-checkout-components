@@ -29,6 +29,10 @@ function log(experiment : string, treatment : string, token : string, state : st
 
 export function logExperimentTreatment(experiment : string, treatment : string, token : string) {
 
+    if (experiment === 'walmart_paypal_incontext') {
+        experiment = 'walmart_paypal_incontext_redirect';
+    }
+
     let { existingTreatment, existingToken } = getSessionState(session => {
 
         let externalExperimentTreatment = session.externalExperimentTreatment;
@@ -79,8 +83,8 @@ function logReturn(token : string, mechanism : string) {
 
         return {
             experiment:      externalExperiment,
-            treatment:       externalExperimentTreatment,
-            complete:        externalExperimentComplete,
+            treatment:       externalExperimentTreatment || 'unknown',
+            complete:        externalExperimentComplete || 'unknown',
             existingToken:   externalExperimentToken
         };
     });

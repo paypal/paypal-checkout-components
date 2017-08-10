@@ -48,7 +48,8 @@ export let config = {
             pre_click_full_page: true,
             memoize_payment: true,
             force_bridge: true,
-            log_authorize: true
+            log_authorize: true,
+            experiment_test_beacon_on_click: 'walmart_paypal_incontext_click'
         },
 
         mmgkjhtnrjqajdxjmwdbowxnegxd: {

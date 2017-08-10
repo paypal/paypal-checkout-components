@@ -12,6 +12,7 @@ import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
          getDomainSetting, isIE, extendUrl, noop, forceIframe, eventEmitter } from '../../lib';
 import { rest } from '../../api';
+import { logExperimentTreatment } from '../../experiments';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
@@ -551,6 +552,11 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.flush();
+
+                    let experimentTestBeacon = getDomainSetting('experiment_test_beacon_on_click');
+                    if (experimentTestBeacon) {
+                        logExperimentTreatment(experimentTestBeacon, 'test');
+                    }
 
                     if (original) {
                         return original.apply(this, arguments);
