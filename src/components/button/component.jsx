@@ -1,4 +1,5 @@
 /* @flow */
+/* @jsx jsxDom */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
@@ -60,9 +61,13 @@ export let Button = xcomponent.create({
     scrolling: false,
 
     containerTemplate,
-    componentTemplate({ props, htmlDom } : { props : Object, htmlDom : Function }) : HTMLElement {
+    componentTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
-        let template = htmlDom(componentTemplate({ props }));
+        let template = (
+            <html>
+                <body innerHTML={ componentTemplate({ props }) }></body>
+            </html>
+        );
 
         template.addEventListener('click', () => {
             $logger.warn('button_pre_template_click');

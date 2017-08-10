@@ -463,27 +463,31 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     }
 
     let container = (
-        <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
-            <a href='#' class="paypal-checkout-close" onClick={ close }></a>
-            <div class="paypal-checkout-modal">
-                <div class="paypal-checkout-logo"></div>
-                <div class="paypal-checkout-message">
-                    { content.windowMessage }
-                </div>
-                <div class="paypal-checkout-continue">
-                    <a onClick={ focus } href='#'>{ content.continue }</a>
-                </div>
-                <div class="paypal-checkout-loader">
-                    <div class="paypal-spinner"></div>
-                </div>
-            </div>
+        <html>
+            <body>
+                <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
+                    <a href='#' class="paypal-checkout-close" onClick={ close }></a>
+                    <div class="paypal-checkout-modal">
+                        <div class="paypal-checkout-logo"></div>
+                        <div class="paypal-checkout-message">
+                            { content.windowMessage }
+                        </div>
+                        <div class="paypal-checkout-continue">
+                            <a onClick={ focus } href='#'>{ content.continue }</a>
+                        </div>
+                        <div class="paypal-checkout-loader">
+                            <div class="paypal-spinner"></div>
+                        </div>
+                    </div>
 
-            <div class="paypal-checkout-iframe-container">
-                { outlet }
-            </div>
+                    <div class="paypal-checkout-iframe-container">
+                        { outlet }
+                    </div>
 
-            <style>{ containerStyle }</style>
-        </div>
+                    <style>{ containerStyle }</style>
+                </div>
+            </body>
+        </html>
     );
 
     on(EVENT.CLOSE, () => {
