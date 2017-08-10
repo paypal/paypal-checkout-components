@@ -45,7 +45,7 @@ export let config = {
             log_domain_prefix: true,
             custom_button_selector: '.paypal-payment-option',
             ie_full_page: false,
-            pre_click_full_page: true,
+            allow_full_page_fallback: true,
             memoize_payment: true,
             force_bridge: true,
             log_authorize: true,
@@ -54,7 +54,7 @@ export let config = {
 
         mmgkjhtnrjqajdxjmwdbowxnegxd: {
             ie_full_page: false,
-            pre_click_full_page: true,
+            allow_full_page_fallback: true,
             memoize_payment: true,
             force_bridge: true,
             log_authorize: true

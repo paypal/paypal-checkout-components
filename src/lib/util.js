@@ -287,3 +287,16 @@ export function getDomainSetting(name : string) : ?mixed {
         }
     }
 }
+
+export function patchMethod(obj : Object, name : string, handler : Function) {
+    let original = obj[name];
+
+    obj[name] = function() : mixed {
+        return handler({
+            context: this,
+            args: arguments,
+            original,
+            callOriginal: () => original.apply(this, arguments)
+        });
+    };
+}

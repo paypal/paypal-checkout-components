@@ -3,8 +3,9 @@
 import * as $logger from 'beaver-logger/client';
 
 import { FPTI } from './config';
-import { onAuthorizeListener } from './components/button';
-import { getReturnToken, getSessionState, getDomainSetting } from './lib';
+import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
+
+export let onAuthorizeListener = eventEmitter();
 
 function log(experiment : string, treatment : string, token : string, state : string) {
 

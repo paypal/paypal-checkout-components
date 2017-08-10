@@ -10,18 +10,16 @@ import { Login } from '../login';
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
-         getBrowserLocale, getCommonSessionID, request, checkpoint,
+         getBrowserLocale, getCommonSessionID, request, checkpoint, patchMethod,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-         getDomainSetting, isIE, extendUrl, noop, forceIframe, eventEmitter } from '../../lib';
+         getDomainSetting, isIE, extendUrl, noop, forceIframe } from '../../lib';
 import { rest } from '../../api';
-import { logExperimentTreatment } from '../../experiments';
+import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
-
-export let onAuthorizeListener = eventEmitter();
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -75,7 +73,7 @@ export let Button = xcomponent.create({
         template.addEventListener('click', () => {
             $logger.warn('button_pre_template_click');
 
-            if (getDomainSetting('pre_click_full_page')) {
+            if (getDomainSetting('allow_full_page_fallback')) {
                 $logger.info('pre_template_force_full_page');
                 $logger.flush();
 
@@ -673,9 +671,8 @@ if (Button.isChild()) {
     awaitPopupBridgeOpener();
 
     let debounce = false;
-    let renderTo = Checkout.renderTo;
 
-    Checkout.renderTo = function(win, props) : ?Promise<Object> {
+    patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
 
         if (debounce) {
             $logger.warn('button_mutliple_click_debounce');
@@ -694,9 +691,8 @@ if (Button.isChild()) {
             };
         }
 
-        return renderTo.apply(this, arguments);
-    };
-
+        return callOriginal();
+    });
 
     if (window.xprops.validate) {
 
@@ -712,13 +708,11 @@ if (Button.isChild()) {
             }
         });
 
-        let renderTo2 = Checkout.renderTo;
-
-        Checkout.renderTo = function() : ?Promise<Object> {
+        patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
             if (enabled) {
-                return renderTo2.apply(this, arguments);
+                return callOriginal();
             }
-        };
+        });
     }
 
     if (isIE() && getDomainSetting('ie_full_page')) {
@@ -758,17 +752,27 @@ if (Button.isChild()) {
         }
     });
 
-    let renderTo3 = Checkout.renderTo;
-
-    Checkout.renderTo = function() : ?Promise<Object> {
+    patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
         checkoutRendered = true;
-        return renderTo3.apply(this, arguments);
-    };
+        return callOriginal();
+    });
 
-    let loginRenderTo = Login.renderTo;
-
-    Login.renderTo = function() : ?Promise<Object> {
+    patchMethod(Login, 'renderTo', ({ callOriginal }) => {
         loginRendered = true;
-        return loginRenderTo.apply(this, arguments);
-    };
+        return callOriginal();
+    });
+
+    if (getDomainSetting('allow_full_page_fallback')) {
+        patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
+            return callOriginal().catch(err => {
+                if (err instanceof xcomponent.PopupOpenError) {
+                    window.xprops.payment().then(token => {
+                        window.top.location = extendUrl(config.checkoutUrl, { token });
+                    });
+                } else {
+                    throw err;
+                }
+            });
+        });
+    }
 }
