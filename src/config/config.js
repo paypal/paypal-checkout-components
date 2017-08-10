@@ -52,7 +52,7 @@ export let config = {
         },
 
         mmgkjhtnrjqajdxjmwdbowxnegxd: {
-            ie_full_page: true,
+            ie_full_page: false,
             pre_click_full_page: true,
             memoize_payment: true,
             force_bridge: true,
@@ -94,7 +94,7 @@ export let config = {
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${window.location.protocol}//${window.location.host}`,
-            [ ENV.DEMO ]:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.DEMO ]:       `${window.location.protocol}//localhost.paypal.com:${window.location.port}`
         };
     },
 
@@ -105,7 +105,7 @@ export let config = {
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `mock://www.paypal.com`,
-            [ ENV.DEMO ]:       `${window.location.protocol}//${window.location.host}`
+            [ ENV.DEMO ]:       `${window.location.protocol}//localhost.paypal.com:${window.location.port}`
         };
     },
 
