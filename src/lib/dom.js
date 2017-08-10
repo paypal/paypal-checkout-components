@@ -320,6 +320,11 @@ export let enablePerformance = memoize(() : boolean => {
 
 export function getPageRenderTime() : ZalgoPromise<?number> {
     return documentReady.then(() => {
+        
+        if (!enablePerformance()) {
+            return;
+        }
+
         let timing = window.performance.timing;
 
         if (timing.connectEnd && timing.domInteractive) {

@@ -640,14 +640,17 @@ export let Button = xcomponent.create({
 if (Button.isChild()) {
 
     getPageRenderTime().then(pageRenderTime => {
-        $logger.track({
-            [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_LOAD,
-            [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
-            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
-        });
 
-        $logger.flush();
+        if (pageRenderTime) {
+            $logger.track({
+                [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
+                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_LOAD,
+                [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+                [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
+            });
+
+            $logger.flush();
+        }
     });
 
     if (window.xprops.logLevel) {
