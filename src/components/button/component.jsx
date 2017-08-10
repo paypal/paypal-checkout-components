@@ -6,6 +6,8 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
+import { Login } from '../login';
+
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
@@ -743,6 +745,7 @@ if (Button.isChild()) {
     }
 
     let checkoutRendered = false;
+    let loginRendered = false;
     let iframeEnabled = false;
 
     // $FlowFixMe
@@ -751,7 +754,7 @@ if (Button.isChild()) {
             return forceIframe() ? true : iframeEnabled;
         },
         set(value) {
-            iframeEnabled = (checkoutRendered || __TEST__) ? value : false;
+            iframeEnabled = (checkoutRendered || loginRendered || __TEST__) ? value : false;
         }
     });
 
@@ -760,5 +763,12 @@ if (Button.isChild()) {
     Checkout.renderTo = function() : ?Promise<Object> {
         checkoutRendered = true;
         return renderTo3.apply(this, arguments);
+    };
+
+    let loginRenderTo = Login.renderTo;
+
+    Login.renderTo = function() : ?Promise<Object> {
+        loginRendered = true;
+        return loginRenderTo.apply(this, arguments);
     };
 }
