@@ -300,6 +300,7 @@ export let Button = xcomponent.create({
                     }).then(token => {
 
                         if (!token) {
+                            $logger.error(`no_token_passed_to_payment`);
                             throw new Error(`No value passed to payment`);
                         }
 
