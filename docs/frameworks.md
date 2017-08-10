@@ -56,7 +56,7 @@ var MyCartComponent = window.React.createClass({
                 client={client}
                 payment={payment}
                 commit=true
-                onAuthorize={onAuthorize} />
+                on-authorize={onAuthorize} />
         </div>);
     }
 });
