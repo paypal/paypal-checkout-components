@@ -57,7 +57,7 @@ export let Checkout = xcomponent.create({
     },
 
     contexts: {
-        iframe: false,
+        iframe: forceIframe(),
         popup: true
     },
 
@@ -439,13 +439,7 @@ export let Checkout = xcomponent.create({
 
 setupPopupBridgeProxy(Checkout);
 
-let enableCheckoutIframeTimeout;
-
 function allowCheckoutIframe() : boolean {
-
-    if (isDevice()) {
-        return false;
-    }
 
     if (!hasMetaViewPort()) {
         return false;
@@ -454,31 +448,12 @@ function allowCheckoutIframe() : boolean {
     return true;
 }
 
-export function enableCheckoutIframe({ timeout = 5 * 60 * 1000 } : { force? : boolean, timeout? : number } = {}) {
-
-    if (forceIframe()) {
+export function enableCheckoutIframe() {
+    
+    if (allowCheckoutIframe()) {
+        delete Checkout.contexts.iframe;
         Checkout.contexts.iframe = true;
-        return;
     }
-
-    if (!allowCheckoutIframe()) {
-        return;
-    }
-
-    Checkout.contexts.iframe = true;
-
-    if (enableCheckoutIframeTimeout) {
-        clearTimeout(enableCheckoutIframeTimeout);
-    }
-
-    enableCheckoutIframeTimeout = setTimeout(() => {
-        Checkout.contexts.iframe = false;
-    }, timeout);
-}
-
-if (forceIframe()) {
-    $logger.info('force_enable_iframe');
-    enableCheckoutIframe({ time: 30 * 60 * 1000 });
 }
 
 if (Checkout.isChild()) {
@@ -489,10 +464,3 @@ if (Checkout.isChild()) {
 
     awaitPopupBridgeOpener();
 }
-
-// $FlowFixMe
-Object.defineProperty(Checkout.contexts, 'lightbox', {
-    set(value) {
-        Checkout.contexts.iframe = value;
-    }
-});

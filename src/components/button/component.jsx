@@ -356,8 +356,6 @@ export let Button = xcomponent.create({
             value() {
                 this.onRemember = this.onRemember || new ZalgoPromise();
                 this.onRemember.resolve();
-
-                // enableCheckoutIframe();
             }
         },
 
