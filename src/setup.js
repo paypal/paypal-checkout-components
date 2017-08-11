@@ -171,7 +171,8 @@ if (currentScript) {
     let loadTime = getResourceLoadTime(currentScript.src);
 
     $logger.debug(`current_script_protocol_${scriptProtocol}`);
-    $logger.debug(`current_script_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }_protocol`);
+    $logger.debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
+    $logger.debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
     if (loadTime && !isPayPalDomain()) {
         $logger.debug(`current_script_time`, { loadTime });
@@ -191,6 +192,7 @@ if (currentScript) {
     });
 
     $logger.debug(`no_current_script`);
+    $logger.debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
     if (document.currentScript) {
         $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
