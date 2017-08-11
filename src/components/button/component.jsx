@@ -6,7 +6,6 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
-import { Login } from '../login';
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
@@ -740,7 +739,6 @@ if (Button.isChild()) {
     }
 
     let checkoutRendered = false;
-    let loginRendered = false;
     let iframeEnabled = false;
 
     // $FlowFixMe
@@ -749,17 +747,12 @@ if (Button.isChild()) {
             return forceIframe() ? true : iframeEnabled;
         },
         set(value) {
-            iframeEnabled = (checkoutRendered || loginRendered || __TEST__) ? value : false;
+            iframeEnabled = (checkoutRendered || window.xprops.prefetchLogin || __TEST__) ? value : false;
         }
     });
 
     patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
         checkoutRendered = true;
-        return callOriginal();
-    });
-
-    patchMethod(Login, 'renderTo', ({ callOriginal }) => {
-        loginRendered = true;
         return callOriginal();
     });
 
