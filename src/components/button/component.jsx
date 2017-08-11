@@ -6,6 +6,7 @@ import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
+import { Login } from '../login';
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
@@ -771,4 +772,9 @@ if (Button.isChild()) {
             });
         });
     }
+
+    patchMethod(Login, 'prerender', ({ callOriginal, args: [ props ] }) => {
+        delete props.env;
+        return callOriginal();
+    });
 }
