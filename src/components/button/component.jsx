@@ -64,9 +64,7 @@ export let Button = xcomponent.create({
     componentTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
         let template = (
-            <html>
-                <body innerHTML={ componentTemplate({ props }) }></body>
-            </html>
+            <div innerHTML={ componentTemplate({ props }) }></div>
         );
 
         template.addEventListener('click', () => {
@@ -93,7 +91,13 @@ export let Button = xcomponent.create({
             }
         });
 
-        return template;
+        return (
+            <html>
+                <body>
+                    { template }
+                </body>
+            </html>
+        );
     },
 
     sacrificialComponentTemplate: true,
