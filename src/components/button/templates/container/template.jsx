@@ -76,9 +76,7 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
             }
         };
 
-    let defaultSize = sizes.small;
-
-    let minWidth = sizes.small.width;
+    let minWidth = '148px';
     let maxWidth = '500px';
 
     let initialHeight = getInitialHeight(dimensions.width, fundingIcons) || sizes.small.height;
@@ -110,11 +108,6 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
                         max-height: ${ sizes.large.height };
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } {
-                        width:  ${ defaultSize.width };
-                        height: ${ defaultSize.height };
-                    }
-
                     #${ id }.paypal-button-size-tiny > .${ CLASS.OUTLET },
                     #${ id }.paypal-button-size-small > .${ CLASS.OUTLET } {
                         width:  ${ sizes.small.width };
@@ -139,7 +132,7 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
                     #${ id } > .${ CLASS.OUTLET } > iframe {
                         min-width: 100%;
                         max-width: 100%;
-                        width: ${ defaultSize.width };
+                        width: ${ sizes.small.width };
                         height: 100%;
                     }
                 `}

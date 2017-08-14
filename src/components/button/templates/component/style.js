@@ -38,7 +38,7 @@ export let componentStyle = `
 
         width: 100%;
 
-        min-width: 147px;
+        min-width: 100px;
         min-height: 42px;
 
         box-sizing: border-box;
@@ -397,11 +397,6 @@ export let componentStyle = `
         .paypal-button.paypal-style-credit {
             display: none;
         }
-    }
-
-    .paypal-button.paypal-style-credit {
-        min-width: 148px;
-        min-height: 42px;
     }
 
     .paypal-button.paypal-style-credit .paypal-button-content .text {
