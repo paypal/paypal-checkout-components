@@ -16,20 +16,11 @@ export function setupLoginPreRender() {
 
     return isLoggedIn().then(loggedIn => {
         if (!loggedIn) {
-            let login = window.paypal.Login.prerender({
+            loginPreRender = window.paypal.Login.prerender({
                 onAuthenticate(data) {
                     throw new Error(`Called unimplemented onAuthenticate`);
                 }
             });
-
-            loginPreRender = {
-                render(props) {
-                    return login.render(props);
-                },
-                renderTo(win, props) {
-                    return login.renderTo(win, props);
-                }
-            };
 
             setTimeout(() => {
                 loginPreRender = null;
