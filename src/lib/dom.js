@@ -348,7 +348,7 @@ export function getResourceLoadTime(url : string) : ?number {
     for (let i = 0; i < entries.length; i++) {
         let entry = entries[i];
 
-        if (entry && entry.name === url && entry.duration) {
+        if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 60000) {
             return Math.floor(entry.duration);
         }
     }
