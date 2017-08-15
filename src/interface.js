@@ -9,10 +9,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 export { ZalgoPromise as Promise } from 'zalgo-promise/src';
 
 export { rest } from './api';
-export { Button } from './components';
+export { Button, forceIframe } from './components';
 export { setup } from './setup';
 export { config, ENV, USERS, SOURCE } from './config';
-export { request, isEligible, isWebView, forceIframe } from './lib';
+export { request, isEligible, isWebView } from './lib';
 export { logExperimentTreatment } from './experiments';
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;

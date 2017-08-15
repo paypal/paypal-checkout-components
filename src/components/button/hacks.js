@@ -4,10 +4,10 @@ import * as xcomponent from 'xcomponent/src';
 
 import { Button } from './component';
 import { Login } from '../login';
-import { Checkout } from '../checkout';
+import { Checkout, forceIframe } from '../checkout';
 
 import { config } from '../../config';
-import { patchMethod, isIE, getDomainSetting, noop, forceIframe,
+import { patchMethod, isIE, getDomainSetting, noop,
          extendUrl } from '../../lib';
 
 if (Button.isChild()) {

@@ -9,8 +9,8 @@ import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
-import { isDevice, request, getQueryParam, redirect as redir, hasMetaViewPort,
-         setLogLevel, getCommonSessionID, getBrowserLocale, forceIframe } from '../../lib';
+import { isDevice, request, getQueryParam, redirect as redir,
+         setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups, hasMetaViewPort } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -23,6 +23,22 @@ function addHeader(name, value) : void {
     if (window.$Api.addHeader) {
         return window.$Api.addHeader(name, value);
     }
+}
+
+export function forceIframe() : boolean {
+    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) {
+        return true;
+    }
+
+    return !supportsPopups();
+}
+
+export function allowIframe() : boolean {
+    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.allow) {
+        return true;
+    }
+
+    return hasMetaViewPort();
 }
 
 export let Checkout = xcomponent.create({
@@ -439,18 +455,9 @@ export let Checkout = xcomponent.create({
 
 setupPopupBridgeProxy(Checkout);
 
-function allowCheckoutIframe() : boolean {
-
-    if (!hasMetaViewPort()) {
-        return false;
-    }
-
-    return true;
-}
-
 export function enableCheckoutIframe() {
-    
-    if (allowCheckoutIframe()) {
+
+    if (allowIframe()) {
         delete Checkout.contexts.iframe;
         Checkout.contexts.iframe = true;
     }

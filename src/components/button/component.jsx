@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { Checkout } from '../checkout';
+import { Checkout, forceIframe } from '../checkout';
 
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
@@ -608,12 +608,15 @@ export let Button = xcomponent.create({
             }
         },
 
-        disableLightbox: {
-            type: 'boolean',
+        lightbox: {
+            type: 'object',
             required: false,
 
-            get value() : boolean {
-                return !hasMetaViewPort();
+            get value() : { allow : boolean, force : boolean } {
+                return {
+                    allow: !hasMetaViewPort(),
+                    force: forceIframe()
+                };
             }
         },
 

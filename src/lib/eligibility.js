@@ -2,7 +2,7 @@
 
 import * as $logger from 'beaver-logger/client';
 
-import { supportsPopups, isIEIntranet } from './device';
+import { isIEIntranet } from './device';
 import { once } from './util';
 import { config } from '../config';
 
@@ -69,7 +69,3 @@ export let checkRecognizedBrowser = once((state : string) => {
     $logger.info(`unrecognized_browser_${state}`, { name, version, mobile, android, ios });
     $logger.flush();
 });
-
-export function forceIframe() : boolean {
-    return !supportsPopups();
-}
