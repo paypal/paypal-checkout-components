@@ -156,7 +156,6 @@ export function setup(options : ConfigOptions = {}) {
 }
 
 if (currentScript) {
-
     setup({
         env:        currentScript.getAttribute('data-env'),
         stage:      currentScript.getAttribute('data-stage'),
@@ -166,37 +165,44 @@ if (currentScript) {
         ppobjects:  true
     });
 
-    let scriptProtocol = currentScript.src.split(':')[0];
-
-    let loadTime = getResourceLoadTime(currentScript.src);
-
-    $logger.debug(`current_script_protocol_${scriptProtocol}`);
-    $logger.debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
-    $logger.debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
-
-    if (loadTime && !isPayPalDomain()) {
-        $logger.debug(`current_script_time`, { loadTime });
-        $logger.debug(`current_script_time_${ Math.floor(loadTime / 1000) }`);
-    }
-
-    $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD,
-        [ FPTI.KEY.TRANSITION_TIME ]: loadTime
-    });
-
 } else {
-    $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
-    });
-
-    $logger.debug(`no_current_script`);
-    $logger.debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
-
-    if (document.currentScript) {
-        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
-    }
-
     setup();
+}
+
+if (!isPayPalDomain()) {
+
+    if (currentScript) {
+
+        let scriptProtocol = currentScript.src.split(':')[0];
+        let loadTime = getResourceLoadTime(currentScript.src);
+
+        $logger.debug(`current_script_protocol_${scriptProtocol}`);
+        $logger.debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
+        $logger.debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
+
+        if (loadTime) {
+            $logger.debug(`current_script_time`, { loadTime });
+            $logger.debug(`current_script_time_${ Math.floor(loadTime / 1000) }`);
+        }
+
+        $logger.track({
+            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD,
+            [ FPTI.KEY.TRANSITION_TIME ]: loadTime
+        });
+
+    } else {
+
+        $logger.debug(`no_current_script`);
+        $logger.debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
+
+        if (document.currentScript) {
+            $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+        }
+
+        $logger.track({
+            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
+        });
+    }
 }
