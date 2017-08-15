@@ -35,7 +35,7 @@ There are two options for installing paypal-checkout:
     3. You will get the following site-speed benefits:
        - The CDN script is hosted on Akamai Edge servers, which are geographically distributed for global users
        - The `checkout.js` script is also loaded inside the iframe and popup window for the PayPal Button and Checkout components.
-         Loading the script from our CDN means we can load the same script from cache, saving your users bandwidth and extra download time.
+         Loading the script from our CDN means we can load the same script from cache, saving your users bandwidth and extra download time. See [Performance](/performance.md)
 
     4. Backwards compatibility with previous versions of `checkout.js` is guaranteed.
 
