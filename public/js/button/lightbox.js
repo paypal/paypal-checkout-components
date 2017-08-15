@@ -5,10 +5,18 @@ import { $util } from 'squid-core/dist/util';
 import { isLoggedIn } from './user';
 
 export function isLightboxEligible() {
+    return Promise.try(() => {
+        let lightbox = window.xprops.lightbox;
 
-    return Promise.resolve().then(() => {
+        if (!lightbox) {
+            return false;
+        }
 
-        if (window.xprops.disableLightbox) {
+        if (lightbox.force) {
+            return true;
+        }
+
+        if (!lightbox.allow) {
             return false;
         }
 
