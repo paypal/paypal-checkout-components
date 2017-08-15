@@ -1,6 +1,8 @@
 /* @flow */
 /* @jsx jsxDom */
 
+import { BUTTON_SIZE, BUTTON_LABEL } from '../../constants';
+
 type ContainerTemplateOptions = {
     id : string,
     props : Object,
@@ -13,75 +15,68 @@ type ContainerTemplateOptions = {
     on : Function
 };
 
-const SIZE = {
-    SMALL:      'small',
-    MEDIUM:     'medium',
-    LARGE:      'large',
-    RESPONSIVE: 'responsive'
-};
-
 const MIN_WIDTH = 100;
 const MAX_WIDTH = 500;
 
-const BUTTON_SIZE = {
-    [ SIZE.SMALL ]: {
+const BUTTON_SIZES = {
+    [ BUTTON_SIZE.SMALL ]: {
         width:  '148px',
         height: '28px'
     },
-    [ SIZE.MEDIUM ]: {
+    [ BUTTON_SIZE.MEDIUM ]: {
         width:  '230px',
         height: '34px'
     },
-    [ SIZE.LARGE ]: {
+    [ BUTTON_SIZE.LARGE ]: {
         width:  '380px',
         height: '44px'
     }
 };
 
-const BUTTON_SIZE_WITH_TAGLINE = {
-    [ SIZE.SMALL ]: {
-        width:  BUTTON_SIZE[SIZE.SMALL].width,
+const BUTTON_SIZES_WITH_TAGLINE = {
+    [ BUTTON_SIZE.SMALL ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.SMALL].width,
         height: '42px'
     },
-    [ SIZE.MEDIUM ]: {
-        width:  BUTTON_SIZE[SIZE.MEDIUM].width,
+    [ BUTTON_SIZE.MEDIUM ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.MEDIUM].width,
         height: '48px'
     },
-    [ SIZE.LARGE ]: {
-        width:  BUTTON_SIZE[SIZE.LARGE].width,
+    [ BUTTON_SIZE.LARGE ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.LARGE].width,
         height: '60px'
     }
 };
 
-const BUTTON_SIZE_WITH_FUNDINGICONS = {
-    [ SIZE.SMALL ]: {
-        width:  BUTTON_SIZE[SIZE.SMALL].width,
+const BUTTON_SIZES_WITH_FUNDINGICONS = {
+    [ BUTTON_SIZE.SMALL ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.SMALL].width,
         height: '65px'
     },
-    [ SIZE.MEDIUM ]: {
-        width:  BUTTON_SIZE[SIZE.MEDIUM].width,
+    [ BUTTON_SIZE.MEDIUM ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.MEDIUM].width,
         height: '75px'
     },
-    [ SIZE.LARGE ]: {
-        width:  BUTTON_SIZE[SIZE.LARGE].width,
+    [ BUTTON_SIZE.LARGE ]: {
+        width:  BUTTON_SIZES[BUTTON_SIZE.LARGE].width,
         height: '85px'
     }
 };
 
 const RESPONSIVE_RANGES = {
-    small:  [ 100, 200 ],
-    medium: [ 200, 300 ],
-    large:  [ 300, 500 ]
+    [ BUTTON_SIZE.SMALL ]:  [ 100, 200 ],
+    [ BUTTON_SIZE.MEDIUM ]: [ 200, 300 ],
+    [ BUTTON_SIZE.LARGE ]:  [ 300, 500 ]
 };
 
 function determineResponsiveSize(containerWidth = 0) : string {
 
     if (containerWidth < MIN_WIDTH) {
-        return SIZE.SMALL;
+        return BUTTON_SIZE.SMALL;
     }
 
     if (containerWidth >= MAX_WIDTH) {
-        return SIZE.LARGE;
+        return BUTTON_SIZE.LARGE;
     }
 
     for (let size of Object.keys(RESPONSIVE_RANGES)) {
@@ -100,18 +95,18 @@ function getSizes({ containerWidth, tagline, fundingicons }) : { [string] : { wi
     let sizes;
 
     if (fundingicons) {
-        sizes = BUTTON_SIZE_WITH_FUNDINGICONS;
+        sizes = BUTTON_SIZES_WITH_FUNDINGICONS;
     } else if (tagline) {
-        sizes = BUTTON_SIZE_WITH_TAGLINE;
+        sizes = BUTTON_SIZES_WITH_TAGLINE;
     } else {
-        sizes = BUTTON_SIZE;
+        sizes = BUTTON_SIZES;
     }
 
     let responsiveSize = determineResponsiveSize(containerWidth);
 
     return {
         ...sizes,
-        responsive: {
+        [ BUTTON_SIZE.RESPONSIVE ]: {
             width: '100%',
             height: sizes[responsiveSize].height
         }
@@ -123,8 +118,8 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
     let style = props.style || {};
 
     let {
-        label        = 'checkout',
-        size         = 'small',
+        label        = BUTTON_LABEL.CHECKOUT,
+        size         = BUTTON_SIZE.SMALL,
         fundingicons = false,
         tagline      = true
     } = style;
@@ -135,7 +130,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
         tagline
     });
 
-    if (size === SIZE.RESPONSIVE) {
+    if (size === BUTTON_SIZE.RESPONSIVE) {
         on('resize', () => {
             let newSizes = getSizes({
                 containerWidth: container.offsetWidth,
@@ -143,7 +138,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                 tagline
             });
 
-            outlet.style.height = newSizes.responsive.height;
+            outlet.style.height = newSizes[BUTTON_SIZE.RESPONSIVE].height;
         });
     }
 
@@ -157,7 +152,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                         width: 100%;
                     }
 
-                    #${ id }.paypal-button-size-responsive {
+                    #${ id }.paypal-button-size-${ BUTTON_SIZE.RESPONSIVE } {
                         text-align: center;
                     }
 
@@ -171,35 +166,34 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                     #${ id },
                     #${ id } > .${ CLASS.OUTLET },
                     #${ id } > .${ CLASS.OUTLET } > iframe {
-                        min-height: ${ sizes.small.height };
-                        max-height: ${ sizes.large.height };
+                        min-height: ${ sizes[BUTTON_SIZE.SMALL].height };
+                        max-height: ${ sizes[BUTTON_SIZE.LARGE].height };
                     }
 
-                    #${ id }.paypal-button-size-tiny > .${ CLASS.OUTLET },
-                    #${ id }.paypal-button-size-small > .${ CLASS.OUTLET } {
-                        width:  ${ sizes.small.width };
-                        height: ${ sizes.small.height };
+                    #${ id }.paypal-button-size-${ BUTTON_SIZE.SMALL } > .${ CLASS.OUTLET } {
+                        width:  ${ sizes[BUTTON_SIZE.SMALL].width };
+                        height: ${ sizes[BUTTON_SIZE.SMALL].height };
                     }
 
-                    #${ id }.paypal-button-size-medium > .${ CLASS.OUTLET } {
-                        width:  ${ sizes.medium.width };
-                        height: ${ sizes.medium.height };
+                    #${ id }.paypal-button-size-${ BUTTON_SIZE.MEDIUM } > .${ CLASS.OUTLET } {
+                        width:  ${ sizes[BUTTON_SIZE.MEDIUM].width };
+                        height: ${ sizes[BUTTON_SIZE.MEDIUM].height };
                     }
 
-                    #${ id }.paypal-button-size-large > .${ CLASS.OUTLET } {
-                        width:  ${ sizes.large.width };
-                        height: ${ sizes.large.height };
+                    #${ id }.paypal-button-size-${ BUTTON_SIZE.LARGE } > .${ CLASS.OUTLET } {
+                        width:  ${ sizes[BUTTON_SIZE.LARGE].width };
+                        height: ${ sizes[BUTTON_SIZE.LARGE].height };
                     }
 
-                    #${ id }.paypal-button-size-responsive > .${ CLASS.OUTLET } {
-                        width:  ${ sizes.responsive.width };
-                        height: ${ sizes.responsive.height };
+                    #${ id }.paypal-button-size-${ BUTTON_SIZE.RESPONSIVE } > .${ CLASS.OUTLET } {
+                        width:  ${ sizes[BUTTON_SIZE.RESPONSIVE].width };
+                        height: ${ sizes[BUTTON_SIZE.RESPONSIVE].height };
                     }
 
                     #${ id } > .${ CLASS.OUTLET } > iframe {
                         min-width: 100%;
                         max-width: 100%;
-                        width: ${ sizes.small.width };
+                        width: ${ sizes[BUTTON_SIZE.SMALL].width };
                         height: 100%;
                         position: absolute;
                         top: 0;

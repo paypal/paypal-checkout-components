@@ -5,6 +5,7 @@ import { componentStyle } from './style';
 import { componentScript } from './script';
 import { componentContent } from './content';
 import { getButtonConfig } from './config';
+import { BRANDING, LAYOUT } from '../../constants';
 import { btoa } from 'Base64';
 
 function expandContentText(contentText : string, { color, logoColor } : { color : string, logoColor : string }) : string {
@@ -21,46 +22,28 @@ function expandContentText(contentText : string, { color, logoColor } : { color 
     });
 }
 
-function getSecondBtnHtml (color : string) : string {
-
-    let colormapper = {
-        gold: 'blue',
-        blue: 'silver',
-        silver: 'blue',
-        black: 'blue'
-    };
-
-    let logocolormapper = {
-        gold: 'white',
-        blue: 'blue',
-        silver: 'white',
-        black: 'white'
-    };
-
-    let contentText = '${venmo}';
-    let venmoBtnColor = colormapper[color];
-    let venmoLogoColor = logocolormapper[color];
-    let labelText = expandContentText(contentText, { color: venmoBtnColor, logoColor: venmoLogoColor });
-
-    return `
-    <div class="paypal-button-content paypal-color-${venmoBtnColor} venmo-logo-color-${venmoLogoColor}">
-        ${ labelText }
-    </div>
-    `;
-}
-
 function removeBranding(contentText : string) : string {
     return contentText.replace('${pp}', '').trim().replace('${paypal}', '').replace(/ +/g, ' ');
 }
 
-export function componentTemplate({ props } : { props : Object }) : string {
-
-    let dual = props.style.dual;
-
-    let { locale = getButtonConfig('defaultLocale'), style = {} } = props;
-
+function parseLocale(locale : string) : { country : string, lang : string } {
     let [ lang, country ] = locale.split('_');
-    let content = componentContent[country][lang];
+    return { country, lang };
+}
+
+function getLocaleContent(locale : { country : string, lang : string }) : Object {
+    let { country, lang } = locale;
+    return componentContent[country][lang];
+}
+
+function normalizeProps(props : Object) : Object {
+
+    let {
+        locale = getButtonConfig('default', 'defaultLocale'),
+        style = {}
+    } = props;
+
+    locale = parseLocale(locale);
 
     let label = style.label || getButtonConfig('default', 'defaultLabel');
 
@@ -69,51 +52,127 @@ export function componentTemplate({ props } : { props : Object }) : string {
         shape        = getButtonConfig(label, 'defaultShape'),
         branding     = getButtonConfig(label, 'defaultBranding'),
         fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
-        tagline      = getButtonConfig(label, 'defaultTagline')
+        tagline      = getButtonConfig(label, 'defaultTagline'),
+        dual         = getButtonConfig(label, 'defaultDual')
     } = style;
 
-    let enableDualBtn = dual ? getButtonConfig(label, 'allowDualButton') : false;
-    enableDualBtn = !branding ? false : enableDualBtn;
+    // Remove this once xo-buttonjs is pushed
+    if (dual === true) { dual = 'venmo'; }
 
-    let logoColor   = getButtonConfig(label, 'logoColors')[color];
-    let taglineColor = getButtonConfig(label, 'tagLineColors')[color];
+    if (dual && !branding && !getButtonConfig(dual, 'allowUnbranded')) {
+        dual = '';
+    }
 
-    let contentText = enableDualBtn ? getButtonConfig(label, 'defaultDualLabel') : (getButtonConfig(label, 'label') || content[label]);
+    return { label, locale, color, shape,
+        branding, fundingicons, tagline, dual };
+}
+
+function determineButtons({ label, color, dual } : { label : string, color : string, dual : string }) : Array<{ label : string, color : string }> {
+
+    let buttons = [];
+
+    buttons.push({
+        label,
+        color
+    });
+
+    if (dual) {
+        buttons.push({
+            label: dual,
+            color: getButtonConfig(dual, 'dualColors')[color]
+        });
+    }
+
+    return buttons;
+}
+
+function buttonTemplate({ label, color, isDual, locale, branding } : { label : string, color : string, isDual : boolean, branding : boolean, locale : Object }) : string {
+
+    let logoColor = getButtonConfig(label, 'logoColors')[color];
+
+    let content = getLocaleContent(locale);
+
+    let contentText = isDual
+        ? getButtonConfig(label, 'dualLabel', content[label])
+        : getButtonConfig(label, 'label', content[label]);
 
     if (!branding) {
         contentText = removeBranding(contentText);
     }
 
-    let allowTagline = (tagline && branding && !fundingicons);
-    let tagContent   = enableDualBtn ? (content[getButtonConfig(label, 'defaultDualTagKey')] || '') : (content[getButtonConfig(label, 'tagkey')] || '');
-
-    let labelText = expandContentText(contentText, { color, logoColor });
-
-    let secondButtonHtml = enableDualBtn ? getSecondBtnHtml(color) : '';
+    contentText = expandContentText(contentText, { color, logoColor });
 
     return `
-        <div id="paypal-button-container">
-
-            <style type="text/css">
-                ${ componentStyle }
-            </style>
-
-            <div id="paypal-button" class="paypal-button paypal-style-${ label } paypal-branding-${ branding ? 'true' : 'false' } paypal-dual-${ enableDualBtn ? 'true' : 'false' } paypal-shape-${ shape }" type="submit" role="button" tabindex="0">
-                <div class="paypal-button-content paypal-color-${ color } paypal-logo-color-${logoColor}">
-                    ${ labelText }
-                </div>
-
-                ${ secondButtonHtml }
-
-                <div class="paypal-button-tag-content paypal-tagline-color-${taglineColor}">
-                    ${ allowTagline ? tagContent : '' }
-                </div>
-
-            </div>
-
-            <script>
-                (${ componentScript.toString() })();
-            </script>
+        <div class="paypal-button-content paypal-label-${ label } paypal-color-${ color } paypal-logo-color-${ logoColor }" role="button" tabindex="0">
+            ${ contentText }
         </div>
+    `;
+}
+
+function enableTagline({ tagline, branding, fundingicons }) : boolean {
+    return Boolean(tagline && branding && !fundingicons);
+}
+
+function taglineTemplate({ label, tagline, branding, fundingicons, color, dual, locale }) : string {
+
+    let enabled = enableTagline({ tagline, branding, fundingicons });
+
+    if (!enabled) {
+        return '';
+    }
+
+    let key = dual
+        ? getButtonConfig(label, 'dualTagKey')
+        : getButtonConfig(label, 'tagKey');
+
+    let content = getLocaleContent(locale);
+    let text    = content[key];
+
+    if (!text) {
+        return '';
+    }
+
+    let tagColor = getButtonConfig(label, 'tagLineColors')[color];
+
+    return `
+        <div class="paypal-tagline paypal-tagline-color-${ tagColor }">
+            ${ text }
+        </div>
+    `;
+}
+
+export function componentTemplate({ props } : { props : Object }) : string {
+
+    let { label, locale, color, shape, branding,
+          fundingicons, tagline, dual } = normalizeProps(props);
+
+    let buttonHTML = determineButtons({ label, color, dual }).map(button => {
+        return buttonTemplate({
+            label: button.label,
+            color: button.color,
+            isDual: Boolean(dual),
+            locale,
+            branding
+        });
+    }).join('\n');
+
+    let taglineHTML = taglineTemplate({
+        label, tagline, branding,
+        fundingicons, color, dual, locale
+    });
+
+    return `
+        <style type="text/css">
+            ${ componentStyle }
+        </style>
+
+        <div id="paypal-button" class="paypal-button paypal-branding-${ branding ? BRANDING.BRANDED : BRANDING.UNBRANDED } paypal-layout-${ dual ? LAYOUT.DUAL : LAYOUT.SINGLE } paypal-shape-${ shape }">
+            ${ buttonHTML }
+            ${ taglineHTML }
+        </div>
+
+        <script>
+            (${ componentScript.toString() })();
+        </script>
     `;
 }

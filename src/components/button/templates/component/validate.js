@@ -1,6 +1,6 @@
 
 import { componentContent } from './content';
-import { buttonConfig, getButtonConfig } from './config';
+import { BUTTON_CONFIG, getButtonConfig } from './config';
 
 export function validateButtonLocale(locale : string) {
 
@@ -31,8 +31,12 @@ export function validateButtonStyle(style : Object = {}) {
         throw new Error(`Invalid style option`);
     }
 
-    if (!buttonConfig[label]) {
+    if (!BUTTON_CONFIG[label]) {
         throw new Error(`Invalid button label: ${label}`);
+    }
+
+    if (!getButtonConfig(label, 'allowPrimary')) {
+        throw new Error(`${label} can not be used as primary button label`);
     }
 
     let { color, shape, size, branding, fundingicons, tagline } = style;

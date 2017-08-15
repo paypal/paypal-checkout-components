@@ -8,6 +8,8 @@ import { loadScript, memoize, isElementVisible, stringifyError } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
+import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_LABEL } from '../components/button/constants';
+
 let $logger = logger.prefix(LOG_PREFIX);
 
 let loadButtonJS = memoize(() : ZalgoPromise<void> => {
@@ -36,10 +38,10 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
         }
 
         locale = locale || `${config.locale.lang}_${config.locale.country}`;
-        color  = color  || 'gold';
-        shape  = shape  || 'pill';
-        size   = size   || 'small';
-        type   = type   || 'checkout';
+        color  = color  || BUTTON_COLOR.GOLD;
+        shape  = shape  || BUTTON_SHAPE.PILL;
+        size   = size   || BUTTON_SIZE.SMALL;
+        type   = type   || BUTTON_LABEL.CHECKOUT;
 
         $logger.debug(`render_button_lc_${locale}`);
         $logger.debug(`render_button_color_${color}`);

@@ -31,11 +31,6 @@ export let config = {
 
     logLevel: __DEFAULT_LOG_LEVEL__,
 
-    buttonStyles: {
-        size: [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
-        label: [ 'checkout', 'credit', 'pay', 'buynow' ]
-    },
-
     throttles: {
         v4_mobile_device: 0
     },

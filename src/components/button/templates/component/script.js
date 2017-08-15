@@ -3,8 +3,9 @@
 export let componentScript = `
     function componentScript() {
 
-        function getElements(selector) {
-            return Array.prototype.slice.call(document.querySelectorAll(selector));
+        function getElements(selector, parent) {
+            parent = parent || document;
+            return Array.prototype.slice.call(parent.querySelectorAll(selector));
         }
 
         function showElement(el, displayType) {
@@ -28,14 +29,22 @@ export let componentScript = `
             return Boolean(rect.height && rect.width);
         }
 
+        function isHidden(el) {
+            return (window.getComputedStyle(el).display === 'none');
+        }
+
+        function displayedElementsHaveDimensions(elements) {
+            return elements.every(el => hasDimensions(el) || isHidden(el));
+        }
+
         function onDisplay(elements, method) {
-            if (elements.every(hasDimensions)) {
+            if (displayedElementsHaveDimensions(elements)) {
                 method();
                 return;
             }
 
             var interval = setInterval(function() {
-                if (elements.every(hasDimensions)) {
+                if (displayedElementsHaveDimensions(elements)) {
                     clearInterval(interval);
                     method();
                     return;
@@ -71,9 +80,8 @@ export let componentScript = `
             return false;
         }
 
-        var images = getElements('.paypal-button-content .logo');
-        var text = getElements('.paypal-button-content .text');
-        var tagline = getElements('.paypal-button-tag-content');
+        var buttons = getElements('.paypal-button-content');
+        var tagline = getElements('.paypal-tagline');
 
         function toggleTagline() {
             if (tagline.some(isOverflowing)) {
@@ -83,27 +91,33 @@ export let componentScript = `
             }
         }
 
-        function showText() {
-            text.forEach(function(el) { showElement(el, 'inline-block') });
-        }
+        buttons.forEach(function(button) {
 
-        function toggleText() {
-            if (images.some(isOverflowing) || text.some(isOverflowing)) {
-                text.forEach(hideElement);
-            } else {
-                text.forEach(makeElementVisible);
+            var images = getElements('.logo', button);
+            var text   = getElements('.text', button);
+
+            function showText() {
+                text.forEach(function(el) { showElement(el, 'inline-block') });
             }
-        }
 
-        onDisplay(images, function() {
-            images.forEach(makeElementVisible);
-            toggleTagline();
-            toggleText();
+            function toggleText() {
+                if (images.some(isOverflowing) || text.some(isOverflowing)) {
+                    text.forEach(hideElement);
+                } else {
+                    text.forEach(makeElementVisible);
+                }
+            }
 
-            window.addEventListener('resize', function() {
+            onDisplay(images, function() {
+                images.forEach(makeElementVisible);
                 toggleTagline();
-                showText();
                 toggleText();
+
+                window.addEventListener('resize', function() {
+                    toggleTagline();
+                    showText();
+                    toggleText();
+                });
             });
         });
     }

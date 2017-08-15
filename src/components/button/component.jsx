@@ -7,6 +7,8 @@ import * as $logger from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
 
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
+
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
@@ -595,10 +597,10 @@ export let Button = xcomponent.create({
 
             def() : Object {
                 return {
-                    color: 'gold',
-                    shape: 'pill',
-                    size:  'small',
-                    label: 'checkout',
+                    color:        BUTTON_COLOR.GOLD,
+                    shape:        BUTTON_SHAPE.PILL,
+                    size:         BUTTON_SIZE.SMALL,
+                    label:        BUTTON_LABEL.CHECKOUT,
                     fundingicons: false
                 };
             },
