@@ -64,33 +64,28 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let label = style.label || getButtonConfig('default', 'defaultLabel');
 
-
-
     let {
         color        = getButtonConfig(label, 'defaultColor'),
         shape        = getButtonConfig(label, 'defaultShape'),
         branding     = getButtonConfig(label, 'defaultBranding'),
-        fundingicons = getButtonConfig(label, 'defaultFundingIcons')
+        fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
+        tagline      = getButtonConfig(label, 'defaultTagline')
     } = style;
 
     let enableDualBtn = dual ? getButtonConfig(label, 'allowDualButton') : false;
     enableDualBtn = !branding ? false : enableDualBtn;
 
-
     let logoColor   = getButtonConfig(label, 'logoColors')[color];
     let taglineColor = getButtonConfig(label, 'tagLineColors')[color];
 
-
     let contentText = enableDualBtn ? getButtonConfig(label, 'defaultDualLabel') : (getButtonConfig(label, 'label') || content[label]);
-
-    let allowTagline = (branding && !fundingicons);
-    let taglineKey = enableDualBtn ? 'dual_tagline' : 'tagline';
-    let tagline =  allowTagline ? getButtonConfig(label, taglineKey) : false;
-    let tagcontent   = enableDualBtn ? (content[getButtonConfig(label, 'defaultDualTagKey')] || '') : (content[getButtonConfig(label, 'tagkey')] || '');
 
     if (!branding) {
         contentText = removeBranding(contentText);
     }
+
+    let allowTagline = (tagline && branding && !fundingicons);
+    let tagContent   = enableDualBtn ? (content[getButtonConfig(label, 'defaultDualTagKey')] || '') : (content[getButtonConfig(label, 'tagkey')] || '');
 
     let labelText = expandContentText(contentText, { color, logoColor });
 
@@ -107,15 +102,15 @@ export function componentTemplate({ props } : { props : Object }) : string {
                 <div class="paypal-button-content paypal-color-${ color } paypal-logo-color-${logoColor}">
                     ${ labelText }
                 </div>
-                
+
                 ${ secondButtonHtml }
-                
+
                 <div class="paypal-button-tag-content paypal-tagline-color-${taglineColor}">
-                    ${ tagline ? tagcontent : '' }
+                    ${ allowTagline ? tagContent : '' }
                 </div>
 
             </div>
-        
+
 
             <script>
                 (${ componentScript.toString() })();

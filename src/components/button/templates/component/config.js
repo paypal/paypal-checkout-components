@@ -25,37 +25,32 @@ export let buttonConfig = {
         defaultDualLabel: '${pp}${paypal}',
         defaultDualTagKey: 'dual_tag',
 
-        defaultLocale: 'en_US',
+        defaultLocale:       'en_US',
         defaultLabel:        'checkout',
         defaultColor:        'gold',
         defaultSize:         'small',
         defaultShape:        'pill',
         defaultBranding:     true,
         defaultFundingIcons: false,
+        defaultTagline:      true,
 
         allowUnbranded: false,
         allowFundingIcons: true
     },
 
     checkout: {
-        tagline: true,
-        dual_tagline: true,
         tagkey:  'safer_tag',
         sizes:  [ 'tiny', 'small', 'medium', 'large', 'responsive' ],
         allowDualButton: true
     },
 
     pay: {
-        tagline: false,
-        dual_tagline: true,
         colors: [ 'gold', 'blue', 'silver', 'black'],
         allowDualButton: true
     },
 
     credit: {
         label: '${pp}${paypal} ${credit}',
-        tagline: true,
-        dual_tagline: true,
         tagkey:  'later_tag',
         colors: [ 'creditblue', 'black'],
         allowFundingIcons: false,
@@ -64,8 +59,6 @@ export let buttonConfig = {
     },
 
     buynow: {
-        tagline: true,
-        dual_tagline: true,
         tagkey:  'safer_tag',
         defaultBranding:     undefined,
         defaultFundingIcons: true,
@@ -74,8 +67,6 @@ export let buttonConfig = {
     },
 
     generic: {
-        tagline: true,
-        dual_tagline: true,
         tagkey: 'safer_tag',
         label: '${pp}${paypal}',
         allowDualButton: true

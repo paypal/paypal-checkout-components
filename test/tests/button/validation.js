@@ -895,19 +895,6 @@ let invalidButtonConfigs = [
     },
 
     {
-        desc: 'checkout unbranded',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                branding: null
-            }
-        }
-    },
-
-    {
         desc: 'checkout branding false',
 
         conf: {

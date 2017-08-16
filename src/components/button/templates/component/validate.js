@@ -35,23 +35,17 @@ export function validateButtonStyle(style : Object = {}) {
         throw new Error(`Invalid button label: ${label}`);
     }
 
-    let {
-        color        = getButtonConfig(label, 'defaultColor'),
-        shape        = getButtonConfig(label, 'defaultShape'),
-        size         = getButtonConfig(label, 'defaultSize'),
-        branding     = getButtonConfig(label, 'defaultBranding'),
-        fundingicons = getButtonConfig(label, 'defaultFundingIcons')
-    } = style;
+    let { color, shape, size, branding, fundingicons, tagline } = style;
 
-    if (getButtonConfig(label, 'colors').indexOf(color) === -1) {
+    if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
         throw new Error(`Unexpected color for ${label} button: ${color}`);
     }
 
-    if (getButtonConfig(label, 'shapes').indexOf(shape) === -1) {
+    if (shape && getButtonConfig(label, 'shapes').indexOf(shape) === -1) {
         throw new Error(`Unexpected shape for ${label} button: ${shape}`);
     }
 
-    if (getButtonConfig(label, 'sizes').indexOf(size) === -1) {
+    if (size && getButtonConfig(label, 'sizes').indexOf(size) === -1) {
         throw new Error(`Unexpected size for ${label} button: ${size}`);
     }
 
@@ -59,12 +53,12 @@ export function validateButtonStyle(style : Object = {}) {
         throw new Error(`Unexpected branding=false for ${label} button`);
     }
 
-    if (!branding && !getButtonConfig(label, 'allowUnbranded')) {
-        throw new Error(`Unexpected branding=false for ${label} button`);
-    }
-
     if (fundingicons && !getButtonConfig(label, 'allowFundingIcons')) {
         throw new Error(`Unexpected fundingicons=true for ${label} button`);
+    }
+
+    if (tagline === true) {
+        throw new Error(`Unexpected tagline=true for ${label} button`);
     }
 }
 
