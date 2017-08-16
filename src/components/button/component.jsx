@@ -12,7 +12,7 @@ import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-         getDomainSetting, extendUrl, noop } from '../../lib';
+         getDomainSetting, extendUrl, noop, getStorage } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 
@@ -42,6 +42,22 @@ if (customButtonSelector) {
         }
     }, 500);
 }
+
+let onRemember = () => {
+    let promise = new ZalgoPromise();
+
+    if (getStorage(storage => storage.remembered, false)) {
+        promise.resolve();
+    } else {
+        promise.then(() => {
+            getStorage(storage => {
+                storage.remembered = true;
+            });
+        });
+    }
+
+    return promise;
+};
 
 export let Button = xcomponent.create({
 
@@ -355,7 +371,7 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onRemember = this.onRemember || new ZalgoPromise();
+                this.onRemember = this.onRemember || onRemember();
                 this.onRemember.resolve();
             }
         },
@@ -365,7 +381,7 @@ export let Button = xcomponent.create({
             required: false,
 
             value() {
-                this.onRemember = this.onRemember || new ZalgoPromise();
+                this.onRemember = this.onRemember || onRemember();
                 this.onRemember.resolve();
             }
         },
@@ -377,12 +393,10 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function() : ZalgoPromise<void> {
                     return ZalgoPromise.try(() => {
-
-                        this.onRemember = this.onRemember || new ZalgoPromise();
-
                         if (this.props.displayTo === USERS.REMEMBERED) {
                             $logger.info(`button_render_wait_for_remembered_user`);
 
+                            this.onRemember = this.onRemember || onRemember();
                             return this.onRemember.then(() => {
                                 $logger.info(`button_render_got_remembered_user`);
                             });

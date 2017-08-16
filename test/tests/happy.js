@@ -4,7 +4,7 @@ import { assert } from 'chai';
 
 describe('paypal happy cases', () => {
 
-    it('should exportwindow.paypal.Checkout andwindow.paypal.Button', () => {
+    it('should export window.paypal.Checkout and window.paypal.Button', () => {
 
         assert.isOk(window.paypal.Checkout, 'Expected window.paypal.Checkout to be present');
         assert.isOk(window.paypal.Button, 'Expected window.paypal.Button to be present');

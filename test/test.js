@@ -36,11 +36,13 @@ beforeEach(() => {
 
 afterEach(() => {
 
+    window.localStorage.clear();
+
     Object.defineProperty(window.navigator, 'userAgent', {
         value: originalUserAgent,
         configurable: true
     });
-    
+
     delete window.document.documentMode;
 
     if (window.gc) {
