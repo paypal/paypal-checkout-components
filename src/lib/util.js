@@ -230,7 +230,7 @@ export function stringifyErrorMessage(err : mixed) : string {
 }
 
 
-let isLocalStorageEnabled = memoize(() : boolean => {
+export let isLocalStorageEnabled = memoize(() : boolean => {
     try {
         if (window.localStorage) {
             let value = Math.random().toString();
@@ -246,31 +246,6 @@ let isLocalStorageEnabled = memoize(() : boolean => {
     }
     return false;
 });
-
-export function getLocalStorage(key : string) : any {
-
-    if (!isLocalStorageEnabled()) {
-        window.__pp_localstorage__ = window.__pp_localstorage__ || {};
-        return window.__pp_localstorage__[key];
-    }
-
-    let result = window.localStorage.getItem(key);
-
-    if (result) {
-        return JSON.parse(result);
-    }
-}
-
-export function setLocalStorage(key : string, value : mixed) {
-
-    if (!isLocalStorageEnabled()) {
-        window.__pp_localstorage__ = window.__pp_localstorage__ || {};
-        window.__pp_localstorage__[key] = value;
-        return;
-    }
-
-    window.localStorage.setItem(key, JSON.stringify(value));
-}
 
 export function getDomainSetting(name : string) : ?mixed {
 

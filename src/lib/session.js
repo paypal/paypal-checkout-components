@@ -1,62 +1,72 @@
 /* @flow */
 
 import { config } from '../config';
-import { getLocalStorage, setLocalStorage, uniqueID } from './util';
+import { uniqueID, isLocalStorageEnabled } from './util';
 
-const SESSION_KEY = '__pp_session__';
+const LOCAL_STORAGE_KEY = '__paypal_storage__';
+const SESSION_KEY = '__paypal_session__';
 
-type SessionType = {
-    guid : string,
-    state : Object,
-    created : number
-};
+export function getStorage<T>(handler : (storage : Object) => T, mutate : boolean = true) : T {
 
-function readRawSession() : SessionType {
-    return getLocalStorage(SESSION_KEY);
-}
+    let enabled = isLocalStorageEnabled();
+    let storage;
 
-function saveRawSession(session) {
-    setLocalStorage(SESSION_KEY, session);
-}
+    if (enabled) {
+        let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
 
-function getSession() : Object {
-
-    let session = readRawSession();
-    let now = Date.now();
-
-    if (session) {
-
-        if ((now - session.created) > config.session_uid_lifetime) {
-            session.guid = uniqueID();
+        if (rawStorage) {
+            storage = JSON.parse(rawStorage);
+        } else {
+            storage = {};
         }
-
-        if (!session.state) {
-            session.state = {};
-        }
-
     } else {
-
-        session = {
-            guid: uniqueID(),
-            state: {},
-            created: now
-        };
+        storage =  window.__pp_localstorage__ = window.__pp_localstorage__ || {};
     }
 
-    saveRawSession(session);
+    let result = handler(storage);
 
-    return session;
-}
+    if (mutate) {
+        if (enabled) {
+            window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
+        } else {
+            window.__pp_localstorage__ = storage;
+        }
+    }
 
-export function getSessionState<T>(handler : (state : Object) => T) : T {
-    let session = getSession();
-    let result = handler(session.state);
-    saveRawSession(session);
     return result;
 }
 
+export function getSessionState<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
+    return getStorage(storage => {
+
+        let session = storage[SESSION_KEY];
+        let now     = Date.now();
+
+        if (session) {
+
+            if ((now - session.created) > config.session_uid_lifetime) {
+                session.guid = uniqueID();
+            }
+
+            if (!session.state) {
+                session.state = {};
+            }
+
+        } else {
+
+            session = {
+                guid: uniqueID(),
+                state: {},
+                created: now
+            };
+        }
+
+        return handler(session.state);
+    }, mutate);
+}
+
 export function getSessionID() : string {
-    return getSession().guid;
+    return getSessionState(session => session.guid, false);
 }
 
 export function getCommonSessionID() : string {
