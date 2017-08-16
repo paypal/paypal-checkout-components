@@ -11,7 +11,6 @@ import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { redirect, logRedirect, parseToken } from './util';
-import { onAuthorizeListener } from './listener';
 import { normalizeOptions, setupConfig } from './options';
 
 let $logger = logger.prefix(LOG_PREFIX);
@@ -187,7 +186,6 @@ function initPayPalCheckout(props = {}) : Object {
 
         onAuthorize(data, actions) : ZalgoPromise<void> {
             $logger.info(`payment_authorized`);
-            onAuthorizeListener.trigger(data.paymentToken);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },

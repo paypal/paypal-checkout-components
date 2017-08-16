@@ -1,11 +1,6 @@
 /* @flow */
 
-import { config } from '../config';
-import { isDevice, getThrottle, getReturnToken, isEligible, supportsPopups } from '../lib';
-
-import { onAuthorizeListener } from './listener';
-
-let throttle = getThrottle(`v4_mobile_device`, config.throttles.v4_mobile_device);
+import { isDevice, isEligible, supportsPopups } from '../lib';
 
 export function isLegacyEligible() : boolean {
 
@@ -18,27 +13,8 @@ export function isLegacyEligible() : boolean {
     }
 
     if (isDevice()) {
-        throttle.logStart();
-        return throttle.isEnabled();
+        return false;
     }
 
     return true;
 }
-
-(function logReturn() {
-
-    if (!isDevice()) {
-        return;
-    }
-
-    onAuthorizeListener.once((token) => {
-        throttle.log(`authorize`, { fltk: token });
-    });
-
-    let token = getReturnToken();
-
-    if (token) {
-        throttle.logComplete({ fltk: token });
-    }
-
-}());
