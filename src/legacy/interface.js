@@ -384,11 +384,15 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 }
 
 function instrumentButtonRender(type : string) {
+    $logger.info(`render_${type}_button`);
+
     $logger.track({
         [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
         [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_RENDER,
         [ FPTI.KEY.BUTTON_TYPE ]: type
     });
+
+    $logger.flush();
 }
 
 function instrumentButtonClick(type : string) {

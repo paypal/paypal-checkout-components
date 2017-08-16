@@ -4,7 +4,7 @@ import * as logger from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, FPTI } from '../config';
-import { loadScript, memoize, isElementVisible, checkpoint, stringifyError } from '../lib';
+import { loadScript, memoize, isElementVisible, stringifyError } from '../lib';
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';
 
@@ -29,16 +29,6 @@ let loadButtonJS = memoize(() : ZalgoPromise<void> => {
 function renderButton(id, { container, locale, type, color, shape, size }) : ZalgoPromise<HTMLElement> {
 
     return loadButtonJS().then(() => {
-
-        checkpoint('render_html_button', { version: true });
-
-        $logger.track({
-            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
-            [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.HTML
-        });
-
-        $logger.flush();
 
         if (locale) {
             let { country, lang } = normalizeLocale(locale);
