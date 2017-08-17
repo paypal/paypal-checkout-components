@@ -10,6 +10,21 @@ import { config } from '../../config';
 import { patchMethod, isIE, getDomainSetting, noop,
          extendUrl } from '../../lib';
 
+patchMethod(Button, 'render', ({ original, context, args }) => {
+
+    let [ props ] = args;
+    let style = props.style;
+
+    if (style && (!style.label || style.label === 'checkout') && style.size === 'tiny') {
+        $logger.warn(`unsupported_button_size_tiny`);
+        style.size = 'small';
+    }
+
+    return original.apply(context, args);
+});
+
+
+
 if (Button.isChild()) {
 
     let debounce = false;
