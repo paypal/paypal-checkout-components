@@ -54,7 +54,15 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         xhr.addEventListener('load', function() : void {
 
-            let corrID = this.getResponseHeader('paypal-debug-id');
+            let corrID;
+
+            try {
+                corrID = this.getResponseHeader('paypal-debug-id');
+            } catch (err) {
+                // pass
+            }
+
+            corrID = corrID || 'unknown';
 
             if (!this.status) {
                 return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code. Correlation id: ${corrID}`));
