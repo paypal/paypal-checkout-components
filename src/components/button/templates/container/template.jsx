@@ -99,6 +99,7 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
                         display: inline-block;
                         min-width: ${ minWidth };
                         max-width: ${ maxWidth };
+                        position: relative;
                     }
 
                     #${ id },
@@ -126,7 +127,7 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
 
                     #${ id }.paypal-button-size-responsive > .${ CLASS.OUTLET } {
                         width: 100%;
-                        height: ${ initialHeight }
+                        height: ${ initialHeight };
                     }
 
                     #${ id } > .${ CLASS.OUTLET } > iframe {
@@ -134,6 +135,14 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
                         max-width: 100%;
                         width: ${ sizes.small.width };
                         height: 100%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 200;
+                    }
+
+                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.SACRIFICIAL_FRAME } {
+                        z-index: 100;
                     }
                 `}
             </style>
