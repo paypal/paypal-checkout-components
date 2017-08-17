@@ -36,7 +36,7 @@ export function getStorage<T>(handler : (storage : Object) => T, mutate : boolea
     return result;
 }
 
-export function getSessionState<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
+export function getSession<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
     return getStorage(storage => {
 
         let session = storage[SESSION_KEY];
@@ -61,12 +61,18 @@ export function getSessionState<T>(handler : (state : Object) => T, mutate : boo
             };
         }
 
+        return handler(session);
+    }, mutate);
+}
+
+export function getSessionState<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
+    return getSession(session => {
         return handler(session.state);
     }, mutate);
 }
 
 export function getSessionID() : string {
-    return getSessionState(session => session.guid, false);
+    return getSession(session => session.guid, false);
 }
 
 export function getCommonSessionID() : string {
