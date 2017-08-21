@@ -2,7 +2,7 @@
 
 import { createTestContainer, destroyTestContainer, getElement, createElement, onElementResize } from '../common';
 
-describe.only(`paypal button component sizes`, () => {
+describe(`paypal button component sizes`, () => {
 
     beforeEach(() => {
         createTestContainer();
