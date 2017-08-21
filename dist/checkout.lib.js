@@ -2461,7 +2461,8 @@
                 },
                 SERIALIZATION_TYPES: {
                     METHOD: "postrobot_method",
-                    ERROR: "postrobot_error"
+                    ERROR: "postrobot_error",
+                    PROMISE: "postrobot_promise"
                 },
                 SEND_STRATEGIES: {
                     POST_MESSAGE: "postrobot_post_message",
@@ -3229,11 +3230,19 @@
                     __message__: Object(__WEBPACK_IMPORTED_MODULE_4__util__.j)(err)
                 };
             }
+            function serializePromise(destination, domain, promise, name) {
+                return {
+                    __type__: __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.PROMISE,
+                    __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                        return promise.then(resolve, reject);
+                    }, name + ".then")
+                };
+            }
             function serializeMethods(destination, domain, obj) {
                 return Object(__WEBPACK_IMPORTED_MODULE_4__util__.h)({
                     obj: obj
                 }, function(item, key) {
-                    return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? serializeError(item) : void 0;
+                    return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? serializeError(item) : __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.isPromise(item) ? serializePromise(destination, domain, item, key.toString()) : void 0;
                 }).obj;
             }
             function deserializeMethod(source, origin, obj) {
@@ -3265,11 +3274,16 @@
             function deserializeError(source, origin, obj) {
                 return new Error(obj.__message__);
             }
+            function deserializePromise(source, origin, prom) {
+                return new __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a(function(resolve, reject) {
+                    return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
+                });
+            }
             function deserializeMethods(source, origin, obj) {
                 return Object(__WEBPACK_IMPORTED_MODULE_4__util__.h)({
                     obj: obj
                 }, function(item, key) {
-                    return "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ERROR) ? deserializeError(source, origin, item) : void 0;
+                    return "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ERROR) ? deserializeError(source, origin, item) : "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.PROMISE) ? deserializePromise(source, origin, item) : void 0;
                 }).obj;
             }
             __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -3939,6 +3953,7 @@
                     _this.props.logLevel && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Y)(_this.props.logLevel);
                     _this.component.log("init_child");
                     _this.setWindows();
+                    _this.listenForResize();
                     _this.onInit = _this.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.INIT, {
                         exports: _this.exports()
                     }).then(function(_ref) {
@@ -3955,6 +3970,12 @@
                     return _this;
                 }
                 _inherits(ChildComponent, _BaseComponent);
+                ChildComponent.prototype.listenForResize = function() {
+                    var _this2 = this;
+                    window.addEventListener("resize", function() {
+                        _this2.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.ONRESIZE);
+                    });
+                };
                 ChildComponent.prototype.hasValidParentDomain = function() {
                     return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(this.component.allowedParentDomains, this.getParentDomain());
                 };
@@ -3974,7 +3995,7 @@
                     return Object(__WEBPACK_IMPORTED_MODULE_5__window__.e)();
                 };
                 ChildComponent.prototype.getInitialProps = function() {
-                    var _this2 = this, componentMeta = Object(__WEBPACK_IMPORTED_MODULE_5__window__.b)();
+                    var _this3 = this, componentMeta = Object(__WEBPACK_IMPORTED_MODULE_5__window__.b)();
                     if (componentMeta) {
                         var props = componentMeta.props;
                         if (props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.RAW) props = props.value; else {
@@ -3989,8 +4010,8 @@
                         if (!props) throw new Error("Initial props not found");
                         return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)(props, function(_ref2) {
                             var fullKey = _ref2.fullKey, self = _ref2.self, args = _ref2.args;
-                            return _this2.onInit.then(function() {
-                                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.v)(_this2.props, fullKey).apply(self, args);
+                            return _this3.onInit.then(function() {
+                                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.v)(_this3.props, fullKey).apply(self, args);
                             });
                         });
                     }
@@ -4033,9 +4054,9 @@
                 ChildComponent.prototype.sendLogsToOpener = function() {
                 };
                 ChildComponent.prototype.watchForClose = function() {
-                    var _this3 = this;
+                    var _this4 = this;
                     window.addEventListener("unload", function() {
-                        return _this3.checkClose();
+                        return _this4.checkClose();
                     });
                 };
                 ChildComponent.prototype.enableAutoResize = function() {
@@ -4065,7 +4086,7 @@
                     };
                 };
                 ChildComponent.prototype.watchForResize = function() {
-                    var _this4 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
+                    var _this5 = this, _getAutoResize = this.getAutoResize(), width = _getAutoResize.width, height = _getAutoResize.height, element = _getAutoResize.element;
                     if ((width || height) && this.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                         this.watchingForResize = !0;
                         return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
@@ -4074,7 +4095,7 @@
                             if (!Object(__WEBPACK_IMPORTED_MODULE_6__lib__.m)(element, {
                                 width: width,
                                 height: height
-                            })) return _this4.resizeToElement(element, {
+                            })) return _this5.resizeToElement(element, {
                                 width: width,
                                 height: height
                             });
@@ -4084,7 +4105,7 @@
                                     width: width,
                                     height: height
                                 }).then(function(dimensions) {
-                                    return _this4.resizeToElement(element, {
+                                    return _this5.resizeToElement(element, {
                                         width: width,
                                         height: height
                                     });
@@ -4105,20 +4126,20 @@
                     };
                 };
                 ChildComponent.prototype.resize = function(width, height) {
-                    var _this5 = this;
+                    var _this6 = this;
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.resolve().then(function() {
-                        _this5.component.log("resize", {
+                        _this6.component.log("resize", {
                             width: width,
                             height: height
                         });
-                        if (_this5.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) return _this5.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.RESIZE, {
+                        if (_this6.context !== __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) return _this6.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.RESIZE, {
                             width: width,
                             height: height
                         });
                     });
                 };
                 ChildComponent.prototype.resizeToElement = function(el, _ref6) {
-                    var _this6 = this, width = _ref6.width, height = _ref6.height, history = [];
+                    var _this7 = this, width = _ref6.width, height = _ref6.height, history = [];
                     return function resize() {
                         return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
                             for (var tracker = Object(__WEBPACK_IMPORTED_MODULE_6__lib__._3)(el, {
@@ -4141,7 +4162,7 @@
                                 width: dimensions.width,
                                 height: dimensions.height
                             });
-                            return _this6.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
+                            return _this7.resize(width ? dimensions.width : null, height ? dimensions.height : null).then(function() {
                                 if (tracker.check().changed) return resize();
                             });
                         });
@@ -5668,6 +5689,8 @@
                         this.checkClose();
                     }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.RESIZE] = function(source, data) {
                         if (this.driver.allowResize) return this.resize(data.width, data.height);
+                    }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.ONRESIZE] = function(source, data) {
+                        this.event.trigger("resize");
                     }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.HIDE] = function(source, data) {
                         this.hide();
                     }, _ref10[__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.SHOW] = function(source, data) {
@@ -5836,6 +5859,7 @@
                     } else el = document.body;
                     if (this.component.containerTemplate) {
                         var containerWidth = el.offsetWidth, containerHeight = el.offsetHeight, container = this.renderTemplate(this.component.containerTemplate, {
+                            container: el,
                             dimensions: {
                                 width: containerWidth,
                                 height: containerHeight
@@ -6313,6 +6337,7 @@
                 CHECK_CLOSE: XCOMPONENT + "_check_close",
                 REDIRECT: XCOMPONENT + "_redirect",
                 RESIZE: XCOMPONENT + "_resize",
+                ONRESIZE: XCOMPONENT + "_onresize",
                 DELEGATE: XCOMPONENT + "_delegate",
                 ERROR: XCOMPONENT + "_error",
                 HIDE: XCOMPONENT + "_hide",
@@ -8086,6 +8111,9 @@
                         return results;
                     });
                 };
+                ZalgoPromise.isPromise = function(value) {
+                    return !!(value && value instanceof ZalgoPromise) || Object(__WEBPACK_IMPORTED_MODULE_0__utils__.a)(value);
+                };
                 return ZalgoPromise;
             }();
         },
@@ -8094,13 +8122,14 @@
             function isPromise(item) {
                 try {
                     if (!item) return !1;
+                    if (window.Promise && item instanceof window.Promise) return !0;
                     if (window.Window && item instanceof window.Window) return !1;
                     if (window.constructor && item instanceof window.constructor) return !1;
                     if (toString) {
                         var name = toString.call(item);
                         if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
                     }
-                    if (item && item.then instanceof Function) return !0;
+                    if (item.then instanceof Function) return !0;
                 } catch (err) {
                     return !1;
                 }
@@ -8479,15 +8508,10 @@
                 },
                 sacrificialComponentTemplate: !0,
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.113";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.114";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
-                },
-                autoResize: {
-                    width: !1,
-                    height: !0,
-                    element: "body"
                 },
                 validate: function() {
                     Object(__WEBPACK_IMPORTED_MODULE_5__lib__.v)() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p("button_render_ineligible");
@@ -8840,8 +8864,8 @@
                         required: !1,
                         get value() {
                             return {
-                                allow: !Object(__WEBPACK_IMPORTED_MODULE_5__lib__.r)(),
-                                force: Object(__WEBPACK_IMPORTED_MODULE_3__checkout__.c)()
+                                allow: Object(__WEBPACK_IMPORTED_MODULE_3__checkout__.b)(),
+                                force: Object(__WEBPACK_IMPORTED_MODULE_3__checkout__.d)()
                             };
                         }
                     },
@@ -8957,23 +8981,9 @@
                         checkout.error(err);
                     });
                 });
-                var checkoutRendered = !1, iframeEnabled = !1;
-                Object.defineProperty(__WEBPACK_IMPORTED_MODULE_4__checkout__.a.contexts, "iframe", {
-                    get: function() {
-                        return !!Object(__WEBPACK_IMPORTED_MODULE_4__checkout__.c)() || iframeEnabled;
-                    },
-                    set: function(value) {
-                        iframeEnabled = !(!checkoutRendered && !window.xprops.prefetchLogin) && value;
-                    }
-                });
-                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref4) {
-                    var callOriginal = _ref4.callOriginal;
-                    checkoutRendered = !0;
-                    return callOriginal();
-                });
-                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref5) {
-                    var callOriginal = _ref5.callOriginal, _ref5$args = _ref5.args;
-                    _ref5$args[0], _ref5$args[1];
+                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref4) {
+                    var callOriginal = _ref4.callOriginal, _ref4$args = _ref4.args;
+                    _ref4$args[0], _ref4$args[1];
                     return callOriginal().catch(function(err) {
                         if (!(err instanceof __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.b)) throw err;
                         window.xprops.payment().then(function(token) {
@@ -8983,11 +8993,20 @@
                         });
                     });
                 });
-                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_3__login__.a, "prerender", function(_ref6) {
-                    var callOriginal = _ref6.callOriginal;
-                    delete _ref6.args[0].env;
+                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_3__login__.a, "prerender", function(_ref5) {
+                    var callOriginal = _ref5.callOriginal;
+                    delete _ref5.args[0].env;
                     return callOriginal();
                 });
+                var buttonElement = document.querySelector(".paypal-button");
+                if (buttonElement) {
+                    buttonElement.style.minWidth = "100px";
+                    buttonElement.style.minHeight = "24px";
+                }
+                if (window.xprops.style && !1 === window.xprops.style.tagline) {
+                    var taglineElement = document.querySelector(".paypal-button-tag-content");
+                    taglineElement && (taglineElement.style.display = "none");
+                }
             }
         },
         "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9144,7 +9163,7 @@
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return componentStyle;
             });
-            var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 100px;\n        min-height: 42px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:hover .paypal-button-content {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-tag-content.paypal-tagline-color-blue {\n        color: #003366;\n    }\n\n    .paypal-button .paypal-button-tag-content.paypal-tagline-color-black {\n        color: #000;\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 0px) {\n        body {\n            height: 42px;\n        }\n\n        body.fundingicons {\n            height: 65px;\n        }\n    }\n\n    @media only screen and (min-width : 0px) and (min-height: 0px) {\n\n        .paypal-button {\n            display: block;\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo{\n            height: 13px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n        body {\n            height: 48px;\n        }\n        body.fundingicons {\n            height: 75px;\n        }\n    }\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {\n            height: 19px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n        body {\n            height: 60px;\n\n        }\n        body.fundingicons {\n            height: 85px;\n        }\n    }\n\n    @media only screen and (min-width : 300px) and (min-height: 60px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {\n            height: 22px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 11px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button .paypal-button-content.paypal-color-gold {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-gold::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button .paypal-button-content.paypal-color-blue {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button .paypal-button-content.paypal-color-blue::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button .paypal-button-content.paypal-color-silver {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-silver::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n     /* Black */\n\n    .paypal-button .paypal-button-content.paypal-color-black {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-black::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n\n\n     /* Credit Button */\n\n    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n\n    /*Unbranded Button; eg: buynow */\n\n\n    @media only screen and (min-height: 22px) and (min-width: 100px) {\n        .paypal-button.paypal-branding-false .paypal-button-content {\n            font-size: 13px;\n        }\n    }\n\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n        .paypal-button.paypal-branding-false .paypal-button-content  {\n            font-size: 15px;\n        }\n    }\n\n    @media only screen and (min-width : 250px) and (min-height: 60px) {\n        .paypal-button.paypal-branding-false .paypal-button-content {\n            font-size: 20px;\n        }\n    }\n\n    .paypal-button.paypal-branding-false .paypal-button-content  {\n        width: 60%;\n        margin: auto;\n        font-weight: 900;\n    }\n\n    /*Add on branding */\n\n    .paypal-button.paypal-branding-true .paypal-button-content  {\n        width: 100%;\n\n        margin: auto;\n    }\n\n    /*Dual button */\n\n    .paypal-button.paypal-dual-true .paypal-button-content {\n        width: 47%;\n        display: inline-block;\n        margin-right: 2px;\n    }\n\n\n\n';
+            var componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        white-space: nowrap;\n        margin: 0;\n        padding: 2px;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        cursor: pointer;\n        z-index: 0;\n\n        width: 100%;\n\n        min-width: 100px;\n        min-height: 24px;\n\n        box-sizing: border-box;\n        outline: none;\n    }\n\n\n\n    .paypal-button .paypal-button-content {\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n    }\n\n    .paypal-button:hover .paypal-button-content {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button:focus .paypal-button-content {\n        box-shadow: 0 0 9px 0 #aaa;\n        -webkit-box-shadow: 0 0 9px 0 #aaa;\n        -moz-box-shadow: 0 0 9px 0 #aaa;\n        -ms-box-shadow: 0 0 9px 0 #aaa;\n        -o-box-shadow: 0 0 9px 0 #aaa;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n        /* display: none; */\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-content::before {\n        content: "";\n        position: absolute;\n        z-index: -1;\n        width: 100%;\n        height: 100%;\n    }\n\n    .paypal-button .paypal-button-tag-content {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n\n        display: block;\n        text-align: center;\n        width: auto;\n        font-size: 9px;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-button-tag-content.paypal-tagline-color-blue {\n        color: #003366;\n    }\n\n    .paypal-button .paypal-button-tag-content.paypal-tagline-color-black {\n        color: #000;\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 0px) and (min-height: 0px) {\n\n        .paypal-button {\n            display: block;\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            max-height: 24px;\n            border-radius: 12px;\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 17px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo{\n            height: 13px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 16px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            max-height: 30px;\n            border-radius: 15px;\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 24px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {\n            height: 19px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            max-height: 40px;\n            border-radius: 20px;\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-dual-true .paypal-button-content .logo.logo-venmo {\n            height: 22px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button .paypal-button-tag-content {\n            font-size: 11px;\n        }\n\n        .paypal-button.paypal-shape-rect .paypal-button-content,\n        .paypal-button.paypal-shape-rect .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n\n\n    /* Gold */\n\n    .paypal-button .paypal-button-content.paypal-color-gold {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-gold::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n\n    /* Blue */\n\n    .paypal-button .paypal-button-content.paypal-color-blue {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n    .paypal-button .paypal-button-content.paypal-color-blue::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n\n    /* Silver */\n\n    .paypal-button .paypal-button-content.paypal-color-silver {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-silver::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n     /* Black */\n\n    .paypal-button .paypal-button-content.paypal-color-black {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-black::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n\n\n     /* Credit Button */\n\n    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content.paypal-color-creditblue::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-credit {\n            display: none;\n        }\n    }\n\n    .paypal-button.paypal-style-credit .paypal-button-content .text {\n        display: none !important;\n    }\n\n\n    /* Pay Button */\n\n    @media only screen and (max-width : 147px) {\n        .paypal-button.paypal-style-pay {\n            display: none;\n        }\n    }\n\n\n    /*Unbranded Button; eg: buynow */\n\n\n    @media only screen and (min-height: 22px) and (min-width: 100px) {\n        .paypal-button.paypal-branding-false .paypal-button-content {\n            font-size: 13px;\n        }\n    }\n\n\n    @media only screen and (min-width : 200px) and (min-height: 48px) {\n        .paypal-button.paypal-branding-false .paypal-button-content  {\n            font-size: 15px;\n        }\n    }\n\n    @media only screen and (min-width : 250px) and (min-height: 60px) {\n        .paypal-button.paypal-branding-false .paypal-button-content {\n            font-size: 20px;\n        }\n    }\n\n    .paypal-button.paypal-branding-false .paypal-button-content  {\n        width: 60%;\n        margin: auto;\n        font-weight: 900;\n    }\n\n    /*Add on branding */\n\n    .paypal-button.paypal-branding-true .paypal-button-content  {\n        width: 100%;\n\n        margin: auto;\n    }\n\n    /*Dual button */\n\n    .paypal-button.paypal-dual-true .paypal-button-content {\n        width: 47%;\n        display: inline-block;\n        margin-right: 2px;\n    }\n\n\n\n';
         },
         "./src/components/button/templates/component/template.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -9224,44 +9243,100 @@
         },
         "./src/components/button/templates/container/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            function getInitialHeight(width) {
-                var fundingIcons = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
-                if (width) return fundingIcons ? width < 200 ? "65px" : width < 300 ? "75px" : "85px" : width < 200 ? "42px" : width < 300 ? "48px" : "60px";
+            function determineResponsiveSize() {
+                var containerWidth = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0;
+                if (containerWidth < MIN_WIDTH) return SIZE.SMALL;
+                if (containerWidth >= MAX_WIDTH) return SIZE.LARGE;
+                for (var _iterator = Object.keys(RESPONSIVE_RANGES), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        _i = _iterator.next();
+                        if (_i.done) break;
+                        _ref = _i.value;
+                    }
+                    var size = _ref, _RESPONSIVE_RANGES$si = RESPONSIVE_RANGES[size], min = _RESPONSIVE_RANGES$si[0], max = _RESPONSIVE_RANGES$si[1];
+                    if (containerWidth >= min && containerWidth < max) return size;
+                }
+                throw new Error("Unable to calculate responsive size for width: " + containerWidth);
             }
-            function containerTemplate(_ref) {
-                var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, dimensions = _ref.dimensions, tag = _ref.tag, context = _ref.context, outlet = _ref.outlet, jsxDom = _ref.jsxDom, style = props.style || {}, label = style.label || "checkout", size = style.size || "small", fundingIcons = props.style.fundingicons || !1, sizes = fundingIcons ? {
-                    small: {
-                        width: "148px",
-                        height: "65px"
-                    },
-                    medium: {
-                        width: "230px",
-                        height: "75px"
-                    },
-                    large: {
-                        width: "380px",
-                        height: "85px"
+            function getSizes(_ref2) {
+                var containerWidth = _ref2.containerWidth, tagline = _ref2.tagline, fundingicons = _ref2.fundingicons, sizes = void 0;
+                sizes = fundingicons ? BUTTON_SIZE_WITH_FUNDINGICONS : tagline ? BUTTON_SIZE_WITH_TAGLINE : BUTTON_SIZE;
+                var responsiveSize = determineResponsiveSize(containerWidth);
+                return _extends({}, sizes, {
+                    responsive: {
+                        width: "100%",
+                        height: sizes[responsiveSize].height
                     }
-                } : {
-                    small: {
-                        width: "148px",
-                        height: "42px"
-                    },
-                    medium: {
-                        width: "230px",
-                        height: "48px"
-                    },
-                    large: {
-                        width: "380px",
-                        height: "60px"
-                    }
-                }, initialHeight = getInitialHeight(dimensions.width, fundingIcons) || sizes.small.height;
+                });
+            }
+            function containerTemplate(_ref3) {
+                var id = _ref3.id, props = _ref3.props, CLASS = _ref3.CLASS, on = _ref3.on, container = _ref3.container, tag = _ref3.tag, context = _ref3.context, outlet = _ref3.outlet, jsxDom = _ref3.jsxDom, style = props.style || {}, _style$label = style.label, label = void 0 === _style$label ? "checkout" : _style$label, _style$size = style.size, size = void 0 === _style$size ? "small" : _style$size, _style$fundingicons = style.fundingicons, fundingicons = void 0 !== _style$fundingicons && _style$fundingicons, _style$tagline = style.tagline, tagline = void 0 === _style$tagline || _style$tagline, sizes = getSizes({
+                    containerWidth: container.offsetWidth,
+                    fundingicons: fundingicons,
+                    tagline: tagline
+                });
+                size === SIZE.RESPONSIVE && on("resize", function() {
+                    var newSizes = getSizes({
+                        containerWidth: container.offsetWidth,
+                        fundingicons: fundingicons,
+                        tagline: tagline
+                    });
+                    outlet.style.height = newSizes.responsive.height;
+                });
                 return jsxDom("div", {
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size
-                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + ".paypal-button-size-responsive {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: 148px;\n                        max-width: 500px;\n                        position: relative;\n                    }\n\n                    #" + id + ",\n                    #" + id + " > ." + CLASS.OUTLET + ",\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-height: " + sizes.small.height + ";\n                        max-height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-tiny > ." + CLASS.OUTLET + ",\n                    #" + id + ".paypal-button-size-small > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.small.width + ";\n                        height: " + sizes.small.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-medium > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.medium.width + ";\n                        height: " + sizes.medium.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-large > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.large.width + ";\n                        height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-responsive > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                        height: " + initialHeight + ";\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + sizes.small.width + ";\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.SACRIFICIAL_FRAME + " {\n                        z-index: 100;\n                    }\n                "), outlet);
+                }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + ".paypal-button-size-responsive {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + MIN_WIDTH + "px;\n                        max-width: " + MAX_WIDTH + "px;\n                        position: relative;\n                    }\n\n                    #" + id + ",\n                    #" + id + " > ." + CLASS.OUTLET + ",\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-height: " + sizes.small.height + ";\n                        max-height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-tiny > ." + CLASS.OUTLET + ",\n                    #" + id + ".paypal-button-size-small > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.small.width + ";\n                        height: " + sizes.small.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-medium > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.medium.width + ";\n                        height: " + sizes.medium.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-large > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.large.width + ";\n                        height: " + sizes.large.height + ";\n                    }\n\n                    #" + id + ".paypal-button-size-responsive > ." + CLASS.OUTLET + " {\n                        width:  " + sizes.responsive.width + ";\n                        height: " + sizes.responsive.height + ";\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + sizes.small.width + ";\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.SACRIFICIAL_FRAME + " {\n                        z-index: 100;\n                    }\n                "), outlet);
             }
             __webpack_exports__.a = containerTemplate;
+            var _BUTTON_SIZE, _BUTTON_SIZE_WITH_TAG, _BUTTON_SIZE_WITH_FUN, _extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }, SIZE = {
+                SMALL: "small",
+                MEDIUM: "medium",
+                LARGE: "large",
+                RESPONSIVE: "responsive"
+            }, MIN_WIDTH = 100, MAX_WIDTH = 500, BUTTON_SIZE = (_BUTTON_SIZE = {}, _BUTTON_SIZE[SIZE.SMALL] = {
+                width: "148px",
+                height: "28px"
+            }, _BUTTON_SIZE[SIZE.MEDIUM] = {
+                width: "230px",
+                height: "34px"
+            }, _BUTTON_SIZE[SIZE.LARGE] = {
+                width: "380px",
+                height: "44px"
+            }, _BUTTON_SIZE), BUTTON_SIZE_WITH_TAGLINE = (_BUTTON_SIZE_WITH_TAG = {}, _BUTTON_SIZE_WITH_TAG[SIZE.SMALL] = {
+                width: BUTTON_SIZE[SIZE.SMALL].width,
+                height: "42px"
+            }, _BUTTON_SIZE_WITH_TAG[SIZE.MEDIUM] = {
+                width: BUTTON_SIZE[SIZE.MEDIUM].width,
+                height: "48px"
+            }, _BUTTON_SIZE_WITH_TAG[SIZE.LARGE] = {
+                width: BUTTON_SIZE[SIZE.LARGE].width,
+                height: "60px"
+            }, _BUTTON_SIZE_WITH_TAG), BUTTON_SIZE_WITH_FUNDINGICONS = (_BUTTON_SIZE_WITH_FUN = {}, 
+            _BUTTON_SIZE_WITH_FUN[SIZE.SMALL] = {
+                width: BUTTON_SIZE[SIZE.SMALL].width,
+                height: "65px"
+            }, _BUTTON_SIZE_WITH_FUN[SIZE.MEDIUM] = {
+                width: BUTTON_SIZE[SIZE.MEDIUM].width,
+                height: "75px"
+            }, _BUTTON_SIZE_WITH_FUN[SIZE.LARGE] = {
+                width: BUTTON_SIZE[SIZE.LARGE].width,
+                height: "85px"
+            }, _BUTTON_SIZE_WITH_FUN), RESPONSIVE_RANGES = {
+                small: [ 100, 200 ],
+                medium: [ 200, 300 ],
+                large: [ 300, 500 ]
+            };
         },
         "./src/components/button/templates/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -9279,11 +9354,19 @@
             function addHeader(name, value) {
                 if (window.$Api) return window.$Api.addHeader ? window.$Api.addHeader(name, value) : void 0;
             }
-            function forceIframe() {
-                return !!(window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) || !Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)();
-            }
             function allowIframe() {
-                return !!(window.xprops && window.xprops.lightbox && window.xprops.lightbox.allow) || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)();
+                if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)()) return !0;
+                if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.r)()) return !1;
+                var xprops = window.xprops;
+                if (xprops) {
+                    if (xprops.lightbox && !xprops.lightbox.allow) return !1;
+                    if (xprops && xprops.prefetchLogin) return !0;
+                }
+                var parentWindow = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.l)();
+                return !(!parentWindow || !Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.t)(parentWindow));
+            }
+            function forceIframe() {
+                return !!allowIframe() && (!!(window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) || !Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)());
             }
             function enableCheckoutIframe() {
                 if (allowIframe()) {
@@ -9291,12 +9374,13 @@
                     Checkout.contexts.iframe = !0;
                 }
             }
-            __webpack_exports__.c = forceIframe;
+            __webpack_exports__.b = allowIframe;
+            __webpack_exports__.d = forceIframe;
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return Checkout;
             });
-            __webpack_exports__.b = enableCheckoutIframe;
-            var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_2_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__templates__ = __webpack_require__("./src/components/checkout/templates/index.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_5__popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_8__compat__ = __webpack_require__("./src/compat/index.js"), _extends = Object.assign || function(target) {
+            __webpack_exports__.c = enableCheckoutIframe;
+            var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_2_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_4__templates__ = __webpack_require__("./src/components/checkout/templates/index.js"), __WEBPACK_IMPORTED_MODULE_5__util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_6__popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_7__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_8__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_9__compat__ = __webpack_require__("./src/compat/index.js"), _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -9307,36 +9391,36 @@
                 name: "ppcheckout",
                 scrolling: !0,
                 buildUrl: function(props) {
-                    var env = props.env || __WEBPACK_IMPORTED_MODULE_7__config__.g.env;
+                    var env = props.env || __WEBPACK_IMPORTED_MODULE_8__config__.g.env;
                     return props.payment().then(function(token) {
                         if (!token) throw new Error("Expected payment id or token to be passed, got " + token);
-                        return Object(__WEBPACK_IMPORTED_MODULE_4__util__.b)(env, token);
+                        return Object(__WEBPACK_IMPORTED_MODULE_5__util__.b)(env, token);
                     });
                 },
                 get domain() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.paypalDomains;
+                    return __WEBPACK_IMPORTED_MODULE_8__config__.g.paypalDomains;
                 },
                 get bridgeUrl() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.postBridgeUrls;
+                    return __WEBPACK_IMPORTED_MODULE_8__config__.g.postBridgeUrls;
                 },
                 get bridgeDomain() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.paypalDomains;
+                    return __WEBPACK_IMPORTED_MODULE_8__config__.g.paypalDomains;
                 },
                 contexts: {
                     iframe: forceIframe(),
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_7__config__.g.ppobjects ? "4" : "4.0.113";
+                    return __WEBPACK_IMPORTED_MODULE_8__config__.g.ppobjects ? "4" : "4.0.114";
                 },
-                componentTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.a,
-                containerTemplate: __WEBPACK_IMPORTED_MODULE_3__templates__.b,
+                componentTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.a,
+                containerTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.b,
                 props: {
                     uid: {
                         type: "string",
-                        value: Object(__WEBPACK_IMPORTED_MODULE_6__lib__.h)(),
+                        value: Object(__WEBPACK_IMPORTED_MODULE_7__lib__.h)(),
                         def: function() {
-                            return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.h)();
+                            return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.h)();
                         },
                         queryParam: !0
                     },
@@ -9345,10 +9429,10 @@
                         required: !1,
                         queryParam: !0,
                         def: function() {
-                            return __WEBPACK_IMPORTED_MODULE_7__config__.g.env;
+                            return __WEBPACK_IMPORTED_MODULE_8__config__.g.env;
                         },
                         validate: function(env) {
-                            if (!__WEBPACK_IMPORTED_MODULE_7__config__.g.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                            if (!__WEBPACK_IMPORTED_MODULE_8__config__.g.paypalUrls[env]) throw new Error("Invalid env: " + env);
                         }
                     },
                     stage: {
@@ -9356,8 +9440,8 @@
                         required: !1,
                         queryParam: !0,
                         def: function(props) {
-                            var env = props.env || __WEBPACK_IMPORTED_MODULE_7__config__.g.env;
-                            if (env === __WEBPACK_IMPORTED_MODULE_7__config__.a.STAGE || env === __WEBPACK_IMPORTED_MODULE_7__config__.a.LOCAL) return __WEBPACK_IMPORTED_MODULE_7__config__.g.stage;
+                            var env = props.env || __WEBPACK_IMPORTED_MODULE_8__config__.g.env;
+                            if (env === __WEBPACK_IMPORTED_MODULE_8__config__.a.STAGE || env === __WEBPACK_IMPORTED_MODULE_8__config__.a.LOCAL) return __WEBPACK_IMPORTED_MODULE_8__config__.g.stage;
                         }
                     },
                     locale: {
@@ -9366,7 +9450,7 @@
                         queryParam: "locale.x",
                         allowDelegate: !0,
                         def: function() {
-                            var _getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.g)();
+                            var _getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_7__lib__.g)();
                             return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                         }
                     },
@@ -9378,7 +9462,7 @@
                         },
                         sendToChild: !1,
                         validate: function(client, props) {
-                            var env = props.env || __WEBPACK_IMPORTED_MODULE_7__config__.g.env;
+                            var env = props.env || __WEBPACK_IMPORTED_MODULE_8__config__.g.env;
                             if (!client[env]) throw new Error("Client ID not found for env: " + env);
                             if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
                         }
@@ -9391,10 +9475,10 @@
                         timeout: 1e4,
                         queryParam: function() {
                             var value = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
-                            return Object(__WEBPACK_IMPORTED_MODULE_4__util__.a)(value);
+                            return Object(__WEBPACK_IMPORTED_MODULE_5__util__.a)(value);
                         },
                         childDef: function() {
-                            return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.m)("token");
+                            return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.m)("token");
                         },
                         validate: function(value, props) {
                             if (!value && !props.url) throw new Error("Expected props.payment to be passed");
@@ -9427,12 +9511,12 @@
                                         return _this.closeComponent();
                                     });
                                 }, redirect = function(win, url) {
-                                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(win || window.top, url || data.returnUrl), close() ]);
+                                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.I)(win || window.top, url || data.returnUrl), close() ]);
                                 };
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                     try {
                                         var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                        if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.J)({
+                                        if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.J)({
                                             win: _this.window,
                                             method: "get",
                                             url: "/webapps/hermes/api/auth"
@@ -9478,7 +9562,7 @@
                                         return _this2.closeComponent();
                                     });
                                 }, redirect = function(win, url) {
-                                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.I)(win || window.top, url || data.cancelUrl), close() ]);
+                                    return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.I)(win || window.top, url || data.cancelUrl), close() ]);
                                 };
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                     if (original) return original.call(_this2, data, _extends({}, actions, {
@@ -9499,17 +9583,27 @@
                             return function(data) {
                                 var _$logger$track;
                                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.j("checkout_init");
-                                __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.o((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_7__config__.b.STATE.CHECKOUT, 
-                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_7__config__.b.TRANSITION.CHECKOUT_INIT, 
-                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_7__config__.b.CONTEXT_TYPE.EC_TOKEN, 
-                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.TOKEN] = data.paymentToken, 
-                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.SELLER_ID] = data.merchantID, 
-                                _$logger$track[__WEBPACK_IMPORTED_MODULE_7__config__.b.KEY.CONTEXT_ID] = data.paymentToken, 
+                                __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.o((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_8__config__.b.STATE.CHECKOUT, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_8__config__.b.TRANSITION.CHECKOUT_INIT, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_8__config__.b.CONTEXT_TYPE.EC_TOKEN, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.TOKEN] = data.paymentToken, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.SELLER_ID] = data.merchantID, 
+                                _$logger$track[__WEBPACK_IMPORTED_MODULE_8__config__.b.KEY.CONTEXT_ID] = data.paymentToken, 
                                 _$logger$track));
                                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.g();
                                 this.paymentToken = data.paymentToken;
                                 this.cancelUrl = data.cancelUrl;
                                 if (original) return original.apply(this, arguments);
+                            };
+                        }
+                    },
+                    lightbox: {
+                        type: "object",
+                        required: !1,
+                        get value() {
+                            return {
+                                allow: allowIframe(),
+                                force: forceIframe()
                             };
                         }
                     },
@@ -9554,7 +9648,7 @@
                                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p("fallback", {
                                     url: url
                                 });
-                                return Object(__WEBPACK_IMPORTED_MODULE_8__compat__.a)(this.props.onAuthorize);
+                                return Object(__WEBPACK_IMPORTED_MODULE_9__compat__.a)(this.props.onAuthorize);
                             };
                         }
                     },
@@ -9562,7 +9656,7 @@
                         type: "string",
                         required: !1,
                         get value() {
-                            return __WEBPACK_IMPORTED_MODULE_7__config__.g.logLevel;
+                            return __WEBPACK_IMPORTED_MODULE_8__config__.g.logLevel;
                         }
                     },
                     popupBridge: {
@@ -9570,8 +9664,8 @@
                         required: !1,
                         get value() {
                             return {
-                                open: Object(__WEBPACK_IMPORTED_MODULE_5__popupBridge__.b)(),
-                                awaitOpener: __WEBPACK_IMPORTED_MODULE_5__popupBridge__.a
+                                open: Object(__WEBPACK_IMPORTED_MODULE_6__popupBridge__.b)(),
+                                awaitOpener: __WEBPACK_IMPORTED_MODULE_6__popupBridge__.a
                             };
                         }
                     },
@@ -9590,7 +9684,7 @@
                     height: !1
                 },
                 get dimensions() {
-                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.t)() ? {
+                    return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.t)() ? {
                         width: "100%",
                         height: "535px"
                     } : {
@@ -9599,10 +9693,10 @@
                     };
                 }
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__popupBridge__.c)(Checkout);
+            Object(__WEBPACK_IMPORTED_MODULE_6__popupBridge__.c)(Checkout);
             if (Checkout.isChild()) {
-                window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.L)(window.xprops.logLevel);
-                Object(__WEBPACK_IMPORTED_MODULE_5__popupBridge__.a)();
+                window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_7__lib__.L)(window.xprops.logLevel);
+                Object(__WEBPACK_IMPORTED_MODULE_6__popupBridge__.a)();
             }
         },
         "./src/components/checkout/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9616,6 +9710,9 @@
             });
             __webpack_require__.d(__webpack_exports__, "c", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__component__.c;
+            });
+            __webpack_require__.d(__webpack_exports__, "d", function() {
+                return __WEBPACK_IMPORTED_MODULE_0__component__.d;
             });
         },
         "./src/components/checkout/popupBridge.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9934,7 +10031,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.113";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.114";
                 },
                 sandboxContainer: !0,
                 componentTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10062,7 +10159,7 @@
             var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.113",
+                version: "4.0.114",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10215,7 +10312,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.113");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.114");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -10818,6 +10915,9 @@
             __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__interface__.forceIframe;
             });
+            __webpack_require__.d(__webpack_exports__, "allowIframe", function() {
+                return __WEBPACK_IMPORTED_MODULE_0__interface__.allowIframe;
+            });
             __webpack_require__.d(__webpack_exports__, "setup", function() {
                 return __WEBPACK_IMPORTED_MODULE_0__interface__.setup;
             });
@@ -10926,7 +11026,10 @@
                 return __WEBPACK_IMPORTED_MODULE_4__components__.a;
             });
             __webpack_require__.d(__webpack_exports__, "forceIframe", function() {
-                return __WEBPACK_IMPORTED_MODULE_4__components__.e;
+                return __WEBPACK_IMPORTED_MODULE_4__components__.d;
+            });
+            __webpack_require__.d(__webpack_exports__, "allowIframe", function() {
+                return __WEBPACK_IMPORTED_MODULE_4__components__.d;
             });
             var __WEBPACK_IMPORTED_MODULE_5__setup__ = __webpack_require__("./src/setup.js");
             __webpack_require__.d(__webpack_exports__, "setup", function() {
@@ -10959,7 +11062,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.113", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.114", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -10967,7 +11070,7 @@
                 Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
                 PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
                 Login = __WEBPACK_IMPORTED_MODULE_4__components__.c;
-                enableCheckoutIframe = __WEBPACK_IMPORTED_MODULE_4__components__.d;
+                enableCheckoutIframe = __WEBPACK_IMPORTED_MODULE_4__components__.e;
                 destroyAll = __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.d;
             }
         },
@@ -11740,7 +11843,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.113";
+                    payload.version = "4.0.114";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                     var query = [];
@@ -11767,7 +11870,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.113".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.114".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -11775,7 +11878,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.113",
+                    v: "checkout.js.4.0.114",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -12448,7 +12551,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                        ver: "4.0.113"
+                        ver: "4.0.114"
                     };
                 });
                 __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
