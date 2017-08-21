@@ -3,6 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as $logger from 'beaver-logger/client';
 import * as xcomponent from 'xcomponent/src';
+import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { containerTemplate, componentTemplate } from './templates';
 
@@ -34,11 +35,33 @@ export function forceIframe() : boolean {
 }
 
 export function allowIframe() : boolean {
-    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.allow) {
+
+    if (!hasMetaViewPort()) {
+        return false;
+    }
+
+    let xprops = window.xprops;
+
+    if (xprops) {
+        if (xprops.lightbox && xprops.lightbox.allow) {
+            return true;
+        }
+
+        if (xprops && xprops.prefetchLogin) {
+            return true;
+        }
+    }
+
+    if (__TEST__) {
         return true;
     }
 
-    return hasMetaViewPort();
+    let parentWindow = getParent();
+    if (parentWindow && isSameDomain(parentWindow)) {
+        return true;
+    }
+
+    return false;
 }
 
 export let Checkout = xcomponent.create({

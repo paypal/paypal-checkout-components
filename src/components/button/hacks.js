@@ -4,7 +4,7 @@ import * as xcomponent from 'xcomponent/src';
 
 import { Button } from './component';
 import { Login } from '../login';
-import { Checkout, forceIframe } from '../checkout';
+import { Checkout } from '../checkout';
 
 import { config } from '../../config';
 import { patchMethod, isIE, getDomainSetting, noop,
@@ -94,24 +94,6 @@ if (Button.isChild()) {
             });
         };
     }
-
-    let checkoutRendered = false;
-    let iframeEnabled = false;
-
-    // $FlowFixMe
-    Object.defineProperty(Checkout.contexts, 'iframe', {
-        get() : boolean {
-            return forceIframe() ? true : iframeEnabled;
-        },
-        set(value) {
-            iframeEnabled = (checkoutRendered || window.xprops.prefetchLogin || __TEST__) ? value : false;
-        }
-    });
-
-    patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
-        checkoutRendered = true;
-        return callOriginal();
-    });
 
     if (getDomainSetting('allow_full_page_fallback')) {
         patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
