@@ -127,12 +127,6 @@ export let Button = xcomponent.create({
         return config.paypalDomains;
     },
 
-    autoResize: {
-        width: false,
-        height: true,
-        element: 'body'
-    },
-
     validate() {
         if (!isEligible()) {
             $logger.warn('button_render_ineligible');

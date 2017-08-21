@@ -5,81 +5,147 @@ type ContainerTemplateOptions = {
     id : string,
     props : Object,
     CLASS : Object,
-    dimensions : {
-        width : number,
-        height : number
-    },
+    container : HTMLElement,
     tag : string,
     context : string,
     outlet : HTMLElement,
-    jsxDom : Function
+    jsxDom : Function,
+    on : Function
 };
 
-function getInitialHeight(width, fundingIcons = false) : ?string {
-    if (width) {
-        if (fundingIcons) {
-            if (width < 200) {
-                return '65px';
-            } else if (width < 300) {
-                return '75px';
-            } else {
-                return '85px';
-            }
-        } else {
-            if (width < 200) {
-                return '42px';
-            } else if (width < 300) {
-                return '48px';
-            } else {
-                return '60px';
-            }
+const SIZE = {
+    SMALL:      'small',
+    MEDIUM:     'medium',
+    LARGE:      'large',
+    RESPONSIVE: 'responsive'
+};
+
+const MIN_WIDTH = 100;
+const MAX_WIDTH = 500;
+
+const BUTTON_SIZE = {
+    [ SIZE.SMALL ]: {
+        width:  '148px',
+        height: '28px'
+    },
+    [ SIZE.MEDIUM ]: {
+        width:  '230px',
+        height: '34px'
+    },
+    [ SIZE.LARGE ]: {
+        width:  '380px',
+        height: '44px'
+    }
+};
+
+const BUTTON_SIZE_WITH_TAGLINE = {
+    [ SIZE.SMALL ]: {
+        width:  BUTTON_SIZE[SIZE.SMALL].width,
+        height: '42px'
+    },
+    [ SIZE.MEDIUM ]: {
+        width:  BUTTON_SIZE[SIZE.MEDIUM].width,
+        height: '48px'
+    },
+    [ SIZE.LARGE ]: {
+        width:  BUTTON_SIZE[SIZE.LARGE].width,
+        height: '60px'
+    }
+};
+
+const BUTTON_SIZE_WITH_FUNDINGICONS = {
+    [ SIZE.SMALL ]: {
+        width:  BUTTON_SIZE[SIZE.SMALL].width,
+        height: '65px'
+    },
+    [ SIZE.MEDIUM ]: {
+        width:  BUTTON_SIZE[SIZE.MEDIUM].width,
+        height: '75px'
+    },
+    [ SIZE.LARGE ]: {
+        width:  BUTTON_SIZE[SIZE.LARGE].width,
+        height: '85px'
+    }
+};
+
+const RESPONSIVE_RANGES = {
+    small:  [ 100, 200 ],
+    medium: [ 200, 300 ],
+    large:  [ 300, 500 ]
+};
+
+function determineResponsiveSize(containerWidth = 0) : string {
+
+    if (containerWidth < MIN_WIDTH) {
+        return SIZE.SMALL;
+    }
+
+    if (containerWidth >= MAX_WIDTH) {
+        return SIZE.LARGE;
+    }
+
+    for (let size of Object.keys(RESPONSIVE_RANGES)) {
+        let [ min, max ] = RESPONSIVE_RANGES[size];
+
+        if (containerWidth >= min && containerWidth < max) {
+            return size;
         }
     }
+
+    throw new Error(`Unable to calculate responsive size for width: ${ containerWidth }`);
 }
 
-export function containerTemplate({ id, props, CLASS, dimensions, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
+function getSizes({ containerWidth, tagline, fundingicons }) : { [string] : { width : string, height : string } } {
+
+    let sizes;
+
+    if (fundingicons) {
+        sizes = BUTTON_SIZE_WITH_FUNDINGICONS;
+    } else if (tagline) {
+        sizes = BUTTON_SIZE_WITH_TAGLINE;
+    } else {
+        sizes = BUTTON_SIZE;
+    }
+
+    let responsiveSize = determineResponsiveSize(containerWidth);
+
+    return {
+        ...sizes,
+        responsive: {
+            width: '100%',
+            height: sizes[responsiveSize].height
+        }
+    };
+}
+
+export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
     let style = props.style || {};
-    let label = style.label || 'checkout';
-    let size = style.size || 'small';
-    let fundingIcons = props.style.fundingicons || false;
 
-    let sizes = fundingIcons
+    let {
+        label        = 'checkout',
+        size         = 'small',
+        fundingicons = false,
+        tagline      = true
+    } = style;
 
-        ? {
-            small: {
-                width: '148px',
-                height: '65px'
-            },
-            medium: {
-                width: '230px',
-                height: '75px'
-            },
-            large: {
-                width: '380px',
-                height: '85px'
-            }
-        }
+    let sizes = getSizes({
+        containerWidth: container.offsetWidth,
+        fundingicons,
+        tagline
+    });
 
-        : {
-            small: {
-                width: '148px',
-                height: '42px'
-            },
-            medium: {
-                width: '230px',
-                height: '48px'
-            },
-            large: {
-                width: '380px',
-                height: '60px'
-            }
-        };
+    if (size === SIZE.RESPONSIVE) {
+        on('resize', () => {
+            let newSizes = getSizes({
+                containerWidth: container.offsetWidth,
+                fundingicons,
+                tagline
+            });
 
-    let minWidth = '148px';
-    let maxWidth = '500px';
-
-    let initialHeight = getInitialHeight(dimensions.width, fundingIcons) || sizes.small.height;
+            outlet.style.height = newSizes.responsive.height;
+        });
+    }
 
     return (
         <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size }` }>
@@ -97,8 +163,8 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
 
                     #${ id } > .${ CLASS.OUTLET } {
                         display: inline-block;
-                        min-width: ${ minWidth };
-                        max-width: ${ maxWidth };
+                        min-width: ${ MIN_WIDTH }px;
+                        max-width: ${ MAX_WIDTH }px;
                         position: relative;
                     }
 
@@ -126,8 +192,8 @@ export function containerTemplate({ id, props, CLASS, dimensions, tag, context, 
                     }
 
                     #${ id }.paypal-button-size-responsive > .${ CLASS.OUTLET } {
-                        width: 100%;
-                        height: ${ initialHeight };
+                        width:  ${ sizes.responsive.width };
+                        height: ${ sizes.responsive.height };
                     }
 
                     #${ id } > .${ CLASS.OUTLET } > iframe {

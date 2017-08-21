@@ -113,4 +113,19 @@ if (Button.isChild()) {
         delete props.env;
         return callOriginal();
     });
+
+    let buttonElement = document.querySelector('.paypal-button');
+
+    if (buttonElement) {
+        buttonElement.style.minWidth = '100px';
+        buttonElement.style.minHeight = '24px';
+    }
+
+    if (window.xprops.style && window.xprops.style.tagline === false) {
+        let taglineElement = document.querySelector('.paypal-button-tag-content');
+
+        if (taglineElement) {
+            taglineElement.style.display = 'none';
+        }
+    }
 }

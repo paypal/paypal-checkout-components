@@ -1,8 +1,8 @@
 /* @flow */
 
-import { createTestContainer, destroyTestContainer, getElement, createElement } from '../common';
+import { createTestContainer, destroyTestContainer, getElement, createElement, onElementResize } from '../common';
 
-describe(`paypal button component sizes`, () => {
+describe.only(`paypal button component sizes`, () => {
 
     beforeEach(() => {
         createTestContainer();
@@ -340,7 +340,7 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 148;
+        let expectedWidth = 100;
         let expectedHeight = 42;
 
         window.paypal.Button.render({
@@ -640,7 +640,7 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 148;
+        let expectedWidth = 100;
         let expectedHeight = 42;
 
         window.paypal.Button.render({
@@ -840,7 +840,7 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 148;
+        let expectedWidth = 100;
         let expectedHeight = 42;
 
         window.paypal.Button.render({
@@ -885,13 +885,13 @@ describe(`paypal button component sizes`, () => {
 
         let container = createElement({
             style: {
-                width: '100px',
+                width: '90px',
                 height: '100px'
             },
             container: '#testContainer'
         });
 
-        let expectedWidth = 148;
+        let expectedWidth = 100;
         let expectedHeight = 42;
 
         window.paypal.Button.render({
@@ -943,7 +943,7 @@ describe(`paypal button component sizes`, () => {
         });
 
         let expectedWidth = 255;
-        let expectedHeight = 42;
+        let expectedHeight = 48;
 
         window.paypal.Button.render({
 
@@ -964,9 +964,9 @@ describe(`paypal button component sizes`, () => {
             onEnter() {
                 setTimeout(() => {
                     container.style.width = '255px';
+                    let frame = getElement('#testContainer iframe');
 
-                    setTimeout(() => {
-                        let frame = getElement('#testContainer iframe');
+                    onElementResize(frame).then(() => {
                         let width = frame.offsetWidth;
                         let height = frame.offsetHeight;
 
@@ -979,7 +979,7 @@ describe(`paypal button component sizes`, () => {
                         }
 
                         return done();
-                    }, 100);
+                    });
                 }, 100);
             }
 
@@ -1051,7 +1051,7 @@ describe(`paypal button component sizes`, () => {
             container: '#testContainer'
         });
 
-        let expectedWidth = 148;
+        let expectedWidth = 100;
         let expectedHeight = 42;
 
         window.paypal.Button.render({

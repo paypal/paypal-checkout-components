@@ -39,7 +39,7 @@ export let componentStyle = `
         width: 100%;
 
         min-width: 100px;
-        min-height: 42px;
+        min-height: 24px;
 
         box-sizing: border-box;
         outline: none;
@@ -131,16 +131,6 @@ export let componentStyle = `
 
     /* Small */
 
-    @media only screen and (min-width : 0px) {
-        body {
-            height: 42px;
-        }
-
-        body.fundingicons {
-            height: 65px;
-        }
-    }
-
     @media only screen and (min-width : 0px) and (min-height: 0px) {
 
         .paypal-button {
@@ -189,15 +179,6 @@ export let componentStyle = `
     /* Medium */
 
     @media only screen and (min-width : 200px) {
-        body {
-            height: 48px;
-        }
-        body.fundingicons {
-            height: 75px;
-        }
-    }
-
-    @media only screen and (min-width : 200px) and (min-height: 48px) {
 
         .paypal-button {
             max-width: 300px;
@@ -248,16 +229,6 @@ export let componentStyle = `
     /* Large */
 
     @media only screen and (min-width : 300px) {
-        body {
-            height: 60px;
-
-        }
-        body.fundingicons {
-            height: 85px;
-        }
-    }
-
-    @media only screen and (min-width : 300px) and (min-height: 60px) {
 
         .paypal-button {
             max-width: 500px;

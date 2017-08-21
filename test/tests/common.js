@@ -524,3 +524,18 @@ export function destroyPopupBridge(win : any = window) {
         win.open.reset();
     }
 }
+
+export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
+    return new ZalgoPromise(resolve => {
+
+        let originalWidth = el.offsetWidth;
+        let originalHeight = el.offsetHeight;
+
+        let interval = setInterval(() => {
+            if (el.offsetWidth !== originalWidth || el.offsetHeight !== originalHeight) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 50);
+    });
+}
