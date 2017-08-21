@@ -9,7 +9,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 export { ZalgoPromise as Promise } from 'zalgo-promise/src';
 
 export { rest } from './api';
-export { Button, forceIframe } from './components';
+export { Button, allowIframe as forceIframe, allowIframe } from './components';
 export { setup } from './setup';
 export { config, ENV, USERS, SOURCE } from './config';
 export { request, isEligible, isWebView } from './lib';

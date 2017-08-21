@@ -26,15 +26,11 @@ function addHeader(name, value) : void {
     }
 }
 
-export function forceIframe() : boolean {
-    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) {
+export function allowIframe() : boolean {
+
+    if (!supportsPopups()) {
         return true;
     }
-
-    return !supportsPopups();
-}
-
-export function allowIframe() : boolean {
 
     if (!hasMetaViewPort()) {
         return false;
@@ -43,8 +39,8 @@ export function allowIframe() : boolean {
     let xprops = window.xprops;
 
     if (xprops) {
-        if (xprops.lightbox && xprops.lightbox.allow) {
-            return true;
+        if (xprops.lightbox && !xprops.lightbox.allow) {
+            return false;
         }
 
         if (xprops && xprops.prefetchLogin) {
@@ -52,12 +48,29 @@ export function allowIframe() : boolean {
         }
     }
 
+    let parentWindow = getParent();
+    if (parentWindow && isSameDomain(parentWindow)) {
+        return true;
+    }
+
     if (__TEST__) {
         return true;
     }
 
-    let parentWindow = getParent();
-    if (parentWindow && isSameDomain(parentWindow)) {
+    return false;
+}
+
+export function forceIframe() : boolean {
+
+    if (!allowIframe()) {
+        return false;
+    }
+
+    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) {
+        return true;
+    }
+
+    if (!supportsPopups()) {
         return true;
     }
 
@@ -356,6 +369,18 @@ export let Checkout = xcomponent.create({
                     if (original) {
                         return original.apply(this, arguments);
                     }
+                };
+            }
+        },
+
+        lightbox: {
+            type: 'object',
+            required: false,
+
+            get value() : { allow : boolean, force : boolean } {
+                return {
+                    allow: allowIframe(),
+                    force: forceIframe()
                 };
             }
         },

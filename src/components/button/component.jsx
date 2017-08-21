@@ -5,11 +5,11 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { Checkout, forceIframe } from '../checkout';
+import { Checkout, forceIframe, allowIframe } from '../checkout';
 
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
-import { redirect as redir, hasMetaViewPort, setLogLevel, checkRecognizedBrowser,
+import { redirect as redir, setLogLevel, checkRecognizedBrowser,
          getBrowserLocale, getCommonSessionID, request, checkpoint,
          isIEIntranet, getPageRenderTime, isEligible, getSessionState,
          getDomainSetting, extendUrl, noop, getStorage } from '../../lib';
@@ -622,7 +622,7 @@ export let Button = xcomponent.create({
 
             get value() : { allow : boolean, force : boolean } {
                 return {
-                    allow: !hasMetaViewPort(),
+                    allow: allowIframe(),
                     force: forceIframe()
                 };
             }
