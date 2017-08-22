@@ -1,4 +1,4 @@
-# Performance
+# Performance Best Practices
 
 This doc details how to optimize your loading of checkout.js and rendering of the button with the best possible performance.
 
@@ -9,6 +9,8 @@ The checkout.js script is avaiable at both at https://www.paypalobjects.com/api/
 We **strongly recommend** for performance reasons that you load the script from paypalobjects.
 
 The reason for this is, the script is also loaded inside the button iframe and checkout popup window, in order to communicate with the parent window. Loading from the CDN means your users' browsers will cache the script, otherwise it will be re-downloaded inside the iframe/popup.
+
+Please see [CDN vs NPM](https://github.com/paypal/paypal-checkout/blob/master/docs/cdn-npm.md)
 
 ### Minified Script
 
