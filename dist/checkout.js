@@ -8199,7 +8199,7 @@
                         Authorization: "Bearer " + accessToken
                     };
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                    return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.J)({
+                    return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_4__config__.g.paymentApiUrls[env],
                         headers: headers,
@@ -8229,7 +8229,7 @@
                     if (experienceDetails) return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.J)({
+                    return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_4__config__.g.billingApiUrls[env],
                         headers: {
@@ -8253,14 +8253,14 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, proxyRest = {}, createAccessToken = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.C)(function(env, client) {
+        }, proxyRest = {}, createAccessToken = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.B)(function(env, client) {
             __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j("rest_api_create_access_token");
             env = env || __WEBPACK_IMPORTED_MODULE_4__config__.g.env;
             var clientID = client[env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(__WEBPACK_IMPORTED_MODULE_2_Base64__.btoa)(clientID + ":");
-            return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.J)({
+            return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)({
                 method: "post",
                 url: __WEBPACK_IMPORTED_MODULE_4__config__.g.authApiUrls[env],
                 headers: {
@@ -8276,7 +8276,7 @@
             });
         }, {
             time: 6e5
-        }), createExperienceProfile = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.C)(function(env, client) {
+        }), createExperienceProfile = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.B)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j("rest_api_create_experience_profile");
             env = env || __WEBPACK_IMPORTED_MODULE_4__config__.g.env;
@@ -8285,7 +8285,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.J)({
+                return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)({
                     method: "post",
                     url: __WEBPACK_IMPORTED_MODULE_4__config__.g.experienceApiUrls[env],
                     headers: {
@@ -8332,18 +8332,18 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.y)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeDomain).then(function(postBridge) {
+                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.x)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeDomain).then(function(postBridge) {
                     return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: __WEBPACK_IMPORTED_MODULE_3__config__.g.paypalDomain
-                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.D);
+                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.C);
                 });
             });
         }
         __webpack_exports__.a = onLegacyPaymentAuthorize;
         var __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), onAuthorize = void 0;
-        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.y)() && __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on("onLegacyPaymentAuthorize", {
+        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.x)() && __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on("onLegacyPaymentAuthorize", {
             window: window.parent
         }, function(_ref) {
             var data = _ref.data;
@@ -8375,7 +8375,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.D);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.C);
                                 }
                             } catch (err) {
                                 return;
@@ -8488,7 +8488,7 @@
                         __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j("pre_template_force_full_page");
                         __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
                         var checkout = __WEBPACK_IMPORTED_MODULE_3__checkout__.a.init({
-                            onAuthorize: __WEBPACK_IMPORTED_MODULE_5__lib__.D
+                            onAuthorize: __WEBPACK_IMPORTED_MODULE_5__lib__.C
                         });
                         checkout.openContainer().then(function() {
                             checkout.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.a.EVENTS.CLOSE);
@@ -8507,14 +8507,14 @@
             },
             sacrificialComponentTemplate: !0,
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.115";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.116";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
             },
             validate: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.v)() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p("button_render_ineligible");
-                if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.x)()) throw new Error("Can not render button in IE intranet mode");
+                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.u)() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p("button_render_ineligible");
+                if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.w)()) throw new Error("Can not render button in IE intranet mode");
             },
             props: {
                 uid: {
@@ -8612,7 +8612,7 @@
                                         });
                                     }
                                 };
-                                actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.J;
+                                actions.request = __WEBPACK_IMPORTED_MODULE_5__lib__.I;
                                 var context = {
                                     props: {
                                         env: _this2.props.env,
@@ -8728,7 +8728,7 @@
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.o((_$logger$track3 = {}, _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_4__config__.b.STATE.CHECKOUT, 
                             _$logger$track3[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_4__config__.b.TRANSITION.CHECKOUT_AUTHORIZE, 
                             _$logger$track3));
-                            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.v)() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j("button_authorize_ineligible");
+                            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.u)() || __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j("button_authorize_ineligible");
                             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.c)("authorize");
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
                             if (this.props.braintree) return this.props.braintree.then(function(client) {
@@ -8739,7 +8739,7 @@
                                 });
                             });
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)(win || window.top, url || data.returnUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(win || window.top, url || data.returnUrl), actions.close() ]);
                             }, restart = function() {
                                 return actions.restart().then(function() {
                                     return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
@@ -8790,7 +8790,7 @@
                             _$logger$track4));
                             __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(win || window.top, url || data.cancelUrl), actions.close() ]);
                             };
                             if (original) return original.call(this, data, _extends({}, actions, {
                                 redirect: redirect
@@ -8858,16 +8858,6 @@
                         return __WEBPACK_IMPORTED_MODULE_4__config__.f.ALL;
                     }
                 },
-                lightbox: {
-                    type: "object",
-                    required: !1,
-                    get value() {
-                        return {
-                            allow: Object(__WEBPACK_IMPORTED_MODULE_3__checkout__.b)(),
-                            force: Object(__WEBPACK_IMPORTED_MODULE_3__checkout__.d)()
-                        };
-                    }
-                },
                 validate: {
                     type: "function",
                     required: !1
@@ -8912,14 +8902,14 @@
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g();
                 }
             });
-            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(window.xprops.logLevel);
+            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(window.xprops.logLevel);
             Object(__WEBPACK_IMPORTED_MODULE_8__checkout_popupBridge__.a)();
         }
     },
     "./src/components/button/hacks.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_3__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_4__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js");
-        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_2__component__.a, "render", function(_ref) {
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(__WEBPACK_IMPORTED_MODULE_2__component__.a, "render", function(_ref) {
             var original = _ref.original, context = _ref.context, args = _ref.args, props = args[0], style = props.style;
             if (style && (!style.label || "checkout" === style.label) && "tiny" === style.size) {
                 __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p("unsupported_button_size_tiny");
@@ -8929,7 +8919,7 @@
         });
         if (__WEBPACK_IMPORTED_MODULE_2__component__.a.isChild()) {
             var debounce = !1;
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref2) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref2) {
                 var callOriginal = _ref2.callOriginal, _ref2$args = _ref2.args, props = (_ref2$args[0], 
                 _ref2$args[1]);
                 if (!debounce) {
@@ -8955,17 +8945,17 @@
                         enabled = !1;
                     }
                 });
-                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref3) {
+                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref3) {
                     var callOriginal = _ref3.callOriginal, _ref3$args = _ref3.args;
                     _ref3$args[0], _ref3$args[1];
                     if (enabled) return callOriginal();
                 });
             }
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.w)() && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_4__checkout__.a.renderTo = function(win, props) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.v)() && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_4__checkout__.a.renderTo = function(win, props) {
                 __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j("force_ie_full_page");
                 __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g();
                 var checkout = __WEBPACK_IMPORTED_MODULE_4__checkout__.a.init({
-                    onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.D
+                    onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.C
                 });
                 checkout.delegate(win);
                 checkout.openContainer().then(function() {
@@ -8980,7 +8970,7 @@
                     checkout.error(err);
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref4) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(__WEBPACK_IMPORTED_MODULE_4__checkout__.a, "renderTo", function(_ref4) {
                 var callOriginal = _ref4.callOriginal, _ref4$args = _ref4.args;
                 _ref4$args[0], _ref4$args[1];
                 return callOriginal().catch(function(err) {
@@ -8992,7 +8982,7 @@
                     });
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.H)(__WEBPACK_IMPORTED_MODULE_3__login__.a, "prerender", function(_ref5) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(__WEBPACK_IMPORTED_MODULE_3__login__.a, "prerender", function(_ref5) {
                 var callOriginal = _ref5.callOriginal;
                 delete _ref5.args[0].env;
                 return callOriginal();
@@ -9354,27 +9344,17 @@
             if (window.$Api) return window.$Api.addHeader ? window.$Api.addHeader(name, value) : void 0;
         }
         function allowIframe() {
-            if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)()) return !0;
-            if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.r)()) return !1;
-            var xprops = window.xprops;
-            if (xprops) {
-                if (xprops.lightbox && !xprops.lightbox.allow) return !1;
-                if (xprops && xprops.prefetchLogin) return !0;
-            }
-            var parentWindow = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.l)();
-            return !(!parentWindow || !Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.t)(parentWindow));
-        }
-        function forceIframe() {
-            return !!allowIframe() && (!!(window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) || !Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)());
+            if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.N)()) return !0;
+            var parentWindow = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.l)(window);
+            if (parentWindow && Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.t)(parentWindow)) return !0;
+            var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+            return !(!parentComponentWindow || !Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.t)(parentComponentWindow));
         }
         function enableCheckoutIframe() {
-            if (allowIframe()) {
-                delete Checkout.contexts.iframe;
-                Checkout.contexts.iframe = !0;
-            }
+            delete Checkout.contexts.iframe;
+            Checkout.contexts.iframe = !0;
         }
         __webpack_exports__.b = allowIframe;
-        __webpack_exports__.d = forceIframe;
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return Checkout;
         });
@@ -9406,11 +9386,13 @@
                 return __WEBPACK_IMPORTED_MODULE_8__config__.g.paypalDomains;
             },
             contexts: {
-                iframe: forceIframe(),
+                iframe: function() {
+                    return !Object(__WEBPACK_IMPORTED_MODULE_7__lib__.N)();
+                }(),
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_8__config__.g.ppobjects ? "4" : "4.0.115";
+                return __WEBPACK_IMPORTED_MODULE_8__config__.g.ppobjects ? "4" : "4.0.116";
             },
             componentTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.b,
@@ -9510,12 +9492,12 @@
                                     return _this.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.I)(win || window.top, url || data.returnUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.H)(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.J)({
+                                    if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.I)({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/hermes/api/auth"
@@ -9561,7 +9543,7 @@
                                     return _this2.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.I)(win || window.top, url || data.cancelUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.H)(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 if (original) return original.call(_this2, data, _extends({}, actions, {
@@ -9593,16 +9575,6 @@
                             this.paymentToken = data.paymentToken;
                             this.cancelUrl = data.cancelUrl;
                             if (original) return original.apply(this, arguments);
-                        };
-                    }
-                },
-                lightbox: {
-                    type: "object",
-                    required: !1,
-                    get value() {
-                        return {
-                            allow: allowIframe(),
-                            force: forceIframe()
                         };
                     }
                 },
@@ -9683,7 +9655,7 @@
                 height: !1
             },
             get dimensions() {
-                return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.t)() ? {
+                return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.s)() ? {
                     width: "100%",
                     height: "535px"
                 } : {
@@ -9694,7 +9666,7 @@
         });
         Object(__WEBPACK_IMPORTED_MODULE_6__popupBridge__.c)(Checkout);
         if (Checkout.isChild()) {
-            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_7__lib__.L)(window.xprops.logLevel);
+            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_7__lib__.K)(window.xprops.logLevel);
             Object(__WEBPACK_IMPORTED_MODULE_6__popupBridge__.a)();
         }
     },
@@ -9709,9 +9681,6 @@
         });
         __webpack_require__.d(__webpack_exports__, "c", function() {
             return __WEBPACK_IMPORTED_MODULE_0__component__.c;
-        });
-        __webpack_require__.d(__webpack_exports__, "d", function() {
-            return __WEBPACK_IMPORTED_MODULE_0__component__.d;
         });
     },
     "./src/components/checkout/popupBridge.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9780,7 +9749,7 @@
                                 data.returnUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.returnUrl;
-                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.I)(win, redirectUrl);
+                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.H)(win, redirectUrl);
                                 };
                                 onAuthorize(data, actions);
                                 resolve();
@@ -9789,7 +9758,7 @@
                                 data.cancelUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.cancelUrl;
-                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.I)(win, redirectUrl);
+                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.H)(win, redirectUrl);
                                 };
                                 onCancel(data, actions);
                                 resolve();
@@ -9804,7 +9773,7 @@
                 var openBridge = getPopupBridgeOpener();
                 return openBridge ? renderThroughPopupBridge(props, openBridge).catch(function(err) {
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.f("popup_bridge_error", {
-                        err: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(err)
+                        err: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(err)
                     });
                     return original();
                 }) : original();
@@ -10030,7 +9999,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.115";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.116";
             },
             sandboxContainer: !0,
             componentTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10158,7 +10127,7 @@
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.115",
+            version: "4.0.116",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10311,7 +10280,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.115");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.116");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -11049,23 +11018,23 @@
         });
         var __WEBPACK_IMPORTED_MODULE_7__lib__ = __webpack_require__("./src/lib/index.js");
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.J;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.I;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.v;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.u;
         });
         __webpack_require__.d(__webpack_exports__, "isWebView", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__lib__.z;
+            return __WEBPACK_IMPORTED_MODULE_7__lib__.y;
         });
         var __WEBPACK_IMPORTED_MODULE_8__experiments__ = __webpack_require__("./src/experiments.js");
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.115", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.116", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
-        if (Object(__WEBPACK_IMPORTED_MODULE_7__lib__.y)()) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_7__lib__.x)()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             Login = __WEBPACK_IMPORTED_MODULE_4__components__.c;
@@ -11103,7 +11072,7 @@
                 }).el;
                 container.appendChild(el);
                 try {
-                    $logger.info("in_page_button_" + (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.u)(el) ? "visible" : "not_visible"));
+                    $logger.info("in_page_button_" + (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.t)(el) ? "visible" : "not_visible"));
                 } catch (err) {}
                 return el.childNodes[0];
             });
@@ -11155,19 +11124,19 @@
         }
         __webpack_exports__.b = renderButtons;
         __webpack_exports__.a = getHijackTargetElement;
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_5__common__ = __webpack_require__("./src/legacy/common.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m(__WEBPACK_IMPORTED_MODULE_4__constants__.c), loadButtonJS = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_5__common__ = __webpack_require__("./src/legacy/common.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m(__WEBPACK_IMPORTED_MODULE_4__constants__.c), loadButtonJS = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)(function() {
             $logger.debug("buttonjs_load");
-            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.A)(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl).catch(function(err) {
+            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.z)(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl).catch(function(err) {
                 $logger.info("buttonjs_load_error_retry", {
-                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(err)
+                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(err)
                 });
-                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.A)(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl);
+                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.z)(__WEBPACK_IMPORTED_MODULE_2__config__.g.buttonJSUrl);
             }).then(function(result) {
                 $logger.debug("buttonjs_load_success");
                 return result;
             }).catch(function(err) {
                 $logger.error("buttonjs_load_error", {
-                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(err)
+                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(err)
                 });
                 throw err;
             });
@@ -11225,7 +11194,7 @@
     "./src/legacy/eligibility.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function isLegacyEligible() {
-            return !!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.v)() && (!!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.O)() && !Object(__WEBPACK_IMPORTED_MODULE_0__lib__.t)());
+            return !!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.u)() && (!!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.N)() && !Object(__WEBPACK_IMPORTED_MODULE_0__lib__.s)());
         }
         __webpack_exports__.a = isLegacyEligible;
         var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./src/lib/index.js");
@@ -11342,7 +11311,7 @@
                 checkout.initXO = function() {
                     $logger.warn("gettoken_initxo");
                 };
-                checkout.startFlow = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(function(item, opts) {
+                checkout.startFlow = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(function(item, opts) {
                     $logger.debug("gettoken_startflow", {
                         item: item
                     });
@@ -11407,7 +11376,7 @@
                 props.init = function(data) {
                     resolve(data.paymentToken);
                 };
-            }), errorHandler = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(function(err) {
+            }), errorHandler = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(function(err) {
                 $logger.error("component_error", {
                     error: err.stack || err.toString()
                 });
@@ -11475,7 +11444,7 @@
             element.addEventListener("click", function(event) {
                 track();
                 var eligible = Object(__WEBPACK_IMPORTED_MODULE_3__eligibility__.a)();
-                if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)()) {
+                if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.N)()) {
                     $logger.debug("click_popups_supported");
                     eligible || $logger.debug("click_popups_supported_but_ineligible");
                 } else {
@@ -11514,7 +11483,7 @@
             $logger.info("setup", {
                 id: id,
                 env: options.environment,
-                options: Object(__WEBPACK_IMPORTED_MODULE_6__lib__.K)(options)
+                options: Object(__WEBPACK_IMPORTED_MODULE_6__lib__.J)(options)
             });
             setupCalled && $logger.debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -11725,7 +11694,7 @@
         "use strict";
         function setupPostBridge(env) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                if (!Object(__WEBPACK_IMPORTED_MODULE_4__lib__.x)()) {
+                if (!Object(__WEBPACK_IMPORTED_MODULE_4__lib__.w)()) {
                     var postBridgeUrl = __WEBPACK_IMPORTED_MODULE_3__config__.g.postBridgeUrls[env], postBridgeDomain = __WEBPACK_IMPORTED_MODULE_3__config__.g.paypalDomains[env];
                     if (!__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge || !__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge.needsBridgeForDomain(postBridgeDomain)) return __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.e("post_bridge_not_required", {
                         env: env
@@ -11756,7 +11725,7 @@
     "./src/legacy/ready.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function invokeReady(method) {
-            Object(__WEBPACK_IMPORTED_MODULE_1__lib__.E)(function() {
+            Object(__WEBPACK_IMPORTED_MODULE_1__lib__.D)(function() {
                 $logger.debug("paypal_checkout_ready");
                 setTimeout(function() {
                     window.paypal || $logger.error("paypal_checkout_ready_no_window_paypal");
@@ -11765,7 +11734,7 @@
             });
         }
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_4__interface__ = __webpack_require__("./src/legacy/interface.js"), $logger = __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m(__WEBPACK_IMPORTED_MODULE_3__constants__.c);
-        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.F)(window, "paypalCheckoutReady", function(method) {
+        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.E)(window, "paypalCheckoutReady", function(method) {
             if ("function" == typeof method) {
                 var oneTimeReady = function() {
                     if (!method.called) {
@@ -11777,7 +11746,7 @@
                 return oneTimeReady;
             }
         });
-        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.E)(function() {
+        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.D)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_3__constants__.a.BUTTON + "]"));
             if (buttons && buttons.length) {
                 $logger.debug("data_paypal_button", {
@@ -11810,15 +11779,15 @@
         "use strict";
         function logRedirect(location) {
             redirected && $logger.warn("multiple_redirects");
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(location) && (redirected = !0);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(location) && (redirected = !0);
             $logger.flush();
         }
         function redirect(url) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.g.env === __WEBPACK_IMPORTED_MODULE_2__config__.a.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.I)(window, "#fullpageRedirect?url=" + url);
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.g.env === __WEBPACK_IMPORTED_MODULE_2__config__.a.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.H)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.I)(window, url);
+                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.H)(window, url);
             });
         }
         function parseToken(token) {
@@ -11842,7 +11811,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.115";
+                payload.version = "4.0.116";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                 var query = [];
@@ -11869,7 +11838,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.115".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.116".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -11877,7 +11846,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.115",
+                v: "checkout.js.4.0.116",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -12085,10 +12054,6 @@
                 }, 1);
             });
         }
-        function hasMetaViewPort() {
-            var meta = document.querySelector("meta[name=viewport]");
-            return !(Object(__WEBPACK_IMPORTED_MODULE_4__device__.a)() && window.screen.width < 660 && !meta);
-        }
         function normalizeLocale(locale) {
             if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
                 var _locale$split = locale.split(/[-_]/), _lang = _locale$split[0], _country = _locale$split[1];
@@ -12143,20 +12108,20 @@
                 if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 6e4) return Math.floor(entry.duration);
             }
         }
-        __webpack_exports__.j = loadScript;
+        __webpack_exports__.i = loadScript;
         __webpack_exports__.c = getElement;
         __webpack_exports__.d = getElements;
-        __webpack_exports__.k = onDocumentReady;
+        __webpack_exports__.j = onDocumentReady;
         __webpack_exports__.f = getQueryParam;
-        __webpack_exports__.m = urlWillRedirectPage;
+        __webpack_exports__.l = urlWillRedirectPage;
         __webpack_exports__.a = extendUrl;
-        __webpack_exports__.l = redirect;
-        __webpack_exports__.h = hasMetaViewPort;
+        __webpack_exports__.k = redirect;
         __webpack_exports__.b = getBrowserLocale;
-        __webpack_exports__.i = isElementVisible;
+        __webpack_exports__.h = isElementVisible;
         __webpack_exports__.e = getPageRenderTime;
         __webpack_exports__.g = getResourceLoadTime;
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_4__device__ = __webpack_require__("./src/lib/device.js"), documentReady = new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/lib/util.js"), documentReady = (__webpack_require__("./src/lib/device.js"), 
+        new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
             if (isDocumentReady()) return resolve();
             var interval = setInterval(function() {
                 if (isDocumentReady()) {
@@ -12164,7 +12129,7 @@
                     return resolve();
                 }
             }, 10);
-        }), parseQuery = (documentReady.then(function() {
+        })), parseQuery = (documentReady.then(function() {
             if (document.body) return document.body;
             throw new Error("Document ready but document.body not present");
         }), Object(__WEBPACK_IMPORTED_MODULE_3__util__.h)(function(queryString) {
@@ -12400,19 +12365,19 @@
     "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./src/lib/device.js");
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.f;
         });
         var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js");
@@ -12425,48 +12390,48 @@
         __webpack_require__.d(__webpack_exports__, "i", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.m;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.n;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.o;
         });
         var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./src/lib/logger.js");
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "r", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_3__eligibility__ = __webpack_require__("./src/lib/eligibility.js");
         __webpack_require__.d(__webpack_exports__, "c", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_4__errors__ = __webpack_require__("./src/lib/errors.js");
@@ -12495,26 +12460,23 @@
         __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
-            return __WEBPACK_IMPORTED_MODULE_5__dom__.m;
-        });
         var __WEBPACK_IMPORTED_MODULE_6__http__ = __webpack_require__("./src/lib/http.js");
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return __WEBPACK_IMPORTED_MODULE_6__http__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_7__beacon__ = __webpack_require__("./src/lib/beacon.js");
@@ -12554,7 +12516,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                    ver: "4.0.115"
+                    ver: "4.0.116"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
@@ -12661,7 +12623,7 @@
                 _$logger$track[__WEBPACK_IMPORTED_MODULE_0__config__.b.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_0__config__.b.TRANSITION.PPTM_LOAD, 
                 _$logger$track));
                 var fullUrl = __WEBPACK_IMPORTED_MODULE_0__config__.g.pptmUrl + "?id=" + window.location.hostname + "&t=xo";
-                Object(__WEBPACK_IMPORTED_MODULE_1__lib__.A)(fullUrl, 0, {
+                Object(__WEBPACK_IMPORTED_MODULE_1__lib__.z)(fullUrl, 0, {
                     async: !0,
                     id: __WEBPACK_IMPORTED_MODULE_0__config__.d
                 }).then(function() {
@@ -12671,7 +12633,7 @@
                     _$logger$track2));
                 }).catch(function(err) {
                     __WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.f("pptm_script_error", {
-                        error: Object(__WEBPACK_IMPORTED_MODULE_1__lib__.M)(err)
+                        error: Object(__WEBPACK_IMPORTED_MODULE_1__lib__.L)(err)
                     });
                 });
             }
@@ -12950,7 +12912,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon;
-        if (window.paypal && "4.0.115" === window.paypal.version) {
+        if (window.paypal && "4.0.116" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -13002,7 +12964,7 @@
                 __WEBPACK_IMPORTED_MODULE_2__config__.g.state = state;
             }
             ppobjects && (__WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects = !0);
-            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(__WEBPACK_IMPORTED_MODULE_2__config__.g.logLevel);
+            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(__WEBPACK_IMPORTED_MODULE_2__config__.g.logLevel);
         }
         function setup() {
             configure(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {});
@@ -13017,11 +12979,11 @@
         __WEBPACK_IMPORTED_MODULE_5_zalgo_promise_src__.a.onPossiblyUnhandledException(function(err) {
             var _$logger$track;
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.f("unhandled_error", {
-                stack: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(err),
+                stack: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(err),
                 errtype: {}.toString.call(err)
             });
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o((_$logger$track = {}, _$logger$track[__WEBPACK_IMPORTED_MODULE_2__config__.b.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _$logger$track[__WEBPACK_IMPORTED_MODULE_2__config__.b.KEY.ERROR_DESC] = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(err), 
+            _$logger$track[__WEBPACK_IMPORTED_MODULE_2__config__.b.KEY.ERROR_DESC] = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(err), 
             _$logger$track));
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g().catch(function(err2) {
                 if (window.console) try {
@@ -13051,12 +13013,12 @@
             document.currentScript && __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_script_not_recognized", {
                 src: document.currentScript.src
             });
-        }(), currentProtocol = window.location.protocol.split(":")[0], init = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.G)(function() {
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.v)() || __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p("ineligible");
+        }(), currentProtocol = window.location.protocol.split(":")[0], init = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.F)(function() {
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.u)() || __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p("ineligible");
             Object(__WEBPACK_IMPORTED_MODULE_3__lib__.b)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.y)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.s)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.i)("force_bridge") && __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.y)() && __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_2__config__.g.postBridgeUrls[__WEBPACK_IMPORTED_MODULE_2__config__.g.env], __WEBPACK_IMPORTED_MODULE_2__config__.g.paypalDomains[__WEBPACK_IMPORTED_MODULE_2__config__.g.env]);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.x)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.r)();
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.i)("force_bridge") && __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.x)() && __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_2__config__.g.postBridgeUrls[__WEBPACK_IMPORTED_MODULE_2__config__.g.env], __WEBPACK_IMPORTED_MODULE_2__config__.g.paypalDomains[__WEBPACK_IMPORTED_MODULE_2__config__.g.env]);
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j("setup_" + __WEBPACK_IMPORTED_MODULE_2__config__.g.env);
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_protocol_" + currentProtocol);
         });
@@ -13068,7 +13030,7 @@
             logLevel: currentScript.getAttribute("data-log-level"),
             ppobjects: !0
         }) : setup();
-        if (!Object(__WEBPACK_IMPORTED_MODULE_3__lib__.y)()) if (currentScript) {
+        if (!Object(__WEBPACK_IMPORTED_MODULE_3__lib__.x)()) if (currentScript) {
             var _$logger$track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.n)(currentScript.src);
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_script_protocol_" + scriptProtocol);
             __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
