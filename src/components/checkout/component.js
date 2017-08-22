@@ -11,7 +11,7 @@ import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir,
-         setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups, hasMetaViewPort } from '../../lib';
+         setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -32,24 +32,13 @@ export function allowIframe() : boolean {
         return true;
     }
 
-    if (!hasMetaViewPort()) {
-        return false;
-    }
-
-    let xprops = window.xprops;
-
-    if (xprops) {
-        if (xprops.lightbox && !xprops.lightbox.allow) {
-            return false;
-        }
-
-        if (xprops && xprops.prefetchLogin) {
-            return true;
-        }
-    }
-
-    let parentWindow = getParent();
+    let parentWindow = getParent(window);
     if (parentWindow && isSameDomain(parentWindow)) {
+        return true;
+    }
+
+    let parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
+    if (parentComponentWindow && isSameDomain(parentComponentWindow)) {
         return true;
     }
 
@@ -60,15 +49,7 @@ export function allowIframe() : boolean {
     return false;
 }
 
-export function forceIframe() : boolean {
-
-    if (!allowIframe()) {
-        return false;
-    }
-
-    if (window.xprops && window.xprops.lightbox && window.xprops.lightbox.force) {
-        return true;
-    }
+function forceIframe() : boolean {
 
     if (!supportsPopups()) {
         return true;
@@ -373,18 +354,6 @@ export let Checkout = xcomponent.create({
             }
         },
 
-        lightbox: {
-            type: 'object',
-            required: false,
-
-            get value() : { allow : boolean, force : boolean } {
-                return {
-                    allow: allowIframe(),
-                    force: forceIframe()
-                };
-            }
-        },
-
         onClose: {
             type: 'function',
             required: false,
@@ -504,11 +473,8 @@ export let Checkout = xcomponent.create({
 setupPopupBridgeProxy(Checkout);
 
 export function enableCheckoutIframe() {
-
-    if (allowIframe()) {
-        delete Checkout.contexts.iframe;
-        Checkout.contexts.iframe = true;
-    }
+    delete Checkout.contexts.iframe;
+    Checkout.contexts.iframe = true;
 }
 
 if (Checkout.isChild()) {

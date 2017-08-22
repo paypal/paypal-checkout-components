@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
 import * as $logger from 'beaver-logger/client';
 
-import { Checkout, forceIframe, allowIframe } from '../checkout';
+import { Checkout } from '../checkout';
 
 
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
@@ -613,18 +613,6 @@ export let Button = xcomponent.create({
             required: false,
             def() : string {
                 return USERS.ALL;
-            }
-        },
-
-        lightbox: {
-            type: 'object',
-            required: false,
-
-            get value() : { allow : boolean, force : boolean } {
-                return {
-                    allow: allowIframe(),
-                    force: forceIframe()
-                };
             }
         },
 
