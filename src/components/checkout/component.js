@@ -98,7 +98,7 @@ export let Checkout = xcomponent.create({
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
     },
 
-    componentTemplate,
+    prerenderTemplate: componentTemplate,
     containerTemplate,
 
     props: {

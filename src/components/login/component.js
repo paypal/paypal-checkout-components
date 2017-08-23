@@ -45,7 +45,7 @@ export let Login = xcomponent.create({
 
     sandboxContainer: true,
 
-    componentTemplate,
+    prerenderTemplate: componentTemplate,
     containerTemplate,
 
     props: {

@@ -204,11 +204,24 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                         position: absolute;
                         top: 0;
                         left: 0;
+                    }
+
+                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
+                        z-index: 100;
+                    }
+
+                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
+                        transition: opacity .2s linear;
                         z-index: 200;
                     }
 
-                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.SACRIFICIAL_FRAME } {
-                        z-index: 100;
+                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
+                        opacity: 1;
+                    }
+
+                    #${ id } > .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
+                        opacity: 0;
+                        pointer-events: none;
                     }
                 `}
             </style>

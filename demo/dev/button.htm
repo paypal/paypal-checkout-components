@@ -57,7 +57,7 @@
         });
 
         document.querySelector('#paypal-button-iframe').addEventListener('click', function() {
-            paypal.Checkout.contexts.iframe = true;
+            paypal.enableCheckoutIframe();
             renderCheckout();
         });
     </script>

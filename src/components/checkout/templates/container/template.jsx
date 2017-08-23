@@ -297,6 +297,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
         #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } {
 
+            position: relative;
+
             -webkit-transition: all 0.3s ease;
             -moz-transition: all 0.3s ease;
             -ms-transition: all 0.3s ease;
@@ -317,6 +319,31 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
             overflow: auto;
             -webkit-overflow-scrolling: touch;
+        }
+
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity .4s ease-in-out;
+        }
+
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.COMPONENT_FRAME } {
+            z-index: 100;
+        }
+
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.PRERENDER_FRAME } {
+            z-index: 200;
+        }
+
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.VISIBLE } {
+            opacity: 1;
+            z-index: 200;
+        }
+
+        #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } > iframe.${ CLASS.INVISIBLE } {
+            opacity: 0;
+            z-index: 100;
         }
 
         @media screen and (max-width: 470px) {

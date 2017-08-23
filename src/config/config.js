@@ -56,7 +56,7 @@ export let config = {
             ie_full_page: false,
             allow_full_page_fallback: true,
             memoize_payment: true,
-            force_bridge: true,
+            force_bridge: false,
             log_authorize: true
         }
     },

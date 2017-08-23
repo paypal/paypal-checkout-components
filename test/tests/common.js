@@ -2,6 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
+import { isWindowClosed } from 'cross-domain-utils/src';
 
 window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
     type: 'number',
@@ -428,6 +429,76 @@ export function preventOpenWindow(flow : string) {
 
         throw new Error(`Flow not recognized: ${flow}`);
     }
+}
+
+export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<any> {
+    return new ZalgoPromise((resolve, reject) => {
+
+        let winOpen = window.open;
+        let documentCreateElement = document.createElement;
+
+        let reset = () => {
+            window.open = winOpen;
+            // $FlowFixMe
+            document.createElement = documentCreateElement;
+        };
+
+        window.open = function() : any {
+            let win = winOpen.apply(this, arguments);
+            reset();
+            resolve(win);
+            return win;
+        };
+
+        // $FlowFixMe
+        document.createElement = function(tagName) : HTMLElement {
+            let el = documentCreateElement.apply(this, arguments);
+
+            if (tagName && tagName.toLowerCase() === 'iframe') {
+
+                let interval;
+                let timeout;
+
+                interval = setInterval(() => {
+                    if (el.contentWindow) {
+                        reset();
+                        clearTimeout(timeout);
+                        clearInterval(interval);
+                        resolve(el.contentWindow);
+                    }
+                }, 10);
+
+                timeout = setTimeout(() => {
+                    clearInterval(interval);
+                    return reject(new Error(`Window not opened in ${ time }ms`));
+                }, time);
+            }
+
+            return el;
+        };
+    }).then(win => {
+
+        if (!win || isWindowClosed(win)) {
+            throw new Error(`Expected win to be open`);
+        }
+
+        return win;
+    });
+}
+
+export function onWindowClose(win : any) : ZalgoPromise<void> {
+    return new ZalgoPromise(resolve => {
+        if (isWindowClosed(win)) {
+            return resolve();
+        }
+
+        let interval = setInterval(() => {
+            if (isWindowClosed(win)) {
+                clearInterval(interval);
+                return resolve();
+            }
+        }, 50);
+    });
 }
 
 export function errorOnWindowOpen(win : any = window) {

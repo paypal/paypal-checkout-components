@@ -78,7 +78,7 @@ export let Button = xcomponent.create({
     scrolling: false,
 
     containerTemplate,
-    componentTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
+    prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
         let template = (
             <div innerHTML={ componentTemplate({ props }) }></div>
@@ -116,8 +116,6 @@ export let Button = xcomponent.create({
             </html>
         );
     },
-
-    sacrificialComponentTemplate: true,
 
     get version() : string {
         return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;

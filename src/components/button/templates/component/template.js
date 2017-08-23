@@ -111,7 +111,6 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
             </div>
 
-
             <script>
                 (${ componentScript.toString() })();
             </script>
