@@ -445,7 +445,14 @@ export let Button = xcomponent.create({
                     if (this.props.braintree) {
                         return this.props.braintree.then(client => {
                             return client.tokenizePayment(data).then(res => {
-                                return original.call(this, { nonce: res.nonce });
+                                return original.call(this, {
+                                    ...data,
+                                    nonce: res.nonce
+                                }, {
+                                    payment: {
+                                        get: actions.payment.get
+                                    }
+                                });
                             });
                         });
                     }
