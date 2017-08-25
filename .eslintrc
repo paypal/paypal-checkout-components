@@ -14,10 +14,6 @@
         "es6": true
     },
 
-    "ecmaFeatures": {
-        "modules": true
-    },
-
     "parserOptions": {
         "sourceType": "module"
     },
@@ -36,8 +32,6 @@
         "__DEFAULT_LOG_LEVEL__": true,
         "__LEGACY_SUPPORT__": true
     },
-
-    "fix": true,
 
     "rules": {
         // possible errors

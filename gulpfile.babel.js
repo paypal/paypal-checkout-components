@@ -1,5 +1,6 @@
 
 let gulp = require('gulp');
+let gulpIf = require('gulp-if');
 let webpackStream = require('webpack-stream');
 let gulpEslint = require('gulp-eslint');
 let gulpFlowtype = require('gulp-flowtype');
@@ -34,12 +35,17 @@ gulp.task('typecheck', [ 'lint' ], function() {
 
 gulp.task('lint', ['lint-src', 'lint-test']);
 
+function isFixed(file) {
+	return file.eslint != null && file.eslint.fixed;
+}
+
 gulp.task('lint-src', function() {
     return gulp.src([ 'src/**/*.{js,jsx}' ]).pipe(gulpEslint({
         fix: Boolean(yargs.argv['fix'])
     }))
         .pipe(gulpEslint.format())
         .pipe(gulpEslint.failAfterError())
+        .pipe(gulpIf(isFixed, gulp.dest('./src')));
 });
 
 gulp.task('lint-test', function() {
@@ -48,6 +54,7 @@ gulp.task('lint-test', function() {
     }))
         .pipe(gulpEslint.format())
         .pipe(gulpEslint.failAfterError())
+        .pipe(gulpIf(isFixed, gulp.dest('./test')));
 });
 
 gulp.task('karma', function (done) {
