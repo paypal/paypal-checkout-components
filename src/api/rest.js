@@ -6,9 +6,7 @@ import { btoa } from 'Base64';
 import * as $logger from 'beaver-logger/client';
 
 import { config, FPTI } from '../config';
-import { request, memoize } from '../lib';
-
-import { Button } from '../components';
+import { request, memoize, isPayPalDomain } from '../lib';
 
 let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<string> } = {};
 
@@ -288,7 +286,7 @@ export let rest = {
 
 const PROXY_REST = `proxy_rest`;
 
-if ((postRobot.bridge && postRobot.bridge.isBridge()) || Button.isChild()) {
+if (isPayPalDomain()) {
     postRobot.sendToParent(PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
