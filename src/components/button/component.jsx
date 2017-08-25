@@ -247,31 +247,21 @@ export let Button = xcomponent.create({
 
             decorate(original) : Function {
                 return function payment() : ZalgoPromise<string> {
-                    return new ZalgoPromise((resolve, reject) => {
 
-                        let _resolve = (token) => {
-                            this.memoizedToken = token;
-                            return resolve(token);
-                        };
+                    let data = {};
 
-                        if (getDomainSetting('memoize_payment') && this.memoizedToken) {
-                            return resolve(this.memoizedToken);
-                        }
-
-                        let data = _resolve;
-                        let actions = reject;
-
-                        data.payment = actions.payment = {
+                    let actions = {
+                        request,
+                        payment: {
                             create: (options, experience) => {
                                 return this.props.braintree
                                     ? this.props.braintree.then(client => {
                                         return client.createPayment(mapPaymentToBraintree(options.payment || options));
                                     })
-                                    : rest.payment.create(this.props.env, this.props.client, options, experience);
+                                    : rest.payment.create(this.props.env, this.props.client, options);
                             }
-                        };
-
-                        data.braintree = actions.braintree = {
+                        },
+                        braintree: {
                             create: (options) => {
                                 if (!this.props.braintree) {
                                     throw new Error(`Can not create using Braintree - no braintree client provided`);
@@ -281,59 +271,38 @@ export let Button = xcomponent.create({
                                     return client.createPayment(options);
                                 });
                             }
-                        };
+                        }
+                    };
 
-                        actions.request = request;
+                    let timeout = __TEST__ ? 500 : 10 * 1000;
 
-                        let context = {
-                            props: {
-                                env: this.props.env,
-                                client: this.props.client
+                    if (getDomainSetting('memoize_payment') && this.memoizedToken) {
+                        return this.memoizedToken;
+                    }
+
+                    this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ])
+                        .timeout(timeout, new Error(`Timed out waiting ${timeout}ms for payment`))
+                        .then(token => {
+
+                            if (!token) {
+                                $logger.error(`no_token_passed_to_payment`);
+                                throw new Error(`No value passed to payment`);
                             }
-                        };
 
-                        let result;
+                            $logger.track({
+                                [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.RECIEVE_PAYMENT,
+                                [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+                                [ FPTI.KEY.TOKEN ]: token,
+                                [ FPTI.KEY.CONTEXT_ID ]: token
+                            });
 
-                        try {
-                            result = original.call(context, data, actions);
-                        } catch (err) {
-                            return reject(err);
-                        }
+                            $logger.flush();
 
-                        if (result && typeof result.then === 'function') {
-                            return result.then(_resolve, reject);
-                        }
-
-                        if (result !== undefined) {
-                            this.memoizedToken = result;
-                            return _resolve(result);
-                        }
-
-                        let timeout = __TEST__ ? 500 : 10 * 1000;
-
-                        setTimeout(() => {
-                            reject(`Timed out waiting ${timeout}ms for payment`);
-                        }, timeout);
-
-                    }).then(token => {
-
-                        if (!token) {
-                            $logger.error(`no_token_passed_to_payment`);
-                            throw new Error(`No value passed to payment`);
-                        }
-
-                        $logger.track({
-                            [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
-                            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.RECIEVE_PAYMENT,
-                            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-                            [ FPTI.KEY.TOKEN ]: token,
-                            [ FPTI.KEY.CONTEXT_ID ]: token
+                            return token;
                         });
 
-                        $logger.flush();
-
-                        return token;
-                    });
+                    return this.memoizedToken;
                 };
             }
         },

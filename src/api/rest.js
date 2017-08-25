@@ -133,7 +133,7 @@ function logPaymentResponse(res) {
     });
 }
 
-function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object, experienceDetails? : ?Object) : ZalgoPromise<string> {
+function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
 
     $logger.info(`rest_api_create_checkout_token`);
 
@@ -145,15 +145,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
         throw new Error(`Client ID not found for env: ${env}`);
     }
 
-    let payment;
-    let experience;
-    let meta;
-
-    if (paymentDetails.payment) {
-        ({ payment, experience, meta } = paymentDetails);
-    } else {
-        [ payment, experience ] = [ paymentDetails, experienceDetails ];
-    }
+    let { payment, experience, meta } = paymentDetails;
 
     if (!payment) {
         throw new Error(`Expected payment details to be passed`);

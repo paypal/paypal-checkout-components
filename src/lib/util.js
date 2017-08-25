@@ -275,3 +275,17 @@ export function patchMethod(obj : Object, name : string, handler : Function) {
         });
     };
 }
+
+export function extend<T : Object | Function>(obj : T, source : Object) : T {
+    if (!source) {
+        return obj;
+    }
+
+    for (let key in source) {
+        if (source.hasOwnProperty(key)) {
+            obj[key] = source[key];
+        }
+    }
+
+    return obj;
+}
