@@ -9,7 +9,7 @@ import { Checkout } from '../checkout';
 import { BUTTON_LABEL, BUTTON_SIZE } from './constants';
 import { config } from '../../config';
 import { patchMethod, isIE, getDomainSetting, noop,
-         extendUrl } from '../../lib';
+    extendUrl } from '../../lib';
 
 patchMethod(Button, 'render', ({ original, context, args }) => {
 

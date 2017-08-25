@@ -1,7 +1,7 @@
 /* @flow */
 
 import { BUTTON_LABEL, BUTTON_COLOR, PAYPAL_LOGO_COLOR, CREDIT_LOGO_COLOR,
-         VENMO_LOGO_COLOR, BUTTON_SIZE, TAGLINE_COLOR, BUTTON_SHAPE } from '../../constants';
+    VENMO_LOGO_COLOR, BUTTON_SIZE, TAGLINE_COLOR, BUTTON_SHAPE } from '../../constants';
 
 export const BUTTON_CONFIG = {
 

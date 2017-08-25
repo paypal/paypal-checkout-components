@@ -3,8 +3,7 @@
 import { assert } from 'chai';
 
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
-         createTestContainer, destroyTestContainer } from '../common';
-
+    createTestContainer, destroyTestContainer } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 

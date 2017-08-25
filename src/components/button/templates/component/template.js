@@ -144,7 +144,7 @@ function taglineTemplate({ label, tagline, branding, fundingicons, color, dual, 
 export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
-          fundingicons, tagline, dual } = normalizeProps(props);
+        fundingicons, tagline, dual } = normalizeProps(props);
 
     let buttonHTML = determineButtons({ label, color, dual }).map(button => {
         return buttonTemplate({

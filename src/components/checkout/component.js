@@ -11,7 +11,7 @@ import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir,
-         setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
+    setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 

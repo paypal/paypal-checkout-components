@@ -1,7 +1,7 @@
 /* @flow */
 
 import { BUTTON_LABEL, BUTTON_COLOR, TAGLINE_COLOR, BUTTON_SHAPE, BRANDING,
-         LAYOUT } from '../../constants';
+    LAYOUT } from '../../constants';
 
 export let componentStyle = `
 
