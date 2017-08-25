@@ -21,7 +21,7 @@ import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
-import { awaitBraintreeClient, type BraintreePayPalClient } from './braintree';
+import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -263,7 +263,11 @@ export let Button = xcomponent.create({
 
                         data.payment = actions.payment = {
                             create: (options, experience) => {
-                                return rest.payment.create(this.props.env, this.props.client, options, experience);
+                                return this.props.braintree
+                                    ? this.props.braintree.then(client => {
+                                        return client.createPayment(mapPaymentToBraintree(options.payment || options));
+                                    })
+                                    : rest.payment.create(this.props.env, this.props.client, options, experience);
                             }
                         };
 
