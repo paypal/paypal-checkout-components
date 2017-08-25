@@ -1,4 +1,5 @@
 let webpack = require('webpack');
+let CircularDependencyPlugin = require('circular-dependency-plugin')
 let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
 
@@ -89,6 +90,10 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                 },
                 mangle: minify,
                 sourceMap: true
+            }),
+            new CircularDependencyPlugin({
+              exclude: /node_modules/,
+              failOnError: true
             })
             // new webpack.optimize.ModuleConcatenationPlugin()
         ]
@@ -110,7 +115,7 @@ module.exports.webpack_tasks = {
             filename: `${FILE_NAME}.js`
         })
     },
-    
+
     major: {
         src: 'src/load.js',
         out: 'dist',
@@ -123,7 +128,7 @@ module.exports.webpack_tasks = {
             }
         })
     },
-    
+
     minor: {
         src: 'src/load.js',
         out: 'dist',
@@ -153,7 +158,7 @@ module.exports.webpack_tasks = {
         })
     },
 
-    
+
     lib: {
         src: 'src/index.js',
         out: 'dist',
@@ -164,8 +169,8 @@ module.exports.webpack_tasks = {
             modulename: `paypal`
         })
     },
-    
-    
+
+
     child_loader: {
         src: 'src/loader/index.js',
         out: 'dist',

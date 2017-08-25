@@ -55,6 +55,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
     "chai": "^4.1.1",
+    "circular-dependency-plugin": "^4.1.0",
     "cross-domain-utils": "^1.0.4",
     "del": "^3.0.0",
     "eslint": "^4.5.0",
