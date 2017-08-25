@@ -11,7 +11,7 @@ before_script:
   - npm install -g flow-typed
   - flow-typed install
 script:
-  - travis_retry gulp test
+  - travis_retry gulp build
 sudo: required
 dist: trusty
 addons:
