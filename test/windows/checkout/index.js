@@ -7,15 +7,15 @@ let { action, onRender, onInit } = window.xprops.test;
 
 let actions = {
     close() {
-        console.error('close test window');
         window.close();
     }
 };
 
-let hash = window.location.hash ? `&hash=${window.location.hash.slice(1)}` : '';
+let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
 
 if (action === 'checkout') {
 
+    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
 
         return window.paypal.Promise.try(() => {
@@ -23,7 +23,7 @@ if (action === 'checkout') {
             if (window.xprops.init) {
                 return window.xprops.init({
                     paymentToken,
-                    cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+                    cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
                 });
             }
 
@@ -37,10 +37,10 @@ if (action === 'checkout') {
 
             window.xprops.onAuthorize({
                 paymentToken,
-                paymentID: paymentToken,
-                payerID: 'YYYYYYYYYYYYY',
-                cancelUrl: `#cancel?token=${paymentToken}${ hash }`,
-                returnUrl: `#return?token=${paymentToken}&PayerID=YYYYYYYYYYYYY${ hash }`,
+                paymentID:  paymentToken,
+                payerID:    'YYYYYYYYYYYYY',
+                cancelUrl:  `#cancel?token=${ paymentToken }${ hash }`,
+                returnUrl:  `#return?token=${ paymentToken }&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href
             });
         });
@@ -48,11 +48,12 @@ if (action === 'checkout') {
 
 } else if (action === 'cancel') {
 
+    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
 
         window.xprops.onCancel({
             paymentToken,
-            cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+            cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
         });
     });
 
@@ -62,7 +63,7 @@ if (action === 'checkout') {
 
     let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-    testButton.addEventListener('click', (event : Event) => {
+    testButton.addEventListener('click', () => {
         window.xchild.hide();
 
         window.paypal.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
@@ -81,20 +82,21 @@ if (action === 'checkout') {
 
     let parent = window.xchild.getParentComponentWindow();
 
+    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
-        window.xprops.fallback(`#fallbackUrl?token=${paymentToken}`).then(() => {
+        return window.xprops.fallback(`#fallbackUrl?token=${ paymentToken }`).then(() => {
 
             createTestContainer();
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 let win;
 
                 if (window.opener) {
                     win = window;
                 } else {
-                    win = window.open('', `fallbackWindow${Math.random()}`, 'width=500,height=500');
+                    win = window.open('', `fallbackWindow${ Math.random() }`, 'width=500,height=500');
                 }
 
                 win.location = '/base/test/windows/fallback/index.htm';
@@ -118,14 +120,15 @@ if (action === 'checkout') {
 
 } else if (action === 'error') {
 
+    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
-        
+
         return window.paypal.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
                     paymentToken,
-                    cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+                    cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
                 });
             }
 
@@ -136,11 +139,12 @@ if (action === 'checkout') {
     });
 } else if (action === 'init') {
 
+    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
         if (window.xprops.init) {
             return window.xprops.init({
                 paymentToken,
-                cancelUrl: `#cancel?token=${paymentToken}${ hash }`
+                cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
             }).then(() => {
 
                 if (onInit) {

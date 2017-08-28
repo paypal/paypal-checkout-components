@@ -1,3 +1,4 @@
+/* @flow */
 
 import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain } from 'cross-domain-utils/src';
@@ -10,7 +11,7 @@ export function proxyMethod(name : string, win : any, originalMethod : Function)
     if (getDomain() === config.paypalDomain) {
 
         if (win) {
-            send(win, `proxy_${name}`, { originalMethod }).catch(noop);
+            send(win, `proxy_${ name }`, { originalMethod }).catch(noop);
         }
 
         return originalMethod;
@@ -18,11 +19,11 @@ export function proxyMethod(name : string, win : any, originalMethod : Function)
 
     let methods = [];
 
-    on(`proxy_${name}`, { domain: config.paypal_domain_regex }, ({ data }) => {
+    on(`proxy_${ name }`, { domain: config.paypal_domain_regex }, ({ data }) => {
         methods.push(data.originalMethod);
     });
 
-    return function() : mixed {
+    return function postMessageProxy() : mixed {
 
         methods = methods.filter(method => !isWindowClosed(method.source));
 

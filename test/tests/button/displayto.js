@@ -6,7 +6,7 @@ import { generateECToken, createTestContainer, destroyTestContainer, getElement 
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component displayto path on ${flow}`, () => {
+    describe(`paypal button component displayto path on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -39,7 +39,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     throw new Error('Expected onCancel to not be called');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 if (getElement('.paypal-button').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);
@@ -101,7 +101,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     throw new Error('Expected onCancel to not be called');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 if (getElement('.paypal-button').style.display === 'none') {
                     throw new Error(`Expected iframe to be visible`);

@@ -18,7 +18,7 @@ let onAuthorize : ?Function;
 // Post-Bridge
 
 if (isPayPalDomain()) {
-    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => { // eslint-disable-line
+    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => {
         onAuthorize = data.method;
     });
 }
@@ -56,7 +56,7 @@ window.watchForLegacyFallback = (win : any) => {
 
             let send = win.XMLHttpRequest.prototype.send;
 
-            win.XMLHttpRequest.prototype.send = function() : void {
+            win.XMLHttpRequest.prototype.send = function overrideXMLHttpRequestSend() : void {
 
                 if (this._patched) {
                     return send.apply(this, arguments);

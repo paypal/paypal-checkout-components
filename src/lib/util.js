@@ -6,14 +6,15 @@ import { getDomain } from 'cross-domain-utils/src';
 import { config } from '../config';
 
 export function isPayPalDomain() : boolean {
-    return Boolean(`${window.location.protocol}//${window.location.host}`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
+    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
 export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
 
     let cache : { [key : string] : R } = {};
 
-    return function(...args : Array<any>) : R {
+    // eslint-disable-next-line no-unused-vars
+    return function memoizedFunction(...args : Array<any>) : R {
 
         let key : string;
 
@@ -39,6 +40,7 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
     };
 }
 
+// eslint-disable-next-line no-unused-vars
 export function noop(...args : Array<mixed>) {
     // pass
 }
@@ -46,7 +48,7 @@ export function noop(...args : Array<mixed>) {
 export function once(method : Function) : Function {
     let called = false;
 
-    return function() : mixed {
+    return function onceFunction() : mixed {
         if (!called) {
             called = true;
             return method.apply(this, arguments);
@@ -98,13 +100,13 @@ export function safeJSON(item : mixed) : string {
     return JSON.stringify(item, (key, val) => {
 
         if (typeof val === 'function') {
-            return `<${typeof val}>`;
+            return `<${ typeof val }>`;
         }
 
         try {
             JSON.stringify(val);
         } catch (err) {
-            return `<${typeof val}>`;
+            return `<${ typeof val }>`;
         }
 
         return val;
@@ -135,7 +137,7 @@ export function eventEmitter() : Listener {
         },
 
         once(method : Function) {
-            let listener = this.listen(function() {
+            let listener = this.listen(function onceListener() {
                 method.apply(null, arguments);
                 listener.cancel();
             });
@@ -196,7 +198,7 @@ export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T>
 export function stringifyError(err : mixed) : string {
 
     if (!err) {
-        return `<unknown error: ${Object.prototype.toString.call(err)}>`;
+        return `<unknown error: ${ Object.prototype.toString.call(err) }>`;
     }
 
     if (err instanceof Error) {
@@ -212,7 +214,7 @@ export function stringifyError(err : mixed) : string {
 
 export function stringifyErrorMessage(err : mixed) : string {
 
-    let defaultMessage = `<unknown error: ${Object.prototype.toString.call(err)}>`;
+    let defaultMessage = `<unknown error: ${ Object.prototype.toString.call(err) }>`;
 
     if (!err) {
         return defaultMessage;
@@ -247,7 +249,7 @@ export let isLocalStorageEnabled = memoize(() : boolean => {
     return false;
 });
 
-export function getDomainSetting(name : string) : ?mixed {
+export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
 
     let domain = window.xchild
         ? window.xchild.getParentDomain()
@@ -261,15 +263,17 @@ export function getDomainSetting(name : string) : ?mixed {
             return settings[name];
         }
     }
+
+    return def;
 }
 
 export function patchMethod(obj : Object, name : string, handler : Function) {
     let original = obj[name];
 
-    obj[name] = function() : mixed {
+    obj[name] = function patchedMethod() : mixed {
         return handler({
-            context: this,
-            args: arguments,
+            context:      this,
+            args:         arguments,
             original,
             callOriginal: () => original.apply(this, arguments)
         });

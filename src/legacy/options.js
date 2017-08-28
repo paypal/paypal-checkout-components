@@ -1,3 +1,4 @@
+/* @flow */
 
 import * as logger from 'beaver-logger/client';
 

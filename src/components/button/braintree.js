@@ -23,7 +23,7 @@ export function awaitBraintreeClient(braintree : Braintree, authorization : stri
 }
 
 const SUPPORTED_REST_FIELDS = {
-    intent: 1,
+    intent:       1,
     transactions: [
         {
             amount: {
@@ -34,7 +34,7 @@ const SUPPORTED_REST_FIELDS = {
     ],
     payer: {
         external_selected_funding_instrument_type: 1,
-        shipping_address: {
+        shipping_address:                          {
             line1:          1,
             line2:          1,
             city:           1,

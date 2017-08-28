@@ -9,6 +9,7 @@ let karma = require('karma');
 let yargs = require('yargs');
 let webpackConfig = require('./webpack.conf');
 let del = require('del');
+let friendlyFormatter = require('eslint-friendly-formatter');
 
 gulp.task('test', ['lint', 'typecheck', 'karma']);
 gulp.task('build', ['test', 'webpack']);
@@ -43,7 +44,7 @@ gulp.task('lint-src', function() {
     return gulp.src([ 'src/**/*.{js,jsx}' ]).pipe(gulpEslint({
         fix: Boolean(yargs.argv['fix'])
     }))
-        .pipe(gulpEslint.format())
+        .pipe(gulpEslint.format(friendlyFormatter))
         .pipe(gulpEslint.failAfterError())
         .pipe(gulpIf(isFixed, gulp.dest('./src')));
 });
@@ -52,7 +53,7 @@ gulp.task('lint-test', function() {
     return gulp.src([ 'test/{tests,windows}/**/*.{js,jsx}' ]).pipe(gulpEslint({
         fix: Boolean(yargs.argv['fix'])
     }))
-        .pipe(gulpEslint.format())
+        .pipe(gulpEslint.format(friendlyFormatter))
         .pipe(gulpEslint.failAfterError())
         .pipe(gulpIf(isFixed, gulp.dest('./test')));
 });

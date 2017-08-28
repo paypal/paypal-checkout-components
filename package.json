@@ -7,13 +7,21 @@
     "test": "gulp test",
     "postinstall": "node postinstall.js",
     "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install",
-    "demo": "serve . --port 1337"
+    "demo": "serve . --port 1337",
+    "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin"
   },
   "files": [
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
     "src/",
     "postinstall.js"
+  ],
+  "browserslist": [
+    "IE >= 9",
+    "chrome >= 27",
+    "firefox >= 30",
+    "safari >= 5",
+    "opera >= 23"
   ],
   "repository": {
     "type": "git",
@@ -59,7 +67,14 @@
     "cross-domain-utils": "^1.0.4",
     "del": "^3.0.0",
     "eslint": "^4.5.0",
+    "eslint-find-rules": "^3.1.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-plugin-compat": "^1.0.4",
+    "eslint-plugin-eslint-comments": "^1.0.3",
     "eslint-plugin-flowtype": "^2.29.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-unicorn": "^2.1.2",
     "flow-bin": "^0.53.1",
     "flow-runtime": "^0.14.0",
     "gulp": "^3.9.1",

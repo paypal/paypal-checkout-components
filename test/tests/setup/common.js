@@ -8,7 +8,7 @@ export function testSetup({ options, script, preScript } : { options? : Object, 
 
         options = options || {
             'data-paypal-checkout': '',
-            env: 'test'
+            'env':                  'test'
         };
 
         let dataOptions = Object.keys(options).map(name => {
@@ -46,7 +46,7 @@ export function testSetup({ options, script, preScript } : { options? : Object, 
 
         let frame = createFrame({
             container: document.body,
-            html: frameHTML
+            html:      frameHTML
         });
 
         window.paypal.postRobot.once('resolve', { window: frame.contentWindow }, ({ data }) => {

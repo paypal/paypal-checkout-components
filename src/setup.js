@@ -4,9 +4,10 @@ import * as $logger from 'beaver-logger/client';
 import { bridge } from 'post-robot/src';
 
 import { config, FPTI } from './config';
-import { initLogger, checkForCommonErrors, setLogLevel, stringifyError, stringifyErrorMessage, getResourceLoadTime } from './lib';
+import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
+    stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
+    getDomainSetting, once } from './lib';
 import { createPptmScript } from './lib/pptm';
-import { isPayPalDomain, isEligible, getDomainSetting, once } from './lib';
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -26,12 +27,12 @@ function setDomainEnv(domain : string) {
     }
 }
 
-setDomainEnv(`${window.location.protocol}//${window.location.host}`);
+setDomainEnv(`${ window.location.protocol }//${ window.location.host }`);
 
 ZalgoPromise.onPossiblyUnhandledException(err => {
 
     $logger.error('unhandled_error', {
-        stack: stringifyError(err),
+        stack:   stringifyError(err),
         errtype: ({}).toString.call(err)
     });
 
@@ -40,7 +41,7 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
         [ FPTI.KEY.ERROR_DESC ]: stringifyErrorMessage(err)
     });
 
-    $logger.flush().catch(err2 => {
+    return $logger.flush().catch(err2 => {
         if (window.console) {
             try {
                 if (window.console.error) {
@@ -63,17 +64,17 @@ function getCurrentScript() : ? HTMLScriptElement {
     let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
     for (let script of scripts) {
-        if (script.src && script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout')) {
+        if (script.src && (script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout'))) {
             return script;
         }
 
-        if (script.src && script.src.indexOf('paypal.checkout.v4.js') !== -1) {
+        if (script.src && (script.src.indexOf('paypal.checkout.v4.js') !== -1)) {
             return script;
         }
     }
 
-    if (document.currentScript) {
-        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+    if (document.currentScript) { // eslint-disable-line compat/compat
+        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
     }
 }
 
@@ -90,11 +91,11 @@ type ConfigOptions = {
     logLevel? : ?string
 };
 
-function configure({ env, stage, apiStage, paypalUrl, state, ppobjects, logLevel } : ConfigOptions = {}) {
+function configure({ env, stage, apiStage, state, ppobjects, logLevel } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
-            throw new Error(`Invalid env: ${env}`);
+            throw new Error(`Invalid env: ${ env }`);
         }
 
         delete config.env;
@@ -145,9 +146,9 @@ export let init = once(() => {
         bridge.openBridge(config.postBridgeUrls[config.env], config.paypalDomains[config.env]);
     }
 
-    $logger.info(`setup_${config.env}`);
+    $logger.info(`setup_${ config.env }`);
 
-    $logger.debug(`current_protocol_${currentProtocol}`);
+    $logger.debug(`current_protocol_${ currentProtocol }`);
 });
 
 export function setup(options : ConfigOptions = {}) {
@@ -176,7 +177,7 @@ if (!isPayPalDomain()) {
         let scriptProtocol = currentScript.src.split(':')[0];
         let loadTime = getResourceLoadTime(currentScript.src);
 
-        $logger.debug(`current_script_protocol_${scriptProtocol}`);
+        $logger.debug(`current_script_protocol_${ scriptProtocol }`);
         $logger.debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
         $logger.debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
@@ -186,8 +187,8 @@ if (!isPayPalDomain()) {
         }
 
         $logger.track({
-            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-            [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD,
+            [ FPTI.KEY.STATE ]:           FPTI.STATE.LOAD,
+            [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.SCRIPT_LOAD,
             [ FPTI.KEY.TRANSITION_TIME ]: loadTime
         });
 
@@ -196,12 +197,12 @@ if (!isPayPalDomain()) {
         $logger.debug(`no_current_script`);
         $logger.debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
-        if (document.currentScript) {
-            $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });
+        if (document.currentScript) {  // eslint-disable-line compat/compat
+            $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
         }
 
         $logger.track({
-            [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
+            [ FPTI.KEY.STATE ]:      FPTI.STATE.LOAD,
             [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
         });
     }

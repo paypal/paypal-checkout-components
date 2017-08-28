@@ -8,19 +8,19 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
     let uid = id || getCommonSessionID();
 
-    let throttle = hashStr(`${name}_${uid}`) % 10000;
+    let throttle = hashStr(`${ name }_${ uid }`) % 10000;
 
     let group;
 
     if (throttle < sample) {
         group = 'test';
-    } else if (sample >= 5000 || sample <= throttle && throttle < sample * 2) {
+    } else if ((sample >= 5000) || ((sample <= throttle) && (throttle < (sample * 2)))) {
         group = 'control';
     } else {
         group = 'throttle';
     }
 
-    let treatment = `${name}_${group}`;
+    let treatment = `${ name }_${ group }`;
 
     return {
 
@@ -38,7 +38,7 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
         log(checkpointName : string, payload : { [key : string] : ?string } = {}, options : Object = {}) : Object {
 
-            let event = `${treatment}_${checkpointName}`;
+            let event = `${ treatment }_${ checkpointName }`;
 
             checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
             fpti({ ...payload, expuid: uid, eligibility_reason: event });

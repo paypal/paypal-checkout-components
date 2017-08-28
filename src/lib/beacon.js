@@ -8,7 +8,7 @@ const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';
 export function beacon(event : string, payload : Object = {}) {
     try {
 
-        payload.event = `ppxo_${event}`;
+        payload.event = `ppxo_${ event }`;
         payload.version = __MINOR_VERSION__;
         payload.host = window.location.host;
         payload.uid = getCommonSessionID();
@@ -17,7 +17,7 @@ export function beacon(event : string, payload : Object = {}) {
 
         for (let key in payload) {
             if (payload.hasOwnProperty(key)) {
-                query.push(`${encodeURIComponent(key)}=${encodeURIComponent(payload[key])}`);
+                query.push(`${ encodeURIComponent(key) }=${ encodeURIComponent(payload[key]) }`);
             }
         }
 
@@ -25,7 +25,7 @@ export function beacon(event : string, payload : Object = {}) {
 
         if (!__TEST__) {
             let beaconImage = new window.Image();
-            beaconImage.src = `${BEACON_URL}?${query}`;
+            beaconImage.src = `${ BEACON_URL }?${ query }`;
         }
 
         setTimeout(() => {
@@ -60,13 +60,13 @@ export function checkpoint(name : string, payload : Object = {}, options : Objec
 
         if (options.version) {
             let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
-            checkpointName = `${version}_${checkpointName}`;
+            checkpointName = `${ version }_${ checkpointName }`;
         }
 
         if (!isCheckpointUnique(checkpointName)) {
             return;
         }
-        
+
         return beacon(checkpointName, payload);
 
     } catch (err) {
@@ -80,7 +80,7 @@ const FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() : Object {
     return {
-        v:     `checkout.js.${__MINOR_VERSION__}`,
+        v:     `checkout.js.${ __MINOR_VERSION__ }`,
         t:     Date.now(),
         g:     new Date().getTimezoneOffset(),
         flnm: 'ec:hermes:',
@@ -101,7 +101,7 @@ export function fpti(payload : Object = {}) {
 
     for (let key in payload) {
         if (payload.hasOwnProperty(key)) {
-            query.push(`${encodeURIComponent(key)}=${encodeURIComponent(payload[key])}`);
+            query.push(`${ encodeURIComponent(key) }=${ encodeURIComponent(payload[key]) }`);
         }
     }
 
@@ -109,7 +109,7 @@ export function fpti(payload : Object = {}) {
 
     try {
         let beaconImage = new window.Image();
-        beaconImage.src = `${FPTI_URL}?${query}`;
+        beaconImage.src = `${ FPTI_URL }?${ query }`;
     } catch (err) {
         // pass
     }

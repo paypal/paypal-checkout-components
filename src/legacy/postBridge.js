@@ -7,11 +7,11 @@ import * as postRobot from 'post-robot/src';
 import { config } from '../config';
 import { isIEIntranet } from '../lib';
 
-postRobot.on('meta', ({ source, data } : { source : any, data : Object }) => {
+postRobot.on('meta', ({ data } : { source : any, data : Object }) => {
 
     $logger.info(data.iframeEligible ?
-        `lightbox_eligible_${data.iframeEligibleReason}` :
-        `lightbox_ineligible_${data.iframeEligibleReason}`);
+        `lightbox_eligible_${ data.iframeEligibleReason }` :
+        `lightbox_ineligible_${ data.iframeEligibleReason }`);
 
     if (config.locales[data.locale.country] && !config.customCountry) {
         config.locale.country = data.locale.country;

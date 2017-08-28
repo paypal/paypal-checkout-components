@@ -1,4 +1,4 @@
-/* flow */
+/* @flow */
 
 import * as $logger from 'beaver-logger/client';
 
@@ -7,28 +7,28 @@ import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from 
 
 export let onAuthorizeListener = eventEmitter();
 
-function log(experiment : string, treatment : string, token : string, state : string) {
+function log(experiment : string, treatment : string, token : ?string, state : string) {
 
-    $logger.info(`experiment_group_${experiment}_${treatment}_${state}`);
+    $logger.info(`experiment_group_${ experiment }_${ treatment }_${ state }`);
 
     let transition = (state === 'start')
         ? FPTI.TRANSITION.EXTERNAL_EXPERIMENT
         : FPTI.TRANSITION.EXTERNAL_EXPERIMENT_COMPLETE;
 
     $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
-        [ FPTI.KEY.TRANSITION ]: transition,
+        [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
+        [ FPTI.KEY.TRANSITION ]:      transition,
         [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
-        [ FPTI.KEY.TREATMENT_NAME ]: treatment,
-        [ FPTI.KEY.TOKEN ]: token,
-        [ FPTI.KEY.CONTEXT_ID ]: token,
-        [ FPTI.KEY.CONTEXT_TYPE ]: token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
+        [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
+        [ FPTI.KEY.TOKEN ]:           token,
+        [ FPTI.KEY.CONTEXT_ID ]:      token,
+        [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
     });
 
     $logger.immediateFlush();
 }
 
-export function logExperimentTreatment(experiment : string, treatment : string, token : string) {
+export function logExperimentTreatment(experiment : string, treatment : string, token : ?string) {
 
     if (experiment === 'walmart_paypal_incontext') {
         experiment = 'walmart_paypal_incontext_redirect';

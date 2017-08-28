@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
@@ -8,7 +9,7 @@ import { generateECToken, generateBillingToken, generatePaymentID, createElement
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component happy path on ${flow}`, () => {
+    describe(`paypal button component happy path on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -104,10 +105,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window);
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
 
             });
@@ -131,7 +132,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     }).catch(done);
                 },
 
-                onCancel(data, actions) : void {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
@@ -158,7 +159,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
@@ -187,10 +188,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window);
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#cancel?token=${token}`);
+                    assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
 
             });
@@ -208,7 +209,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize() : void {
                     return done(new Error('Expected onAuthorize to not be called'));
                 },
 
@@ -241,7 +242,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
@@ -405,7 +406,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                                 logo_image: 'https://foo.com/bar.png'
                             },
                             input_fields: {
-                                no_shipping: 1,
+                                no_shipping:      1,
                                 address_override: 1
                             }
                         }
@@ -609,7 +610,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.isOk(data.currentUrl.indexOf(`token=${checkoutToken}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
                     assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
@@ -637,7 +638,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.isOk(data.currentUrl.indexOf(`token=${paymentID}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
                     assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
@@ -665,7 +666,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize(data) : void {
-                    assert.isOk(data.currentUrl.indexOf(`ba_token=${billingToken}`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`ba_token=${ billingToken }`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`billingurl=true`) !== -1);
                     assert.isOk(data.currentUrl.indexOf(`&token=`) === -1);
                     assert.isOk(data.currentUrl.indexOf(`?token=`) === -1);
@@ -733,7 +734,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#lateContainer');
 
             createElement({
-                id: 'lateContainer',
+                id:        'lateContainer',
                 container: '#testContainer'
             });
 
@@ -747,7 +748,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     test: {
                         flow,
-                        action: 'checkout',
+                        action:   'checkout',
                         checkout: {
                             action: 'init',
                             onInit(actions) {
@@ -790,7 +791,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     onAuthorize() : void {
                         if (paymentCalls !== 1) {
-                            return done(new Error(`Expected payment to be called one time, got ${paymentCalls} calls`));
+                            return done(new Error(`Expected payment to be called one time, got ${ paymentCalls } calls`));
                         }
 
                         return done();
@@ -822,7 +823,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }, '#testContainer');
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 }).toPromise();
             });
 

@@ -16,7 +16,7 @@ describe('paypal legacy checkout ready', () => {
 
         return delay(20).then(() => {
             if (count !== 1) {
-                throw new Error(`Expected ready to only be called once, actually called ${count} times`);
+                throw new Error(`Expected ready to only be called once, actually called ${ count } times`);
             }
         }).toPromise();
     });
@@ -36,7 +36,7 @@ describe('paypal legacy checkout ready', () => {
 
         return delay(20).then(() => {
             if (count !== 1) {
-                throw new Error(`Expected ready to only be called once, actually called ${count} times`);
+                throw new Error(`Expected ready to only be called once, actually called ${ count } times`);
             }
         }).toPromise();
     });
@@ -55,7 +55,7 @@ describe('paypal legacy checkout ready', () => {
 
         return delay(20).then(() => {
             if (count !== 1) {
-                throw new Error(`Expected ready to only be called once, actually called ${count} times`);
+                throw new Error(`Expected ready to only be called once, actually called ${ count } times`);
             }
         }).toPromise();
     });

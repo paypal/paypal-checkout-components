@@ -31,11 +31,11 @@ export let Login = xcomponent.create({
 
     contexts: {
         iframe: false,
-        popup: true
+        popup:  true
     },
 
     dimensions: {
-        width: '450px',
+        width:  '450px',
         height: '535px'
     },
 
@@ -51,7 +51,7 @@ export let Login = xcomponent.create({
     props: {
 
         uid: {
-            type: 'string',
+            type:  'string',
             value: getCommonSessionID(),
             def() : string {
                 return getCommonSessionID();
@@ -60,8 +60,8 @@ export let Login = xcomponent.create({
         },
 
         env: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def() : string {
@@ -70,26 +70,26 @@ export let Login = xcomponent.create({
 
             validate(env) {
                 if (!config.paypalUrls[env]) {
-                    throw new Error(`Invalid env: ${env}`);
+                    throw new Error(`Invalid env: ${ env }`);
                 }
             }
         },
 
         locale: {
-            type: 'string',
-            required: false,
-            queryParam: 'locale.x',
+            type:          'string',
+            required:      false,
+            queryParam:    'locale.x',
             allowDelegate: true,
 
             def() : string {
                 let { lang, country } = getBrowserLocale();
-                return `${lang}_${country}`;
+                return `${ lang }_${ country }`;
             }
         },
 
         stage: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def(props) : ?string {
@@ -102,12 +102,12 @@ export let Login = xcomponent.create({
         },
 
         onAuthenticate: {
-            type: 'function',
+            type:     'function',
             required: true,
             // sameDomain: true,
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data) : ZalgoPromise<void> {
+                    return function decorateOnAuthenticate(data) : ZalgoPromise<void> {
                         return ZalgoPromise.try(() => {
                             return original.call(this, data);
                         }).catch(err => {
@@ -121,14 +121,14 @@ export let Login = xcomponent.create({
         },
 
         onCancel: {
-            type: 'function',
+            type:     'function',
             required: false,
-            once: true,
-            noop: true,
+            once:     true,
+            noop:     true,
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data) : ZalgoPromise<void> {
+                    return function decorateOnCancel(data) : ZalgoPromise<void> {
                         return ZalgoPromise.try(() => {
                             return original.call(this, data);
                         }).catch(err => {
@@ -142,7 +142,7 @@ export let Login = xcomponent.create({
         },
 
         logLevel: {
-            type: 'string',
+            type:     'string',
             required: false,
             get value() : string {
                 return config.logLevel;
@@ -150,7 +150,7 @@ export let Login = xcomponent.create({
         },
 
         test: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return { action: 'login' };
@@ -159,7 +159,7 @@ export let Login = xcomponent.create({
     },
 
     autoResize: {
-        width: false,
+        width:  false,
         height: false
     }
 });

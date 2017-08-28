@@ -2,6 +2,7 @@
 
 import { generateECToken } from '../../tests/common';
 
+// eslint-disable-next-line promise/catch-or-return
 window.paypal.Button.render({
 
     payment() : string {
@@ -17,5 +18,3 @@ window.paypal.Button.render({
     button.window.paypal.Checkout.contexts.iframe = (window.location.hash === '#iframe');
     button.window.document.querySelector('button').click();
 });
-
-

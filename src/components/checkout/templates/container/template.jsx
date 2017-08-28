@@ -1,5 +1,6 @@
 /* @flow */
 /* @jsx jsxDom */
+/* eslint max-lines: 0 */
 
 import componentContentJSON from './content.json';
 let componentContent = JSON.parse(componentContentJSON);
@@ -20,10 +21,10 @@ type ContainerTemplateOptions = {
     context : string,
     outlet : HTMLElement,
     on : Function,
-    props : Object,
     jsxDom : Function
 };
 
+// eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT, on, tag, context, actions, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
     let [ lang, country ] = props.locale.split('_');

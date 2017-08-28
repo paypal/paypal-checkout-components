@@ -65,8 +65,6 @@ export let componentScript = `
             }
 
             var e = el.getBoundingClientRect();
-
-            // $FlowFixMe
             var p = parent.getBoundingClientRect();
 
             if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {

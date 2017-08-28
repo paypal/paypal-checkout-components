@@ -11,7 +11,7 @@ export let config = {
 
     script_props: {
         'data-paypal-checkout': '',
-        'data-no-bridge': '',
-        'data-state': 'ppxo_checkout'
+        'data-no-bridge':       '',
+        'data-state':           'ppxo_checkout'
     }
 };

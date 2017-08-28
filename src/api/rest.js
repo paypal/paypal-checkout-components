@@ -19,21 +19,21 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
     let clientID : string = client[env];
 
     if (!clientID) {
-        throw new Error(`Client ID not found for env: ${env}`);
+        throw new Error(`Client ID not found for env: ${ env }`);
     }
 
     if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) {
         return proxyRest.createAccessToken(env, client);
     }
 
-    let basicAuth : string = btoa(`${clientID}:`);
+    let basicAuth : string = btoa(`${ clientID }:`);
 
     return request({
 
-        method: `post`,
-        url: config.authApiUrls[env],
+        method:  `post`,
+        url:     config.authApiUrls[env],
         headers: {
-            Authorization: `Basic ${basicAuth}`
+            Authorization: `Basic ${ basicAuth }`
         },
         data: {
             grant_type: `client_credentials`
@@ -42,11 +42,11 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
     }).then(res => {
 
         if (res && res.error === 'invalid_client') {
-            throw new Error(`Auth Api invalid ${env} client id: ${clientID}:\n\n${JSON.stringify(res, null, 4)}`);
+            throw new Error(`Auth Api invalid ${ env } client id: ${ clientID }:\n\n${ JSON.stringify(res, null, 4) }`);
         }
 
         if (!res || !res.access_token) {
-            throw new Error(`Auth Api response error:\n\n${JSON.stringify(res, null, 4)}`);
+            throw new Error(`Auth Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
         }
 
         return res.access_token;
@@ -63,7 +63,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
     let clientID = client[env];
 
     if (!clientID) {
-        throw new Error(`Client ID not found for env: ${env}`);
+        throw new Error(`Client ID not found for env: ${ env }`);
     }
 
     if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) {
@@ -71,15 +71,15 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
     }
 
     experienceDetails.temporary = true;
-    experienceDetails.name = experienceDetails.name ? `${experienceDetails.name}_${Math.random().toString()}` : Math.random().toString();
+    experienceDetails.name = experienceDetails.name ? `${ experienceDetails.name }_${ Math.random().toString() }` : Math.random().toString();
 
     return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
 
         return request({
-            method: `post`,
-            url: config.experienceApiUrls[env],
+            method:  `post`,
+            url:     config.experienceApiUrls[env],
             headers: {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${ accessToken }`
             },
             json: experienceDetails
         });
@@ -91,7 +91,7 @@ let createExperienceProfile = memoize((env : string, client : { [key : string] :
         }
 
         if (!res.id) {
-            throw new Error(`No id in experience profile response:\n\n${JSON.stringify(res, null, 4)}`);
+            throw new Error(`No id in experience profile response:\n\n${ JSON.stringify(res, null, 4) }`);
         }
 
         return res.id;
@@ -124,12 +124,12 @@ function logPaymentResponse(res) {
     }
 
     $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CREATE_PAYMENT,
+        [ FPTI.KEY.STATE ]:        FPTI.STATE.BUTTON,
+        [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CREATE_PAYMENT,
         [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-        [ FPTI.KEY.PAY_ID ]: paymentID,
-        [ FPTI.KEY.TOKEN ]: paymentToken,
-        [ FPTI.KEY.CONTEXT_ID ]: paymentToken
+        [ FPTI.KEY.PAY_ID ]:       paymentID,
+        [ FPTI.KEY.TOKEN ]:        paymentToken,
+        [ FPTI.KEY.CONTEXT_ID ]:   paymentToken
     });
 }
 
@@ -142,7 +142,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     let clientID = client[env];
 
     if (!clientID) {
-        throw new Error(`Client ID not found for env: ${env}`);
+        throw new Error(`Client ID not found for env: ${ env }`);
     }
 
     let { payment, experience, meta } = paymentDetails;
@@ -158,8 +158,8 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     payment = { ...payment };
     payment.intent = payment.intent || 'sale';
     payment.redirect_urls = payment.redirect_urls || {};
-    payment.redirect_urls.return_url = payment.redirect_urls.return_url || `${window.location.protocol}//${window.location.host}`;
-    payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || `${window.location.protocol}//${window.location.host}`;
+    payment.redirect_urls.return_url = payment.redirect_urls.return_url || `${ window.location.protocol }//${ window.location.host }`;
+    payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || `${ window.location.protocol }//${ window.location.host }`;
     payment.payer = payment.payer || {};
     payment.payer.payment_method = payment.payer.payment_method || 'paypal';
 
@@ -178,7 +178,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
             }
 
             let headers : Object = {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${ accessToken }`
             };
 
             if (meta && meta.partner_attribution_id) {
@@ -187,9 +187,9 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
             return request({
                 method: `post`,
-                url: config.paymentApiUrls[env],
+                url:    config.paymentApiUrls[env],
                 headers,
-                json: payment
+                json:   payment
             });
         });
 
@@ -201,7 +201,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
             return res.id;
         }
 
-        throw new Error(`Payment Api response error:\n\n${JSON.stringify(res, null, 4)}`);
+        throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
     });
 }
 
@@ -214,7 +214,7 @@ export function createBillingToken(env : string, client : { [key : string] : str
     let clientID = client[env];
 
     if (!clientID) {
-        throw new Error(`Client ID not found for env: ${env}`);
+        throw new Error(`Client ID not found for env: ${ env }`);
     }
 
     if (proxyRest.createBillingToken && !proxyRest.createBillingToken.source.closed) {
@@ -224,8 +224,8 @@ export function createBillingToken(env : string, client : { [key : string] : str
     billingDetails = { ...billingDetails };
     billingDetails.plan = billingDetails.plan || {};
     billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
-    billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || `${window.location.protocol}//${window.location.host}`;
-    billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || `${window.location.protocol}//${window.location.host}`;
+    billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || `${ window.location.protocol }//${ window.location.host }`;
+    billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || `${ window.location.protocol }//${ window.location.host }`;
     billingDetails.payer = billingDetails.payer || {};
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
@@ -245,10 +245,10 @@ export function createBillingToken(env : string, client : { [key : string] : str
             }
 
             return request({
-                method: `post`,
-                url: config.billingApiUrls[env],
+                method:  `post`,
+                url:     config.billingApiUrls[env],
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${ accessToken }`
                 },
                 json: billingDetails
             });
@@ -260,7 +260,7 @@ export function createBillingToken(env : string, client : { [key : string] : str
             return res.token_id;
         }
 
-        throw new Error(`Billing Api response error:\n\n${JSON.stringify(res, null, 4)}`);
+        throw new Error(`Billing Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
     });
 }
 
@@ -285,7 +285,6 @@ if (isPayPalDomain()) {
         });
 
 } else {
-    // $FlowFixMe
     postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
         proxyRest = data;
     });

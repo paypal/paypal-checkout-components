@@ -4,16 +4,16 @@ import { config } from '../../config';
 import { Login } from './component';
 
 let prerender = Login.prerender;
-Login.prerender = function(props) : Object {
+Login.prerender = function loginPrerender(props) : Object {
     let component = prerender.apply(this, arguments);
 
     let env = (props && props.env) || config.env;
 
     component.html = component.html.then(html => {
         return `
-            ${html}
+            ${ html }
 
-            <script src="${config.scriptUrl}" async></script>
+            <script src="${ config.scriptUrl }" async></script>
 
             <script>
                 (function() {
@@ -51,7 +51,7 @@ Login.prerender = function(props) : Object {
                                 }).join('&').replace(/%20/g, '+');
 
                                 var req = new XMLHttpRequest();
-                                req.open(form.method || 'GET', '${config.paypalUrls[env]}' + form.getAttribute('action'));
+                                req.open(form.method || 'GET', '${ config.paypalUrls[env] }' + form.getAttribute('action'));
                                 req.setRequestHeader('Accept', 'application/json');
                                 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 req.setRequestHeader('x-csrf-token', data._csrf);

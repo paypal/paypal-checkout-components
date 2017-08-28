@@ -58,7 +58,7 @@ onKey(window, 'paypalCheckoutReady', method => {
 
 onDocumentReady(() => {
 
-    let buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ATTRIBUTES.BUTTON}]`));
+    let buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTES.BUTTON }]`));
 
     if (buttons && buttons.length) {
         $logger.debug(`data_paypal_button`, { number: buttons.length });

@@ -48,7 +48,7 @@ let mockBraintree = {
                 }
 
                 if (options.authorization !== MOCK_BRAINTREE_AUTH) {
-                    throw new Error(`Braintree expected authorization to be ${MOCK_BRAINTREE_AUTH}`);
+                    throw new Error(`Braintree expected authorization to be ${ MOCK_BRAINTREE_AUTH }`);
                 }
 
                 return {};
@@ -77,7 +77,7 @@ let mockBraintree = {
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button braintree tests on ${flow}`, () => {
+    describe(`paypal button braintree tests on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -114,7 +114,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data) : void {
 
                     if (data.nonce !== MOCK_BRAINTREE_NONCE) {
-                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                        return done(new Error(`Expected data.nonce to be ${ MOCK_BRAINTREE_NONCE }, got ${ data.nonce }`));
                     }
 
                     return done();
@@ -139,7 +139,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: MOCK_BRAINTREE_AUTH
                 },
 
-                payment(data, actions) : ZalgoPromise<string> {
+                payment(data) : ZalgoPromise<string> {
                     return data.braintree.create({
                         flow:     'checkout',
                         amount:   '1.00',
@@ -151,7 +151,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data) : void {
 
                     if (data.nonce !== MOCK_BRAINTREE_NONCE) {
-                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                        return done(new Error(`Expected data.nonce to be ${ MOCK_BRAINTREE_NONCE }, got ${ data.nonce }`));
                     }
 
                     return done();
@@ -167,11 +167,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should accept actions.payment.create', (done) => {
 
             let payment = {
-                intent: 'authorize',
+                intent:       'authorize',
                 transactions: [
                     {
                         amount: {
-                            total: '13.37',
+                            total:    '13.37',
                             currency: 'EUR'
                         }
                     }
@@ -195,7 +195,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data) : void {
 
                     if (data.nonce !== MOCK_BRAINTREE_NONCE) {
-                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                        return done(new Error(`Expected data.nonce to be ${ MOCK_BRAINTREE_NONCE }, got ${ data.nonce }`));
                     }
 
                     return done();
@@ -213,11 +213,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should accept actions.payment.create with a payment object', (done) => {
 
             let payment = {
-                intent: 'authorize',
+                intent:       'authorize',
                 transactions: [
                     {
                         amount: {
-                            total: '13.37',
+                            total:    '13.37',
                             currency: 'EUR'
                         }
                     }
@@ -241,7 +241,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data) : void {
 
                     if (data.nonce !== MOCK_BRAINTREE_NONCE) {
-                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                        return done(new Error(`Expected data.nonce to be ${ MOCK_BRAINTREE_NONCE }, got ${ data.nonce }`));
                     }
 
                     return done();
@@ -259,32 +259,32 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should accept actions.payment.create and correctly map to a Braintree payment', (done) => {
 
             let payment = {
-                intent: 'authorize',
+                intent:       'authorize',
                 transactions: [
                     {
                         amount: {
-                            total: '13.37',
+                            total:    '13.37',
                             currency: 'EUR'
                         }
                     }
                 ],
                 payer: {
                     external_selected_funding_instrument_type: 'CREDIT',
-                    shipping_address: {
-                        line1: 'address_line1',
-                        line2: 'address_line2',
-                        city: 'address_city',
-                        state: 'address_state',
-                        postal_code: 'address_postal_code',
-                        country_code: 'address_country_code',
-                        phone: 'address_phone',
+                    shipping_address:                          {
+                        line1:          'address_line1',
+                        line2:          'address_line2',
+                        city:           'address_city',
+                        state:          'address_state',
+                        postal_code:    'address_postal_code',
+                        country_code:   'address_country_code',
+                        phone:          'address_phone',
                         recipient_name: 'address_recipient_name'
                     }
                 },
                 application_context: {
-                    brand_name: 'Snake Plissken',
+                    brand_name:          'Snake Plissken',
                     shipping_preference: 'SET_PROVIDED_ADDRESS',
-                    landing_page: 'billing'
+                    landing_page:        'billing'
                 }
             };
 
@@ -360,7 +360,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     throw new Error(`Expected ${ paymentOptions.shippingAddressOverride.recipientName } to be ${ payment.payer.shipping_address.recipient_name }`);
                 }
 
-                return createPayment.apply(this, arguments);
+                return createPayment(paymentOptions);
             };
 
             window.paypal.Button.render({
@@ -380,7 +380,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data) : void {
 
                     if (data.nonce !== MOCK_BRAINTREE_NONCE) {
-                        return done(new Error(`Expected data.nonce to be ${MOCK_BRAINTREE_NONCE}, got ${data.nonce}`));
+                        return done(new Error(`Expected data.nonce to be ${ MOCK_BRAINTREE_NONCE }, got ${ data.nonce }`));
                     }
 
                     return done();
@@ -398,13 +398,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should error on actions.payment.create with a payment object which can not be mapped', (done) => {
 
             let payment = {
-                intent: 'authorize',
+                intent:       'authorize',
                 transactions: [
                     {
                         amount: {
-                            total: '13.37',
+                            total:    '13.37',
                             currency: 'EUR',
-                            foo: 'bar'
+                            foo:      'bar'
                         }
                     }
                 ]
@@ -426,7 +426,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     });
                 },
 
-                onAuthorize(data) : void {
+                onAuthorize() : void {
                     return done(new Error('Expected onAuthorize() to not be called'));
                 },
 

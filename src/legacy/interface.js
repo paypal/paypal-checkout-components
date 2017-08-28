@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as logger from 'beaver-logger/client';
@@ -24,9 +25,9 @@ export function reset() {
 
     // Once our callback has been called, we can set the global methods to their original values
 
-    checkout.initXO    = initXO;    // eslint-disable-line
-    checkout.startFlow = startFlow; // eslint-disable-line
-    checkout.closeFlow = closeFlow; // eslint-disable-line
+    checkout.initXO    = initXO;    // eslint-disable-line no-use-before-define
+    checkout.startFlow = startFlow; // eslint-disable-line no-use-before-define
+    checkout.closeFlow = closeFlow; // eslint-disable-line no-use-before-define
 }
 
 checkout.reset = reset;
@@ -34,7 +35,7 @@ checkout.reset = reset;
 // $FlowFixMe
 Object.defineProperty(checkout, 'urlPrefix', {
     get() : string {
-        return `${config.checkoutUrl}${ config.checkoutUrl.indexOf('?') === -1 ? '?' : '&' }token=`;
+        return `${ config.checkoutUrl }${ config.checkoutUrl.indexOf('?') === -1 ? '?' : '&' }token=`;
     }
 });
 
@@ -57,13 +58,13 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
 
         if (!url.match(/^https?:\/\/|^\//)) {
             if (paymentToken) {
-                $logger.info(`startflow_relative_url_with_token`, {url});
+                $logger.info(`startflow_relative_url_with_token`, { url });
             } else {
-                $logger.info(`startflow_relative_url_no_token`, {url});
+                $logger.info(`startflow_relative_url_no_token`, { url });
             }
 
             if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
-                url = `${config.checkoutUrl}${url}`;
+                url = `${ config.checkoutUrl }${ url }`;
             }
 
         } else if (paymentToken) {
@@ -84,7 +85,7 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
             $logger.debug(`startflow_with_token`, { url });
         } else {
             $logger.error(`startflow_no_url_or_token`, { url });
-            throw new Error(`Could not determine url or token from "${item}"`);
+            throw new Error(`Could not determine url or token from "${ item }"`);
         }
     }
 
@@ -106,12 +107,11 @@ function checkUrlAgainstEnv(url : string) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
                 $logger.warn(`mismatched_env_startflow_url`, { env: config.env, url });
                 redirect(url);
-                throw new Error(`${url} is not a ${config.env} url`);
+                throw new Error(`${ url } is not a ${ config.env } url`);
             }
         }
     }
 }
-
 
 /*  Get Token
     ---------
@@ -129,7 +129,7 @@ function checkUrlAgainstEnv(url : string) {
 
 function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken : ZalgoPromise<?string> } {
 
-    let paymentTokenAndUrl = new ZalgoPromise((resolve, reject) => {
+    let paymentTokenAndUrl = new ZalgoPromise((resolve) => {
 
         checkout.initXO = () => {
             $logger.warn(`gettoken_initxo`);
@@ -137,7 +137,7 @@ function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken 
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
-        checkout.startFlow = once((item, opts) => {
+        checkout.startFlow = once((item) => {
             $logger.debug(`gettoken_startflow`, { item });
 
             let { url, paymentToken } = matchUrlAndPaymentToken(item);
@@ -242,11 +242,13 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
             hijackTarget.removeAttribute('target');
         }
 
+        // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
         urlProp.then(url => {
             $logger.warn(`render_error_redirect_using_url`);
             return redirect(url);
         });
 
+        // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
         paymentToken.then(token => {
             logger.warn(`render_error_redirect_using_token`);
             return redirect(extendUrl(config.checkoutUrl, { token }));
@@ -266,6 +268,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
         paypalCheckout.hijack(hijackTarget);
         paypalCheckout.runTimeout();
 
+        // eslint-disable-next-line promise/catch-or-return
         urlProp.then(url => {
             $logger.warn(`hijack_then_url_passed`);
             paypalCheckout.loadUrl(url);
@@ -288,7 +291,7 @@ function handleClick(clickHandler, event) {
     $logger.debug(`button_click_handler`);
 
     try {
-        clickHandler.call(null, event);
+        clickHandler(event);
     } catch (err) {
         $logger.error(`click_handler_error`, { error: err.stack || err.toString() });
     }
@@ -308,14 +311,13 @@ function handleClickHijack(element) : void {
 
     let token;
 
+    // eslint-disable-next-line promise/catch-or-return
     paymentToken.then(result => {
         token = result;
     });
 
     renderPayPalCheckout({ url, payment: () => ZalgoPromise.resolve(token) }, targetElement);
 }
-
-
 
 function listenClick(container, button, clickHandler, condition, track) : void {
 
@@ -382,7 +384,7 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 }
 
 function instrumentButtonRender(type : string) {
-    $logger.info(`render_${type}_button`);
+    $logger.info(`render_${ type }_button`);
 
     $logger.track({
         [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
@@ -422,7 +424,7 @@ export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     $logger.info(`setup`, {
         id,
-        env: options.environment,
+        env:     options.environment,
         options: safeJSON(options)
     });
 
@@ -534,10 +536,8 @@ function closeFlow(closeUrl? : string) {
     if (closeUrl) {
         $logger.warn(`closeflow_with_url`, { closeUrl });
         redirect(closeUrl);
-        return;
-    }
 
-    console.warn('Checkout is not open, can not be closed');
+    }
 }
 
 checkout.closeFlow = closeFlow;

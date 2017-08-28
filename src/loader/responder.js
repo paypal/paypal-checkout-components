@@ -11,7 +11,7 @@ export function responder() : { respond : (error : ?Error, result : ?mixed) => v
     function flush() {
         if (loaded) {
             while (callbacks.length) {
-                callbacks.shift().call(null, err, res);
+                callbacks.shift()(err, res);
             }
         }
     }

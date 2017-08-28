@@ -15,7 +15,7 @@ type RequestOptionsType = {
 
 const HEADERS = {
     CONTENT_TYPE: 'content-type',
-    ACCEPT: 'accept'
+    ACCEPT:       'accept'
 };
 
 let headerBuilders = [];
@@ -24,7 +24,7 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
     return new ZalgoPromise((resolve, reject) => {
 
-        if (json && data || json && body || data && json) {
+        if ((json && data) || (json && body) || (data && json)) {
             throw new Error(`Only options.json or options.data or options.body should be passed`);
         }
 
@@ -52,7 +52,7 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         let xhr = new win.XMLHttpRequest();
 
-        xhr.addEventListener('load', function() : void {
+        xhr.addEventListener('load', function xhrLoad() : void {
 
             let corrID;
 
@@ -65,7 +65,7 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
             corrID = corrID || 'unknown';
 
             if (!this.status) {
-                return reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: no response status code. Correlation id: ${corrID}`));
+                return reject(new Error(`Request to ${ method.toLowerCase() } ${ url } failed: no response status code. Correlation id: ${ corrID }`));
             }
 
             let contentType = this.getResponseHeader('content-type');
@@ -76,19 +76,19 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 res = JSON.parse(this.responseText);
             } catch (err) {
                 if (isJSON) {
-                    return reject(new Error(`Invalid json: ${this.responseText}. Correlation id: ${corrID}`));
+                    return reject(new Error(`Invalid json: ${ this.responseText }. Correlation id: ${ corrID }`));
                 }
             }
 
             if (this.status >= 400) {
-                let message = `Request to ${method.toLowerCase()} ${url} failed with ${this.status} error. Correlation id: ${corrID}`;
+                let message = `Request to ${ method.toLowerCase() } ${ url } failed with ${ this.status } error. Correlation id: ${ corrID }`;
 
                 if (res) {
                     if (isJSON) {
                         res = JSON.stringify(res, null, 4);
                     }
 
-                    message = `${message}\n\n${res}\n`;
+                    message = `${ message }\n\n${ res }\n`;
                 }
 
                 return reject(new Error(message));
@@ -98,28 +98,30 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         }, false);
 
-        xhr.addEventListener('error', function(evt) {
+        xhr.addEventListener('error', function xhrError(evt) {
             let corrID = this.getResponseHeader('paypal-debug-id');
-            reject(new Error(`Request to ${method.toLowerCase()} ${url} failed: ${evt.toString()}. Correlation id: ${corrID}`));
+            reject(new Error(`Request to ${ method.toLowerCase() } ${ url } failed: ${ evt.toString() }. Correlation id: ${ corrID }`));
         }, false);
 
         xhr.open(method, url, true);
 
         for (let key in normalizedHeaders) {
-            xhr.setRequestHeader(key, normalizedHeaders[key]);
+            if (normalizedHeaders.hasOwnProperty(key)) {
+                xhr.setRequestHeader(key, normalizedHeaders[key]);
+            }
         }
 
         if (json) {
             body = JSON.stringify(json);
         } else if (data) {
             body = Object.keys(data).map(key => {
-                return `${encodeURIComponent(key)}=${data ? encodeURIComponent(data[key]) : ''}`;
+                return `${ encodeURIComponent(key) }=${ data ? encodeURIComponent(data[key]) : '' }`;
             }).join('&');
         }
 
         xhr.timeout = timeout;
-        xhr.ontimeout = function () {
-            reject(new Error(`Request to ${method.toLowerCase()} ${url} has timed out`));
+        xhr.ontimeout = function xhrTimeout() {
+            reject(new Error(`Request to ${ method.toLowerCase() } ${ url } has timed out`));
         };
 
         xhr.send(body);

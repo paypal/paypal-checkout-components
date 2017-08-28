@@ -18,7 +18,7 @@ export function loadScript(url : string, prop : string, attrs : Object, callback
 
     script.onload = () => {
         if (!window[prop]) {
-            return callback(new Error(`Expected ${prop} to be present on window`));
+            return callback(new Error(`Expected ${ prop } to be present on window`));
         }
 
         return callback(null, window[prop]);
@@ -58,7 +58,7 @@ export function parseQuery(queryString : string = window.location.search) : Obje
     }
 
     if (queryString.indexOf('=') === -1) {
-        throw new Error(`Can not parse query string params: ${queryString}`);
+        throw new Error(`Can not parse query string params: ${ queryString }`);
     }
 
     for (let pair of queryString.split('&')) {

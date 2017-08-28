@@ -3,12 +3,12 @@
 import { type ZalgoPromise } from 'zalgo-promise/src';
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
-window.angular.module('app', ['paypal-button']);
-window.angular.bootstrap(document.body, ['app']);
+window.angular.module('app', [ 'paypal-button' ]);
+window.angular.bootstrap(document.body, [ 'app' ]);
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button framework drivers on ${flow}`, () => {
+    describe(`paypal button framework drivers on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();

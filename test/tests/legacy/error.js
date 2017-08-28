@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 
 import { extendUrl } from 'src/lib/dom';
@@ -9,7 +10,7 @@ import { onHashChange, generateECToken, createTestContainer, destroyTestContaine
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal legacy legacy error cases on ${flow}`, () => {
+    describe(`paypal legacy legacy error cases on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -27,8 +28,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
-                window.paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
+            testButton.addEventListener('click', () => {
+                window.paypal.checkout.startFlow(`#redirectUrl?token=${ token }`);
             });
 
             preventOpenWindow(flow);
@@ -36,7 +37,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#redirectUrl?token=${token}`);
+                assert.equal(urlHash, `#redirectUrl?token=${ token }`);
             }).toPromise();
         });
 
@@ -45,7 +46,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
             });
 
@@ -56,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             return onHashChange().then(urlHash => {
                 window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
-                assert.equal(urlHash, `#fullpageRedirect?url=${extendUrl(window.paypal.config.checkoutUrl, { token })}`);
+                assert.equal(urlHash, `#fullpageRedirect?url=${ extendUrl(window.paypal.config.checkoutUrl, { token }) }`);
             }).toPromise();
         });
 
@@ -68,8 +69,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
+                click() {
+                    window.paypal.checkout.startFlow(`#redirectUrl?token=${ token }`);
                 }
 
             }).then(() => {
@@ -79,7 +80,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#redirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#redirectUrl?token=${ token }`);
                 });
             });
         });
@@ -87,13 +88,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should call startFlow and redirect to full-page if there is an error from the page', () => {
 
             let token = generateECToken();
-            let redirectUrl = extendUrl(`${window.paypal.checkout.urlPrefix}${token}`);
+            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(redirectUrl);
                 }
 
@@ -106,7 +107,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
-                    assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
         });
@@ -119,11 +120,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`#redirectUrl?token=${token}`);
+                        window.paypal.checkout.startFlow(`#redirectUrl?token=${ token }`);
                     }, 200);
                 }
 
@@ -134,7 +135,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#redirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#redirectUrl?token=${ token }`);
                 });
             });
         });
@@ -142,13 +143,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should call startFlow and redirect to full-page with initXO and startFlow, with an error from the page', () => {
 
             let token = generateECToken();
-            let redirectUrl = extendUrl(`${window.paypal.checkout.urlPrefix}${token}`);
+            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
@@ -164,7 +165,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
         });
@@ -177,7 +178,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -194,7 +195,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
-                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -202,13 +203,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should call startFlow with a token and redirect to full-page if there is an error from the page', () => {
 
             let token = generateECToken();
-            let redirectUrl = extendUrl(`${window.paypal.checkout.urlPrefix}${token}`);
+            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             return window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -221,7 +222,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
-                    assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
         });
@@ -232,18 +233,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `#errorRedirectUrl?token=${token}`
+                id:        'testForm',
+                props:     {
+                    action: `#errorRedirectUrl?token=${ token }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -266,7 +267,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 preventOpenWindow(flow);
 
                 let result = onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
 
                 getElement('button', testForm).click();
@@ -280,18 +281,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
+                id:        'testForm',
+                props:     {
                     action: window.paypal.config.checkoutUrl
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -317,7 +318,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
 
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', CheckoutUrlDescriptor);
-                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -328,18 +329,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -354,7 +355,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
-                    window.paypal.checkout.startFlow(`#errorRedirectUrl?token=${token}`);
+                    window.paypal.checkout.startFlow(`#errorRedirectUrl?token=${ token }`);
                 });
 
                 preventOpenWindow(flow);
@@ -362,7 +363,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#errorRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -371,21 +372,21 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let token = generateECToken();
             let hash = uniqueID();
-            let redirectUrl = extendUrl(`${window.paypal.checkout.urlPrefix}${token}`);
+            let redirectUrl = extendUrl(`${ window.paypal.checkout.urlPrefix }${ token }`);
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -409,7 +410,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#fullpageRedirect?url=${redirectUrl}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
         });
@@ -420,7 +421,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) : void {
+                click() : void {
                     try {
                         window.paypal.checkout.startFlow();
                     } catch (err) {
@@ -444,8 +445,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                click() {
+                    window.paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${ token }`);
                 }
 
             }).then(() => {
@@ -453,7 +454,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${ token }`);
                 });
             });
         });
@@ -466,11 +467,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                        window.paypal.checkout.startFlow(`https://www.sandbox.paypal.com/checkoutnow?token=${ token }`);
                     }, 200);
                 }
 
@@ -479,7 +480,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirect?url=https://www.sandbox.paypal.com/checkoutnow?token=${ token }`);
                 });
             });
         });
@@ -492,7 +493,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -504,7 +505,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#fallbackUrl?token=${token}`);
+                    assert.equal(urlHash, `#fallbackUrl?token=${ token }`);
                 });
             });
         });

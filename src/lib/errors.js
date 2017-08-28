@@ -43,6 +43,7 @@ export function checkForCommonErrors() {
             message: `Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">` });
     }
 
+    // eslint-disable-next-line no-unused-vars
     function foo(bar, baz, zomg) {
         // pass;
     }

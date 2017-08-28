@@ -34,20 +34,20 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
 
         if (locale) {
             let { country, lang } = normalizeLocale(locale);
-            locale = `${lang}_${country}`;
+            locale = `${ lang }_${ country }`;
         }
 
-        locale = locale || `${config.locale.lang}_${config.locale.country}`;
+        locale = locale || `${ config.locale.lang }_${ config.locale.country }`;
         color  = color  || BUTTON_COLOR.GOLD;
         shape  = shape  || BUTTON_SHAPE.PILL;
         size   = size   || BUTTON_SIZE.SMALL;
         type   = type   || BUTTON_LABEL.CHECKOUT;
 
-        $logger.debug(`render_button_lc_${locale}`);
-        $logger.debug(`render_button_color_${color}`);
-        $logger.debug(`render_button_shape_${shape}`);
-        $logger.debug(`render_button_size_${size}`);
-        $logger.debug(`render_button_label_${type}`);
+        $logger.debug(`render_button_lc_${ locale }`);
+        $logger.debug(`render_button_color_${ color }`);
+        $logger.debug(`render_button_shape_${ shape }`);
+        $logger.debug(`render_button_size_${ size }`);
+        $logger.debug(`render_button_label_${ type }`);
 
         let el = window.paypal.button.create(id, { lc: locale, color, shape, size }, { type: 'button', label: type }).el;
         container.appendChild(el);

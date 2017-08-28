@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
@@ -57,7 +58,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_US',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -70,7 +71,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_GB',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -83,7 +84,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'fr_FR',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -96,7 +97,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'de_DE',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -109,7 +110,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'es_ES',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -122,7 +123,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'zh_C2',
-            style: {
+            style:  {
                 label: 'checkout'
             }
         }
@@ -135,7 +136,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_US',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -148,7 +149,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_GB',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -161,7 +162,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'fr_FR',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -174,7 +175,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'de_DE',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -187,7 +188,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'es_ES',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -200,7 +201,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'zh_C2',
-            style: {
+            style:  {
                 label: 'credit'
             }
         }
@@ -213,7 +214,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_US',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -226,7 +227,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_GB',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -239,7 +240,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'fr_FR',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -252,7 +253,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'de_DE',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -265,7 +266,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'es_ES',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -278,7 +279,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'zh_C2',
-            style: {
+            style:  {
                 label: 'buynow'
             }
         }
@@ -291,7 +292,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_US',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -304,7 +305,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'en_GB',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -317,7 +318,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'fr_FR',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -330,7 +331,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'de_DE',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -343,7 +344,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'es_ES',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -356,7 +357,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             locale: 'zh_C2',
-            style: {
+            style:  {
                 label: 'pay'
             }
         }
@@ -370,7 +371,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'tiny'
+                size:  'tiny'
             }
         }
     },
@@ -383,7 +384,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'small'
+                size:  'small'
             }
         }
     },
@@ -396,7 +397,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'medium'
+                size:  'medium'
             }
         }
     },
@@ -409,7 +410,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'large'
+                size:  'large'
             }
         }
     },
@@ -422,7 +423,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'responsive'
+                size:  'responsive'
             }
         }
     },
@@ -435,7 +436,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'small'
+                size:  'small'
             }
         }
     },
@@ -448,7 +449,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'medium'
+                size:  'medium'
             }
         }
     },
@@ -461,7 +462,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'checkout',
-                size: 'large'
+                size:  'large'
             }
         }
     },
@@ -474,7 +475,7 @@ let validButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'credit',
-                size: 'responsive'
+                size:  'responsive'
             }
         }
     },
@@ -664,7 +665,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'checkout',
+                label:        'checkout',
                 fundingicons: true
             }
         }
@@ -677,7 +678,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'pay',
+                label:        'pay',
                 fundingicons: true
             }
         }
@@ -691,7 +692,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'buynow',
+                label:        'buynow',
                 fundingicons: true
             }
         }
@@ -704,7 +705,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'buynow',
+                label:        'buynow',
                 fundingicons: false
             }
         }
@@ -717,7 +718,7 @@ let validButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'buynow',
+                label:    'buynow',
                 branding: true
             }
         }
@@ -830,7 +831,7 @@ let invalidButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'credit',
-                size: 'tiny'
+                size:  'tiny'
             }
         }
     },
@@ -843,7 +844,7 @@ let invalidButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'pay',
-                size: 'tiny'
+                size:  'tiny'
             }
         }
     },
@@ -856,7 +857,7 @@ let invalidButtonConfigs = [
             onAuthorize() { /* pass */ },
             style: {
                 label: 'buynow',
-                size: 'tiny'
+                size:  'tiny'
             }
         }
     },
@@ -901,7 +902,7 @@ let invalidButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'checkout',
+                label:    'checkout',
                 branding: false
             }
         }
@@ -914,7 +915,7 @@ let invalidButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'checkout',
+                label:    'checkout',
                 branding: false
             }
         }
@@ -927,7 +928,7 @@ let invalidButtonConfigs = [
             payment() { /* pass */ },
             onAuthorize() { /* pass */ },
             style: {
-                label: 'credit',
+                label:        'credit',
                 fundingicons: true
             }
         }
@@ -945,7 +946,7 @@ describe(`paypal button component validation`, () => {
     });
 
     for (let invalidConfig of invalidButtonConfigs) {
-        it(`should attempt to render a button with ${invalidConfig.desc} and error out`, () => {
+        it(`should attempt to render a button with ${ invalidConfig.desc } and error out`, () => {
 
             return window.paypal.Button.render(invalidConfig.conf, 'body').then(() => {
                 throw new Error('Expected error to be thrown');
@@ -956,7 +957,7 @@ describe(`paypal button component validation`, () => {
     }
 
     for (let validConfig of validButtonConfigs) {
-        it(`should attempt to render a button with ${validConfig.desc} and succeed`, () => {
+        it(`should attempt to render a button with ${ validConfig.desc } and succeed`, () => {
             return window.paypal.Button.render({
                 test: {
                     action: 'none'

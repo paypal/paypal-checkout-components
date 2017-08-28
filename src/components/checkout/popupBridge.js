@@ -71,7 +71,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
         }
 
         if (props.env && !config.checkoutUrls[props.env]) {
-            throw new Error(`Invalid props.env: ${props.env}`);
+            throw new Error(`Invalid props.env: ${ props.env }`);
         }
 
         let env = props.env = props.env || config.env;
@@ -88,8 +88,8 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
             if (token) {
                 return extendUrl(determineUrlFromToken(env, token), {
                     [ determineParameterFromToken(token) ]: token,
-                    useraction: props.commit ? 'commit' : '',
-                    native_xo: '1'
+                    useraction:                             props.commit ? 'commit' : '',
+                    native_xo:                              '1'
                 });
             }
         }));
@@ -166,26 +166,26 @@ export function setupPopupBridgeProxy(Checkout : Object) {
     }
 
     let render = Checkout.render;
-    Checkout.render = function(props : Object) : ZalgoPromise<void> {
+    Checkout.render = function popupBridgeRender(props : Object) : ZalgoPromise<void> {
         return doRender(props, () => render.apply(this, arguments));
     };
 
     let renderTo = Checkout.renderTo;
-    Checkout.renderTo = function(win : any, props : Object) : ZalgoPromise<void> {
+    Checkout.renderTo = function popupBridgeRenderTo(win : any, props : Object) : ZalgoPromise<void> {
         return doRender(props, () => renderTo.apply(this, arguments));
     };
 
     let init = Checkout.init;
-    Checkout.init = function(props) : Object {
+    Checkout.init = function popupBridgeInit(props) : Object {
         let instance = init.apply(this, arguments);
 
         let _render = instance.render;
-        instance.render = function() : ZalgoPromise<void> {
+        instance.render = function popupBridgeInstanceRender() : ZalgoPromise<void> {
             return doRender(props, () => _render.apply(this, arguments));
         };
 
         let _renderTo = instance.renderTo;
-        instance.renderTo = function() : ZalgoPromise<void> {
+        instance.renderTo = function popupBridgeInstanceRenderTo() : ZalgoPromise<void> {
             return doRender(props, () => _renderTo.apply(this, arguments));
         };
 

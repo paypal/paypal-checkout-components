@@ -39,12 +39,12 @@ export function loadScript(src : string, timeout : number = 0, attrs : Object = 
     return new ZalgoPromise((resolve, reject) => {
         let script = document.createElement('script');
 
-        script.onload = function () {
+        script.onload = function scriptOnLoad() {
             resolve();
         };
 
         // For Internet explorer 8 support
-        script.onreadystatechange = function () {
+        script.onreadystatechange = function scriptOnReadyStateChange() {
             if (this.readyState === 'complete' || this.readyState === 'loaded') {
                 resolve();
             }
@@ -52,7 +52,7 @@ export function loadScript(src : string, timeout : number = 0, attrs : Object = 
 
         let scriptLoadError = new Error('script_loading_error');
 
-        script.onerror = (event : Event) => {
+        script.onerror = () => {
             return reject(scriptLoadError);
         };
 
@@ -157,7 +157,7 @@ export let parseQuery = memoize((queryString : string) : Object => {
     }
 
     if (queryString.indexOf('=') === -1) {
-        throw new Error(`Can not parse query string params: ${queryString}`);
+        throw new Error(`Can not parse query string params: ${ queryString }`);
     }
 
     for (let pair of queryString.split('&')) {
@@ -200,7 +200,7 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
     let [ serverUrl, hash ] = url.split('#');
 
     if (hash && !serverUrl) {
-        [ serverUrl, hash ] = [ `#${hash}`, '' ];
+        [ serverUrl, hash ] = [ `#${ hash }`, '' ];
     }
 
     let [ originalUrl, originalQueryString ] = serverUrl.split('?');
@@ -215,20 +215,18 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
         }
     }
 
-    let newQueryString = Object.keys(params).sort().map(key => {
-        if (key && params[key]) {
-            return `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;
-        }
-    }).filter(Boolean).join('&');
+    let newQueryString = Object.keys(params).filter(key => key && params[key]).sort().map(key => {
+        return `${ encodeURIComponent(key) }=${ encodeURIComponent(params[key]) }`;
+    }).join('&');
 
     let newUrl = originalUrl;
 
     if (newQueryString) {
-        newUrl = `${newUrl}?${newQueryString}`;
+        newUrl = `${ newUrl }?${ newQueryString }`;
     }
 
     if (hasHash) {
-        newUrl = `${newUrl}#${hash || ''}`;
+        newUrl = `${ newUrl }#${ hash || '' }`;
     }
 
     return newUrl;

@@ -7,7 +7,7 @@ import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElem
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal legacy standalone checkout on ${flow}`, () => {
+    describe(`paypal legacy standalone checkout on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -25,14 +25,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
             }).toPromise();
         });
 
@@ -41,7 +41,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.startFlow(token);
             });
 
@@ -51,7 +51,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             return onHashChange().then(urlHash => {
                 window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                assert.equal(urlHash, `#cancel?token=${token}`);
+                assert.equal(urlHash, `#cancel?token=${ token }`);
             }).toPromise();
         });
 
@@ -61,14 +61,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            testButton.addEventListener('click', (event : Event) => {
-                window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+            testButton.addEventListener('click', () => {
+                window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
             }).toPromise();
         });
 
@@ -78,14 +78,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', (event : Event) => {
-                window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+            testButton.addEventListener('click', () => {
+                window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
             }).toPromise();
         });
 
@@ -94,7 +94,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
 
                 window.paypal.checkout.initXO();
 
@@ -106,7 +106,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
             }).toPromise();
         });
 
@@ -116,19 +116,19 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
             let hash = uniqueID();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
 
                 setTimeout(() => {
 
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }, 100);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
             }).toPromise();
         });
 
@@ -138,18 +138,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let hash = uniqueID();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
 
                 setTimeout(() => {
-                    window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                    window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
                 }, 100);
             });
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
             }).toPromise();
         });
 
@@ -158,7 +158,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
             let token = generateECToken();
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
 
                 window.paypal.checkout.initXO();
                 window.paypal.checkout.startFlow(token);
@@ -167,7 +167,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
             }).toPromise();
         });
 
@@ -175,17 +175,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function() : window {
+                    window.open = function overrideWindowOpen() : any {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
 
                         let close = win.close;
-                        win.close = function() : void {
+                        win.close = function overrideWindowClose() : void {
                             let result = close.apply(this, arguments);
                             done();
                             return result;
@@ -217,7 +217,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
                 window.paypal.checkout.initXO();
 
                 setTimeout(() => {
@@ -236,7 +236,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-            testButton.addEventListener('click', (event : Event) => {
+            testButton.addEventListener('click', () => {
 
                 if (flow === 'iframe') {
                     setTimeout(() => {
@@ -250,7 +250,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 } else {
 
                     let open = window.open;
-                    window.open = function() : window {
+                    window.open = function overrideWindowOpen() : any {
                         window.open = open;
 
                         let win : Object = {

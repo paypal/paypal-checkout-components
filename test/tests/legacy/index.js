@@ -10,8 +10,6 @@ export * from './customclick';
 export * from './error';
 export * from './popupBridge';
 
-
-
 beforeEach(() => {
     window.paypal.checkout.reset();
 });

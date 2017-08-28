@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { assert } from 'chai';
 
@@ -49,7 +50,7 @@ describe('paypal legacy button rendering', () => {
 
             container: 'testContainer',
 
-            click(event) {
+            click() {
                 done();
             }
 
@@ -66,7 +67,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         done();
                     }
                 }
@@ -107,7 +108,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -118,7 +119,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -138,8 +139,8 @@ describe('paypal legacy button rendering', () => {
     it('should work with a link container', (done) => {
 
         let link = createElement({
-            tag: 'link',
-            id: 'linkContainer',
+            tag:       'link',
+            id:        'linkContainer',
             container: 'testContainer'
         });
 
@@ -148,7 +149,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'linkContainer',
-                    click(event) {
+                    click() {
                         done();
                     }
                 }
@@ -163,8 +164,8 @@ describe('paypal legacy button rendering', () => {
     it('should work with a link container when the container is clicked', (done) => {
 
         let link = createElement({
-            tag: 'a',
-            id: 'linkContainer',
+            tag:       'a',
+            id:        'linkContainer',
             container: 'testContainer'
         });
 
@@ -173,7 +174,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'linkContainer',
-                    click(event) {
+                    click() {
                         done();
                     }
                 }
@@ -188,19 +189,20 @@ describe('paypal legacy button rendering', () => {
     it('should not work with a non-link container when the container is clicked', (done) => {
 
         let paraContainer = createElement({
-            tag: 'p',
-            id: 'paraContainer',
+            tag:       'p',
+            id:        'paraContainer',
             container: 'testContainer'
         });
 
         let clicked = false;
 
+        // eslint-disable-next-line promise/catch-or-return
         window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
                     container: 'paraContainer',
-                    click(event) {
+                    click() {
                         clicked = true;
                         done(new Error('Expected click handler to not be called'));
                     }
@@ -226,7 +228,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         done();
                     }
                 }
@@ -247,14 +249,14 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     container: 'DOESNOTEXIST1',
-                    click(event) : void {
-                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    click() : void {
+                        return done(new Error('Expected non-existant button to not be clicked'));
                     }
                 },
 
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -265,14 +267,14 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     container: 'DOESNOTEXIST2',
-                    click(event) : void {
-                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    click() : void {
+                        return done(new Error('Expected non-existant button to not be clicked'));
                     }
                 },
 
                 {
                     container: 'testContainer',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -283,8 +285,8 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     container: 'DOESNOTEXIST3',
-                    click(event) : void {
-                        return done(new Error('Expectednon-existant button to not be clicked'));
+                    click() : void {
+                        return done(new Error('Expected non-existant button to not be clicked'));
                     }
                 }
             ]
@@ -304,7 +306,7 @@ describe('paypal legacy button rendering', () => {
 
             button: 'testButton',
 
-            click(event) {
+            click() {
                 done();
             }
 
@@ -401,7 +403,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     button: 'testButton',
-                    click(event) {
+                    click() {
                         done();
                     }
                 }
@@ -425,7 +427,7 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     button: 'testButton',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -436,7 +438,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     button: 'testButton2',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -465,14 +467,14 @@ describe('paypal legacy button rendering', () => {
             buttons: [
                 {
                     button: 'DOESNOTEXIST1',
-                    click(event) : void {
+                    click() : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 },
 
                 {
                     button: 'testButton',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -483,14 +485,14 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     button: 'DOESNOTEXIST2',
-                    click(event) : void {
+                    click() : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 },
 
                 {
                     button: 'testButton2',
-                    click(event) {
+                    click() {
                         clickCount += 1;
 
                         if (clickCount === 2) {
@@ -501,7 +503,7 @@ describe('paypal legacy button rendering', () => {
 
                 {
                     button: 'DOESNOTEXIST3',
-                    click(event) : void {
+                    click() : void {
                         return done(new Error('Expected click handler for non-existant button to not be called'));
                     }
                 }
@@ -539,14 +541,14 @@ describe('paypal legacy button rendering', () => {
     it('should render a button into a link container, click on a custom button, and provide a working click handler', (done) => {
 
         let customLink = createElement({
-            tag: 'a',
-            id: 'customLink',
+            tag:       'a',
+            id:        'customLink',
             container: 'testContainer',
 
             children: [
                 {
                     tag: 'button',
-                    id: 'testButton'
+                    id:  'testButton'
                 }
             ]
         });
@@ -555,7 +557,7 @@ describe('paypal legacy button rendering', () => {
 
             container: 'customLink',
 
-            click(event) {
+            click() {
                 done();
             }
 
@@ -623,11 +625,12 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
+        // eslint-disable-next-line promise/catch-or-return
         window.paypal.checkout.setup('merchantID', {
 
             container: 'testButton',
 
-            click(event) {
+            click() {
                 clicked = true;
                 done(new Error(`Expected click not to be called`));
             }
@@ -653,7 +656,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: 'testButton',
+            button:    'testButton',
             container: 'randomContainer',
 
             click() {
@@ -673,7 +676,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: [ 'testButton' ],
+            button:    [ 'testButton' ],
             container: 'randomContainer',
 
             click() {
@@ -693,7 +696,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: [ 'testButton' ],
+            button:    [ 'testButton' ],
             container: [ 'randomContainer' ],
 
             click() {
@@ -713,7 +716,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: 'testButton',
+            button:    'testButton',
             container: 'randomContainer',
 
             click() {
@@ -737,7 +740,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: 'testButton',
+            button:    'testButton',
             container: 'randomContainer',
 
             click() {
@@ -757,7 +760,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: 'testButton',
+            button:    'testButton',
             container: [ 'randomContainer' ],
 
             click() {
@@ -777,7 +780,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: [ 'testButton' ],
+            button:    [ 'testButton' ],
             container: 'randomContainer',
 
             click() {
@@ -797,7 +800,7 @@ describe('paypal legacy button rendering', () => {
 
         return window.paypal.checkout.setup('merchantID', {
 
-            button: [ 'testButton' ],
+            button:    [ 'testButton' ],
             container: [ 'randomContainer' ],
 
             click() {
@@ -832,17 +835,17 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'en_US'
+                    locale:    'en_US'
                 },
 
                 {
                     container: 'container2',
-                    locale: 'en_US'
+                    locale:    'en_US'
                 },
 
                 {
                     container: 'container3',
-                    locale: 'fr_FR'
+                    locale:    'fr_FR'
                 }
             ]
 
@@ -868,7 +871,7 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'en_US'
+                    locale:    'en_US'
                 },
 
                 {
@@ -895,12 +898,12 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'en_US'
+                    locale:    'en_US'
                 },
 
                 {
                     container: 'container2',
-                    locale: 'xx_XX'
+                    locale:    'xx_XX'
                 }
             ]
 
@@ -923,12 +926,12 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'fr_US'
+                    locale:    'fr_US'
                 },
 
                 {
                     container: 'container2',
-                    locale: 'fr'
+                    locale:    'fr'
                 }
             ]
 
@@ -951,12 +954,12 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'en_US'
+                    locale:    'en_US'
                 },
 
                 {
                     container: 'container2',
-                    locale: 'US'
+                    locale:    'US'
                 }
             ]
 
@@ -979,12 +982,12 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    locale: 'en_FR'
+                    locale:    'en_FR'
                 },
 
                 {
                     container: 'container2',
-                    locale: 'FR'
+                    locale:    'FR'
                 }
             ]
 
@@ -1021,7 +1024,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            size: 'tiny'
+            size:      'tiny'
 
         }).then(() => {
 
@@ -1036,7 +1039,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            size: 'small'
+            size:      'small'
 
         }).then(() => {
 
@@ -1051,7 +1054,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            size: 'medium'
+            size:      'medium'
 
         }).then(() => {
 
@@ -1066,7 +1069,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            shape: 'pill'
+            shape:     'pill'
 
         }).then(() => {
 
@@ -1081,7 +1084,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            shape: 'rect'
+            shape:     'rect'
 
         }).then(() => {
 
@@ -1096,7 +1099,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            color: 'gold'
+            color:     'gold'
 
         }).then(() => {
 
@@ -1111,7 +1114,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            color: 'blue'
+            color:     'blue'
 
         }).then(() => {
 
@@ -1126,7 +1129,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            color: 'silver'
+            color:     'silver'
 
         }).then(() => {
 
@@ -1141,7 +1144,7 @@ describe('paypal legacy button options', () => {
         return window.paypal.checkout.setup('merchantID', {
 
             container: 'container1',
-            locale: 'fr_FR'
+            locale:    'fr_FR'
 
         }).then(() => {
 
@@ -1160,24 +1163,24 @@ describe('paypal legacy button options', () => {
             buttons: [
                 {
                     container: 'container1',
-                    color: 'gold',
-                    size: 'tiny',
-                    shape: 'rect',
-                    locale: 'de_DE'
+                    color:     'gold',
+                    size:      'tiny',
+                    shape:     'rect',
+                    locale:    'de_DE'
                 },
                 {
                     container: 'container2',
-                    color: 'silver',
-                    size: 'medium',
-                    shape: 'pill',
-                    locale: 'en_GB'
+                    color:     'silver',
+                    size:      'medium',
+                    shape:     'pill',
+                    locale:    'en_GB'
                 },
                 {
                     container: 'container3',
-                    color: 'blue',
-                    size: 'small',
-                    shape: 'rect',
-                    locale: 'es_ES'
+                    color:     'blue',
+                    size:      'small',
+                    shape:     'rect',
+                    locale:    'es_ES'
                 }
             ]
 

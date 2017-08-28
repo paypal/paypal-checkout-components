@@ -1,15 +1,11 @@
 /* @flow */
 
 import { assert } from 'chai';
-
-
-
-
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupPopupBridge, destroyPopupBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal legacy popup bridge checkout setup/startflow on ${flow}`, () => {
+    describe(`paypal legacy popup bridge checkout setup/startflow on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -34,7 +30,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -43,7 +39,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -58,7 +54,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -70,7 +66,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#cancel?token=${token}`);
+                    assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
         });
@@ -84,8 +80,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -93,7 +89,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -106,8 +102,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
                 }
 
             }).then(() => {
@@ -115,7 +111,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });

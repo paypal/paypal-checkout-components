@@ -60,7 +60,7 @@ function forceIframe() : boolean {
 
 export let Checkout = xcomponent.create({
 
-    tag: 'paypal-checkout',
+    tag:  'paypal-checkout',
     name: 'ppcheckout',
 
     scrolling: true,
@@ -70,7 +70,7 @@ export let Checkout = xcomponent.create({
 
         return props.payment().then(token => {
             if (!token) {
-                throw new Error(`Expected payment id or token to be passed, got ${token}`);
+                throw new Error(`Expected payment id or token to be passed, got ${ token }`);
             }
 
             return determineUrlFromToken(env, token);
@@ -91,7 +91,7 @@ export let Checkout = xcomponent.create({
 
     contexts: {
         iframe: forceIframe(),
-        popup: true
+        popup:  true
     },
 
     get version() : string {
@@ -104,7 +104,7 @@ export let Checkout = xcomponent.create({
     props: {
 
         uid: {
-            type: 'string',
+            type:  'string',
             value: getCommonSessionID(),
             def() : string {
                 return getCommonSessionID();
@@ -113,8 +113,8 @@ export let Checkout = xcomponent.create({
         },
 
         env: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def() : string {
@@ -123,14 +123,14 @@ export let Checkout = xcomponent.create({
 
             validate(env) {
                 if (!config.paypalUrls[env]) {
-                    throw new Error(`Invalid env: ${env}`);
+                    throw new Error(`Invalid env: ${ env }`);
                 }
             }
         },
 
         stage: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def(props) : ?string {
@@ -143,20 +143,20 @@ export let Checkout = xcomponent.create({
         },
 
         locale: {
-            type: 'string',
-            required: false,
-            queryParam: 'locale.x',
+            type:          'string',
+            required:      false,
+            queryParam:    'locale.x',
             allowDelegate: true,
 
             def() : string {
                 let { lang, country } = getBrowserLocale();
-                return `${lang}_${country}`;
+                return `${ lang }_${ country }`;
             }
         },
 
 
         client: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return {};
@@ -167,21 +167,21 @@ export let Checkout = xcomponent.create({
                 let env = props.env || config.env;
 
                 if (!client[env]) {
-                    throw new Error(`Client ID not found for env: ${env}`);
+                    throw new Error(`Client ID not found for env: ${ env }`);
                 }
 
                 if (client[env].match(/^(.)\1+$/)) {
-                    throw new Error(`Invalid client ID: ${client[env]}`);
+                    throw new Error(`Invalid client ID: ${ client[env] }`);
                 }
             }
         },
 
         payment: {
-            type: 'string',
+            type:     'string',
             required: false,
-            getter: true,
-            memoize: true,
-            timeout: __TEST__ ? 500 : 10 * 1000,
+            getter:   true,
+            memoize:  true,
+            timeout:  __TEST__ ? 500 : 10 * 1000,
             queryParam(value = '') : string {
                 return determineParameterFromToken(value);
             },
@@ -197,12 +197,12 @@ export let Checkout = xcomponent.create({
         },
 
         commit: {
-            type: 'boolean',
+            type:     'boolean',
             required: false
         },
 
         experience: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return {};
@@ -210,13 +210,13 @@ export let Checkout = xcomponent.create({
         },
 
         onAuthorize: {
-            type: 'function',
+            type:     'function',
             required: true,
-            once: true,
+            once:     true,
 
             decorate(original) : ?Function {
                 if (original) {
-                    return function(data, actions = {}) : ZalgoPromise<void> {
+                    return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
 
                         Checkout.contexts.iframe = false;
 
@@ -245,14 +245,14 @@ export let Checkout = xcomponent.create({
 
                                 if (isButton && isGuest) {
                                     return request({
-                                        win: this.window,
+                                        win:    this.window,
                                         method: 'get',
-                                        url: '/webapps/hermes/api/auth'
+                                        url:    '/webapps/hermes/api/auth'
                                     }).then(result => {
                                         if (result && result.data && result.data.access_token) {
                                             addHeader('x-paypal-internal-euat', result.data.access_token);
                                         }
-                                    }).catch(err2 => {
+                                    }).catch(() => {
                                         // pass
                                     });
                                 }
@@ -274,24 +274,24 @@ export let Checkout = xcomponent.create({
         },
 
         onAuth: {
-            type: 'function',
-            required: false,
+            type:       'function',
+            required:   false,
             sameDomain: true
         },
 
         accessToken: {
-            type: 'function',
+            type:     'function',
             required: false
         },
 
         onCancel: {
-            type: 'function',
+            type:     'function',
             required: false,
-            once: true,
-            noop: true,
+            once:     true,
+            noop:     true,
 
             decorate(original) : ?Function {
-                return function(data, actions = {}) : ZalgoPromise<void> {
+                return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
 
                     Checkout.contexts.iframe = false;
 
@@ -324,22 +324,22 @@ export let Checkout = xcomponent.create({
         },
 
         init: {
-            type: 'function',
+            type:     'function',
             required: false,
-            once: true,
+            once:     true,
 
             decorate(original) : Function {
-                return function(data) : void {
+                return function decorateInit(data) : void {
 
                     $logger.info('checkout_init');
 
                     $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_INIT,
+                        [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CHECKOUT_INIT,
                         [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-                        [ FPTI.KEY.TOKEN ]: data.paymentToken,
-                        [ FPTI.KEY.SELLER_ID ]: data.merchantID,
-                        [ FPTI.KEY.CONTEXT_ID ]: data.paymentToken
+                        [ FPTI.KEY.TOKEN ]:        data.paymentToken,
+                        [ FPTI.KEY.SELLER_ID ]:    data.merchantID,
+                        [ FPTI.KEY.CONTEXT_ID ]:   data.paymentToken
                     });
 
                     $logger.flush();
@@ -355,13 +355,13 @@ export let Checkout = xcomponent.create({
         },
 
         onClose: {
-            type: 'function',
-            required: false,
-            once: true,
+            type:      'function',
+            required:  false,
+            once:      true,
             promisify: true,
 
             decorate(original) : Function {
-                return function(reason) : ZalgoPromise<void> {
+                return function decorateOnClose(reason) : ZalgoPromise<void> {
 
                     let onClose = original
                         ? original.apply(this, arguments)
@@ -401,20 +401,20 @@ export let Checkout = xcomponent.create({
         },
 
         onError: {
-            type: 'function',
-            required: false,
+            type:      'function',
+            required:  false,
             promisify: true,
-            noop: true,
-            once: true
+            noop:      true,
+            once:      true
         },
 
         fallback: {
-            type: 'function',
+            type:     'function',
             required: false,
-            once: true,
+            once:     true,
 
             def() : Function {
-                return function(url) : ZalgoPromise<void> {
+                return function decorateFallback(url) : ZalgoPromise<void> {
                     $logger.warn('fallback', { url });
                     return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
@@ -422,7 +422,7 @@ export let Checkout = xcomponent.create({
         },
 
         logLevel: {
-            type: 'string',
+            type:     'string',
             required: false,
             get value() : string {
                 return config.logLevel;
@@ -430,18 +430,18 @@ export let Checkout = xcomponent.create({
         },
 
         popupBridge: {
-            type: 'object',
+            type:     'object',
             required: false,
             get value() : Object {
                 return {
-                    open: getPopupBridgeOpener(),
+                    open:        getPopupBridgeOpener(),
                     awaitOpener: awaitPopupBridgeOpener
                 };
             }
         },
 
         test: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return { action: 'checkout' };
@@ -450,7 +450,7 @@ export let Checkout = xcomponent.create({
     },
 
     autoResize: {
-        width: false,
+        width:  false,
         height: false
     },
 
@@ -458,13 +458,13 @@ export let Checkout = xcomponent.create({
 
         if (isDevice()) {
             return {
-                width: '100%',
+                width:  '100%',
                 height: '535px'
             };
         }
 
         return {
-            width: '450px',
+            width:  '450px',
             height: '535px'
         };
     }

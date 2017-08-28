@@ -41,7 +41,7 @@ export const BUTTON_CONFIG = {
             [ BUTTON_COLOR.CREDITBLUE ]: TAGLINE_COLOR.BLUE
         },
 
-        dualLabel:  '${pp}${paypal}',
+        dualLabel:  '${pp}${paypal}', // eslint-disable-line no-template-curly-in-string
         tagKey:     'safer_tag',
         dualTagKey: 'dual_tag',
 
@@ -70,8 +70,8 @@ export const BUTTON_CONFIG = {
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
-        label:     '${pp}${paypal} ${credit}',
-        dualLabel: '${pp}${credit}',
+        label:     '${pp}${paypal} ${credit}', // eslint-disable-line no-template-curly-in-string
+        dualLabel: '${pp}${credit}',  // eslint-disable-line no-template-curly-in-string
         tagKey:    'later_tag',
 
         colors: [
@@ -104,12 +104,12 @@ export const BUTTON_CONFIG = {
     },
 
     [ BUTTON_LABEL.GENERIC ]: {
-        label:  '${pp}${paypal}'
+        label:  '${pp}${paypal}' // eslint-disable-line no-template-curly-in-string
     },
 
     [ BUTTON_LABEL.VENMO ]: {
-        label:     '${venmo}',
-        dualLabel: '${venmo}',
+        label:     '${venmo}', // eslint-disable-line no-template-curly-in-string
+        dualLabel: '${venmo}', // eslint-disable-line no-template-curly-in-string
 
         colors: [
             BUTTON_COLOR.BLUE,
@@ -151,7 +151,7 @@ function getConfig<T : mixed>(config : Object, label : string, key : string, def
         return def;
     }
 
-    throw new Error(`No value found for ${label}:${key}`);
+    throw new Error(`No value found for ${ label }:${ key }`);
 }
 
 export function getButtonConfig<T : mixed>(label : string, key : string, def : ?T) : T {

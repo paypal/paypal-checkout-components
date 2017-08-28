@@ -21,7 +21,7 @@ describe(`paypal checkout auth api`, () => {
             paymentApi.done();
 
             if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${paymentID}`);
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
             }
         });
     });
@@ -43,11 +43,11 @@ describe(`paypal checkout auth api`, () => {
                 }
 
                 if (data.transactions[0].amount.total !== '1.00') {
-                    throw new Error(`Expected data.transactions[0].amount.total to be 1.00, got ${data.transactions[0].total}`);
+                    throw new Error(`Expected data.transactions[0].amount.total to be 1.00, got ${ data.transactions[0].total }`);
                 }
 
                 if (data.transactions[0].amount.currency !== 'USD') {
-                    throw new Error(`Expected data.transactions[0].amount.total to be USD, got ${data.transactions[0].currency}`);
+                    throw new Error(`Expected data.transactions[0].amount.total to be USD, got ${ data.transactions[0].currency }`);
                 }
 
                 return {
@@ -68,7 +68,7 @@ describe(`paypal checkout auth api`, () => {
             paymentApi.done();
 
             if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${paymentID}`);
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
             }
         });
     });
@@ -84,7 +84,7 @@ describe(`paypal checkout auth api`, () => {
                 }
 
                 if (data.presentation.logo_image !== 'https://foo.com/bar.png') {
-                    throw new Error(`Expected data.presentation.logo_image to be 'https://foo.com/bar.png', got "${data.presentation.logo_image}"`);
+                    throw new Error(`Expected data.presentation.logo_image to be 'https://foo.com/bar.png', got "${ data.presentation.logo_image }"`);
                 }
 
                 if (!data.input_fields) {
@@ -92,11 +92,11 @@ describe(`paypal checkout auth api`, () => {
                 }
 
                 if (data.input_fields.no_shipping !== 1) {
-                    throw new Error(`Expected data.input_fields.no_shipping to be 1, got "${data.input_fields.no_shipping}"`);
+                    throw new Error(`Expected data.input_fields.no_shipping to be 1, got "${ data.input_fields.no_shipping }"`);
                 }
 
                 if (data.input_fields.address_override !== 1) {
-                    throw new Error(`Expected data.input_fields.address_override to be 1, got "${data.input_fields.address_override}"`);
+                    throw new Error(`Expected data.input_fields.address_override to be 1, got "${ data.input_fields.address_override }"`);
                 }
 
                 return {
@@ -108,7 +108,7 @@ describe(`paypal checkout auth api`, () => {
         let paymentApi = getPaymentApiMock({
             handler({ data }) : { id : string } {
                 if (data.experience_profile_id !== experienceID) {
-                    throw new Error(`Expected data.experience_profile_id to be ${experienceID}, got ${data.experience_profile_id}`);
+                    throw new Error(`Expected data.experience_profile_id to be ${ experienceID }, got ${ data.experience_profile_id }`);
                 }
 
                 return {
@@ -128,7 +128,7 @@ describe(`paypal checkout auth api`, () => {
                 logo_image: 'https://foo.com/bar.png'
             },
             input_fields: {
-                no_shipping: 1,
+                no_shipping:      1,
                 address_override: 1
             }
         }).then(paymentID => {
@@ -137,7 +137,7 @@ describe(`paypal checkout auth api`, () => {
             experienceApi.done();
 
             if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${paymentID}`);
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
             }
         });
     });
@@ -154,7 +154,7 @@ describe(`paypal checkout auth api`, () => {
                 }
 
                 if (data.presentation.logo_image !== 'https://foo.com/bar.png') {
-                    throw new Error(`Expected data.presentation.logo_image to be 'https://foo.com/bar.png', got "${data.presentation.logo_image}"`);
+                    throw new Error(`Expected data.presentation.logo_image to be 'https://foo.com/bar.png', got "${ data.presentation.logo_image }"`);
                 }
 
                 if (!data.input_fields) {
@@ -162,11 +162,11 @@ describe(`paypal checkout auth api`, () => {
                 }
 
                 if (data.input_fields.no_shipping !== 1) {
-                    throw new Error(`Expected data.input_fields.no_shipping to be 1, got "${data.input_fields.no_shipping}"`);
+                    throw new Error(`Expected data.input_fields.no_shipping to be 1, got "${ data.input_fields.no_shipping }"`);
                 }
 
                 if (data.input_fields.address_override !== 0) {
-                    throw new Error(`Expected data.input_fields.address_override to be 0, got "${data.input_fields.address_override}"`);
+                    throw new Error(`Expected data.input_fields.address_override to be 0, got "${ data.input_fields.address_override }"`);
                 }
 
                 return {
@@ -178,11 +178,11 @@ describe(`paypal checkout auth api`, () => {
         let paymentApi = getPaymentApiMock({
             handler({ data, headers }) : { id : string } {
                 if (data.experience_profile_id !== experienceID) {
-                    throw new Error(`Expected data.experience_profile_id to be ${experienceID}, got ${data.experience_profile_id}`);
+                    throw new Error(`Expected data.experience_profile_id to be ${ experienceID }, got ${ data.experience_profile_id }`);
                 }
 
                 if (headers['paypal-partner-attribution-id'] !== partnerAttributionID) {
-                    throw new Error(`Expected paypal-partner-attribution-id to be ${partnerAttributionID}, got ${headers['paypal-partner-attribution-id']}`);
+                    throw new Error(`Expected paypal-partner-attribution-id to be ${ partnerAttributionID }, got ${ headers['paypal-partner-attribution-id'] }`);
                 }
 
                 return {
@@ -206,7 +206,7 @@ describe(`paypal checkout auth api`, () => {
                     logo_image: 'https://foo.com/bar.png'
                 },
                 input_fields: {
-                    no_shipping: 1,
+                    no_shipping:      1,
                     address_override: 0
                 }
             },
@@ -221,7 +221,7 @@ describe(`paypal checkout auth api`, () => {
             experienceApi.done();
 
             if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${paymentID}`);
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
             }
         });
     });
@@ -246,7 +246,7 @@ describe(`paypal checkout auth api`, () => {
             paymentApi.done();
 
             if (!paymentID.match(/^PAY-[A-Z0-9]+$/)) {
-                throw new Error(`Expected valid payment ID, got ${paymentID}`);
+                throw new Error(`Expected valid payment ID, got ${ paymentID }`);
             }
         });
     });

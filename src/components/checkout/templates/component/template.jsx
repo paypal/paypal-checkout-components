@@ -3,6 +3,7 @@
 
 import { checkoutComponentStyle } from './style';
 
+// eslint-disable-next-line no-unused-vars
 export function componentTemplate({ jsxDom } : { jsxDom : Function }) : HTMLElement {
 
     return (

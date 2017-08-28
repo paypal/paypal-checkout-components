@@ -16,7 +16,7 @@ function getIntegrationURLs() : { latest : boolean, major : string, minor : stri
     return {
         latest: isLatest(),
         major:  config.checkoutjs_url.replace('{version}', ''),
-        minor:  config.checkoutjs_url.replace('{version}', `.${getVersion()}`)
+        minor:  config.checkoutjs_url.replace('{version}', `.${ getVersion() }`)
     };
 }
 
@@ -49,7 +49,7 @@ function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => v
     loadScript(urls.latest ? urls.major : urls.minor, config.xchild_global, props, (err, result) => {
 
         if (err && !urls.latest) {
-            return loadScript(`${urls.major}?t=${Date.now()}`, config.xchild_global, props, callback);
+            return loadScript(`${ urls.major }?t=${ Date.now() }`, config.xchild_global, props, callback);
         }
 
         return callback(err, result);

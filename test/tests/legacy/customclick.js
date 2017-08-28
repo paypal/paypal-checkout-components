@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { assert } from 'chai';
 
@@ -6,7 +7,7 @@ import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_A
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal legacy checkout flow with custom click handler on ${flow}`, () => {
+    describe(`paypal legacy checkout flow with custom click handler on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -25,18 +26,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -61,7 +62,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -72,18 +73,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -91,7 +92,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
 
             let testButton = createElement({
-                tag: 'button',
+                tag:       'button',
                 container: 'testForm'
             });
 
@@ -111,7 +112,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 testButton.click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -122,18 +123,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -162,7 +163,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -173,18 +174,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -192,7 +193,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
 
             let testButton = createElement({
-                tag: 'button',
+                tag:       'button',
                 container: 'testForm'
             });
 
@@ -216,7 +217,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 testButton.click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -227,18 +228,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -266,7 +267,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#cancel?token=${token}`);
+                    assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
         });
@@ -277,11 +278,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testLink = createElement({
-                tag: 'a',
-                id: 'testLink',
+                tag:       'a',
+                id:        'testLink',
                 container: 'testContainer',
-                props: {
-                    href: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                props:     {
+                    href: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 }
             });
 
@@ -303,7 +304,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testLink).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -314,25 +315,25 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     },
 
                     {
                         tag: 'button',
-                        id: 'testButton'
+                        id:  'testButton'
                     }
                 ]
             });
@@ -355,7 +356,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -366,11 +367,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testLink = createElement({
-                tag: 'a',
-                id: 'testLink',
+                tag:       'a',
+                id:        'testLink',
                 container: 'testContainer',
-                props: {
-                    href: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                props:     {
+                    href: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 }
             });
 
@@ -392,7 +393,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 testLink.click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -403,25 +404,25 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     },
 
                     {
                         tag: 'button',
-                        id: 'testButton'
+                        id:  'testButton'
                     }
                 ]
             });
@@ -438,7 +439,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function() : window {
+            window.open = function overrideWindowOpen() : any {
 
                 openCount += 1;
 
@@ -463,7 +464,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                     window.open = windowOpen;
                 });
             });
@@ -475,11 +476,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testLink = createElement({
-                tag: 'a',
-                id: 'testLink',
+                tag:       'a',
+                id:        'testLink',
                 container: 'testContainer',
-                props: {
-                    href: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                props:     {
+                    href: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 }
             });
 
@@ -495,7 +496,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function() : window {
+            window.open = function overrideWindowOpen() : any {
 
                 openCount += 1;
 
@@ -521,7 +522,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.open = windowOpen;
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -533,18 +534,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -563,13 +564,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -580,23 +581,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -615,13 +616,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
-                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -632,18 +633,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -669,7 +670,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -680,18 +681,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -711,13 +712,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -728,23 +729,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -764,13 +765,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).addEventListener('click', (event : Event) => {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
-                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -781,18 +782,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -820,7 +821,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -831,18 +832,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -863,14 +864,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                        window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                     }, 200);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -881,23 +882,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -918,14 +919,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                     }, 200);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -936,18 +937,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -968,14 +969,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                        window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
                     }, 200);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -983,7 +984,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a form container and click on the button, with a custom listener, initXO and startFlow with a url with no token in an ineligible browser', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
@@ -991,18 +992,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -1023,14 +1024,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     event.preventDefault();
                     window.paypal.checkout.initXO();
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                     }, 200);
                 });
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -1041,18 +1042,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -1091,18 +1092,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -1139,24 +1140,25 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
                 ]
             });
 
+            // eslint-disable-next-line promise/catch-or-return
             window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',
@@ -1186,13 +1188,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function() : window {
+                    window.open = function overrideWindowOpen() : any {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
 
                         let close = win.close;
-                        win.close = function() : void {
+                        win.close = function overrideWindowClose() : void {
                             let result = close.apply(this, arguments);
                             done();
                             return result;
@@ -1212,18 +1214,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let hash = uniqueID();
 
             let testForm = createElement({
-                tag: 'form',
+                tag:       'form',
                 container: 'testContainer',
-                id: 'testForm',
-                props: {
-                    action: `${window.paypal.config.checkoutUrl}&token=${token}#${hash}`
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
                 },
 
                 children: [
                     {
-                        tag: 'input',
+                        tag:   'input',
                         props: {
-                            name: 'token',
+                            name:  'token',
                             value: token
                         }
                     }
@@ -1257,13 +1259,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function() : window {
+                    window.open = function overrideWindowOpen() : any {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
 
                         let close = win.close;
-                        win.close = function() : void {
+                        win.close = function overrideWindowClose() : void {
                             let result = close.apply(this, arguments);
                             done();
                             return result;

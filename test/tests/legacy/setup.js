@@ -1,11 +1,12 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { assert } from 'chai';
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal legacy checkout setup/startflow on ${flow}`, () => {
+    describe(`paypal legacy checkout setup/startflow on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -26,7 +27,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -35,7 +36,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -48,7 +49,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -60,7 +61,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-                    assert.equal(urlHash, `#cancel?token=${token}`);
+                    assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
         });
@@ -68,7 +69,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call startFlow in an ineligible browser', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
@@ -83,7 +84,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -92,7 +93,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+                    assert.equal(urlHash, `#testCheckoutUrl?token=${ token }`);
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
                 });
             });
@@ -101,7 +102,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call startFlow in an ineligible browser in Intranet Mode', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE11_USER_AGENT,
+                value:        IE11_USER_AGENT,
                 configurable: true
             });
             window.document.documentMode = 11;
@@ -117,7 +118,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -126,7 +127,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#testCheckoutUrl?token=${token}`);
+                    assert.equal(urlHash, `#testCheckoutUrl?token=${ token }`);
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
                 });
             });
@@ -141,8 +142,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -150,7 +151,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -164,8 +165,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${window.paypal.checkout.urlPrefix}${token}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ window.paypal.checkout.urlPrefix }${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -173,7 +174,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -186,10 +187,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             return window.paypal.checkout.setup('merchantID', {
 
                 environment: 'test',
-                container: 'testContainer',
+                container:   'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -197,7 +198,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -210,10 +211,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             return window.paypal.checkout.setup('merchantID', {
 
                 environment: 'THISISINVALID',
-                container: 'testContainer',
+                container:   'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -221,7 +222,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -240,9 +241,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return true;
                 },
 
-                click(event) {
+                click() {
                     clicked = true;
-                    window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                    window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                 }
 
             }).then(() => {
@@ -254,7 +255,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -271,7 +272,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return false;
                 },
 
-                click(event) {
+                click() {
                     clicked = true;
                 }
 
@@ -301,7 +302,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call startFlow with a url in an ineligible browser', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
@@ -311,8 +312,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                click() {
+                    window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                 }
 
             }).then(() => {
@@ -320,7 +321,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -333,8 +334,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
-                    window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                click() {
+                    window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
                 }
 
             }).then(() => {
@@ -342,7 +343,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -350,7 +351,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call startFlow with a url with no token in an ineligible browser', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
@@ -358,7 +359,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(`#fullpageRedirectUrl`);
                 }
 
@@ -380,7 +381,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
 
                     window.paypal.checkout.initXO();
 
@@ -397,7 +398,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -411,12 +412,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
 
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${token}#${hash}`);
+                        window.paypal.checkout.startFlow(`${ token }#${ hash }`);
                     }, 100);
                 }
 
@@ -425,7 +426,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -433,7 +434,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         it('should render a button into a container and click on the button, then call initXO, then startFlow in an ineligible browser', () => {
 
             Object.defineProperty(window.navigator, 'userAgent', {
-                value: IE8_USER_AGENT,
+                value:        IE8_USER_AGENT,
                 configurable: true
             });
 
@@ -443,11 +444,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${token}`);
+                        window.paypal.checkout.startFlow(`#fullpageRedirectUrl?token=${ token }`);
                     }, 100);
                 }
 
@@ -456,7 +457,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${token}`);
+                    assert.equal(urlHash, `#fullpageRedirectUrl?token=${ token }`);
                 });
             });
         });
@@ -469,11 +470,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${CHILD_REDIRECT_URI}#${hash}`);
+                        window.paypal.checkout.startFlow(`${ CHILD_REDIRECT_URI }#${ hash }`);
                     }, 100);
                 }
 
@@ -482,7 +483,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -496,12 +497,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
 
                     window.paypal.checkout.initXO();
 
                     setTimeout(() => {
-                        window.paypal.checkout.startFlow(`${window.paypal.config.checkoutUrl}&token=${token}#${hash}`);
+                        window.paypal.checkout.startFlow(`${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`);
                     }, 100);
                 }
 
@@ -510,7 +511,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY&hash=${hash}`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY&hash=${ hash }`);
                 });
             });
         });
@@ -523,7 +524,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.initXO();
                     window.paypal.checkout.startFlow(token);
                 }
@@ -533,28 +534,29 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
 
         it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
 
+            // eslint-disable-next-line promise/catch-or-return
             window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
 
                     if (flow === 'popup') {
                         let open = window.open;
-                        window.open = function() : window {
+                        window.open = function overrideWindowOpen() : any {
                             window.open = open;
 
                             let win = window.open.apply(this, arguments);
 
                             let close = win.close;
-                            win.close = function() : void {
+                            win.close = function overrideWindowClose() : void {
                                 let result = close.apply(this, arguments);
                                 done();
                                 return result;
@@ -593,7 +595,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
                     window.paypal.checkout.startFlow(token);
                 }
 
@@ -602,7 +604,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -613,7 +615,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) {
+                click() {
 
                     window.paypal.checkout.initXO();
 
@@ -638,17 +640,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 container: 'testContainer',
 
-                click(event) : void {
+                click() : void {
 
                     if (flow === 'popup') {
                         let open = window.open;
-                        window.open = function() : window {
+                        window.open = function overrideWindowOpen() : any {
                             window.open = open;
 
                             let win = window.open.apply(this, arguments);
 
                             let close = win.close;
-                            win.close = function() : void {
+                            win.close = function overrideWindowClose() : void {
                                 let result = close.apply(this, arguments);
                                 done();
                                 return result;

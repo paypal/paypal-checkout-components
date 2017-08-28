@@ -52,7 +52,7 @@ export function isIosWebview(ua? : string = getUserAgent()) : boolean {
 
 export function isAndroidWebview(ua? : string = getUserAgent()) : boolean {
     if (isAndroid(ua)) {
-        return (/Version\/[\d\.]+/).test(ua) && !isOperaMini(ua);
+        return (/Version\/[\d.]+/).test(ua) && !isOperaMini(ua);
     }
     return false;
 }

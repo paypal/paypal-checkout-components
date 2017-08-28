@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
@@ -7,7 +8,7 @@ import { generateECToken, createTestContainer, destroyTestContainer, setupPopupB
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component popup bridge happy path on ${flow}`, () => {
+    describe(`paypal button component popup bridge happy path on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();
@@ -112,10 +113,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window);
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                 });
             });
         });
@@ -138,7 +139,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     }).catch(done);
                 },
 
-                onCancel(data, actions) : void {
+                onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
@@ -165,7 +166,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#successUrl`);
@@ -194,10 +195,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window);
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    assert.equal(urlHash, `#cancel?token=${token}`);
+                    assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
         });
@@ -215,7 +216,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return token;
                 },
 
-                onAuthorize(data, actions) : void {
+                onAuthorize() : void {
                     return done(new Error('Expected onAuthorize to not be called'));
                 },
 
@@ -249,7 +250,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return actions.redirect(window, '#cancelUrl');
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#cancelUrl`);
@@ -435,7 +436,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let checkoutToken = generateECToken();
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${checkoutToken}`) !== -1);
+                assert.isOk(url.indexOf(`token=${ checkoutToken }`) !== -1);
                 assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                 assert.isOk(url.indexOf(`&ba_token=`) === -1);
                 assert.isOk(url.indexOf(`?ba_token=`) === -1);
@@ -451,7 +452,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return checkoutToken;
                 },
 
-                onAuthorize(data) : void {
+                onAuthorize() : void {
                     if (flow === 'iframe') {
                         return done();
                     } else {
@@ -471,7 +472,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let paymentID = generatePaymentID();
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${paymentID}`) !== -1);
+                assert.isOk(url.indexOf(`token=${ paymentID }`) !== -1);
                 assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                 assert.isOk(url.indexOf(`&ba_token=`) === -1);
                 assert.isOk(url.indexOf(`?ba_token=`) === -1);
@@ -487,7 +488,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return paymentID;
                 },
 
-                onAuthorize(data) : void {
+                onAuthorize() : void {
                     if (flow === 'iframe') {
                         return done();
                     } else {
@@ -507,7 +508,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let billingToken = generateBillingToken();
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`ba_token=${billingToken}`) !== -1);
+                assert.isOk(url.indexOf(`ba_token=${ billingToken }`) !== -1);
                 assert.isOk(url.indexOf(`billingurl=true`) !== -1);
                 assert.isOk(url.indexOf(`&token=`) === -1);
                 assert.isOk(url.indexOf(`?token=`) === -1);
@@ -523,7 +524,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return billingToken;
                 },
 
-                onAuthorize(data) : void {
+                onAuthorize() : void {
                     if (flow === 'iframe') {
                         return done();
                     } else {
@@ -571,6 +572,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             destroyPopupBridge();
 
+            // eslint-disable-next-line promise/catch-or-return
             window.paypal.Button.render({
 
                 test: { flow, action: 'checkout', delay: 50, bridge: true },
@@ -587,7 +589,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return done(new Error('Expected onCancel to not be called'));
                 }
 
-            }, '#testContainer').then(button => {
+            }, '#testContainer').then(() => {
 
                 setupPopupBridge();
             });
@@ -620,6 +622,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let token = generateECToken();
 
+                // eslint-disable-next-line promise/catch-or-return
                 window.paypal.Button.render({
 
                     test: { flow, action: 'popout', bridge: true },
@@ -632,10 +635,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return actions.redirect(window);
                     }
 
-                }, '#testContainer').then(button => {
+                }, '#testContainer').then(() => {
 
                     return onHashChange().then(urlHash => {
-                        assert.equal(urlHash, `#return?token=${token}&PayerID=YYYYYYYYYYYYY`);
+                        assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
                     });
                 });
             });

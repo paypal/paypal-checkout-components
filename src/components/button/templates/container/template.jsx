@@ -107,12 +107,13 @@ function getSizes({ containerWidth, tagline, fundingicons }) : { [string] : { wi
     return {
         ...sizes,
         [ BUTTON_SIZE.RESPONSIVE ]: {
-            width: '100%',
+            width:  '100%',
             height: sizes[responsiveSize].height
         }
     };
 }
 
+// eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
     let style = props.style || {};

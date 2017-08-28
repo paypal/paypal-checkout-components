@@ -11,12 +11,12 @@ export let componentLogos = {
 
     pp: {
         white: pp_white,
-        blue: pp_blue
+        blue:  pp_blue
     },
 
     paypal: {
         white: paypal_white,
-        blue: paypal_blue
+        blue:  paypal_blue
     },
 
     credit: {
@@ -25,6 +25,6 @@ export let componentLogos = {
 
     venmo: {
         white: venmo_white,
-        blue: venmo_blue
+        blue:  venmo_blue
     }
 };

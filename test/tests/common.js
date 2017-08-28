@@ -1,11 +1,12 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed } from 'cross-domain-utils/src';
 
 window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
-    type: 'number',
+    type:     'number',
     required: false,
     def() : number {
         return 60 * 1000;
@@ -17,19 +18,19 @@ window.paypal.postRobot.CONFIG.ACK_TIMEOUT = 60 * 1000;
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
 
-    window.console[level] = function() : void {
+    window.console[level] = function log() : void {
 
         let date = new Date();
         let args = Array.prototype.slice.call(arguments);
 
-        args.unshift(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`);
+        args.unshift(`${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() }:${ date.getMilliseconds() }`);
 
         return original.apply(this, args);
     };
 }
 
 export function onHashChange() : ZalgoPromise<string> {
-    return new ZalgoPromise((resolve, reject) => {
+    return new ZalgoPromise(resolve => {
         let currentHash = window.location.hash;
 
         function listener() {
@@ -50,28 +51,28 @@ export function delay(time : number) : ZalgoPromise<void> {
 }
 
 export function uniqueID(length : number = 8, chars : string = '0123456789abcdefhijklmnopqrstuvwxyz') : string {
-    return new Array(length + 1).join('x').replace(/x/g, item => {
+    return new Array(length + 1).join('x').replace(/x/g, () => {
         return chars.charAt(Math.floor(Math.random() * chars.length));
     });
 }
 
 export function generateECToken() : string {
-    return `EC-${uniqueID(17).toUpperCase()}`;
+    return `EC-${ uniqueID(17).toUpperCase() }`;
 }
 
 export function generatePaymentID() : string {
-    return `PAY-${uniqueID(20).toUpperCase()}`;
+    return `PAY-${ uniqueID(20).toUpperCase() }`;
 }
 
 export function generateBillingToken() : string {
-    return `BA-${uniqueID(17).toUpperCase()}`;
+    return `BA-${ uniqueID(17).toUpperCase() }`;
 }
 
 export function generateExperienceToken() : string {
     return uniqueID(17).toUpperCase();
 }
 
-export const CHILD_REDIRECT_URI = `${window.paypal.config.paypalUrl}/base/test/windows/redirect/index.htm`;
+export const CHILD_REDIRECT_URI = `${ window.paypal.config.paypalUrl }/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 
@@ -115,7 +116,7 @@ export function createElement(options : Object) : HTMLElement {
         }
 
         if (!container) {
-            throw new Error(`Could not find container: ${containerName}`);
+            throw new Error(`Could not find container: ${ containerName }`);
         }
 
         container.appendChild(element);
@@ -174,7 +175,7 @@ export function getElement(el : string | HTMLElement, container : HTMLElement | 
         element = container.querySelector(el);
 
         if (!element) {
-            throw new Error(`Can not find element: ${el}`);
+            throw new Error(`Can not find element: ${ el }`);
         }
     } else {
         element = el;
@@ -192,7 +193,7 @@ export function getElements(selector : string, container : HTMLElement | Documen
     let elements = container.querySelectorAll(selector);
 
     if (!elements) {
-        throw new Error(`Can not find element: ${selector}`);
+        throw new Error(`Can not find element: ${ selector }`);
     }
 
     return elements;
@@ -201,7 +202,7 @@ export function getElements(selector : string, container : HTMLElement | Documen
 
 export function createTestContainer() : HTMLElement {
     return createElement({
-        id: 'testContainer',
+        id:        'testContainer',
         container: document.body
     });
 }
@@ -215,8 +216,8 @@ patchXmlHttpRequest();
 export function getLoggerApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri: window.paypal.config.loggerUrl,
-        data: {},
+        uri:    window.paypal.config.loggerUrl,
+        data:   {},
         ...options
     });
 }
@@ -224,7 +225,7 @@ export function getLoggerApiMock(options : Object = {}) : Object {
 export function getAuthApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri: window.paypal.config.authApiUrl,
+        uri:    window.paypal.config.authApiUrl,
         handler({ headers, data }) : { access_token : string } {
 
             if (!headers.authorization) {
@@ -232,11 +233,11 @@ export function getAuthApiMock(options : Object = {}) : Object {
             }
 
             if (!headers.authorization.match(/^Basic .+$/)) {
-                throw new Error(`Expected authorization header to be Basic XXXX, got "${headers.authorization}"`);
+                throw new Error(`Expected authorization header to be Basic XXXX, got "${ headers.authorization }"`);
             }
 
             if (!data.grant_type === 'client_credentials') {
-                throw new Error(`Expected grant_type to be client_credentials, got "${data.grant_type}"`);
+                throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
             }
 
             return {
@@ -250,7 +251,7 @@ export function getAuthApiMock(options : Object = {}) : Object {
 export function getPaymentApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri: window.paypal.config.paymentApiUrl,
+        uri:    window.paypal.config.paymentApiUrl,
         handler({ data, headers }) : { id : string } {
 
             if (!headers.authorization) {
@@ -258,7 +259,7 @@ export function getPaymentApiMock(options : Object = {}) : Object {
             }
 
             if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
             }
 
             if (!data.intent) {
@@ -296,15 +297,15 @@ export function getPaymentApiMock(options : Object = {}) : Object {
 export function getBillingApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri: window.paypal.config.billingApiUrl,
-        handler({ data, headers }) : { token_id : string } {
+        uri:    window.paypal.config.billingApiUrl,
+        handler({ headers }) : { token_id : string } {
 
             if (!headers.authorization) {
                 throw new Error(`Expected authorization header for auth api request`);
             }
 
             if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
             }
 
             return {
@@ -318,15 +319,15 @@ export function getBillingApiMock(options : Object = {}) : Object {
 export function getExperienceApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri: window.paypal.config.experienceApiUrl,
-        handler({ data, headers }) : { id : string } {
+        uri:    window.paypal.config.experienceApiUrl,
+        handler({ headers }) : { id : string } {
 
             if (!headers.authorization) {
                 throw new Error(`Expected authorization header for auth api request`);
             }
 
             if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`);
+                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
             }
 
             return {
@@ -346,15 +347,15 @@ getExperienceApiMock().listen();
 
 window.karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);
 
-window.console.karma = function() {
+window.console.karma = function consoleKarma() {
     if (window.karma) {
         window.karma.log('debug', arguments);
     }
-    console.log.apply(console, arguments);
+    console.log.apply(console, arguments); // eslint-disable-line no-console
 };
 
 window.debug = () => {
-    debugger; // eslint-disable-line
+    debugger; // eslint-disable-line no-debugger
 };
 
 let isClick = false;
@@ -371,13 +372,13 @@ function doClick() {
 
 
 let HTMLElementClick = window.HTMLElement.prototype.click;
-window.HTMLElement.prototype.click = function() : void {
+window.HTMLElement.prototype.click = function overrideHTMLElementClick() : void {
     doClick();
     return HTMLElementClick.apply(this, arguments);
 };
 
 let windowOpen = window.open;
-window.open = function() : any {
+window.open = function patchedWindowOpen() : any {
 
     if (!isClick) {
         let win : Object = {
@@ -386,10 +387,10 @@ window.open = function() : any {
                 // pass
             },
             location: {
-                href: '',
+                href:     '',
                 pathname: '',
                 protocol: '',
-                host: '',
+                host:     '',
                 hostname: ''
             }
         };
@@ -420,14 +421,14 @@ export function preventOpenWindow(flow : string) {
 
         let documentCreateElement = document.createElement;
         // $FlowFixMe
-        document.createElement = (name : string) => { // $FlowFixMe
+        document.createElement = () => { // $FlowFixMe
             document.createElement = documentCreateElement;
             throw new Error('Can not create element');
         };
 
     } else {
 
-        throw new Error(`Flow not recognized: ${flow}`);
+        throw new Error(`Flow not recognized: ${ flow }`);
     }
 }
 
@@ -443,7 +444,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
             document.createElement = documentCreateElement;
         };
 
-        window.open = function() : any {
+        window.open = function patchedWindowOpen() : any {
             let win = winOpen.apply(this, arguments);
             reset();
             resolve(win);
@@ -451,7 +452,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
         };
 
         // $FlowFixMe
-        document.createElement = function(tagName) : HTMLElement {
+        document.createElement = function docCreateElement(tagName) : HTMLElement {
             let el = documentCreateElement.apply(this, arguments);
 
             if (tagName && tagName.toLowerCase() === 'iframe') {
@@ -533,7 +534,7 @@ function parseUrl(url : string) : Object {
     }
 
     return {
-        url: serverUrl,
+        url:   serverUrl,
         query: params,
         hash
     };
@@ -561,15 +562,15 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
                 if (isAuthorize) {
                     queryItems.opType = 'payment';
                     queryItems.payerId = 'YYYYYYYYYYYYY';
-                    queryItems.redirect_uri = `#return?token=${queryItems.token}&PayerID=YYYYYYYYYYYYY`;
+                    queryItems.redirect_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
                     if (hash) {
-                        queryItems.redirect_uri = `${queryItems.redirect_uri}&hash=${hash}`;
+                        queryItems.redirect_uri = `${ queryItems.redirect_uri }&hash=${ hash }`;
                     }
                 } else {
                     queryItems.opType = 'cancel';
-                    queryItems.redirect_uri = `#cancel?token=${queryItems.token}`;
+                    queryItems.redirect_uri = `#cancel?token=${ queryItems.token }`;
                     if (hash) {
-                        queryItems.redirect_uri = `${queryItems.redirect_uri}&hash=${hash}`;
+                        queryItems.redirect_uri = `${ queryItems.redirect_uri }&hash=${ hash }`;
                     }
                 }
 

@@ -11,11 +11,11 @@ import { btoa } from 'Base64';
 function expandContentText(contentText : string, { color, logoColor } : { color : string, logoColor : string }) : string {
     return contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
         if (name) {
-            return `<img class="logo logo-${name} logo-${name}-${color}"
-                        src="data:image/svg+xml;base64,${btoa(componentLogos[name][logoColor])}"
-                        alt="${name}">`;
+            return `<img class="logo logo-${ name } logo-${ name }-${ color }"
+                        src="data:image/svg+xml;base64,${ btoa(componentLogos[name][logoColor]) }"
+                        alt="${ name }">`;
         } else if (text && text.trim()) {
-            return `<span class="text">${text}</span>`;
+            return `<span class="text">${ text }</span>`;
         } else {
             return text;
         }
@@ -23,7 +23,7 @@ function expandContentText(contentText : string, { color, logoColor } : { color 
 }
 
 function removeBranding(contentText : string) : string {
-    return contentText.replace('${pp}', '').trim().replace('${paypal}', '').replace(/ +/g, ' ');
+    return contentText.replace('${pp}', '').trim().replace('${paypal}', '').replace(/ +/g, ' '); // eslint-disable-line no-template-curly-in-string
 }
 
 function parseLocale(locale : string) : { country : string, lang : string } {
@@ -57,7 +57,9 @@ function normalizeProps(props : Object) : Object {
     } = style;
 
     // Remove this once xo-buttonjs is pushed
-    if (dual === true) { dual = 'venmo'; }
+    if (dual === true) {
+        dual = 'venmo';
+    }
 
     if (dual && !branding && !getButtonConfig(dual, 'allowUnbranded')) {
         dual = '';
@@ -148,8 +150,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let buttonHTML = determineButtons({ label, color, dual }).map(button => {
         return buttonTemplate({
-            label: button.label,
-            color: button.color,
+            label:  button.label,
+            color:  button.color,
             isDual: Boolean(dual),
             locale,
             branding

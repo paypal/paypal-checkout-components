@@ -49,7 +49,7 @@ export const BUTTON_SHAPE = {
 };
 
 export const BRANDING = {
-    BRANDED: 'branded',
+    BRANDED:   'branded',
     UNBRANDED: 'unbranded'
 };
 

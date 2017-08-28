@@ -7,11 +7,11 @@ import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 patchXmlHttpRequest();
 
 $mockEndpoint.register({
-    method: 'POST',
-    uri: '/legacy/complete',
+    method:  'POST',
+    uri:     '/legacy/complete',
     handler: () => ({
         type: 'redirect',
-        url: `#return`
+        url:  `#return`
     })
 }).expectCalls();
 

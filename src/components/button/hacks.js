@@ -61,7 +61,7 @@ patchMethod(Button, 'render', ({ original, context, args }) => {
 
                 let ctx = {
                     props: {
-                        env: paymentContext.props.env,
+                        env:    paymentContext.props.env,
                         client: paymentContext.props.client
                     }
                 };
@@ -82,19 +82,17 @@ patchMethod(Button, 'render', ({ original, context, args }) => {
                     return resolve(result);
                 }
             });
-        });    
+        });
     }
 
     return original.apply(context, args);
 });
 
-
-
 if (Button.isChild()) {
 
     let debounce = false;
 
-    patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
+    patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ , props ] }) => {
 
         if (debounce) {
             $logger.warn('button_mutliple_click_debounce');
@@ -105,7 +103,7 @@ if (Button.isChild()) {
 
         for (let methodName of [ 'onAuthorize', 'onCancel', 'onError', 'onClose' ]) {
             let original = props[methodName];
-            props[methodName] = function() : mixed {
+            props[methodName] = function unDebounce() : mixed {
                 debounce = false;
                 if (original) {
                     return original.apply(this, arguments);
@@ -130,7 +128,7 @@ if (Button.isChild()) {
             }
         });
 
-        patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
+        patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
             if (enabled) {
                 return callOriginal();
             }
@@ -138,7 +136,7 @@ if (Button.isChild()) {
     }
 
     if (isIE() && getDomainSetting('ie_full_page')) {
-        Checkout.renderTo = (win, props) => {
+        Checkout.renderTo = (win) => {
             $logger.info('force_ie_full_page');
             $logger.flush();
 
@@ -147,6 +145,8 @@ if (Button.isChild()) {
             });
 
             checkout.delegate(win);
+
+            // eslint-disable-next-line promise/catch-or-return
             checkout.openContainer().then(() => {
                 checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
                 checkout.showContainer();
@@ -161,10 +161,10 @@ if (Button.isChild()) {
     }
 
     if (getDomainSetting('allow_full_page_fallback')) {
-        patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ win, props ] }) => {
+        patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
             return callOriginal().catch(err => {
                 if (err instanceof xcomponent.PopupOpenError) {
-                    window.xprops.payment().then(token => {
+                    return window.xprops.payment().then(token => {
                         window.top.location = extendUrl(config.checkoutUrl, { token });
                     });
                 } else {

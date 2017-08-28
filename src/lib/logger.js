@@ -26,13 +26,13 @@ export function initLogger() {
     $logger.addPayloadBuilder(() => {
         return {
             referer: getRefererDomain(),
-            host: window.location.host,
-            path: window.location.pathname,
-            env: config.env,
+            host:    window.location.host,
+            path:    window.location.pathname,
+            env:     config.env,
             country: config.locale.country,
-            lang: config.locale.lang,
-            uid: getCommonSessionID(),
-            ver: __MINOR_VERSION__
+            lang:    config.locale.lang,
+            uid:     getCommonSessionID(),
+            ver:     __MINOR_VERSION__
         };
     });
 
@@ -44,12 +44,12 @@ export function initLogger() {
 
     $logger.addTrackingBuilder(() => {
         return {
-            [ FPTI.KEY.FEED ]: FPTI.FEED.CHECKOUTJS,
-            [ FPTI.KEY.DATA_SOURCE ]: FPTI.DATA_SOURCE.CHECKOUT,
+            [ FPTI.KEY.FEED ]:         FPTI.FEED.CHECKOUTJS,
+            [ FPTI.KEY.DATA_SOURCE ]:  FPTI.DATA_SOURCE.CHECKOUT,
             [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
-            [ FPTI.KEY.SESSION_UID ]: getCommonSessionID(),
-            [ FPTI.KEY.CONTEXT_ID ]: getCommonSessionID(),
-            [ FPTI.KEY.REFERER ]: getRefererDomain()
+            [ FPTI.KEY.SESSION_UID ]:  getCommonSessionID(),
+            [ FPTI.KEY.CONTEXT_ID ]:   getCommonSessionID(),
+            [ FPTI.KEY.REFERER ]:      getRefererDomain()
         };
     });
 
@@ -60,18 +60,18 @@ export function initLogger() {
     }
 
     $logger.init({
-        uri: config.loggerUrl,
-        heartbeat: false,
+        uri:            config.loggerUrl,
+        heartbeat:      false,
         logPerformance: false,
         prefix,
-        logLevel: __DEFAULT_LOG_LEVEL__
+        logLevel:       __DEFAULT_LOG_LEVEL__
     });
 }
 
 export function setLogLevel(logLevel : string) {
 
     if ($logger.logLevels.indexOf(logLevel) === -1) {
-        throw new Error(`Invalid logLevel: ${logLevel}`);
+        throw new Error(`Invalid logLevel: ${ logLevel }`);
     }
 
     config.logLevel = logLevel;

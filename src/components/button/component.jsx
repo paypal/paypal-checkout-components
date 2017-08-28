@@ -1,5 +1,6 @@
 /* @flow */
 /* @jsx jsxDom */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as xcomponent from 'xcomponent/src';
@@ -51,6 +52,7 @@ let onRemember = () => {
     if (getStorage(storage => storage.remembered, false)) {
         promise.resolve();
     } else {
+        // eslint-disable-next-line promise/catch-or-return
         promise.then(() => {
             getStorage(storage => {
                 storage.remembered = true;
@@ -63,7 +65,7 @@ let onRemember = () => {
 
 export let Button = xcomponent.create({
 
-    tag: 'paypal-button',
+    tag:  'paypal-button',
     name: 'ppbutton',
 
     buildUrl(props) : string {
@@ -74,12 +76,14 @@ export let Button = xcomponent.create({
 
     contexts: {
         iframe: true,
-        popup: false
+        popup:  false
     },
 
     scrolling: false,
 
     containerTemplate,
+
+    // eslint-disable-next-line no-unused-vars
     prerenderTemplate({ props, jsxDom } : { props : Object, jsxDom : Function }) : HTMLElement {
 
         let template = (
@@ -97,6 +101,7 @@ export let Button = xcomponent.create({
                     onAuthorize: noop
                 });
 
+                // eslint-disable-next-line promise/catch-or-return
                 checkout.openContainer().then(() => {
                     checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
                     checkout.showContainer();
@@ -140,7 +145,7 @@ export let Button = xcomponent.create({
     props: {
 
         uid: {
-            type: 'string',
+            type:  'string',
             value: getCommonSessionID(),
             def() : string {
                 return getCommonSessionID();
@@ -149,8 +154,8 @@ export let Button = xcomponent.create({
         },
 
         env: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def() : string {
@@ -159,13 +164,13 @@ export let Button = xcomponent.create({
 
             validate(env) {
                 if (!config.paypalUrls[env]) {
-                    throw new Error(`Invalid env: ${env}`);
+                    throw new Error(`Invalid env: ${ env }`);
                 }
             }
         },
 
         client: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return {};
@@ -176,17 +181,17 @@ export let Button = xcomponent.create({
                 let env = props.env || config.env;
 
                 if (!client[env]) {
-                    throw new Error(`Client ID not found for env: ${env}`);
+                    throw new Error(`Client ID not found for env: ${ env }`);
                 }
 
                 if (client[env].match(/^(.)\1+$/)) {
-                    throw new Error(`Invalid client ID: ${client[env]}`);
+                    throw new Error(`Invalid client ID: ${ client[env] }`);
                 }
             }
         },
 
         source: {
-            type: 'string',
+            type:     'string',
             required: false,
             def() : string {
                 return SOURCE.MANUAL;
@@ -194,13 +199,13 @@ export let Button = xcomponent.create({
         },
 
         prefetchLogin: {
-            type: 'boolean',
+            type:     'boolean',
             required: false
         },
 
         stage: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: true,
 
             def(props) : ?string {
@@ -213,7 +218,7 @@ export let Button = xcomponent.create({
         },
 
         braintree: {
-            type: 'object',
+            type:     'object',
             required: false,
             validate(braintree, props) {
 
@@ -239,11 +244,11 @@ export let Button = xcomponent.create({
         },
 
         payment: {
-            type: 'function',
+            type:     'function',
             required: true,
-            memoize: false,
-            timeout: __TEST__ ? 500 : 10 * 1000,
-            alias: 'billingAgreement',
+            memoize:  false,
+            timeout:  __TEST__ ? 500 : 10 * 1000,
+            alias:    'billingAgreement',
 
             decorate(original) : Function {
                 return function payment() : ZalgoPromise<string> {
@@ -253,7 +258,7 @@ export let Button = xcomponent.create({
                     let actions = {
                         request,
                         payment: {
-                            create: (options, experience) => {
+                            create: (options) => {
                                 return this.props.braintree
                                     ? this.props.braintree.then(client => {
                                         return client.createPayment(mapPaymentToBraintree(options.payment || options));
@@ -281,7 +286,7 @@ export let Button = xcomponent.create({
                     }
 
                     this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ])
-                        .timeout(timeout, new Error(`Timed out waiting ${timeout}ms for payment`))
+                        .timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`))
                         .then(token => {
 
                             if (!token) {
@@ -290,11 +295,11 @@ export let Button = xcomponent.create({
                             }
 
                             $logger.track({
-                                [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
-                                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.RECIEVE_PAYMENT,
+                                [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
+                                [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
                                 [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-                                [ FPTI.KEY.TOKEN ]: token,
-                                [ FPTI.KEY.CONTEXT_ID ]: token
+                                [ FPTI.KEY.TOKEN ]:        token,
+                                [ FPTI.KEY.CONTEXT_ID ]:   token
                             });
 
                             $logger.flush();
@@ -308,21 +313,21 @@ export let Button = xcomponent.create({
         },
 
         commit: {
-            type: 'boolean',
+            type:     'boolean',
             required: false
         },
 
         onRender: {
-            type: 'function',
+            type:      'function',
             promisify: true,
-            required: false,
+            required:  false,
             decorate(original) : Function {
-                return function() : mixed {
+                return function decorateOnRender() : mixed {
                     checkpoint('render_iframe_button', { version: true });
                     $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.LOAD,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_RENDER,
-                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.STATE ]:         FPTI.STATE.LOAD,
+                        [ FPTI.KEY.TRANSITION ]:    FPTI.TRANSITION.BUTTON_RENDER,
+                        [ FPTI.KEY.BUTTON_TYPE ]:   FPTI.BUTTON_TYPE.IFRAME,
                         [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
                     });
                     $logger.flush();
@@ -334,7 +339,7 @@ export let Button = xcomponent.create({
         },
 
         onAuth: {
-            type: 'function',
+            type:     'function',
             required: false,
 
             value() {
@@ -344,7 +349,7 @@ export let Button = xcomponent.create({
         },
 
         onRemembered: {
-            type: 'function',
+            type:     'function',
             required: false,
 
             value() {
@@ -354,11 +359,11 @@ export let Button = xcomponent.create({
         },
 
         onDisplay: {
-            type: 'function',
+            type:     'function',
             required: false,
 
             decorate(original) : Function {
-                return function() : ZalgoPromise<void> {
+                return function decorateOnDisplay() : ZalgoPromise<void> {
                     return ZalgoPromise.try(() => {
                         if (this.props.displayTo === USERS.REMEMBERED) {
                             $logger.info(`button_render_wait_for_remembered_user`);
@@ -380,11 +385,11 @@ export let Button = xcomponent.create({
         },
 
         onAuthorize: {
-            type: 'function',
+            type:     'function',
             required: true,
 
             decorate(original) : Function {
-                return function(data, actions) : void | ZalgoPromise<void> {
+                return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                     $logger.info('checkout_authorize');
 
@@ -403,7 +408,7 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
                     });
 
@@ -470,12 +475,12 @@ export let Button = xcomponent.create({
         },
 
         onCancel: {
-            type: 'function',
+            type:     'function',
             required: false,
-            noop: true,
+            noop:     true,
 
             decorate(original) : Function {
-                return function(data, actions) : void | ZalgoPromise<void> {
+                return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
 
                     $logger.info('checkout_cancel');
 
@@ -494,7 +499,7 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_CANCEL
                     });
 
@@ -515,10 +520,10 @@ export let Button = xcomponent.create({
         },
 
         onClick: {
-            type: 'function',
+            type:     'function',
             required: false,
             decorate(original) : Function {
-                return function() : void {
+                return function decorateOnClick() : void {
 
                     $logger.info('button_click');
 
@@ -537,8 +542,8 @@ export let Button = xcomponent.create({
                     });
 
                     $logger.track({
-                        [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_CLICK,
+                        [ FPTI.KEY.STATE ]:       FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_CLICK,
                         [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
                     });
 
@@ -557,23 +562,23 @@ export let Button = xcomponent.create({
         },
 
         locale: {
-            type: 'string',
-            required: false,
+            type:       'string',
+            required:   false,
             queryParam: 'locale.x',
 
             def() : string {
                 let { lang, country } = getBrowserLocale();
-                return `${lang}_${country}`;
+                return `${ lang }_${ country }`;
             },
 
             validate: validateButtonLocale
         },
 
         style: {
-            type: 'object',
-            required: false,
+            type:       'object',
+            required:   false,
             queryParam: true,
-            alias: 'buttonStyle',
+            alias:      'buttonStyle',
 
             def() : Object {
                 return {
@@ -589,7 +594,7 @@ export let Button = xcomponent.create({
         },
 
         displayTo: {
-            type: 'string',
+            type:     'string',
             required: false,
             def() : string {
                 return USERS.ALL;
@@ -597,12 +602,12 @@ export let Button = xcomponent.create({
         },
 
         validate: {
-            type: 'function',
+            type:     'function',
             required: false
         },
 
         logLevel: {
-            type: 'string',
+            type:     'string',
             required: false,
             get value() : string {
                 return config.logLevel;
@@ -610,18 +615,18 @@ export let Button = xcomponent.create({
         },
 
         popupBridge: {
-            type: 'object',
+            type:     'object',
             required: false,
             get value() : Object {
                 return {
-                    open: getPopupBridgeOpener(),
+                    open:        getPopupBridgeOpener(),
                     awaitOpener: awaitPopupBridgeOpener
                 };
             }
         },
 
         test: {
-            type: 'object',
+            type:     'object',
             required: false,
             def() : Object {
                 return { action: 'checkout' };
@@ -632,13 +637,14 @@ export let Button = xcomponent.create({
 
 if (Button.isChild()) {
 
+    // eslint-disable-next-line promise/catch-or-return
     getPageRenderTime().then(pageRenderTime => {
 
         if (pageRenderTime) {
             $logger.track({
-                [ FPTI.KEY.STATE ]: FPTI.STATE.BUTTON,
-                [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.BUTTON_LOAD,
-                [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME,
+                [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
+                [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_LOAD,
+                [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
                 [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
             });
 

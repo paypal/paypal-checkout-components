@@ -7,7 +7,7 @@ import { generateECToken, createTestContainer, destroyTestContainer } from '../c
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
-    describe(`paypal button component error cases on ${flow}`, () => {
+    describe(`paypal button component error cases on ${ flow }`, () => {
 
         beforeEach(() => {
             createTestContainer();

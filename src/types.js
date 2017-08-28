@@ -1,3 +1,4 @@
+/* @flow */
 
 declare var __FILE_VERSION__ : string;
 declare var __MINOR_VERSION__ : string;

@@ -28,7 +28,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
         beacon('bootstrap_error', {
             message: err ? err.toString() : 'undefined',
-            stack: err.stack || err.toString(),
+            stack:   err.stack || err.toString(),
             errtype: ({}).toString.call(err)
         });
 

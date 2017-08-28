@@ -66,6 +66,6 @@ export let checkRecognizedBrowser = once((state : string) => {
     }
 
     let { name, version, mobile, android, ios } = bowser;
-    $logger.info(`unrecognized_browser_${state}`, { name, version, mobile, android, ios });
+    $logger.info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
     $logger.flush();
 });

@@ -55,8 +55,8 @@ export function getSession<T>(handler : (state : Object) => T, mutate : boolean 
         } else {
 
             session = {
-                guid: uniqueID(),
-                state: {},
+                guid:    uniqueID(),
+                state:   {},
                 created: now
             };
         }

@@ -48,7 +48,7 @@ describe('paypal initial setup', () => {
             val,
             options: {
                 'data-paypal-checkout': '',
-                [ optKey ]: val
+                [ optKey ]:             val
             }
         }).toPromise();
     });
@@ -64,7 +64,7 @@ describe('paypal initial setup', () => {
             val,
             options: {
                 'data-paypal-checkout': '',
-                [ optKey ]: val
+                [ optKey ]:             val
             }
         }).toPromise();
     });
@@ -80,7 +80,7 @@ describe('paypal initial setup', () => {
             val,
             options: {
                 'data-paypal-checkout': '',
-                [ optKey ]: val
+                [ optKey ]:             val
             }
         }).toPromise();
     });
@@ -96,7 +96,7 @@ describe('paypal initial setup', () => {
             val,
             options: {
                 'data-paypal-checkout': '',
-                [ optKey ]: val
+                [ optKey ]:             val
             }
         }).toPromise();
     });
@@ -112,7 +112,7 @@ describe('paypal initial setup', () => {
             val,
             options: {
                 'data-paypal-checkout': '',
-                [ optKey ]: val
+                [ optKey ]:             val
             }
         }).toPromise();
     });

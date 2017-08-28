@@ -11,7 +11,7 @@ export function createPptmScript() {
         return;
     }
 
-    const alreadyDownloaded = !!getElement(PPTM_ID);
+    const alreadyDownloaded = Boolean(getElement(PPTM_ID));
 
     if (alreadyDownloaded) {
         $logger.warn(`pptm_tried_loading_twice`);
@@ -19,17 +19,17 @@ export function createPptmScript() {
     }
 
     $logger.track({
-        [ FPTI.KEY.STATE ]: FPTI.STATE.PPTM,
+        [ FPTI.KEY.STATE ]:      FPTI.STATE.PPTM,
         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.PPTM_LOAD
     });
 
     // Works essentially as a NOOP until opt-in
-    const fullUrl = `${config.pptmUrl}?id=${window.location.hostname}&t=xo`;
+    const fullUrl = `${ config.pptmUrl }?id=${ window.location.hostname }&t=xo`;
 
     loadScript(fullUrl, 0, { async: true, id: PPTM_ID }).then(() => {
 
         $logger.track({
-            [ FPTI.KEY.STATE ]: FPTI.STATE.PPTM,
+            [ FPTI.KEY.STATE ]:      FPTI.STATE.PPTM,
             [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.PPTM_LOADED
         });
 

@@ -33,7 +33,7 @@ export function redirect(url : string) : ZalgoPromise<void> {
         }
 
         if (config.env === ENV.TEST && urlWillRedirectPage(url)) {
-            return redir(window, `#fullpageRedirect?url=${url}`);
+            return redir(window, `#fullpageRedirect?url=${ url }`);
         }
 
         logRedirect(url);

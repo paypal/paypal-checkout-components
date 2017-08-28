@@ -59,17 +59,17 @@ function renderCheckout() {
         },
 
         onCancel: window.xprops.onCancel,
-        onError: window.xprops.onError,
-        commit: window.xprops.commit,
-        locale: window.xprops.locale,
-        test: {
+        onError:  window.xprops.onError,
+        commit:   window.xprops.commit,
+        locale:   window.xprops.locale,
+        test:     {
             action: action || 'checkout',
             ...checkout
         }
     });
 }
 
-getElement('#paypal-button', document).addEventListener('click', (event : Event) => {
+getElement('#paypal-button', document).addEventListener('click', () => {
 
     if (window.xprops.onClick) {
         window.xprops.onClick();
