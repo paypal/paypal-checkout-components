@@ -197,7 +197,7 @@
         "use strict";
         function responder() {
             function flush() {
-                if (loaded) for (;callbacks.length; ) callbacks.shift().call(null, err, res);
+                if (loaded) for (;callbacks.length; ) callbacks.shift()(err, res);
             }
             function respond(error, result) {
                 loaded = !0;
