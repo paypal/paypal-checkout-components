@@ -7,7 +7,7 @@
     "test": "gulp test",
     "postinstall": "node postinstall.js",
     "reinstall": "rm -rf node_modules flow-typed && npm install && flow-typed install",
-    "demo": "serve . --port 1337",
+    "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin"
   },
   "files": [
