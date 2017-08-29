@@ -4,9 +4,9 @@ import { config } from '../config';
 import { uniqueID, isLocalStorageEnabled } from './util';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';
-const SESSION_KEY = '__paypal_session__';
+const SESSION_KEY       = '__paypal_session__';
 
-export function getStorage<T>(handler : (storage : Object) => T, mutate : boolean = true) : T {
+export function getStorage<T>(handler : (storage : Object) => T) : T {
 
     let enabled = isLocalStorageEnabled();
     let storage;
@@ -25,18 +25,16 @@ export function getStorage<T>(handler : (storage : Object) => T, mutate : boolea
 
     let result = handler(storage);
 
-    if (mutate) {
-        if (enabled) {
-            window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
-        } else {
-            window.__pp_localstorage__ = storage;
-        }
+    if (enabled) {
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
+    } else {
+        window.__pp_localstorage__ = storage;
     }
 
     return result;
 }
 
-export function getSession<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
+export function getSession<T>(handler : (state : Object) => T) : T {
     return getStorage(storage => {
 
         let session = storage[SESSION_KEY];
@@ -62,17 +60,17 @@ export function getSession<T>(handler : (state : Object) => T, mutate : boolean 
         }
 
         return handler(session);
-    }, mutate);
+    });
 }
 
-export function getSessionState<T>(handler : (state : Object) => T, mutate : boolean = true) : T {
+export function getSessionState<T>(handler : (state : Object) => T) : T {
     return getSession(session => {
         return handler(session.state);
-    }, mutate);
+    });
 }
 
 export function getSessionID() : string {
-    return getSession(session => session.guid, false);
+    return getSession(session => session.guid);
 }
 
 export function getCommonSessionID() : string {

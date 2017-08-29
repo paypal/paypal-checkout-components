@@ -49,7 +49,7 @@ if (customButtonSelector) {
 let onRemember = () => {
     let promise = new ZalgoPromise();
 
-    if (getStorage(storage => storage.remembered, false)) {
+    if (getStorage(storage => storage.remembered)) {
         promise.resolve();
     } else {
         // eslint-disable-next-line promise/catch-or-return
