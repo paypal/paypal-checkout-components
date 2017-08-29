@@ -283,7 +283,7 @@ module.exports = {
         'flowtype/delimiter-dangle': [ 'error', 'never' ],
         'flowtype/generic-spacing': [ 'error', 'never' ],
         'flowtype/no-primitive-constructor-types': 'error',
-        'flowtype/no-weak-types': [ 'error', { 'any': false, 'Object': false, 'Function': false } ],
+        'flowtype/no-weak-types': [ 'error', { 'any': true, 'Object': false, 'Function': false } ],
         'flowtype/object-type-delimiter': [ 'error', 'comma' ],
         'flowtype/require-parameter-type': 'off',
         'flowtype/require-return-type': [ 'error', 'always', { 'annotateUndefined': 'never', 'excludeArrowFunctions': true } ],

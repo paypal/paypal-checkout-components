@@ -378,7 +378,7 @@ window.HTMLElement.prototype.click = function overrideHTMLElementClick() : void 
 };
 
 let windowOpen = window.open;
-window.open = function patchedWindowOpen() : any {
+window.open = function patchedWindowOpen() : CrossDomainWindowType {
 
     if (!isClick) {
         let win : Object = {
@@ -432,7 +432,7 @@ export function preventOpenWindow(flow : string) {
     }
 }
 
-export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<any> {
+export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPromise<CrossDomainWindowType> {
     return new ZalgoPromise((resolve, reject) => {
 
         let winOpen = window.open;
@@ -444,7 +444,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
             document.createElement = documentCreateElement;
         };
 
-        window.open = function patchedWindowOpen() : any {
+        window.open = function patchedWindowOpen() : CrossDomainWindowType {
             let win = winOpen.apply(this, arguments);
             reset();
             resolve(win);
@@ -487,7 +487,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
     });
 }
 
-export function onWindowClose(win : any) : ZalgoPromise<void> {
+export function onWindowClose(win : CrossDomainWindowType) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
         if (isWindowClosed(win)) {
             return resolve();
@@ -502,7 +502,7 @@ export function onWindowClose(win : any) : ZalgoPromise<void> {
     });
 }
 
-export function errorOnWindowOpen(win : any = window) {
+export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
 
     if (win.open.reset) {
         win.open.reset();
@@ -585,7 +585,7 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
     };
 }
 
-export function destroyPopupBridge(win : any = window) {
+export function destroyPopupBridge(win : SameDomainWindowType = window) {
     delete win.popupBridge;
 
     if (window.popupBridge) {

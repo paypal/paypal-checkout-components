@@ -30,7 +30,7 @@ export function onLegacyPaymentAuthorize(method : Function) : ZalgoPromise<void>
 
     return ZalgoPromise.try(() => {
         if (postRobot.bridge && !isPayPalDomain()) {
-            return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : any) => {
+            return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : CrossDomainWindowType) => {
                 return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);
             });
@@ -42,7 +42,7 @@ window.onLegacyPaymentAuthorize = onLegacyPaymentAuthorize;
 
 // Post-Bridge / Button
 
-window.watchForLegacyFallback = (win : any) => {
+window.watchForLegacyFallback = (win : SameDomainWindowType) => {
     let interval = setInterval(() => {
         try {
             let isLegacy = (win.document.body.innerHTML.indexOf('merchantpaymentweb') !== -1 ||

@@ -439,7 +439,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function overrideWindowOpen() : any {
+            window.open = function overrideWindowOpen() : CrossDomainWindowType {
 
                 openCount += 1;
 
@@ -496,7 +496,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openCount = 0;
 
             let windowOpen = window.open;
-            window.open = function overrideWindowOpen() : any {
+            window.open = function overrideWindowOpen() : CrossDomainWindowType {
 
                 openCount += 1;
 
@@ -1188,7 +1188,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function overrideWindowOpen() : any {
+                    window.open = function overrideWindowOpen() : CrossDomainWindowType {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);
@@ -1259,7 +1259,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 if (flow === 'popup') {
                     let open = window.open;
-                    window.open = function overrideWindowOpen() : any {
+                    window.open = function overrideWindowOpen() : CrossDomainWindowType {
                         window.open = open;
 
                         let win = window.open.apply(this, arguments);

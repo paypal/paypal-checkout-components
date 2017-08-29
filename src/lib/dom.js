@@ -232,7 +232,7 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
     return newUrl;
 }
 
-export function redirect(win : any = window, url : string) : ZalgoPromise<void> {
+export function redirect(win : CrossDomainWindowType = window, url : string) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
 
         $logger.info(`redirect`, { url });

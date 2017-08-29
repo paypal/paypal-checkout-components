@@ -7,7 +7,7 @@ import * as postRobot from 'post-robot/src';
 import { config } from '../config';
 import { isIEIntranet } from '../lib';
 
-postRobot.on('meta', ({ data } : { source : any, data : Object }) => {
+postRobot.on('meta', ({ data } : { source : CrossDomainWindowType, data : Object }) => {
 
     $logger.info(data.iframeEligible ?
         `lightbox_eligible_${ data.iframeEligibleReason }` :

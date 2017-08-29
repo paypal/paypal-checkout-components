@@ -126,7 +126,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
                         data.returnUrl = query.redirect_uri;
 
-                        actions.redirect = (win : any = window, redirectUrl : string = data.returnUrl) : ZalgoPromise<void> => {
+                        actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = data.returnUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
 
@@ -137,7 +137,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
                         data.cancelUrl = query.redirect_uri;
 
-                        actions.redirect = (win : any = window, redirectUrl : string = data.cancelUrl) : ZalgoPromise<void> => {
+                        actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = data.cancelUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);
                         };
 
@@ -171,7 +171,7 @@ export function setupPopupBridgeProxy(Checkout : Object) {
     };
 
     let renderTo = Checkout.renderTo;
-    Checkout.renderTo = function popupBridgeRenderTo(win : any, props : Object) : ZalgoPromise<void> {
+    Checkout.renderTo = function popupBridgeRenderTo(win : CrossDomainWindowType, props : Object) : ZalgoPromise<void> {
         return doRender(props, () => renderTo.apply(this, arguments));
     };
 

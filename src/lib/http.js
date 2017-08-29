@@ -9,7 +9,7 @@ type RequestOptionsType = {
     json? : Object,
     data? : { [key : string] : string },
     body? : string,
-    win? : any,
+    win? : SameDomainWindowType,
     timeout? : number
 };
 

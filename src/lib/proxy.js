@@ -6,7 +6,11 @@ import { isWindowClosed, getDomain } from 'cross-domain-utils/src';
 import { config } from '../config';
 import { noop } from './util';
 
-export function proxyMethod(name : string, win : any, originalMethod : Function) : Function {
+export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
+
+    if (!win) {
+        return originalMethod;
+    }
 
     if (getDomain() === config.paypalDomain) {
 

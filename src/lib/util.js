@@ -9,11 +9,12 @@ export function isPayPalDomain() : boolean {
     return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
+// eslint-disable-next-line flowtype/no-weak-types
 export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
 
     let cache : { [key : string] : R } = {};
 
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
     return function memoizedFunction(...args : Array<any>) : R {
 
         let key : string;
