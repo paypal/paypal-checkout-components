@@ -1,3 +1,4 @@
+/* @flow */
 
 import componentContentJSON from './content.json';
 

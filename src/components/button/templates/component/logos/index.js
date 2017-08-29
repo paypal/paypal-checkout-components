@@ -1,3 +1,4 @@
+/* @flow */
 
 import pp_white from './pp_white.svg';
 import pp_blue from './pp_blue.svg';
