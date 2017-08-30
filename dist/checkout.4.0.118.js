@@ -1273,37 +1273,6 @@
             }
             return result;
         }
-        function getAllFramesInWindow(win) {
-            var result = getAllChildFrames(win);
-            result.push(win);
-            for (var _iterator3 = getParents(win), _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref3;
-                if (_isArray3) {
-                    if (_i4 >= _iterator3.length) break;
-                    _ref3 = _iterator3[_i4++];
-                } else {
-                    _i4 = _iterator3.next();
-                    if (_i4.done) break;
-                    _ref3 = _i4.value;
-                }
-                var parent = _ref3;
-                result.push(parent);
-                for (var _iterator4 = getFrames(parent), _isArray4 = Array.isArray(_iterator4), _i5 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                    var _ref4;
-                    if (_isArray4) {
-                        if (_i5 >= _iterator4.length) break;
-                        _ref4 = _iterator4[_i5++];
-                    } else {
-                        _i5 = _iterator4.next();
-                        if (_i5.done) break;
-                        _ref4 = _i5.value;
-                    }
-                    var frame = _ref4;
-                    -1 === result.indexOf(frame) && result.push(frame);
-                }
-            }
-            return result;
-        }
         function getTop(win) {
             if (win) {
                 try {
@@ -1311,28 +1280,32 @@
                 } catch (err) {}
                 if (getParent(win) === win) return win;
                 try {
-                    if (isAncestorParent(window, win)) return window.top;
+                    if (isAncestorParent(window, win) && window.top) return window.top;
                 } catch (err) {}
                 try {
-                    if (isAncestorParent(win, window)) return window.top;
+                    if (isAncestorParent(win, window) && window.top) return window.top;
                 } catch (err) {}
-                for (var _iterator5 = getAllChildFrames(win), _isArray5 = Array.isArray(_iterator5), _i6 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
-                    var _ref5;
-                    if (_isArray5) {
-                        if (_i6 >= _iterator5.length) break;
-                        _ref5 = _iterator5[_i6++];
+                for (var _iterator3 = getAllChildFrames(win), _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray3) {
+                        if (_i4 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i4++];
                     } else {
-                        _i6 = _iterator5.next();
-                        if (_i6.done) break;
-                        _ref5 = _i6.value;
+                        _i4 = _iterator3.next();
+                        if (_i4.done) break;
+                        _ref3 = _i4.value;
                     }
-                    var frame = _ref5;
+                    var frame = _ref3;
                     try {
                         if (frame.top) return frame.top;
                     } catch (err) {}
                     if (getParent(frame) === frame) return frame;
                 }
             }
+        }
+        function getAllFramesInWindow(win) {
+            var top = getTop(win);
+            return getAllChildFrames(top).concat(top);
         }
         function isTop(win) {
             return win === getTop(win);
@@ -1380,9 +1353,9 @@
                 iframeFrames.splice(i, 1);
                 iframeWindows.splice(i, 1);
             }
-            for (var _i7 = 0; _i7 < iframeWindows.length; _i7++) if (isWindowClosed(iframeWindows[_i7])) {
-                iframeFrames.splice(_i7, 1);
-                iframeWindows.splice(_i7, 1);
+            for (var _i5 = 0; _i5 < iframeWindows.length; _i5++) if (isWindowClosed(iframeWindows[_i5])) {
+                iframeFrames.splice(_i5, 1);
+                iframeWindows.splice(_i5, 1);
             }
         }
         function linkFrameWindow(frame) {
@@ -1397,17 +1370,17 @@
             return win.navigator.mockUserAgent || win.navigator.userAgent;
         }
         function getFrameByName(win, name) {
-            for (var winFrames = getFrames(win), _iterator6 = winFrames, _isArray6 = Array.isArray(_iterator6), _i8 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator](); ;) {
-                var _ref6;
-                if (_isArray6) {
-                    if (_i8 >= _iterator6.length) break;
-                    _ref6 = _iterator6[_i8++];
+            for (var winFrames = getFrames(win), _iterator4 = winFrames, _isArray4 = Array.isArray(_iterator4), _i6 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray4) {
+                    if (_i6 >= _iterator4.length) break;
+                    _ref4 = _iterator4[_i6++];
                 } else {
-                    _i8 = _iterator6.next();
-                    if (_i8.done) break;
-                    _ref6 = _i8.value;
+                    _i6 = _iterator4.next();
+                    if (_i6.done) break;
+                    _ref4 = _i6.value;
                 }
-                var childFrame = _ref6;
+                var childFrame = _ref4;
                 try {
                     if (isSameDomain(childFrame) && childFrame.name === name && -1 !== winFrames.indexOf(childFrame)) return childFrame;
                 } catch (err) {}
@@ -1422,17 +1395,17 @@
         function findChildFrameByName(win, name) {
             var frame = getFrameByName(win, name);
             if (frame) return frame;
-            for (var _iterator7 = getFrames(win), _isArray7 = Array.isArray(_iterator7), _i9 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
-                var _ref7;
-                if (_isArray7) {
-                    if (_i9 >= _iterator7.length) break;
-                    _ref7 = _iterator7[_i9++];
+            for (var _iterator5 = getFrames(win), _isArray5 = Array.isArray(_iterator5), _i7 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                var _ref5;
+                if (_isArray5) {
+                    if (_i7 >= _iterator5.length) break;
+                    _ref5 = _iterator5[_i7++];
                 } else {
-                    _i9 = _iterator7.next();
-                    if (_i9.done) break;
-                    _ref7 = _i9.value;
+                    _i7 = _iterator5.next();
+                    if (_i7.done) break;
+                    _ref5 = _i7.value;
                 }
-                var childFrame = _ref7, namedFrame = findChildFrameByName(childFrame, name);
+                var childFrame = _ref5, namedFrame = findChildFrameByName(childFrame, name);
                 if (namedFrame) return namedFrame;
             }
         }
@@ -1456,17 +1429,17 @@
             if (actualParent) return actualParent === parent;
             if (child === parent) return !1;
             if (getTop(child) === child) return !1;
-            for (var _iterator9 = getFrames(parent), _isArray9 = Array.isArray(_iterator9), _i11 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
-                var _ref9;
-                if (_isArray9) {
-                    if (_i11 >= _iterator9.length) break;
-                    _ref9 = _iterator9[_i11++];
+            for (var _iterator7 = getFrames(parent), _isArray7 = Array.isArray(_iterator7), _i9 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+                var _ref7;
+                if (_isArray7) {
+                    if (_i9 >= _iterator7.length) break;
+                    _ref7 = _iterator7[_i9++];
                 } else {
-                    _i11 = _iterator9.next();
-                    if (_i11.done) break;
-                    _ref9 = _i11.value;
+                    _i9 = _iterator7.next();
+                    if (_i9.done) break;
+                    _ref7 = _i9.value;
                 }
-                if (_ref9 === child) return !0;
+                if (_ref7 === child) return !0;
             }
             return !1;
         }
@@ -1477,27 +1450,27 @@
             return Boolean(getParent(window));
         }
         function anyMatch(collection1, collection2) {
-            for (var _iterator10 = collection1, _isArray10 = Array.isArray(_iterator10), _i12 = 0, _iterator10 = _isArray10 ? _iterator10 : _iterator10[Symbol.iterator](); ;) {
-                var _ref10;
-                if (_isArray10) {
-                    if (_i12 >= _iterator10.length) break;
-                    _ref10 = _iterator10[_i12++];
+            for (var _iterator8 = collection1, _isArray8 = Array.isArray(_iterator8), _i10 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
+                var _ref8;
+                if (_isArray8) {
+                    if (_i10 >= _iterator8.length) break;
+                    _ref8 = _iterator8[_i10++];
                 } else {
-                    _i12 = _iterator10.next();
-                    if (_i12.done) break;
-                    _ref10 = _i12.value;
+                    _i10 = _iterator8.next();
+                    if (_i10.done) break;
+                    _ref8 = _i10.value;
                 }
-                for (var item1 = _ref10, _iterator11 = collection2, _isArray11 = Array.isArray(_iterator11), _i13 = 0, _iterator11 = _isArray11 ? _iterator11 : _iterator11[Symbol.iterator](); ;) {
-                    var _ref11;
-                    if (_isArray11) {
-                        if (_i13 >= _iterator11.length) break;
-                        _ref11 = _iterator11[_i13++];
+                for (var item1 = _ref8, _iterator9 = collection2, _isArray9 = Array.isArray(_iterator9), _i11 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
+                    var _ref9;
+                    if (_isArray9) {
+                        if (_i11 >= _iterator9.length) break;
+                        _ref9 = _iterator9[_i11++];
                     } else {
-                        _i13 = _iterator11.next();
-                        if (_i13.done) break;
-                        _ref11 = _i13.value;
+                        _i11 = _iterator9.next();
+                        if (_i11.done) break;
+                        _ref9 = _i11.value;
                     }
-                    if (item1 === _ref11) return !0;
+                    if (item1 === _ref9) return !0;
                 }
             }
         }
@@ -1574,8 +1547,8 @@
         __webpack_exports__.l = getParent;
         __webpack_exports__.k = getOpener;
         __webpack_exports__.i = getFrames;
-        __webpack_exports__.c = getAllFramesInWindow;
         __webpack_exports__.m = getTop;
+        __webpack_exports__.c = getAllFramesInWindow;
         __webpack_exports__.v = isTop;
         __webpack_exports__.x = isWindowClosed;
         __webpack_exports__.y = linkFrameWindow;
@@ -8547,7 +8520,7 @@
             var promise = new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
             Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(storage) {
                 return storage.remembered;
-            }, !1) ? promise.resolve() : promise.then(function() {
+            }) ? promise.resolve() : promise.then(function() {
                 Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(storage) {
                     storage.remembered = !0;
                 });
@@ -8596,7 +8569,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects, "4.0.117";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects, "4.0.118";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.g.paypalDomains;
@@ -9347,7 +9320,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return componentScript;
         });
-        var componentScript = "\n    function componentScript() {\n\n        function getElements(selector, parent) {\n            parent = parent || document;\n            return Array.prototype.slice.call(parent.querySelectorAll(selector));\n        }\n\n        function showElement(el, displayType) {\n            el.style.display = displayType || 'block';\n        }\n\n        function hideElement(el) {\n            el.style.display = 'none';\n        }\n\n        function makeElementVisible(el) {\n            el.style.visibility = 'visible';\n        }\n\n        function makeElementInvisible(el) {\n            el.style.visibility = 'hidden';\n        }\n\n        function hasDimensions(el) {\n            var rect = el.getBoundingClientRect();\n            return Boolean(rect.height && rect.width);\n        }\n\n        function isHidden(el) {\n            return (window.getComputedStyle(el).display === 'none');\n        }\n\n        function displayedElementsHaveDimensions(elements) {\n            return elements.every(el => hasDimensions(el) || isHidden(el));\n        }\n\n        function onDisplay(elements, method) {\n            if (displayedElementsHaveDimensions(elements)) {\n                method();\n                return;\n            }\n\n            var interval = setInterval(function() {\n                if (displayedElementsHaveDimensions(elements)) {\n                    clearInterval(interval);\n                    method();\n                    return;\n                }\n            }, 5);\n        }\n\n        function isOverflowing(el) {\n\n            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {\n                return true;\n            }\n\n            var parent = el.parentNode;\n\n            if (!parent) {\n                return false;\n            }\n\n            var e = el.getBoundingClientRect();\n            var p = parent.getBoundingClientRect();\n\n            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {\n                return true;\n            }\n\n            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {\n                return true;\n            }\n\n            return false;\n        }\n\n        var buttons = getElements('.paypal-button-content');\n        var tagline = getElements('.paypal-tagline');\n\n        function toggleTagline() {\n            if (tagline.some(isOverflowing)) {\n                tagline.forEach(makeElementInvisible);\n            } else {\n                tagline.forEach(makeElementVisible);\n            }\n        }\n\n        buttons.forEach(function(button) {\n\n            var images = getElements('.logo', button);\n            var text   = getElements('.text', button);\n\n            function showText() {\n                text.forEach(function(el) { showElement(el, 'inline-block') });\n            }\n\n            function toggleText() {\n                if (images.some(isOverflowing) || text.some(isOverflowing)) {\n                    text.forEach(hideElement);\n                } else {\n                    text.forEach(makeElementVisible);\n                }\n            }\n\n            onDisplay(images, function() {\n                images.forEach(makeElementVisible);\n                toggleTagline();\n                toggleText();\n\n                window.addEventListener('resize', function() {\n                    toggleTagline();\n                    showText();\n                    toggleText();\n                });\n            });\n        });\n    }\n";
+        var componentScript = "\n    function componentScript() {\n\n        function getElements(selector, parent) {\n            parent = parent || document;\n            return Array.prototype.slice.call(parent.querySelectorAll(selector));\n        }\n\n        function showElement(el, displayType) {\n            el.style.display = displayType || 'block';\n        }\n\n        function hideElement(el) {\n            el.style.display = 'none';\n        }\n\n        function makeElementVisible(el) {\n            el.style.visibility = 'visible';\n        }\n\n        function makeElementInvisible(el) {\n            el.style.visibility = 'hidden';\n        }\n\n        function hasDimensions(el) {\n            var rect = el.getBoundingClientRect();\n            return Boolean(rect.height && rect.width);\n        }\n\n        function isHidden(el) {\n            return (window.getComputedStyle(el).display === 'none');\n        }\n\n        function displayedElementsHaveDimensions(elements) {\n            return elements.every(function(el) {\n                return hasDimensions(el) || isHidden(el);\n            });\n        }\n\n        function onDisplay(elements, method) {\n            if (displayedElementsHaveDimensions(elements)) {\n                method();\n                return;\n            }\n\n            var interval = setInterval(function() {\n                if (displayedElementsHaveDimensions(elements)) {\n                    clearInterval(interval);\n                    method();\n                    return;\n                }\n            }, 5);\n        }\n\n        function isOverflowing(el) {\n\n            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {\n                return true;\n            }\n\n            var parent = el.parentNode;\n\n            if (!parent) {\n                return false;\n            }\n\n            var e = el.getBoundingClientRect();\n            var p = parent.getBoundingClientRect();\n\n            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {\n                return true;\n            }\n\n            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {\n                return true;\n            }\n\n            return false;\n        }\n\n        var buttons = getElements('.paypal-button-content');\n        var tagline = getElements('.paypal-tagline');\n\n        function toggleTagline() {\n            if (tagline.some(isOverflowing)) {\n                tagline.forEach(makeElementInvisible);\n            } else {\n                tagline.forEach(makeElementVisible);\n            }\n        }\n\n        buttons.forEach(function(button) {\n\n            var images = getElements('.logo', button);\n            var text   = getElements('.text', button);\n\n            function showText() {\n                text.forEach(function(el) { showElement(el, 'inline-block') });\n            }\n\n            function toggleText() {\n                if (images.some(isOverflowing) || text.some(isOverflowing)) {\n                    text.forEach(hideElement);\n                } else {\n                    text.forEach(makeElementVisible);\n                }\n            }\n\n            onDisplay(images, function() {\n                images.forEach(makeElementVisible);\n                toggleTagline();\n                toggleText();\n\n                window.addEventListener('resize', function() {\n                    toggleTagline();\n                    showText();\n                    toggleText();\n                });\n            });\n        });\n    }\n";
     },
     "./src/components/button/templates/component/style.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9646,7 +9619,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_8__config__.g.ppobjects, "4.0.117";
+                return __WEBPACK_IMPORTED_MODULE_8__config__.g.ppobjects, "4.0.118";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_4__templates__.b,
@@ -10253,7 +10226,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects, "4.0.117";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects, "4.0.118";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10379,9 +10352,9 @@
             return config;
         });
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.117.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.118.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.117",
+            version: "4.0.118",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10531,7 +10504,7 @@
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.117");
+                "4.0.118");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -11281,7 +11254,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.117", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_0_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.118", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -12062,7 +12035,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.117";
+                payload.version = "4.0.118";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                 var query = [];
@@ -12089,7 +12062,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.117".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.118".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -12097,7 +12070,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.117",
+                v: "checkout.js.4.0.118",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -12432,7 +12405,7 @@
                 var browser = _ref2;
                 if (bowser[browser] && bowser.version && bowser[browser] && -1 === bowser.compareVersions([ bowser.version, __WEBPACK_IMPORTED_MODULE_3__config__.g.SUPPORTED_BROWSERS[browser] ])) return !1;
             }
-            return !0;
+            return !bowser.msedge || 0 !== bowser.compareVersions([ bowser.version, "15" ]);
         }
         function isEligible() {
             if (Object(__WEBPACK_IMPORTED_MODULE_1__device__.d)()) return !1;
@@ -12772,7 +12745,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                    ver: "4.0.117"
+                    ver: "4.0.118"
                 };
             });
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a(function() {
@@ -12927,17 +12900,16 @@
     "./src/lib/session.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function getStorage(handler) {
-            var mutate = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1], enabled = Object(__WEBPACK_IMPORTED_MODULE_1__util__.f)(), storage = void 0;
+            var enabled = Object(__WEBPACK_IMPORTED_MODULE_1__util__.f)(), storage = void 0;
             if (enabled) {
                 var rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
                 storage = rawStorage ? JSON.parse(rawStorage) : {};
             } else storage = window.__pp_localstorage__ = window.__pp_localstorage__ || {};
             var result = handler(storage);
-            mutate && (enabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window.__pp_localstorage__ = storage);
+            enabled ? window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage)) : window.__pp_localstorage__ = storage;
             return result;
         }
         function getSession(handler) {
-            var mutate = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
             return getStorage(function(storage) {
                 var session = storage[SESSION_KEY], now = Date.now();
                 if (session) {
@@ -12949,18 +12921,17 @@
                     created: now
                 };
                 return handler(session);
-            }, mutate);
+            });
         }
         function getSessionState(handler) {
-            var mutate = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
             return getSession(function(session) {
                 return handler(session.state);
-            }, mutate);
+            });
         }
         function getSessionID() {
             return getSession(function(session) {
                 return session.guid;
-            }, !1);
+            });
         }
         function getCommonSessionID() {
             return window.xprops && window.xprops.uid ? window.xprops.uid : getSessionID();
@@ -13176,7 +13147,7 @@
     },
     "./src/load.js": function(module, exports, __webpack_require__) {
         var _require = __webpack_require__("./src/lib/beacon.js"), beacon = _require.beacon;
-        if (window.paypal && "4.0.117" === window.paypal.version) {
+        if (window.paypal && "4.0.118" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -13321,4 +13292,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.117.js.map
+//# sourceMappingURL=checkout.4.0.118.js.map
