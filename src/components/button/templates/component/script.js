@@ -34,7 +34,9 @@ export let componentScript = `
         }
 
         function displayedElementsHaveDimensions(elements) {
-            return elements.every(el => hasDimensions(el) || isHidden(el));
+            return elements.every(function(el) {
+                return hasDimensions(el) || isHidden(el);
+            });
         }
 
         function onDisplay(elements, method) {
