@@ -289,7 +289,7 @@ module.exports = {
         'flowtype/require-return-type': [ 'error', 'always', { 'annotateUndefined': 'never', 'excludeArrowFunctions': true } ],
         'flowtype/require-valid-file-annotation': [ 'error', 'always', { 'annotationStyle': 'block' } ],
         'flowtype/semi': [ 'error', 'always' ],
-        'flowtype/space-after-type-colon': [ 'error', 'always' ],
+        'flowtype/space-after-type-colon': [ 'error', 'always', { 'allowLineBreak': true } ],
         'flowtype/space-before-generic-bracket': [ 'error', 'never' ],
         'flowtype/space-before-type-colon': [ 'error', 'always' ],
         'flowtype/type-id-match': [ 'error', '^([A-Z][a-z0-9]+)+$' ],
