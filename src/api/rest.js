@@ -4,9 +4,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import * as postRobot from 'post-robot/src';
 import { btoa } from 'Base64';
 import * as $logger from 'beaver-logger/client';
+import { getAncestor, isSameDomain, getDomain } from 'cross-domain-utils/src';
 
 import { config, FPTI } from '../config';
-import { request, memoize, isPayPalDomain } from '../lib';
+import { request, memoize } from '../lib';
 
 let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<string> } = {};
 
@@ -277,15 +278,15 @@ export let rest = {
 };
 
 const PROXY_REST = `proxy_rest`;
+let parentWin = getAncestor();
 
-if (isPayPalDomain()) {
-    postRobot.sendToParent(PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
+postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
+    proxyRest = data;
+});
+
+if (getDomain() === config.paypalDomain && !isSameDomain(parentWin)) {
+    postRobot.send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
         });
-
-} else {
-    postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
-        proxyRest = data;
-    });
 }
