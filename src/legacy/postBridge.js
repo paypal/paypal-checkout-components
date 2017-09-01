@@ -1,15 +1,15 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as $logger from 'beaver-logger/client';
-import * as postRobot from 'post-robot/src';
+import { info, debug } from 'beaver-logger/client';
+import { on, bridge } from 'post-robot/src';
 
 import { config } from '../config';
 import { isIEIntranet } from '../lib';
 
-postRobot.on('meta', ({ data } : { source : CrossDomainWindowType, data : Object }) => {
+on('meta', ({ data } : { source : CrossDomainWindowType, data : Object }) => {
 
-    $logger.info(data.iframeEligible ?
+    info(data.iframeEligible ?
         `lightbox_eligible_${ data.iframeEligibleReason }` :
         `lightbox_ineligible_${ data.iframeEligibleReason }`);
 
@@ -36,20 +36,20 @@ export function setupPostBridge(env : string) : ZalgoPromise<void> {
         let postBridgeUrl : string = config.postBridgeUrls[env];
         let postBridgeDomain : string = config.paypalDomains[env];
 
-        if (!postRobot.bridge || !postRobot.bridge.needsBridgeForDomain(postBridgeDomain)) {
-            return $logger.debug(`post_bridge_not_required`, { env });
+        if (!bridge || !bridge.needsBridgeForDomain(postBridgeDomain)) {
+            return debug(`post_bridge_not_required`, { env });
         }
 
-        $logger.debug(`setup_post_bridge`, { env });
+        debug(`setup_post_bridge`, { env });
 
-        return postRobot.bridge.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
+        return bridge.openBridge(postBridgeUrl, postBridgeDomain).catch(err => {
 
             // Post-Bridge is best-effort for everything but IE
 
-            if (postRobot.bridge.needsBridge({ domain: postBridgeDomain })) {
+            if (bridge.needsBridge({ domain: postBridgeDomain })) {
                 throw err;
             } else {
-                $logger.debug(`open_post_bridge_transient_failure`);
+                debug(`open_post_bridge_transient_failure`);
             }
         });
     });

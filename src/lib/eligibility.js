@@ -1,10 +1,11 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { info, flush as flushLogs } from 'beaver-logger/client';
+
+import { config } from '../config';
 
 import { isIEIntranet } from './device';
 import { once } from './util';
-import { config } from '../config';
 
 function getBowser({ clearCache = false } = {}) : Object {
 
@@ -70,6 +71,6 @@ export let checkRecognizedBrowser = once((state : string) => {
     }
 
     let { name, version, mobile, android, ios } = bowser;
-    $logger.info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
-    $logger.flush();
+    info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
+    flushLogs();
 });

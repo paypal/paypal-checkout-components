@@ -1,19 +1,19 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as $logger from 'beaver-logger/client';
-import * as xcomponent from 'xcomponent/src';
+import { info, track, warn, flush as flushLogs } from 'beaver-logger/client';
+import { create, CONSTANTS } from 'xcomponent/src';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
-
-import { containerTemplate, componentTemplate } from './templates';
-
-import { determineParameterFromToken, determineUrlFromToken } from './util';
-import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 import { isDevice, request, getQueryParam, redirect as redir,
     setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
+
+import { containerTemplate, componentTemplate } from './templates';
+import { determineParameterFromToken, determineUrlFromToken } from './util';
+import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
+
 
 function addHeader(name, value) : void {
 
@@ -58,7 +58,7 @@ function forceIframe() : boolean {
     return false;
 }
 
-export let Checkout = xcomponent.create({
+export let Checkout = create({
 
     tag:  'paypal-checkout',
     name: 'ppcheckout',
@@ -331,9 +331,9 @@ export let Checkout = xcomponent.create({
             decorate(original) : Function {
                 return function decorateInit(data) : void {
 
-                    $logger.info('checkout_init');
+                    info('checkout_init');
 
-                    $logger.track({
+                    track({
                         [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CHECKOUT_INIT,
                         [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
@@ -342,7 +342,7 @@ export let Checkout = xcomponent.create({
                         [ FPTI.KEY.CONTEXT_ID ]:   data.paymentToken
                     });
 
-                    $logger.flush();
+                    flushLogs();
 
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
@@ -367,7 +367,7 @@ export let Checkout = xcomponent.create({
                         ? original.apply(this, arguments)
                         : ZalgoPromise.resolve();
 
-                    let CLOSE_REASONS = xcomponent.CONSTANTS.CLOSE_REASONS;
+                    let CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
 
                     let shouldCancel =
                         this.props.onCancel &&
@@ -378,12 +378,12 @@ export let Checkout = xcomponent.create({
                         this.cancelUrl;
 
                     if (shouldCancel && !hasDetails) {
-                        $logger.warn(`close_no_token_cancelurl`);
+                        warn(`close_no_token_cancelurl`);
                         return onClose;
                     }
 
                     if (shouldCancel) {
-                        $logger.info(`close_trigger_cancel`);
+                        info(`close_trigger_cancel`);
                         return ZalgoPromise.all([
                             onClose,
                             this.props.onCancel({
@@ -415,7 +415,7 @@ export let Checkout = xcomponent.create({
 
             def() : Function {
                 return function decorateFallback(url) : ZalgoPromise<void> {
-                    $logger.warn('fallback', { url });
+                    warn('fallback', { url });
                     return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
             }

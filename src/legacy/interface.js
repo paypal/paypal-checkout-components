@@ -2,26 +2,27 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as logger from 'beaver-logger/client';
+import { prefix, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../components';
-import { isLegacyEligible } from './eligibility';
 import { config, ENV, FPTI } from '../config';
-import { setupPostBridge } from './postBridge';
 import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
+
+import { setupPostBridge } from './postBridge';
+import { isLegacyEligible } from './eligibility';
 import { LOG_PREFIX } from './constants';
 import { renderButtons, getHijackTargetElement } from './button';
 import { redirect, logRedirect, parseToken } from './util';
 import { normalizeOptions, setupConfig } from './options';
 
-let $logger = logger.prefix(LOG_PREFIX);
+let { info, debug, warn, error, track } = prefix(LOG_PREFIX);
 
 export let checkout = {};
 export let apps = { checkout, Checkout: checkout };
 
 export function reset() {
 
-    $logger.debug('reset');
+    debug('reset');
 
     // Once our callback has been called, we can set the global methods to their original values
 
@@ -46,7 +47,7 @@ if (window.xchild && !window.paypalCheckout) {
 function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string } {
 
     if (!item || !item.trim()) {
-        $logger.error(`startflow_no_url_or_token`, { item });
+        error(`startflow_no_url_or_token`, { item });
         throw new Error(`startflow_no_url_or_token`);
     }
 
@@ -58,9 +59,9 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
 
         if (!url.match(/^https?:\/\/|^\//)) {
             if (paymentToken) {
-                $logger.info(`startflow_relative_url_with_token`, { url });
+                info(`startflow_relative_url_with_token`, { url });
             } else {
-                $logger.info(`startflow_relative_url_no_token`, { url });
+                info(`startflow_relative_url_no_token`, { url });
             }
 
             if (url.toLowerCase().indexOf('ec-') === 0 && paymentToken) {
@@ -69,22 +70,22 @@ function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string 
 
         } else if (paymentToken) {
             if (url.indexOf('.paypal.com') !== -1) {
-                $logger.debug(`startflow_paypalurl_with_token`, { url });
+                debug(`startflow_paypalurl_with_token`, { url });
             } else {
-                $logger.debug(`startflow_url_with_token`, { url });
+                debug(`startflow_url_with_token`, { url });
             }
 
         } else {
-            $logger.debug(`startflow_url_no_token`, { url });
+            debug(`startflow_url_no_token`, { url });
         }
 
     } else {
 
         if (paymentToken) {
             url = extendUrl(config.checkoutUrl, { token: paymentToken });
-            $logger.debug(`startflow_with_token`, { url });
+            debug(`startflow_with_token`, { url });
         } else {
-            $logger.error(`startflow_no_url_or_token`, { url });
+            error(`startflow_no_url_or_token`, { url });
             throw new Error(`Could not determine url or token from "${ item }"`);
         }
     }
@@ -105,7 +106,7 @@ function checkUrlAgainstEnv(url : string) {
 
         if (env !== config.env) {
             if (url.indexOf(paypalUrl) === 0 || url.indexOf(paypalUrl.replace('//www.', '//')) === 0) {
-                $logger.warn(`mismatched_env_startflow_url`, { env: config.env, url });
+                warn(`mismatched_env_startflow_url`, { env: config.env, url });
                 redirect(url);
                 throw new Error(`${ url } is not a ${ config.env } url`);
             }
@@ -132,13 +133,13 @@ function awaitPaymentTokenAndUrl() : { url : ZalgoPromise<string>, paymentToken 
     let paymentTokenAndUrl = new ZalgoPromise((resolve) => {
 
         checkout.initXO = () => {
-            $logger.warn(`gettoken_initxo`);
+            warn(`gettoken_initxo`);
         };
 
         // startFlow is our 'success' case - we get a token, and we can pass it back to the caller
 
         checkout.startFlow = once((item) => {
-            $logger.debug(`gettoken_startflow`, { item });
+            debug(`gettoken_startflow`, { item });
 
             let { url, paymentToken } = matchUrlAndPaymentToken(item);
 
@@ -170,14 +171,14 @@ let closeFlowCalled = false;
 
 function initPayPalCheckout(props = {}) : Object {
 
-    $logger.info(`init_checkout`);
+    info(`init_checkout`);
 
     if (paypalCheckoutInited && config.env !== ENV.TEST) {
-        $logger.warn(`multiple_init_paypal_checkout`);
+        warn(`multiple_init_paypal_checkout`);
     }
 
     if (closeFlowCalled) {
-        $logger.debug(`init_after_closeflow`);
+        debug(`init_after_closeflow`);
     }
 
     paypalCheckoutInited = true;
@@ -185,19 +186,19 @@ function initPayPalCheckout(props = {}) : Object {
     let paypalCheckout = Checkout.init({
 
         onAuthorize(data, actions) : ZalgoPromise<void> {
-            $logger.info(`payment_authorized`);
+            info(`payment_authorized`);
             logRedirect(data.returnUrl);
             return actions.redirect(window);
         },
 
         onCancel(data, actions) : ZalgoPromise<void> {
-            $logger.info(`payment_canceled`);
+            info(`payment_canceled`);
             logRedirect(data.cancelUrl);
             return actions.redirect(window);
         },
 
         fallback(url) : ZalgoPromise<void> {
-            $logger.error(`fallback_handler`, { url });
+            error(`fallback_handler`, { url });
             this.destroy();
             return redirect(url);
         },
@@ -206,7 +207,7 @@ function initPayPalCheckout(props = {}) : Object {
     });
 
     checkout.closeFlow = (closeUrl? : string) => {
-        $logger.warn(`closeflow`);
+        warn(`closeflow`);
 
         closeFlowCalled = true;
 
@@ -215,7 +216,7 @@ function initPayPalCheckout(props = {}) : Object {
         paypalCheckout.destroy();
 
         if (closeUrl) {
-            $logger.warn(`closeflow_with_url`, { closeUrl });
+            warn(`closeflow_with_url`, { closeUrl });
             return redirect(closeUrl);
         }
     };
@@ -235,22 +236,22 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
 
     let errorHandler = once(err => {
 
-        $logger.error(`component_error`, { error: err.stack || err.toString() });
+        error(`component_error`, { error: err.stack || err.toString() });
 
         if (hijackTarget) {
-            $logger.warn(`render_error_hijack_revert_target`);
+            warn(`render_error_hijack_revert_target`);
             hijackTarget.removeAttribute('target');
         }
 
         // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
         urlProp.then(url => {
-            $logger.warn(`render_error_redirect_using_url`);
+            warn(`render_error_redirect_using_url`);
             return redirect(url);
         });
 
         // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
         paymentToken.then(token => {
-            logger.warn(`render_error_redirect_using_token`);
+            warn(`render_error_redirect_using_token`);
             return redirect(extendUrl(config.checkoutUrl, { token }));
         });
     });
@@ -270,7 +271,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
 
         // eslint-disable-next-line promise/catch-or-return
         urlProp.then(url => {
-            $logger.warn(`hijack_then_url_passed`);
+            warn(`hijack_then_url_passed`);
             paypalCheckout.loadUrl(url);
         });
 
@@ -288,12 +289,12 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
 
 
 function handleClick(clickHandler, event) {
-    $logger.debug(`button_click_handler`);
+    debug(`button_click_handler`);
 
     try {
         clickHandler(event);
     } catch (err) {
-        $logger.error(`click_handler_error`, { error: err.stack || err.toString() });
+        error(`click_handler_error`, { error: err.stack || err.toString() });
     }
 }
 
@@ -302,10 +303,10 @@ function handleClickHijack(element) : void {
     let targetElement = getHijackTargetElement(element);
 
     if (!targetElement) {
-        return $logger.error(`target_element_not_found`);
+        return error(`target_element_not_found`);
     }
 
-    $logger.info(`init_paypal_checkout_hijack`);
+    info(`init_paypal_checkout_hijack`);
 
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
@@ -319,14 +320,14 @@ function handleClickHijack(element) : void {
     renderPayPalCheckout({ url, payment: () => ZalgoPromise.resolve(token) }, targetElement);
 }
 
-function listenClick(container, button, clickHandler, condition, track) : void {
+function listenClick(container, button, clickHandler, condition, tracker) : void {
 
     let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
     let isClick  = (clickHandler instanceof Function);
 
     if (element.hasAttribute('data-paypal-click-listener')) {
-        return $logger.warn(`button_already_has_paypal_click_listener`);
+        return warn(`button_already_has_paypal_click_listener`);
     }
 
     element.setAttribute('data-paypal-click-listener', '');
@@ -334,43 +335,43 @@ function listenClick(container, button, clickHandler, condition, track) : void {
     let targetElement = getHijackTargetElement(element);
 
     if (targetElement && isClick) {
-        $logger.info(`button_link_or_form`);
+        info(`button_link_or_form`);
     }
 
     element.addEventListener('click', (event : Event) => {
 
-        track();
+        tracker();
 
         let eligible = isLegacyEligible();
 
         if (supportsPopups()) {
-            $logger.debug(`click_popups_supported`);
+            debug(`click_popups_supported`);
 
             if (!eligible) {
-                $logger.debug(`click_popups_supported_but_ineligible`);
+                debug(`click_popups_supported_but_ineligible`);
             }
         } else {
-            $logger.debug(`click_popups_not_supported`);
+            debug(`click_popups_not_supported`);
 
             if (eligible) {
-                $logger.debug(`click_popups_not_supported_but_eligible`);
+                debug(`click_popups_not_supported_but_eligible`);
             }
         }
 
         if (!isClick) {
 
             if (!eligible) {
-                return $logger.debug(`ineligible_listenclick`);
+                return debug(`ineligible_listenclick`);
             }
         }
 
-        $logger.info(`button_click`);
+        info(`button_click`);
 
         if (condition instanceof Function) {
             if (condition.call()) {
-                $logger.info(`button_click_condition_enabled`);
+                info(`button_click_condition_enabled`);
             } else {
-                return $logger.info(`button_click_condition_disabled`);
+                return info(`button_click_condition_disabled`);
             }
         }
 
@@ -384,24 +385,24 @@ function listenClick(container, button, clickHandler, condition, track) : void {
 }
 
 function instrumentButtonRender(type : string) {
-    $logger.info(`render_${ type }_button`);
+    info(`render_${ type }_button`);
 
-    $logger.track({
+    track({
         [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
         [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_RENDER,
         [ FPTI.KEY.BUTTON_TYPE ]: type
     });
 
-    $logger.flush();
+    flushLogs();
 }
 
 function instrumentButtonClick(type : string) {
-    $logger.track({
+    track({
         [ FPTI.KEY.STATE ]:       FPTI.STATE.LOAD,
         [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_CLICK,
         [ FPTI.KEY.BUTTON_TYPE ]: type
     });
-    $logger.flush();
+    flushLogs();
 }
 
 
@@ -422,14 +423,14 @@ export function setup(id : string, options : Object = {}) : ZalgoPromise<void> {
 
     id = id || 'merchant';
 
-    $logger.info(`setup`, {
+    info(`setup`, {
         id,
         env:     options.environment,
         options: safeJSON(options)
     });
 
     if (setupCalled) {
-        $logger.debug(`setup_called_multiple_times`);
+        debug(`setup_called_multiple_times`);
     }
 
     setupCalled = true;
@@ -475,15 +476,15 @@ checkout.setup = setup;
 
 function initXO() : void {
 
-    $logger.debug(`initxo`);
+    debug(`initxo`);
 
     if (!isLegacyEligible()) {
-        return $logger.debug(`ineligible_initxo`);
+        return debug(`ineligible_initxo`);
     }
 
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
-    $logger.info(`init_paypal_checkout_initxo`);
+    info(`init_paypal_checkout_initxo`);
 
     renderPayPalCheckout({ url, payment: paymentToken });
 }
@@ -502,19 +503,19 @@ checkout.initXO = initXO;
 */
 
 function startFlow(item : string) {
-    $logger.debug(`startflow`, { item });
+    debug(`startflow`, { item });
 
     let { paymentToken, url } = matchUrlAndPaymentToken(item);
 
     checkUrlAgainstEnv(url);
 
     if (!isLegacyEligible()) {
-        $logger.debug(`ineligible_startflow_global`, { url });
+        debug(`ineligible_startflow_global`, { url });
         redirect(url);
         return;
     }
 
-    $logger.info(`init_paypal_checkout_startflow`);
+    info(`init_paypal_checkout_startflow`);
 
     renderPayPalCheckout({ url, payment: paymentToken });
 }
@@ -531,10 +532,10 @@ checkout.startFlow = startFlow;
 */
 
 function closeFlow(closeUrl? : string) {
-    $logger.warn(`closeflow_not_opened`);
+    warn(`closeflow_not_opened`);
 
     if (closeUrl) {
-        $logger.warn(`closeflow_with_url`, { closeUrl });
+        warn(`closeflow_with_url`, { closeUrl });
         redirect(closeUrl);
 
     }

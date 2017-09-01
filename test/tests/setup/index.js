@@ -1,4 +1,4 @@
 /* @flow */
 
-export * from './setup';
-export * from './pptm';
+import './setup';
+import './pptm';

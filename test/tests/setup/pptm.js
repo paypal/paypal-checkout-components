@@ -1,6 +1,7 @@
 /* @flow */
 
 import { PPTM_ID } from '../../../src/config';
+
 import { testSetup } from './common';
 
 describe('paypal pptm script setup', () => {

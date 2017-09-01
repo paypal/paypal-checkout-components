@@ -1,6 +1,7 @@
 /* @flow */
 
-let { beacon } = require('./lib/beacon');
+import { beacon } from './lib/beacon';
+import { extendNamespace } from './lib/namespace';
 
 if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
@@ -17,11 +18,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 } else {
 
     try {
-
-        let { extendNamespace } = require('./lib/namespace');
-
         let _interface = require('./index');
-
         extendNamespace(_interface, [ 'paypal', 'PAYPAL', 'ppxo' ], [ 'apps' ]);
 
     } catch (err) {

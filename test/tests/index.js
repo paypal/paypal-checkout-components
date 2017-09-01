@@ -1,8 +1,8 @@
 /* @flow */
 
-export * from './happy';
-export * from './setup';
-export * from './legacy';
-export * from './checkout';
-export * from './button';
-export * from './api';
+import './happy';
+import './setup';
+import './legacy';
+import './checkout';
+import './button';
+import './api';

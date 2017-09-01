@@ -1,14 +1,14 @@
 /* @flow */
 
-export * from './ready';
-export * from './button';
-export * from './setup';
-export * from './standalone';
-export * from './hijack';
-export * from './hybrid';
-export * from './customclick';
-export * from './error';
-export * from './popupBridge';
+import './ready';
+import './button';
+import './setup';
+import './standalone';
+import './hijack';
+import './hybrid';
+import './customclick';
+import './error';
+import './popupBridge';
 
 beforeEach(() => {
     window.paypal.checkout.reset();

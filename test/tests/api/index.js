@@ -1,3 +1,3 @@
 /* @flow */
 
-export * from './payment';
+import './payment';

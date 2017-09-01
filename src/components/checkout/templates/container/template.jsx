@@ -3,6 +3,7 @@
 /* eslint max-lines: 0 */
 
 import componentContentJSON from './content.json';
+
 let componentContent = JSON.parse(componentContentJSON);
 
 type ContainerTemplateOptions = {

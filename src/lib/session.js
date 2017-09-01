@@ -1,6 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
+
 import { uniqueID, isLocalStorageEnabled } from './util';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';

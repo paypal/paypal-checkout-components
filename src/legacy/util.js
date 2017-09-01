@@ -1,28 +1,28 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as logger from 'beaver-logger/client';
+import { flush as flushLogs, prefix } from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
 import { urlWillRedirectPage, redirect as redir } from '../lib';
 
 import { LOG_PREFIX } from './constants';
 
-let $logger = logger.prefix(LOG_PREFIX);
+let { warn } = prefix(LOG_PREFIX);
 
 let redirected = false;
 
 export function logRedirect(location : string) {
 
     if (redirected) {
-        $logger.warn(`multiple_redirects`);
+        warn(`multiple_redirects`);
     }
 
     if (urlWillRedirectPage(location)) {
         redirected = true;
     }
 
-    $logger.flush();
+    flushLogs();
 }
 
 export function redirect(url : string) : ZalgoPromise<void> {

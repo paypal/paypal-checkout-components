@@ -1,12 +1,14 @@
 /* @flow */
 
+import { btoa } from 'Base64';
+
+import { BRANDING, LAYOUT } from '../../constants';
+
 import { componentLogos } from './logos';
 import { componentStyle } from './style';
 import { componentScript } from './script';
 import { componentContent } from './content';
 import { getButtonConfig } from './config';
-import { BRANDING, LAYOUT } from '../../constants';
-import { btoa } from 'Base64';
 
 function expandContentText(contentText : string, { color, logoColor } : { color : string, logoColor : string }) : string {
     return contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {

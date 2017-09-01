@@ -1,6 +1,7 @@
 /* @flow */
 
 import { config } from '../../config';
+
 import { Login } from './component';
 
 let prerender = Login.prerender;

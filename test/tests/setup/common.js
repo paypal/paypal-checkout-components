@@ -1,6 +1,7 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
+
 import { createFrame, destroyElement } from '../common';
 
 export function testSetup({ options, script, preScript } : { options? : Object, script : string, preScript? : string }) : ZalgoPromise<void> {

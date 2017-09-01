@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config } from '../config';
@@ -235,7 +235,7 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
 export function redirect(win : CrossDomainWindowType = window, url : string) : ZalgoPromise<void> {
     return new ZalgoPromise(resolve => {
 
-        $logger.info(`redirect`, { url });
+        info(`redirect`, { url });
 
         setTimeout(() => {
             win.location = url;

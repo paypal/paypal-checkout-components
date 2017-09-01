@@ -1,7 +1,8 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { componentTemplate } from 'src/components/button/templates';
+
+import { componentTemplate } from '../../../src/components/button/templates';
 import { getElement, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout } = window.xprops.test;

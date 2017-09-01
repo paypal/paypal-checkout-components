@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { info, track, immediateFlush } from 'beaver-logger/client';
 
 import { FPTI } from './config';
 import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
@@ -9,13 +9,13 @@ export let onAuthorizeListener = eventEmitter();
 
 function log(experiment : string, treatment : string, token : ?string, state : string) {
 
-    $logger.info(`experiment_group_${ experiment }_${ treatment }_${ state }`);
+    info(`experiment_group_${ experiment }_${ treatment }_${ state }`);
 
     let transition = (state === 'start')
         ? FPTI.TRANSITION.EXTERNAL_EXPERIMENT
         : FPTI.TRANSITION.EXTERNAL_EXPERIMENT_COMPLETE;
 
-    $logger.track({
+    track({
         [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
         [ FPTI.KEY.TRANSITION ]:      transition,
         [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
@@ -25,7 +25,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
         [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
     });
 
-    $logger.immediateFlush();
+    immediateFlush();
 }
 
 export function logExperimentTreatment(experiment : string, treatment : string, token : ?string) {
@@ -56,14 +56,14 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
     let state = existingTreatment ? 'start_duplicate' : 'start';
 
     if (existingTreatment) {
-        $logger.info(`duplicate_experiment_start`);
+        info(`duplicate_experiment_start`);
 
         if (existingTreatment !== treatment) {
-            $logger.info(`duplicate_experiment_start_different_treatment`, { treatment, existingTreatment });
+            info(`duplicate_experiment_start_different_treatment`, { treatment, existingTreatment });
         }
 
         if (existingToken && existingToken !== token) {
-            $logger.info(`duplicate_experiment_complete_different_token`, { token, existingToken });
+            info(`duplicate_experiment_complete_different_token`, { token, existingToken });
         }
     }
 
@@ -93,10 +93,10 @@ function logReturn(token : string, mechanism : string) {
     let state = complete ? 'complete_duplicate' : 'complete';
 
     if (complete) {
-        $logger.info(`duplicate_experiment_complete`);
+        info(`duplicate_experiment_complete`);
 
         if (existingToken !== token) {
-            $logger.info(`duplicate_experiment_complete_different_token`, { token, existingToken });
+            info(`duplicate_experiment_complete_different_token`, { token, existingToken });
         }
     }
 

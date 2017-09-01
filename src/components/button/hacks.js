@@ -1,18 +1,17 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
-import * as xcomponent from 'xcomponent/src';
+import { info, warn, flush as flushLogs } from 'beaver-logger/client';
+import { CONSTANTS, PopupOpenError } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { Button } from './component';
+import { rest } from '../../api';
+import { config } from '../../config';
+import { patchMethod, isIE, getDomainSetting, noop, extend, extendUrl } from '../../lib';
 import { Login } from '../login';
 import { Checkout } from '../checkout';
 
-import { rest } from '../../api';
+import { Button } from './component';
 import { BUTTON_LABEL, BUTTON_SIZE } from './constants';
-import { config } from '../../config';
-import { patchMethod, isIE, getDomainSetting, noop, extend,
-    extendUrl } from '../../lib';
 
 patchMethod(rest.payment, 'create', ({ original : createOriginal, context : createContext, args : [ env, client, options, experience ] }) => {
     if (!options.payment) {
@@ -27,7 +26,7 @@ patchMethod(Button, 'render', ({ original, context, args }) => {
     let { style } = props;
 
     if (style && (!style.label || style.label === BUTTON_LABEL.CHECKOUT) && style.size === 'tiny') {
-        $logger.warn(`unsupported_button_size_tiny`);
+        warn(`unsupported_button_size_tiny`);
         style.size = BUTTON_SIZE.SMALL;
     }
 
@@ -95,7 +94,7 @@ if (Button.isChild()) {
     patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ , props ] }) => {
 
         if (debounce) {
-            $logger.warn('button_mutliple_click_debounce');
+            warn('button_mutliple_click_debounce');
             return;
         }
 
@@ -137,8 +136,8 @@ if (Button.isChild()) {
 
     if (isIE() && getDomainSetting('ie_full_page')) {
         Checkout.renderTo = (win) => {
-            $logger.info('force_ie_full_page');
-            $logger.flush();
+            info('force_ie_full_page');
+            flushLogs();
 
             let checkout = Checkout.init({
                 onAuthorize: noop
@@ -148,7 +147,7 @@ if (Button.isChild()) {
 
             // eslint-disable-next-line promise/catch-or-return
             checkout.openContainer().then(() => {
-                checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
+                checkout.event.triggerOnce(CONSTANTS.EVENTS.CLOSE);
                 checkout.showContainer();
             });
 
@@ -163,7 +162,7 @@ if (Button.isChild()) {
     if (getDomainSetting('allow_full_page_fallback')) {
         patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
             return callOriginal().catch(err => {
-                if (err instanceof xcomponent.PopupOpenError) {
+                if (err instanceof PopupOpenError) {
                     return window.xprops.payment().then(token => {
                         window.top.location = extendUrl(config.checkoutUrl, { token });
                     });

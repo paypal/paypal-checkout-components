@@ -1,6 +1,7 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
+
 import { testSetup } from './common';
 
 function verifySetupOptions({ options, key, val, expected } : { options : Object, key : string, val : string, expected? : string }) : ZalgoPromise<void> {

@@ -1,9 +1,9 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as postRobot from 'post-robot/src';
+import { on, send } from 'post-robot/src';
 import { btoa } from 'Base64';
-import * as $logger from 'beaver-logger/client';
+import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, getDomain } from 'cross-domain-utils/src';
 
 import { config, FPTI } from '../config';
@@ -13,7 +13,7 @@ let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<stri
 
 let createAccessToken = memoize((env : string, client : { [key : string] : string }) : ZalgoPromise<string> => {
 
-    $logger.info(`rest_api_create_access_token`);
+    info(`rest_api_create_access_token`);
 
     env = env || config.env;
 
@@ -57,7 +57,7 @@ let createAccessToken = memoize((env : string, client : { [key : string] : strin
 
 let createExperienceProfile = memoize((env : string, client : { [key : string] : string }, experienceDetails : Object = {}) : ZalgoPromise<string> => {
 
-    $logger.info(`rest_api_create_experience_profile`);
+    info(`rest_api_create_experience_profile`);
 
     env = env || config.env;
 
@@ -124,7 +124,7 @@ function logPaymentResponse(res) {
         }
     }
 
-    $logger.track({
+    track({
         [ FPTI.KEY.STATE ]:        FPTI.STATE.BUTTON,
         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CREATE_PAYMENT,
         [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
@@ -136,7 +136,7 @@ function logPaymentResponse(res) {
 
 function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
 
-    $logger.info(`rest_api_create_checkout_token`);
+    info(`rest_api_create_checkout_token`);
 
     env = env || config.env;
 
@@ -208,7 +208,7 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
 
 export function createBillingToken(env : string, client : { [key : string] : string }, billingDetails : Object, experienceDetails? : ?Object) : ZalgoPromise<string> {
 
-    $logger.info(`rest_api_create_billing_token`);
+    info(`rest_api_create_billing_token`);
 
     env = env || config.env;
 
@@ -280,12 +280,12 @@ export let rest = {
 const PROXY_REST = `proxy_rest`;
 let parentWin = getAncestor();
 
-postRobot.on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
+on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
     proxyRest = data;
 });
 
 if (getDomain() === config.paypalDomain && !isSameDomain(parentWin)) {
-    postRobot.send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
+    send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass
         });

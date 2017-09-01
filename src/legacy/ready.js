@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as logger from 'beaver-logger/client';
+import { prefix } from 'beaver-logger/client';
 
 import { onDocumentReady, onKey } from '../lib';
 import { ENV } from '../config';
@@ -8,7 +8,7 @@ import { ENV } from '../config';
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
 import { setup } from './interface';
 
-let $logger = logger.prefix(LOG_PREFIX);
+let { error, debug } = prefix(LOG_PREFIX);
 
 /*  PayPal Checkout Ready
     ---------------------
@@ -19,11 +19,11 @@ let $logger = logger.prefix(LOG_PREFIX);
 function invokeReady(method) {
 
     onDocumentReady(() => {
-        $logger.debug(`paypal_checkout_ready`);
+        debug(`paypal_checkout_ready`);
         setTimeout(() => {
 
             if (!window.paypal) {
-                $logger.error(`paypal_checkout_ready_no_window_paypal`);
+                error(`paypal_checkout_ready_no_window_paypal`);
             }
 
             method();
@@ -61,7 +61,7 @@ onDocumentReady(() => {
     let buttons = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTES.BUTTON }]`));
 
     if (buttons && buttons.length) {
-        $logger.debug(`data_paypal_button`, { number: buttons.length });
+        debug(`data_paypal_button`, { number: buttons.length });
 
         for (let button of buttons) {
 

@@ -1,9 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-
 import { assert } from 'chai';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, generateBillingToken, generatePaymentID, createElement, createTestContainer, destroyTestContainer, onHashChange } from '../common';
 

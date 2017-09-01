@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as postRobot from 'post-robot/src';
+import { on, send, bridge } from 'post-robot/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { isPayPalDomain, noop } from '../lib';
@@ -18,7 +18,7 @@ let onAuthorize : ?Function;
 // Post-Bridge
 
 if (isPayPalDomain()) {
-    postRobot.on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => {
+    on('onLegacyPaymentAuthorize', { window: window.parent }, ({ data } : { data : { method : Function } }) => {
         onAuthorize = data.method;
     });
 }
@@ -29,9 +29,9 @@ export function onLegacyPaymentAuthorize(method : Function) : ZalgoPromise<void>
     onAuthorize = method;
 
     return ZalgoPromise.try(() => {
-        if (postRobot.bridge && !isPayPalDomain()) {
-            return postRobot.bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : CrossDomainWindowType) => {
-                return postRobot.send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
+        if (bridge && !isPayPalDomain()) {
+            return bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : CrossDomainWindowType) => {
+                return send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);
             });
         }
@@ -54,12 +54,12 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
 
             win.ppxoWatching = true;
 
-            let send = win.XMLHttpRequest.prototype.send;
+            let XMLHttpRequestsend = win.XMLHttpRequest.prototype.send;
 
             win.XMLHttpRequest.prototype.send = function overrideXMLHttpRequestSend() : void {
 
                 if (this._patched) {
-                    return send.apply(this, arguments);
+                    return XMLHttpRequestsend.apply(this, arguments);
                 }
 
                 this._patched = true;
@@ -136,7 +136,7 @@ window.watchForLegacyFallback = (win : SameDomainWindowType) => {
 
                 }
 
-                return send.apply(this, arguments);
+                return XMLHttpRequestsend.apply(this, arguments);
             };
 
         } catch (err) {

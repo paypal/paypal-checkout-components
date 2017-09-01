@@ -8,7 +8,8 @@ module.exports = {
         'unicorn',
         'eslint-comments',
         'promise',
-        'security'
+        'security',
+        'import'
     ],
 
     'env': {
@@ -17,6 +18,15 @@ module.exports = {
         'amd': false,
         'mocha': true,
         'es6': true
+    },
+
+    'settings': {
+        'import/extensions': [ '.js', '.jsx' ],
+        'import/resolver': {
+            'node': {
+                'extensions': [ '.js', '.jsx' ]
+            }
+        }
     },
 
     'parserOptions': {
@@ -354,6 +364,37 @@ module.exports = {
         'security/detect-disable-mustache-escape': 'error',
         'security/detect-object-injection': 'off',
         'security/detect-new-buffer': 'error',
+
+        'import/default': 'error',
+        'import/export': 'error',
+        'import/extensions': 'error',
+        'import/first': 'error',
+        'import/max-dependencies': 'off',
+        'import/named': 'error',
+        'import/namespace': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-absolute-path': 'error',
+        'import/no-amd': 'error',
+        'import/no-anonymous-default-export': 'error',
+        'import/no-commonjs': 'error',
+        'import/no-deprecated': 'error',
+        'import/no-duplicates': 'error',
+        'import/no-dynamic-require': 'error',
+        'import/no-extraneous-dependencies': 'error',
+        'import/no-internal-modules': 'off',
+        'import/no-mutable-exports': 'off',
+        'import/no-named-as-default': 'error',
+        'import/no-named-as-default-member': 'error',
+        'import/no-named-default': 'error',
+        'import/no-namespace': 'error',
+        'import/no-nodejs-modules': 'error',
+        'import/no-restricted-paths': 'error',
+        'import/no-unassigned-import': [ 'error', { 'allow': [ 'test/**' ] } ],
+        'import/no-unresolved': 'error',
+        'import/no-webpack-loader-syntax': 'error',
+        'import/order': [ 'error', { 'newlines-between': 'always' } ],
+        'import/prefer-default-export': 'off',
+        'import/unambiguous': 'error',
 
         'array-bracket-newline': 'off',
         'array-element-newline': 'off',

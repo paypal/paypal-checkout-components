@@ -1,6 +1,7 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
+
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
 window.angular.module('app', [ 'paypal-button' ]);

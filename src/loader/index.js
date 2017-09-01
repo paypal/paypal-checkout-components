@@ -2,4 +2,6 @@
 
 import { extendNamespace } from '../lib/namespace';
 
-extendNamespace(require('./interface'), [ 'paypal' ]);
+let _interface = require('./interface'); // eslint-disable-line import/no-commonjs
+
+extendNamespace(_interface, [ 'paypal' ]);

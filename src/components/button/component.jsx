@@ -3,14 +3,10 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as xcomponent from 'xcomponent/src';
-import * as $logger from 'beaver-logger/client';
+import { create, CONSTANTS as XCOMPONENT_CONSTANTS } from 'xcomponent/src';
+import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
-
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
-
-
 import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getCommonSessionID, request, checkpoint,
@@ -18,11 +14,12 @@ import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getDomainSetting, extendUrl, noop, getStorage } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
-
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
+
 import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -39,8 +36,8 @@ if (customButtonSelector) {
 
             el.setAttribute('ppxo-merchant-custom-click-listener', '');
             el.addEventListener('click', () => {
-                $logger.info('custom_merchant_button_click');
-                $logger.flush();
+                info('custom_merchant_button_click');
+                flushLogs();
             });
         }
     }, 500);
@@ -63,7 +60,7 @@ let onRemember = () => {
     return promise;
 };
 
-export let Button = xcomponent.create({
+export let Button = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',
@@ -91,11 +88,11 @@ export let Button = xcomponent.create({
         );
 
         template.addEventListener('click', () => {
-            $logger.warn('button_pre_template_click');
+            warn('button_pre_template_click');
 
             if (getDomainSetting('allow_full_page_fallback')) {
-                $logger.info('pre_template_force_full_page');
-                $logger.flush();
+                info('pre_template_force_full_page');
+                flushLogs();
 
                 let checkout = Checkout.init({
                     onAuthorize: noop
@@ -103,7 +100,7 @@ export let Button = xcomponent.create({
 
                 // eslint-disable-next-line promise/catch-or-return
                 checkout.openContainer().then(() => {
-                    checkout.event.triggerOnce(xcomponent.CONSTANTS.EVENTS.CLOSE);
+                    checkout.event.triggerOnce(XCOMPONENT_CONSTANTS.EVENTS.CLOSE);
                     checkout.showContainer();
                 });
 
@@ -134,7 +131,7 @@ export let Button = xcomponent.create({
 
     validate() {
         if (!isEligible()) {
-            $logger.warn('button_render_ineligible');
+            warn('button_render_ineligible');
         }
 
         if (isIEIntranet()) {
@@ -290,11 +287,11 @@ export let Button = xcomponent.create({
                         .then(token => {
 
                             if (!token) {
-                                $logger.error(`no_token_passed_to_payment`);
+                                error(`no_token_passed_to_payment`);
                                 throw new Error(`No value passed to payment`);
                             }
 
-                            $logger.track({
+                            track({
                                 [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
                                 [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
                                 [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
@@ -302,7 +299,7 @@ export let Button = xcomponent.create({
                                 [ FPTI.KEY.CONTEXT_ID ]:   token
                             });
 
-                            $logger.flush();
+                            flushLogs();
 
                             return token;
                         });
@@ -324,13 +321,13 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
                     checkpoint('render_iframe_button', { version: true });
-                    $logger.track({
+                    track({
                         [ FPTI.KEY.STATE ]:         FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:    FPTI.TRANSITION.BUTTON_RENDER,
                         [ FPTI.KEY.BUTTON_TYPE ]:   FPTI.BUTTON_TYPE.IFRAME,
                         [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
                     });
-                    $logger.flush();
+                    flushLogs();
                     if (original) {
                         return original.apply(this, arguments);
                     }
@@ -366,11 +363,11 @@ export let Button = xcomponent.create({
                 return function decorateOnDisplay() : ZalgoPromise<void> {
                     return ZalgoPromise.try(() => {
                         if (this.props.displayTo === USERS.REMEMBERED) {
-                            $logger.info(`button_render_wait_for_remembered_user`);
+                            info(`button_render_wait_for_remembered_user`);
 
                             this.onRemember = this.onRemember || onRemember();
                             return this.onRemember.then(() => {
-                                $logger.info(`button_render_got_remembered_user`);
+                                info(`button_render_got_remembered_user`);
                             });
                         }
 
@@ -391,34 +388,34 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
 
-                    $logger.info('checkout_authorize');
+                    info('checkout_authorize');
 
                     if (getSessionState(session => session.buttonAuthorized)) {
-                        $logger.info('checkout_authorize_multiple');
+                        info('checkout_authorize_multiple');
                     } else {
-                        $logger.info('checkout_authorize_unique');
+                        info('checkout_authorize_unique');
                     }
 
                     if (getSessionState(session => session.buttonCancelled)) {
-                        $logger.info('checkout_authorize_after_cancel');
+                        info('checkout_authorize_after_cancel');
                     }
 
                     getSessionState(session => {
                         session.buttonAuthorized = true;
                     });
 
-                    $logger.track({
+                    track({
                         [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
                     });
 
                     if (!isEligible()) {
-                        $logger.info('button_authorize_ineligible');
+                        info('button_authorize_ineligible');
                     }
 
                     checkRecognizedBrowser('authorize');
 
-                    $logger.flush();
+                    flushLogs();
 
                     if (this.props.braintree) {
                         return this.props.braintree.then(client => {
@@ -453,7 +450,7 @@ export let Button = xcomponent.create({
                         return execute().then(result => {
 
                             if (!result || !result.id || !result.intent || !result.state) {
-                                $logger.warn(`execute_result_missing_data`);
+                                warn(`execute_result_missing_data`);
                                 return new ZalgoPromise();
                             }
 
@@ -482,28 +479,28 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
 
-                    $logger.info('checkout_cancel');
+                    info('checkout_cancel');
 
                     if (getSessionState(session => session.buttonCancelled)) {
-                        $logger.info('checkout_cancel_multiple');
+                        info('checkout_cancel_multiple');
                     } else {
-                        $logger.info('checkout_cancel_unique');
+                        info('checkout_cancel_unique');
                     }
 
                     if (getSessionState(session => session.buttonCancelled)) {
-                        $logger.info('checkout_cancel_after_cancel');
+                        info('checkout_cancel_after_cancel');
                     }
 
                     getSessionState(session => {
                         session.buttonCancelled = true;
                     });
 
-                    $logger.track({
+                    track({
                         [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_CANCEL
                     });
 
-                    $logger.flush();
+                    flushLogs();
 
                     let redirect = (win, url) => {
                         return ZalgoPromise.all([
@@ -525,29 +522,29 @@ export let Button = xcomponent.create({
             decorate(original) : Function {
                 return function decorateOnClick() : void {
 
-                    $logger.info('button_click');
+                    info('button_click');
 
                     if (getSessionState(session => session.buttonClicked)) {
-                        $logger.info('button_click_multiple');
+                        info('button_click_multiple');
                     } else {
-                        $logger.info('button_click_unique');
+                        info('button_click_unique');
                     }
 
                     if (getSessionState(session => session.buttonCancelled)) {
-                        $logger.info('button_click_after_cancel');
+                        info('button_click_after_cancel');
                     }
 
                     getSessionState(session => {
                         session.buttonClicked = true;
                     });
 
-                    $logger.track({
+                    track({
                         [ FPTI.KEY.STATE ]:       FPTI.STATE.BUTTON,
                         [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_CLICK,
                         [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
                     });
 
-                    $logger.flush();
+                    flushLogs();
 
                     let experimentTestBeacon = getDomainSetting('experiment_test_beacon_on_click');
                     if (experimentTestBeacon) {
@@ -641,14 +638,14 @@ if (Button.isChild()) {
     getPageRenderTime().then(pageRenderTime => {
 
         if (pageRenderTime) {
-            $logger.track({
+            track({
                 [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
                 [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_LOAD,
                 [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
                 [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
             });
 
-            $logger.flush();
+            flushLogs();
         }
     });
 

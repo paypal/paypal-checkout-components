@@ -1,10 +1,10 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { warn } from 'beaver-logger/client';
 
 import { isIE, isIEIntranet, isIECompHeader } from './device';
 
-function warn(err) : void {
+function logWarn(err) : void {
     if (window.console) {
         if (window.console.warn) {
             return window.console.warn(err);
@@ -20,26 +20,26 @@ export function checkForCommonErrors() {
 
     if (JSON.stringify([]) !== '[]') {
         if (Array.prototype.toJSON) {
-            warn(`Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js`);
+            logWarn(`Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js`);
         } else {
-            warn(`JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.`);
+            logWarn(`JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.`);
         }
 
-        $logger.warn(`json_stringify_array_broken`);
+        warn(`json_stringify_array_broken`);
     }
 
     if (JSON.stringify({}) !== '{}') {
-        warn(`JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.`);
+        logWarn(`JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.`);
 
-        $logger.warn(`json_stringify_object_broken`);
+        warn(`json_stringify_object_broken`);
     }
 
     if (isIEIntranet()) {
-        $logger.warn(`ie_intranet_mode`);
+        warn(`ie_intranet_mode`);
     }
 
     if (isIE() && !isIECompHeader()) {
-        $logger.warn(`ie_meta_compatibility_header_missing`, {
+        warn(`ie_meta_compatibility_header_missing`, {
             message: `Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">` });
     }
 
@@ -49,10 +49,10 @@ export function checkForCommonErrors() {
     }
 
     if (foo.bind({ a: 1 }).length !== 3) {
-        $logger.warn(`function_bind_arrity_overwritten`);
+        warn(`function_bind_arrity_overwritten`);
     }
 
     if (window.opener && window.parent !== window) {
-        $logger.warn(`window_has_opener_and_parent`);
+        warn(`window_has_opener_and_parent`);
     }
 }

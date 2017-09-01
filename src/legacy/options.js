@@ -1,13 +1,14 @@
 /* @flow */
 
-import * as logger from 'beaver-logger/client';
+import { prefix } from 'beaver-logger/client';
 
 import { config, ENV } from '../config';
 import { getElements } from '../lib';
+
 import { normalizeLocale } from './common';
 import { LOG_PREFIX } from './constants';
 
-let $logger = logger.prefix(LOG_PREFIX);
+let { info, warn } = prefix(LOG_PREFIX);
 
 export function normalizeOptions(options : Object) {
 
@@ -20,7 +21,7 @@ export function normalizeOptions(options : Object) {
         }
 
         if (!config.paypalUrls[options.environment]) {
-            $logger.warn('invalid_env', { badenv: options.environment });
+            warn('invalid_env', { badenv: options.environment });
             options.environment = config.env;
         }
     }
@@ -28,7 +29,7 @@ export function normalizeOptions(options : Object) {
     // If we're passed a single button in options.button, turn it into an array
 
     if (options.button && !Array.isArray(options.button)) {
-        $logger.info(`options_button_single_button_passed`);
+        info(`options_button_single_button_passed`);
 
         options.button = [ options.button ];
     }
@@ -36,7 +37,7 @@ export function normalizeOptions(options : Object) {
     // If we're passed an array of elements in options.buttons, switch it over to options.button
 
     if (options.buttons && getElements(options.buttons).length) {
-        $logger.info(`options_buttons_with_elements_passed`);
+        info(`options_buttons_with_elements_passed`);
 
         options.button = options.buttons;
         delete options.buttons;
@@ -45,7 +46,7 @@ export function normalizeOptions(options : Object) {
     // If we're passed an empty options.button array, clear the value
 
     if (options.button && options.button.length === 0) {
-        $logger.info(`options_button_empty`);
+        info(`options_button_empty`);
 
         delete options.button;
     }
@@ -53,7 +54,7 @@ export function normalizeOptions(options : Object) {
     // If we're passed options.button and options.container, concat both under button
 
     if (options.button && options.container) {
-        $logger.info(`options_button_and_container_passed`, { button: options.button, container: options.container });
+        info(`options_button_and_container_passed`, { button: options.button, container: options.container });
 
         options.button = options.button.concat(options.container);
         delete options.container;
@@ -68,7 +69,7 @@ export function normalizeOptions(options : Object) {
             options.button = button;
 
         } else {
-            $logger.warn(`options_button_element_not_found`, { element: JSON.stringify(options.button) });
+            warn(`options_button_element_not_found`, { element: JSON.stringify(options.button) });
             delete options.button;
         }
     }
@@ -103,7 +104,7 @@ export function normalizeOptions(options : Object) {
             }
 
             if (button.container && button.container !== options.container) {
-                $logger.warn(`mismatched_container_and_button_passed`, { options: options.container, button: button.container });
+                warn(`mismatched_container_and_button_passed`, { options: options.container, button: button.container });
             }
 
             getElements(button.container || button.button).forEach(element => {

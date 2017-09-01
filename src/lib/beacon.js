@@ -1,6 +1,7 @@
 /* @flow */
 
 import { config, LOG_LEVEL } from '../config';
+
 import { getCommonSessionID, getSessionState } from './session';
 
 const BEACON_URL = 'https://www.paypal.com/webapps/hermes/api/logger';

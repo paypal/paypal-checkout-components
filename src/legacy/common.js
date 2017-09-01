@@ -1,11 +1,12 @@
 /* @flow */
 
-import * as logger from 'beaver-logger/client';
+import { prefix } from 'beaver-logger/client';
 
 import { config } from '../config';
+
 import { LOG_PREFIX } from './constants';
 
-let $logger = logger.prefix(LOG_PREFIX);
+let { warn } = prefix(LOG_PREFIX);
 
 const DEFAULT_COUNTRY = 'US';
 const DEFAULT_LANG = 'en';
@@ -24,7 +25,7 @@ export function normalizeLocale(locale : string) : { country : string, lang : st
     }
 
     if (!config.locales[country]) {
-        $logger.warn(`invalid_user_country`, { country });
+        warn(`invalid_user_country`, { country });
         country = DEFAULT_COUNTRY;
     }
 
@@ -33,7 +34,7 @@ export function normalizeLocale(locale : string) : { country : string, lang : st
     }
 
     if (config.locales[country].indexOf(lang) === -1) {
-        $logger.warn(`invalid_user_lang`, { lang });
+        warn(`invalid_user_lang`, { lang });
 
         if (config.locales[country].indexOf(DEFAULT_LANG) !== -1) {
             lang = DEFAULT_LANG;

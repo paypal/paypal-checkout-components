@@ -1,6 +1,7 @@
 /* @flow */
 
 import { isSameDomain, getFrames } from 'cross-domain-utils/src';
+
 import { createTestContainer, createElement } from '../../tests/common';
 
 let { action, onRender, onInit } = window.xprops.test;

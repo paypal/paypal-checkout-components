@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { info } from 'beaver-logger/client';
 
 import { match } from '../../lib';
 import { config } from '../../config';
@@ -12,21 +12,21 @@ export function determineParameterFromToken(token : string) : string {
 export function determineUrlFromToken(env : string, token : string) : string {
 
     if (token.indexOf('BA-') === 0) {
-        $logger.info(`url_billing`);
+        info(`url_billing`);
         return config.billingUrls[env];
     }
 
     if (token.indexOf('PAY-') === 0) {
-        $logger.info(`url_payment`);
+        info(`url_payment`);
         return config.checkoutUrls[env];
     }
 
     if (token.indexOf('EC-') === 0) {
-        $logger.info(`url_checkout`);
+        info(`url_checkout`);
         return config.checkoutUrls[env];
     }
 
-    $logger.info(`url_default`);
+    info(`url_default`);
     return config.checkoutUrls[env];
 }
 

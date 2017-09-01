@@ -1,15 +1,14 @@
 /* @flow */
 
-import * as $logger from 'beaver-logger/client';
+import { info, track, debug, warn, error, flush as flushLogs } from 'beaver-logger/client';
 import { bridge } from 'post-robot/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
     getDomainSetting, once } from './lib';
 import { createPptmScript } from './lib/pptm';
-
-import { ZalgoPromise } from 'zalgo-promise/src';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -31,17 +30,17 @@ setDomainEnv(`${ window.location.protocol }//${ window.location.host }`);
 
 ZalgoPromise.onPossiblyUnhandledException(err => {
 
-    $logger.error('unhandled_error', {
+    error('unhandled_error', {
         stack:   stringifyError(err),
         errtype: ({}).toString.call(err)
     });
 
-    $logger.track({
+    track({
         [ FPTI.KEY.ERROR_CODE ]: 'checkoutjs_error',
         [ FPTI.KEY.ERROR_DESC ]: stringifyErrorMessage(err)
     });
 
-    return $logger.flush().catch(err2 => {
+    return flushLogs().catch(err2 => {
         if (window.console) {
             try {
                 if (window.console.error) {
@@ -74,7 +73,7 @@ function getCurrentScript() : ? HTMLScriptElement {
     }
 
     if (document.currentScript) { // eslint-disable-line compat/compat
-        $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
+        debug(`current_script_not_recognized`, { src: document.currentScript.src }); // eslint-disable-line compat/compat
     }
 }
 
@@ -131,7 +130,7 @@ function configure({ env, stage, apiStage, state, ppobjects, logLevel } : Config
 export let init = once(() => {
 
     if (!isEligible()) {
-        $logger.warn('ineligible');
+        warn('ineligible');
     }
 
     checkForCommonErrors();
@@ -146,9 +145,9 @@ export let init = once(() => {
         bridge.openBridge(config.postBridgeUrls[config.env], config.paypalDomains[config.env]);
     }
 
-    $logger.info(`setup_${ config.env }`);
+    info(`setup_${ config.env }`);
 
-    $logger.debug(`current_protocol_${ currentProtocol }`);
+    debug(`current_protocol_${ currentProtocol }`);
 });
 
 export function setup(options : ConfigOptions = {}) {
@@ -177,16 +176,16 @@ if (!isPayPalDomain()) {
         let scriptProtocol = currentScript.src.split(':')[0];
         let loadTime = getResourceLoadTime(currentScript.src);
 
-        $logger.debug(`current_script_protocol_${ scriptProtocol }`);
-        $logger.debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
-        $logger.debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
+        debug(`current_script_protocol_${ scriptProtocol }`);
+        debug(`current_script_protocol_${ currentProtocol === scriptProtocol ? 'match' : 'mismatch' }`);
+        debug(`current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
         if (loadTime) {
-            $logger.debug(`current_script_time`, { loadTime });
-            $logger.debug(`current_script_time_${ Math.floor(loadTime / 1000) }`);
+            debug(`current_script_time`, { loadTime });
+            debug(`current_script_time_${ Math.floor(loadTime / 1000) }`);
         }
 
-        $logger.track({
+        track({
             [ FPTI.KEY.STATE ]:           FPTI.STATE.LOAD,
             [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.SCRIPT_LOAD,
             [ FPTI.KEY.TRANSITION_TIME ]: loadTime
@@ -194,14 +193,14 @@ if (!isPayPalDomain()) {
 
     } else {
 
-        $logger.debug(`no_current_script`);
-        $logger.debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
+        debug(`no_current_script`);
+        debug(`no_current_script_version_${ config.version.replace(/[^0-9a-zA-Z]+/g, '_') }`);
 
         if (document.currentScript) {  // eslint-disable-line compat/compat
-            $logger.debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
+            debug(`current_script_not_recognized`, { src: document.currentScript.src });  // eslint-disable-line compat/compat
         }
 
-        $logger.track({
+        track({
             [ FPTI.KEY.STATE ]:      FPTI.STATE.LOAD,
             [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.SCRIPT_LOAD
         });

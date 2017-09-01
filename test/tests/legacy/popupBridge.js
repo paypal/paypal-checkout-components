@@ -1,6 +1,7 @@
 /* @flow */
 
 import { assert } from 'chai';
+
 import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, getElement, setupPopupBridge, destroyPopupBridge, uniqueID, CHILD_REDIRECT_URI } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {

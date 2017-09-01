@@ -2,11 +2,12 @@
 
 import { getter, memoize, once, noop } from 'xcomponent/src/lib';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import * as $logger from 'beaver-logger/client';
+import { error } from 'beaver-logger/client';
 
 import { extendUrl, redirect, awaitKey, stringifyError } from '../../lib';
-import { determineParameterFromToken, determineUrlFromToken } from './util';
 import { config } from '../../config';
+
+import { determineParameterFromToken, determineUrlFromToken } from './util';
 
 function ternary(condition, truthyResult, falsyResult) : ZalgoPromise<*> {
     return ZalgoPromise.resolve(condition).then(result => {
@@ -160,7 +161,7 @@ export function setupPopupBridgeProxy(Checkout : Object) {
     function doRender(props, original) : ZalgoPromise<void> {
         let openBridge = getPopupBridgeOpener();
         return openBridge ? renderThroughPopupBridge(props, openBridge).catch((err) => {
-            $logger.error(`popup_bridge_error`, { err: stringifyError(err) });
+            error(`popup_bridge_error`, { err: stringifyError(err) });
             return original();
         }) : original();
     }
