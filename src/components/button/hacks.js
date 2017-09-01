@@ -20,9 +20,8 @@ patchMethod(rest.payment, 'create', ({ original : createOriginal, context : crea
     return createOriginal.call(createContext, env, client, options);
 });
 
-patchMethod(Button, 'render', ({ original, context, args }) => {
+patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
 
-    let [ props ] = args;
     let { style } = props;
 
     if (style && (!style.label || style.label === BUTTON_LABEL.CHECKOUT) && style.size === 'tiny') {
@@ -35,56 +34,56 @@ patchMethod(Button, 'render', ({ original, context, args }) => {
         delete props.billingAgreement;
     }
 
-    if (props.payment) {
-        patchMethod(props, 'payment', ({ context: paymentContext, original: originalPayment, args: [ data, actions ] }) => {
-            return new ZalgoPromise((resolve, reject) => {
+    return callOriginal();
+});
 
-                patchMethod(actions.payment, 'create', ({ original : createOriginal, context : createContext, args : [ options, experience ] }) => {
-                    if (!options.payment) {
-                        options = { payment: options, experience };
-                    }
-                    return createOriginal.call(createContext, options);
-                });
+patchMethod(Button.props.payment, 'decorate', ({ original, context, args: [ originalPayment ] }) => {
+    return original.call(context, function payment(data : Object, actions : Object) : ZalgoPromise<string> {
+        return new ZalgoPromise((resolve, reject) => {
 
-                function resolveData(token) {
-                    resolve(token);
+            patchMethod(actions.payment, 'create', ({ original : createOriginal, context : createContext, args : [ options, experience ] }) => {
+                if (!options.payment) {
+                    options = { payment: options, experience };
                 }
-
-                function rejectActions(err) {
-                    reject(err);
-                }
-
-                extend(resolveData, data);
-                extend(resolveData, actions);
-                extend(rejectActions, actions);
-
-                let ctx = {
-                    props: {
-                        env:    paymentContext.props.env,
-                        client: paymentContext.props.client
-                    }
-                };
-
-                let result;
-
-                try {
-                    result = originalPayment.call(ctx, resolveData, rejectActions);
-                } catch (err) {
-                    return reject(err);
-                }
-
-                if (result && typeof result.then === 'function') {
-                    return result.then(resolve, reject);
-                }
-
-                if (result !== undefined) {
-                    return resolve(result);
-                }
+                return createOriginal.call(createContext, options);
             });
-        });
-    }
 
-    return original.apply(context, args);
+            function resolveData(token) {
+                resolve(token);
+            }
+
+            function rejectActions(err) {
+                reject(err);
+            }
+
+            extend(resolveData, data);
+            extend(resolveData, actions);
+            extend(rejectActions, actions);
+
+            let ctx = {
+                props: {
+                    env:    this.props.env,
+                    client: this.props.client
+                }
+            };
+
+            let result;
+
+            try {
+                result = originalPayment.call(ctx, resolveData, rejectActions);
+            } catch (err) {
+                return reject(err);
+            }
+
+            if (result && typeof result.then === 'function') {
+                return result.then(resolve, reject);
+            }
+
+            if (result !== undefined) {
+                return resolve(result);
+            }
+        });
+    });
 });
 
 if (Button.isChild()) {

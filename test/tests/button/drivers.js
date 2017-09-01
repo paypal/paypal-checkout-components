@@ -1,6 +1,6 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
 
@@ -63,6 +63,95 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.ReactDOM.render(window.React.createElement(Main, null), container);
         });
 
+        it('should render a button into a container with React with a promise in payment and click on the button, then complete the payment', (done) => {
+
+            let Main = window.React.createClass({
+
+                render() : Object {
+
+                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
+                    return window.React.createElement(
+                        'div',
+                        null,
+                        window.React.createElement(window.paypal.Button.react, {
+
+                            payment() : string | ZalgoPromise<string> {
+                                return ZalgoPromise.try(() => {
+                                    return generateECToken();
+                                });
+                            },
+
+                            onAuthorize() : void {
+                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
+                                return done();
+                            },
+
+                            onCancel() : void {
+                                return done(new Error('Expected onCancel to not be called'));
+                            }
+                        })
+                    );
+                }
+            });
+
+            let container = document.createElement('div');
+
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
+
+            document.body.appendChild(container);
+
+            window.ReactDOM.render(window.React.createElement(Main, null), container);
+        });
+
+        it('should render a button into a container with React with a non-zalgo promise in payment and click on the button, then complete the payment', (done) => {
+
+            let Main = window.React.createClass({
+
+                render() : Object {
+
+                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
+                    return window.React.createElement(
+                        'div',
+                        null,
+                        window.React.createElement(window.paypal.Button.react, {
+
+                            payment() : string | ZalgoPromise<string> {
+                                // $FlowFixMe
+                                return {
+                                    then(successHandler) {
+                                        successHandler(generateECToken());
+                                    }
+                                };
+                            },
+
+                            onAuthorize() : void {
+                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
+                                return done();
+                            },
+
+                            onCancel() : void {
+                                return done(new Error('Expected onCancel to not be called'));
+                            }
+                        })
+                    );
+                }
+            });
+
+            let container = document.createElement('div');
+
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
+
+            document.body.appendChild(container);
+
+            window.ReactDOM.render(window.React.createElement(Main, null), container);
+        });
+
         it('should render a button into a container with Angular and click on the button, then complete the payment', done => {
 
             let injector = window.angular.element(document.body).injector();
@@ -77,6 +166,93 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 payment() : string | ZalgoPromise<string> {
                     return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+            };
+
+            let template = `
+                <paypal-button on-render="opts.onRender" payment="opts.payment" on-authorize="opts.onAuthorize" on-cancel="opts.onCancel"></test-component>
+            `;
+
+            $compile(template)($scope, element => {
+
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
+
+                document.body.appendChild(element[0]);
+            });
+        });
+
+        it('should render a button into a container with Angular with a promise in payment and click on the button, then complete the payment', done => {
+
+            let injector = window.angular.element(document.body).injector();
+            let $compile = injector.get('$compile');
+            let $rootScope = injector.get('$rootScope');
+
+            let $scope = $rootScope.$new();
+
+            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
+            $scope.opts = {
+
+                payment() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.try(() => {
+                        return generateECToken();
+                    });
+                },
+
+                onAuthorize() : void {
+                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+            };
+
+            let template = `
+                <paypal-button on-render="opts.onRender" payment="opts.payment" on-authorize="opts.onAuthorize" on-cancel="opts.onCancel"></test-component>
+            `;
+
+            $compile(template)($scope, element => {
+
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
+
+                document.body.appendChild(element[0]);
+            });
+        });
+
+        it('should render a button into a container with Angular with a non-zalgo promise in payment and click on the button, then complete the payment', done => {
+
+            let injector = window.angular.element(document.body).injector();
+            let $compile = injector.get('$compile');
+            let $rootScope = injector.get('$rootScope');
+
+            let $scope = $rootScope.$new();
+
+            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+
+            $scope.opts = {
+
+                payment() : string | ZalgoPromise<string> {
+                    // $FlowFixMe
+                    return {
+                        then(successHandler) {
+                            successHandler(generateECToken());
+                        }
+                    };
                 },
 
                 onAuthorize() : void {

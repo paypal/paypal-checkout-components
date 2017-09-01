@@ -596,6 +596,33 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render a button into a container and click on the button, with a non-zalgo promise token passed, then complete the payment', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                payment() : string | ZalgoPromise<string> {
+
+                    // $FlowFixMe
+                    return {
+                        then(successHandler) {
+                            successHandler(generateECToken());
+                        }
+                    };
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
         it('should render button with a checkout token on the correct url, then complete the payment', (done) => {
 
             let checkoutToken = generateECToken();
