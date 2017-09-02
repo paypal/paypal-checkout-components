@@ -12,6 +12,7 @@ import { Checkout } from '../checkout';
 
 import { Button } from './component';
 import { BUTTON_LABEL, BUTTON_SIZE } from './constants';
+import { componentScript } from './templates/component/script';
 
 patchMethod(rest.payment, 'create', ({ original : createOriginal, context : createContext, args : [ env, client, options, experience ] }) => {
     if (!options.payment) {
@@ -190,5 +191,14 @@ if (Button.isChild()) {
         if (taglineElement) {
             taglineElement.style.display = 'none';
         }
+    }
+
+    if (document.body && !window.getComputedStyle(document.body)) {
+        let interval = setInterval(() => {
+            if (window.getComputedStyle(document.body)) {
+                clearInterval(interval);
+                eval(`(${ componentScript })()`); // eslint-disable-line no-eval, security/detect-eval-with-expression
+            }
+        }, 10);
     }
 }
