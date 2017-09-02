@@ -8572,7 +8572,7 @@
                     return jsxDom("html", null, jsxDom("body", null, template));
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.120";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.121";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -9029,7 +9029,7 @@
         },
         "./src/components/button/hacks.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js");
+            var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_10__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js");
             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_3__api__.a.payment, "create", function(_ref) {
                 var createOriginal = _ref.original, createContext = _ref.context, _ref$args = _ref.args, env = _ref$args[0], client = _ref$args[1], options = _ref$args[2], experience = _ref$args[3];
                 options.payment || (options = {
@@ -9162,6 +9162,12 @@
                     var taglineElement = document.querySelector(".paypal-button-tag-content");
                     taglineElement && (taglineElement.style.display = "none");
                 }
+                if (document.body && !window.getComputedStyle(document.body)) var interval = setInterval(function() {
+                    if (window.getComputedStyle(document.body)) {
+                        clearInterval(interval);
+                        eval("(" + __WEBPACK_IMPORTED_MODULE_10__templates_component_script__.a + ")()");
+                    }
+                }, 10);
             }
         },
         "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9327,7 +9333,7 @@
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return componentScript;
             });
-            var componentScript = "\n    function componentScript() {\n\n        function getElements(selector, parent) {\n            parent = parent || document;\n            return Array.prototype.slice.call(parent.querySelectorAll(selector));\n        }\n\n        function showElement(el, displayType) {\n            el.style.display = displayType || 'block';\n        }\n\n        function hideElement(el) {\n            el.style.display = 'none';\n        }\n\n        function makeElementVisible(el) {\n            el.style.visibility = 'visible';\n        }\n\n        function makeElementInvisible(el) {\n            el.style.visibility = 'hidden';\n        }\n\n        function hasDimensions(el) {\n            var rect = el.getBoundingClientRect();\n            return Boolean(rect.height && rect.width);\n        }\n\n        function isHidden(el) {\n            return (window.getComputedStyle(el).display === 'none');\n        }\n\n        function displayedElementsHaveDimensions(elements) {\n            return elements.every(function(el) {\n                return hasDimensions(el) || isHidden(el);\n            });\n        }\n\n        function onDisplay(elements, method) {\n            if (displayedElementsHaveDimensions(elements)) {\n                method();\n                return;\n            }\n\n            var interval = setInterval(function() {\n                if (displayedElementsHaveDimensions(elements)) {\n                    clearInterval(interval);\n                    method();\n                    return;\n                }\n            }, 5);\n        }\n\n        function isOverflowing(el) {\n\n            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {\n                return true;\n            }\n\n            var parent = el.parentNode;\n\n            if (!parent) {\n                return false;\n            }\n\n            var e = el.getBoundingClientRect();\n            var p = parent.getBoundingClientRect();\n\n            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {\n                return true;\n            }\n\n            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {\n                return true;\n            }\n\n            return false;\n        }\n\n        var buttons = getElements('.paypal-button-content');\n        var tagline = getElements('.paypal-tagline');\n\n        function toggleTagline() {\n            if (tagline.some(isOverflowing)) {\n                tagline.forEach(makeElementInvisible);\n            } else {\n                tagline.forEach(makeElementVisible);\n            }\n        }\n\n        buttons.forEach(function(button) {\n\n            var images = getElements('.logo', button);\n            var text   = getElements('.text', button);\n\n            function showText() {\n                text.forEach(function(el) { showElement(el, 'inline-block') });\n            }\n\n            function toggleText() {\n                if (images.some(isOverflowing) || text.some(isOverflowing)) {\n                    text.forEach(hideElement);\n                } else {\n                    text.forEach(makeElementVisible);\n                }\n            }\n\n            onDisplay(images, function() {\n                images.forEach(makeElementVisible);\n                toggleTagline();\n                toggleText();\n\n                window.addEventListener('resize', function() {\n                    toggleTagline();\n                    showText();\n                    toggleText();\n                });\n            });\n        });\n    }\n";
+            var componentScript = "\n    function componentScript() {\n\n        function getElements(selector, parent) {\n            parent = parent || document;\n            return Array.prototype.slice.call(parent.querySelectorAll(selector));\n        }\n\n        function showElement(el, displayType) {\n            el.style.display = displayType || 'block';\n        }\n\n        function hideElement(el) {\n            el.style.display = 'none';\n        }\n\n        function makeElementVisible(el) {\n            el.style.visibility = 'visible';\n        }\n\n        function makeElementInvisible(el) {\n            el.style.visibility = 'hidden';\n        }\n\n        function hasDimensions(el) {\n            var rect = el.getBoundingClientRect();\n            return Boolean(rect.height && rect.width);\n        }\n\n        function isHidden(el) {\n            var computedStyle = window.getComputedStyle(el);\n            return (!computedStyle || computedStyle.display === 'none');\n        }\n\n        function displayedElementsHaveDimensions(elements) {\n            return elements.every(function(el) {\n                return hasDimensions(el) || isHidden(el);\n            });\n        }\n\n        function onDisplay(elements, method) {\n            if (displayedElementsHaveDimensions(elements)) {\n                method();\n                return;\n            }\n\n            var interval = setInterval(function() {\n                if (displayedElementsHaveDimensions(elements)) {\n                    clearInterval(interval);\n                    method();\n                    return;\n                }\n            }, 5);\n        }\n\n        function isOverflowing(el) {\n\n            if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) {\n                return true;\n            }\n\n            var parent = el.parentNode;\n\n            if (!parent) {\n                return false;\n            }\n\n            var e = el.getBoundingClientRect();\n            var p = parent.getBoundingClientRect();\n\n            if (e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom) {\n                return true;\n            }\n\n            if (e.left < 0 || e.top < 0 || (e.left + e.width) > window.innerWidth || (e.top + e.height) > window.innerHeight) {\n                return true;\n            }\n\n            return false;\n        }\n\n        var buttons = getElements('.paypal-button-content');\n        var tagline = getElements('.paypal-tagline');\n\n        function toggleTagline() {\n            if (tagline.some(isOverflowing)) {\n                tagline.forEach(makeElementInvisible);\n            } else {\n                tagline.forEach(makeElementVisible);\n            }\n        }\n\n        buttons.forEach(function(button) {\n\n            var images = getElements('.logo', button);\n            var text   = getElements('.text', button);\n\n            function showText() {\n                text.forEach(function(el) { showElement(el, 'inline-block') });\n            }\n\n            function toggleText() {\n                if (images.some(isOverflowing) || text.some(isOverflowing)) {\n                    text.forEach(hideElement);\n                } else {\n                    text.forEach(makeElementVisible);\n                }\n            }\n\n            onDisplay(images, function() {\n                images.forEach(makeElementVisible);\n                toggleTagline();\n                toggleText();\n\n                window.addEventListener('resize', function() {\n                    toggleTagline();\n                    showText();\n                    toggleText();\n                });\n            });\n        });\n    }\n";
         },
         "./src/components/button/templates/component/style.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
@@ -9626,7 +9632,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.120";
+                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.121";
                 },
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
@@ -10232,7 +10238,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.120";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.121";
                 },
                 sandboxContainer: !0,
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10360,7 +10366,7 @@
             var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.120",
+                version: "4.0.121",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10509,7 +10515,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.120");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.121");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -11255,7 +11261,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.120", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.121", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -12034,7 +12040,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.120";
+                    payload.version = "4.0.121";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                     var query = [];
@@ -12061,7 +12067,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.120".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.121".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -12069,7 +12075,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.120",
+                    v: "checkout.js.4.0.121",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -12740,7 +12746,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                        ver: "4.0.120"
+                        ver: "4.0.121"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
