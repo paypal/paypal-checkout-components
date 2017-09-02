@@ -139,8 +139,8 @@
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        var __WEBPACK_IMPORTED_MODULE_0__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        Object(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(__webpack_require__("./src/loader/interface.js"), [ "paypal" ]);
+        var __WEBPACK_IMPORTED_MODULE_0__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), _interface = __webpack_require__("./src/loader/interface.js");
+        Object(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(_interface, [ "paypal" ]);
     },
     "./src/loader/interface.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
