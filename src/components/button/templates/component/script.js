@@ -30,7 +30,8 @@ export let componentScript = `
         }
 
         function isHidden(el) {
-            return (window.getComputedStyle(el).display === 'none');
+            var computedStyle = window.getComputedStyle(el);
+            return (!computedStyle || computedStyle.display === 'none');
         }
 
         function displayedElementsHaveDimensions(elements) {
