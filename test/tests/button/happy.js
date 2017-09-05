@@ -741,11 +741,29 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let readyState = document.readyState;
             Object.defineProperty(document, 'readyState', { value: 'loading', configurable: true });
 
+            let container;
+
             window.paypal.Button.render({
 
                 test: { flow, action: 'checkout' },
 
                 payment() : string | ZalgoPromise<string> {
+                    if (!container) {
+                        throw new Error(`Expected container to be created`);
+                    }
+
+                    let frame = container.querySelector('iframe');
+
+                    if (!frame) {
+                        throw new Error(`Expected iframe to be created`);
+                    }
+
+                    let { width, height } = frame.getBoundingClientRect();
+
+                    if (!width || !height) {
+                        throw new Error(`Expected button frame to have width and height`);
+                    }
+
                     return generateECToken();
                 },
 
@@ -755,11 +773,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 onCancel() : void {
                     return done(new Error('Expected onCancel to not be called'));
-                }
+                },
+
+                onError: done
 
             }, '#lateContainer');
 
-            createElement({
+            container = createElement({
                 id:        'lateContainer',
                 container: '#testContainer'
             });
