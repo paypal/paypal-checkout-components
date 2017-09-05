@@ -45,7 +45,6 @@ export let componentStyle = `
         min-height: 24px;
 
         box-sizing: border-box;
-        padding: 2px;
     }
 
 
@@ -63,14 +62,6 @@ export let componentStyle = `
         cursor: pointer;
         outline: none;
     }
-
-    .paypal-button .paypal-button-content::before {
-         content: "";
-         position: absolute;
-         z-index: -1;
-         width: 100%;
-         height: 100%;
-     }
 
     .paypal-button .paypal-button-content:hover {
         box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);
@@ -145,17 +136,13 @@ export let componentStyle = `
         }
 
         .paypal-button .paypal-button-content {
-            height: 24px;
+            height: 26px;
             border-radius: 13px;
         }
 
         .paypal-button .paypal-button-content,
         .paypal-button .paypal-tagline {
             font-size: 10px;
-        }
-
-        .paypal-button .paypal-tagline {
-            font-size: 9px;
         }
 
         .paypal-button.paypal-branding-${ BRANDING.UNBRANDED } .paypal-button-content {
@@ -173,17 +160,6 @@ export let componentStyle = `
         }
 
         .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content {
-            border-radius: 4px;
-        }
-
-        .paypal-button .paypal-button-content::before {
-            padding: 1px;
-            top: -1px;
-            left: -1px;
-            border-radius: 14px;
-        }
-
-        .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content::before {
             border-radius: 4px;
         }
     }
@@ -233,7 +209,7 @@ export let componentStyle = `
         }
 
         .paypal-button .paypal-button-content {
-            height: 30px;
+            height: 32px;
             border-radius: 16px;
         }
 
@@ -242,26 +218,22 @@ export let componentStyle = `
             font-size: 12px;
         }
 
-        .paypal-button .paypal-tagline {
-            font-size: 10px;
-        }
-
         .paypal-button.paypal-branding-${ BRANDING.UNBRANDED } .paypal-button-content  {
             font-size: 15px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-pp {
-            height: 25px;
+            height: 23px;
         }
 
         .paypal-button .paypal-button-content .logo.logo-paypal,
         .paypal-button .paypal-button-content .logo.logo-venmo,
         .paypal-button .paypal-button-content .logo.logo-credit {
-            height: 24px;
+            height: 22px;
         }
 
         .paypal-button.paypal-layout-${ LAYOUT.DUAL } .paypal-button-content .logo.logo-pp {
-            height: 23px;
+            height: 21px;
         }
 
         .paypal-button.paypal-layout-${ LAYOUT.DUAL } .paypal-button-content .logo.logo-paypal,
@@ -271,17 +243,6 @@ export let componentStyle = `
         }
 
         .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content {
-            border-radius: 6px;
-        }
-
-        .paypal-button .paypal-button-content::before {
-            padding: 2px;
-            top: -2px;
-            left: -2px;
-            border-radius: 17px;
-        }
-
-        .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content::before {
             border-radius: 6px;
         }
     }
@@ -295,17 +256,13 @@ export let componentStyle = `
         }
 
         .paypal-button .paypal-button-content {
-            height: 40px;
+            height: 42px;
             border-radius: 21px;
         }
 
         .paypal-button .paypal-button-content,
         .paypal-button .paypal-tagline {
             font-size: 14px;
-        }
-
-        .paypal-button .paypal-tagline {
-            font-size: 11px;
         }
 
         .paypal-button.paypal-branding-${ BRANDING.UNBRANDED } .paypal-button-content  {
@@ -335,17 +292,6 @@ export let componentStyle = `
         .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content {
             border-radius: 6px;
         }
-
-        .paypal-button .paypal-button-content::before {
-            padding: 2px;
-            top: -2px;
-            left: -2px;
-            border-radius: 22px;
-        }
-
-        .paypal-button.paypal-shape-${ BUTTON_SHAPE.RECT } .paypal-button-content::before {
-            border-radius: 6px;
-        }
     }
 
 
@@ -357,28 +303,12 @@ export let componentStyle = `
         text-shadow: 0px 1px 0 #ffdc88;
     }
 
-    .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.GOLD }::before {
-        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;
-        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;
-        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;
-        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;
-        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;
-    }
-
     /* Blue */
 
     .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.BLUE } {
         background: #009cde;
         color: #fff;
         text-shadow: 0px -1px 0 #0d86bb;
-    }
-
-    .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.BLUE }::before {
-        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;
-        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;
-        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;
     }
 
     /* Silver */
@@ -389,14 +319,6 @@ export let componentStyle = `
         text-shadow: 0px -1px 0 #ccc;
     }
 
-    .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.SILVER }::before {
-        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
-        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
-    }
-
      /* Black */
 
     .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.BLACK } {
@@ -405,13 +327,7 @@ export let componentStyle = `
         text-shadow: 0px 1px 0 #6C7378;
     }
 
-    .paypal-button .paypal-button-content.paypal-color-${ BUTTON_COLOR.BLACK }::before {
-        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;
-        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;
-    }
+
 
 
      /* Credit Button */
@@ -420,14 +336,6 @@ export let componentStyle = `
         background: #003087;
         color: #fff;
         text-shadow: 0px -1px 0 #0d86bb;
-    }
-
-    .paypal-button .paypal-button-content.paypal-label-${ BUTTON_LABEL.CREDIT }.paypal-color-${ BUTTON_COLOR.CREDITBLUE }::before {
-        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;
-        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;
-        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;
     }
 
     .paypal-button .paypal-button-content.paypal-label-${ BUTTON_LABEL.CREDIT } .text {
