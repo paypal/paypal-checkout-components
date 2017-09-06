@@ -389,7 +389,7 @@ export let Button = create({
                 return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                     if (data && !data.intent) {
-                        warn(`button_authorize_no_intent`);
+                        warn(`button_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
                     }
 
                     info('checkout_authorize');
