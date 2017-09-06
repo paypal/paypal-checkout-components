@@ -2435,7 +2435,9 @@
             SERIALIZATION_TYPES: {
                 METHOD: "postrobot_method",
                 ERROR: "postrobot_error",
-                PROMISE: "postrobot_promise"
+                PROMISE: "postrobot_promise",
+                ZALGO_PROMISE: "postrobot_zalgo_promise",
+                REGEX: "regex"
             },
             SEND_STRATEGIES: {
                 POST_MESSAGE: "postrobot_post_message",
@@ -3247,11 +3249,25 @@
                 }, name + ".then")
             };
         }
+        function serializeZalgoPromise(destination, domain, promise, name) {
+            return {
+                __type__: __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ZALGO_PROMISE,
+                __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                    return promise.then(resolve, reject);
+                }, name + ".then")
+            };
+        }
+        function serializeRegex(regex) {
+            return {
+                __type__: __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.REGEX,
+                __source__: regex.source
+            };
+        }
         function serializeMethods(destination, domain, obj) {
             return Object(__WEBPACK_IMPORTED_MODULE_4__util__.h)({
                 obj: obj
             }, function(item, key) {
-                return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? serializeError(item) : __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.isPromise(item) ? serializePromise(destination, domain, item, key.toString()) : void 0;
+                return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? serializeError(item) : window.Promise && item instanceof window.Promise ? serializePromise(destination, domain, item, key.toString()) : __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.isPromise(item) ? serializeZalgoPromise(destination, domain, item, key.toString()) : Object(__WEBPACK_IMPORTED_MODULE_4__util__.c)(item) ? serializeRegex(item) : void 0;
             }).obj;
         }
         function deserializeMethod(source, origin, obj) {
@@ -3283,16 +3299,24 @@
         function deserializeError(source, origin, obj) {
             return new Error(obj.__message__);
         }
-        function deserializePromise(source, origin, prom) {
+        function deserializeZalgoPromise(source, origin, prom) {
             return new __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a(function(resolve, reject) {
                 return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
             });
+        }
+        function deserializePromise(source, origin, prom) {
+            return window.Promise ? new window.Promise(function(resolve, reject) {
+                return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
+            }) : deserializeZalgoPromise(source, origin, prom);
+        }
+        function deserializeRegex(source, origin, item) {
+            return new RegExp(item.__source__);
         }
         function deserializeMethods(source, origin, obj) {
             return Object(__WEBPACK_IMPORTED_MODULE_4__util__.h)({
                 obj: obj
             }, function(item, key) {
-                if ("object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item) return isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ERROR) ? deserializeError(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.PROMISE) ? deserializePromise(source, origin, item) : void 0;
+                if ("object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item) return isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ERROR) ? deserializeError(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.PROMISE) ? deserializePromise(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.ZALGO_PROMISE) ? deserializeZalgoPromise(source, origin, item) : isSerialized(item, __WEBPACK_IMPORTED_MODULE_3__conf__.b.SERIALIZATION_TYPES.REGEX) ? deserializeRegex(source, origin, item) : void 0;
             }).obj;
         }
         __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -3687,23 +3711,29 @@
             options.handler = handler || options.handler;
             return listen(options);
         }
-        function once(name, options, handler) {
+        function once(name) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, handler = arguments[2];
             if ("function" == typeof options) {
                 handler = options;
                 options = {};
             }
             options = options || {};
-            options.name = name;
-            options.handler = handler || options.handler;
-            options.once = !0;
-            var prom = new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
-                options.handler = options.handler || function(event) {
-                    return resolve(event);
+            handler = handler || options.handler;
+            var errorHandler = options.errorHandler, promise = new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
+                options = options || {};
+                options.name = name;
+                options.once = !0;
+                options.handler = function(event) {
+                    resolve(event);
+                    if (handler) return handler(event);
                 };
-                options.errorHandler = options.errorHandler || reject;
-            }), myListener = listen(options);
-            prom.cancel = myListener.cancel;
-            return prom;
+                options.errorHandler = function(err) {
+                    reject(err);
+                    if (errorHandler) return errorHandler(err);
+                };
+            }), onceListener = listen(options);
+            promise.cancel = onceListener.cancel;
+            return promise;
         }
         function listener() {
             var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -4984,7 +5014,6 @@
                             return _this.destroy();
                         });
                     }, iframeWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._5)(_this.iframe, detectClose), elementWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._5)(_this.element, detectClose);
-                    Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)(_this.element);
                     _this.clean.register("destroyWindow", function() {
                         iframeWatcher.cancel();
                         elementWatcher.cancel();
@@ -5862,6 +5891,7 @@
                     Object(__WEBPACK_IMPORTED_MODULE_6__lib__.d)(el, this.container);
                     if (this.driver.renderedIntoContainerTemplate) {
                         this.element = this.getOutlet();
+                        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.D)(this.element);
                         var _ref12 = this.getInitialDimensions(el) || {}, width = _ref12.width, height = _ref12.height;
                         (width || height) && this.resize(width, height, {
                             waitForTransition: !1
@@ -7777,7 +7807,9 @@
         function dotify(obj) {
             var prefix = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "", newobj = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             prefix = prefix ? prefix + "." : prefix;
-            for (var key in obj) void 0 !== obj[key] && null !== obj[key] && (obj[key] && "object" === _typeof(obj[key]) ? newobj = dotify(obj[key], "" + prefix + key, newobj) : newobj["" + prefix + key] = obj[key].toString());
+            for (var key in obj) void 0 !== obj[key] && null !== obj[key] && "function" != typeof obj[key] && (obj[key] && Array.isArray(obj[key]) && obj[key].length && obj[key].every(function(val) {
+                return "object" !== (void 0 === val ? "undefined" : _typeof(val));
+            }) ? newobj["" + prefix + key] = obj[key].join(",") : newobj["" + prefix + key] = obj[key].toString());
             return newobj;
         }
         function getObjectID(obj) {
@@ -8121,7 +8153,7 @@
                     var name = toString.call(item);
                     if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
                 }
-                if (item.then instanceof Function) return !0;
+                if ("function" == typeof item.then) return !0;
             } catch (err) {
                 return !1;
             }
@@ -8571,7 +8603,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects, "4.0.121";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects, "4.0.122";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -8758,7 +8790,10 @@
                     decorate: function(original) {
                         return function(data, actions) {
                             var _track3, _this4 = this;
-                            data && !data.intent && Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p)("button_authorize_no_intent");
+                            data && !data.intent && Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p)("button_authorize_no_intent", {
+                                paymentID: data.paymentID,
+                                token: data.paymentToken
+                            });
                             Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j)("checkout_authorize");
                             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.q)(function(session) {
                                 return session.buttonAuthorized;
@@ -9339,7 +9374,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return componentStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n\n        width: 100%;\n\n        min-width: 100px;\n        min-height: 24px;\n\n        box-sizing: border-box;\n        padding: 2px;\n    }\n\n\n\n    .paypal-button .paypal-button-content {\n        display: inline-block;\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content::before {\n         content: "";\n         position: absolute;\n         z-index: -1;\n         width: 100%;\n         height: 100%;\n     }\n\n    .paypal-button .paypal-button-content:hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button .paypal-button-content:focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .paypal-button .paypal-button-content:nth-child(2):focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    .paypal-button.paypal-branding-' + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + ' .paypal-button-content .text .branding {\n        display: none;\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-tagline {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-tagline.paypal-tagline-color-' + __WEBPACK_IMPORTED_MODULE_0__constants__.i.BLUE + " {\n        color: #003366;\n    }\n\n    .paypal-button .paypal-tagline.paypal-tagline-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.i.BLACK + " {\n        color: #6C7378;\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 0px) {\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 24px;\n            border-radius: 13px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 10px;\n        }\n\n        .paypal-button .paypal-tagline {\n            font-size: 9px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content {\n            font-size: 13px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 17px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 4px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 1px;\n            top: -1px;\n            left: -1px;\n            border-radius: 14px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content::before {\n            border-radius: 4px;\n        }\n    }\n\n    @media only screen and (max-width : 147px) {\n\n        .paypal-button .paypal-button-content.paypal-label-credit .logo.logo-paypal {\n            display: none;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content:nth-child(2) {\n            display: none;\n        }\n\n        .paypal-button .paypal-tagline {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : 148px) {\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 16px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 15px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content {\n            width: 49%;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content:nth-child(1) {\n            margin-right: 2%;\n        }\n    }\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 30px;\n            border-radius: 16px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 12px;\n        }\n\n        .paypal-button .paypal-tagline {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n            font-size: 15px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 25px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 24px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 23px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 20px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 6px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 17px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 40px;\n            border-radius: 21px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 14px;\n        }\n\n        .paypal-button .paypal-tagline {\n            font-size: 11px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n            font-size: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 24px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 6px;\n        }\n\n        .paypal-button .paypal-button-content::before {\n            padding: 2px;\n            top: -2px;\n            left: -2px;\n            border-radius: 22px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content::before {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Gold */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.GOLD + " {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.GOLD + "::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffdc88), to(#d9a630)) 0 100%;\n        background: -webkit-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -moz-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: -o-linear-gradient(#ffdc88, #d9a630) 0 100%;\n        background: linear-gradient(to bottom, #ffdc88, #d9a630) 0 100%;\n    }\n\n    /* Blue */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLUE + " {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLUE + "::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#4dbae8), to(#0d86bb)) 0 100%;\n        background: -webkit-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -moz-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: -o-linear-gradient(#4dbae8, #0d86bb) 0 100%;\n        background: linear-gradient(to bottom, #4dbae8, #0d86bb) 0 100%;\n    }\n\n    /* Silver */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.SILVER + " {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.SILVER + "::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n     /* Black */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLACK + "::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100%;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100%;\n    }\n\n\n     /* Credit Button */\n\n    .paypal-button .paypal-button-content.paypal-label-" + __WEBPACK_IMPORTED_MODULE_0__constants__.c.CREDIT + ".paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.CREDITBLUE + " {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button .paypal-button-content.paypal-label-" + __WEBPACK_IMPORTED_MODULE_0__constants__.c.CREDIT + ".paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.CREDITBLUE + "::before {\n        background: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#cccccc)) 0 100% !important;\n        background: -webkit-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -moz-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: -o-linear-gradient(#f5f5f5, #cccccc) 0 100%;\n        background: linear-gradient(to bottom, #f5f5f5, #cccccc) 0 100% !important;\n    }\n\n    .paypal-button .paypal-button-content.paypal-label-" + __WEBPACK_IMPORTED_MODULE_0__constants__.c.CREDIT + " .text {\n        display: none !important;\n    }\n\n    .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), componentStyle = '\n\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n    }\n\n\n    /* Base Button */\n\n    .paypal-button {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n\n        width: 100%;\n\n        min-width: 100px;\n        min-height: 24px;\n\n        box-sizing: border-box;\n    }\n\n\n\n    .paypal-button .paypal-button-content {\n        display: inline-block;\n        padding: 4px 8px 4px;\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    .paypal-button .paypal-button-content:hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2), 0 0 1px 1px rgba(255, 255, 255, 0.2);\n    }\n\n    .paypal-button .paypal-button-content:focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .paypal-button .paypal-button-content:nth-child(2):focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    .paypal-button .paypal-button-content .logo {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    .paypal-button .paypal-button-content .logo.logo-pp {\n        margin-right: 2px;\n    }\n\n    .paypal-button .paypal-button-content .text {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    .paypal-button.paypal-branding-' + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + ' .paypal-button-content .text .branding {\n        display: none;\n    }\n\n    .paypal-button .paypal-button-content .logo, .paypal-button .paypal-button-content .text {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-tagline {\n        max-width: 100%;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        margin-top: 2px;\n        visibility: hidden;\n    }\n\n    .paypal-button .paypal-tagline.paypal-tagline-color-' + __WEBPACK_IMPORTED_MODULE_0__constants__.i.BLUE + " {\n        color: #003366;\n    }\n\n    .paypal-button .paypal-tagline.paypal-tagline-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.i.BLACK + " {\n        color: #6C7378;\n    }\n\n    /* Small */\n\n    @media only screen and (min-width : 0px) {\n        .paypal-button {\n            max-width: 200px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 26px;\n            border-radius: 13px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 10px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content {\n            font-size: 13px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 17px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 4px;\n        }\n    }\n\n    @media only screen and (max-width : 147px) {\n\n        .paypal-button .paypal-button-content.paypal-label-credit .logo.logo-paypal {\n            display: none;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content:nth-child(2) {\n            display: none;\n        }\n\n        .paypal-button .paypal-tagline {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : 148px) {\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 16px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 15px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content {\n            width: 49%;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content:nth-child(1) {\n            margin-right: 2%;\n        }\n    }\n\n    /* Medium */\n\n    @media only screen and (min-width : 200px) {\n\n        .paypal-button {\n            max-width: 300px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 32px;\n            border-radius: 16px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 12px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n            font-size: 15px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 23px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 22px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 21px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 20px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 6px;\n        }\n    }\n\n    /* Large */\n\n    @media only screen and (min-width : 300px) {\n\n        .paypal-button {\n            max-width: 500px;\n        }\n\n        .paypal-button .paypal-button-content {\n            height: 42px;\n            border-radius: 21px;\n        }\n\n        .paypal-button .paypal-button-content,\n        .paypal-button .paypal-tagline {\n            font-size: 14px;\n        }\n\n        .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n            font-size: 18px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-pp {\n            height: 30px;\n        }\n\n        .paypal-button .paypal-button-content .logo.logo-paypal,\n        .paypal-button .paypal-button-content .logo.logo-venmo,\n        .paypal-button .paypal-button-content .logo.logo-credit {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-pp {\n            height: 27px;\n        }\n\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-paypal,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-venmo,\n        .paypal-button.paypal-layout-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.DUAL + " .paypal-button-content .logo.logo-credit {\n            height: 24px;\n        }\n\n        .paypal-button.paypal-shape-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.RECT + " .paypal-button-content {\n            border-radius: 6px;\n        }\n    }\n\n\n    /* Gold */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.GOLD + " {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    /* Blue */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLUE + " {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    /* Silver */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.SILVER + " {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n     /* Black */\n\n    .paypal-button .paypal-button-content.paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n\n\n\n     /* Credit Button */\n\n    .paypal-button .paypal-button-content.paypal-label-" + __WEBPACK_IMPORTED_MODULE_0__constants__.c.CREDIT + ".paypal-color-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.CREDITBLUE + " {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    .paypal-button .paypal-button-content.paypal-label-" + __WEBPACK_IMPORTED_MODULE_0__constants__.c.CREDIT + " .text {\n        display: none !important;\n    }\n\n    .paypal-button.paypal-branding-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " .paypal-button-content  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n";
     },
     "./src/components/button/templates/component/template.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9631,7 +9666,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects, "4.0.121";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects, "4.0.122";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
@@ -10237,7 +10272,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects, "4.0.121";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects, "4.0.122";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10363,9 +10398,9 @@
             return config;
         });
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.121.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.122.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.121",
+            version: "4.0.122",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10515,7 +10550,7 @@
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.121");
+                "4.0.122");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -11261,7 +11296,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.121", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.122", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -12040,7 +12075,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.121";
+                payload.version = "4.0.122";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                 var query = [];
@@ -12067,7 +12102,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.121".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.122".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -12075,7 +12110,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.121",
+                v: "checkout.js.4.0.122",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -12747,7 +12782,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                    ver: "4.0.121"
+                    ver: "4.0.122"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -13149,7 +13184,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.121" === window.paypal.version) {
+        if (window.paypal && "4.0.122" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -13295,4 +13330,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.121.js.map
+//# sourceMappingURL=checkout.4.0.122.js.map
