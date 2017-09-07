@@ -120,7 +120,6 @@
                 logLevel: "warn",
                 autoLog: [ "warn", "error" ],
                 logUnload: !0,
-                logUnloadSync: !1,
                 logPerformance: !0
             }, logLevels = [ "error", "warn", "info", "debug" ];
         },
@@ -185,14 +184,17 @@
                     __WEBPACK_IMPORTED_MODULE_0__config__.a.logPerformance && Object(__WEBPACK_IMPORTED_MODULE_2__performance__.b)();
                     __WEBPACK_IMPORTED_MODULE_0__config__.a.heartbeat && Object(__WEBPACK_IMPORTED_MODULE_2__performance__.a)();
                     if (__WEBPACK_IMPORTED_MODULE_0__config__.a.logUnload) {
-                        var async = !__WEBPACK_IMPORTED_MODULE_0__config__.a.logUnloadSync;
                         window.addEventListener("beforeunload", function() {
                             Object(__WEBPACK_IMPORTED_MODULE_3__logger__.g)("window_beforeunload");
-                            Object(__WEBPACK_IMPORTED_MODULE_3__logger__.f)(async);
+                            Object(__WEBPACK_IMPORTED_MODULE_3__logger__.f)({
+                                fireAndForget: !0
+                            });
                         });
                         window.addEventListener("unload", function() {
                             Object(__WEBPACK_IMPORTED_MODULE_3__logger__.g)("window_unload");
-                            Object(__WEBPACK_IMPORTED_MODULE_3__logger__.f)(async);
+                            Object(__WEBPACK_IMPORTED_MODULE_3__logger__.f)({
+                                fireAndForget: !0
+                            });
                         });
                     }
                     __WEBPACK_IMPORTED_MODULE_0__config__.a.flushInterval && setInterval(__WEBPACK_IMPORTED_MODULE_3__logger__.d, __WEBPACK_IMPORTED_MODULE_0__config__.a.flushInterval);
@@ -329,20 +331,21 @@
                 }
             }
             function immediateFlush() {
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$fireAndForget = _ref.fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
                 if (__WEBPACK_IMPORTED_MODULE_2__config__.a.uri) {
                     var hasBuffer = buffer.length, hasTracking = tracking.length;
                     if (hasBuffer || hasTracking) {
                         for (var meta = {}, _iterator = __WEBPACK_IMPORTED_MODULE_1__builders__.f, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                            var _ref;
+                            var _ref2;
                             if (_isArray) {
                                 if (_i >= _iterator.length) break;
-                                _ref = _iterator[_i++];
+                                _ref2 = _iterator[_i++];
                             } else {
                                 _i = _iterator.next();
                                 if (_i.done) break;
-                                _ref = _i.value;
+                                _ref2 = _i.value;
                             }
-                            var builder = _ref;
+                            var builder = _ref2;
                             try {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(meta, builder(), !1);
                             } catch (err) {
@@ -350,16 +353,16 @@
                             }
                         }
                         for (var headers = {}, _iterator2 = __WEBPACK_IMPORTED_MODULE_1__builders__.e, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                            var _ref2;
+                            var _ref3;
                             if (_isArray2) {
                                 if (_i2 >= _iterator2.length) break;
-                                _ref2 = _iterator2[_i2++];
+                                _ref3 = _iterator2[_i2++];
                             } else {
                                 _i2 = _iterator2.next();
                                 if (_i2.done) break;
-                                _ref2 = _i2.value;
+                                _ref3 = _i2.value;
                             }
-                            var _builder = _ref2;
+                            var _builder = _ref3;
                             try {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(headers, _builder(), !1);
                             } catch (err) {
@@ -370,6 +373,8 @@
                             events: events,
                             meta: meta,
                             tracking: tracking
+                        }, {
+                            fireAndForget: fireAndForget
                         });
                         buffer = [];
                         tracking = [];
@@ -400,16 +405,16 @@
                 }
                 payload.timestamp = Date.now();
                 for (var _iterator3 = __WEBPACK_IMPORTED_MODULE_1__builders__.g, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                    var _ref3;
+                    var _ref4;
                     if (_isArray3) {
                         if (_i3 >= _iterator3.length) break;
-                        _ref3 = _iterator3[_i3++];
+                        _ref4 = _iterator3[_i3++];
                     } else {
                         _i3 = _iterator3.next();
                         if (_i3.done) break;
-                        _ref3 = _i3.value;
+                        _ref4 = _i3.value;
                     }
-                    var builder = _ref3;
+                    var builder = _ref4;
                     try {
                         Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(), !1);
                     } catch (err) {
@@ -461,16 +466,16 @@
                         return;
                     }
                     for (var _iterator4 = __WEBPACK_IMPORTED_MODULE_1__builders__.h, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
-                        var _ref4;
+                        var _ref5;
                         if (_isArray4) {
                             if (_i4 >= _iterator4.length) break;
-                            _ref4 = _iterator4[_i4++];
+                            _ref5 = _iterator4[_i4++];
                         } else {
                             _i4 = _iterator4.next();
                             if (_i4.done) break;
-                            _ref4 = _i4.value;
+                            _ref5 = _i4.value;
                         }
-                        var builder = _ref4;
+                        var builder = _ref5;
                         try {
                             Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(), !1);
                         } catch (err) {
@@ -511,8 +516,8 @@
             Function.prototype.bind && window.console && "object" === _typeof(console.log) && [ "log", "info", "warn", "error" ].forEach(function(method) {
                 console[method] = this.bind(console[method], console);
             }, Function.prototype.call);
-            var transport = function(headers, data) {
-                return Object(__WEBPACK_IMPORTED_MODULE_0__util__.a)("post", __WEBPACK_IMPORTED_MODULE_2__config__.a.uri, headers, data);
+            var transport = function(headers, data, options) {
+                return Object(__WEBPACK_IMPORTED_MODULE_0__util__.a)("post", __WEBPACK_IMPORTED_MODULE_2__config__.a.uri, headers, data, options);
             }, loaded = !1;
             setTimeout(function() {
                 loaded = !0;
@@ -657,7 +662,7 @@
                 return !match || match[0] === window.location.protocol + "//" + window.location.host;
             }
             function ajax(method, url) {
-                var headers = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, data = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {};
+                var headers = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, data = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {}, _ref = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {}, _ref$fireAndForget = _ref.fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
                 return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
                     var XRequest = window.XMLHttpRequest || window.ActiveXObject;
                     if (window.XDomainRequest && !isSameDomain(url)) {
@@ -671,7 +676,7 @@
                         req.setRequestHeader("Content-type", "application/json");
                         for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
                     }
-                    req.onreadystatechange = function() {
+                    fireAndForget ? resolve() : req.onreadystatechange = function() {
                         req.readyState > 3 && resolve();
                     };
                     req.send(JSON.stringify(data).replace(/&/g, "%26"));
@@ -736,8 +741,8 @@
             __webpack_exports__.f = uniqueID;
             __webpack_exports__.c = isIE;
             var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), windowReady = new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
-                "complete" === document.readyState && resolve();
-                window.addEventListener("load", resolve);
+                "undefined" != typeof document && "complete" === document.readyState && resolve();
+                window.addEventListener && window.addEventListener("load", resolve);
             });
         },
         "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
@@ -1333,7 +1338,7 @@
                 try {
                     if (win.closed) return !0;
                 } catch (err) {
-                    return !err || "Call was rejected by callee.\r\n" !== err.message;
+                    return !err || err.message !== IE_WIN_ACCESS_ERROR;
                 }
                 if (allowMock && isSameDomain(win)) try {
                     if (win.mockclosed) return !0;
@@ -1538,8 +1543,35 @@
             }
             function isWindow(obj) {
                 try {
+                    if (obj === window) return !0;
+                } catch (err) {
+                    if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+                }
+                try {
+                    if (window.Window && obj instanceof window.Window) return !0;
+                } catch (err) {
+                    if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+                }
+                try {
                     if (obj && obj.self === obj) return !0;
-                } catch (err) {}
+                } catch (err) {
+                    if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+                }
+                try {
+                    if (obj && obj.parent === obj) return !0;
+                } catch (err) {
+                    if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+                }
+                try {
+                    if (obj && obj.top === obj) return !0;
+                } catch (err) {
+                    if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+                }
+                try {
+                    Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(obj && obj.__cross_domain_utils_window_check__);
+                } catch (err) {
+                    return !0;
+                }
                 return !1;
             }
             __webpack_exports__.b = getActualDomain;
@@ -1573,14 +1605,16 @@
                 MOCK_PROTOCOL: "mock:",
                 FILE_PROTOCOL: "file:",
                 WILDCARD: "*"
-            }, iframeWindows = [], iframeFrames = [];
+            }, IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n", iframeWindows = [], iframeFrames = [];
         },
         "./node_modules/cross-domain-utils/src/util.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function isRegex(item) {
                 return "[object RegExp]" === Object.prototype.toString.call(item);
             }
+            function noop() {}
             __webpack_exports__.a = isRegex;
+            __webpack_exports__.b = noop;
         },
         "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
             (function(global) {
@@ -8551,16 +8585,16 @@
                     });
                 }
             }, 500);
-            var onRemember = function() {
-                var promise = new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
+            var onRememberUser = function(instance) {
+                instance.onRememberUser = instance.onRememberUser || new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
                 Object(__WEBPACK_IMPORTED_MODULE_5__lib__.r)(function(storage) {
                     return storage.remembered;
-                }) ? promise.resolve() : promise.then(function() {
+                }) ? instance.onRememberUser.resolve() : instance.onRememberUser.then(function() {
                     Object(__WEBPACK_IMPORTED_MODULE_5__lib__.r)(function(storage) {
                         storage.remembered = !0;
                     });
                 });
-                return promise;
+                return instance.onRememberUser;
             }, Button = Object(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.c)({
                 tag: "paypal-button",
                 name: "ppbutton",
@@ -8604,7 +8638,7 @@
                     return jsxDom("html", null, jsxDom("body", null, template));
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.122";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.123";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -8735,7 +8769,7 @@
                         required: !1,
                         decorate: function(original) {
                             return function() {
-                                var _track2;
+                                var _track2, _this3 = this;
                                 Object(__WEBPACK_IMPORTED_MODULE_5__lib__.d)("render_iframe_button", {
                                     version: !0
                                 });
@@ -8745,6 +8779,9 @@
                                 _track2[__WEBPACK_IMPORTED_MODULE_4__config__.b.KEY.BUTTON_SOURCE] = this.props.source, 
                                 _track2));
                                 Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g)();
+                                onRememberUser(this).then(function() {
+                                    _this3.props.onRememberUser();
+                                });
                                 if (original) return original.apply(this, arguments);
                             };
                         }
@@ -8753,16 +8790,19 @@
                         type: "function",
                         required: !1,
                         value: function() {
-                            this.onRemember = this.onRemember || onRemember();
-                            this.onRemember.resolve();
+                            onRememberUser(this).resolve();
                         }
                     },
-                    onRemembered: {
+                    onRememberUser: {
                         type: "function",
+                        alias: "onRemembered",
                         required: !1,
-                        value: function() {
-                            this.onRemember = this.onRemember || onRemember();
-                            this.onRemember.resolve();
+                        once: !0,
+                        decorate: function(original) {
+                            return function() {
+                                onRememberUser(this).resolve();
+                                if (original) return original.apply(this, arguments);
+                            };
                         }
                     },
                     onDisplay: {
@@ -8770,17 +8810,16 @@
                         required: !1,
                         decorate: function(original) {
                             return function() {
-                                var _this3 = this, _arguments = arguments;
+                                var _this4 = this, _arguments = arguments;
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                                    if (_this3.props.displayTo === __WEBPACK_IMPORTED_MODULE_4__config__.f.REMEMBERED) {
+                                    if (_this4.props.displayTo === __WEBPACK_IMPORTED_MODULE_4__config__.f.REMEMBERED) {
                                         Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j)("button_render_wait_for_remembered_user");
-                                        _this3.onRemember = _this3.onRemember || onRemember();
-                                        return _this3.onRemember.then(function() {
+                                        return onRememberUser(_this4).then(function() {
                                             Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.j)("button_render_got_remembered_user");
                                         });
                                     }
                                 }).then(function() {
-                                    if (original) return original.apply(_this3, _arguments);
+                                    if (original) return original.apply(_this4, _arguments);
                                 });
                             };
                         }
@@ -8790,7 +8829,7 @@
                         required: !0,
                         decorate: function(original) {
                             return function(data, actions) {
-                                var _track3, _this4 = this;
+                                var _track3, _this5 = this;
                                 data && !data.intent && Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.p)("button_authorize_no_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken
@@ -8813,7 +8852,7 @@
                                 Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.g)();
                                 if (this.props.braintree) return this.props.braintree.then(function(client) {
                                     return client.tokenizePayment(data).then(function(res) {
-                                        return original.call(_this4, _extends({}, data, {
+                                        return original.call(_this5, _extends({}, data, {
                                             nonce: res.nonce
                                         }), {
                                             payment: {
@@ -8842,12 +8881,12 @@
                                     paymentToken: data.paymentToken
                                 });
                                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                                    return original.call(_this4, data, _extends({}, actions, {
+                                    return original.call(_this5, data, _extends({}, actions, {
                                         redirect: redirect,
                                         restart: restart
                                     }));
                                 }).catch(function(err) {
-                                    return _this4.error(err);
+                                    return _this5.error(err);
                                 });
                             };
                         }
@@ -9667,7 +9706,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.122";
+                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.123";
                 },
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
@@ -10273,7 +10312,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.122";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.123";
                 },
                 sandboxContainer: !0,
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10401,7 +10440,7 @@
             var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.122",
+                version: "4.0.123",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10550,7 +10589,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.122");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.123");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -11296,7 +11335,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.122", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.123", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -12075,7 +12114,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.122";
+                    payload.version = "4.0.123";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                     var query = [];
@@ -12102,7 +12141,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.122".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.123".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -12110,7 +12149,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.122",
+                    v: "checkout.js.4.0.123",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -12781,7 +12820,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                        ver: "4.0.122"
+                        ver: "4.0.123"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
