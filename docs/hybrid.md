@@ -32,7 +32,7 @@ paypal.Button.render({
 
     commit: true,
 
-    onAuthorize: function(data) {
+    onAuthorize: function(data, actions) {
         return actions.payment.execute().then(function() {
             console.log('The payment was completed!');
         });
@@ -80,7 +80,7 @@ paypal.Button.render({
         production: 'xxxxxxxxx'
     },
 
-    payment: function() {
+    payment: function(data, actions) {
         return actions.payment.create({
             transactions: [
                 {
@@ -122,7 +122,7 @@ paypal.Button.render({
 
     commit: true,
 
-    onAuthorize: function(data) {
+    onAuthorize: function(data, actions) {
         return actions.payment.execute().then(function() {
             console.log('The payment was completed!');
         });
