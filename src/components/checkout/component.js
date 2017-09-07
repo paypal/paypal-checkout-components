@@ -1,11 +1,12 @@
 /* @flow */
+/* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs } from 'beaver-logger/client';
 import { create, CONSTANTS } from 'xcomponent/src';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
-import { isDevice, request, getQueryParam, redirect as redir,
+import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
@@ -217,6 +218,10 @@ export let Checkout = create({
             decorate(original) : ?Function {
                 if (original) {
                     return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
+
+                        if (data && !data.intent) {
+                            warn(`checkout_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
+                        }
 
                         Checkout.contexts.iframe = false;
 
@@ -484,4 +489,18 @@ if (Checkout.isChild()) {
     }
 
     awaitPopupBridgeOpener();
+
+    patchMethod(window.xprops, 'onAuthorize', ({ callOriginal, args : [ data ] }) => {
+        if (data && !data.intent) {
+            warn(`hermes_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
+
+            try {
+                let intent = window.injector.get('$CheckoutCartModel').instance(data.paymentToken).payment_action;
+                warn(`hermes_intent`, { paymentID: data.paymentID, token: data.paymentToken, intent });
+            } catch (err) {
+                // pass
+            }
+        }
+        return callOriginal();
+    });
 }
