@@ -43,21 +43,21 @@ if (customButtonSelector) {
     }, 500);
 }
 
-let onRemember = () => {
-    let promise = new ZalgoPromise();
+let onRememberUser = (instance : Object) => {
+    instance.onRememberUser = instance.onRememberUser || new ZalgoPromise();
 
     if (getStorage(storage => storage.remembered)) {
-        promise.resolve();
+        instance.onRememberUser.resolve();
     } else {
         // eslint-disable-next-line promise/catch-or-return
-        promise.then(() => {
+        instance.onRememberUser.then(() => {
             getStorage(storage => {
                 storage.remembered = true;
             });
         });
     }
 
-    return promise;
+    return instance.onRememberUser;
 };
 
 export let Button = create({
@@ -320,6 +320,7 @@ export let Button = create({
             required:  false,
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
+
                     checkpoint('render_iframe_button', { version: true });
                     track({
                         [ FPTI.KEY.STATE ]:         FPTI.STATE.LOAD,
@@ -328,6 +329,12 @@ export let Button = create({
                         [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
                     });
                     flushLogs();
+
+                    // eslint-disable-next-line promise/catch-or-return
+                    onRememberUser(this).then(() => {
+                        this.props.onRememberUser();
+                    });
+
                     if (original) {
                         return original.apply(this, arguments);
                     }
@@ -340,18 +347,23 @@ export let Button = create({
             required: false,
 
             value() {
-                this.onRemember = this.onRemember || onRemember();
-                this.onRemember.resolve();
+                onRememberUser(this).resolve();
             }
         },
 
-        onRemembered: {
+        onRememberUser: {
             type:     'function',
+            alias:    'onRemembered',
             required: false,
+            once:     true,
 
-            value() {
-                this.onRemember = this.onRemember || onRemember();
-                this.onRemember.resolve();
+            decorate(original : Function) : () => void {
+                return function onRememberUsered() : void {
+                    onRememberUser(this).resolve();
+                    if (original) {
+                        return original.apply(this, arguments);
+                    }
+                };
             }
         },
 
@@ -365,8 +377,7 @@ export let Button = create({
                         if (this.props.displayTo === USERS.REMEMBERED) {
                             info(`button_render_wait_for_remembered_user`);
 
-                            this.onRemember = this.onRemember || onRemember();
-                            return this.onRemember.then(() => {
+                            return onRememberUser(this).then(() => {
                                 info(`button_render_got_remembered_user`);
                             });
                         }
