@@ -29,7 +29,9 @@ export function proxyMethod(name : string, win : ?CrossDomainWindowType, origina
         methods = methods.filter(method => !isWindowClosed(method.source));
 
         if (methods.length) {
-            return methods[0].apply(this, arguments);
+            return methods[methods.length - 1].apply(this, arguments).catch(() => {
+                return originalMethod.apply(this, arguments);
+            });
         }
 
         return originalMethod.apply(this, arguments);
