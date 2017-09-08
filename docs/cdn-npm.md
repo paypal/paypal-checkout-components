@@ -38,6 +38,9 @@ There are two options for installing paypal-checkout:
          Loading the script from our CDN means we can load the same script from cache, saving your users bandwidth and extra download time. See [Performance](./performance.md)
 
     4. Backwards compatibility with previous versions of `checkout.js` is guaranteed.
+	 5. Less likelihood of compatibility errors:
+	    - checkout.js pre-renders the PayPal button on the page, before it is rendered by the paypal.com server-side. Using the latest checkout.js ensures that the pre-rendered button will always match the server-side rendered button
+		 - checkout.js communicates directly with the PayPal Checkout app, which is pushed on a regular basis with new features, fixes, etc. The latest version of checkout.js is less likely to have compatibility issues with the latest live Checkout app.
 
 - You may decide to go with NPM (e.g. if your company's security policy only allows self-hosted javascript files), but please be aware:
 
@@ -46,3 +49,4 @@ There are two options for installing paypal-checkout:
     2. Having a locked version does not guarantee any extra stability:
        - You are likely to quickly get behind the latest version of the script, which recieves the most attention, bug reports, support, etc.
        - Issues arising from communucations between the iframe button and the parent page with an old version of `checkout.js` may be more frequent and difficult to triage
+		 - There may be double-render issues if and when the style of the button changes
