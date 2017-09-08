@@ -70,6 +70,7 @@
     "eslint-find-rules": "^3.1.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-plugin-compat": "^1.0.4",
+    "eslint-plugin-const-immutable": "^2.0.0",
     "eslint-plugin-eslint-comments": "^1.0.3",
     "eslint-plugin-flowtype": "^2.29.1",
     "eslint-plugin-import": "^2.7.0",

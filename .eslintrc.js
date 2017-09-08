@@ -9,7 +9,8 @@ module.exports = {
         'eslint-comments',
         'promise',
         'security',
-        'import'
+        'import',
+        'const-immutable'
     ],
 
     'env': {
@@ -192,7 +193,7 @@ module.exports = {
         'id-match': 'off',
         'indent': [ 'error', 4],
         'jsx-quotes': 'off',
-        'key-spacing': [ 'error', { 'afterColon': true, 'mode': 'minimum', 'align': 'value' } ],
+        'key-spacing': [ 'error', { 'afterColon': true, 'mode': 'minimum', 'align': { 'beforeColon': false, 'afterColon': true, 'on': 'value', 'mode': 'minimum' } } ],
         'keyword-spacing': 'error',
         'linebreak-style': [ 'error', 'unix' ],
         'lines-around-comment': 'off',
@@ -395,6 +396,8 @@ module.exports = {
         'import/order': [ 'error', { 'newlines-between': 'always' } ],
         'import/prefer-default-export': 'off',
         'import/unambiguous': 'error',
+
+        'const-immutable/no-mutation': 'error',
 
         'array-bracket-newline': 'off',
         'array-element-newline': 'off',
