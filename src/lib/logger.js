@@ -6,7 +6,7 @@ import { getParent } from 'cross-domain-utils/src';
 
 import { config, FPTI } from '../config';
 
-import { getCommonSessionID } from './session';
+import { getSessionID } from './session';
 import { proxyMethod } from './proxy';
 import { getDomainSetting, once } from './util';
 
@@ -32,7 +32,7 @@ export function initLogger() {
             env:     config.env,
             country: config.locale.country,
             lang:    config.locale.lang,
-            uid:     getCommonSessionID(),
+            uid:     getSessionID(),
             ver:     __MINOR_VERSION__
         };
     });
@@ -48,8 +48,8 @@ export function initLogger() {
             [ FPTI.KEY.FEED ]:         FPTI.FEED.CHECKOUTJS,
             [ FPTI.KEY.DATA_SOURCE ]:  FPTI.DATA_SOURCE.CHECKOUT,
             [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
-            [ FPTI.KEY.SESSION_UID ]:  getCommonSessionID(),
-            [ FPTI.KEY.CONTEXT_ID ]:   getCommonSessionID(),
+            [ FPTI.KEY.SESSION_UID ]:  getSessionID(),
+            [ FPTI.KEY.CONTEXT_ID ]:   getSessionID(),
             [ FPTI.KEY.REFERER ]:      getRefererDomain()
         };
     });

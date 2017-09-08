@@ -5,9 +5,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { error } from 'beaver-logger/client';
 
 import { extendUrl, redirect, awaitKey, stringifyError } from '../../lib';
-import { config } from '../../config';
+import { config, FUNDING } from '../../config';
 
-import { determineParameterFromToken, determineUrlFromToken } from './util';
+import { determineParameterFromToken, determineUrl } from './util';
 
 function ternary(condition, truthyResult, falsyResult) : ZalgoPromise<*> {
     return ZalgoPromise.resolve(condition).then(result => {
@@ -87,7 +87,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
         let awaitUrl = ternary(props.url, props.url, payment().then(token => {
             if (token) {
-                return extendUrl(determineUrlFromToken(env, token), {
+                return extendUrl(determineUrl(env, FUNDING.PAYPAL, token), {
                     [ determineParameterFromToken(token) ]: token,
                     useraction:                             props.commit ? 'commit' : '',
                     native_xo:                              '1'

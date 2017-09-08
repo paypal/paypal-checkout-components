@@ -256,7 +256,7 @@ export function hasMetaViewPort() : boolean {
     return true;
 }
 
-export function normalizeLocale(locale : string) : ?{ country : string, lang : string } {
+export function normalizeLocale(locale : string) : ?LocaleType {
 
     if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
         let [ lang, country ] = locale.split(/[-_]/);
@@ -272,7 +272,7 @@ export function normalizeLocale(locale : string) : ?{ country : string, lang : s
     }
 }
 
-export function getBrowserLocale() : { country : string, lang : string } {
+export function getBrowserLocale() : LocaleType {
 
     if (window.navigator.languages) {
         for (let locale of Array.prototype.slice.apply(window.navigator.languages)) {

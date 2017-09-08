@@ -7,19 +7,22 @@ import { create, CONSTANTS as XCOMPONENT_CONSTANTS } from 'xcomponent/src';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
-import { config, USERS, SOURCE, ENV, FPTI } from '../../config';
+import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
-    getBrowserLocale, getCommonSessionID, request, checkpoint,
+    getBrowserLocale, getSessionID, request, checkpoint, getElements,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-    getDomainSetting, extendUrl, noop, getStorage } from '../../lib';
+    getDomainSetting, extendUrl, noop } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
 import { containerTemplate, componentTemplate } from './templates';
+import { labelToFunding } from './templates/config';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
+import { rememberFunding, getRememberedFunding, onRememberFunding } from './funding';
+import { validateFunding } from './templates/funding';
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -42,23 +45,6 @@ if (customButtonSelector) {
         }
     }, 500);
 }
-
-let onRememberUser = (instance : Object) => {
-    instance.onRememberUser = instance.onRememberUser || new ZalgoPromise();
-
-    if (getStorage(storage => storage.remembered)) {
-        instance.onRememberUser.resolve();
-    } else {
-        // eslint-disable-next-line promise/catch-or-return
-        instance.onRememberUser.then(() => {
-            getStorage(storage => {
-                storage.remembered = true;
-            });
-        });
-    }
-
-    return instance.onRememberUser;
-};
 
 export let Button = create({
 
@@ -145,11 +131,11 @@ export let Button = create({
 
     props: {
 
-        uid: {
+        sessionID: {
             type:  'string',
-            value: getCommonSessionID(),
+            value: getSessionID(),
             def() : string {
-                return getCommonSessionID();
+                return getSessionID();
             },
             queryParam: true
         },
@@ -313,6 +299,25 @@ export let Button = create({
             }
         },
 
+        funding: {
+            type:       'object',
+            required:   false,
+            queryParam: true,
+            validate({ allowed = [], disallowed = [] } = {}) {
+                validateFunding({ allowed, disallowed, remembered: [] });
+            },
+            decorate({ allowed = [], disallowed = [] } = {}) : {} {
+                return {
+                    allowed,
+                    disallowed,
+                    remembered: getRememberedFunding(sources => sources),
+                    remember(sources) {
+                        rememberFunding(sources);
+                    }
+                };
+            }
+        },
+
         commit: {
             type:     'boolean',
             required: false
@@ -334,24 +339,19 @@ export let Button = create({
                     });
                     flushLogs();
 
-                    // eslint-disable-next-line promise/catch-or-return
-                    onRememberUser(this).then(() => {
-                        this.props.onRememberUser();
-                    });
+                    let source = labelToFunding(this.props.style && this.props.style.label);
+
+                    if (this.props.onRememberUser) {
+                        // eslint-disable-next-line promise/catch-or-return
+                        onRememberFunding(source).then(() => {
+                            this.props.onRememberUser({ funding: [ source ] });
+                        });
+                    }
 
                     if (original) {
                         return original.apply(this, arguments);
                     }
                 };
-            }
-        },
-
-        onAuth: {
-            type:     'function',
-            required: false,
-
-            value() {
-                onRememberUser(this).resolve();
             }
         },
 
@@ -359,41 +359,7 @@ export let Button = create({
             type:     'function',
             alias:    'onRemembered',
             required: false,
-            once:     true,
-
-            decorate(original : Function) : () => void {
-                return function onRememberUsered() : void {
-                    onRememberUser(this).resolve();
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
-                };
-            }
-        },
-
-        onDisplay: {
-            type:     'function',
-            required: false,
-
-            decorate(original) : Function {
-                return function decorateOnDisplay() : ZalgoPromise<void> {
-                    return ZalgoPromise.try(() => {
-                        if (this.props.displayTo === USERS.REMEMBERED) {
-                            info(`button_render_wait_for_remembered_user`);
-
-                            return onRememberUser(this).then(() => {
-                                info(`button_render_got_remembered_user`);
-                            });
-                        }
-
-                    }).then(() => {
-
-                        if (original) {
-                            return original.apply(this, arguments);
-                        }
-                    });
-                };
-            }
+            once:     true
         },
 
         onAuthorize: {
@@ -539,7 +505,7 @@ export let Button = create({
             type:     'function',
             required: false,
             decorate(original) : Function {
-                return function decorateOnClick() : void {
+                return function decorateOnClick(data : ?{ fundingSource : string }) : void {
 
                     info('button_click');
 
@@ -558,9 +524,10 @@ export let Button = create({
                     });
 
                     track({
-                        [ FPTI.KEY.STATE ]:       FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]:  FPTI.TRANSITION.BUTTON_CLICK,
-                        [ FPTI.KEY.BUTTON_TYPE ]: FPTI.BUTTON_TYPE.IFRAME
+                        [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_CLICK,
+                        [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.CHOSEN_FUNDING ]: data && data.fundingSource
                     });
 
                     flushLogs();
@@ -606,7 +573,9 @@ export let Button = create({
                 };
             },
 
-            validate: validateButtonStyle
+            validate(style = {}) {
+                validateButtonStyle(style);
+            }
         },
 
         displayTo: {
@@ -656,16 +625,17 @@ if (Button.isChild()) {
     // eslint-disable-next-line promise/catch-or-return
     getPageRenderTime().then(pageRenderTime => {
 
-        if (pageRenderTime) {
-            track({
-                [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
-                [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_LOAD,
-                [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
-                [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
-            });
+        let fundingSources = getElements(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)
+            .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE))
+            .join(',');
 
-            flushLogs();
-        }
+        track({
+            [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
+            [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_RENDERED,
+            [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
+            [ FPTI.KEY.FUNDING_LIST ]:   fundingSources,
+            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
+        });
     });
 
     if (window.xprops.logLevel) {

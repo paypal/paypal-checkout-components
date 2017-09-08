@@ -151,6 +151,15 @@ export let config = {
         [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
     },
 
+    guestUris: {
+        [ ENV.LOCAL ]:      `/webapps/xoonboarding`,
+        [ ENV.STAGE ]:      `/webapps/xoonboarding`,
+        [ ENV.SANDBOX ]:    `/webapps/xoonboarding`,
+        [ ENV.PRODUCTION ]: `/webapps/xoonboarding`,
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?guesturl=true`,
+        [ ENV.DEMO ]:       `/demo/dev/guest.htm`
+    },
+
     billingUris: {
         [ ENV.LOCAL ]:      `/webapps/hermes/agreements?ul=0`,
         [ ENV.STAGE ]:      `/webapps/hermes/agreements`,
@@ -227,6 +236,20 @@ export let config = {
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.checkoutUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.checkoutUris.test }`,
             [ ENV.DEMO ]:       `${ paypalUrls.test }${ config.checkoutUris.demo }`
+        };
+    },
+
+    get guestUrls() : Object {
+
+        let paypalUrls = config.paypalUrls;
+
+        return {
+            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.guestUris.local }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.guestUris.stage }`,
+            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.guestUris.sandbox }`,
+            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.guestUris.production }`,
+            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.guestUris.test }`,
+            [ ENV.DEMO ]:       `${ paypalUrls.test }${ config.guestUris.demo }`
         };
     },
 

@@ -1,7 +1,9 @@
 /* @flow */
 
+import { BUTTON_LAYOUT, BUTTON_SIZE } from '../../constants';
+import { BUTTON_CONFIG, getButtonConfig } from '../config';
+
 import { componentContent } from './content';
-import { BUTTON_CONFIG, getButtonConfig } from './config';
 
 export function validateButtonLocale(locale : string) {
 
@@ -20,23 +22,20 @@ export function validateButtonLocale(locale : string) {
     }
 }
 
+// eslint-disable-next-line complexity
 export function validateButtonStyle(style : Object = {}) {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
     }
 
-    let label = style.label || getButtonConfig('default', 'defaultLabel');
+    let label = style.label || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
 
     if (!BUTTON_CONFIG[label]) {
         throw new Error(`Invalid button label: ${ label }`);
     }
 
-    if (!getButtonConfig(label, 'allowPrimary')) {
-        throw new Error(`${ label } can not be used as primary button label`);
-    }
-
-    let { color, shape, size, branding, fundingicons, tagline } = style;
+    let { color, shape, size, branding, fundingicons, tagline, layout, max } = style;
 
     if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
         throw new Error(`Unexpected color for ${ label } button: ${ color }`);
@@ -60,6 +59,54 @@ export function validateButtonStyle(style : Object = {}) {
 
     if (tagline === true) {
         throw new Error(`Unexpected tagline=true for ${ label } button`);
+    }
+
+    if (layout && getButtonConfig(label, 'layouts').indexOf(layout) === -1) {
+        throw new Error(`Unexpected layout for ${ label } button: ${ layout }`);
+    }
+
+    if (typeof max !== 'undefined') {
+        if (typeof max !== 'number') {
+            throw new TypeError(`Expected max to be a number, got ${ max }`);
+        }
+
+        if (max < 1) {
+            throw new Error(`Expected max to be a at least 1, got ${ max }`);
+        }
+
+        let minButtons = (layout === BUTTON_LAYOUT.VERTICAL)
+            ? getButtonConfig(label, 'minVerticalButtons')
+            : getButtonConfig(label, 'minHorizontalButtons');
+
+        if (max < minButtons) {
+            throw new Error(`Expected max to be no fewer than ${ minButtons }, got ${ max }`);
+        }
+
+        let maxButtons = (layout === BUTTON_LAYOUT.VERTICAL)
+            ? getButtonConfig(label, 'maxVerticalButtons')
+            : getButtonConfig(label, 'maxHorizontalButtons');
+
+        if (max > maxButtons) {
+            throw new Error(`Expected max to be no greater than ${ maxButtons }, got ${ max }`);
+        }
+    }
+
+    if (!getButtonConfig(label, 'allowPrimary')) {
+        throw new Error(`${ label } can not be used as primary button label`);
+    }
+
+    if (layout === BUTTON_LAYOUT.VERTICAL) {
+        if (!getButtonConfig(label, 'allowPrimaryVertical')) {
+            throw new Error(`${ label } can not be used as primary vertical button label`);
+        }
+
+        if (fundingicons === true) {
+            throw new Error(`No fundingicons allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
+        }
+
+        if (style.size && [ BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ].indexOf(style.size) === -1) {
+            throw new Error(`Button must be at least ${ BUTTON_SIZE.MEDIUM } size for ${ BUTTON_LAYOUT.VERTICAL } layout`);
+        }
     }
 }
 

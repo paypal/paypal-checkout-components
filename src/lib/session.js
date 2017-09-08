@@ -6,37 +6,50 @@ import { uniqueID, isLocalStorageEnabled } from './util';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';
 const SESSION_KEY       = '__paypal_session__';
+const GLOBAL_KEY        = '__paypal_global__';
 
-export function getStorage<T>(handler : (storage : Object) => T) : T {
+let accessedStorage;
+
+export function getStorageState<T>(handler : (storage : Object) => T) : T {
 
     let enabled = isLocalStorageEnabled();
     let storage;
 
-    if (enabled) {
-        let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (accessedStorage) {
+        storage = accessedStorage;
 
-        if (rawStorage) {
-            storage = JSON.parse(rawStorage);
-        } else {
-            storage = {};
-        }
     } else {
-        storage =  window.__pp_localstorage__ = window.__pp_localstorage__ || {};
+
+        if (enabled) {
+            let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+
+            if (rawStorage) {
+                storage = JSON.parse(rawStorage);
+            } else {
+                storage = {};
+            }
+        } else {
+            storage =  window[LOCAL_STORAGE_KEY] = window.__pp_localstorage__ || {};
+        }
     }
+
+    accessedStorage = storage;
 
     let result = handler(storage);
 
     if (enabled) {
         window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
     } else {
-        window.__pp_localstorage__ = storage;
+        window[LOCAL_STORAGE_KEY] = storage;
     }
+
+    accessedStorage = null;
 
     return result;
 }
 
 export function getSession<T>(handler : (state : Object) => T) : T {
-    return getStorage(storage => {
+    return getStorageState(storage => {
 
         let session = storage[SESSION_KEY];
         let now     = Date.now();
@@ -66,14 +79,15 @@ export function getSessionState<T>(handler : (state : Object) => T) : T {
 }
 
 export function getSessionID() : string {
+
+    if (window.xprops && window.xprops.sessionID) {
+        return window.xprops.sessionID;
+    }
+
     return getSession(session => session.guid);
 }
 
-export function getCommonSessionID() : string {
-
-    if (window.xprops && window.xprops.uid) {
-        return window.xprops.uid;
-    }
-
-    return getSessionID();
+export function getGlobalState<T>(handler : (state : Object) => T) : T {
+    window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
+    return handler(window[GLOBAL_KEY]);
 }

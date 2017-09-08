@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, ENV } from '../../config';
 import { containerTemplate, componentTemplate } from '../checkout/templates';
-import { getCommonSessionID, getBrowserLocale } from '../../lib';
+import { getSessionID, getBrowserLocale } from '../../lib';
 
 export let Login = create({
 
@@ -50,11 +50,11 @@ export let Login = create({
 
     props: {
 
-        uid: {
+        sessionID: {
             type:  'string',
-            value: getCommonSessionID(),
+            value: getSessionID(),
             def() : string {
-                return getCommonSessionID();
+                return getSessionID();
             },
             queryParam: true
         },

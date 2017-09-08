@@ -7,12 +7,12 @@ import { create, CONSTANTS } from 'xcomponent/src';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
+    setLogLevel, getSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
 import { containerTemplate, componentTemplate } from './templates';
-import { determineParameterFromToken, determineUrlFromToken } from './util';
+import { determineParameterFromToken, determineUrl } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 
@@ -74,7 +74,7 @@ export let Checkout = create({
                 throw new Error(`Expected payment id or token to be passed, got ${ token }`);
             }
 
-            return determineUrlFromToken(env, token);
+            return determineUrl(env, props.fundingSource, token);
         });
     },
 
@@ -104,11 +104,11 @@ export let Checkout = create({
 
     props: {
 
-        uid: {
+        sessionID: {
             type:  'string',
-            value: getCommonSessionID(),
+            value: getSessionID(),
             def() : string {
-                return getCommonSessionID();
+                return getSessionID();
             },
             queryParam: true
         },
@@ -208,6 +208,12 @@ export let Checkout = create({
             def() : Object {
                 return {};
             }
+        },
+
+        fundingSource: {
+            type:       'string',
+            required:   false,
+            queryParam: true
         },
 
         onAuthorize: {
@@ -335,7 +341,6 @@ export let Checkout = create({
 
             decorate(original) : Function {
                 return function decorateInit(data) : void {
-
                     info('checkout_init');
 
                     track({

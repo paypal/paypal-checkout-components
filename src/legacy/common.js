@@ -11,7 +11,7 @@ let { warn } = prefix(LOG_PREFIX);
 const DEFAULT_COUNTRY = 'US';
 const DEFAULT_LANG = 'en';
 
-export function normalizeLocale(locale : string) : { country : string, lang : string } {
+export function normalizeLocale(locale : string) : LocaleType {
 
     let [ lang, country ] = locale.split('_');
 

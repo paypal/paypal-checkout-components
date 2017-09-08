@@ -184,19 +184,38 @@ export function getElement(el : string | HTMLElement, container : HTMLElement | 
     return element;
 }
 
-export function getElements(selector : string, container : HTMLElement | Document = document) : NodeList<HTMLElement> {
+export function getElements(selector : string, container : HTMLElement | Document = document) : Array<HTMLElement> {
 
     if (!selector) {
         throw new Error(`No element passed`);
     }
 
-    let elements = container.querySelectorAll(selector);
+    let elements = Array.prototype.slice.call(container.querySelectorAll(selector));
 
     if (!elements) {
         throw new Error(`Can not find element: ${ selector }`);
     }
 
     return elements;
+}
+
+export function getElementRecursive(selector : string, win : SameDomainWindowType = window) : HTMLElement {
+
+    try {
+        return getElement(selector, win.document);
+    } catch (err) {
+        // pass
+    }
+
+    for (let i = 0; i < win.frames.length; i++) {
+        try {
+            return getElementRecursive(selector, win.frames[i]);
+        } catch (err) {
+            continue;
+        }
+    }
+
+    throw new Error(`Can not find element: ${ selector }`);
 }
 
 
@@ -538,6 +557,10 @@ function parseUrl(url : string) : Object {
         query: params,
         hash
     };
+}
+
+export function noop() {
+    // pass
 }
 
 export function setupPopupBridge({ win = window, isAuthorize = true } : { win? : window, isAuthorize? : boolean } = {}) {
