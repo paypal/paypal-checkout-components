@@ -7,7 +7,7 @@ import { create, CONSTANTS } from 'xcomponent/src';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getCommonSessionID, getBrowserLocale, supportsPopups } from '../../lib';
+    setLogLevel, getSessionID, getBrowserLocale, supportsPopups } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -104,11 +104,11 @@ export let Checkout = create({
 
     props: {
 
-        uid: {
+        sessionID: {
             type:  'string',
-            value: getCommonSessionID(),
+            value: getSessionID(),
             def() : string {
-                return getCommonSessionID();
+                return getSessionID();
             },
             queryParam: true
         },
@@ -208,6 +208,12 @@ export let Checkout = create({
             def() : Object {
                 return {};
             }
+        },
+
+        fundingSource: {
+            type:       'string',
+            required:   false,
+            queryParam: true
         },
 
         onAuthorize: {

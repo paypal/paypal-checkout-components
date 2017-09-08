@@ -70,7 +70,7 @@ function renderCheckout() {
     });
 }
 
-getElement('#paypal-button', document).addEventListener('click', () => {
+getElement('.paypal-button', document).addEventListener('click', () => {
 
     if (window.xprops.onClick) {
         window.xprops.onClick();
@@ -85,21 +85,25 @@ if (action === 'auth') {
         window.xprops.onAuth();
     }
 
+} else if (action === 'remember') {
+
+    window.xprops.funding.remember([ 'paypal' ]);
+
 } else if (action === 'checkout' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {
-            getElement('#paypal-button', document).click();
+            getElement('.paypal-button', document).click();
         }, delay);
     } else {
-        getElement('#paypal-button', document).click();
+        getElement('.paypal-button', document).click();
     }
 }
 
 if (onRender) {
     onRender({
         click() {
-            getElement('#paypal-button', document).click();
+            getElement('.paypal-button', document).click();
         }
     });
 }

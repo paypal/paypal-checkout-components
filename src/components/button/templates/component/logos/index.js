@@ -1,31 +1,45 @@
 /* @flow */
 
-import pp_white from './pp_white.svg';
-import pp_blue from './pp_blue.svg';
+import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../../constants';
+
+import pp_white     from './pp_white.svg';
+import pp_blue      from './pp_blue.svg';
 import paypal_white from './paypal_white.svg';
-import paypal_blue from './paypal_blue.svg';
+import paypal_blue  from './paypal_blue.svg';
+import paypal_black from './paypal_black.svg';
 import credit_white from './credit_white.svg';
-import venmo_white from './venmo_white.svg';
-import venmo_blue from './venmo_blue.svg';
+import venmo_white  from './venmo_white.svg';
+import venmo_blue   from './venmo_blue.svg';
+import ideal        from './ideal.svg';
+import elv          from './elv.svg';
 
 export let componentLogos = {
 
-    pp: {
-        white: pp_white,
-        blue:  pp_blue
+    [ BUTTON_LOGO.PP ]: {
+        [ BUTTON_LOGO_COLOR.WHITE ]: pp_white,
+        [ BUTTON_LOGO_COLOR.BLUE ]:  pp_blue
     },
 
-    paypal: {
-        white: paypal_white,
-        blue:  paypal_blue
+    [ BUTTON_LOGO.PAYPAL ]: {
+        [ BUTTON_LOGO_COLOR.WHITE ]: paypal_white,
+        [ BUTTON_LOGO_COLOR.BLUE ]:  paypal_blue,
+        [ BUTTON_LOGO_COLOR.BLACK ]: paypal_black
     },
 
-    credit: {
-        white: credit_white
+    [ BUTTON_LOGO.CREDIT ]: {
+        [ BUTTON_LOGO_COLOR.WHITE ]: credit_white
     },
 
-    venmo: {
-        white: venmo_white,
-        blue:  venmo_blue
+    [ BUTTON_LOGO.VENMO ]: {
+        [ BUTTON_LOGO_COLOR.WHITE ]: venmo_white,
+        [ BUTTON_LOGO_COLOR.BLUE ]:  venmo_blue
+    },
+
+    [ BUTTON_LOGO.IDEAL ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]: ideal
+    },
+
+    [ BUTTON_LOGO.ELV ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]: elv
     }
 };

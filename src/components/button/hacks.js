@@ -11,7 +11,7 @@ import { Login } from '../login';
 import { Checkout } from '../checkout';
 
 import { Button } from './component';
-import { BUTTON_LABEL, BUTTON_SIZE } from './constants';
+import { BUTTON_LABEL, BUTTON_SIZE, BUTTON_COLOR } from './constants';
 
 patchMethod(rest.payment, 'create', ({ original : createOriginal, context : createContext, args : [ env, client, options, experience ] }) => {
     if (!options.payment) {
@@ -23,6 +23,14 @@ patchMethod(rest.payment, 'create', ({ original : createOriginal, context : crea
 patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
 
     let { style } = props;
+
+    if (style && style.color === 'creditblue') {
+        style.color = BUTTON_COLOR.DARKBLUE;
+    }
+
+    if (style && style.label === 'generic') {
+        style.label = BUTTON_LABEL.PAYPAL;
+    }
 
     if (style && (!style.label || style.label === BUTTON_LABEL.CHECKOUT) && style.size === 'tiny') {
         warn(`unsupported_button_size_tiny`);

@@ -19,13 +19,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
             window.paypal.Checkout.contexts.iframe = false;
         });
 
-        it('should render a button into a container to only remembered users, with a logged in user', () => {
+        it('should render a button into a container to only remembered users, with a remembered user', () => {
 
             let onRememberUserCalled = false;
 
             return window.paypal.Button.render({
 
-                test: { flow, action: 'auth', authed: true },
+                test: { flow, action: 'remember' },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -57,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         });
 
-        it('should render a button into a container to only remembered users, with a logged out user', (done) => {
+        it('should render a button into a container to only remembered users, with a non-remembered user', (done) => {
 
             let onRememberUserCalled = false;
 
@@ -65,8 +65,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: {
                     flow,
-                    action: 'auth',
-                    authed: false,
                     onRender() : void {
                         if (getElement('.paypal-button').style.display !== 'none') {
                             return done(new Error(`Expected iframe to not be visible`));
@@ -101,7 +99,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container to all, with a logged in user', (done) => {
+        it('should render a button into a container to all, with a remembered user', (done) => {
 
             let onRememberUserCalled = false;
 
@@ -109,8 +107,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: {
                     flow,
-                    action: 'auth',
-                    authed: true,
+                    action: 'remember',
                     onRender() {
                         if (getElement('.paypal-button').style.display === 'none') {
                             throw new Error(`Expected iframe to be visible`);
@@ -145,7 +142,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container to all, with a logged out user', (done) => {
+        it('should render a button into a container to all, with a non-remembered user', (done) => {
 
             let onRememberUserCalled = false;
 
@@ -153,8 +150,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 test: {
                     flow,
-                    action: 'auth',
-                    authed: false,
                     onRender() : void {
 
                         if (getElement('.paypal-button').style.display === 'none') {
@@ -190,7 +185,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render a button into a container to only remembered users, with a logged in user, then render a second button instantly', () => {
+        it('should render a button into a container to only remembered users, with a remembered user, then render a second button instantly', () => {
 
             let onRememberUserCalled = false;
 
@@ -200,7 +195,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let renderPromise1 = window.paypal.Button.render({
 
-                test: { flow, action: 'auth', authed: true },
+                test: { flow, action: 'remember' },
 
                 displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -244,7 +239,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let renderPromise2 = window.paypal.Button.render({
 
-                    test: { flow, action: 'auth', authed: true },
+                    test: { flow, action: 'remember' },
 
                     displayTo: window.paypal.USERS.REMEMBERED,
 
@@ -266,19 +261,21 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 }, container2);
 
-                if (getElement('.paypal-button', container2).style.display === 'none') {
-                    throw new Error(`Expected iframe to be visible`);
-                }
-
-                return renderPromise2.then(() => {
-
+                return ZalgoPromise.flush().then(() => {
                     if (getElement('.paypal-button', container2).style.display === 'none') {
                         throw new Error(`Expected iframe to be visible`);
                     }
 
-                    if (!onRememberUserCalled2) {
-                        throw new Error(`Expected onRememberUser to be called`);
-                    }
+                    return renderPromise2.then(() => {
+
+                        if (getElement('.paypal-button', container2).style.display === 'none') {
+                            throw new Error(`Expected iframe to be visible`);
+                        }
+
+                        if (!onRememberUserCalled2) {
+                            throw new Error(`Expected onRememberUser to be called`);
+                        }
+                    });
                 });
             });
         });
