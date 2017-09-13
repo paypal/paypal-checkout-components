@@ -85,8 +85,8 @@ function logReturn(token : string, mechanism : string) {
         return {
             experiment:      externalExperiment,
             treatment:       externalExperimentTreatment || 'unknown',
-            complete:        externalExperimentComplete || 'unknown',
-            existingToken:   externalExperimentToken
+            complete:        externalExperimentComplete,
+            existingToken:   externalExperimentToken || 'unknown'
         };
     });
 
