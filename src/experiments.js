@@ -72,6 +72,10 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
 
 function logReturn(token : string, mechanism : string) {
 
+    if (!getSessionState(session => session.externalExperiment)) {
+        return;
+    }
+
     let { experiment, treatment, complete, existingToken } = getSessionState(session => {
 
         let externalExperiment           = session.externalExperiment;
