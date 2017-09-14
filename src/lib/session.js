@@ -53,7 +53,7 @@ export function getSession<T>(handler : (state : Object) => T) : T {
 
         } else {
 
-            session = {
+            session = storage[SESSION_KEY] = {
                 guid:    uniqueID(),
                 state:   {},
                 created: now
