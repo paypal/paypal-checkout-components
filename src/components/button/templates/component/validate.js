@@ -28,10 +28,6 @@ export function validateButtonStyle(style : Object = {}) {
 
     let label = style.label || getButtonConfig('default', 'defaultLabel');
 
-    if (style.dual) {
-        throw new Error(`Invalid style option`);
-    }
-
     if (!BUTTON_CONFIG[label]) {
         throw new Error(`Invalid button label: ${ label }`);
     }

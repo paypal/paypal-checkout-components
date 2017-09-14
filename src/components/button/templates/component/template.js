@@ -9,6 +9,7 @@ import { componentStyle } from './style';
 import { componentScript } from './script';
 import { componentContent } from './content';
 import { getButtonConfig } from './config';
+import { validateButtonProps } from './validate';
 
 function expandContentText(contentText : string, { color, logoColor } : { color : string, logoColor : string }) : string {
     return contentText.replace(/\$\{([a-zA-Z_-]+)\}|([^${}]+)/g, (match, name, text) => {
@@ -146,6 +147,8 @@ function taglineTemplate({ label, tagline, branding, fundingicons, color, dual, 
 }
 
 export function componentTemplate({ props } : { props : Object }) : string {
+
+    validateButtonProps(props);
 
     let { label, locale, color, shape, branding,
         fundingicons, tagline, dual } = normalizeProps(props);
