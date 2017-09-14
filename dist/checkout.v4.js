@@ -8109,7 +8109,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.125";
+                return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.126";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -8443,7 +8443,7 @@
                             fundingicons: !1
                         };
                     },
-                    validate: __WEBPACK_IMPORTED_MODULE_10__templates_component_validate__.b
+                    validate: __WEBPACK_IMPORTED_MODULE_10__templates_component_validate__.c
                 },
                 displayTo: {
                     type: "string",
@@ -8962,7 +8962,9 @@
             return text ? '\n        <div class="paypal-tagline paypal-tagline-color-' + Object(__WEBPACK_IMPORTED_MODULE_6__config__.b)(label, "tagLineColors")[color] + '">\n            ' + text + "\n        </div>\n    " : "";
         }
         function componentTemplate(_ref6) {
-            var props = _ref6.props, _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, dual = _normalizeProps.dual, buttonHTML = determineButtons({
+            var props = _ref6.props;
+            Object(__WEBPACK_IMPORTED_MODULE_7__validate__.b)(props);
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, fundingicons = _normalizeProps.fundingicons, tagline = _normalizeProps.tagline, dual = _normalizeProps.dual, buttonHTML = determineButtons({
                 label: label,
                 color: color,
                 dual: dual
@@ -8987,7 +8989,7 @@
         }
         __webpack_exports__.a = componentTemplate;
         var __WEBPACK_IMPORTED_MODULE_0_Base64__ = __webpack_require__("./node_modules/Base64/base64.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_Base64__), 
-        __webpack_require__("./src/components/button/constants.js")), __WEBPACK_IMPORTED_MODULE_2__logos__ = __webpack_require__("./src/components/button/templates/component/logos/index.js"), __WEBPACK_IMPORTED_MODULE_3__style__ = __webpack_require__("./src/components/button/templates/component/style.js"), __WEBPACK_IMPORTED_MODULE_4__script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_5__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_6__config__ = __webpack_require__("./src/components/button/templates/component/config.js");
+        __webpack_require__("./src/components/button/constants.js")), __WEBPACK_IMPORTED_MODULE_2__logos__ = __webpack_require__("./src/components/button/templates/component/logos/index.js"), __WEBPACK_IMPORTED_MODULE_3__style__ = __webpack_require__("./src/components/button/templates/component/style.js"), __WEBPACK_IMPORTED_MODULE_4__script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_5__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_6__config__ = __webpack_require__("./src/components/button/templates/component/config.js"), __WEBPACK_IMPORTED_MODULE_7__validate__ = __webpack_require__("./src/components/button/templates/component/validate.js");
     },
     "./src/components/button/templates/component/validate.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9001,7 +9003,6 @@
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             if (!style) throw new Error("Expected props.style to be set");
             var label = style.label || Object(__WEBPACK_IMPORTED_MODULE_1__config__.b)("default", "defaultLabel");
-            if (style.dual) throw new Error("Invalid style option");
             if (!__WEBPACK_IMPORTED_MODULE_1__config__.a[label]) throw new Error("Invalid button label: " + label);
             if (!Object(__WEBPACK_IMPORTED_MODULE_1__config__.b)(label, "allowPrimary")) throw new Error(label + " can not be used as primary button label");
             var color = style.color, shape = style.shape, size = style.size, branding = style.branding, fundingicons = style.fundingicons, tagline = style.tagline;
@@ -9012,8 +9013,15 @@
             if (fundingicons && !Object(__WEBPACK_IMPORTED_MODULE_1__config__.b)(label, "allowFundingIcons")) throw new Error("Unexpected fundingicons=true for " + label + " button");
             if (!0 === tagline) throw new Error("Unexpected tagline=true for " + label + " button");
         }
+        function validateButtonProps(props) {
+            if (!props) throw new Error("Expected props");
+            var locale = props.locale, style = props.style;
+            validateButtonLocale(locale);
+            validateButtonStyle(style);
+        }
         __webpack_exports__.a = validateButtonLocale;
-        __webpack_exports__.b = validateButtonStyle;
+        __webpack_exports__.c = validateButtonStyle;
+        __webpack_exports__.b = validateButtonProps;
         var __WEBPACK_IMPORTED_MODULE_0__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/components/button/templates/component/config.js");
     },
     "./src/components/button/templates/container/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9177,7 +9185,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.125";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.126";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
@@ -9805,7 +9813,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.125";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.126";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -9933,7 +9941,7 @@
         var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.125",
+            version: "4.0.126",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10082,7 +10090,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.125");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.126");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -10828,7 +10836,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.125", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.126", checkout = void 0, apps = void 0, Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
         if (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.w)()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
@@ -10843,7 +10851,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.125";
+                payload.version = "4.0.126";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                 var query = [];
@@ -10870,7 +10878,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.125".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.126".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -10878,7 +10886,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.125",
+                v: "checkout.js.4.0.126",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -11507,7 +11515,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                    ver: "4.0.125"
+                    ver: "4.0.126"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -11896,7 +11904,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.125" === window.paypal.version) {
+        if (window.paypal && "4.0.126" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
