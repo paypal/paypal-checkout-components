@@ -41,24 +41,18 @@ export function getSession<T>(handler : (state : Object) => T) : T {
         let session = storage[SESSION_KEY];
         let now     = Date.now();
 
-        if (session) {
+        if (session && ((now - session.created) > config.session_uid_lifetime)) {
+            session = null;
+        }
 
-            if ((now - session.created) > config.session_uid_lifetime) {
-                session.guid = uniqueID();
-            }
-
-            if (!session.state) {
-                session.state = {};
-            }
-
-        } else {
-
-            session = storage[SESSION_KEY] = {
+        if (!session) {
+            session = {
                 guid:    uniqueID(),
-                state:   {},
                 created: now
             };
         }
+
+        storage[SESSION_KEY] = session;
 
         return handler(session);
     });
@@ -66,6 +60,7 @@ export function getSession<T>(handler : (state : Object) => T) : T {
 
 export function getSessionState<T>(handler : (state : Object) => T) : T {
     return getSession(session => {
+        session.state = session.state || {};
         return handler(session.state);
     });
 }
