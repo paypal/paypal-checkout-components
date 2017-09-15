@@ -53,8 +53,6 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
         };
     });
 
-    let state = existingTreatment ? 'start_duplicate' : 'start';
-
     if (existingTreatment) {
         info(`duplicate_experiment_start`);
 
@@ -65,16 +63,14 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
         if (existingToken && existingToken !== token) {
             info(`duplicate_experiment_complete_different_token`, { token, existingToken });
         }
+
+        return;
     }
 
-    log(experiment, treatment, token, state);
+    log(experiment, treatment, token, 'start');
 }
 
 function logReturn(token : string, mechanism : string) {
-
-    if (!getSessionState(session => session.externalExperiment)) {
-        return;
-    }
 
     let { experiment, treatment, complete, existingToken } = getSessionState(session => {
 
@@ -94,17 +90,17 @@ function logReturn(token : string, mechanism : string) {
         };
     });
 
-    let state = complete ? 'complete_duplicate' : 'complete';
-
     if (complete) {
         info(`duplicate_experiment_complete`);
 
         if (existingToken !== token) {
             info(`duplicate_experiment_complete_different_token`, { token, existingToken });
         }
+
+        return;
     }
 
-    log(experiment, treatment, token, `${ state }_${ mechanism }`);
+    log(experiment, treatment, token, `complete_${ mechanism }`);
 }
 
 if (getDomainSetting('log_authorize')) {
