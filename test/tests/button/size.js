@@ -963,26 +963,25 @@ describe(`paypal button component sizes`, () => {
             },
 
             onEnter() {
-                setTimeout(() => {
-                    container.style.width = '255px';
-                    let frame = getElement('#testContainer iframe');
+                let frame = getElement('#testContainer iframe');
 
-                    // eslint-disable-next-line promise/catch-or-return
-                    onElementResize(frame).then(() => {
-                        let width = frame.offsetWidth;
-                        let height = frame.offsetHeight;
+                // eslint-disable-next-line promise/catch-or-return
+                onElementResize(frame).then(() => {
+                    let width = frame.offsetWidth;
+                    let height = frame.offsetHeight;
 
-                        if (width !== expectedWidth) {
-                            return done(new Error(`Expected button to have width of ${ expectedWidth }px, got ${ width }px`));
-                        }
+                    if (width !== expectedWidth) {
+                        return done(new Error(`Expected button to have width of ${ expectedWidth }px, got ${ width }px`));
+                    }
 
-                        if (height !== expectedHeight) {
-                            return done(new Error(`Expected button to have height of ${ expectedHeight }px, got ${ height }px`));
-                        }
+                    if (height !== expectedHeight) {
+                        return done(new Error(`Expected button to have height of ${ expectedHeight }px, got ${ height }px`));
+                    }
 
-                        return done();
-                    });
-                }, 100);
+                    return done();
+                });
+
+                container.style.width = '255px';
             }
 
         }, container);
