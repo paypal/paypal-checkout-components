@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { info, track, warn, flush as flushLogs } from 'beaver-logger/client';
+import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { create, CONSTANTS } from 'xcomponent/src';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
@@ -500,6 +500,8 @@ if (Checkout.isChild()) {
             } catch (err) {
                 // pass
             }
+
+            immediateFlush();
         }
         return callOriginal();
     });
