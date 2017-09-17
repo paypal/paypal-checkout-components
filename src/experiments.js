@@ -9,109 +9,91 @@ export let onAuthorizeListener = eventEmitter();
 
 function log(experiment : string, treatment : string, token : ?string, state : string) {
 
-    info(`experiment_group_${ experiment }_${ treatment }_${ state }`);
+    getSessionState(session => {
 
-    let transition = (state === 'start')
-        ? FPTI.TRANSITION.EXTERNAL_EXPERIMENT
-        : FPTI.TRANSITION.EXTERNAL_EXPERIMENT_COMPLETE;
+        let event        = `experiment_group_${ experiment }_${ treatment }_${ state }`;
+        let loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
+        let duplicate    = loggedEvents.indexOf(event) !== -1;
 
-    track({
-        [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
-        [ FPTI.KEY.TRANSITION ]:      transition,
-        [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
-        [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
-        [ FPTI.KEY.TOKEN ]:           token,
-        [ FPTI.KEY.CONTEXT_ID ]:      token,
-        [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
+        if (duplicate) {
+            info(`duplicate_${ event }`);
+
+        } else {
+            info(event);
+            loggedEvents.push(event);
+
+            track({
+                [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
+                [ FPTI.KEY.TRANSITION ]:      state,
+                [ FPTI.KEY.EXPERIMENT_NAME ]: experiment,
+                [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
+                [ FPTI.KEY.TOKEN ]:           token,
+                [ FPTI.KEY.CONTEXT_ID ]:      token,
+                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
+            });
+
+            immediateFlush();
+        }
     });
-
-    immediateFlush();
 }
 
 export function logExperimentTreatment(experiment : string, treatment : string, token : ?string) {
 
-    if (experiment === 'walmart_paypal_incontext') {
-        experiment = 'walmart_paypal_incontext_redirect';
+    let exp;
+    let state;
+
+    if (experiment === 'walmart_paypal_incontext' || experiment === 'walmart_paypal_incontext_redirect') {
+        exp   = 'walmart_paypal_incontext';
+        state = 'redirect';
+    } else if (experiment === 'walmart_paypal_incontext_click') {
+        exp   = 'walmart_paypal_incontext';
+        state = 'click';
+    } else {
+        exp = experiment;
+        state = 'start';
     }
 
-    let { existingTreatment, existingToken } = getSessionState(session => {
-
-        let externalExperimentTreatment = session.externalExperimentTreatment;
-        let externalExperimentToken     = session.externalExperimentToken;
-
-        session.externalExperiment          = experiment;
+    getSessionState(session => {
+        session.externalExperiment          = exp;
         session.externalExperimentTreatment = treatment;
-        session.externalExperimentToken     = token;
 
         if (token) {
-            session.experimentToken = token;
+            session.externalExperimentToken = token;
         }
-
-        return {
-            existingTreatment: externalExperimentTreatment,
-            existingToken:     externalExperimentToken
-        };
     });
 
-    if (existingTreatment) {
-        info(`duplicate_experiment_start`);
-
-        if (existingTreatment !== treatment) {
-            info(`duplicate_experiment_start_different_treatment`, { treatment, existingTreatment });
-        }
-
-        if (existingToken && existingToken !== token) {
-            info(`duplicate_experiment_complete_different_token`, { token, existingToken });
-        }
-
-        return;
-    }
-
-    log(experiment, treatment, token, 'start');
+    log(exp, treatment, token, state);
 }
 
-function logReturn(token : string, mechanism : string) {
+function logReturn(token : string) {
 
-    let { experiment, treatment, complete, existingToken } = getSessionState(session => {
+    let {
+        externalExperiment,
+        externalExperimentTreatment,
+        externalExperimentToken
+    } = getSessionState(session => session);
 
-        let externalExperiment           = session.externalExperiment;
-        let externalExperimentTreatment  = session.externalExperimentTreatment;
-        let externalExperimentComplete   = session.externalExperimentComplete;
-        let externalExperimentToken      = session.externalExperimentToken;
-
-        session.externalExperimentComplete = true;
-        session.externalExperimentToken    = token;
-
-        return {
-            experiment:      externalExperiment,
-            treatment:       externalExperimentTreatment || 'unknown',
-            complete:        externalExperimentComplete,
-            existingToken:   externalExperimentToken || 'unknown'
-        };
-    });
-
-    if (complete) {
-        info(`duplicate_experiment_complete`);
-
-        if (existingToken !== token) {
-            info(`duplicate_experiment_complete_different_token`, { token, existingToken });
-        }
-
-        return;
+    if (externalExperiment && externalExperimentTreatment && externalExperimentToken === token) {
+        log(externalExperiment, externalExperimentTreatment, token, `complete`);
+    } else {
+        info(`experiment_mismatch`, {
+            token,
+            externalExperiment,
+            externalExperimentTreatment,
+            externalExperimentToken
+        });
     }
-
-    log(experiment, treatment, token, `complete_${ mechanism }`);
 }
 
 if (getDomainSetting('log_authorize')) {
 
     onAuthorizeListener.once(({ paymentToken }) => {
-        logReturn(paymentToken, 'callback');
+        logReturn(paymentToken);
     });
 
     let returnToken = getReturnToken();
 
     if (returnToken) {
-        logReturn(returnToken, 'redirect');
+        logReturn(returnToken);
     }
 }
