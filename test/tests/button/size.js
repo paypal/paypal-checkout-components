@@ -967,6 +967,15 @@ describe(`paypal button component sizes`, () => {
 
                 // eslint-disable-next-line promise/catch-or-return
                 onElementResize(frame).then(() => {
+
+                    let height = frame.offsetHeight;
+
+                    if (height === 42) {
+                        return onElementResize(frame);
+                    }
+
+                }).then(() => {
+
                     let width = frame.offsetWidth;
                     let height = frame.offsetHeight;
 
