@@ -88,12 +88,18 @@ function logReturn(token : string) {
 if (getDomainSetting('log_authorize')) {
 
     onAuthorizeListener.once(({ paymentToken }) => {
-        logReturn(paymentToken);
+        setTimeout(() => {
+            logReturn(paymentToken);
+        }, 1);
     });
 
     let returnToken = getReturnToken();
 
     if (returnToken) {
-        logReturn(returnToken);
+        setTimeout(() => {
+            if (returnToken) {
+                logReturn(returnToken);
+            }
+        }, 1);
     }
 }
