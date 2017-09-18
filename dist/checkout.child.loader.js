@@ -15,6 +15,9 @@
     var installedModules = {};
     __webpack_require__.m = modules;
     __webpack_require__.c = installedModules;
+    __webpack_require__.i = function(value) {
+        return value;
+    };
     __webpack_require__.d = function(exports, name, getter) {
         __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
             configurable: !1,
@@ -109,9 +112,9 @@
             var version = getVersion();
             return Boolean(version === __WEBPACK_IMPORTED_MODULE_0__config__.a.major_version || version === __WEBPACK_IMPORTED_MODULE_0__config__.a.latest_version);
         }
-        __webpack_exports__.b = isCheckoutXComponent;
-        __webpack_exports__.a = getVersion;
-        __webpack_exports__.c = isLatest;
+        __webpack_exports__.a = isCheckoutXComponent;
+        __webpack_exports__.c = getVersion;
+        __webpack_exports__.b = isLatest;
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/loader/config.js");
     },
     "./src/loader/config.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -140,7 +143,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), _interface = __webpack_require__("./src/loader/interface.js");
-        Object(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(_interface, [ "paypal" ]);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_namespace__.a)(_interface, [ "paypal" ]);
     },
     "./src/loader/interface.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -153,7 +156,7 @@
         });
         var __WEBPACK_IMPORTED_MODULE_1__component__ = __webpack_require__("./src/loader/component.js");
         __webpack_require__.d(__webpack_exports__, "isCheckoutXComponent", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__component__.b;
+            return __WEBPACK_IMPORTED_MODULE_1__component__.a;
         });
     },
     "./src/loader/load.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -163,13 +166,13 @@
         }
         function getIntegrationURLs() {
             return {
-                latest: Object(__WEBPACK_IMPORTED_MODULE_2__component__.c)(),
+                latest: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__component__.b)(),
                 major: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", ""),
-                minor: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", "." + Object(__WEBPACK_IMPORTED_MODULE_2__component__.a)())
+                minor: __WEBPACK_IMPORTED_MODULE_0__config__.a.checkoutjs_url.replace("{version}", "." + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__component__.c)())
             };
         }
         function getIntegrationProps() {
-            var props = _extends({}, __WEBPACK_IMPORTED_MODULE_0__config__.a.script_props), query = Object(__WEBPACK_IMPORTED_MODULE_3__util__.b)();
+            var props = _extends({}, __WEBPACK_IMPORTED_MODULE_0__config__.a.script_props), query = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.a)();
             query.env && (props["data-env"] = query.env);
             query.stage && (props["data-stage"] = query.stage);
             return props;
@@ -181,15 +184,15 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, integrationResponder = Object(__WEBPACK_IMPORTED_MODULE_1__responder__.a)();
+        }, integrationResponder = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__responder__.a)();
         !function(callback) {
-            if (!Object(__WEBPACK_IMPORTED_MODULE_2__component__.b)()) return callback(null, null);
+            if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__component__.a)()) return callback(null, null);
             var urls = getIntegrationURLs(), props = getIntegrationProps();
-            Object(__WEBPACK_IMPORTED_MODULE_3__util__.a)(urls.latest ? urls.major : urls.minor, __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, function(err, result) {
-                return err && !urls.latest ? Object(__WEBPACK_IMPORTED_MODULE_3__util__.a)(urls.major + "?t=" + Date.now(), __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, callback) : callback(err, result);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(urls.latest ? urls.major : urls.minor, __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, function(err, result) {
+                return err && !urls.latest ? __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.b)(urls.major + "?t=" + Date.now(), __WEBPACK_IMPORTED_MODULE_0__config__.a.xchild_global, props, callback) : callback(err, result);
             });
         }(function(err, result) {
-            err && Object(__WEBPACK_IMPORTED_MODULE_3__util__.c)("Failed to load checkout.js", err.stack || err.toString());
+            err && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util__.c)("Failed to load checkout.js", err.stack || err.toString());
             if (err || result) return integrationResponder.respond(err, result);
         });
     },
@@ -272,9 +275,9 @@
             }
             return params;
         }
-        __webpack_exports__.a = loadScript;
+        __webpack_exports__.b = loadScript;
         __webpack_exports__.c = warn;
-        __webpack_exports__.b = parseQuery;
+        __webpack_exports__.a = parseQuery;
     }
 }));
 //# sourceMappingURL=checkout.child.loader.js.map
