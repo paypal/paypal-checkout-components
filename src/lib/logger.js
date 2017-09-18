@@ -57,7 +57,7 @@ export function initLogger() {
     let prefix = 'ppxo';
 
     if (getDomainSetting('log_domain_prefix')) {
-        prefix = `${ prefix }_${ window.location.host.replace(/[^a-zA-Z0-9_]/g, '_') }`;
+        prefix = `${ prefix }_${ window.location.host.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^www_/, '').replace(/_com$/, '') }`;
     }
 
     init({

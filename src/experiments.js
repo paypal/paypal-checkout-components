@@ -11,7 +11,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
 
     getSessionState(session => {
 
-        let event        = `experiment_group_${ experiment }_${ treatment }_${ state }`;
+        let event        = `${ experiment }_${ treatment }_${ state }`;
         let loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
         let duplicate    = loggedEvents.indexOf(event) !== -1;
 
