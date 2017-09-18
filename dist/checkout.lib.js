@@ -8664,7 +8664,7 @@
                     return jsxDom("html", null, jsxDom("body", null, template));
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.128";
+                    return __WEBPACK_IMPORTED_MODULE_4__config__.g.ppobjects ? "4" : "4.0.129";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_4__config__.g.paypalDomains;
@@ -9129,7 +9129,7 @@
         },
         "./src/components/button/hacks.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_10__templates_component_script__ = __webpack_require__("./src/components/button/templates/component/script.js");
+            var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js");
             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_3__api__.a.payment, "create", function(_ref) {
                 var createOriginal = _ref.original, createContext = _ref.context, _ref$args = _ref.args, env = _ref$args[0], client = _ref$args[1], options = _ref$args[2], experience = _ref$args[3];
                 options.payment || (options = {
@@ -9253,21 +9253,6 @@
                     delete _ref8.args[0].env;
                     return callOriginal();
                 });
-                var buttonElement = document.querySelector(".paypal-button");
-                if (buttonElement) {
-                    buttonElement.style.minWidth = "100px";
-                    buttonElement.style.minHeight = "24px";
-                }
-                if (window.xprops.style && !1 === window.xprops.style.tagline) {
-                    var taglineElement = document.querySelector(".paypal-button-tag-content");
-                    taglineElement && (taglineElement.style.display = "none");
-                }
-                if (document.body && !window.getComputedStyle(document.body)) var interval = setInterval(function() {
-                    if (window.getComputedStyle(document.body)) {
-                        clearInterval(interval);
-                        eval("(" + __WEBPACK_IMPORTED_MODULE_10__templates_component_script__.a + ")()");
-                    }
-                }, 10);
             }
         },
         "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9740,7 +9725,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.128";
+                    return __WEBPACK_IMPORTED_MODULE_5__config__.g.ppobjects ? "4" : "4.0.129";
                 },
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_7__templates__.b,
@@ -10034,6 +10019,7 @@
                                 intent: intent
                             });
                         } catch (err) {}
+                        Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i)();
                     }
                     return callOriginal();
                 });
@@ -10368,7 +10354,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.128";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.g.ppobjects ? "4" : "4.0.129";
                 },
                 sandboxContainer: !0,
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -10496,7 +10482,7 @@
             var _checkoutUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.128",
+                version: "4.0.129",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.a.PRODUCTION,
@@ -10645,7 +10631,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.128");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.129");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -11152,61 +11138,51 @@
         "./src/experiments.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function log(experiment, treatment, token, state) {
-                var _track;
-                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("experiment_group_" + experiment + "_" + treatment + "_" + state);
-                var transition = "start" === state ? __WEBPACK_IMPORTED_MODULE_1__config__.b.TRANSITION.EXTERNAL_EXPERIMENT : __WEBPACK_IMPORTED_MODULE_1__config__.b.TRANSITION.EXTERNAL_EXPERIMENT_COMPLETE;
-                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.b.STATE.CHECKOUT, 
-                _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TRANSITION] = transition, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.EXPERIMENT_NAME] = experiment, 
-                _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TREATMENT_NAME] = treatment, 
-                _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TOKEN] = token, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.CONTEXT_ID] = token, 
-                _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.CONTEXT_TYPE] = token ? __WEBPACK_IMPORTED_MODULE_1__config__.b.CONTEXT_TYPE.EC_TOKEN : __WEBPACK_IMPORTED_MODULE_1__config__.b.CONTEXT_TYPE.UID, 
-                _track));
-                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.i)();
+                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(function(session) {
+                    var event = "experiment_group_" + experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
+                    if (-1 !== loggedEvents.indexOf(event)) Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_" + event); else {
+                        var _track;
+                        Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)(event);
+                        loggedEvents.push(event);
+                        Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.b.STATE.CHECKOUT, 
+                        _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TRANSITION] = state, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.EXPERIMENT_NAME] = experiment, 
+                        _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TREATMENT_NAME] = treatment, 
+                        _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.TOKEN] = token, _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.CONTEXT_ID] = token, 
+                        _track[__WEBPACK_IMPORTED_MODULE_1__config__.b.KEY.CONTEXT_TYPE] = token ? __WEBPACK_IMPORTED_MODULE_1__config__.b.CONTEXT_TYPE.EC_TOKEN : __WEBPACK_IMPORTED_MODULE_1__config__.b.CONTEXT_TYPE.UID, 
+                        _track));
+                        Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.i)();
+                    }
+                });
             }
             function logExperimentTreatment(experiment, treatment, token) {
-                "walmart_paypal_incontext" === experiment && (experiment = "walmart_paypal_incontext_redirect");
-                var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(function(session) {
-                    var externalExperimentTreatment = session.externalExperimentTreatment, externalExperimentToken = session.externalExperimentToken;
-                    session.externalExperiment = experiment;
+                var exp = void 0, state = void 0;
+                if ("walmart_paypal_incontext" === experiment || "walmart_paypal_incontext_redirect" === experiment) {
+                    exp = "walmart_paypal_incontext";
+                    state = "redirect";
+                } else if ("walmart_paypal_incontext_click" === experiment) {
+                    exp = "walmart_paypal_incontext";
+                    state = "click";
+                } else {
+                    exp = experiment;
+                    state = "start";
+                }
+                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(function(session) {
+                    session.externalExperiment = exp;
                     session.externalExperimentTreatment = treatment;
-                    session.externalExperimentToken = token;
-                    token && (session.experimentToken = token);
-                    return {
-                        existingTreatment: externalExperimentTreatment,
-                        existingToken: externalExperimentToken
-                    };
-                }), existingTreatment = _getSessionState.existingTreatment, existingToken = _getSessionState.existingToken;
-                if (existingTreatment) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_experiment_start");
-                    existingTreatment !== treatment && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_experiment_start_different_treatment", {
-                        treatment: treatment,
-                        existingTreatment: existingTreatment
-                    });
-                    existingToken && existingToken !== token && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_experiment_complete_different_token", {
-                        token: token,
-                        existingToken: existingToken
-                    });
-                } else log(experiment, treatment, token, "start");
+                    token && (session.externalExperimentToken = token);
+                });
+                log(exp, treatment, token, state);
             }
-            function logReturn(token, mechanism) {
-                var _getSessionState2 = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(function(session) {
-                    var externalExperiment = session.externalExperiment, externalExperimentTreatment = session.externalExperimentTreatment, externalExperimentComplete = session.externalExperimentComplete, externalExperimentToken = session.externalExperimentToken;
-                    session.externalExperimentComplete = !0;
-                    session.externalExperimentToken = token;
-                    return {
-                        experiment: externalExperiment,
-                        treatment: externalExperimentTreatment || "unknown",
-                        complete: externalExperimentComplete,
-                        existingToken: externalExperimentToken || "unknown"
-                    };
-                }), experiment = _getSessionState2.experiment, treatment = _getSessionState2.treatment, complete = _getSessionState2.complete, existingToken = _getSessionState2.existingToken;
-                if (complete) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_experiment_complete");
-                    existingToken !== token && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_experiment_complete_different_token", {
-                        token: token,
-                        existingToken: existingToken
-                    });
-                } else log(experiment, treatment, token, "complete_" + mechanism);
+            function logReturn(token) {
+                var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)(function(session) {
+                    return session;
+                }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
+                externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("experiment_mismatch", {
+                    token: token,
+                    externalExperiment: externalExperiment,
+                    externalExperimentTreatment: externalExperimentTreatment,
+                    externalExperimentToken: externalExperimentToken
+                });
             }
             __webpack_require__.d(__webpack_exports__, "b", function() {
                 return onAuthorizeListener;
@@ -11215,10 +11191,10 @@
             var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), onAuthorizeListener = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.e)();
             if (Object(__WEBPACK_IMPORTED_MODULE_2__lib__.j)("log_authorize")) {
                 onAuthorizeListener.once(function(_ref) {
-                    logReturn(_ref.paymentToken, "callback");
+                    logReturn(_ref.paymentToken);
                 });
                 var returnToken = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.p)();
-                returnToken && logReturn(returnToken, "redirect");
+                returnToken && logReturn(returnToken);
             }
         },
         "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -11389,7 +11365,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.128", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.129", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -12168,7 +12144,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.128";
+                    payload.version = "4.0.129";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.a)();
                     var query = [];
@@ -12195,7 +12171,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.128".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.129".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -12203,7 +12179,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.128",
+                    v: "checkout.js.4.0.129",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -12874,7 +12850,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.g.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(),
-                        ver: "4.0.128"
+                        ver: "4.0.129"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
