@@ -32,10 +32,6 @@ function isBrowserEligible() : boolean {
         }
     }
 
-    if (bowser.msedge && bowser.compareVersions([ bowser.version, '15' ]) === 0) {
-        return false;
-    }
-
     return true;
 }
 
