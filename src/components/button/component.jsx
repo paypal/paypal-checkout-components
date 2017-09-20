@@ -92,7 +92,11 @@ export let Button = create({
 
             if (getDomainSetting('allow_full_page_fallback')) {
                 info('pre_template_force_full_page');
-                flushLogs();
+
+                let experimentTestBeacon = getDomainSetting('experiment_test_beacon_on_click');
+                if (experimentTestBeacon) {
+                    logExperimentTreatment(experimentTestBeacon, 'test');
+                }
 
                 let checkout = Checkout.init({
                     onAuthorize: noop
