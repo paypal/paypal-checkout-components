@@ -4,16 +4,28 @@ import { info, flush as flushLogs } from 'beaver-logger/client';
 
 import { config } from '../config';
 
-import { isIEIntranet } from './device';
+import { isIEIntranet, getUserAgent } from './device';
 import { once } from './util';
 
+let bowserCache = {};
+
 function getBowser({ clearCache = false } = {}) : Object {
+
+    let userAgent = getUserAgent();
+
+    if (bowserCache[userAgent]) {
+        return bowserCache[userAgent];
+    }
 
     if (clearCache) {
         delete require.cache[require.resolve('bowser/bowser.min')];
     }
 
-    return require('bowser/bowser.min');
+    let bowser = require('bowser/bowser.min');
+
+    bowserCache[userAgent] = bowser;
+
+    return bowser;
 }
 
 function isBrowserEligible() : boolean {
