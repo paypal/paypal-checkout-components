@@ -7,6 +7,7 @@
 [libs]
 flow-typed
 src/types.js
+test/types.js
 [options]
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 unsafe.enable_getters_and_setters=true

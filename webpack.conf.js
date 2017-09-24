@@ -2,6 +2,13 @@ let webpack = require('webpack');
 let CircularDependencyPlugin = require('circular-dependency-plugin')
 let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
+let fs = require('fs');
+
+let babelConfig = JSON.parse(fs.readFileSync('./.babelrc'));
+
+babelConfig.babelrc = false;
+babelConfig.cacheDirectory = true;
+babelConfig.presets[0][1].modules = false;
 
 const FILE_NAME = 'checkout';
 
@@ -41,9 +48,7 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
                     test: /\.jsx?$/,
                     exclude: /(sinon|chai)/,
                     loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true
-                    }
+                    options: babelConfig
                 },
                 {
                     test: /\.(html?|css|json|svg)$/,

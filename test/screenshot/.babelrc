@@ -3,16 +3,11 @@
         [
             "env", {
                 "targets": {
-                    "ie": 9,
-                    "chrome": 27,
-                    "firefox": 30,
-                    "safari": 5,
-                    "opera": 23
+                    "node": "6.10"
                 },
                 "loose": true
             }
-        ],
-        "react"
+        ]
     ],
     "plugins": [
         [ "transform-flow-strip-types", { "loose": true } ],
@@ -22,7 +17,6 @@
         [ "transform-es3-property-literals", { "loose": true } ],
         [ "transform-es3-member-expression-literals", { "loose": true } ],
         [ "transform-decorators-legacy", { "loose": true } ],
-        [ "transform-es2015-for-of", { "loose": true } ],
-        [ "babel-plugin-transform-react-jsx", { "pragma": "jsxDom" } ]
+        [ "transform-es2015-for-of", { "loose": true } ]
     ]
 }

@@ -19,9 +19,15 @@ export let componentStyle = `
         -khtml-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
-        user-select: none;
     }
 
+    .paypal-button.paypal-button-env-test .text,
+    .paypal-button.paypal-button-env-test .paypal-tagline {
+        font-family: "Arial" !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        color: transparent  !important;
+        text-shadow: none  !important;
+    }
 
     /* Base Button */
 
@@ -32,6 +38,7 @@ export let componentStyle = `
         background: 0;
         border: 0;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
         text-transform: none;
         font-weight: 500;
         -webkit-font-smoothing: antialiased;
@@ -111,7 +118,6 @@ export let componentStyle = `
 
     .paypal-button .paypal-tagline {
         max-width: 100%;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: normal;
         display: block;
         text-align: center;

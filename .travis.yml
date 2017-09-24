@@ -6,12 +6,15 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm i -g npm@4
+  - sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections"
+  - sudo aptitude -y install ttf-mscorefonts-installer > /dev/null
+  - sudo fc-cache
 before_script:
   - npm install -g gulp
   - npm install -g flow-typed
   - flow-typed install
 script:
-  - travis_retry gulp build
+  - npm run buttondiff && gulp build
 sudo: required
 dist: trusty
 addons:

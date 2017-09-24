@@ -42,6 +42,7 @@ function getLocaleContent(locale : { country : string, lang : string }) : Object
 function normalizeProps(props : Object) : Object {
 
     let {
+        env,
         locale = getButtonConfig('default', 'defaultLocale'),
         style = {}
     } = props;
@@ -68,7 +69,7 @@ function normalizeProps(props : Object) : Object {
         dual = '';
     }
 
-    return { label, locale, color, shape,
+    return { label, locale, color, shape, env,
         branding, fundingicons, tagline, dual };
 }
 
@@ -150,7 +151,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     validateButtonProps(props);
 
-    let { label, locale, color, shape, branding,
+    let { label, locale, color, shape, branding, env,
         fundingicons, tagline, dual } = normalizeProps(props);
 
     let buttonHTML = determineButtons({ label, color, dual }).map(button => {
@@ -169,13 +170,12 @@ export function componentTemplate({ props } : { props : Object }) : string {
     });
 
     return `
-        <style type="text/css">
-            ${ componentStyle }
-        </style>
-
-        <div id="paypal-button" class="paypal-button paypal-branding-${ branding ? BRANDING.BRANDED : BRANDING.UNBRANDED } paypal-layout-${ dual ? LAYOUT.DUAL : LAYOUT.SINGLE } paypal-shape-${ shape }">
+        <div id="paypal-button" class="paypal-button paypal-branding-${ branding ? BRANDING.BRANDED : BRANDING.UNBRANDED } paypal-layout-${ dual ? LAYOUT.DUAL : LAYOUT.SINGLE } paypal-shape-${ shape } paypal-button-env-${ env }">
             ${ buttonHTML }
             ${ taglineHTML }
+            <style type="text/css">
+                ${ componentStyle }
+            </style>
         </div>
 
         <script>

@@ -23,8 +23,10 @@ npm run postinstall
 rm dist/*;
 
 gulp build;
+npm run buttondiff;
 
-git add dist --all;
+git add ./dist --all;
+git add ./test/screenshot/images --all;
 
 git commit -m "Dist" || echo "Nothing to distribute";
 
