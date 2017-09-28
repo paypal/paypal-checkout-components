@@ -40,6 +40,17 @@ If you are rendering the PayPal button immediately on the page, after a server-s
    </script>
    ```
    
+3. For a bonus performance boost, load the `checkout.js` script asynchronously on a page which preceeds the checkout page. That will have the effect of pre-caching the script, making future loads/renders instantaneous:
+
+   ```html
+   <!-- On one of your landing pages or pre-checkout pages -->
+
+   <head>
+       <script src="https://www.paypalobjects.com/api/checkout.js" async></script>
+   </head>
+   ```
+
+   
 ### Delayed Render
 
 If your app is client-side rendered, or there is a user action on the page before showing the PayPal button (like selecting a radio field), you should:
