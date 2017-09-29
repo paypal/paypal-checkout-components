@@ -3,9 +3,9 @@
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
 import { componentTemplate } from '../../../src/components/button/templates';
-import { getElement, errorOnWindowOpen } from '../../tests/common';
+import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
-let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout } = window.xprops.test;
+let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;
 
 let button = componentTemplate({ props: window.xprops });
 
@@ -21,7 +21,7 @@ if (bridge) {
     errorOnWindowOpen();
 }
 
-function renderCheckout() {
+function renderCheckout(props = {}) {
     window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
         payment: window.xprops.payment,
@@ -66,17 +66,23 @@ function renderCheckout() {
         test:     {
             action: action || 'checkout',
             ...checkout
-        }
+        },
+
+        ...props
     });
 }
 
-getElement('#paypal-button', document).addEventListener('click', () => {
+getElements('.paypal-button', document).forEach(el => {
+    el.addEventListener('click', () => {
 
-    if (window.xprops.onClick) {
-        window.xprops.onClick();
-    }
+        if (window.xprops.onClick) {
+            window.xprops.onClick();
+        }
 
-    renderCheckout();
+        renderCheckout({
+            fundingSource: el.getAttribute('data-funding-source')
+        });
+    });
 });
 
 if (action === 'auth') {
@@ -85,21 +91,26 @@ if (action === 'auth') {
         window.xprops.onAuth();
     }
 
+} else if (action === 'remember') {
+
+    window.xprops.funding.remember([ remembered ]);
+
 } else if (action === 'checkout' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {
-            getElement('#paypal-button', document).click();
+            getElement(selector || '.paypal-button', document).click();
         }, delay);
     } else {
-        getElement('#paypal-button', document).click();
+        getElement(selector || '.paypal-button', document).click();
     }
 }
 
 if (onRender) {
     onRender({
+        fundingSources: getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')),
         click() {
-            getElement('#paypal-button', document).click();
+            getElement('.paypal-button', document).click();
         }
     });
 }

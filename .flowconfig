@@ -3,6 +3,8 @@
 .*/node_modules/babel-plugin-flow-runtime
 .*/node_modules/flow-runtime
 .*/node_modules/cross-domain-safe-weakmap/test
+.*/node_modules/**/dist
+.*/dist
 [include]
 [libs]
 flow-typed

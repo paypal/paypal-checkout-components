@@ -1,7 +1,8 @@
 /* @flow */
 
-import { getButtonConfig } from '../../src/components/button/templates/component/config';
+import { getButtonConfig } from '../../src/components/button/templates/config';
 import { BUTTON_LABEL, BUTTON_SIZE } from '../../src/components/button/constants';
+import { FUNDING, CARD } from '../../src/config/constants';
 
 /*
 
@@ -105,6 +106,28 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                     }
                 }
             });
+
+            buttonConfigs.push({
+                button: {
+                    locale: 'pt_BR',
+                    style:  {
+                        label,
+                        fundingicons: true
+                    }
+                }
+            });
+
+            buttonConfigs.push({
+                button: {
+                    style: {
+                        label,
+                        fundingicons: true
+                    },
+                    funding: {
+                        disallowed: [ CARD.AMEX ]
+                    }
+                }
+            });
         }
 
         if (getButtonConfig(label, 'allowUnbranded')) {
@@ -126,5 +149,104 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             }
         });
+
+        buttonConfigs.push({
+            button: {
+                style: {
+                    label,
+                    max: 1
+                }
+            }
+        });
+
+        if (getButtonConfig(label, 'allowPrimaryVertical')) {
+            for (let color of getButtonConfig(label, 'colors')) {
+
+                buttonConfigs.push({
+                    button: {
+                        style: {
+                            label,
+                            color,
+                            layout: 'horizontal'
+                        },
+                        funding: {
+                            allowed: [ FUNDING.CREDIT ]
+                        }
+                    }
+                });
+
+                buttonConfigs.push({
+                    button: {
+                        style: {
+                            label,
+                            color,
+                            layout: 'horizontal'
+                        },
+                        funding: {
+                            allowed: [ FUNDING.VENMO ]
+                        }
+                    }
+                });
+
+                buttonConfigs.push({
+                    button: {
+                        style: {
+                            label,
+                            color,
+                            layout: 'vertical',
+                            max:    4
+                        },
+                        funding: {
+                            allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
+                        }
+                    }
+                });
+
+                buttonConfigs.push({
+                    button: {
+                        locale: 'pt_BR',
+                        style:  {
+                            label,
+                            color,
+                            layout: 'vertical',
+                            max:    4
+                        },
+                        funding: {
+                            allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
+                        }
+                    }
+                });
+
+                buttonConfigs.push({
+                    button: {
+                        locale: 'de_DE',
+                        style:  {
+                            label,
+                            color,
+                            layout: 'vertical',
+                            max:    4
+                        },
+                        funding: {
+                            allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.CARD ]
+                        }
+                    }
+                });
+
+                buttonConfigs.push({
+                    button: {
+                        locale: 'nl_NL',
+                        style:  {
+                            label,
+                            color,
+                            layout: 'vertical',
+                            max:    4
+                        },
+                        funding: {
+                            allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]
+                        }
+                    }
+                });
+            }
+        }
     }
 }

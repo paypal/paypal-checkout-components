@@ -3,28 +3,29 @@
 import { info } from 'beaver-logger/client';
 
 import { match } from '../../lib';
-import { config } from '../../config';
+import { config, FUNDING } from '../../config';
 
 export function determineParameterFromToken(token : string) : string {
     return token.indexOf('BA-') === 0 ? 'ba_token' : 'token';
 }
 
-export function determineUrlFromToken(env : string, token : string) : string {
+export function determineUrl(env : string, fundingSource : string, token : string) : string {
 
     if (token.indexOf('BA-') === 0) {
         info(`url_billing`);
         return config.billingUrls[env];
     } else if (token.indexOf('PAY-') === 0 || token.indexOf('PAYID-') === 0) {
         info(`url_payment`);
-        return config.checkoutUrls[env];
-    }
-
-    if (token.indexOf('EC-') === 0) {
+    } else if (token.indexOf('EC-') === 0) {
         info(`url_checkout`);
-        return config.checkoutUrls[env];
+    } else {
+        info(`url_default`);
     }
 
-    info(`url_default`);
+    if (fundingSource === FUNDING.CARD) {
+        return config.guestUrls[env];
+    }
+
     return config.checkoutUrls[env];
 }
 

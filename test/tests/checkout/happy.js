@@ -4,7 +4,9 @@
 import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID,
+    createTestContainer, destroyTestContainer, onHashChange, createElement,
+    getElementRecursive, onWindowOpen } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -602,7 +604,86 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
+        it('should render checkout, and click the close button to close the window', (done) => {
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', () => {
+                return window.paypal.Checkout.render({
+
+                    test: {
+                        action: 'init'
+                    },
+
+                    payment() : string | ZalgoPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() : void {
+                        return done(new Error('Expected onAuthorize to not be called'));
+                    },
+
+                    onCancel() : void {
+                        return done();
+                    }
+
+                }).then(() => {
+
+                    setTimeout(() => {
+                        getElementRecursive('.paypal-checkout-close').click();
+                    }, 100);
+                });
+            });
+
+            testButton.click();
+        });
+
         if (flow === 'popup') {
+            it('should render checkout, and click the focus button to focus the popup', (done) => {
+
+                let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+                let childWindow;
+
+                testButton.addEventListener('click', () => {
+
+                    // eslint-disable-next-line promise/catch-or-return
+                    onWindowOpen().then(win => {
+                        childWindow = win;
+                    });
+
+                    return window.paypal.Checkout.render({
+
+                        test: {
+                            action: 'init'
+                        },
+
+                        payment() : string | ZalgoPromise<string> {
+                            return generateECToken();
+                        },
+
+                        onAuthorize() : void {
+                            return done(new Error('Expected onAuthorize to not be called'));
+                        },
+
+                        onCancel() : void {
+                            return done(new Error('Expected onCancel to not be called'));
+                        }
+
+                    }).then(() => {
+
+                        // $FlowFixMe
+                        childWindow.focus = () => {
+                            done();
+                        };
+
+                        getElementRecursive('.paypal-checkout-overlay').click();
+                    });
+                });
+
+                testButton.click();
+            });
+
             it('should render checkout, then cancel the payment by closing the window', (done) => {
 
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });

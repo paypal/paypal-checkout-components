@@ -49,7 +49,9 @@ export const FPTI = {
         PAGE_LOAD_TIME:  'page_load_time',
         EXPERIMENT_NAME: 'pxp_exp_id',
         TREATMENT_NAME:  'pxp_trtmnt_id',
-        TRANSITION_TIME: 'transition_time'
+        TRANSITION_TIME: 'transition_time',
+        FUNDING_LIST:    'allowed_funding_list',
+        CHOSEN_FUNDING:  'chosen_funding_option'
     },
 
     BUTTON_TYPE: {
@@ -81,9 +83,9 @@ export const FPTI = {
     TRANSITION: {
         SCRIPT_LOAD: 'process_script_load',
 
-        BUTTON_RENDER: 'process_button_render',
-        BUTTON_LOAD:   'process_button_load',
-        BUTTON_CLICK:  'process_button_click',
+        BUTTON_RENDER:   'process_button_render',
+        BUTTON_RENDERED: 'process_button_rendered',
+        BUTTON_CLICK:    'process_button_click',
 
         CREATE_PAYMENT:  'process_create_payment',
         RECIEVE_PAYMENT: 'process_recieve_payment',
@@ -102,3 +104,50 @@ export const FPTI = {
 };
 
 export const PPTM_ID = 'xo-pptm';
+
+export const FUNDING = {
+    PAYPAL: 'paypal',
+    VENMO:  'venmo',
+    CREDIT: 'credit',
+    CARD:   'card',
+    IDEAL:  'ideal',
+    ELV:    'elv'
+};
+
+export const CARD = {
+    VISA:        'visa',
+    MASTERCARD:  'mastercard',
+    AMEX:        'amex',
+    DISCOVER:    'discover',
+    SWITCH:      'switch',
+    MAESTRO:     'maestro',
+    HIPER:       'hiper',
+    ELO:         'elo',
+    JCB:         'jcb',
+    CUP:         'cup',
+    COFINOGA:    'cofinoga',
+    COFIDIS:     'cofidis',
+    CETELEM:     'cetelem',
+    CBNATIONALE: 'cbnationale'
+};
+
+export const CARD_PRIORITY = [
+    CARD.VISA,
+    CARD.MASTERCARD,
+    CARD.AMEX,
+    CARD.DISCOVER,
+    CARD.SWITCH,
+    CARD.MAESTRO,
+    CARD.HIPER,
+    CARD.ELO,
+    CARD.JCB,
+    CARD.CUP,
+    CARD.COFINOGA,
+    CARD.COFIDIS,
+    CARD.CETELEM,
+    CARD.CBNATIONALE
+];
+
+export const ATTRIBUTE = {
+    FUNDING_SOURCE: 'data-funding-source'
+};

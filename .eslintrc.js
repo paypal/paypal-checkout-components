@@ -225,7 +225,7 @@ module.exports = {
         'no-restricted-syntax': 'off',
         'no-spaced-func': 'error',
         'no-ternary': 'off',
-        'no-trailing-spaces': 'error',
+        'no-trailing-spaces': [ 'error', { 'skipBlankLines': true } ],
         'no-underscore-dangle': 'off',
         'no-unneeded-ternary': 'off',
         'no-whitespace-before-property': 'error',

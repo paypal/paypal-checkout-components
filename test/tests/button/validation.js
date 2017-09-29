@@ -1,1044 +1,1376 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
 import { assert } from 'chai';
 
-import { generateECToken, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { createTestContainer, destroyTestContainer, noop } from '../common';
 
-let validButtonConfigs = [
+let buttonConfigs = [
 
     {
-        desc: 'both payment and onAuthorize',
+        name: 'callbacks',
 
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ }
-        }
-    },
+        cases: [
+            {
+                desc: `both payment and onAuthorize`,
 
-    {
-        desc: 'commit true',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            commit: true
-        }
-    },
-
-    {
-        desc: 'shape rect',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                shape: 'rect'
-            }
-        }
-    },
-
-    {
-        desc: 'shape pill',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                shape: 'pill'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout en_US',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_US',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout en_GB',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_GB',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout fr_FR',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'fr_FR',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout de_DE',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'de_DE',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout es_ES',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'es_ES',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout zh_C2',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'zh_C2',
-            style:  {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'credit en_US',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_US',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'credit en_GB',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_GB',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'credit fr_FR',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'fr_FR',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'credit de_DE',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'de_DE',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'credit es_ES',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'es_ES',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'credit zh_C2',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'zh_C2',
-            style:  {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow en_US',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_US',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow en_GB',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_GB',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow fr_FR',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'fr_FR',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow de_DE',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'de_DE',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow es_ES',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'es_ES',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow zh_C2',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'zh_C2',
-            style:  {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'pay en_US',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_US',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'pay en_GB',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'en_GB',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'pay fr_FR',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'fr_FR',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'pay de_DE',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'de_DE',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'pay es_ES',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'es_ES',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'pay zh_C2',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'zh_C2',
-            style:  {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout tiny',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'tiny'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout small',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'small'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout medium',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'medium'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout large',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'large'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout responsive',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'responsive'
-            }
-        }
-    },
-
-    {
-        desc: 'credit small',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'small'
-            }
-        }
-    },
-
-    {
-        desc: 'credit medium',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'medium'
-            }
-        }
-    },
-
-    {
-        desc: 'credit large',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                size:  'large'
-            }
-        }
-    },
-
-    {
-        desc: 'credit responsive',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'credit',
-                size:  'responsive'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout label',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout'
-            }
-        }
-    },
-
-    {
-        desc: 'credit label',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'credit'
-            }
-        }
-    },
-
-    {
-        desc: 'pay label',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'pay'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout label blue',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                color: 'blue'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout label gold',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                color: 'gold'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout label silver',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'checkout',
-                color: 'silver'
-            }
-        }
-    },
-
-    {
-        desc: 'pay label blue',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'pay',
-                color: 'blue'
-            }
-        }
-    },
-
-    {
-        desc: 'pay label gold',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'pay',
-                color: 'gold'
-            }
-        }
-    },
-
-    {
-        desc: 'pay label silver',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'pay',
-                color: 'silver'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label blue',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow',
-                color: 'blue'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label gold',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow',
-                color: 'gold'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label silver',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow',
-                color: 'silver'
-            }
-        }
-    },
-
-    {
-        desc: 'credit label creditblue',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'credit',
-                color: 'creditblue'
-            }
-        }
-    },
-
-    {
-        desc: 'checkout label with fundingicons',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:        'checkout',
-                fundingicons: true
-            }
-        }
-    },
-
-    {
-        desc: 'pay label with fundingicons',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:        'pay',
-                fundingicons: true
-            }
-        }
-    },
-
-
-    {
-        desc: 'buynow label with fundingicons',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:        'buynow',
-                fundingicons: true
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label without fundingicons',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:        'buynow',
-                fundingicons: false
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label with branding',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:    'buynow',
-                branding: true
-            }
-        }
-    },
-
-    {
-        desc: 'buynow label without branding',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow'
-            }
-        }
-    }
-];
-
-let invalidButtonConfigs = [
-
-    {
-        desc: 'invalid env',
-
-        conf: {
-            env: 'moo',
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ }
-        }
-    },
-
-    {
-        desc: 'no onAuthorize',
-
-        conf: {
-            payment() { /* pass */ }
-        }
-    },
-
-    {
-        desc: 'no payment',
-
-        conf: {
-            onAuthorize() { /* pass */ }
-        }
-    },
-
-    {
-        desc: 'invalid size',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                size: 'moo'
-            }
-        }
-    },
-
-    {
-        desc: 'no client ids',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            client: {}
-        }
-    },
-
-    {
-        desc: 'invalid client id',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            client: {
-                test: 'xxxxxxxxxx'
-            }
-        }
-    },
-
-    {
-        desc: 'invalid label',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'moo'
-            }
-        }
-    },
-
-    {
-        desc: 'invalid shape',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                shape: 'moo'
-            }
-        }
-    },
-
-    {
-        desc: 'credit tiny style',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'credit',
-                size:  'tiny'
-            }
-        }
-    },
-
-    {
-        desc: 'pay tiny style',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'pay',
-                size:  'tiny'
-            }
-        }
-    },
-
-    {
-        desc: 'buynow tiny style',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'buynow',
-                size:  'tiny'
-            }
-        }
-    },
-
-    {
-        desc: 'credit gold style',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label: 'credit',
-                color: 'gold'
-            }
-        }
-    },
-
-    {
-        desc: 'invalid locale',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'xx_YY'
-        }
-    },
-
-    {
-        desc: 'invalid locale format',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            locale: 'xx-YY'
-        }
-    },
-
-    {
-        desc: 'checkout branding false',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:    'checkout',
-                branding: false
-            }
-        }
-    },
-
-    {
-        desc: 'buynow branding false',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:    'checkout',
-                branding: false
-            }
-        }
-    },
-
-    {
-        desc: 'credit with fundingicons',
-
-        conf: {
-            payment() { /* pass */ },
-            onAuthorize() { /* pass */ },
-            style: {
-                label:        'credit',
-                fundingicons: true
-            }
-        }
-    }
-];
-
-describe(`paypal button component validation`, () => {
-
-    beforeEach(() => {
-        createTestContainer();
-    });
-
-    afterEach(() => {
-        destroyTestContainer();
-    });
-
-    for (let invalidConfig of invalidButtonConfigs) {
-        it(`should attempt to render a button with ${ invalidConfig.desc } and error out`, () => {
-
-            return window.paypal.Button.render(invalidConfig.conf, 'body').then(() => {
-                throw new Error('Expected error to be thrown');
-            }, err => {
-                assert.isOk(err instanceof Error, 'Expected error object to be thrown');
-            });
-        });
-    }
-
-    for (let validConfig of validButtonConfigs) {
-        it(`should attempt to render a button with ${ validConfig.desc } and succeed`, () => {
-            return window.paypal.Button.render({
-                test: {
-                    action: 'none'
-                },
-
-                ...validConfig.conf
-            }, 'body');
-        });
-    }
-
-    it('should render a button into a container, then disable the button, then click on the button, then complete the payment', (done) => {
-
-        let input = document.createElement('input');
-        input.type = 'checkbox';
-
-        getElement('#testContainer').appendChild(input);
-
-        let clicks = 0;
-
-        window.paypal.Button.render({
-
-            test: {
-                onRender(actions) {
-                    actions.click();
+                valid: true,
 
-                    input.addEventListener('change', () => {
-                        setTimeout(() => {
-                            actions.click();
-                        }, 200);
-                    });
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop
                 }
             },
 
-            payment() : string | ZalgoPromise<string> {
-                return generateECToken();
+            {
+                desc: `just payment, no onAuthorize`,
+
+                valid: false,
+
+                conf: {
+                    payment: noop
+                }
             },
 
-            validate(actions) {
-                actions.disable();
+            {
+                desc: `just onAuthorize, no payment`,
 
-                input.addEventListener('change', () => {
-                    if (input.checked) {
-                        actions.enable();
-                    } else {
-                        actions.disable();
+                valid: false,
+
+                conf: {
+                    onAuthorize: noop
+                }
+            },
+
+
+            {
+                desc: `commit true`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+                    commit:      true
+                }
+            }
+        ]
+    },
+
+    {
+        name: 'labels',
+
+        cases: [
+
+            {
+                label: `checkout`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
+                valid: true
+            },
+
+            {
+                label: `venmo`,
+                valid: true
+            },
+
+            {
+                label: `credit`,
+                valid: true
+            },
+
+            {
+                label: `card`,
+                valid: false
+            },
+
+            {
+                label: `ideal`,
+                valid: false
+            },
+
+            {
+                label: `elv`,
+                valid: false
+            },
+
+            {
+                label: `gnorf`,
+                valid: false
+            }
+
+        ].map(({ label, valid }) => ({
+
+            desc: `label ${ label }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { label }
+            }
+        }))
+    },
+
+    {
+        name: 'shapes',
+
+        cases: [
+
+            {
+                shape: `pill`,
+                valid: true
+            },
+
+            {
+                shape: `rect`,
+                valid: true
+            },
+
+            {
+                shape: `zomg`,
+                valid: false
+            }
+
+        ].map(({ shape, valid }) => ({
+
+            desc: `shape ${ shape }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { shape }
+            }
+        }))
+    },
+
+    {
+        name: 'sizes',
+
+        cases: [
+
+            {
+                size:  `tiny`,
+                valid: true
+            },
+
+            {
+                size:  `small`,
+                valid: true
+            },
+
+            {
+                size:  `medium`,
+                valid: true
+            },
+
+            {
+                size:  `large`,
+                valid: true
+            },
+
+            {
+                size:  `responsive`,
+                valid: true
+            },
+
+            {
+                size:  `huge`,
+                valid: false
+            },
+
+            {
+                size:  `blerf`,
+                valid: false
+            }
+
+        ].map(({ size, valid }) => ({
+
+            desc: `size ${ size }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { size }
+            }
+        }))
+    },
+
+    {
+        name: 'colors',
+
+        cases: [
+
+            {
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                color: `black`,
+                valid: true
+            },
+
+            {
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `checkout`,
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                label: `checkout`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `checkout`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `checkout`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `checkout`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `checkout`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `checkout`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `paypal`,
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `paypal`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `paypal`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `paypal`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `pay`,
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `pay`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `pay`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `pay`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `buynow`,
+                color: `gold`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `buynow`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `buynow`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `buynow`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `credit`,
+                color: `gold`,
+                valid: false
+            },
+
+            {
+                label: `credit`,
+                color: `blue`,
+                valid: false
+            },
+
+            {
+                label: `credit`,
+                color: `silver`,
+                valid: false
+            },
+
+            {
+                label: `credit`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `credit`,
+                color: `creditblue`,
+                valid: true
+            },
+
+            {
+                label: `credit`,
+                color: `darkblue`,
+                valid: true
+            },
+
+            {
+                label: `credit`,
+                color: `blerf`,
+                valid: false
+            },
+
+            {
+                label: `venmo`,
+                color: `gold`,
+                valid: false
+            },
+
+            {
+                label: `venmo`,
+                color: `blue`,
+                valid: true
+            },
+
+            {
+                label: `venmo`,
+                color: `silver`,
+                valid: true
+            },
+
+            {
+                label: `venmo`,
+                color: `black`,
+                valid: true
+            },
+
+            {
+                label: `venmo`,
+                color: `creditblue`,
+                valid: false
+            },
+
+            {
+                label: `venmo`,
+                color: `darkblue`,
+                valid: false
+            },
+
+            {
+                label: `credit`,
+                color: `blerf`,
+                valid: false
+            }
+
+        // $FlowFixMe
+        ].map(({ label, color, valid }) => ({
+
+            desc: `color ${ color } with label ${ label || 'default' }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { label, color }
+            }
+        }))
+    },
+
+    {
+        name: 'layouts',
+
+        cases: [
+
+            {
+                layout: `horizontal`,
+                valid:  true
+            },
+
+            {
+                layout: `vertical`,
+                valid:  true
+            },
+
+            {
+                layout: `ffggh`,
+                valid:  false
+            },
+
+            {
+                layout:  `vertical`,
+                tagline: true,
+                valid:   false
+            },
+
+            {
+                layout:       `vertical`,
+                fundingicons: true,
+                valid:        false
+            },
+
+            {
+                layout:   `vertical`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                layout:  `vertical`,
+                size:    'small',
+                valid:   false
+            },
+
+            {
+                layout:  `vertical`,
+                size:    'medium',
+                valid:   true
+            },
+
+            {
+                layout:  `vertical`,
+                size:    'large',
+                valid:   true
+            },
+
+            {
+                layout:  `vertical`,
+                size:    'responsive',
+                valid:   true
+            },
+
+            {
+                layout:  `vertical`,
+                size:    'wgeewg',
+                valid:   false
+            }
+
+        // $FlowFixMe
+        ].map(({ layout, tagline, fundingicons, branding, size, valid }) => ({
+
+            desc: `layout ${ layout } with tagline ${ tagline ? tagline.toString() : 'default' }, fundingicons ${ fundingicons ? fundingicons.toString() : 'default' }, branding ${ branding || 'default' }, size ${ size || 'default' }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { layout, tagline, fundingicons, branding, size }
+            }
+        }))
+    },
+
+    {
+        name: 'max',
+
+        cases: [
+
+            {
+                max:    0,
+                valid:  false
+            },
+
+            {
+                max:    1,
+                valid:  true
+            },
+
+            {
+                max:    2,
+                valid:  true
+            },
+
+            {
+                max:    3,
+                valid:  false
+            },
+
+            {
+                max:    4,
+                valid:  false
+            },
+
+            {
+                max:    5,
+                valid:  false
+            },
+
+            {
+                layout: `horizontal`,
+                max:    0,
+                valid:  false
+            },
+
+            {
+                layout: `horizontal`,
+                max:    1,
+                valid:  true
+            },
+
+            {
+                layout: `horizontal`,
+                max:    2,
+                valid:  true
+            },
+
+            {
+                layout: `horizontal`,
+                max:    3,
+                valid:  false
+            },
+
+            {
+                layout: `horizontal`,
+                max:    4,
+                valid:  false
+            },
+
+            {
+                layout: `horizontal`,
+                max:    5,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                max:    0,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                max:    1,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                max:    2,
+                valid:  true
+            },
+
+            {
+                layout: `vertical`,
+                max:    3,
+                valid:  true
+            },
+
+            {
+                layout: `vertical`,
+                max:    4,
+                valid:  true
+            },
+
+            {
+                layout: `vertical`,
+                max:    5,
+                valid:  false
+            },
+
+            {
+                max:    '1',
+                valid:  false
+            },
+
+            {
+                max:    'sdbsdbdsb',
+                valid:  false
+            }
+
+        // $FlowFixMe
+        ].map(({ max, layout, valid }) => ({
+
+            desc: `max ${ max } and layout ${ layout || 'default' }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { max, layout }
+            }
+        }))
+    },
+
+    {
+        name: 'fundingicons',
+
+        cases: [
+
+            {
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `checkout`,
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                label:        `checkout`,
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `pay`,
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                label:        `pay`,
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `buynow`,
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                label:        `buynow`,
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `paypal`,
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                label:        `paypal`,
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `credit`,
+                fundingicons: true,
+                valid:        false
+            },
+
+            {
+                label:        `credit`,
+                fundingicons: false,
+                valid:        true
+            },
+
+            {
+                label:        `venmo`,
+                fundingicons: true,
+                valid:        true
+            },
+
+            {
+                label:        `venmo`,
+                fundingicons: false,
+                valid:        true
+            }
+
+        // $FlowFixMe
+        ].map(({ label, fundingicons, valid }) => ({
+
+            desc: `fundingicons ${ fundingicons.toString() } with label ${ label || 'default' }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { label, fundingicons }
+            }
+        }))
+    },
+
+    {
+        name: 'branding',
+
+        cases: [
+
+            {
+                branding: true,
+                valid:    true
+            },
+
+            {
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `checkout`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `checkout`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `pay`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `pay`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `buynow`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `buynow`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `paypal`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `paypal`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `credit`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `credit`,
+                branding: false,
+                valid:    false
+            },
+
+            {
+                label:    `venmo`,
+                branding: true,
+                valid:    true
+            },
+
+            {
+                label:    `venmo`,
+                branding: false,
+                valid:    false
+            }
+
+        // $FlowFixMe
+        ].map(({ label, branding, valid }) => ({
+
+            desc: `branding ${ branding.toString() } with label ${ label || 'default' }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { label, branding }
+            }
+        }))
+    },
+
+    {
+        name: 'tagline',
+
+        cases: [
+
+            {
+                tagline: true,
+                valid:   false
+            },
+
+            {
+                tagline: false,
+                valid:   true
+            }
+
+        ].map(({ tagline, valid }) => ({
+
+            desc: `branding ${ tagline.toString() }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                style:       { tagline }
+            }
+        }))
+    },
+
+    {
+        name: 'locale',
+
+        cases: [
+
+            {
+                locale: 'en_US',
+                valid:  true
+            },
+
+            {
+                locale: 'en_GB',
+                valid:  true
+            },
+
+            {
+                locale: 'fr_FR',
+                valid:  true
+            },
+
+            {
+                locale: 'es_ES',
+                valid:  true
+            },
+
+            {
+                locale: 'de_DE',
+                valid:  true
+            },
+
+            {
+                locale: 'zh_C2',
+                valid:  true
+            },
+
+            {
+                locale: 'zh_C2',
+                valid:  true
+            },
+
+            {
+                locale: 'de_GB',
+                valid:  false
+            },
+
+            {
+                locale: 'xx_XX',
+                valid:  false
+            },
+
+            {
+                locale: 'foobarbaz',
+                valid:  false
+            }
+
+        ].map(({ locale, valid }) => ({
+
+            desc: `locale ${ locale }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                locale
+            }
+        }))
+    },
+
+    {
+        name: 'env',
+
+        cases: [
+
+            {
+                env:   'test',
+                valid: true
+            },
+
+            {
+                env:   'moo',
+                valid: false
+            }
+
+        ].map(({ env, valid }) => ({
+
+            desc: `env ${ env }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                env
+            }
+        }))
+    },
+
+    {
+        name: 'client',
+
+        cases: [
+
+            {
+                desc: `client id for env`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    env:    'test',
+                    client: {
+                        test: 'abc123'
                     }
+                }
+            },
+
+            {
+                desc: `client id for multiple envs`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    env:    'test',
+                    client: {
+                        test:    'abc123',
+                        sandbox: 'xyz456',
+                        stage:   'efwegwerg'
+                    }
+                }
+            },
+
+            {
+                desc: `client id for wrong env`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    env:    'test',
+                    client: {
+                        production: 'abc123'
+                    }
+                }
+            },
+
+            {
+                desc: `no client ids`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    env:    'test',
+                    client: {}
+                }
+            },
+
+            {
+                desc: `no client ids and no env`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    client: {}
+                }
+            }
+        ]
+    },
+
+    {
+        name: 'funding',
+
+        cases: [
+
+            {
+                desc: `opt-in to venmo`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.VENMO ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of venmo`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.VENMO ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to credit`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.CREDIT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of credit`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.CREDIT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to paypal`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.PAYPAL ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of paypal`,
+
+                valid: false,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.PAYPAL ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to ideal`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.IDEAL ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of ideal`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.IDEAL ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to elv`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.ELV ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of elv`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.ELV ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to card`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.CARD ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of card`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.CARD ]
+                    }
+                }
+            }
+        ]
+    }
+];
+
+for (let group of buttonConfigs) {
+    describe(`paypal button ${ group.name } validation`, () => {
+
+        beforeEach(() => {
+            createTestContainer();
+        });
+
+        afterEach(() => {
+            destroyTestContainer();
+        });
+
+        for (let useCase of group.cases) {
+            if (useCase.valid) {
+                it(`should attempt to render a button with ${ useCase.desc } and succeed`, () => {
+                    return window.paypal.Button.render({
+                        test: {
+                            action: `none`
+                        },
+
+                        ...useCase.conf
+                    }, `body`);
                 });
-            },
+            } else {
+                it(`should attempt to render a button with ${ useCase.desc } and error out`, () => {
 
-            onClick() {
-                clicks += 1;
-
-                if (clicks === 1) {
-
-                    if (input.checked) {
-                        throw new Error('Expected checkbox to be unchecked');
-                    }
-
-                    input.click();
-
-                } else if (clicks === 2) {
-
-                    if (!input.checked) {
-                        throw new Error('Expected checkbox to be checked');
-                    }
-                }
-            },
-
-            onAuthorize() : void {
-
-                if (clicks !== 2) {
-                    throw new Error('Expected onClick to have been called twice');
-                }
-
-                return done();
-            },
-
-            onCancel() : void {
-                return done(new Error('Expected onCancel to not be called'));
+                    return window.paypal.Button.render(useCase.conf, `body`).then(() => {
+                        throw new Error(`Expected error to be thrown`);
+                    }, err => {
+                        assert.isOk(err instanceof Error, `Expected error object to be thrown`);
+                    });
+                });
             }
-
-        }, '#testContainer');
+        }
     });
-});
+}

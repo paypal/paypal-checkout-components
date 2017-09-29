@@ -25,3 +25,13 @@ export type SameDomainWindowType = Object & {
     XMLHttpRequest : typeof XMLHttpRequest,
     document : Document
 };
+
+export type DimensionsType = {
+    width : number,
+    height : number
+};
+
+export type LocaleType = {
+    country : string,
+    lang : string
+};

@@ -294,3 +294,36 @@ export function extend<T : Object | Function>(obj : T, source : Object) : T {
 
     return obj;
 }
+
+export function hasValue<T : mixed>(obj : { [string] : T }, value : T) : boolean {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key] === value) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export function contains<T>(arr : Array<T>, value : T) : boolean {
+    return arr.indexOf(value) !== -1;
+}
+
+export function sortBy<T>(arr : Array<T>, order : Array<T>) : Array<T> {
+    return arr.sort((a : T, b : T) => {
+        return order.indexOf(a) - order.indexOf(b);
+    });
+}
+
+export function reverseMap(obj : { [string] : string }) : { [string] : string } {
+    let result = {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result[obj[key]] = key;
+        }
+    }
+    return result;
+}
+
+export function arrayRemove<T>(arr : Array<T>, item : T) {
+    arr.splice(arr.indexOf(item), 1);
+}

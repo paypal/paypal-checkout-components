@@ -2,11 +2,11 @@
 
 import { checkpoint, fpti } from './beacon';
 import { hashStr, match } from './util';
-import { getCommonSessionID } from './session';
+import { getSessionID } from './session';
 
 export function getThrottle(name : string, sample : number, id? : string) : Object {
 
-    let uid = id || getCommonSessionID();
+    let uid = id || getSessionID();
 
     let throttle = hashStr(`${ name }_${ uid }`) % 10000;
 

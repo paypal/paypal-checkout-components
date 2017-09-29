@@ -175,6 +175,16 @@ module.exports.webpack_tasks = {
         })
     },
 
+    button_render: {
+        src: 'src/components/button/templates/component/index.js',
+        out: 'dist',
+        cfg: getWebpackConfig({
+            version: nextMajorVersion,
+            filename: `${FILE_NAME}.button.render.js`,
+            target: `commonjs`
+        })
+    },
+
 
     child_loader: {
         src: 'src/loader/index.js',
