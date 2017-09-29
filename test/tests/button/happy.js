@@ -679,6 +679,34 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
+        it('should render button with a new-style payment id on the correct url, then complete the payment', (done) => {
+
+            let paymentID = generatePaymentID().replace('PAY-', 'PAYID-');
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                payment() : string | ZalgoPromise<string> {
+                    return paymentID;
+                },
+
+                onAuthorize(data) : void {
+                    assert.isOk(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
         it('should render button with a billing token on the correct url, then complete the payment', (done) => {
 
             let billingToken = generateBillingToken();

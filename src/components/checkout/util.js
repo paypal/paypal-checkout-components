@@ -14,9 +14,7 @@ export function determineUrlFromToken(env : string, token : string) : string {
     if (token.indexOf('BA-') === 0) {
         info(`url_billing`);
         return config.billingUrls[env];
-    }
-
-    if (token.indexOf('PAY-') === 0) {
+    } else if (token.indexOf('PAY-') === 0 || token.indexOf('PAYID-') === 0) {
         info(`url_payment`);
         return config.checkoutUrls[env];
     }
