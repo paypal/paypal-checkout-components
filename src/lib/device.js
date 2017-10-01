@@ -20,6 +20,10 @@ export function isWebView() : boolean {
     (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
 }
 
+export function isFacebookWebView(ua? : string = getUserAgent()) : boolean {
+    return (ua.indexOf('FBAN') !== -1) || (ua.indexOf('FBAV') !== -1);
+}
+
 export function isFirefoxIOS(ua? : string = getUserAgent()) : boolean {
     return (/FxiOS/i).test(ua);
 }
@@ -107,5 +111,5 @@ export function isIEIntranet() : boolean {
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
-    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua));
+    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua));
 }
