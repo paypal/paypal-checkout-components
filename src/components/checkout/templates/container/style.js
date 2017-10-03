@@ -16,6 +16,8 @@ export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : O
             height: 100vh;
             max-width: 100%;
             max-height: 100%;
+            min-width: 100%;
+            min-height: 100%;
 
             z-index: 2147483647;
 
