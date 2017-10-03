@@ -1,22 +1,15 @@
 
-let { Checkout, Promise, enableCheckoutIframe } = window.paypal;
 import { $util } from 'squid-core/dist/util';
 
 import { isLoggedIn } from './user';
 
+let lightboxEligibilityTimeout;
+
 export function isLightboxEligible() {
-    return Promise.try(() => {
-        let lightbox = window.xprops.lightbox;
 
-        if (!lightbox) {
-            return false;
-        }
+    return window.paypal.Promise.resolve().then(() => {
 
-        if (lightbox.force) {
-            return true;
-        }
-
-        if (!lightbox.allow) {
+        if (window.xprops.disableLightbox) {
             return false;
         }
 
@@ -29,17 +22,26 @@ export function isLightboxEligible() {
 }
 
 export function enableLightbox() {
-    if (enableCheckoutIframe) {
-        enableCheckoutIframe();
-    } else {
-        Checkout.contexts.iframe = false;
+
+    if (lightboxEligibilityTimeout) {
+        clearTimeout(lightboxEligibilityTimeout);
     }
+
+    lightboxEligibilityTimeout = setTimeout(() => {
+        window.paypal.Checkout.contexts.lightbox = false;
+        window.paypal.Checkout.contexts.iframe = false;
+    }, 5 * 60 * 1000);
+
+    window.paypal.Checkout.contexts.lightbox = true;
+    window.paypal.Checkout.contexts.iframe = true;
 }
 
 export function detectLightboxEligibility() {
 
     return isLightboxEligible().then(eligible => {
         if (eligible) {
+            // enableLightbox();
+
             if (window.xprops.onAuth) {
                 window.xprops.onAuth();
             }

@@ -22,3 +22,7 @@ export function memoize(method) {
 
     return memoizeWrapper;
 }
+
+export function querySelectorAll(selector, doc = window.document) {
+    return Array.prototype.slice.call(doc.querySelectorAll(selector));
+}

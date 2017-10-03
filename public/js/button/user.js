@@ -1,5 +1,4 @@
 
-let { Promise } = window.paypal;
 import { $Api } from 'squid-core/dist/api';
 import { $cookies } from 'squid-core/dist/config';
 
@@ -27,7 +26,7 @@ export function isCookied() {
 
 export function isRemembered() {
 
-    return Promise.resolve().then(() => {
+    return window.paypal.Promise.resolve().then(() => {
 
         if (isCookied()) {
             return true;

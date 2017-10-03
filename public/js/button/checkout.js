@@ -1,6 +1,4 @@
 
-let { Checkout, Promise } = window.paypal;
-
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
 import { memoize } from './util';
 import { getPayment, executePayment } from './api';
@@ -12,7 +10,7 @@ function buildActions(checkout, data, actions, intent) {
         return checkout.close().then(() => {
             enableLightbox();
             renderCheckout({ payment: () => data.paymentToken });
-            return new Promise();
+            return new window.paypal.Promise();
         });
     };
 
@@ -72,7 +70,7 @@ function buildActions(checkout, data, actions, intent) {
 
 export function renderCheckout(props = {}) {
 
-    Checkout.renderTo(window.top, {
+    window.paypal.Checkout.renderTo(window.top, {
 
         payment: window.xprops.payment,
 
@@ -100,6 +98,10 @@ export function renderCheckout(props = {}) {
         onAuth({ accessToken }) {
             persistAccessToken(accessToken);
             detectLightboxEligibility();
+        },
+
+        style: {
+            overlayColor: window.xprops.style.overlayColor
         },
 
         ...props

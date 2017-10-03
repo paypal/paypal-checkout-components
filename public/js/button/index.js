@@ -1,6 +1,4 @@
 
-import './promise';
-
 import { setupButton } from './button';
 
-setupButton();
+window.setupButton = setupButton;

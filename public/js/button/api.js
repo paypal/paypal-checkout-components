@@ -19,6 +19,10 @@ export let $localeApi = new $Api({
     uri: '/api/locale'
 });
 
+export let $buttonFundingApi = new $Api({
+    uri: '/api/button/funding'
+});
+
 export function getLocale() {
     return $localeApi.retrieve({
         params: {
@@ -34,6 +38,16 @@ export function getAuth() {
     return $authApi.retrieve().then(res => res.data);
 }
 
+export function getButtonFunding() {
+    return getLocale().then(locale => {
+        return $buttonFundingApi.retrieve({
+            params: {
+                country: locale.country
+            }
+        }).then(res => res.data);
+    });
+}
+
 export function getPayment(paymentID) {
     return $paymentApi.retrieve({
         model: {
@@ -43,7 +57,7 @@ export function getPayment(paymentID) {
         if (res.ack !== 'success') {
             throw new Error('Execute payment failed');
         }
-        
+
         return res.data;
     });
 }

@@ -1,14 +1,15 @@
 
-
-let { config } = window.paypal;
+import { usePayPalPromise } from './promise';
 import { detectLightboxEligibility, enableLightbox } from './lightbox';
 import { determineLocale } from './locale';
-import { isRemembered, persistAccessToken } from './user';
+import { persistAccessToken } from './user';
 import { setupLoginPreRender, getAccessToken, shouldPrefetchLogin } from './login';
 import { renderCheckout } from './checkout';
-import { KEY_CODES, IDS } from './constants';
+import { KEY_CODES } from './constants';
+import { getButtonFunding } from './api';
+import { querySelectorAll } from './util';
 
-function clickButton(event) {
+function clickButton(event, fundingSource = 'paypal') {
     event.preventDefault();
 
     if (shouldPrefetchLogin()) {
@@ -25,41 +26,44 @@ function clickButton(event) {
         });
     }
 
-    renderCheckout();
+    renderCheckout({ fundingSource });
 
     if (window.xprops.onClick) {
-        window.xprops.onClick();
+        window.xprops.onClick({ fundingSource });
     }
 }
 
 export function setupButton() {
+
+    usePayPalPromise();
 
     setupLoginPreRender();
 
     detectLightboxEligibility();
 
     determineLocale().then(locale => {
-        config.locale.country = locale.country;
-        config.locale.lang = locale.lang;
+        window.paypal.config.locale.country = locale.country;
+        window.paypal.config.locale.lang = locale.lang;
     });
 
-    if (window.xprops.onRemembered) {
-        isRemembered().then(remembered => {
-            if (remembered) {
-                window.xprops.onRemembered();
+    querySelectorAll('.paypal-button').forEach(button => {
+        let fundingSource = button.getAttribute('data-funding-source');
+
+        button.addEventListener('click', event => {
+            return clickButton(event, fundingSource);
+        });
+
+        button.addEventListener('keypress', event => {
+            if (event.keyCode === KEY_CODES.ENTER) {
+                return clickButton(event, fundingSource);
             }
         });
-    }
-
-    let button = window.document.getElementById(IDS.PAYPAL_BUTTON);
-
-    button.addEventListener('click', event => {
-        return clickButton(event);
     });
 
-    button.addEventListener('keypress', event => {
-        if (event.keyCode === KEY_CODES.ENTER) {
-            return clickButton(event);
+    getButtonFunding().then(funding => {
+
+        if (window.xprops.funding && window.xprops.funding.remember && funding.eligible.length) {
+            window.xprops.funding.remember(funding.eligible);
         }
     });
 }

@@ -1,5 +1,4 @@
 
-let { Login, Promise } = window.paypal;
 import { isLoggedIn } from './user';
 
 let loginPreRender;
@@ -16,11 +15,22 @@ export function setupLoginPreRender() {
 
     return isLoggedIn().then(loggedIn => {
         if (!loggedIn) {
-            loginPreRender = window.paypal.Login.prerender({
+            let login = window.paypal.Login.prerender({
+                env: 'stage',
+
                 onAuthenticate(data) {
                     throw new Error(`Called unimplemented onAuthenticate`);
                 }
             });
+
+            loginPreRender = {
+                render(props) {
+                    return login.render(props);
+                },
+                renderTo(win, props) {
+                    return login.renderTo(win, props);
+                }
+            };
 
             setTimeout(() => {
                 loginPreRender = null;
@@ -30,8 +40,8 @@ export function setupLoginPreRender() {
 }
 
 export function getAccessToken() {
-    return new Promise((resolve, reject) => {
-        let LoginComponent = loginPreRender || Login;
+    return new window.paypal.Promise((resolve, reject) => {
+        let LoginComponent = loginPreRender || window.paypal.Login;
         loginPreRender = null;
 
         LoginComponent.renderTo(window.top, {
