@@ -32,14 +32,16 @@ export class JsxHTMLNode {
     }
 
     propsToString() : string {
-        if (!this.props) {
+        let props = this.props;
+
+        if (!props) {
             return '';
         }
 
-        return Object.keys(this.props).filter(key => {
+        return Object.keys(props).filter(key => {
             return key !== 'innerHTML';
         }).map(key => {
-            return this.props ? `${ key }="${ encode(this.props[key]) }"` : '';
+            return props ? `${ encode(key) }="${ encode(props[key]) }"` : '';
         }).join(' ');
     }
 
