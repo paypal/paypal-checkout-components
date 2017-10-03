@@ -151,19 +151,17 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
         }
 
         #${ id } .paypal-checkout-modal .paypal-checkout-logo {
-            background: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite.png") no-repeat -18px -16px;
-            width: 132px;
-            height: 36px;
             cursor: pointer;
             margin-bottom: 30px;
             display: inline-block;
         }
 
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), not all, not all, only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {
-            #${ id } .paypal-checkout-modal .paypal-checkout-logo {
-                background-image: url("https://www.paypalobjects.com/images/checkout/incontext/incontext_mask_sprite_2x.png");
-                background-size: 200px 200px;
-            }
+        #${ id } .paypal-checkout-modal .paypal-checkout-logo img {
+            height: 36px;
+        }
+
+        #${ id } .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {
+            margin-right: 10px;
         }
 
         #${ id } .paypal-checkout-modal .paypal-checkout-message {

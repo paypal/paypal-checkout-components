@@ -2,6 +2,11 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
+import { btoa } from 'Base64';
+
+import { componentLogos } from '../../../button/templates/component/logos';
+import { BUTTON_LOGO_COLOR } from '../../../button/constants';
+
 import componentContentJSON from './content.json';
 import { getContainerStyle, getSandboxStyle } from './style';
 
@@ -51,7 +56,12 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                 <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
                     <a href='#' class="paypal-checkout-close" onClick={ close }></a>
                     <div class="paypal-checkout-modal">
-                        <div class="paypal-checkout-logo"></div>
+                        <div class="paypal-checkout-logo">
+                            <img class="paypal-checkout-logo-pp" alt="pp"
+                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.pp[BUTTON_LOGO_COLOR.WHITE]) }` } />
+                            <img class="paypal-checkout-logo-paypal" alt="paypal"
+                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.paypal[BUTTON_LOGO_COLOR.WHITE]) }` } />
+                        </div>
                         <div class="paypal-checkout-message">
                             { content.windowMessage }
                         </div>
