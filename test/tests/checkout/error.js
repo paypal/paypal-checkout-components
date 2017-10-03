@@ -139,66 +139,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
-        it('should render checkout and call reject in payment', (done) => {
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                return window.paypal.Checkout.render({
-
-                    payment(resolve, reject) {
-                        reject(new Error('error'));
-                    },
-
-                    onError(err) : void {
-                        assert.isOk(err instanceof Error);
-                        return done();
-                    },
-
-                    onAuthorize() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                });
-            });
-
-            testButton.click();
-        });
-
-        it('should render checkout and call reject with undefined in payment', (done) => {
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                return window.paypal.Checkout.render({
-
-                    payment(resolve, reject) {
-                        reject();
-                    },
-
-                    onError(err) : void {
-                        assert.isOk(err instanceof Error);
-                        return done();
-                    },
-
-                    onAuthorize() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                });
-            });
-
-            testButton.click();
-        });
-
         it('should render checkout, then fall back and complete the payment', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });

@@ -401,58 +401,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             testButton.click();
         });
 
-
-        it('should render checkout, with an async resolved token passed, then complete the payment', (done) => {
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                return window.paypal.Checkout.render({
-
-                    payment(resolve) {
-                        setTimeout(() => {
-                            return resolve(generateECToken());
-                        }, 200);
-                    },
-
-                    onAuthorize() : void {
-                        return done();
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                });
-            });
-
-            testButton.click();
-        });
-
-        it('should render checkout, with an immediately resolved token passed, then complete the payment', (done) => {
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                return window.paypal.Checkout.render({
-
-                    payment(resolve) : void {
-                        return resolve(generateECToken());
-                    },
-
-                    onAuthorize() : void {
-                        return done();
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-                });
-            });
-
-            testButton.click();
-        });
-
         it('should render checkout, with a promise token passed, then complete the payment', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
@@ -672,7 +620,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     }).then(() => {
 
-                        // $FlowFixMe
                         childWindow.focus = () => {
                             done();
                         };

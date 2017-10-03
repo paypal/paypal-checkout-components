@@ -480,6 +480,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
                 let timeout;
 
                 interval = setInterval(() => {
+                    // $FlowFixMe
                     if (el.contentWindow) {
                         reset();
                         clearTimeout(timeout);

@@ -6,10 +6,10 @@ import { match } from '../../lib';
 import { config, FUNDING } from '../../config';
 
 export function determineParameterFromToken(token : string) : string {
-    return token.indexOf('BA-') === 0 ? 'ba_token' : 'token';
+    return (token && token.indexOf('BA-') === 0) ? 'ba_token' : 'token';
 }
 
-export function determineUrl(env : string, fundingSource : string, token : string) : string {
+export function determineUrl(env : string, fundingSource : ?string, token : string) : string {
 
     if (token.indexOf('BA-') === 0) {
         info(`url_billing`);

@@ -83,7 +83,7 @@ export let Button = create({
                 if (experimentTestBeacon) {
                     logExperimentTreatment(experimentTestBeacon, 'test');
                 }
-
+                
                 let checkout = Checkout.init({
                     onAuthorize: noop
                 });
@@ -150,8 +150,10 @@ export let Button = create({
             },
 
             validate(env) {
-                if (!config.paypalUrls[env]) {
-                    throw new Error(`Invalid env: ${ env }`);
+                if (env) {
+                    if (!config.paypalUrls[env]) {
+                        throw new Error(`Invalid env: ${ env }`);
+                    }
                 }
             }
         },
@@ -218,10 +220,6 @@ export let Button = create({
                 }
             },
             decorate(braintree, props) : ?ZalgoPromise<BraintreePayPalClient> {
-
-                if (!braintree) {
-                    return;
-                }
 
                 let env = props.env || config.env;
                 let authorization = props.client[env];
@@ -303,10 +301,13 @@ export let Button = create({
             type:       'object',
             required:   false,
             queryParam: true,
-            validate({ allowed = [], disallowed = [] } = {}) {
+            validate({ allowed = [], disallowed = [] } : Object = {}) {
                 validateFunding({ allowed, disallowed, remembered: [] });
             },
-            decorate({ allowed = [], disallowed = [] } = {}) : {} {
+            def() : Object {
+                return {};
+            },
+            decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
                 return {
                     allowed,
                     disallowed,
@@ -327,6 +328,7 @@ export let Button = create({
             type:      'function',
             promisify: true,
             required:  false,
+            noop:      true,
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
 
@@ -348,9 +350,7 @@ export let Button = create({
                         });
                     }
 
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
+                    return original.apply(this, arguments);
                 };
             }
         },
@@ -494,9 +494,7 @@ export let Button = create({
                         ]);
                     };
 
-                    if (original) {
-                        return original.call(this, data, { ...actions, redirect });
-                    }
+                    return original.call(this, data, { ...actions, redirect });
                 };
             }
         },
@@ -504,6 +502,7 @@ export let Button = create({
         onClick: {
             type:     'function',
             required: false,
+            noop:     true,
             decorate(original) : Function {
                 return function decorateOnClick(data : ?{ fundingSource : string }) : void {
 
@@ -537,9 +536,7 @@ export let Button = create({
                         logExperimentTreatment(experimentTestBeacon, 'test');
                     }
 
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
+                    return original.apply(this, arguments);
                 };
             }
         },

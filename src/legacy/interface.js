@@ -486,7 +486,7 @@ function initXO() : void {
 
     info(`init_paypal_checkout_initxo`);
 
-    renderPayPalCheckout({ url, payment: paymentToken });
+    renderPayPalCheckout({ url, payment: () => paymentToken });
 }
 
 checkout.initXO = initXO;
@@ -517,7 +517,7 @@ function startFlow(item : string) {
 
     info(`init_paypal_checkout_startflow`);
 
-    renderPayPalCheckout({ url, payment: paymentToken });
+    renderPayPalCheckout({ url, payment: () => ZalgoPromise.resolve(paymentToken) });
 }
 
 checkout.startFlow = startFlow;

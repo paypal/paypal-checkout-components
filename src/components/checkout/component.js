@@ -4,10 +4,11 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { create, CONSTANTS } from 'xcomponent/src';
+import { type Component } from 'xcomponent/src/component/component';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getSessionID, getBrowserLocale, supportsPopups } from '../../lib';
+    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize } from '../../lib';
 import { config, ENV, FPTI } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -59,15 +60,27 @@ function forceIframe() : boolean {
     return false;
 }
 
-export let Checkout = create({
+type CheckoutPropsType = {
+    payment? : () => ZalgoPromise<string>,
+    onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
+    onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
+    fallback? : (string) => ?ZalgoPromise<void>,
+    fundingSource? : string
+};
+
+export let Checkout : Component<CheckoutPropsType> = create({
 
     tag:  'paypal-checkout',
     name: 'ppcheckout',
 
     scrolling: true,
 
-    buildUrl(props) : string | ZalgoPromise<string> {
+    buildUrl(props) : ZalgoPromise<string> {
         let env = props.env || config.env;
+
+        if (!props.payment) {
+            throw new Error(`Can not build url without payment prop`);
+        }
 
         return props.payment().then(token => {
             if (!token) {
@@ -159,7 +172,7 @@ export let Checkout = create({
         client: {
             type:     'object',
             required: false,
-            def() : Object {
+            def() : { [string] : string } {
                 return {};
             },
             sendToChild: false,
@@ -178,20 +191,28 @@ export let Checkout = create({
         },
 
         payment: {
-            type:     'string',
-            required: false,
-            getter:   true,
-            memoize:  true,
-            timeout:  __TEST__ ? 500 : 10 * 1000,
-            queryParam(value = '') : string {
-                return determineParameterFromToken(value);
+            type:      'function',
+            required:  false,
+            memoize:   true,
+            promisify: true,
+            queryParam(payment) : ZalgoPromise<string> {
+                return payment().then(token => {
+                    return determineParameterFromToken(token);
+                });
             },
-            childDef() : ?string {
-                return getQueryParam('token');
+            queryValue(payment) : ZalgoPromise<string> {
+                return payment();
             },
-            validate(value, props) {
-                if (!value && !props.url) {
-                    throw new Error(`Expected props.payment to be passed`);
+            childDecorate(payment) : () => ZalgoPromise<string> {
+                let token = getQueryParam('token');
+
+                return token
+                    ? memoize(() => ZalgoPromise.resolve(token))
+                    : payment;
+            },
+            validate(payment, props) {
+                if (!payment && !props.url) {
+                    throw new Error(`Expected either props.payment or props.url to be passed`);
                 }
             },
             alias: 'billingAgreement'
@@ -324,9 +345,7 @@ export let Checkout = create({
                     };
 
                     return ZalgoPromise.try(() => {
-                        if (original) {
-                            return original.call(this, data, { ...actions, close, redirect });
-                        }
+                        return original.call(this, data, { ...actions, close, redirect });
                     }).finally(() => {
                         this.close();
                     });
@@ -338,6 +357,7 @@ export let Checkout = create({
             type:     'function',
             required: false,
             once:     true,
+            noop:     true,
 
             decorate(original) : Function {
                 return function decorateInit(data) : void {
@@ -357,9 +377,7 @@ export let Checkout = create({
                     this.paymentToken = data.paymentToken;
                     this.cancelUrl    = data.cancelUrl;
 
-                    if (original) {
-                        return original.apply(this, arguments);
-                    }
+                    return original.apply(this, arguments);
                 };
             }
         },
@@ -369,13 +387,12 @@ export let Checkout = create({
             required:  false,
             once:      true,
             promisify: true,
+            noop:      true,
 
             decorate(original) : Function {
                 return function decorateOnClose(reason) : ZalgoPromise<void> {
 
-                    let onClose = original
-                        ? original.apply(this, arguments)
-                        : ZalgoPromise.resolve();
+                    let onClose = original.apply(this, arguments);
 
                     let CLOSE_REASONS = CONSTANTS.CLOSE_REASONS;
 
@@ -424,7 +441,7 @@ export let Checkout = create({
             once:     true,
 
             def() : Function {
-                return function decorateFallback(url) : ZalgoPromise<void> {
+                return function defaultFallback(url) : ZalgoPromise<void> {
                     warn('fallback', { url });
                     return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
@@ -464,7 +481,7 @@ export let Checkout = create({
         height: false
     },
 
-    get dimensions() : { width : string | number, height : string | number } {
+    get dimensions() : { width : string, height : string } {
 
         if (isDevice()) {
             return {

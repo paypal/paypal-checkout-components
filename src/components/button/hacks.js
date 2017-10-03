@@ -142,6 +142,7 @@ if (Button.isChild()) {
     }
 
     if (isIE() && getDomainSetting('ie_full_page')) {
+        // $FlowFixMe
         Checkout.renderTo = (win) => {
             info('force_ie_full_page');
             flushLogs();
