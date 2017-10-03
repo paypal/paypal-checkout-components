@@ -5,6 +5,7 @@ import { BUTTON_LOGO, BUTTON_LOGO_COLOR } from '../../../constants';
 
 import pp_white     from './pp_white.svg';
 import pp_blue      from './pp_blue.svg';
+import pp_black     from './pp_black.svg';
 import paypal_white from './paypal_white.svg';
 import paypal_blue  from './paypal_blue.svg';
 import paypal_black from './paypal_black.svg';
@@ -26,7 +27,8 @@ export let componentLogos = {
 
     [ BUTTON_LOGO.PP ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: pp_white,
-        [ BUTTON_LOGO_COLOR.BLUE ]:  pp_blue
+        [ BUTTON_LOGO_COLOR.BLUE ]:  pp_blue,
+        [ BUTTON_LOGO_COLOR.BLACK ]: pp_black
     },
 
     [ BUTTON_LOGO.PAYPAL ]: {

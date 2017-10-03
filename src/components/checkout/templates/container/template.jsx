@@ -6,11 +6,17 @@ import { btoa } from 'Base64';
 
 import { componentLogos } from '../../../button/templates/component/logos';
 import { BUTTON_LOGO_COLOR } from '../../../button/constants';
+import { CHECKOUT_OVERLAY_COLOR } from '../../constants';
 
 import componentContentJSON from './content.json';
 import { getContainerStyle, getSandboxStyle } from './style';
 
 let componentContent = JSON.parse(componentContentJSON);
+
+const LOGO_COLOR = {
+    [ CHECKOUT_OVERLAY_COLOR.BLACK ]: BUTTON_LOGO_COLOR.WHITE,
+    [ CHECKOUT_OVERLAY_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLACK
+};
 
 export type ContainerTemplateOptions = {
     id : string,
@@ -50,17 +56,20 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         actions.focus();
     }
 
+    let overlayColor = props.style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
+    let logoColor = LOGO_COLOR[overlayColor];
+
     let container = (
         <html>
             <body>
-                <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
+                <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` }>
                     <a href='#' class="paypal-checkout-close" onClick={ close }></a>
                     <div class="paypal-checkout-modal">
                         <div class="paypal-checkout-logo">
                             <img class="paypal-checkout-logo-pp" alt="pp"
-                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.pp[BUTTON_LOGO_COLOR.WHITE]) }` } />
+                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.pp[logoColor]) }` } />
                             <img class="paypal-checkout-logo-paypal" alt="paypal"
-                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.paypal[BUTTON_LOGO_COLOR.WHITE]) }` } />
+                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.paypal[logoColor]) }` } />
                         </div>
                         <div class="paypal-checkout-message">
                             { content.windowMessage }

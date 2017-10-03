@@ -15,6 +15,7 @@ import { onLegacyPaymentAuthorize } from '../../compat';
 import { containerTemplate, componentTemplate } from './templates';
 import { determineParameterFromToken, determineUrl } from './util';
 import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
+import { CHECKOUT_OVERLAY_COLOR } from './constants';
 
 
 function addHeader(name, value) : void {
@@ -216,6 +217,20 @@ export let Checkout : Component<CheckoutPropsType> = create({
                 }
             },
             alias: 'billingAgreement'
+        },
+
+        style: {
+            type:          'object',
+            required:      false,
+            allowDelegate: true,
+            def() : Object {
+                return {};
+            },
+            validate(style) {
+                if (style.overlayColor && style.overlayColor !== CHECKOUT_OVERLAY_COLOR.BLACK && style.overlayColor !== CHECKOUT_OVERLAY_COLOR.WHITE) {
+                    throw new Error(`Invalid background color: ${ style.overlayColor }`);
+                }
+            }
         },
 
         commit: {

@@ -13,3 +13,4 @@ import './braintree';
 import './multiple';
 import './funding';
 import './layout';
+import './style';

@@ -59,6 +59,10 @@ function renderCheckout(props = {}) {
             // pass
         },
 
+        style: {
+            overlayColor: window.xprops.style.overlayColor
+        },
+
         onCancel: window.xprops.onCancel,
         onError:  window.xprops.onError,
         commit:   window.xprops.commit,

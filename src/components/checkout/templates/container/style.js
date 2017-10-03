@@ -1,5 +1,7 @@
 /* @flow */
 
+import { CHECKOUT_OVERLAY_COLOR } from '../../constants';
+
 export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : Object }) : string {
     return `
         #${ id }.paypal-checkout-sandbox {
@@ -96,6 +98,14 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             width: 100%;
             height: 100%;
 
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } {
             background-color: black;
             background-color: rgba(0, 0, 0, 0.8);
 
@@ -104,11 +114,37 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
             background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
 
-            -webkit-transform: translate3d(0, 0, 0);
-            -moz-transform: translate3d(0, 0, 0);
-            -ms-transform: translate3d(0, 0, 0);
-            -o-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+            color: #fff;
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } {
+            background-color: white;
+            background-color: rgba(255, 255, 255, 0.4);
+
+            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
+            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
+            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
+            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
+
+            color: #333;
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } a {
+            color: #fff;
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } a {
+            color: #333;
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:before,
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:after {
+            background-color: #fff;
+        }
+
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } .paypal-checkout-close:before,
+        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } .paypal-checkout-close:after {
+            background-color: #111;
         }
 
         #${ id }.${ tag }-context-${ CONTEXT.POPUP } {
@@ -117,13 +153,17 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
 
         #${ id }.${ tag }-context-${ CONTEXT.POPUP } {
             cursor: pointer;
+        }
+
+        #${ id } a {
+            text-decoration: none;
         }
 
         #${ id } .paypal-checkout-modal {
             font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
             font-size: 14px;
             text-align: center;
-            color: #fff;
+
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             -ms-box-sizing: border-box;
@@ -178,7 +218,6 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             font-size: 15px;
             line-height: 1.35;
             padding: 10px 0;
-            text-decoration: underline;
             font-weight: bold;
         }
 
@@ -205,7 +244,6 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             content: ' ';
             height: 16px;
             width: 2px;
-            background-color: white;
         }
 
         #${ id } .paypal-checkout-close:before {
@@ -222,10 +260,6 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             -moz-transform: rotate(-45deg);
             -o-transform: rotate(-45deg);
             -ms-transform: rotate(-45deg);
-        }
-
-        #${ id } a {
-            color: white;
         }
 
         #${ id } .paypal-checkout-iframe-container {
