@@ -605,133 +605,133 @@ let buttonConfigs = [
     },
 
     {
-        name: 'max',
+        name: 'maxbuttons',
 
         cases: [
 
             {
-                max:    0,
-                valid:  false
+                maxbuttons: 0,
+                valid:      false
             },
 
             {
-                max:    1,
-                valid:  true
+                maxbuttons: 1,
+                valid:      true
             },
 
             {
-                max:    2,
-                valid:  true
+                maxbuttons: 2,
+                valid:      true
             },
 
             {
-                max:    3,
-                valid:  false
+                maxbuttons: 3,
+                valid:      false
             },
 
             {
-                max:    4,
-                valid:  false
+                maxbuttons: 4,
+                valid:      false
             },
 
             {
-                max:    5,
-                valid:  false
+                maxbuttons: 5,
+                valid:      false
             },
 
             {
-                layout: `horizontal`,
-                max:    0,
-                valid:  false
+                layout:     `horizontal`,
+                maxbuttons: 0,
+                valid:      false
             },
 
             {
-                layout: `horizontal`,
-                max:    1,
-                valid:  true
+                layout:     `horizontal`,
+                maxbuttons: 1,
+                valid:      true
             },
 
             {
-                layout: `horizontal`,
-                max:    2,
-                valid:  true
+                layout:     `horizontal`,
+                maxbuttons: 2,
+                valid:      true
             },
 
             {
-                layout: `horizontal`,
-                max:    3,
-                valid:  false
+                layout:     `horizontal`,
+                maxbuttons: 3,
+                valid:      false
             },
 
             {
-                layout: `horizontal`,
-                max:    4,
-                valid:  false
+                layout:     `horizontal`,
+                maxbuttons: 4,
+                valid:      false
             },
 
             {
-                layout: `horizontal`,
-                max:    5,
-                valid:  false
+                layout:     `horizontal`,
+                maxbuttons: 5,
+                valid:      false
             },
 
             {
-                layout: `vertical`,
-                max:    0,
-                valid:  false
+                layout:     `vertical`,
+                maxbuttons: 0,
+                valid:      false
             },
 
             {
-                layout: `vertical`,
-                max:    1,
-                valid:  false
+                layout:     `vertical`,
+                maxbuttons: 1,
+                valid:      false
             },
 
             {
-                layout: `vertical`,
-                max:    2,
-                valid:  true
+                layout:     `vertical`,
+                maxbuttons: 2,
+                valid:      true
             },
 
             {
-                layout: `vertical`,
-                max:    3,
-                valid:  true
+                layout:     `vertical`,
+                maxbuttons: 3,
+                valid:      true
             },
 
             {
-                layout: `vertical`,
-                max:    4,
-                valid:  true
+                layout:     `vertical`,
+                maxbuttons: 4,
+                valid:      true
             },
 
             {
-                layout: `vertical`,
-                max:    5,
-                valid:  false
+                layout:     `vertical`,
+                maxbuttons: 5,
+                valid:      false
             },
 
             {
-                max:    '1',
-                valid:  false
+                maxbuttons: '1',
+                valid:      false
             },
 
             {
-                max:    'sdbsdbdsb',
-                valid:  false
+                maxbuttons: 'sdbsdbdsb',
+                valid:      false
             }
 
         // $FlowFixMe
-        ].map(({ max, layout, valid }) => ({
+        ].map(({ maxbuttons, layout, valid }) => ({
 
-            desc: `max ${ max } and layout ${ layout || 'default' }`,
+            desc: `maxbuttons ${ maxbuttons } and layout ${ layout || 'default' }`,
 
             valid,
 
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
-                style:       { max, layout }
+                style:       { maxbuttons, layout }
             }
         }))
     },

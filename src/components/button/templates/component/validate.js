@@ -1,6 +1,6 @@
 /* @flow */
 
-import { BUTTON_LAYOUT, BUTTON_SIZE } from '../../constants';
+import { BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS } from '../../constants';
 import { BUTTON_CONFIG, getButtonConfig } from '../config';
 
 import { componentContent } from './content';
@@ -29,13 +29,22 @@ export function validateButtonStyle(style : Object = {}) {
         throw new Error(`Expected props.style to be set`);
     }
 
-    let label = style.label || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
+    let label = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style[BUTTON_STYLE_OPTIONS.LAYOUT] === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
 
     if (!BUTTON_CONFIG[label]) {
         throw new Error(`Invalid button label: ${ label }`);
     }
 
-    let { color, shape, size, branding, fundingicons, tagline, layout, max } = style;
+    let {
+        [ BUTTON_STYLE_OPTIONS.COLOR ]:        color,
+        [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape,
+        [ BUTTON_STYLE_OPTIONS.SIZE ]:         size,
+        [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding,
+        [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons,
+        [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline,
+        [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout,
+        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max
+    } = style;
 
     if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
         throw new Error(`Unexpected color for ${ label } button: ${ color }`);
@@ -104,7 +113,7 @@ export function validateButtonStyle(style : Object = {}) {
             throw new Error(`No fundingicons allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
         }
 
-        if (style.size && [ BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ].indexOf(style.size) === -1) {
+        if (size && [ BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ].indexOf(size) === -1) {
             throw new Error(`Button must be at least ${ BUTTON_SIZE.MEDIUM } size for ${ BUTTON_LAYOUT.VERTICAL } layout`);
         }
     }

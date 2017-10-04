@@ -4,6 +4,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS as XCOMPONENT_CONSTANTS } from 'xcomponent/src';
+import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
@@ -46,7 +47,16 @@ if (customButtonSelector) {
     }, 500);
 }
 
-export let Button = create({
+type ButtonOptions = {
+    style : {|
+        maxbuttons? : number
+    |},
+    client : {
+        [string] : string
+    }
+};
+
+export let Button : Component<ButtonOptions> = create({
 
     tag:  'paypal-button',
     name: 'ppbutton',

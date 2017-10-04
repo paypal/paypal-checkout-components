@@ -6,7 +6,7 @@ export const BUTTON_STYLE_OPTIONS = {
     SHAPE:        'shape',
     COLOR:        'color',
     LAYOUT:       'layout',
-    MAX:          'max',
+    MAXBUTTONS:   'maxbuttons',
     FUNDINGICONS: 'fundingicons',
     BRANDING:     'branding',
     TAGLINE:      'tagline'

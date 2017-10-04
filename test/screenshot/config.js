@@ -154,7 +154,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             button: {
                 style: {
                     label,
-                    max: 1
+                    maxbuttons: 1
                 }
             }
         });
@@ -194,7 +194,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                             label,
                             color,
                             layout: 'vertical',
-                            max:    4
+                            maxbuttons:    4
                         },
                         funding: {
                             allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
@@ -209,7 +209,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                             label,
                             color,
                             layout: 'vertical',
-                            max:    4
+                            maxbuttons:    4
                         },
                         funding: {
                             allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
@@ -223,8 +223,8 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                         style:  {
                             label,
                             color,
-                            layout: 'vertical',
-                            max:    4
+                            layout:     'vertical',
+                            maxbuttons: 4
                         },
                         funding: {
                             allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.CARD ]
@@ -239,7 +239,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                             label,
                             color,
                             layout: 'vertical',
-                            max:    4
+                            maxbuttons:    4
                         },
                         funding: {
                             allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]

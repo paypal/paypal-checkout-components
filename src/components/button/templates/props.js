@@ -54,7 +54,7 @@ export function normalizeProps(props : Object) : Object {
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout       = getButtonConfig(label, 'defaultLayout'),
-        [ BUTTON_STYLE_OPTIONS.MAX ]:          max
+        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max
     } = style;
 
     max = determineMaxButtons({ label, layout, max });
