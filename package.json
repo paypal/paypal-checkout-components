@@ -14,6 +14,8 @@
   "files": [
     "dist/checkout.lib.js",
     "dist/checkout.lib.js.map",
+    "dist/checkout.button.render.js",
+    "dist/checkout.button.render.js.map",
     "src/",
     "postinstall.js"
   ],
