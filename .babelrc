@@ -3,6 +3,8 @@
   "plugins": [
      "transform-flow-strip-types",
      "add-module-exports",
+     "transform-object-rest-spread",
+     "syntax-object-rest-spread",
      ["babel-plugin-inline-import", {
         "extensions": [
           ".svg"
