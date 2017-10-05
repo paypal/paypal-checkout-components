@@ -51,7 +51,7 @@ module.exports = (req, ctx) => {
         shape:        query(req, 'style.shape'),
         label:        query(req, 'style.label'),
         layout:       query(req, 'style.layout'),
-        max:          number(req, 'style.max'),
+        maxbuttons:   number(req, 'style.maxbuttons'),
 
         fundingicons: bool(req, 'style.fundingicons'),
         branding:     bool(req, 'style.branding'),
