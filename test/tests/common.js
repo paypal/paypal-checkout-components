@@ -485,6 +485,7 @@ export function onWindowOpen({ time = 500 } : { time? : number } = {}) : ZalgoPr
                         reset();
                         clearTimeout(timeout);
                         clearInterval(interval);
+                        // $FlowFixMe
                         resolve(el.contentWindow);
                     }
                 }, 10);

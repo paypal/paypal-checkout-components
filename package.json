@@ -43,7 +43,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "babel-core": "^6.25.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.0",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -72,7 +72,7 @@
     "eslint": "^4.5.0",
     "eslint-find-rules": "^3.1.1",
     "eslint-friendly-formatter": "^3.0.0",
-    "eslint-plugin-compat": "^1.0.4",
+    "eslint-plugin-compat": "^1.0.0",
     "eslint-plugin-const-immutable": "^2.0.0",
     "eslint-plugin-eslint-comments": "^1.0.3",
     "eslint-plugin-flowtype": "^2.29.1",
@@ -80,7 +80,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-unicorn": "^2.1.2",
-    "flow-bin": "^0.53.1",
+    "flow-bin": "^0.56.0",
     "flow-runtime": "^0.14.0",
     "fs-extra": "^4.0.2",
     "gulp": "^3.9.1",
@@ -116,7 +116,7 @@
     "raw-loader": "^0.5.1",
     "regenerator-runtime": "^0.11.0",
     "serve": "^6.0.2",
-    "sinon": "^3.2.1",
+    "sinon": "^4.0.1",
     "sinon-chai": "^2.11.0",
     "sync-browser-mocks": "^1.0.43",
     "text-loader": "0.0.1",
@@ -124,7 +124,7 @@
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.0.0",
     "webpack-stream": "^4.0.0",
-    "yargs": "^8.0.2"
+    "yargs": "^9.0.1"
   },
   "dependencies": {
     "Base64": "^1.0.0",
