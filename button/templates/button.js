@@ -1,6 +1,5 @@
-'use strict'
 
-let componentTemplate = require('paypal-checkout/dist/checkout.button.render').componentTemplate;
+import { componentTemplate } from 'paypal-checkout/dist/checkout.button.render';
 
 function query(req, key, def) {
     return req.query[key] || def;
@@ -28,7 +27,7 @@ function number(req, key, def) {
     let val = query(req, key, def);
 
     if (val) {
-        return parseInt(val);
+        return parseInt(val, 10);
     }
 }
 
@@ -36,12 +35,12 @@ function safeJSON() {
     return JSON.stringify.apply(null, arguments).replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
 }
 
-module.exports = (req, ctx) => {
+export default (req, ctx) => {
 
-    let config  = ctx.config;
-    let meta    = ctx.meta;
+    let config = ctx.config;
+    let meta = ctx.meta;
     let cookies = ctx.cookies;
-    let pre     = ctx.pre;
+    let pre = ctx.pre;
 
     let locale = query(req, 'locale.x', 'en_US');
 
@@ -70,17 +69,20 @@ module.exports = (req, ctx) => {
 
     let buttonHTML = componentTemplate({
         props: {
+            env:     meta.env,
             locale:  locale,
             style:   style,
             funding: funding
         }
     });
 
+    let stageProp = meta.icstage ? `data-stage="${ meta.icstage }"` : '';
+
     return `
         <body>
             ${ buttonHTML }
 
-            <script src="${ config.urls.incontextScript }/checkout${ meta.version ? '.' + meta.version : '' }.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="${ meta.env }" ${ meta.icstage ? 'data-stage="' + meta.icstage + '"' : '' }}></script>
+            <script src="${ config.urls.incontextScript }/checkout${ meta.version ? '.' : '' }${ meta.version ? meta.version : '' }.js" data-paypal-checkout data-no-bridge data-state="ppxo_meta" data-env="${ meta.env }" ${ stageProp ? stageProp : '' }}></script>
 
             <script>
                 window.angular = {
@@ -104,4 +106,4 @@ module.exports = (req, ctx) => {
             </script>
         </body>
     `;
-}
+};

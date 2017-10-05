@@ -1,10 +1,5 @@
-'use strict';
 
-module.exports = (req, ctx) => {
-
-    let config  = ctx.config;
-    let meta    = ctx.meta;
-    let cookies = ctx.cookies;
+export default (req, ctx) => {
 
     return `
         <!DOCTYPE html>
@@ -27,4 +22,4 @@ module.exports = (req, ctx) => {
                 </script>
             </head>
     `;
-}
+};

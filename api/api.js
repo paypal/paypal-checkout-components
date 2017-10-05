@@ -1,7 +1,6 @@
-'use strict';
 
-let spark = require('xo-spark');
-let FUNDING = require('paypal-checkout/dist/checkout.button.render').FUNDING;
+import spark from 'xo-spark';
+import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
 
 module.exports = spark.register({
 
@@ -15,7 +14,7 @@ module.exports = spark.register({
             path: '/api/button/funding',
 
             handlers: {
-                get: function (req, res, params, query) {
+                get(req, res, params, query) {
 
                     let remembered = [];
                     let eligible = [];
