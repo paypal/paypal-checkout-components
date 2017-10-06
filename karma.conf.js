@@ -33,8 +33,8 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            'test/client/index.js': [ 'webpack',  'sourcemap' ],
-            'public/**/*.js':       [ 'coverage', 'sourcemap' ]
+            'test/client/index.js':  [ 'webpack',  'sourcemap' ],
+            'public/js/button/*.js': [ 'coverage', 'sourcemap' ]
         },
 
         customLaunchers: {

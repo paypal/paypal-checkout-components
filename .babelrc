@@ -1,19 +1,22 @@
 {
-  "presets": ["es2015", "stage-2"],
-  "plugins": [
-     "transform-flow-strip-types",
-     "add-module-exports",
-     "transform-object-rest-spread",
-     "syntax-object-rest-spread",
-     ["babel-plugin-inline-import", {
-        "extensions": [
-          ".svg"
-        ]
-     }]
+  "presets": [
+      [ "es2015" ]
   ],
+  
+  "plugins": [
+      [ "transform-flow-strip-types", { "loose": true } ],
+      [ "transform-object-rest-spread", { "loose": true } ],
+      [ "syntax-object-rest-spread", { "loose": true } ],
+      [ "transform-es3-property-literals", { "loose": true } ],
+      [ "transform-es3-member-expression-literals", { "loose": true } ],
+      [ "transform-es2015-for-of", { "loose": true } ]
+  ],
+
   "env": {
-    "test": {
-      "plugins": [ [ "__coverage__", { "ignore": [ "test", "node_modules" ] } ] ]
-    }
+      "test": {
+          "plugins": [
+              [ "istanbul", { "only": "./public/js/button" } ]
+          ]
+      }
   }
 }
