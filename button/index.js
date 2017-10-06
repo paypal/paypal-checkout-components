@@ -1,8 +1,9 @@
+'use strict'
 
 require('module-babel')(__dirname);
 
-import { indexTemplate } from './templates/index';
-import { buttonTemplate } from './templates/button';
+let indexTemplate = require('./templates/index').indexTemplate;
+let buttonTemplate = require('./templates/button').buttonTemplate;
 
 module.exports = {
     getIndexTemplate: () => indexTemplate,
