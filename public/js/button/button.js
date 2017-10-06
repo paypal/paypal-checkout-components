@@ -34,17 +34,8 @@ function clickButton(event, fundingSource = 'paypal') {
 }
 
 export function setupButton() {
-
     usePayPalPromise();
-
     setupLoginPreRender();
-
-    detectLightboxEligibility();
-
-    determineLocale().then(locale => {
-        window.paypal.config.locale.country = locale.country;
-        window.paypal.config.locale.lang = locale.lang;
-    });
 
     querySelectorAll('.paypal-button').forEach(button => {
         let fundingSource = button.getAttribute('data-funding-source');
@@ -60,10 +51,19 @@ export function setupButton() {
         });
     });
 
-    getButtonFunding().then(funding => {
+    return Promise.all([
 
-        if (window.xprops.funding && window.xprops.funding.remember && funding.eligible.length) {
-            window.xprops.funding.remember(funding.eligible);
-        }
-    });
+        detectLightboxEligibility(),
+
+        determineLocale().then(locale => {
+            window.paypal.config.locale.country = locale.country;
+            window.paypal.config.locale.lang = locale.lang;
+        }),
+
+        getButtonFunding().then(funding => {
+            if (window.xprops.funding && window.xprops.funding.remember && funding.eligible.length) {
+                window.xprops.funding.remember(funding.eligible);
+            }
+        })
+    ]);
 }

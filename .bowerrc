@@ -3,5 +3,5 @@
         "search" : ["http://bower.paypalcorp.com", "http://components.paypal.com", "https://bower.herokuapp.com"],
         "register" : "http://bower.paypalcorp.com"
     },
-	"directory": "public/components"
+	"directory": "bower_modules"
 }

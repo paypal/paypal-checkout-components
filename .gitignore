@@ -17,7 +17,7 @@ tmp
 ext
 temp
 tools/tmp
-public/components
+bower_modules
 config/production.json
 test/functional/datadriven/report
 server.crt

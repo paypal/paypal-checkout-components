@@ -25,7 +25,7 @@ function getWebpackConfig({ filename, modulename, minify = false, options = {}, 
             modules: [
                 __dirname,
                 'node_modules',
-                'public/components'
+                'bower_modules'
             ]
         },
 

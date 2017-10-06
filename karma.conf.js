@@ -26,15 +26,15 @@ module.exports = function(config) {
             },
 
             {
-                pattern: 'test/client/test.js',
+                pattern: 'test/client/index.js',
                 included: true,
                 served: true
             }
         ],
 
         preprocessors: {
-            'test/client/test.js': [ 'webpack',  'sourcemap' ],
-            'public/**/*.js':      [ 'coverage', 'sourcemap' ]
+            'test/client/index.js': [ 'webpack',  'sourcemap' ],
+            'public/**/*.js':       [ 'coverage', 'sourcemap' ]
         },
 
         customLaunchers: {

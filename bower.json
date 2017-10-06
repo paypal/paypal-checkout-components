@@ -1,6 +1,7 @@
 {
   "name": "xo-buttonjs",
   "description": "Serverside rendered ButtonJS",
+  "directory": "bower_components",
   "main": "index.js",
   "authors": [
     "DL-PP-Hermes-Integration@paypal.com"

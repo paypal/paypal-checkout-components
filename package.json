@@ -10,7 +10,8 @@
   "scripts": {
     "build": " ",
     "jest": "jest test/server",
-    "karma": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/karma start",
+    "karma": "babel-node ./node_modules/.bin/karma start",
+    "babel-node": "babel-node",
     "cover": "npm run coverage",
     "test": "mkdir -p logs && npm run lint && npm run jest && npm run karma",
     "lint": "eslint api button public/js test",
@@ -77,6 +78,7 @@
     "pre-commit": "^1.0.10",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.14.0",
+    "sync-browser-mocks": "^1.0.44",
     "webpack": "^3.6.0",
     "xo-log-watcher": "^1.0.0"
   },
