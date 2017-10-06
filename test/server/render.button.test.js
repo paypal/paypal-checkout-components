@@ -1,7 +1,7 @@
 
 import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
 
-import renderButton from '../../button/templates/button';
+import { buttonTemplate } from '../../button/templates/button';
 
 import { mockReq, mockContext } from './mock';
 import { regexMap } from './util';
@@ -15,7 +15,7 @@ test('should do a basic button render and succeed', () => {
     let req = mockReq();
     let ctx = mockContext();
 
-    renderButton(req, ctx);
+    buttonTemplate(req, ctx);
 });
 
 test('should pass the correct attributes to checkout.js', () => {
@@ -23,7 +23,7 @@ test('should pass the correct attributes to checkout.js', () => {
     let req = mockReq();
     let ctx = mockContext();
 
-    let template = renderButton(req, ctx);
+    let template = buttonTemplate(req, ctx);
 
     if (template.indexOf(`<script src="${ ctx.config.urls.incontextScript }`) === -1) {
         throw new Error(`Expected button template to have incontext script included`);
@@ -51,7 +51,7 @@ test('should render the button in html', () => {
     let req = mockReq();
     let ctx = mockContext();
 
-    let template = renderButton(req, ctx);
+    let template = buttonTemplate(req, ctx);
 
     if (template.indexOf(`class="paypal-button-container`) === -1) {
         throw new Error(`Expected button template to be rendered`);
@@ -63,7 +63,7 @@ test('should only render paypal button by default', () => {
     let req = mockReq();
     let ctx = mockContext();
 
-    let template = renderButton(req, ctx);
+    let template = buttonTemplate(req, ctx);
 
     let fundingSources = getRenderedFundingSources(template);
     
@@ -79,7 +79,7 @@ test('should use buttonTypes api to inform buttons which are rendered', () => {
 
     ctx.pre.buttonTypes.res.data.eligible = [ FUNDING.VENMO ];
 
-    let template = renderButton(req, ctx);
+    let template = buttonTemplate(req, ctx);
 
     let fundingSources = getRenderedFundingSources(template);
     
@@ -95,7 +95,7 @@ test('should use funding.allowed to inform buttons which are rendered', () => {
 
     req.query['funding.allowed'] = FUNDING.VENMO;
 
-    let template = renderButton(req, ctx);
+    let template = buttonTemplate(req, ctx);
 
     let fundingSources = getRenderedFundingSources(template);
     

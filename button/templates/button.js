@@ -1,41 +1,29 @@
 
 import { componentTemplate } from 'paypal-checkout/dist/checkout.button.render';
 
-function query(req, key, def) {
-    return req.query[key] || def;
+import { pollForResource, query, array, bool, number, safeJSON } from './util';
+
+const COMPONENT_TEMPLATE_URL = 'https://www.paypalobjects.com/api/checkout.button.render.js';
+const COMPONENT_TEMPLATE_FETCH_INTERVAL = 20 * 60 * 1000;
+
+let dynamicComponentTemplate = componentTemplate;
+
+if (process.env.NODE_ENV !== 'test') {
+    pollForResource(COMPONENT_TEMPLATE_URL, async (code) => {
+        
+        let exports = {};
+        eval(code); // eslint-disable-line no-eval
+    
+        if (typeof exports.componentTemplate !== 'function') {
+            throw new Error(`Expected componentTemplate to be a function`);
+        }
+    
+        dynamicComponentTemplate = exports.componentTemplate;
+    
+    }, COMPONENT_TEMPLATE_FETCH_INTERVAL);
 }
 
-function array(req, key) {
-    return query(req, key, '').split(',').filter(Boolean);
-}
-
-function bool(req, key, def) {
-
-    let val = query(req, key, def);
-
-    if (val === 'true') {
-        return true;
-    }
-
-    if (val === 'false') {
-        return false;
-    }
-}
-
-function number(req, key, def) {
-
-    let val = query(req, key, def);
-
-    if (val) {
-        return parseInt(val, 10);
-    }
-}
-
-function safeJSON() {
-    return JSON.stringify.apply(null, arguments).replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
-}
-
-export default (req, ctx) => {
+export let buttonTemplate = (req, ctx) => {
 
     let config = ctx.config;
     let meta = ctx.meta;
@@ -67,7 +55,7 @@ export default (req, ctx) => {
         funding.remembered.push(source);
     });
 
-    let buttonHTML = componentTemplate({
+    let buttonHTML = dynamicComponentTemplate({
         props: {
             env:     meta.env,
             locale:  locale,

@@ -1,5 +1,5 @@
 
-export default (req, ctx) => {
+export let indexTemplate = (req, ctx) => {
 
     return `
         <!DOCTYPE html>

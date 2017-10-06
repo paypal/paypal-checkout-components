@@ -23,14 +23,9 @@
     "postinstall": "mkdir -p logs"
   },
   "dependencies": {
-    "applogger": "^1",
-    "bluebird": "^2",
-    "cal": "^0.5.32",
-    "handlebars": "^4.0.0",
     "module-babel": "^2.0.8",
     "paypal-checkout": "^4.0.55",
-    "squid-core": "^0.4.11",
-    "underscore": "^1"
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",
