@@ -1,4 +1,4 @@
-'use strict'
+'use strict'; // eslint-disable-line strict
 
 require('module-babel')(__dirname);
 
