@@ -1,6 +1,12 @@
 /* @flow */
 
-export const BUTTON_STYLE_OPTIONS = {
+export const DEFAULT = 'default';
+
+type BUTTON_STYLE_OPTIONS_ENUM =
+    Enum<'label' | 'size' | 'shape' | 'color' | 'layout' |
+    'fundingicons' | 'maxbuttons' | 'branding' | 'tagline'>;
+
+export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     LABEL:        'label',
     SIZE:         'size',
     SHAPE:        'shape',
@@ -12,7 +18,11 @@ export const BUTTON_STYLE_OPTIONS = {
     TAGLINE:      'tagline'
 };
 
-export const BUTTON_LABEL = {
+type BUTTON_LABEL_ENUM =
+    Enum<'paypal' | 'checkout' | 'pay' | 'credit' |
+    'card' | 'buynow' | 'venmo' | 'ideal' | 'elv'>;
+
+export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     PAYPAL:   'paypal',
     CHECKOUT: 'checkout',
     PAY:      'pay',
@@ -24,7 +34,10 @@ export const BUTTON_LABEL = {
     ELV:      'elv'
 };
 
-export const BUTTON_COLOR = {
+type BUTTON_COLOR_ENUM =
+    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue'>;
+
+export const BUTTON_COLOR : BUTTON_COLOR_ENUM = {
     GOLD:     'gold',
     BLUE:     'blue',
     SILVER:   'silver',
@@ -32,14 +45,20 @@ export const BUTTON_COLOR = {
     DARKBLUE: 'darkblue'
 };
 
-export const BUTTON_LOGO_COLOR = {
+type BUTTON_LOGO_COLOR_ENUM =
+    Enum<'blue' | 'white' | 'black' | 'any'>;
+
+export const BUTTON_LOGO_COLOR : BUTTON_LOGO_COLOR_ENUM = {
     BLUE:  'blue',
     WHITE: 'white',
     BLACK: 'black',
     ANY:   'any'
 };
 
-export const BUTTON_SIZE = {
+type BUTTON_SIZE_ENUM =
+    Enum<'tiny' | 'small' | 'medium' | 'large' | 'responsive'>;
+
+export const BUTTON_SIZE : BUTTON_SIZE_ENUM = {
     TINY:       'tiny',
     SMALL:      'small',
     MEDIUM:     'medium',
@@ -47,32 +66,50 @@ export const BUTTON_SIZE = {
     RESPONSIVE: 'responsive'
 };
 
-export const BUTTON_TAGLINE_COLOR = {
+type BUTTON_TAGLINE_COLOR_ENUM =
+    Enum<'black' | 'blue'>;
+
+export const BUTTON_TAGLINE_COLOR : BUTTON_TAGLINE_COLOR_ENUM = {
     BLACK: 'black',
     BLUE:  'blue'
 };
 
-export const BUTTON_SHAPE = {
+type BUTTON_SHAPE_ENUM =
+    Enum<'pill' | 'rect'>;
+
+export const BUTTON_SHAPE : BUTTON_SHAPE_ENUM = {
     PILL: 'pill',
     RECT: 'rect'
 };
 
-export const BUTTON_BRANDING = {
+type BUTTON_BRANDING_ENUM =
+    Enum<'branded' | 'unbranded'>;
+
+export const BUTTON_BRANDING : BUTTON_BRANDING_ENUM = {
     BRANDED:   'branded',
     UNBRANDED: 'unbranded'
 };
 
-export const BUTTON_LAYOUT = {
+type BUTTON_LAYOUT_ENUM =
+    Enum<'horizontal' | 'vertical'>;
+
+export const BUTTON_LAYOUT : BUTTON_LAYOUT_ENUM = {
     HORIZONTAL: 'horizontal',
     VERTICAL:   'vertical'
 };
 
-export const BUTTON_NUMBER = {
+type BUTTON_NUMBER_ENUM =
+    Enum<'single' | 'multiple'>;
+
+export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
     SINGLE:   'single',
     MULTIPLE: 'multiple'
 };
 
-export const BUTTON_LOGO = {
+type BUTTON_LOGO_ENUM =
+    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'ideal' | 'elv'>;
+
+export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     PP:     'pp',
     PAYPAL: 'paypal',
     VENMO:  'venmo',

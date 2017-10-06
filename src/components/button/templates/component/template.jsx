@@ -4,7 +4,7 @@
 import { btoa } from 'Base64';
 
 import { ENV, ATTRIBUTE } from '../../../../config/constants';
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR } from '../../constants';
+import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL } from '../../constants';
 import { getButtonConfig, fundingToDefaultLabel } from '../config';
 import { determineEligibleCards, type FundingSource, type FundingList, type FundingSelection } from '../funding';
 import { normalizeProps } from '../props';
@@ -40,8 +40,8 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
-function determineButtons({ label, color, sources, multiple } : { label : string, color : string, sources : FundingList, multiple : boolean }) :
-    Array<{ label : string, color : string, source : FundingSource }> {
+function determineButtons({ label, color, sources, multiple } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean }) :
+    Array<{ label : $Values<typeof BUTTON_LABEL>, color : string, source : FundingSource }> {
 
     return sources.map((source, i) => {
 

@@ -2,12 +2,18 @@
 /* eslint no-template-curly-in-string: off */
 
 import { FUNDING, CARD } from '../../../config/constants';
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
+import { DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
-export const BUTTON_CONFIG = {
+type ButtonConfig = {
+    [ string ] : {
+        colors : Array<$Values<typeof BUTTON_COLOR>>
+    }
+};
 
-    DEFAULT: {
+export const BUTTON_CONFIG : ButtonConfig = {
+
+    [ DEFAULT ]: {
 
         colors: [
             BUTTON_COLOR.GOLD,
@@ -351,7 +357,7 @@ export function labelToFunding(label : ?string) : string {
     return label ? LABEL_TO_FUNDING[label] : FUNDING.PAYPAL;
 }
 
-export function fundingToDefaultLabel(funding : string) : string {
+export function fundingToDefaultLabel(funding : string) : $Values<typeof BUTTON_LABEL> {
     return FUNDING_TO_DEFAULT_LABEL[funding];
 }
 
@@ -366,7 +372,7 @@ export const FUNDING_PRIORITY = [
 
 export const FUNDING_CONFIG = {
 
-    DEFAULT: {
+    [ DEFAULT ]: {
         enabled: true,
 
         allowOptIn:    true,
@@ -413,7 +419,7 @@ export const FUNDING_CONFIG = {
 
 export const CARD_CONFIG = {
 
-    DEFAULT: {
+    [ DEFAULT ]: {
         priority: [
             CARD.VISA,
             CARD.MASTERCARD,
@@ -439,8 +445,8 @@ function getConfig<T : mixed>(conf : Object, category : string, key : string, de
         return categoryConfig[key];
     }
 
-    if (conf.DEFAULT && conf.DEFAULT.hasOwnProperty(key)) {
-        return conf.DEFAULT[key];
+    if (conf[DEFAULT] && conf[DEFAULT].hasOwnProperty(key)) {
+        return conf[DEFAULT][key];
     }
 
     if (arguments.length >= 4) {

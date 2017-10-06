@@ -307,7 +307,7 @@ module.exports = {
         'flowtype/space-after-type-colon': [ 'error', 'always', { 'allowLineBreak': true } ],
         'flowtype/space-before-generic-bracket': [ 'error', 'never' ],
         'flowtype/space-before-type-colon': [ 'error', 'always' ],
-        'flowtype/type-id-match': [ 'error', '^([A-Z][a-z0-9]+)+$' ],
+        'flowtype/type-id-match': [ 'off', '^([A-Z][a-z0-9]+)+$' ],
         'flowtype/union-intersection-spacing': [ 'error', 'always' ],
         'flowtype/use-flow-type': 'error',
         'flowtype/valid-syntax': 'error',
