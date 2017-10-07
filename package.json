@@ -25,7 +25,8 @@
   "dependencies": {
     "module-babel": "^2.0.8",
     "paypal-checkout": "^4.0.55",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "zalgo-promise": "^1.0.20"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",

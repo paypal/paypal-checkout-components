@@ -26,3 +26,7 @@ export function memoize(method) {
 export function querySelectorAll(selector, doc = window.document) {
     return Array.prototype.slice.call(doc.querySelectorAll(selector));
 }
+
+export function noop() {
+    // pass
+}

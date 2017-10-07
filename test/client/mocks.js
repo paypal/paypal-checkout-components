@@ -1,6 +1,7 @@
 
 import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
+import { ZalgoPromise } from 'zalgo-promise';
 
 const PAYPAL_BUTTON_CLASS = 'paypal-button';
 
@@ -12,8 +13,14 @@ export function setupMocks() {
         }
     };
 
+    window.meta = {
+        headers: {
+            'x-csrf-jwt': 'xxxxxxx'
+        }
+    };
+
     window.paypal = {
-        Promise: window.Promise,
+        Promise: ZalgoPromise,
         config: {
             locale: {
                 country: 'US',
@@ -21,6 +28,10 @@ export function setupMocks() {
             }
         },
         Checkout: {
+            contexts: {
+                popup: true,
+                lightbox: false
+            },
             renderTo() {
                 
             },
@@ -35,7 +46,27 @@ export function setupMocks() {
 
         },
         onClick() {
+            return window.Promise.resolve();
+        },
+        onAuthorize() {
+            return window.Promise.resolve();
+        },
+        onCancel() {
+            return window.Promise.resolve();
+        },
+        funding: {
+            allowed: [],
+            disallowed: [],
+            remember() {
 
+            }
+        }
+    };
+
+    window.xchild = {
+        xprops: window.xprops,
+        error(err) {
+            throw err;
         }
     };
 
@@ -46,6 +77,17 @@ export function setupMocks() {
 
 setupMocks();
 patchXmlHttpRequest();
+
+export function getMockCheckoutInstance() {
+    return {
+        closeComponent() {
+            return window.Promise.resolve();
+        },
+        close() {
+            return window.Promise.resolve();
+        }
+    };
+}
 
 export function createButtonHTML(sources = [ FUNDING.PAYPAL ]) {
     return sources.map(source => {
@@ -60,8 +102,14 @@ export function getLocaleApiMock(options = {}) {
         method: 'GET',
         uri:    '/webapps/hermes/api/locale',
         data:   {
-            country: 'US',
-            lang:    'en'
+            ack: 'success',
+            data: {
+                country: 'US',
+                lang:    'en'
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
         },
         ...options
     });
@@ -72,7 +120,65 @@ export function getAuthApiMock(options = {}) {
         method: 'GET',
         uri:    '/webapps/hermes/api/auth',
         data:   {
-            
+            ack: 'success',
+            data: {
+
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function getFundingApiMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri:    '/webapps/hermes/api/button/funding',
+        data:   {
+            ack: 'success',
+            data: {
+                eligible: [],
+                remembered: []
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function getPaymentApiMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri:    new RegExp('/webapps/hermes/api/payment/[^/]+'),
+        data:   {
+            ack: 'success',
+            data: {
+
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function executePaymentApiMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/webapps/hermes/api/payment/[^/]+/execute'),
+        data:   {
+            ack: 'success',
+            data: {
+                
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
         },
         ...options
     });
@@ -80,3 +186,6 @@ export function getAuthApiMock(options = {}) {
 
 getLocaleApiMock().listen();
 getAuthApiMock().listen();
+getFundingApiMock().listen();
+getPaymentApiMock().listen();
+executePaymentApiMock().listen();

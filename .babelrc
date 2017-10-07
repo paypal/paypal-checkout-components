@@ -9,7 +9,8 @@
       [ "syntax-object-rest-spread", { "loose": true } ],
       [ "transform-es3-property-literals", { "loose": true } ],
       [ "transform-es3-member-expression-literals", { "loose": true } ],
-      [ "transform-es2015-for-of", { "loose": true } ]
+      [ "transform-es2015-for-of", { "loose": true } ],
+      [ "transform-async-to-generator", { "loose": true } ]
   ],
 
   "env": {

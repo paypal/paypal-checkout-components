@@ -1,6 +1,6 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
-import { memoize } from './util';
+import { memoize, noop } from './util';
 import { getPayment, executePayment } from './api';
 import { persistAccessToken } from './user';
 
@@ -10,7 +10,7 @@ function buildActions(checkout, data, actions, intent) {
         return checkout.close().then(() => {
             enableLightbox();
             renderCheckout({ payment: () => data.paymentToken });
-            return new window.paypal.Promise();
+            return new window.paypal.Promise(noop);
         });
     };
 
@@ -54,11 +54,7 @@ function buildActions(checkout, data, actions, intent) {
                 }
 
                 return getPayment(data.paymentID);
-            }),
-
-            executeAndConfirm: () => {
-                throw new Error('Not implemented');
-            }
+            })
         },
 
         restart: restartFlow
