@@ -16,7 +16,12 @@
   "env": {
       "test": {
           "plugins": [
-              [ "istanbul", { "only": "./public/js/button" } ]
+              [ 
+                  "istanbul", {
+                      "only": "public",
+                      "exclude": [ "bower_modules", "test" ]
+                  }
+              ]
           ]
       }
   }
