@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": " ",
-    "jest": "jest test/server",
+    "jest": "jest test/server --collectCoverage",
     "karma": "NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "babel-node": "babel-node",
     "cover": "npm run coverage",
