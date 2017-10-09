@@ -87,10 +87,11 @@ type ConfigOptions = {
     apiStage? : ?string,
     state? : ?string,
     ppobjects? : ?boolean,
-    logLevel? : ?string
+    logLevel? : ?string,
+    merchantID? : ?string
 };
 
-function configure({ env, stage, apiStage, state, ppobjects, logLevel } : ConfigOptions = {}) {
+function configure({ env, stage, apiStage, state, ppobjects, logLevel, merchantID } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -118,6 +119,10 @@ function configure({ env, stage, apiStage, state, ppobjects, logLevel } : Config
 
     if (ppobjects) {
         config.ppobjects = true;
+    }
+
+    if (merchantID) {
+        config.merchantID = merchantID;
     }
 
     if (logLevel) {
@@ -162,6 +167,7 @@ if (currentScript) {
         apiStage:   currentScript.getAttribute('data-api-stage'),
         state:      currentScript.getAttribute('data-state'),
         logLevel:   currentScript.getAttribute('data-log-level'),
+        merchantID: currentScript.getAttribute('data-merchant-id'),
         ppobjects:  true
     });
 

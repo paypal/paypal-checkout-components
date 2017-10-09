@@ -31,6 +31,8 @@ export let config = {
 
     stage: 'msmaster',
 
+    merchantID: '',
+
     logLevel: __DEFAULT_LOG_LEVEL__,
 
     throttles: {

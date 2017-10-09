@@ -48,6 +48,7 @@ export function initLogger() {
             [ FPTI.KEY.FEED ]:         FPTI.FEED.CHECKOUTJS,
             [ FPTI.KEY.DATA_SOURCE ]:  FPTI.DATA_SOURCE.CHECKOUT,
             [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.UID,
+            [ FPTI.KEY.SELLER_ID ]:    config.merchantID,
             [ FPTI.KEY.SESSION_UID ]:  getSessionID(),
             [ FPTI.KEY.CONTEXT_ID ]:   getSessionID(),
             [ FPTI.KEY.REFERER ]:      getRefererDomain()

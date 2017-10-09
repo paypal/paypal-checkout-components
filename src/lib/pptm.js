@@ -3,7 +3,9 @@
 import { track, warn, error } from 'beaver-logger/client';
 
 import { config, FPTI, PPTM_ID } from '../config';
-import { loadScript, getElement, stringifyError } from '../lib';
+
+import { stringifyError } from './util';
+import { extendUrl, loadScript, getElement } from './dom';
 
 export function createPptmScript() {
     const id = window.location.hostname;
@@ -25,7 +27,11 @@ export function createPptmScript() {
     });
 
     // Works essentially as a NOOP until opt-in
-    const fullUrl = `${ config.pptmUrl }?id=${ window.location.hostname }&t=xo`;
+    const fullUrl = extendUrl(config.pptmUrl, {
+        t:    'xo',
+        id:   window.location.hostname,
+        mrid: config.merchantID
+    });
 
     loadScript(fullUrl, 0, { async: true, id: PPTM_ID }).then(() => {
 
