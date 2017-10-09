@@ -49,7 +49,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   window.paypal.FUNDING.ELV,
-                fragment: 'checkouturl=true',
+                fragment: 'guesturl=true',
                 locale:   'de_DE'
             }
 

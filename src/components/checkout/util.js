@@ -26,6 +26,10 @@ export function determineUrl(env : string, fundingSource : ?string, token : stri
         return config.guestUrls[env];
     }
 
+    if (fundingSource === FUNDING.ELV) {
+        return config.guestUrls[env];
+    }
+
     return config.checkoutUrls[env];
 }
 
