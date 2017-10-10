@@ -16,22 +16,10 @@ export type FundingSelection = {
 function isFundingEligible(source : FundingSource, { locale, funding, env, layout } :
     { locale : LocaleType, funding : FundingSelection, env : string, layout : string }) : boolean {
 
-    if (getFundingConfig(source, 'default')) {
-        return true;
-    }
-
     if (!getFundingConfig(source, 'enabled')) {
         if (!(env === ENV.TEST && getFundingConfig(source, 'test'))) {
             return false;
         }
-    }
-
-    if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
-        return false;
-    }
-
-    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
-        return false;
     }
 
     let label = fundingToDefaultLabel(source);
@@ -45,7 +33,19 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
         return false;
     }
 
+    if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
+        return false;
+    }
+
+    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
+        return false;
+    }
+
     if (getFundingConfig(source, 'defaultCountries', []).indexOf(locale.country) !== -1) {
+        return true;
+    }
+
+    if (getFundingConfig(source, 'default')) {
         return true;
     }
 

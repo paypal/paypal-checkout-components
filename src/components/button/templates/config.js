@@ -388,7 +388,7 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.CARD ]: {
-
+        default: true
     },
 
     [ FUNDING.VENMO ]: {
@@ -409,11 +409,10 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.ELV ]: {
-        enabled: false,
-        test:    true,
+        enabled: true,
 
-        allowedCountries: [ 'DE' ],
-        defaultCountries: [ 'DE' ]
+        allowedCountries: [ 'DE', 'AT' ],
+        defaultCountries: [ 'DE', 'AT' ]
     }
 };
 
