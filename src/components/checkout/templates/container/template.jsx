@@ -66,9 +66,11 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
                     <a href='#' class="paypal-checkout-close" onClick={ close }></a>
                     <div class="paypal-checkout-modal">
                         <div class="paypal-checkout-logo">
-                            <img class="paypal-checkout-logo-pp" alt="pp"
+                            <img
+                                class="paypal-checkout-logo-pp" alt="pp"
                                 src={ `data:image/svg+xml;base64,${ btoa(componentLogos.pp[logoColor]) }` } />
-                            <img class="paypal-checkout-logo-paypal" alt="paypal"
+                            <img
+                                class="paypal-checkout-logo-paypal" alt="paypal"
                                 src={ `data:image/svg+xml;base64,${ btoa(componentLogos.paypal[logoColor]) }` } />
                         </div>
                         <div class="paypal-checkout-message">

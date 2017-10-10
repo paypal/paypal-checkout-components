@@ -68,9 +68,7 @@ function renderCards({ funding, locale } : { funding : FundingSelection, locale 
 
         return (
             <span class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }>
-                <img
-                    src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
-                    alt={ name } />
+                <img src={ `data:image/svg+xml;base64,${ btoa(logo) }` } alt={ name } />
             </span>
         );
     });
@@ -109,10 +107,12 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
 
             let logo = componentLogos[name][logoColor] || componentLogos[name][BUTTON_LOGO_COLOR.ANY];
 
-            return <img
-                class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }
-                src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
-                alt={ name } />;
+            return (
+                <img
+                    class={ `${ CLASS.LOGO } ${ CLASS.LOGO }-${ name } ${ CLASS.LOGO }-${ color }` }
+                    src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
+                    alt={ name } />
+            );
         },
 
         content(name : string) : JsxHTMLNode {

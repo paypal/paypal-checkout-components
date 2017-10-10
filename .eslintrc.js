@@ -10,7 +10,8 @@ module.exports = {
         'promise',
         'security',
         'import',
-        'const-immutable'
+        'const-immutable',
+        'react'
     ],
 
     'env': {
@@ -402,6 +403,32 @@ module.exports = {
         'import/unambiguous': 'error',
 
         'const-immutable/no-mutation': 'error',
+
+        'react/jsx-boolean-value': 'off',
+        'react/jsx-closing-bracket-location': [ 'error', 'after-props' ],
+        'react/jsx-closing-tag-location': 'error',
+        'react/jsx-curly-spacing': [ 'error', { 'when': 'always', 'allowMultiline': false } ],
+        'react/jsx-equals-spacing': [ 'error', 'never' ],
+        'react/jsx-filename-extension': 'error',
+        'react/jsx-first-prop-new-line': [ 'error', 'multiline-multiprop' ],
+        'react/jsx-handler-names': 'off',
+        'react/jsx-indent': [ 'error', 4 ],
+        'react/jsx-indent-props': [ 'error', 4 ],
+        'react/jsx-key': 'off',
+        'react/jsx-max-props-per-line': 'off',
+        'react/jsx-no-bind': 'off',
+        'react/jsx-no-comment-textnodes': 'error',
+        'react/jsx-no-duplicate-props': 'error',
+        'react/jsx-no-literals': 'off',
+        'react/jsx-no-target-blank': 'off',
+        'react/jsx-no-undef': 'error',
+        'react/jsx-curly-brace-presence': 'off',
+        'react/jsx-pascal-case': 'off',
+        'react/jsx-sort-props': 'off',
+        'react/jsx-tag-spacing': 'error',
+        'react/jsx-uses-react': 'off',
+        'react/jsx-uses-vars': 'error',
+        'react/jsx-wrap-multilines': 'error',
 
         'array-bracket-newline': 'off',
         'array-element-newline': 'off',
