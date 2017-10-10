@@ -65,6 +65,9 @@
     },
     "./src/components/button/constants.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        __webpack_require__.d(__webpack_exports__, "l", function() {
+            return DEFAULT;
+        });
         __webpack_require__.d(__webpack_exports__, "j", function() {
             return BUTTON_STYLE_OPTIONS;
         });
@@ -98,13 +101,13 @@
         __webpack_require__.d(__webpack_exports__, "e", function() {
             return BUTTON_LOGO;
         });
-        var BUTTON_STYLE_OPTIONS = {
+        var DEFAULT = "default", BUTTON_STYLE_OPTIONS = {
             LABEL: "label",
             SIZE: "size",
             SHAPE: "shape",
             COLOR: "color",
             LAYOUT: "layout",
-            MAX: "max",
+            MAXBUTTONS: "maxbuttons",
             FUNDINGICONS: "fundingicons",
             BRANDING: "branding",
             TAGLINE: "tagline"
@@ -650,6 +653,7 @@
                 locale: locale
             }), styleNode = renderStyle(), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
+                "data-version": "4.0.134",
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -780,9 +784,9 @@
         function validateButtonStyle() {
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             if (!style) throw new Error("Expected props.style to be set");
-            var label = style.label || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
+            var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT] === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
             if (!__WEBPACK_IMPORTED_MODULE_1__config__.a[label]) throw new Error("Invalid button label: " + label);
-            var color = style.color, shape = style.shape, size = style.size, branding = style.branding, fundingicons = style.fundingicons, tagline = style.tagline, layout = style.layout, max = style.max;
+            var color = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], shape = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], size = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], branding = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], fundingicons = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], tagline = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], layout = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], max = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS];
             if (color && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "colors").indexOf(color)) throw new Error("Unexpected color for " + label + " button: " + color);
             if (shape && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "shapes").indexOf(shape)) throw new Error("Unexpected shape for " + label + " button: " + shape);
             if (size && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "sizes").indexOf(size)) throw new Error("Unexpected size for " + label + " button: " + size);
@@ -802,7 +806,7 @@
             if (layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL) {
                 if (!Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "allowPrimaryVertical")) throw new Error(label + " can not be used as primary vertical button label");
                 if (!0 === fundingicons) throw new Error("No fundingicons allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
-                if (style.size && -1 === [ __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM, __WEBPACK_IMPORTED_MODULE_0__constants__.i.LARGE, __WEBPACK_IMPORTED_MODULE_0__constants__.i.RESPONSIVE ].indexOf(style.size)) throw new Error("Button must be at least " + __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM + " size for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
+                if (size && -1 === [ __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM, __WEBPACK_IMPORTED_MODULE_0__constants__.i.LARGE, __WEBPACK_IMPORTED_MODULE_0__constants__.i.RESPONSIVE ].indexOf(size)) throw new Error("Button must be at least " + __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM + " size for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
             }
         }
         function validateButtonProps(props) {
@@ -825,7 +829,7 @@
         function getConfig(conf, category, key, def) {
             var categoryConfig = conf[category];
             if (categoryConfig && categoryConfig.hasOwnProperty(key)) return categoryConfig[key];
-            if (conf.DEFAULT && conf.DEFAULT.hasOwnProperty(key)) return conf.DEFAULT[key];
+            if (conf[__WEBPACK_IMPORTED_MODULE_1__constants__.l] && conf[__WEBPACK_IMPORTED_MODULE_1__constants__.l].hasOwnProperty(key)) return conf[__WEBPACK_IMPORTED_MODULE_1__constants__.l][key];
             if (arguments.length >= 4) return def;
             throw new Error("No value found for " + category + ":" + key);
         }
@@ -852,61 +856,60 @@
         __webpack_exports__.e = getButtonConfig;
         __webpack_exports__.g = getFundingConfig;
         __webpack_exports__.f = getCardConfig;
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _FUNDING_CONFIG, __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), BUTTON_CONFIG = (_BUTTON_CONFIG = {
-            DEFAULT: {
-                colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK ],
-                sizes: [ __WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL, __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM, __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE, __WEBPACK_IMPORTED_MODULE_1__constants__.i.RESPONSIVE ],
-                shapes: [ __WEBPACK_IMPORTED_MODULE_1__constants__.h.PILL, __WEBPACK_IMPORTED_MODULE_1__constants__.h.RECT ],
-                layouts: [ __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL, __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL ],
-                logoColors: (_logoColors = {}, _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLUE, 
-                _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLUE, 
-                _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
-                _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
-                _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
-                _logoColors),
-                tagLineColors: (_tagLineColors = {}, _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
-                _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
-                _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
-                _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLACK, 
-                _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
-                _tagLineColors),
-                secondaryColors: (_secondaryColors = {}, _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, 
-                _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, 
-                _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
-                _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK, 
-                _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
-                _secondaryColors),
-                tag: "{ content: safer_tag }",
-                dualTag: "{ content: dual_tag|safer_tag }",
-                defaultLocale: "en_US",
-                defaultLabel: __WEBPACK_IMPORTED_MODULE_1__constants__.c.CHECKOUT,
-                defaultVerticalLabel: __WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL,
-                defaultColor: __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD,
-                defaultSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL,
-                defaultVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM,
-                defaultShape: __WEBPACK_IMPORTED_MODULE_1__constants__.h.PILL,
-                defaultLayout: __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL,
-                defaultBranding: !0,
-                defaultVerticalBranding: !0,
-                defaultFundingIcons: !1,
-                defaultTagline: !0,
-                defaultDual: "",
-                minimumSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.TINY,
-                minimumVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM,
-                maximumSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE,
-                maximumVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE,
-                minHorizontalButtons: 1,
-                minVerticalButtons: 2,
-                maxHorizontalButtons: 2,
-                maxVerticalButtons: 4,
-                allowUnbranded: !1,
-                allowFundingIcons: !0,
-                allowPrimary: !1,
-                allowPrimaryVertical: !1,
-                allowPrimaryHorizontal: !1,
-                allowSecondaryVertical: !0,
-                allowSecondaryHorizontal: !1
-            }
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _FUNDING_CONFIG, _CARD_CONFIG, __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), BUTTON_CONFIG = (_BUTTON_CONFIG = {}, 
+        _BUTTON_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
+            colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK ],
+            sizes: [ __WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL, __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM, __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE, __WEBPACK_IMPORTED_MODULE_1__constants__.i.RESPONSIVE ],
+            shapes: [ __WEBPACK_IMPORTED_MODULE_1__constants__.h.PILL, __WEBPACK_IMPORTED_MODULE_1__constants__.h.RECT ],
+            layouts: [ __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL, __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL ],
+            logoColors: (_logoColors = {}, _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLUE, 
+            _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLUE, 
+            _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
+            _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
+            _logoColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
+            _logoColors),
+            tagLineColors: (_tagLineColors = {}, _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
+            _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
+            _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
+            _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLACK, 
+            _tagLineColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.k.BLUE, 
+            _tagLineColors),
+            secondaryColors: (_secondaryColors = {}, _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, 
+            _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE, 
+            _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
+            _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK, 
+            _secondaryColors[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
+            _secondaryColors),
+            tag: "{ content: safer_tag }",
+            dualTag: "{ content: dual_tag|safer_tag }",
+            defaultLocale: "en_US",
+            defaultLabel: __WEBPACK_IMPORTED_MODULE_1__constants__.c.CHECKOUT,
+            defaultVerticalLabel: __WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL,
+            defaultColor: __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD,
+            defaultSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL,
+            defaultVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM,
+            defaultShape: __WEBPACK_IMPORTED_MODULE_1__constants__.h.PILL,
+            defaultLayout: __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL,
+            defaultBranding: !0,
+            defaultVerticalBranding: !0,
+            defaultFundingIcons: !1,
+            defaultTagline: !0,
+            defaultDual: "",
+            minimumSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.TINY,
+            minimumVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.MEDIUM,
+            maximumSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE,
+            maximumVerticalSize: __WEBPACK_IMPORTED_MODULE_1__constants__.i.LARGE,
+            minHorizontalButtons: 1,
+            minVerticalButtons: 2,
+            maxHorizontalButtons: 2,
+            maxVerticalButtons: 4,
+            allowUnbranded: !1,
+            allowFundingIcons: !0,
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1,
+            allowSecondaryVertical: !0,
+            allowSecondaryHorizontal: !1
         }, _BUTTON_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL] = {
             label: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " } { logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " }",
             logoLabel: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " } { logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " }",
@@ -1052,13 +1055,12 @@
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT, 
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO, 
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL, 
-        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.ELV ], FUNDING_CONFIG = (_FUNDING_CONFIG = {
-            DEFAULT: {
-                enabled: !0,
-                allowOptIn: !0,
-                allowOptOut: !0,
-                allowRemember: !0
-            }
+        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.ELV ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
+        _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
+            enabled: !0,
+            allowOptIn: !0,
+            allowOptOut: !0,
+            allowRemember: !0
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
@@ -1079,14 +1081,11 @@
             test: !0,
             allowedCountries: [ "DE" ],
             defaultCountries: [ "DE" ]
-        }, _FUNDING_CONFIG), CARD_CONFIG = {
-            DEFAULT: {
-                priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER ]
-            },
-            BR: {
-                priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER ]
-            }
-        };
+        }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
+            priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER ]
+        }, _CARD_CONFIG.BR = {
+            priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER ]
+        }, _CARD_CONFIG);
     },
     "./src/components/button/templates/funding.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -1156,7 +1155,7 @@
         function normalizeProps(props) {
             var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding;
             locale = parseLocale(locale);
-            var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), _style$BUTTON_STYLE_O = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultTagline") : _style$BUTTON_STYLE_O6, _style$BUTTON_STYLE_O7 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], layout = void 0 === _style$BUTTON_STYLE_O7 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultLayout") : _style$BUTTON_STYLE_O7, max = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAX];
+            var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), _style$BUTTON_STYLE_O = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultTagline") : _style$BUTTON_STYLE_O6, _style$BUTTON_STYLE_O7 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], layout = void 0 === _style$BUTTON_STYLE_O7 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultLayout") : _style$BUTTON_STYLE_O7, max = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS];
             max = determineMaxButtons({
                 label: label,
                 layout: layout,
