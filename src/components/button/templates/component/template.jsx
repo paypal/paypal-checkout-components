@@ -236,7 +236,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let scriptNode = renderScript();
 
     return (
-        <div class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
+        <div data-version={ __MINOR_VERSION__ } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
             { styleNode }
 
             { buttonNodes }
