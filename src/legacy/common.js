@@ -2,14 +2,14 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { config } from '../config';
+import { config, COUNTRY, LANG } from '../config';
 
 import { LOG_PREFIX } from './constants';
 
 let { warn } = prefix(LOG_PREFIX);
 
-const DEFAULT_COUNTRY = 'US';
-const DEFAULT_LANG = 'en';
+const DEFAULT_COUNTRY = COUNTRY.US;
+const DEFAULT_LANG = LANG.EN;
 
 export function normalizeLocale(locale : string) : LocaleType {
 

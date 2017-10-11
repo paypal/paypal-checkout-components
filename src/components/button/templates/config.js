@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off */
 
-import { FUNDING, CARD } from '../../../config/constants';
+import { FUNDING, CARD, COUNTRY } from '../../../config/constants';
 import { DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
@@ -393,26 +393,42 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.VENMO ]: {
         allowOptOut:      false,
-        allowedCountries: [ 'US' ]
+        allowedCountries: [
+            COUNTRY.US
+        ]
     },
 
     [ FUNDING.CREDIT ]: {
-        allowedCountries: [ 'US', 'GB', 'DE' ]
+        allowedCountries: [
+            COUNTRY.US,
+            COUNTRY.GB,
+            COUNTRY.DE
+        ]
     },
 
     [ FUNDING.IDEAL ]: {
         enabled: false,
         test:    true,
 
-        allowedCountries: [ 'NL' ],
-        defaultCountries: [ 'NL' ]
+        allowedCountries: [
+            COUNTRY.NL
+        ],
+        defaultCountries: [
+            COUNTRY.NL
+        ]
     },
 
     [ FUNDING.ELV ]: {
         enabled: true,
 
-        allowedCountries: [ 'DE', 'AT' ],
-        defaultCountries: [ 'DE', 'AT' ]
+        allowedCountries: [
+            COUNTRY.DE,
+            COUNTRY.AT
+        ],
+        defaultCountries: [
+            COUNTRY.DE,
+            COUNTRY.AT
+        ]
     }
 };
 
