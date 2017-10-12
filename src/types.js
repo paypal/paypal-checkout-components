@@ -17,7 +17,13 @@ export type CrossDomainWindowType = {|
     self : CrossDomainWindowType,
     closed : boolean,
     open : (string, string, string) => CrossDomainWindowType,
-    close : () => void
+    close : () => void,
+    focus : () => void,
+    frames : Array<CrossDomainWindowType>,
+    opener ? : CrossDomainWindowType,
+    parent : CrossDomainWindowType,
+    length : number,
+    postMessage : (string, string) => void
 |};
 
 export type SameDomainWindowType = Object & {
@@ -26,8 +32,13 @@ export type SameDomainWindowType = Object & {
     closed : boolean,
     open : (string, string, string) => CrossDomainWindowType,
     close : () => void,
+    focus : () => void,
     XMLHttpRequest : typeof XMLHttpRequest,
-    document : Document
+    document : Document,
+    navigator : {
+        userAgent : string,
+        mockUserAgent? : string
+    }
 };
 
 export type DimensionsType = {
