@@ -34,8 +34,7 @@ export const FPTI = {
         STATE:           'state_name',
         TRANSITION:      'transition_name',
         BUTTON_TYPE:     'button_type',
-        SESSION_UID:     'user_session_guid',
-        USER_UID:        'user_guid',
+        SESSION_UID:     'button_session_id',
         TOKEN:           'token',
         CONTEXT_ID:      'context_id',
         CONTEXT_TYPE:    'context_type',
@@ -50,8 +49,8 @@ export const FPTI = {
         EXPERIMENT_NAME: 'pxp_exp_id',
         TREATMENT_NAME:  'pxp_trtmnt_id',
         TRANSITION_TIME: 'transition_time',
-        FUNDING_LIST:    'allowed_funding_list',
-        CHOSEN_FUNDING:  'chosen_funding_option'
+        FUNDING_LIST:    'eligible_payment_methods',
+        CHOSEN_FUNDING:  'selected_payment_method'
     },
 
     BUTTON_TYPE: {
@@ -65,8 +64,8 @@ export const FPTI = {
     },
 
     CONTEXT_TYPE: {
-        UID:      'UID',
-        EC_TOKEN: 'EC-Token'
+        BUTTON_SESSION_ID: 'button_session_id',
+        EC_TOKEN:          'EC-Token'
     },
 
     FEED: {

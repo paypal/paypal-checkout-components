@@ -29,7 +29,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
                 [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
                 [ FPTI.KEY.TOKEN ]:           token,
                 [ FPTI.KEY.CONTEXT_ID ]:      token,
-                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.UID
+                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
             });
 
             immediateFlush();

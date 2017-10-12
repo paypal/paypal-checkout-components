@@ -634,7 +634,7 @@ if (Button.isChild()) {
 
         let fundingSources = getElements(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)
             .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE))
-            .join(',');
+            .join(':');
 
         track({
             [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
