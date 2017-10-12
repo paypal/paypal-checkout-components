@@ -284,7 +284,7 @@ on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
     proxyRest = data;
 });
 
-if (getDomain() === config.paypalDomain && !isSameDomain(parentWin)) {
+if (parentWin && getDomain() === config.paypalDomain && !isSameDomain(parentWin)) {
     send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken })
         .catch(() => {
             // pass

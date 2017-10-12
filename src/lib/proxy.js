@@ -9,7 +9,7 @@ import { noop } from './util';
 
 export function proxyMethod(name : string, win : ?CrossDomainWindowType, originalMethod : Function) : Function {
 
-    if (getDomain() === config.paypalDomain && !isSameDomain(win)) {
+    if (win && getDomain() === config.paypalDomain && !isSameDomain(win)) {
 
         if (win) {
             send(win, `proxy_${ name }`, { originalMethod }).catch(noop);
