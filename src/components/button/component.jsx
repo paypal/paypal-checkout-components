@@ -633,14 +633,14 @@ if (Button.isChild()) {
     getPageRenderTime().then(pageRenderTime => {
 
         let fundingSources = getElements(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)
-            .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE))
-            .join(':');
+            .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE));
 
         track({
             [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
-            [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_RENDERED,
+            [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_LOAD,
             [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
-            [ FPTI.KEY.FUNDING_LIST ]:   fundingSources,
+            [ FPTI.KEY.FUNDING_LIST ]:   fundingSources.join(':'),
+            [ FPTI.KEY.FUNDING_COUNT ]:  fundingSources.length,
             [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
         });
     });

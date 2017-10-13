@@ -50,6 +50,7 @@ export const FPTI = {
         TREATMENT_NAME:  'pxp_trtmnt_id',
         TRANSITION_TIME: 'transition_time',
         FUNDING_LIST:    'eligible_payment_methods',
+        FUNDING_COUNT:   'eligible_payment_count',
         CHOSEN_FUNDING:  'selected_payment_method'
     },
 
@@ -83,7 +84,7 @@ export const FPTI = {
         SCRIPT_LOAD: 'process_script_load',
 
         BUTTON_RENDER:   'process_button_render',
-        BUTTON_RENDERED: 'process_button_rendered',
+        BUTTON_LOAD:     'process_button_load',
         BUTTON_CLICK:    'process_button_click',
 
         CREATE_PAYMENT:  'process_create_payment',
