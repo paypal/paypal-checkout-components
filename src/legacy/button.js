@@ -65,7 +65,7 @@ function renderButton(id, { container, locale, type, color, shape, size }) : Zal
 
 export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromise<Array<Object>> {
 
-    return ZalgoPromise.all(buttons.map(button => {
+    return ZalgoPromise.map(buttons, button => {
         return ZalgoPromise.try(() => {
 
             if (button.container) {
@@ -91,7 +91,7 @@ export function renderButtons(id : string, buttons : Array<Object>) : ZalgoPromi
 
             return { container, element, type, condition, click };
         });
-    }));
+    });
 }
 
 export function getHijackTargetElement(button : HTMLElement | HTMLButtonElement) : ?Element {

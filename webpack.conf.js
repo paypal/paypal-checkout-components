@@ -1,8 +1,9 @@
 let webpack = require('webpack');
-let CircularDependencyPlugin = require('circular-dependency-plugin')
+let CircularDependencyPlugin = require('circular-dependency-plugin');
 let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let path = require('path');
 let fs = require('fs');
+let qs = require('querystring');
 
 let babelConfig = JSON.parse(fs.readFileSync('./.babelrc'));
 
@@ -37,33 +38,56 @@ function getVersionVars() {
 
 function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false, vars = {} }) {
 
+    vars = {
+        __TEST__:                           false,
+        __IE_POPUP_SUPPORT__:               true,
+        __POPUP_SUPPORT__:                  true,
+        __LEGACY_SUPPORT__:                 true,
+        __FILE_NAME__:                      JSON.stringify(filename),
+        __FILE_VERSION__:                   JSON.stringify(version),
+        __DEFAULT_LOG_LEVEL__:              JSON.stringify('warn'),
+        __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: true,
+        __SEND_POPUP_LOGS_TO_OPENER__:      false,
+        ...getVersionVars(),
+        ...vars
+    };
+
+    const PREPROCESSOR_OPTS = {
+        'ifdef-triple-slash': 'false',
+        ...vars
+    };
+
     let config = {
         module: {
             rules: [
                 {
-                    test: /sinon\.js$/,
-                    loader: "imports?define=>false,require=>false"
+                    test:   /\.js$/,
+                    loader: `ifdef-loader?${ qs.encode(PREPROCESSOR_OPTS) }`
                 },
                 {
-                    test: /\.jsx?$/,
+                    test:   /sinon\.js$/,
+                    loader: 'imports?define=>false,require=>false'
+                },
+                {
+                    test:    /\.jsx?$/,
                     exclude: /(sinon|chai)/,
-                    loader: 'babel-loader',
+                    loader:  'babel-loader',
                     options: babelConfig
                 },
                 {
-                    test: /\.(html?|css|json|svg)$/,
+                    test:   /\.(html?|css|json|svg)$/,
                     loader: 'raw-loader'
                 }
             ]
         },
         output: {
-            filename: filename,
-            libraryTarget: target,
+            filename,
+            libraryTarget:  target,
             umdNamedDefine: true,
-            library: modulename,
-            pathinfo: false
+            library:        modulename,
+            pathinfo:       false
         },
-        bail: true,
+        bail:    true,
         resolve: {
             extensions: [ '.js', '.jsx' ]
         },
@@ -71,34 +95,22 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
             }),
-            new webpack.DefinePlugin({
-                __TEST__: JSON.stringify(false),
-                __IE_POPUP_SUPPORT__: JSON.stringify(true),
-                __POPUP_SUPPORT__: JSON.stringify(true),
-                __LEGACY_SUPPORT__: JSON.stringify(true),
-                __FILE_NAME__: JSON.stringify(filename),
-                __FILE_VERSION__: JSON.stringify(version),
-                __DEFAULT_LOG_LEVEL__: JSON.stringify('warn'),
-                __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
-                __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(false),
-                ...vars,
-                ...getVersionVars()
-            }),
+            new webpack.DefinePlugin(vars),
             new webpack.NamedModulesPlugin(),
             new UglifyJSPlugin({
-                test: /\.js$/,
+                test:     /\.js$/,
                 beautify: !minify,
                 minimize: minify,
                 compress: {
-                    warnings: false,
+                    warnings:  false,
                     sequences: minify
                 },
-                mangle: minify,
+                mangle:    minify,
                 sourceMap: true
             }),
             new CircularDependencyPlugin({
-              exclude: /node_modules/,
-              failOnError: true
+                exclude:     /node_modules/,
+                failOnError: true
             })
             // new webpack.optimize.ModuleConcatenationPlugin()
         ]
@@ -116,8 +128,8 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `${FILE_NAME}.js`
+            version:  nextMajorVersion,
+            filename: `${ FILE_NAME }.js`
         })
     },
 
@@ -125,11 +137,11 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `${FILE_NAME}.v${nextMajorVersion}.js`,
-            vars: {
-                __IE_POPUP_SUPPORT__: JSON.stringify(false),
-                __LEGACY_SUPPORT__: JSON.stringify(false)
+            version:  nextMajorVersion,
+            filename: `${ FILE_NAME }.v${ nextMajorVersion }.js`,
+            vars:     {
+                __IE_POPUP_SUPPORT__: false,
+                __LEGACY_SUPPORT__:   true
             }
         })
     },
@@ -138,8 +150,8 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMinorVersion,
-            filename: `${FILE_NAME}.${nextMinorVersion}.js`
+            version:  nextMinorVersion,
+            filename: `${ FILE_NAME }.${ nextMinorVersion }.js`
         })
     },
 
@@ -147,9 +159,9 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `${FILE_NAME}.min.js`,
-            minify: true
+            version:  nextMajorVersion,
+            filename: `${ FILE_NAME }.min.js`,
+            minify:   true
         })
     },
 
@@ -157,9 +169,9 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMinorVersion,
-            filename: `${FILE_NAME}.${nextMinorVersion}.min.js`,
-            minify: true
+            version:  nextMinorVersion,
+            filename: `${ FILE_NAME }.${ nextMinorVersion }.min.js`,
+            minify:   true
         })
     },
 
@@ -168,9 +180,9 @@ module.exports.webpack_tasks = {
         src: 'src/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `${FILE_NAME}.lib.js`,
-            target: `umd`,
+            version:    nextMajorVersion,
+            filename:   `${ FILE_NAME }.lib.js`,
+            target:     `umd`,
             modulename: `paypal`
         })
     },
@@ -179,9 +191,9 @@ module.exports.webpack_tasks = {
         src: 'src/components/button/templates/component/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
-            filename: `${FILE_NAME}.button.render.js`,
-            target: `commonjs`
+            version:  nextMajorVersion,
+            filename: `${ FILE_NAME }.button.render.js`,
+            target:   `commonjs`
         })
     },
 
@@ -190,7 +202,7 @@ module.exports.webpack_tasks = {
         src: 'src/loader/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
+            version:  nextMajorVersion,
             filename: `checkout.child.loader.js`
         })
     },
@@ -199,9 +211,9 @@ module.exports.webpack_tasks = {
         src: 'src/loader/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version: nextMajorVersion,
+            version:  nextMajorVersion,
             filename: `checkout.child.loader.min.js`,
-            minify: true
+            minify:   true
         })
     }
 };

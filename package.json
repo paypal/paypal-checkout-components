@@ -88,6 +88,7 @@
     "gulp-flowtype": "^1.0.0",
     "gulp-if": "^2.0.2",
     "gulp-webserver": "^0.9.1",
+    "ifdef-loader": "^2.0.3",
     "imagemagick": "^0.1.3",
     "imgur": "^0.2.1",
     "istanbul-instrumenter-loader": "^3.0.0",
@@ -131,7 +132,7 @@
     "beaver-logger": "^3.0.6",
     "bowser": "^1.7.1",
     "cross-domain-utils": "^2.0.1",
-    "post-robot": "^7.0.1",
+    "post-robot": "^8.0.0",
     "xcomponent": "^6.0.0",
     "zalgo-promise": "^1.0.10"
   }
