@@ -17,7 +17,7 @@ import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from './constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from './constants';
 import { containerTemplate, componentTemplate } from './templates';
 import { labelToFunding } from './templates/config';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
@@ -641,7 +641,8 @@ if (Button.isChild()) {
             [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
             [ FPTI.KEY.FUNDING_LIST ]:   fundingSources.join(':'),
             [ FPTI.KEY.FUNDING_COUNT ]:  fundingSources.length,
-            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime
+            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime,
+            [ FPTI.KEY.BUTTON_LAYOUT ]:  (window.xprops && window.xprops.style && window.xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
         });
     });
 

@@ -51,7 +51,8 @@ export const FPTI = {
         TRANSITION_TIME: 'transition_time',
         FUNDING_LIST:    'eligible_payment_methods',
         FUNDING_COUNT:   'eligible_payment_count',
-        CHOSEN_FUNDING:  'selected_payment_method'
+        CHOSEN_FUNDING:  'selected_payment_method',
+        BUTTON_LAYOUT:   'button_layout'
     },
 
     BUTTON_TYPE: {
