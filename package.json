@@ -80,7 +80,7 @@
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-unicorn": "^2.1.2",
-    "flow-bin": "^0.56.0",
+    "flow-bin": "0.56.0",
     "flow-runtime": "^0.14.0",
     "fs-extra": "^4.0.2",
     "gulp": "^3.9.1",
