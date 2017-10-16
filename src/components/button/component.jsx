@@ -280,27 +280,31 @@ export let Button : Component<ButtonOptions> = create({
                         return this.memoizedToken;
                     }
 
-                    this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ])
-                        .timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`))
-                        .then(token => {
+                    this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ]);
 
-                            if (!token) {
-                                error(`no_token_passed_to_payment`);
-                                throw new Error(`No value passed to payment`);
-                            }
+                    if (this.props.env === ENV.PRODUCTION) {
+                        this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
+                    }
+                        
+                    this.memoizedToken = this.memoizedToken.then(token => {
 
-                            track({
-                                [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
-                                [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
-                                [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-                                [ FPTI.KEY.TOKEN ]:        token,
-                                [ FPTI.KEY.CONTEXT_ID ]:   token
-                            });
+                        if (!token) {
+                            error(`no_token_passed_to_payment`);
+                            throw new Error(`No value passed to payment`);
+                        }
 
-                            flushLogs();
-
-                            return token;
+                        track({
+                            [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
+                            [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
+                            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+                            [ FPTI.KEY.TOKEN ]:        token,
+                            [ FPTI.KEY.CONTEXT_ID ]:   token
                         });
+
+                        flushLogs();
+
+                        return token;
+                    });
 
                     return this.memoizedToken;
                 };
