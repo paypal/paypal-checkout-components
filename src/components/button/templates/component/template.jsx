@@ -214,6 +214,10 @@ export function componentTemplate({ props } : { props : Object }) : string {
         props.style.label = 'paypal';
     }
 
+    if (props && props.style && props.style.color === 'creditblue') {
+        delete props.style.color;
+    }
+
     validateButtonProps(props);
 
     let { label, locale, color, shape, branding, tagline, funding,

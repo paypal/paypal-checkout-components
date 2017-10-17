@@ -123,5 +123,57 @@ export function getComponentScript() : () => void {
                 });
             });
         });
+
+        /* eslint-disable flowtype/require-return-type, unicorn/catch-error-name */
+
+        try {
+            let val = window.setupButton;
+            // $FlowFixMe
+            Object.defineProperty(window, 'setupButton', {
+                // $FlowFixMe
+                get() {
+                    return val;
+                },
+                set(value) {
+                    val = function () {
+
+                        try {
+
+                            if (window.paypal && window.paypal.Promise) {
+                                let resolve = window.paypal.Promise.prototype.resolve;
+                                window.paypal.Promise.prototype.resolve = function res(obj) {
+                                    try {
+                                        if (obj && obj.responseHeaders) {
+                                            obj.headers = obj.responseHeaders;
+                                        }
+                                    } catch (err2) {
+                                        // pass
+                                    }
+
+                                    return resolve.apply(this, arguments);
+                                };
+                            }
+
+                            if (window.paypal && window.paypal.Checkout && window.paypal.Checkout.props) {
+                                let props = window.paypal.Checkout.props;
+
+                                props.style = props.style || { type: 'object', required: false };
+                                props.fundingSource = props.fundingSource || { type: 'string', required: false };
+                            }
+
+                        } catch (err3) {
+                            // pass
+                        }
+
+                        return value.apply(this, arguments);
+                    };
+                }
+            });
+
+        } catch (err) {
+            // pass
+        }
+
+        /* eslint-enable flowtype/require-return-type, unicorn/catch-error-name */
     };
 }
