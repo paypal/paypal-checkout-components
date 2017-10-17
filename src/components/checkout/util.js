@@ -3,7 +3,7 @@
 import { info } from 'beaver-logger/client';
 
 import { match } from '../../lib';
-import { config, FUNDING } from '../../config';
+import { config } from '../../config';
 
 export function determineParameterFromToken(token : string) : string {
     return (token && token.indexOf('BA-') === 0) ? 'ba_token' : 'token';
@@ -22,6 +22,8 @@ export function determineUrl(env : string, fundingSource : ?string, token : stri
         info(`url_default`);
     }
 
+    /*
+
     if (fundingSource === FUNDING.CARD) {
         return config.guestUrls[env];
     }
@@ -29,6 +31,8 @@ export function determineUrl(env : string, fundingSource : ?string, token : stri
     if (fundingSource === FUNDING.ELV) {
         return config.guestUrls[env];
     }
+
+    */
 
     return config.checkoutUrls[env];
 }

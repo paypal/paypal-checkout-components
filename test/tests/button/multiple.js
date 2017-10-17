@@ -25,7 +25,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   window.paypal.FUNDING.CARD,
-                fragment: 'guesturl=true',
+                // fragment: 'guesturl=true',
+                fragment: 'checkouturl=true',
                 locale:   'en_US'
             },
 
@@ -49,7 +50,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   window.paypal.FUNDING.ELV,
-                fragment: 'guesturl=true',
+                // fragment: 'guesturl=true',
+                fragment: 'checkouturl=true',
                 locale:   'de_DE'
             }
 
