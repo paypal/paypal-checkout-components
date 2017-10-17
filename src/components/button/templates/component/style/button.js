@@ -98,8 +98,7 @@ export let buttonStyle = `
     }
 
     .${ CLASS.BUTTON } .${ CLASS.LOGO },
-    .${ CLASS.BUTTON } .${ CLASS.TEXT },
-    .${ CLASS.BUTTON } .${ CLASS.CARD } {
+    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
         vertical-align: top;
         position: relative;
         top: 50%;

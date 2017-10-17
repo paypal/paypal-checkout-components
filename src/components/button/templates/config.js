@@ -401,6 +401,9 @@ export const FUNDING_CONFIG = {
             COUNTRY.US,
             COUNTRY.GB,
             COUNTRY.DE
+        ],
+        defaultCountries: [
+            COUNTRY.US
         ]
     },
 
