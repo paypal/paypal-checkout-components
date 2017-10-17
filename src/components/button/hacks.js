@@ -20,9 +20,11 @@ patchMethod(rest.payment, 'create', ({ original : createOriginal, context : crea
     return createOriginal.call(createContext, env, client, options);
 });
 
-patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
+patchMethod(Button.props.style, 'validate', ({ callOriginal, args: [ style ] }) => {
 
-    let { style } = props;
+    if (!style) {
+        return callOriginal();
+    }
 
     if (style && style.color === 'creditblue') {
         style.color = BUTTON_COLOR.DARKBLUE;
@@ -36,6 +38,9 @@ patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
         warn(`unsupported_button_size_tiny`);
         style.size = BUTTON_SIZE.SMALL;
     }
+});
+
+patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
 
     if (props.billingAgreement) {
         props.payment = props.billingAgreement;
