@@ -9,7 +9,7 @@ import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize } from '../../lib';
-import { config, ENV, FPTI } from '../../config';
+import { config, ENV, FPTI, FUNDING } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
 import { containerTemplate, componentTemplate } from './templates';
@@ -542,4 +542,12 @@ if (Checkout.isChild()) {
         }
         return callOriginal();
     });
+
+    let fundingSource = window.xprops.fundingSource;
+
+    if (fundingSource && (fundingSource === FUNDING.ELV || fundingSource === FUNDING.CARD)) {
+        if (window.meta && window.meta.token && window.location.pathname === '/checkoutnow' && window.meta.logAppName !== 'xoonboardingnodeweb') {
+            window.location = `/webapps/xoonboarding?token=${ window.meta.token }`;
+        }
+    }
 }
