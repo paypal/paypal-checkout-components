@@ -209,6 +209,11 @@ function renderStyle() : JsxHTMLNode {
 }
 
 export function componentTemplate({ props } : { props : Object }) : string {
+
+    if (props && props.style && props.style.label === 'generic') {
+        props.style.label = 'paypal';
+    }
+
     validateButtonProps(props);
 
     let { label, locale, color, shape, branding, tagline, funding,
