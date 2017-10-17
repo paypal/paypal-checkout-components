@@ -51,7 +51,7 @@ export function setupButton() {
         });
     });
 
-    return Promise.all([
+    return window.paypal.Promise.all([
 
         detectLightboxEligibility(),
 
