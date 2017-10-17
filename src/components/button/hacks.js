@@ -38,6 +38,8 @@ patchMethod(Button.props.style, 'validate', ({ callOriginal, args: [ style ] }) 
         warn(`unsupported_button_size_tiny`);
         style.size = BUTTON_SIZE.SMALL;
     }
+
+    return callOriginal();
 });
 
 patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
