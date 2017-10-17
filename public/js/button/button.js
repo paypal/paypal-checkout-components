@@ -11,6 +11,7 @@ import { querySelectorAll } from './util';
 
 function clickButton(event, fundingSource = 'paypal') {
     event.preventDefault();
+    event.stopPropagation();
 
     if (shouldPrefetchLogin()) {
         enableLightbox();
