@@ -1,8 +1,6 @@
-let argv = require('yargs').argv;
-let path = require('path');
-let webpack = require('webpack');
+import { argv } from 'yargs';
 
-let { WEBPACK_CONFIG_TEST } = require('./webpack.config.js');
+import { WEBPACK_CONFIG_TEST } from './webpack.config.js';
 
 module.exports = function(config) {
 

@@ -1,10 +1,10 @@
-let path = require('path');
-let webpack = require('webpack');
-let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-let CircularDependencyPlugin = require('circular-dependency-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+// import CircularDependencyPlugin from 'circular-dependency-plugin';
 
-export let FILE_NAME = 'xo-buttonjs';
-export let MODULE_NAME = 'xobuttonjs';
+let FILE_NAME = 'xo-buttonjs';
+let MODULE_NAME = 'xobuttonjs';
 
 function getWebpackConfig({ filename, modulename, minify = false, options = {}, vars = {} }) {
 
