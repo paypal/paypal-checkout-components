@@ -103,6 +103,10 @@ patchMethod(Button.props.payment, 'decorate', ({ original, context, args: [ orig
 
 if (Button.isChild()) {
 
+    if (!window.Promise) {
+        window.Promise = ZalgoPromise;
+    }
+
     let debounce = false;
 
     patchMethod(Checkout, 'renderTo', ({ callOriginal, args : [ , props ] }) => {
