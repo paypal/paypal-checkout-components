@@ -39,7 +39,7 @@ export function pollForResource(url, handler, delay, failureThreshold = 5) {
     
     let poll = async () => {
         try {
-            let code = await request(url);
+            let code = await request(`${ url }?ts=${ Date.now() }`);
             await handler(code);
 
         } catch (err) {
