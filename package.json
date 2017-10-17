@@ -29,6 +29,7 @@
     "zalgo-promise": "^1.0.20"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.3.17",
     "babel-eslint": "^6.0.2",
     "babel-loader": "^7.1.2",
