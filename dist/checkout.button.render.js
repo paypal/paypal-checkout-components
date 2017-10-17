@@ -183,7 +183,7 @@
         });
         var __WEBPACK_IMPORTED_MODULE_1__config_constants__ = __webpack_require__("./src/config/constants.js");
         __webpack_require__.d(__webpack_exports__, "FUNDING", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__config_constants__.e;
+            return __WEBPACK_IMPORTED_MODULE_1__config_constants__.f;
         });
     },
     "./src/components/button/templates/component/logos/amex.svg": function(module, exports) {
@@ -371,7 +371,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return buttonStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " {\n        margin-right: 2px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " {\n        margin-right: 2px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
     },
     "./src/components/button/templates/component/style/card.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -536,7 +536,7 @@
                             break;
                         }
                     }
-                    if (!contentString && env === __WEBPACK_IMPORTED_MODULE_1__config_constants__.d.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
+                    if (!contentString && env === __WEBPACK_IMPORTED_MODULE_1__config_constants__.e.TEST) throw new Error("Could not find content " + name + " for " + locale.lang + "_" + locale.country);
                     return renderContent(contentString || "", {
                         locale: locale,
                         color: color,
@@ -620,6 +620,7 @@
         }
         function componentTemplate(_ref11) {
             var props = _ref11.props;
+            props && props.style && "generic" === props.style.label && (props.style.label = "paypal");
             Object(__WEBPACK_IMPORTED_MODULE_12__validate__.a)(props);
             var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, buttonNodes = determineButtons({
                 label: label,
@@ -653,7 +654,7 @@
                 locale: locale
             }), styleNode = renderStyle(), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
-                "data-version": "4.0.134",
+                "data-version": "4.0.135",
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -821,7 +822,7 @@
     "./src/components/button/templates/config.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function labelToFunding(label) {
-            return label ? LABEL_TO_FUNDING[label] : __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL;
+            return label ? LABEL_TO_FUNDING[label] : __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL;
         }
         function fundingToDefaultLabel(funding) {
             return FUNDING_TO_DEFAULT_LABEL[funding];
@@ -1041,46 +1042,46 @@
             allowPrimaryHorizontal: !1,
             allowSecondaryVertical: !0,
             allowSecondaryHorizontal: !1
-        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL, 
-        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO, 
-        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.CARD, 
-        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT, 
-        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL, 
-        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.ELV] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.ELV, 
-        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CHECKOUT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.PAY] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.BUYNOW] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CARD] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO, 
-        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL, 
-        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.ELV ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
+        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.VENMO] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO, 
+        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CARD] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.CARD, 
+        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CREDIT] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT, 
+        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.ELV] = __WEBPACK_IMPORTED_MODULE_1__constants__.c.ELV, 
+        _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.PAYPAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CHECKOUT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.PAY] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.BUYNOW] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CARD] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CARD, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CREDIT, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.VENMO, 
+        _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL, 
+        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.f.ELV ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
         _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
             enabled: !0,
             allowOptIn: !0,
             allowOptOut: !0,
             allowRemember: !0
-        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.PAYPAL] = {
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
             allowOptOut: !1
-        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CARD] = {}, 
-        _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.VENMO] = {
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CARD] = {
+            default: !0
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.VENMO] = {
             allowOptOut: !1,
-            allowedCountries: [ "US" ]
-        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.CREDIT] = {
-            allowedCountries: [ "US", "GB", "DE" ]
-        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.IDEAL] = {
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CREDIT] = {
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.GB, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE ]
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL] = {
             enabled: !1,
             test: !0,
-            allowedCountries: [ "NL" ],
-            defaultCountries: [ "NL" ]
-        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.e.ELV] = {
-            enabled: !1,
-            test: !0,
-            allowedCountries: [ "DE" ],
-            defaultCountries: [ "DE" ]
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ],
+            defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ]
+        }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.ELV] = {
+            enabled: !0,
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ],
+            defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ]
         }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
             priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER ]
         }, _CARD_CONFIG.BR = {
@@ -1091,12 +1092,9 @@
         "use strict";
         function isFundingEligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, env = _ref.env, layout = _ref.layout;
-            if (Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default")) return !0;
-            if (!(Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "enabled") || env === __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.TEST && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "test"))) return !1;
-            if (-1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut")) return !1;
-            if (-1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country)) return !1;
+            if (!(Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "enabled") || env === __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "test"))) return !1;
             var label = Object(__WEBPACK_IMPORTED_MODULE_2__config__.d)(source);
-            return !!(Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, layout === __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL ? "allowSecondaryVertical" : "allowSecondaryHorizontal") && (-1 !== Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) || -1 !== funding.allowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn") || -1 !== funding.remembered.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
+            return !(!Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, layout === __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL ? "allowSecondaryVertical" : "allowSecondaryHorizontal") || -1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut") || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) && !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default") && (-1 === funding.allowed.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) && (-1 === funding.remembered.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
         }
         function determineEligibleFunding(_ref2) {
             var funding = _ref2.funding, selected = _ref2.selected, locale = _ref2.locale, env = _ref2.env, layout = _ref2.layout, eligibleFunding = __WEBPACK_IMPORTED_MODULE_2__config__.c.filter(function(source) {
@@ -1297,10 +1295,10 @@
     },
     "./src/config/constants.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "d", function() {
+        __webpack_require__.d(__webpack_exports__, "e", function() {
             return ENV;
         });
-        __webpack_require__.d(__webpack_exports__, "e", function() {
+        __webpack_require__.d(__webpack_exports__, "f", function() {
             return FUNDING;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -1311,6 +1309,9 @@
         });
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return ATTRIBUTE;
+        });
+        __webpack_require__.d(__webpack_exports__, "d", function() {
+            return COUNTRY;
         });
         var ENV = {
             LOCAL: "local",
@@ -1343,6 +1344,211 @@
             CBNATIONALE: "cbnationale"
         }, CARD_PRIORITY = [ CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE ], ATTRIBUTE = {
             FUNDING_SOURCE: "data-funding-source"
+        }, COUNTRY = {
+            AD: "AD",
+            AE: "AE",
+            AG: "AG",
+            AI: "AI",
+            AL: "AL",
+            AM: "AM",
+            AN: "AN",
+            AO: "AO",
+            AR: "AR",
+            AT: "AT",
+            AU: "AU",
+            AW: "AW",
+            AZ: "AZ",
+            BA: "BA",
+            BB: "BB",
+            BE: "BE",
+            BF: "BF",
+            BG: "BG",
+            BH: "BH",
+            BI: "BI",
+            BJ: "BJ",
+            BM: "BM",
+            BN: "BN",
+            BO: "BO",
+            BR: "BR",
+            BS: "BS",
+            BT: "BT",
+            BW: "BW",
+            BY: "BY",
+            BZ: "BZ",
+            C2: "C2",
+            CA: "CA",
+            CD: "CD",
+            CG: "CG",
+            CH: "CH",
+            CI: "CI",
+            CK: "CK",
+            CL: "CL",
+            CM: "CM",
+            CN: "CN",
+            CO: "CO",
+            CR: "CR",
+            CV: "CV",
+            CY: "CY",
+            CZ: "CZ",
+            DE: "DE",
+            DJ: "DJ",
+            DK: "DK",
+            DM: "DM",
+            DO: "DO",
+            DZ: "DZ",
+            EC: "EC",
+            EE: "EE",
+            EG: "EG",
+            ER: "ER",
+            ES: "ES",
+            ET: "ET",
+            FI: "FI",
+            FJ: "FJ",
+            FK: "FK",
+            FM: "FM",
+            FO: "FO",
+            FR: "FR",
+            GA: "GA",
+            GB: "GB",
+            GD: "GD",
+            GE: "GE",
+            GF: "GF",
+            GI: "GI",
+            GL: "GL",
+            GM: "GM",
+            GN: "GN",
+            GP: "GP",
+            GR: "GR",
+            GT: "GT",
+            GW: "GW",
+            GY: "GY",
+            HK: "HK",
+            HN: "HN",
+            HR: "HR",
+            HU: "HU",
+            ID: "ID",
+            IE: "IE",
+            IL: "IL",
+            IN: "IN",
+            IS: "IS",
+            IT: "IT",
+            JM: "JM",
+            JO: "JO",
+            JP: "JP",
+            KE: "KE",
+            KG: "KG",
+            KH: "KH",
+            KI: "KI",
+            KM: "KM",
+            KN: "KN",
+            KR: "KR",
+            KW: "KW",
+            KY: "KY",
+            KZ: "KZ",
+            LA: "LA",
+            LC: "LC",
+            LI: "LI",
+            LK: "LK",
+            LS: "LS",
+            LT: "LT",
+            LU: "LU",
+            LV: "LV",
+            MA: "MA",
+            MC: "MC",
+            MD: "MD",
+            ME: "ME",
+            MG: "MG",
+            MH: "MH",
+            MK: "MK",
+            ML: "ML",
+            MN: "MN",
+            MQ: "MQ",
+            MR: "MR",
+            MS: "MS",
+            MT: "MT",
+            MU: "MU",
+            MV: "MV",
+            MW: "MW",
+            MX: "MX",
+            MY: "MY",
+            MZ: "MZ",
+            NA: "NA",
+            NC: "NC",
+            NE: "NE",
+            NF: "NF",
+            NG: "NG",
+            NI: "NI",
+            NL: "NL",
+            NO: "NO",
+            NP: "NP",
+            NR: "NR",
+            NU: "NU",
+            NZ: "NZ",
+            OM: "OM",
+            PA: "PA",
+            PE: "PE",
+            PF: "PF",
+            PG: "PG",
+            PH: "PH",
+            PL: "PL",
+            PM: "PM",
+            PN: "PN",
+            PT: "PT",
+            PW: "PW",
+            PY: "PY",
+            QA: "QA",
+            RE: "RE",
+            RO: "RO",
+            RS: "RS",
+            RU: "RU",
+            RW: "RW",
+            SA: "SA",
+            SB: "SB",
+            SC: "SC",
+            SE: "SE",
+            SG: "SG",
+            SH: "SH",
+            SI: "SI",
+            SJ: "SJ",
+            SK: "SK",
+            SL: "SL",
+            SM: "SM",
+            SN: "SN",
+            SO: "SO",
+            SR: "SR",
+            ST: "ST",
+            SV: "SV",
+            SZ: "SZ",
+            TC: "TC",
+            TD: "TD",
+            TG: "TG",
+            TH: "TH",
+            TJ: "TJ",
+            TM: "TM",
+            TN: "TN",
+            TO: "TO",
+            TR: "TR",
+            TT: "TT",
+            TV: "TV",
+            TW: "TW",
+            TZ: "TZ",
+            UA: "UA",
+            UG: "UG",
+            US: "US",
+            UY: "UY",
+            VA: "VA",
+            VC: "VC",
+            VE: "VE",
+            VG: "VG",
+            VN: "VN",
+            VU: "VU",
+            WF: "WF",
+            WS: "WS",
+            YE: "YE",
+            YT: "YT",
+            ZA: "ZA",
+            ZM: "ZM",
+            ZW: "ZW"
         };
     }
 }));
