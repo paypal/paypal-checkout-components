@@ -402,7 +402,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.GB,
             COUNTRY.DE
         ],
-        defaultCountries: [
+        defaultVerticalCountries: [
             COUNTRY.US
         ]
     },

@@ -22,9 +22,11 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
         }
     }
 
+    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+
     let label = fundingToDefaultLabel(source);
 
-    let allowSecondary = getButtonConfig(label, layout === BUTTON_LAYOUT.VERTICAL
+    let allowSecondary = getButtonConfig(label, isVertical
         ? 'allowSecondaryVertical'
         : 'allowSecondaryHorizontal'
     );
@@ -42,6 +44,10 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
     }
 
     if (getFundingConfig(source, 'defaultCountries', []).indexOf(locale.country) !== -1) {
+        return true;
+    }
+
+    if (isVertical && getFundingConfig(source, 'defaultVerticalCountries', []).indexOf(locale.country) !== -1) {
         return true;
     }
 
