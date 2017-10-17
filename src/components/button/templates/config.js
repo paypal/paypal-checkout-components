@@ -306,21 +306,19 @@ export const BUTTON_CONFIG : ButtonConfig = {
         defaultColor: BUTTON_COLOR.SILVER,
 
         colors: [
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK
+            BUTTON_COLOR.TRANSPARENT
         ],
 
         logoColors:  {
-            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
-            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+            [ BUTTON_COLOR.TRANSPARENT ]: BUTTON_LOGO_COLOR.BLACK
         },
 
         secondaryColors: {
-            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
-            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.TRANSPARENT,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.TRANSPARENT,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.TRANSPARENT,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.TRANSPARENT,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.TRANSPARENT
         },
 
         allowPrimary: false,

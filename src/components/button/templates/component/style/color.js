@@ -8,7 +8,7 @@ export let buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD } {
         background: #ffc439;
-        color: #000;
+        color: #111;
         text-shadow: 0px 1px 0 #ffdc88;
     }
 
@@ -20,7 +20,7 @@ export let buttonColorStyle = `
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER } {
         background: #eee;
-        color: #000;
+        color: #111;
         text-shadow: 0px -1px 0 #ccc;
     }
 
@@ -33,6 +33,12 @@ export let buttonColorStyle = `
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.DARKBLUE } {
         background: #003087;
         color: #fff;
+        text-shadow: 0px -1px 0 #0d86bb;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT } {
+        background: transparent;
+        color: #111;
         text-shadow: 0px -1px 0 #0d86bb;
     }
 `;

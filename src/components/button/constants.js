@@ -35,14 +35,15 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
 };
 
 type BUTTON_COLOR_ENUM =
-    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue'>;
+    Enum<'gold' | 'blue' | 'silver' | 'black' | 'darkblue' | 'transparent'>;
 
 export const BUTTON_COLOR : BUTTON_COLOR_ENUM = {
-    GOLD:     'gold',
-    BLUE:     'blue',
-    SILVER:   'silver',
-    BLACK:    'black',
-    DARKBLUE: 'darkblue'
+    GOLD:        'gold',
+    BLUE:        'blue',
+    SILVER:      'silver',
+    BLACK:       'black',
+    DARKBLUE:    'darkblue',
+    TRANSPARENT: 'transparent'
 };
 
 type BUTTON_LOGO_COLOR_ENUM =

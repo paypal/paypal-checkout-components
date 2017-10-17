@@ -70,13 +70,14 @@ let sizeResponsiveStyle = Object.keys(BUTTON_STYLE).map(size => {
                 height: ${ style.fundingHeight }px;
             }
 
-            .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } {
-                margin-top: ${ ((style.fundingHeight - style.cardLogoSize) / 2).toFixed(1) }px;
-            }
-
             .${ CLASS.CARD } {
                 height: ${ style.cardLogoSize }px;
-                margin-right: ${ style.cardLogoMargin }px;
+                margin: 0 ${ style.cardLogoMargin }px;
+            }
+
+            .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } {
+                height: ${ style.fundingLogoSize || style.cardLogoSize };
+                margin: ${ ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) }px ${ style.fundingLogoMargin || style.cardLogoMargin }px;
             }
         }
 
