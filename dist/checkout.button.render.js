@@ -691,7 +691,7 @@
                 locale: locale
             }), styleNode = renderStyle(), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
-                "data-version": "4.0.137",
+                "data-version": "4.0.138",
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -1109,7 +1109,7 @@
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.CREDIT] = {
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.GB, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE ],
-            defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
+            defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL] = {
             enabled: !1,
             test: !0,
@@ -1130,8 +1130,8 @@
         function isFundingEligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, env = _ref.env, layout = _ref.layout;
             if (!(Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "enabled") || env === __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "test"))) return !1;
-            var label = Object(__WEBPACK_IMPORTED_MODULE_2__config__.d)(source);
-            return !(!Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, layout === __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL ? "allowSecondaryVertical" : "allowSecondaryHorizontal") || -1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut") || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) && !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default") && (-1 === funding.allowed.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) && (-1 === funding.remembered.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
+            var isVertical = layout === __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL, label = Object(__WEBPACK_IMPORTED_MODULE_2__config__.d)(source);
+            return !(!Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, isVertical ? "allowSecondaryVertical" : "allowSecondaryHorizontal") || -1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut") || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) && (!isVertical || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultVerticalCountries", []).indexOf(locale.country)) && !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default") && (-1 === funding.allowed.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) && (-1 === funding.remembered.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
         }
         function determineEligibleFunding(_ref2) {
             var funding = _ref2.funding, selected = _ref2.selected, locale = _ref2.locale, env = _ref2.env, layout = _ref2.layout, eligibleFunding = __WEBPACK_IMPORTED_MODULE_2__config__.c.filter(function(source) {
