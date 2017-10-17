@@ -8230,7 +8230,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.l.ppobjects ? "4" : "4.0.136";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.l.ppobjects ? "4" : "4.0.137";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.l.paypalDomains;
@@ -8692,7 +8692,8 @@
             BLUE: "blue",
             SILVER: "silver",
             BLACK: "black",
-            DARKBLUE: "darkblue"
+            DARKBLUE: "darkblue",
+            TRANSPARENT: "transparent"
         }, BUTTON_LOGO_COLOR = {
             BLUE: "blue",
             WHITE: "white",
@@ -8786,22 +8787,26 @@
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_8__component__.a, "render", function(_ref2) {
-            var callOriginal = _ref2.callOriginal, _ref2$args = _ref2.args, props = _ref2$args[0], style = props.style;
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.style, "validate", function(_ref2) {
+            var callOriginal = _ref2.callOriginal, _ref2$args = _ref2.args, style = _ref2$args[0];
+            if (!style) return callOriginal();
             style && "creditblue" === style.color && (style.color = __WEBPACK_IMPORTED_MODULE_9__constants__.b.DARKBLUE);
             style && "generic" === style.label && (style.label = __WEBPACK_IMPORTED_MODULE_9__constants__.c.PAYPAL);
             if (style && (!style.label || style.label === __WEBPACK_IMPORTED_MODULE_9__constants__.c.CHECKOUT) && "tiny" === style.size) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("unsupported_button_size_tiny");
                 style.size = __WEBPACK_IMPORTED_MODULE_9__constants__.i.SMALL;
             }
+        });
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_8__component__.a, "render", function(_ref3) {
+            var callOriginal = _ref3.callOriginal, _ref3$args = _ref3.args, props = _ref3$args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
                 delete props.billingAgreement;
             }
             return callOriginal();
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.payment, "decorate", function(_ref3) {
-            var original = _ref3.original, context = _ref3.context, _ref3$args = _ref3.args, originalPayment = _ref3$args[0];
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.payment, "decorate", function(_ref4) {
+            var original = _ref4.original, context = _ref4.context, _ref4$args = _ref4.args, originalPayment = _ref4$args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
                 return new __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a(function(resolve, reject) {
@@ -8811,8 +8816,8 @@
                     function rejectActions(err) {
                         reject(err);
                     }
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(actions.payment, "create", function(_ref4) {
-                        var createOriginal = _ref4.original, createContext = _ref4.context, _ref4$args = _ref4.args, options = _ref4$args[0], experience = _ref4$args[1];
+                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(actions.payment, "create", function(_ref5) {
+                        var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = _ref5.args, options = _ref5$args[0], experience = _ref5$args[1];
                         options.payment || (options = {
                             payment: options,
                             experience: experience
@@ -8839,8 +8844,8 @@
         });
         if (__WEBPACK_IMPORTED_MODULE_8__component__.a.isChild()) {
             var debounce = !1;
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref5) {
-                var callOriginal = _ref5.callOriginal, _ref5$args = _ref5.args, props = _ref5$args[1];
+            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref6) {
+                var callOriginal = _ref6.callOriginal, _ref6$args = _ref6.args, props = _ref6$args[1];
                 if (!debounce) {
                     debounce = !0;
                     for (var _arr = [ "onAuthorize", "onCancel", "onError", "onClose" ], _i = 0; _i < _arr.length; _i++) !function() {
@@ -8864,8 +8869,8 @@
                         enabled = !1;
                     }
                 });
-                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref6) {
-                    var callOriginal = _ref6.callOriginal;
+                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref7) {
+                    var callOriginal = _ref7.callOriginal;
                     if (enabled) return callOriginal();
                 });
             }
@@ -8888,8 +8893,8 @@
                     checkout.error(err);
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref7) {
-                return (0, _ref7.callOriginal)().catch(function(err) {
+            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref8) {
+                return (0, _ref8.callOriginal)().catch(function(err) {
                     if (err instanceof __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.b) return window.xprops.payment().then(function(token) {
                         window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.g)(__WEBPACK_IMPORTED_MODULE_4__config__.l.checkoutUrl, {
                             token: token
@@ -8898,9 +8903,9 @@
                     throw err;
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_6__login__.a, "prerender", function(_ref8) {
-                var callOriginal = _ref8.callOriginal;
-                delete _ref8.args[0].env;
+            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_6__login__.a, "prerender", function(_ref9) {
+                var callOriginal = _ref9.callOriginal;
+                delete _ref9.args[0].env;
                 return callOriginal();
             });
         }
@@ -9151,7 +9156,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return buttonStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " {\n        margin-right: 2px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ", ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " {\n        margin-right: 2px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
     },
     "./src/components/button/templates/component/style/card.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9190,7 +9195,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return buttonColorStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonColorStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.GOLD + " {\n        background: #ffc439;\n        color: #000;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLUE + " {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.SILVER + " {\n        background: #eee;\n        color: #000;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonColorStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.GOLD + " {\n        background: #ffc439;\n        color: #111;\n        text-shadow: 0px 1px 0 #ffdc88;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLUE + " {\n        background: #009cde;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.SILVER + " {\n        background: #eee;\n        color: #111;\n        text-shadow: 0px -1px 0 #ccc;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n        text-shadow: 0px 1px 0 #6C7378;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_1__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_1__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.b.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n        text-shadow: 0px -1px 0 #0d86bb;\n    }\n";
     },
     "./src/components/button/templates/component/style/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9204,7 +9209,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return labelStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.a[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.a[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.a[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
     },
     "./src/components/button/templates/component/style/layout.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -9227,7 +9232,7 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), sizeResponsiveStyle = Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.a).map(function(size) {
             var style = __WEBPACK_IMPORTED_MODULE_1__style__.a[size];
-            return "\n        @media only screen and (min-width: " + style.minWidth + "px) {\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + " {\n                min-width: " + style.minWidth + "px;\n                max-width: " + style.maxWidth + "px;\n                font-size: " + style.fontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n                height: " + style.height + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                font-size: " + style.largeFontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                border-radius: " + style.pillRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                border-radius: " + style.rectRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                margin-bottom: " + style.verticalMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.horizontal.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.horizontal.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.horizontal.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n                height: " + style.taglineHeight + "px;\n                line-height: " + style.taglineHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " {\n                height: " + style.fundingHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                margin-top: " + ((style.fundingHeight - style.cardLogoSize) / 2).toFixed(1) + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + style.cardLogoSize + "px;\n                margin-right: " + style.cardLogoMargin + "px;\n            }\n        }\n\n    ";
+            return "\n        @media only screen and (min-width: " + style.minWidth + "px) {\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + " {\n                min-width: " + style.minWidth + "px;\n                max-width: " + style.maxWidth + "px;\n                font-size: " + style.fontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n                height: " + style.height + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                font-size: " + style.largeFontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                border-radius: " + style.pillRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                border-radius: " + style.rectRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                margin-bottom: " + style.verticalMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.horizontal.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.horizontal.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.horizontal.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n                height: " + style.taglineHeight + "px;\n                line-height: " + style.taglineHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " {\n                height: " + style.fundingHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + style.cardLogoSize + "px;\n                margin: 0 " + style.cardLogoMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + (style.fundingLogoSize || style.cardLogoSize) + ";\n                margin: " + ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) + "px " + (style.fundingLogoMargin || style.cardLogoMargin) + "px;\n            }\n        }\n\n    ";
         }).join("\n"), buttonResponsiveStyle = "\n\n    " + sizeResponsiveStyle + "\n\n    @media only screen and (max-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            width: 100%;\n            margin-right: 0;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: none;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            display: inline-block;\n            width: calc(50% - 2px);\n            margin-right: 4px;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: inline-block;\n            width: calc(50% - 2px);\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: block;\n        }\n    }\n";
     },
     "./src/components/button/templates/component/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
@@ -9435,7 +9440,7 @@
                 locale: locale
             }), styleNode = renderStyle(), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
-                "data-version": "4.0.136",
+                "data-version": "4.0.137",
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -9810,15 +9815,14 @@
             label: "{ cards }",
             logoLabel: "{ cards }",
             defaultColor: __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER,
-            colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK ],
-            logoColors: (_logoColors6 = {}, _logoColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLACK, 
-            _logoColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE, 
+            colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT ],
+            logoColors: (_logoColors6 = {}, _logoColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLACK, 
             _logoColors6),
-            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
-            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
-            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
-            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK, 
-            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, 
+            secondaryColors: (_secondaryColors6 = {}, _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT, 
+            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT, 
+            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT, 
+            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT, 
+            _secondaryColors6[__WEBPACK_IMPORTED_MODULE_1__constants__.b.DARKBLUE] = __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT, 
             _secondaryColors6),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
@@ -9839,7 +9843,7 @@
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CREDIT, 
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.VENMO] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.VENMO, 
         _LABEL_TO_FUNDING[__WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL] = __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL, 
-        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.ELV ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
+        _LABEL_TO_FUNDING), FUNDING_PRIORITY = [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.PAYPAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.VENMO, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CREDIT, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.ELV, __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CARD ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
         _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
             enabled: !0,
             allowOptIn: !0,
@@ -9855,7 +9859,8 @@
             allowOptOut: !1,
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CREDIT] = {
-            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.GB, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE ]
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.GB, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE ],
+            defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL] = {
             enabled: !1,
             test: !0,
@@ -10140,11 +10145,11 @@
             pillRadius: 13,
             rectRadius: 4,
             taglineHeight: 15,
-            fundingHeight: 25,
+            fundingHeight: 30,
             verticalMargin: 8,
             separatorMargin: 6,
-            cardLogoSize: 16,
-            cardLogoMargin: 3,
+            cardLogoSize: 19,
+            cardLogoMargin: 2,
             horizontal: {
                 logoSize: 16,
                 wordmarkSize: 15,
@@ -10163,11 +10168,13 @@
             pillRadius: 16,
             rectRadius: 6,
             taglineHeight: 15,
-            fundingHeight: 35,
+            fundingHeight: 40,
             verticalMargin: 9,
             separatorMargin: 7,
-            cardLogoSize: 25,
-            cardLogoMargin: 7,
+            fundingLogoSize: 25,
+            fundingLogoMargin: 3,
+            cardLogoSize: 30,
+            cardLogoMargin: 5,
             horizontal: {
                 logoSize: 18,
                 wordmarkSize: 19,
@@ -10186,11 +10193,13 @@
             pillRadius: 21,
             rectRadius: 6,
             taglineHeight: 20,
-            fundingHeight: 35,
+            fundingHeight: 40,
             verticalMargin: 10,
             separatorMargin: 10,
-            cardLogoSize: 30,
-            cardLogoMargin: 8,
+            cardLogoSize: 35,
+            cardLogoMargin: 7,
+            fundingLogoSize: 30,
+            fundingLogoMargin: 5,
             horizontal: {
                 logoSize: 27,
                 wordmarkSize: 24,
@@ -10254,7 +10263,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.l.ppobjects ? "4" : "4.0.136";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.l.ppobjects ? "4" : "4.0.137";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -10576,6 +10585,8 @@
                 }
                 return callOriginal();
             });
+            var _fundingSource = window.xprops.fundingSource;
+            !_fundingSource || _fundingSource !== __WEBPACK_IMPORTED_MODULE_6__config__.f.ELV && _fundingSource !== __WEBPACK_IMPORTED_MODULE_6__config__.f.CARD || window.meta && window.meta.token && "/checkoutnow" === window.location.pathname && "xoonboardingnodeweb" !== window.meta.logAppName && (window.location = "/webapps/xoonboarding?token=" + window.meta.token);
         }
     },
     "./src/components/checkout/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -10891,7 +10902,7 @@
                 return __WEBPACK_IMPORTED_MODULE_2__config__.l.billingUrls[env];
             }
             0 === token.indexOf("PAY-") || 0 === token.indexOf("PAYID-") ? Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_payment") : 0 === token.indexOf("EC-") ? Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_checkout") : Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_default");
-            return fundingSource === __WEBPACK_IMPORTED_MODULE_2__config__.f.CARD ? __WEBPACK_IMPORTED_MODULE_2__config__.l.guestUrls[env] : fundingSource === __WEBPACK_IMPORTED_MODULE_2__config__.f.ELV ? __WEBPACK_IMPORTED_MODULE_2__config__.l.guestUrls[env] : __WEBPACK_IMPORTED_MODULE_2__config__.l.checkoutUrls[env];
+            return __WEBPACK_IMPORTED_MODULE_2__config__.l.checkoutUrls[env];
         }
         __webpack_exports__.a = determineParameterFromToken;
         __webpack_exports__.b = determineUrl;
@@ -10946,7 +10957,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.l.ppobjects ? "4" : "4.0.136";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.l.ppobjects ? "4" : "4.0.137";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11074,7 +11085,7 @@
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.136",
+            version: "4.0.137",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11231,7 +11242,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.136");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.137");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12277,7 +12288,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.136", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.137", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13060,7 +13071,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.136";
+                payload.version = "4.0.137";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                 var query = [];
@@ -13087,7 +13098,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.136".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.137".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13095,7 +13106,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.136",
+                v: "checkout.js.4.0.137",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -13775,7 +13786,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.l.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.l.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.136"
+                    ver: "4.0.137"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14188,7 +14199,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.136" === window.paypal.version) {
+        if (window.paypal && "4.0.137" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
