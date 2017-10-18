@@ -10,7 +10,7 @@ import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/clie
 import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, checkpoint, getElements,
+    getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
     getDomainSetting, extendUrl, noop } from '../../lib';
 import { rest } from '../../api';
@@ -636,7 +636,7 @@ if (Button.isChild()) {
     // eslint-disable-next-line promise/catch-or-return
     getPageRenderTime().then(pageRenderTime => {
 
-        let fundingSources = getElements(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)
+        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`))
             .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE));
 
         track({
