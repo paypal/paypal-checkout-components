@@ -648,6 +648,8 @@ if (Button.isChild()) {
             [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime,
             [ FPTI.KEY.BUTTON_LAYOUT ]:  (window.xprops && window.xprops.style && window.xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
         });
+
+        flushLogs();
     });
 
     if (window.xprops.logLevel) {
