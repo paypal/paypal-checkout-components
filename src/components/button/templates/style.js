@@ -60,7 +60,7 @@ export const BUTTON_STYLE = {
         responsiveMin:     200,
         minWidth:          200,
         maxWidth:          300,
-        fontSize:          11,
+        fontSize:          13,
         largeFontSize:     15,
         logoSize:          22,
         wordmarkSize:      22,

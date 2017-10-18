@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off */
 
-import { FUNDING, CARD, COUNTRY } from '../../../config/constants';
+import { FUNDING, CARD, COUNTRY, PLATFORM } from '../../../config/constants';
 import { DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON_SIZE,
     BUTTON_TAGLINE_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_LOGO } from '../constants';
 
@@ -266,8 +266,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
     [ BUTTON_LABEL.ELV ]: {
 
-        label:     `{ logo: ${ BUTTON_LOGO.ELV } }{separator}{ logo: ${ BUTTON_LOGO.PAYPAL } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.ELV } }{separator}{ logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        label:     `{ logo: ${ BUTTON_LOGO.ELV } } Lastschrift`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.ELV } } Lastschrift`,
 
         defaultColor: BUTTON_COLOR.SILVER,
 
@@ -404,6 +404,9 @@ export const FUNDING_CONFIG = {
         ],
         defaultVerticalCountries: [
             COUNTRY.US
+        ],
+        platforms: [
+            PLATFORM.MOBILE
         ]
     },
 

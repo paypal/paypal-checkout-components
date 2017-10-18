@@ -13,9 +13,7 @@ import credit_white from './credit_white.svg';
 import venmo_white  from './venmo_white.svg';
 import venmo_blue   from './venmo_blue.svg';
 import ideal        from './ideal.svg';
-import ideal_white  from './ideal_white.svg';
 import elv          from './elv.svg';
-import elv_white    from './elv_white.svg';
 import visa         from './visa.svg';
 import amex         from './amex.svg';
 import mastercard   from './mastercard.svg';
@@ -47,13 +45,11 @@ export let componentLogos = {
     },
 
     [ BUTTON_LOGO.IDEAL ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   ideal,
-        [ BUTTON_LOGO_COLOR.WHITE ]: ideal_white
+        [ BUTTON_LOGO_COLOR.ANY ]: ideal
     },
 
     [ BUTTON_LOGO.ELV ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   elv,
-        [ BUTTON_LOGO_COLOR.WHITE ]: elv_white
+        [ BUTTON_LOGO_COLOR.ANY ]: elv
     }
 };
 
