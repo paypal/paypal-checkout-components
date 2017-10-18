@@ -543,11 +543,27 @@ if (Checkout.isChild()) {
         return callOriginal();
     });
 
-    let fundingSource = window.xprops.fundingSource;
+    try {
+        let fundingSource = window.xprops.fundingSource;
 
-    if (fundingSource && (fundingSource === FUNDING.ELV || fundingSource === FUNDING.CARD)) {
-        if (window.meta && window.meta.token && window.location.pathname === '/checkoutnow' && window.meta.logAppName !== 'xoonboardingnodeweb') {
-            window.location = `/webapps/xoonboarding?token=${ window.meta.token }`;
+        if (fundingSource === FUNDING.ELV || fundingSource === FUNDING.CARD) {
+
+            let token = (window.meta && window.meta.token) ||
+                (window.PAYPAL && window.PAYPAL.ulData && window.PAYPAL.ulData.incontextData && window.PAYPAL.ulData.incontextData.paymentToken);
+            let isGuest = (window.meta && window.meta.logAppName === 'xoonboardingnodeweb');
+            let isCheckout = window.location.pathname === '/checkoutnow';
+
+            if (token && isCheckout && !isGuest) {
+                let spinner = document.querySelector('.spinnerWithLockIcon');
+
+                if (spinner) {
+                    spinner.className = spinner.className.replace('hide', '');
+                }
+
+                window.location = `/webapps/xoonboarding?token=${ token }`;
+            }
         }
+    } catch (err) {
+        // pass
     }
 }
