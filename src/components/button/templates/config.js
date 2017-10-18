@@ -162,7 +162,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
     [ BUTTON_LABEL.CREDIT ]: {
         label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
         tag:       `{ content: later_tag }`,
 
         colors: [
