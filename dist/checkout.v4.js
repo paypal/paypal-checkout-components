@@ -8230,7 +8230,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.l.ppobjects ? "4" : "4.0.138";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.l.ppobjects ? "4" : "4.0.139";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.l.paypalDomains;
@@ -8624,6 +8624,7 @@
                 _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
                 _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_LAYOUT] = window.xprops && window.xprops.style && window.xprops.style.layout || __WEBPACK_IMPORTED_MODULE_10__constants__.d.HORIZONTAL, 
                 _track6));
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
             });
             window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.L)(window.xprops.logLevel);
             Object(__WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__.a)();
@@ -9234,7 +9235,7 @@
         });
         var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), sizeResponsiveStyle = Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.a).map(function(size) {
             var style = __WEBPACK_IMPORTED_MODULE_1__style__.a[size];
-            return "\n        @media only screen and (min-width: " + style.minWidth + "px) {\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + " {\n                min-width: " + style.minWidth + "px;\n                max-width: " + style.maxWidth + "px;\n                font-size: " + style.fontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n                height: " + style.height + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                font-size: " + style.largeFontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                border-radius: " + style.pillRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                border-radius: " + style.rectRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                margin-bottom: " + style.verticalMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.horizontal.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.horizontal.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.horizontal.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n                height: " + style.taglineHeight + "px;\n                line-height: " + style.taglineHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " {\n                height: " + style.fundingHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + style.cardLogoSize + "px;\n                margin: 0 " + style.cardLogoMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + (style.fundingLogoSize || style.cardLogoSize) + ";\n                margin: " + ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) + "px " + (style.fundingLogoMargin || style.cardLogoMargin) + "px;\n            }\n        }\n\n    ";
+            return "\n        @media only screen and (min-width: " + style.minWidth + "px) {\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + " {\n                min-width: " + style.minWidth + "px;\n                max-width: " + style.maxWidth + "px;\n                font-size: " + style.fontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n                height: " + style.height + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                font-size: " + style.largeFontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                border-radius: " + Math.ceil(style.height / 2) + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                border-radius: " + style.rectRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                margin-bottom: " + style.verticalMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.horizontal.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.horizontal.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.horizontal.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n                height: " + style.taglineHeight + "px;\n                line-height: " + style.taglineHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " {\n                height: " + style.fundingHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + style.cardLogoSize + "px;\n                margin: 0 " + style.cardLogoMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + (style.fundingLogoSize || style.cardLogoSize) + ";\n                margin: " + ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) + "px " + (style.fundingLogoMargin || style.cardLogoMargin) + "px;\n            }\n        }\n\n    ";
         }).join("\n"), buttonResponsiveStyle = "\n\n    " + sizeResponsiveStyle + "\n\n    @media only screen and (max-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            width: 100%;\n            margin-right: 0;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: none;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            display: inline-block;\n            width: calc(50% - 2px);\n            margin-right: 4px;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: inline-block;\n            width: calc(50% - 2px);\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: block;\n        }\n    }\n";
     },
     "./src/components/button/templates/component/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
@@ -9442,7 +9443,7 @@
                 locale: locale
             }), styleNode = renderStyle(), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
-                "data-version": "4.0.138",
+                "data-version": "4.0.139",
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10121,7 +10122,6 @@
             largeFontSize: 13,
             logoSize: 14,
             wordmarkSize: 14,
-            pillRadius: 13,
             rectRadius: 4,
             taglineHeight: 0,
             fundingHeight: 0,
@@ -10144,7 +10144,6 @@
             largeFontSize: 13,
             logoSize: 17,
             wordmarkSize: 17,
-            pillRadius: 13,
             rectRadius: 4,
             taglineHeight: 15,
             fundingHeight: 30,
@@ -10167,7 +10166,6 @@
             largeFontSize: 15,
             logoSize: 22,
             wordmarkSize: 22,
-            pillRadius: 16,
             rectRadius: 6,
             taglineHeight: 15,
             fundingHeight: 40,
@@ -10192,7 +10190,6 @@
             largeFontSize: 18,
             logoSize: 27,
             wordmarkSize: 27,
-            pillRadius: 21,
             rectRadius: 6,
             taglineHeight: 20,
             fundingHeight: 40,
@@ -10265,7 +10262,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.l.ppobjects ? "4" : "4.0.138";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.l.ppobjects ? "4" : "4.0.139";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -10587,8 +10584,17 @@
                 }
                 return callOriginal();
             });
-            var _fundingSource = window.xprops.fundingSource;
-            !_fundingSource || _fundingSource !== __WEBPACK_IMPORTED_MODULE_6__config__.f.ELV && _fundingSource !== __WEBPACK_IMPORTED_MODULE_6__config__.f.CARD || window.meta && window.meta.token && "/checkoutnow" === window.location.pathname && "xoonboardingnodeweb" !== window.meta.logAppName && (window.location = "/webapps/xoonboarding?token=" + window.meta.token);
+            try {
+                var _fundingSource = window.xprops.fundingSource;
+                if (_fundingSource === __WEBPACK_IMPORTED_MODULE_6__config__.f.ELV || _fundingSource === __WEBPACK_IMPORTED_MODULE_6__config__.f.CARD) {
+                    var token = window.meta && window.meta.token || window.PAYPAL && window.PAYPAL.ulData && window.PAYPAL.ulData.incontextData && window.PAYPAL.ulData.incontextData.paymentToken, isGuest = window.meta && "xoonboardingnodeweb" === window.meta.logAppName, isCheckout = "/checkoutnow" === window.location.pathname;
+                    if (token && isCheckout && !isGuest) {
+                        var spinner = document.querySelector(".spinnerWithLockIcon");
+                        spinner && (spinner.className = spinner.className.replace("hide", ""));
+                        window.location = "/webapps/xoonboarding?token=" + token;
+                    }
+                }
+            } catch (err) {}
         }
     },
     "./src/components/checkout/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -10959,7 +10965,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.l.ppobjects ? "4" : "4.0.138";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.l.ppobjects ? "4" : "4.0.139";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11087,7 +11093,7 @@
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.138",
+            version: "4.0.139",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11244,7 +11250,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.138");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.139");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12290,7 +12296,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.138", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.139", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13073,7 +13079,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.138";
+                payload.version = "4.0.139";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                 var query = [];
@@ -13100,7 +13106,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.138".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.139".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13108,7 +13114,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.138",
+                v: "checkout.js.4.0.139",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -13788,7 +13794,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.l.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.l.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.138"
+                    ver: "4.0.139"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14201,7 +14207,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.138" === window.paypal.version) {
+        if (window.paypal && "4.0.139" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
