@@ -426,7 +426,7 @@ export const FUNDING_CONFIG = {
             COUNTRY.DE,
             COUNTRY.AT
         ],
-        defaultCountries: [
+        defaultVerticalCountries: [
             COUNTRY.DE,
             COUNTRY.AT
         ]
