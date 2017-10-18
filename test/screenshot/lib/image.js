@@ -22,11 +22,13 @@ export function writePNG(png : Object, path : string) : Promise<void> {
 
         stream.on('finish', () => {
             imagemagick.convert([ '-density', '144', '-units', 'pixelsperinch', path, path ], err => {
-                return err ? reject(err) : resolve();
+                return err ? reject(`imagemagick: ${ path } - ${ err.stack || err.message || err.toString() }`) : resolve();
             });
         });
 
-        stream.on('error', reject);
+        stream.on('error', err => {
+            return reject(`${ path } - ${ err.stack || err.message || err.toString() }`);
+        });
     });
 }
 

@@ -34,10 +34,14 @@ beforeAll(async () => {
     ({ browser, page } = await openPage(await webpackCompile(WEBPACK_CONFIG)));
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
-        if (filename.endsWith('-diff.png')) {
+        if (filename.endsWith('-old.png')) {
             await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
         }
     }
+
+    await page.evaluate(() => {
+        window.paypal.setup({ env: 'test' });
+    });
 });
 
 afterAll(async () => {
@@ -49,7 +53,7 @@ for (let config of buttonConfigs) {
 
     test(`Render button with ${ filename }`, async () => {
         let filepath = `${ IMAGE_DIR }/${ filename }.png`;
-        let diffpath  = `${ IMAGE_DIR }/${ filename }-diff.png`;
+        let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
         let { x, y, width, height } = await page.evaluate((options) => {
 
@@ -62,8 +66,6 @@ for (let config of buttonConfigs) {
             if (options.container) {
                 container.style.width = `${ options.container.width }px`;
             }
-
-            window.paypal.setup({ env: 'test' });
 
             window.paypal.Button.render(Object.assign({
                 payment() { /* pass */ },
@@ -92,8 +94,15 @@ for (let config of buttonConfigs) {
             let delta = await diffPNG(screenshot, existing);
 
             if (delta > DIFF_THRESHOLD) {
-                await screenshot.write(diffpath);
-                let imgurUrl = await uploadToImgur(diffpath);
+                await existing.write(diffpath);
+                await screenshot.write(filepath);
+
+                let imgurUrl = '';
+
+                if (process.env.TRAVIS) {
+                    imgurUrl = await uploadToImgur(diffpath);
+                }
+                
                 throw new Error(`Button style changed with delta of ${ delta } for configuration:\n\n${ JSON.stringify(config, null, 4) }\n\nSee ${ diffpath } or ${ imgurUrl || '' }`);
             }
 
