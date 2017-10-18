@@ -87,7 +87,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         maximumVerticalSize: BUTTON_SIZE.LARGE,
 
         minHorizontalButtons: 1,
-        minVerticalButtons:   2,
+        minVerticalButtons:   1,
 
         maxHorizontalButtons: 2,
         maxVerticalButtons:   4,
