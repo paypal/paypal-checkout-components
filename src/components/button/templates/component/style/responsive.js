@@ -34,7 +34,7 @@ let sizeResponsiveStyle = Object.keys(BUTTON_STYLE).map(size => {
             }
 
             .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {
-                border-radius: ${ style.pillRadius }px;
+                border-radius: ${ Math.ceil(style.height / 2) }px;
             }
 
             .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
