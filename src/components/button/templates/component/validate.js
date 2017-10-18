@@ -32,7 +32,7 @@ export function validateButtonStyle(style : Object = {}) {
     let label = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style[BUTTON_STYLE_OPTIONS.LAYOUT] === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
 
     if (!BUTTON_CONFIG[label]) {
-        throw new Error(`Invalid button label: ${ label }`);
+        throw new Error(`Invalid button label: ${ label }, expected: ${ Object.keys(BUTTON_CONFIG[label]).join(', ') }`);
     }
 
     let {
@@ -43,60 +43,60 @@ export function validateButtonStyle(style : Object = {}) {
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons,
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline,
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout,
-        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max
+        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   maxbuttons
     } = style;
 
     if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
-        throw new Error(`Unexpected color for ${ label } button: ${ color }`);
+        throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.COLOR } for ${ label } button: ${ color }, expected ${ getButtonConfig(label, 'colors').join(', ') }`);
     }
 
     if (shape && getButtonConfig(label, 'shapes').indexOf(shape) === -1) {
-        throw new Error(`Unexpected shape for ${ label } button: ${ shape }`);
+        throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.SHAPE } for ${ label } button: ${ shape }, expected ${ getButtonConfig(label, 'shapes').join(', ') }`);
     }
 
     if (size && getButtonConfig(label, 'sizes').indexOf(size) === -1) {
-        throw new Error(`Unexpected size for ${ label } button: ${ size }`);
+        throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.SIZE } for ${ label } button: ${ size }, expected ${ getButtonConfig(label, 'sizes').join(', ') }`);
     }
 
     if (branding === false) {
-        throw new Error(`Unexpected branding=false for ${ label } button`);
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.BRANDING }:false is not allowed`);
     }
 
     if (fundingicons && !getButtonConfig(label, 'allowFundingIcons')) {
-        throw new Error(`Unexpected fundingicons=true for ${ label } button`);
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS }:true is not allowed for ${ label } button`);
     }
 
     if (tagline === true) {
-        throw new Error(`Unexpected tagline=true for ${ label } button`);
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.TAGLINE }:true is not allowed for ${ label } button`);
     }
 
     if (layout && getButtonConfig(label, 'layouts').indexOf(layout) === -1) {
-        throw new Error(`Unexpected layout for ${ label } button: ${ layout }`);
+        throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.LAYOUT } for ${ label } button: ${ layout }, expected ${ getButtonConfig(label, 'layouts').join(', ') }`);
     }
 
-    if (typeof max !== 'undefined') {
-        if (typeof max !== 'number') {
-            throw new TypeError(`Expected max to be a number, got ${ max }`);
+    if (typeof maxbuttons !== 'undefined') {
+        if (typeof maxbuttons !== 'number') {
+            throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a number, got: ${ maxbuttons }`);
         }
 
-        if (max < 1) {
-            throw new Error(`Expected max to be a at least 1, got ${ max }`);
+        if (maxbuttons < 1) {
+            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a at least 1, got: ${ maxbuttons }`);
         }
 
         let minButtons = (layout === BUTTON_LAYOUT.VERTICAL)
             ? getButtonConfig(label, 'minVerticalButtons')
             : getButtonConfig(label, 'minHorizontalButtons');
 
-        if (max < minButtons) {
-            throw new Error(`Expected max to be no fewer than ${ minButtons }, got ${ max }`);
+        if (maxbuttons < minButtons) {
+            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no fewer than ${ minButtons }, got ${ maxbuttons }`);
         }
 
         let maxButtons = (layout === BUTTON_LAYOUT.VERTICAL)
             ? getButtonConfig(label, 'maxVerticalButtons')
             : getButtonConfig(label, 'maxHorizontalButtons');
 
-        if (max > maxButtons) {
-            throw new Error(`Expected max to be no greater than ${ maxButtons }, got ${ max }`);
+        if (maxbuttons > maxButtons) {
+            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no greater than ${ maxButtons }, got ${ maxbuttons }`);
         }
     }
 
@@ -106,7 +106,7 @@ export function validateButtonStyle(style : Object = {}) {
 
     if (layout === BUTTON_LAYOUT.VERTICAL) {
         if (!getButtonConfig(label, 'allowPrimaryVertical')) {
-            throw new Error(`${ label } can not be used as primary vertical button label`);
+            throw new Error(`${ label } can not be used as primary ${ BUTTON_LAYOUT.VERTICAL } button label`);
         }
 
         if (fundingicons === true) {
