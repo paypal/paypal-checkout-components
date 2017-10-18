@@ -2,7 +2,8 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { getStorageState, getGlobalState } from '../../lib';
+import { FUNDING } from '../../config/constants';
+import { getStorageState, getGlobalState, isDevice } from '../../lib';
 
 export type FundingSource    = string;
 export type FundingList      = Array<FundingSource>;
@@ -34,6 +35,11 @@ function getRememberedFundingPromise(source : string) : ZalgoPromise<void> {
 export function rememberFunding(sources : FundingList) {
     getRememberedFunding(rememberedFunding => {
         for (let source of sources) {
+            
+            if (source === FUNDING.VENMO && !isDevice()) {
+                continue;
+            }
+
             if (rememberedFunding.indexOf(source) === -1) {
                 rememberedFunding.push(source);
             }

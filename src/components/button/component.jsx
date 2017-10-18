@@ -8,11 +8,11 @@ import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 
 import { Checkout } from '../checkout';
-import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE } from '../../config';
+import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-    getDomainSetting, extendUrl, noop } from '../../lib';
+    getDomainSetting, extendUrl, noop, isDevice } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -322,10 +322,21 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             },
             decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
+
+                if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
+                    allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
+                }
+
+                let remembered = getRememberedFunding(sources => sources);
+
+                if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
+                    remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                }
+
                 return {
                     allowed,
                     disallowed,
-                    remembered: getRememberedFunding(sources => sources),
+                    remembered,
                     remember(sources) {
                         rememberFunding(sources);
                     }

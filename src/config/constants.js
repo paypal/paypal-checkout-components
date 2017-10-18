@@ -153,6 +153,11 @@ export const ATTRIBUTE = {
     FUNDING_SOURCE: 'data-funding-source'
 };
 
+export const PLATFORM = {
+    DESKTOP: 'desktop',
+    MOBILE:  'mobile'
+};
+
 export const COUNTRY = {
     AD: 'AD',
     AE: 'AE',
