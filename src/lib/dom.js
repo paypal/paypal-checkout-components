@@ -3,7 +3,7 @@
 import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { config } from '../config';
+import { config, LANG_TO_DEFAULT_COUNTRY } from '../config';
 
 import { memoize } from './util';
 import { isDevice } from './device';
@@ -266,8 +266,8 @@ export function normalizeLocale(locale : string) : ?LocaleType {
     }
 
     if (locale && locale.match(/^[a-z]{2}$/)) {
-        if (config.locales[config.defaultLocale.country].indexOf(locale) !== -1) {
-            return { country: config.defaultLocale.country, lang: locale };
+        if (LANG_TO_DEFAULT_COUNTRY[locale]) {
+            return LANG_TO_DEFAULT_COUNTRY[locale];
         }
     }
 }

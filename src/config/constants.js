@@ -387,3 +387,25 @@ export const LANG = {
     TH: 'th',
     TR: 'tr'
 };
+
+export const LANG_TO_DEFAULT_COUNTRY = {
+    [LANG.EN]: COUNTRY.US,
+    [LANG.FR]: COUNTRY.FR,
+    [LANG.ES]: COUNTRY.ES,
+    [LANG.ZH]: COUNTRY.CN,
+    [LANG.DE]: COUNTRY.DE,
+    [LANG.NL]: COUNTRY.NL,
+    [LANG.PT]: COUNTRY.PT,
+    [LANG.DA]: COUNTRY.DK,
+    [LANG.RU]: COUNTRY.RU,
+    [LANG.ID]: COUNTRY.ID,
+    [LANG.HE]: COUNTRY.IL,
+    [LANG.IT]: COUNTRY.IT,
+    [LANG.JA]: COUNTRY.JP,
+    [LANG.KO]: COUNTRY.KR,
+    [LANG.NO]: COUNTRY.NO,
+    [LANG.PL]: COUNTRY.PL,
+    [LANG.SV]: COUNTRY.SE,
+    [LANG.TH]: COUNTRY.TH,
+    [LANG.TR]: COUNTRY.TR
+};
