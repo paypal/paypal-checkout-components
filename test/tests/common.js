@@ -75,8 +75,8 @@ export function generateExperienceToken() : string {
 export const CHILD_REDIRECT_URI = `${ window.paypal.config.paypalUrl }/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
-
 export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+export const IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 export function createElement(options : Object) : HTMLElement {
 

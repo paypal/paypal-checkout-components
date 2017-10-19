@@ -25,6 +25,10 @@ const WEBPACK_CONFIG = {
 
 const DIFF_THRESHOLD = 20;
 
+const USER_AGENTS = {
+    iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
+};
+
 jest.setTimeout(50000);
 
 let browser;
@@ -55,7 +59,7 @@ for (let config of buttonConfigs) {
         let filepath = `${ IMAGE_DIR }/${ filename }.png`;
         let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
-        let { x, y, width, height } = await page.evaluate((options) => {
+        let { x, y, width, height } = await page.evaluate((options, userAgents) => {
 
             // $FlowFixMe
             document.body.innerHTML = '';
@@ -67,12 +71,18 @@ for (let config of buttonConfigs) {
                 container.style.width = `${ options.container.width }px`;
             }
 
+            if (options.userAgent) {
+                window.navigator.mockUserAgent = userAgents[options.userAgent];
+            }
+
             window.paypal.Button.render(Object.assign({
                 payment() { /* pass */ },
                 onAuthorize() { /* pass */ }
             }, options.button), container);
 
             let rect = container.querySelector('iframe').getBoundingClientRect();
+
+            delete window.navigator.mockUserAgent;
 
             return {
                 x:      rect.left,
@@ -81,7 +91,7 @@ for (let config of buttonConfigs) {
                 height: rect.height
             };
 
-        }, config);
+        }, config, USER_AGENTS);
 
         let existingExists = await fs.exists(filepath);
 

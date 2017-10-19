@@ -158,95 +158,114 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             }
         });
+    }
+}
 
-        if (getButtonConfig(label, 'allowPrimaryVertical')) {
-            for (let color of getButtonConfig(label, 'colors')) {
+for (let color of getButtonConfig('paypal', 'colors')) {
 
-                buttonConfigs.push({
-                    button: {
-                        style: {
-                            label,
-                            color,
-                            layout: 'horizontal'
-                        },
-                        funding: {
-                            allowed: [ FUNDING.CREDIT ]
-                        }
-                    }
-                });
-
-                buttonConfigs.push({
-                    button: {
-                        style: {
-                            label,
-                            color,
-                            layout: 'horizontal'
-                        },
-                        funding: {
-                            allowed: [ FUNDING.VENMO ]
-                        }
-                    }
-                });
-
-                buttonConfigs.push({
-                    button: {
-                        style: {
-                            label,
-                            color,
-                            layout: 'vertical',
-                            maxbuttons:    4
-                        },
-                        funding: {
-                            allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
-                        }
-                    }
-                });
-
-                buttonConfigs.push({
-                    button: {
-                        locale: 'pt_BR',
-                        style:  {
-                            label,
-                            color,
-                            layout: 'vertical',
-                            maxbuttons:    4
-                        },
-                        funding: {
-                            allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
-                        }
-                    }
-                });
-
-                buttonConfigs.push({
-                    button: {
-                        locale: 'de_DE',
-                        style:  {
-                            label,
-                            color,
-                            layout:     'vertical',
-                            maxbuttons: 4
-                        },
-                        funding: {
-                            allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.CARD ]
-                        }
-                    }
-                });
-
-                buttonConfigs.push({
-                    button: {
-                        locale: 'nl_NL',
-                        style:  {
-                            label,
-                            color,
-                            layout: 'vertical',
-                            maxbuttons:    4
-                        },
-                        funding: {
-                            allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]
-                        }
-                    }
-                });
+    buttonConfigs.push({
+        button: {
+            style: {
+                color,
+                layout: 'horizontal'
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT ]
             }
         }
-    }
+    });
+
+    buttonConfigs.push({
+        button: {
+            style: {
+                color,
+                layout: 'horizontal'
+            },
+            funding: {
+                allowed: [ FUNDING.VENMO ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        userAgent: 'iphone6',
+        button:    {
+            style: {
+                color,
+                layout: 'horizontal'
+            },
+            funding: {
+                allowed: [ FUNDING.VENMO ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            style: {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        userAgent: 'iphone6',
+        button:    {
+            style: {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.VENMO, FUNDING.CARD ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'pt_BR',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.CARD ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'de_DE',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.CARD ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'nl_NL',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]
+            }
+        }
+    });
 }

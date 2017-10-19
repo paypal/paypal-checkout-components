@@ -587,19 +587,73 @@ let buttonConfigs = [
                 layout:  `vertical`,
                 size:    'wgeewg',
                 valid:   false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `paypal`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `checkout`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `pay`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `buynow`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `venmo`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `credit`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `elv`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `ideal`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `card`,
+                valid:  false
             }
 
         // $FlowFixMe
-        ].map(({ layout, tagline, fundingicons, branding, size, valid }) => ({
+        ].map(({ layout, label, tagline, fundingicons, branding, size, valid }) => ({
 
-            desc: `layout ${ layout } with tagline ${ tagline ? tagline.toString() : 'default' }, fundingicons ${ fundingicons ? fundingicons.toString() : 'default' }, branding ${ branding || 'default' }, size ${ size || 'default' }`,
+            desc: `layout ${ layout } with label ${ label ? label.toString() : 'default' }, tagline ${ tagline ? tagline.toString() : 'default' }, fundingicons ${ fundingicons ? fundingicons.toString() : 'default' }, branding ${ branding || 'default' }, size ${ size || 'default' }`,
 
             valid,
 
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
-                style:       { layout, tagline, fundingicons, branding, size }
+                style:       { label, layout, tagline, fundingicons, branding, size }
             }
         }))
     },
@@ -626,17 +680,17 @@ let buttonConfigs = [
 
             {
                 maxbuttons: 3,
-                valid:      false
+                valid:      true
             },
 
             {
                 maxbuttons: 4,
-                valid:      false
+                valid:      true
             },
 
             {
                 maxbuttons: 5,
-                valid:      false
+                valid:      true
             },
 
             {
@@ -660,19 +714,19 @@ let buttonConfigs = [
             {
                 layout:     `horizontal`,
                 maxbuttons: 3,
-                valid:      false
+                valid:      true
             },
 
             {
                 layout:     `horizontal`,
                 maxbuttons: 4,
-                valid:      false
+                valid:      true
             },
 
             {
                 layout:     `horizontal`,
                 maxbuttons: 5,
-                valid:      false
+                valid:      true
             },
 
             {
@@ -684,7 +738,7 @@ let buttonConfigs = [
             {
                 layout:     `vertical`,
                 maxbuttons: 1,
-                valid:      false
+                valid:      true
             },
 
             {
@@ -708,7 +762,7 @@ let buttonConfigs = [
             {
                 layout:     `vertical`,
                 maxbuttons: 5,
-                valid:      false
+                valid:      true
             },
 
             {

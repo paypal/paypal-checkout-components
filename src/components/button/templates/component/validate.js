@@ -90,14 +90,6 @@ export function validateButtonStyle(style : Object = {}) {
         if (maxbuttons < minButtons) {
             throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no fewer than ${ minButtons }, got ${ maxbuttons }`);
         }
-
-        let maxButtons = (layout === BUTTON_LAYOUT.VERTICAL)
-            ? getButtonConfig(label, 'maxVerticalButtons')
-            : getButtonConfig(label, 'maxHorizontalButtons');
-
-        if (maxbuttons > maxButtons) {
-            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no greater than ${ maxButtons }, got ${ maxbuttons }`);
-        }
     }
 
     if (!getButtonConfig(label, 'allowPrimary')) {
@@ -105,12 +97,13 @@ export function validateButtonStyle(style : Object = {}) {
     }
 
     if (layout === BUTTON_LAYOUT.VERTICAL) {
-        if (!getButtonConfig(label, 'allowPrimaryVertical')) {
-            throw new Error(`${ label } can not be used as primary ${ BUTTON_LAYOUT.VERTICAL } button label`);
+
+        if (style[BUTTON_STYLE_OPTIONS.LABEL]) {
+            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.LABEL } option is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
         }
 
         if (fundingicons === true) {
-            throw new Error(`No fundingicons allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
+            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS } not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
         }
 
         if (size && [ BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ].indexOf(size) === -1) {

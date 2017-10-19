@@ -3,12 +3,13 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { createTestContainer, destroyTestContainer } from '../common';
+import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT } from '../common';
 
 describe(`paypal button component remembered funding`, () => {
 
     beforeEach(() => {
         createTestContainer();
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
     });
 
     afterEach(() => {
