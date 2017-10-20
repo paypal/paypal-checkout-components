@@ -1001,7 +1001,7 @@ let buttonConfigs = [
 
             {
                 tagline: true,
-                valid:   false
+                valid:   true
             },
 
             {

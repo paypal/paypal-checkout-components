@@ -66,15 +66,11 @@ export function validateButtonStyle(style : Object = {}) {
         throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS }:true is not allowed for ${ label } button`);
     }
 
-    if (tagline === true) {
-        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.TAGLINE }:true is not allowed for ${ label } button`);
-    }
-
     if (layout && getButtonConfig(label, 'layouts').indexOf(layout) === -1) {
         throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.LAYOUT } for ${ label } button: ${ layout }, expected ${ getButtonConfig(label, 'layouts').join(', ') }`);
     }
 
-    if (typeof maxbuttons !== 'undefined') {
+    if (maxbuttons !== undefined) {
         if (typeof maxbuttons !== 'number') {
             throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a number, got: ${ maxbuttons }`);
         }
@@ -98,16 +94,20 @@ export function validateButtonStyle(style : Object = {}) {
 
     if (layout === BUTTON_LAYOUT.VERTICAL) {
 
-        if (style[BUTTON_STYLE_OPTIONS.LABEL]) {
-            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.LABEL } option is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
-        }
-
-        if (fundingicons === true) {
-            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS } not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout`);
-        }
-
         if (size && [ BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ].indexOf(size) === -1) {
             throw new Error(`Button must be at least ${ BUTTON_SIZE.MEDIUM } size for ${ BUTTON_LAYOUT.VERTICAL } layout`);
+        }
+
+        if (style[BUTTON_STYLE_OPTIONS.LABEL]) {
+            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.LABEL } option is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout - got ${ label }`);
+        }
+
+        if (fundingicons) {
+            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS } not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout - got ${ fundingicons }`);
+        }
+
+        if (tagline) {
+            throw new Error(`style.${ BUTTON_STYLE_OPTIONS.TAGLINE } is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout - got ${ tagline }`);
         }
     }
 }
