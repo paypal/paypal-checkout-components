@@ -2,6 +2,7 @@
 
 import { BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS } from '../../constants';
 import { BUTTON_CONFIG, getButtonConfig } from '../config';
+import { BUTTON_STYLE } from '../style';
 
 import { componentContent } from './content';
 
@@ -43,7 +44,8 @@ export function validateButtonStyle(style : Object = {}) {
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons,
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline,
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout,
-        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   maxbuttons
+        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   maxbuttons,
+        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
     } = style;
 
     if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
@@ -85,6 +87,23 @@ export function validateButtonStyle(style : Object = {}) {
 
         if (maxbuttons < minButtons) {
             throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no fewer than ${ minButtons }, got ${ maxbuttons }`);
+        }
+    }
+
+    if (height !== undefined) {
+        if (typeof height !== 'number') {
+            throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be a number, got: ${ maxbuttons }`);
+        }
+
+        let buttonSize = size || getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize');
+
+        let { minHeight, maxHeight } = (size === BUTTON_SIZE.RESPONSIVE) ? {
+            minHeight: BUTTON_STYLE[BUTTON_SIZE.SMALL].minHeight,
+            maxHeight: BUTTON_STYLE[BUTTON_SIZE.LARGE].maxHeight
+        } : BUTTON_STYLE[buttonSize];
+
+        if (height < minHeight || height > maxHeight) {
+            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be between ${ minHeight }px and ${ maxHeight }px - got ${ height }px`);
         }
     }
 

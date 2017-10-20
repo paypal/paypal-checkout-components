@@ -5,25 +5,33 @@ export function getComponentScript() : () => void {
     /* istanbul ignore next */
     return () => {
 
+        const STYLE = {
+            BLOCK:        'block',
+            INLINE_BLOCK: 'inline-block',
+            NONE:         'none',
+            VISIBLE:      'visible',
+            HIDDEN:       'hidden'
+        };
+
         function getElements(selector, parent) : Array<HTMLElement> {
             parent = parent || document;
             return Array.prototype.slice.call(parent.querySelectorAll(selector));
         }
 
-        function showElement(el : HTMLElement, displayType : ?string) {
-            el.style.display = displayType || 'block';
+        function showElement(el : HTMLElement, displayType : string = STYLE.INLINE_BLOCK) {
+            el.style.display = displayType;
         }
 
         function hideElement(el : HTMLElement) {
-            el.style.display = 'none';
+            el.style.display = STYLE.NONE;
         }
 
         function makeElementVisible(el : HTMLElement) {
-            el.style.visibility = 'visible';
+            el.style.visibility = STYLE.VISIBLE;
         }
 
         function makeElementInvisible(el : HTMLElement) {
-            el.style.visibility = 'hidden';
+            el.style.visibility = STYLE.HIDDEN;
         }
 
         function hasDimensions(el : HTMLElement) : boolean {
@@ -33,7 +41,7 @@ export function getComponentScript() : () => void {
 
         function isHidden(el : HTMLElement) : boolean {
             let computedStyle = window.getComputedStyle(el);
-            return (!computedStyle || computedStyle.display === 'none');
+            return (!computedStyle || computedStyle.display === STYLE.NONE);
         }
 
         function displayedElementsHaveDimensions(elements : Array<HTMLElement>) : boolean {
@@ -83,44 +91,42 @@ export function getComponentScript() : () => void {
             return false;
         }
 
-        let buttons = getElements('.{ CLASS.BUTTON }');
-        let tagline = getElements('.{ CLASS.TAGLINE }');
+        let images    = getElements('.{ CLASS.BUTTON } .{ CLASS.LOGO }');
+        let text      = getElements('.{ CLASS.BUTTON } .{ CLASS.TEXT }');
+        let tagline   = getElements('.{ CLASS.TAGLINE }');
+        let cards     = getElements('.{ CLASS.FUNDINGICONS } .{ CLASS.CARD }');
+        let optionals = getElements('.{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal');
 
-        function toggleTagline() {
+        function toggleOptionals() {
+
             if (tagline.some(isOverflowing)) {
                 tagline.forEach(makeElementInvisible);
             } else {
                 tagline.forEach(makeElementVisible);
             }
+
+            cards.forEach(el => showElement(el));
+            cards.filter(isOverflowing).forEach(hideElement);
+
+            text.forEach(el => showElement(el));
+            optionals.forEach(el => showElement(el));
+
+            if (images.some(isOverflowing) || text.some(isOverflowing)) {
+                text.forEach(hideElement);
+                optionals.forEach(hideElement);
+                
+            } else {
+                text.forEach(makeElementVisible);
+                optionals.forEach(el => showElement(el));
+            }
         }
 
-        buttons.forEach(button => {
+        onDisplay(images, () => {
+            images.forEach(makeElementVisible);
+            toggleOptionals();
 
-            let images = getElements('.{ CLASS.LOGO }', button);
-            let text   = getElements('.{ CLASS.TEXT }', button);
-
-            function showText() {
-                text.forEach(el => showElement(el, 'inline-block'));
-            }
-
-            function toggleText() {
-                if (images.some(isOverflowing) || text.some(isOverflowing)) {
-                    text.forEach(hideElement);
-                } else {
-                    text.forEach(makeElementVisible);
-                }
-            }
-
-            onDisplay(images, () => {
-                images.forEach(makeElementVisible);
-                toggleTagline();
-                toggleText();
-
-                window.addEventListener('resize', () => {
-                    toggleTagline();
-                    showText();
-                    toggleText();
-                });
+            window.addEventListener('resize', () => {
+                toggleOptionals();
             });
         });
 

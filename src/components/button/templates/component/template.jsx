@@ -207,9 +207,9 @@ function renderScript() : JsxHTMLNode {
     );
 }
 
-function renderStyle() : JsxHTMLNode {
+function renderStyle({ height } : { height? : number }) : JsxHTMLNode {
     return (
-        <style innerHTML={ componentStyle } />
+        <style innerHTML={ componentStyle({ height }) } />
     );
 }
 
@@ -226,7 +226,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     validateButtonProps(props);
 
     let { label, locale, color, shape, branding, tagline, funding,
-        layout, sources, multiple, fundingicons, env } = normalizeProps(props);
+        layout, sources, multiple, fundingicons, env, height } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({
@@ -246,7 +246,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env });
     let fundingiconNode = renderFundingIcons({ funding, fundingicons, locale });
 
-    let styleNode  = renderStyle();
+    let styleNode  = renderStyle({ height });
     let scriptNode = renderScript();
 
     return (

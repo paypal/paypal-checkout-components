@@ -158,6 +158,62 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             }
         });
+
+        for (let shape of getButtonConfig(label, 'shapes')) {
+
+            buttonConfigs.push({
+                button: {
+                    style: {
+                        label,
+                        shape,
+                        height: 45,
+                        size:   BUTTON_SIZE.SMALL
+                    }
+                }
+            });
+        }
+
+        buttonConfigs.push({
+            button: {
+                style: {
+                    label,
+                    height: 45,
+                    size:   BUTTON_SIZE.SMALL
+                },
+                funding: {
+                    allowed: [ FUNDING.CREDIT ]
+                }
+            }
+        });
+
+        buttonConfigs.push({
+            container: {
+                width: 340
+            },
+            button: {
+                style: {
+                    label,
+                    height: 44,
+                    size:   BUTTON_SIZE.RESPONSIVE
+                }
+            }
+        });
+
+        buttonConfigs.push({
+            container: {
+                width: 340
+            },
+            button: {
+                style: {
+                    label,
+                    height: 44,
+                    size:   BUTTON_SIZE.RESPONSIVE
+                },
+                funding: {
+                    allowed: [ FUNDING.VENMO ]
+                }
+            }
+        });
     }
 }
 

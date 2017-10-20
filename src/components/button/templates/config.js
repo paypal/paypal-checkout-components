@@ -232,8 +232,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
     [ BUTTON_LABEL.IDEAL ]: {
 
-        label:     `{ logo: ${ BUTTON_LOGO.IDEAL } }{separator}{ logo: ${ BUTTON_LOGO.PAYPAL } }`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.IDEAL } }{separator}{ logo: ${ BUTTON_LOGO.PAYPAL } }`,
+        label:     `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.IDEAL } } Online betalen`,
 
         defaultColor: BUTTON_COLOR.SILVER,
 

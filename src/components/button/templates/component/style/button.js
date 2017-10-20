@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ENV } from '../../../../../config/constants';
-import { BUTTON_LOGO, BUTTON_COLOR } from '../../../constants';
+import { BUTTON_COLOR } from '../../../constants';
 
 import { CLASS } from './class';
 
@@ -34,6 +34,7 @@ export let buttonStyle = `
         vertical-align: top;
         cursor: pointer;
         outline: none;
+        overflow: hidden;
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.TRANSPARENT } {
@@ -86,10 +87,6 @@ export let buttonStyle = `
         background: none;
         border: none;
         width: auto;
-    }
-
-    .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LOGO.PP } {
-        margin-right: 2px;
     }
 
     .${ CLASS.TEXT } {

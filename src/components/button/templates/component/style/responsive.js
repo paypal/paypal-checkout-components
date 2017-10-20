@@ -1,124 +1,134 @@
 /* @flow */
 
-import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_SIZE, BUTTON_LOGO } from '../../../constants';
-import { BUTTON_STYLE } from '../../style';
+import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER } from '../../../constants';
+import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../style';
+import { min, max, perc } from '../util';
 
 import { CLASS } from './class';
 
-let sizeResponsiveStyle = Object.keys(BUTTON_STYLE).map(size => {
-    let style = BUTTON_STYLE[size];
+const DUAL_BUTTON_MIN_RATIO = 2.8;
 
-    return `
-        @media only screen and (min-width: ${ style.minWidth }px) {
+export function buttonResponsiveStyle({ height } : { height? : number }) : string {
 
-            .${ CLASS.CONTAINER } {
-                min-width: ${ style.minWidth }px;
-                max-width: ${ style.maxWidth }px;
-                font-size: ${ style.fontSize }px;
+    return Object.keys(BUTTON_STYLE).map(size => {
+
+        let style = BUTTON_STYLE[size];
+        let buttonHeight = min(max(height || style.defaultHeight, style.minHeight), style.maxHeight);
+        let minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
+
+        return `
+
+            @media only screen and (min-width: ${ style.minWidth }px) {
+
+                .${ CLASS.CONTAINER } {
+                    min-width: ${ style.minWidth }px;
+                    max-width: ${ style.maxWidth }px;
+                    font-size: ${ max(perc(buttonHeight, 32), 10) }px;
+                }
+
+                .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
+                    height: ${ buttonHeight }px;
+                    min-height: ${ style.minHeight }px;
+                    max-height: ${ style.maxHeight }px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } {
+                    font-size: ${ max(perc(buttonHeight, 50), 10) }px;
+                }
+
+                .${ CLASS.LOGO } {
+                    height: ${ perc(buttonHeight, 35) + 10 }px;
+                    max-height: ${ perc(buttonHeight, 68) }px;
+                    min-height: ${ perc(buttonHeight, 60) }px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {
+                    border-radius: ${ Math.ceil(buttonHeight / 2) }px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
+                    border-radius: ${ perc(buttonHeight, 16) }px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
+                    margin-bottom: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) }px;
+                }
+
+                .${ CLASS.SEPARATOR } {
+                    margin: 0 ${ perc(buttonHeight, 5) }px;
+                }
+
+                .${ CLASS.TAGLINE } {
+                    height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
+                    line-height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) }px;
+                }
+
+                .${ CLASS.FUNDINGICONS } {
+                    height: ${ perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) }px;
+                }
+
+                .${ CLASS.CARD } {
+                    display: inline-block;
+                }
+
+                .${ CLASS.BUTTON } .${ CLASS.CARD } {
+                    width: 20%;
+                    max-width: ${ perc(buttonHeight, 160) };
+                    margin-top: 0;
+                    margin-left: 1.5%;
+                    margin-right: 1.5%;
+                }
+
+                .${ CLASS.BUTTON } .${ CLASS.CARD } img {
+                    width: 100%;
+                }
+
+                .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } {
+                    height: ${ perc(buttonHeight, 70) }px;
+                    margin-top: ${ perc(buttonHeight, 15) }px;
+                    margin-left: ${ perc(buttonHeight, 7) }px;
+                    margin-right: ${ perc(buttonHeight, 7) }px;
+                }
+
+                .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } img {
+                    height: 100%;
+                }
             }
 
-            .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
-                height: ${ style.height }px;
+            @media only screen and (min-width: ${ style.minWidth }px) and (max-width: ${ minDualWidth }px) {
+
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
+                    width: 100%;
+                    margin-right: 0;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
+                    display: none;
+                }
+
+                .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {
+                    display: none;
+                }
             }
 
-            .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } {
-                font-size: ${ style.largeFontSize }px;
+            @media only screen and (min-width: ${ max(style.minWidth, minDualWidth) }px) {
+
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
+                    display: inline-block;
+                    width: calc(50% - 2px);
+                    margin-right: 4px;
+                }
+
+                .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
+                    display: inline-block;
+                    width: calc(50% - 2px);
+                }
+
+                .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {
+                    display: block;
+                }
             }
+        `;
 
-            .${ CLASS.LOGO } {
-                height: ${ style.wordmarkSize }px;
-            }
-
-            .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LOGO.PP } {
-                height: ${ style.logoSize }px;
-            }
-
-            .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {
-                border-radius: ${ Math.ceil(style.height / 2) }px;
-            }
-
-            .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
-                border-radius: ${ style.rectRadius }px;
-            }
-
-            .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
-                margin-bottom: ${ style.verticalMargin }px;
-            }
-
-            .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.BUTTON } .${ CLASS.LOGO } {
-                height: ${ style.horizontal.wordmarkSize }px;
-            }
-
-            .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LOGO.PP } {
-                height: ${ style.horizontal.logoSize }px;
-            }
-
-            .${ CLASS.SEPARATOR } {
-                margin: 0 ${ style.separatorMargin }px;
-            }
-
-            .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL } .${ CLASS.SEPARATOR } {
-                margin: 0 ${ style.horizontal.separatorMargin }px;
-            }
-
-            .${ CLASS.TAGLINE } {
-                height: ${ style.taglineHeight }px;
-                line-height: ${ style.taglineHeight }px;
-            }
-
-            .${ CLASS.FUNDINGICONS } {
-                height: ${ style.fundingHeight }px;
-            }
-
-            .${ CLASS.CARD } {
-                height: ${ style.cardLogoSize }px;
-                margin: 0 ${ style.cardLogoMargin }px;
-            }
-
-            .${ CLASS.FUNDINGICONS } .${ CLASS.CARD } {
-                height: ${ style.fundingLogoSize || style.cardLogoSize };
-                margin: ${ ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) }px ${ style.fundingLogoMargin || style.cardLogoMargin }px;
-            }
-        }
-
-    `;
-}).join('\n');
-
-export let buttonResponsiveStyle = `
-
-    ${ sizeResponsiveStyle }
-
-    @media only screen and (max-width: ${ BUTTON_STYLE[BUTTON_SIZE.SMALL].minWidth }px) {
-
-        .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
-            width: 100%;
-            margin-right: 0;
-        }
-
-        .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
-            display: none;
-        }
-
-        .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {
-            display: none;
-        }
-    }
-
-    @media only screen and (min-width: ${ BUTTON_STYLE[BUTTON_SIZE.SMALL].minWidth }px) {
-
-        .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-0 {
-            display: inline-block;
-            width: calc(50% - 2px);
-            margin-right: 4px;
-        }
-
-        .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE }.${ CLASS.NUMBER }-1 {
-            display: inline-block;
-            width: calc(50% - 2px);
-        }
-
-        .${ CLASS.CONTAINER }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.HORIZONTAL }.${ CLASS.NUMBER }-${ BUTTON_NUMBER.MULTIPLE } .${ CLASS.TAGLINE } {
-            display: block;
-        }
-    }
-`;
+    }).join('\n');
+}

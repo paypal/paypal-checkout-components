@@ -2,9 +2,10 @@
 /* @jsx jsxDom */
 
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
-import { BUTTON_STYLE } from '../style';
+import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../style';
 import { getButtonConfig } from '../config';
 import { normalizeProps } from '../props';
+import { min, max, perc } from '../component/util';
 
 type ContainerTemplateOptions = {
     id : string,
@@ -44,20 +45,26 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
     throw new Error(`Unable to calculate responsive size for width: ${ width }`);
 }
 
-function getDimensions({  label, size, tagline, fundingicons, layout, number, viewport }) : DimensionsType {
+function getDimensions({  label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight }) : DimensionsType {
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
         size = determineResponsiveSize({ label, layout, width: viewport.width });
     }
 
-    let { width, height, fundingHeight, taglineHeight, verticalMargin } = BUTTON_STYLE[size];
+    let { defaultWidth, defaultHeight, minHeight, maxHeight, allowFunding, allowTagline } = BUTTON_STYLE[size];
 
-    if (fundingicons) {
-        height += fundingHeight;
-    } else if (tagline) {
-        height += taglineHeight;
+    buttonHeight = buttonHeight || defaultHeight;
+    buttonHeight = min(max(buttonHeight, minHeight), maxHeight);
+
+    let width  = defaultWidth;
+    let height = buttonHeight;
+
+    if (fundingicons && allowFunding) {
+        height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS);
+    } else if (tagline && allowTagline) {
+        height += perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE);
     } else if (layout === BUTTON_LAYOUT.VERTICAL) {
-        height = (height * number) + (verticalMargin * (number - 1));
+        height = (buttonHeight * number) + (perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) * (number - 1));
     }
 
     return { width, height };
@@ -66,11 +73,12 @@ function getDimensions({  label, size, tagline, fundingicons, layout, number, vi
 // eslint-disable-next-line no-unused-vars
 export function containerTemplate({ id, props, CLASS, on, container, tag, context, outlet, jsxDom } : ContainerTemplateOptions) : HTMLElement {
 
-    let { size, label, fundingicons, tagline, layout, sources } = normalizeProps(props);
+    let { size, label, fundingicons, tagline, layout, sources, height: buttonHeight } = normalizeProps(props);
 
     let getContainerDimensions = () => getDimensions({
         viewport: { width: container.offsetWidth, height: container.offsetHeight },
         number:   sources.length,
+        height:   buttonHeight,
         label,
         size,
         fundingicons,
@@ -111,7 +119,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                     }
 
                     #${ id }.${ tag }-layout-${ BUTTON_LAYOUT.VERTICAL } > .${ CLASS.OUTLET } {
-                        min-width: ${ BUTTON_STYLE[minimumSize].width }px;
+                        min-width: ${ BUTTON_STYLE[minimumSize].minWidth }px;
                     }
 
                     #${ id } > .${ CLASS.OUTLET } {

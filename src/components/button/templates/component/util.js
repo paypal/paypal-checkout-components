@@ -11,6 +11,18 @@ export function encode(html : string = '') : string {
         .replace(/\//g, '&#x2F;');
 }
 
+export function perc(pixels : number, percentage : number) : number {
+    return Math.round((pixels * percentage) / 100);
+}
+
+export function min(...args : Array<number>) : number {
+    return Math.min(...args);
+}
+
+export function max(...args : Array<number>) : number {
+    return Math.max(...args);
+}
+
 // eslint-disable-next-line no-use-before-define
 type ChildType = $ReadOnlyArray<ChildType> | JsxHTMLNode | string | void | null;
 type ChildrenType = $ReadOnlyArray<ChildType>;

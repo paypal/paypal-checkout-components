@@ -4,7 +4,7 @@ export const DEFAULT = 'default';
 
 type BUTTON_STYLE_OPTIONS_ENUM =
     Enum<'label' | 'size' | 'shape' | 'color' | 'layout' |
-    'fundingicons' | 'maxbuttons' | 'branding' | 'tagline'>;
+    'fundingicons' | 'maxbuttons' | 'branding' | 'tagline' | 'height'>;
 
 export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     LABEL:        'label',
@@ -15,7 +15,8 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     MAXBUTTONS:   'maxbuttons',
     FUNDINGICONS: 'fundingicons',
     BRANDING:     'branding',
-    TAGLINE:      'tagline'
+    TAGLINE:      'tagline',
+    HEIGHT:       'height'
 };
 
 type BUTTON_LABEL_ENUM =

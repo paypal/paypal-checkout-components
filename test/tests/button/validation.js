@@ -1122,6 +1122,154 @@ let buttonConfigs = [
     },
 
     {
+        name: 'height',
+
+        cases: [
+
+            {
+                height: 45,
+                valid:  true
+            },
+
+            {
+                height: 50,
+                valid:  false
+            },
+
+            {
+                height: 25,
+                valid:  true
+            },
+
+            {
+                height: 20,
+                valid:  false
+            },
+
+            {
+                size:   'small',
+                height: 45,
+                valid:  true
+            },
+
+            {
+                size:   'small',
+                height: 50,
+                valid:  false
+            },
+
+            {
+                size:   'small',
+                height: 25,
+                valid:  true
+            },
+
+            {
+                size:   'small',
+                height: 20,
+                valid:  false
+            },
+
+            {
+                size:   'medium',
+                height: 45,
+                valid:  true
+            },
+
+            {
+                size:   'medium',
+                height: 50,
+                valid:  false
+            },
+
+            {
+                size:   'medium',
+                height: 25,
+                valid:  false
+            },
+
+            {
+                size:   'medium',
+                height: 20,
+                valid:  false
+            },
+
+            {
+                size:   'large',
+                height: 45,
+                valid:  true
+            },
+
+            {
+                size:   'large',
+                height: 50,
+                valid:  false
+            },
+
+            {
+                size:   'large',
+                height: 40,
+                valid:  true
+            },
+
+            {
+                size:   'large',
+                height: 35,
+                valid:  false
+            },
+
+            {
+                size:   'large',
+                height: 25,
+                valid:  false
+            },
+
+            {
+                size:   'large',
+                height: 20,
+                valid:  false
+            },
+
+            {
+                size:   'responsive',
+                height: 45,
+                valid:  true
+            },
+
+            {
+                size:   'responsive',
+                height: 50,
+                valid:  false
+            },
+
+            {
+                size:   'responsive',
+                height: 25,
+                valid:  true
+            },
+
+            {
+                size:   'responsive',
+                height: 20,
+                valid:  false
+            }
+
+        // $FlowFixMe
+        ].map(({ height, size, valid }) => ({
+
+            desc: `height ${ height } with size ${ size || 'default' }`,
+
+            valid,
+
+            conf: {
+                style:       { height, size },
+                payment:     noop,
+                onAuthorize: noop
+            }
+        }))
+    },
+
+    {
         name: 'client',
 
         cases: [

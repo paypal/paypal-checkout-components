@@ -54,7 +54,8 @@ export function normalizeProps(props : Object) : Object {
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout       = getButtonConfig(label, 'defaultLayout'),
-        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max
+        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
+        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
     } = style;
 
     max = determineMaxButtons({ label, layout, max });
@@ -70,5 +71,5 @@ export function normalizeProps(props : Object) : Object {
     tagline = enableTagline({ tagline, branding, fundingicons, layout });
 
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env };
+        tagline, funding, layout, sources, max, multiple, env, height };
 }

@@ -7,15 +7,15 @@ import { brandingStyle } from './branding';
 import { labelStyle } from './labels';
 import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
-import { cardStyle } from './card';
 
-export let componentStyle = `
-    ${ pageStyle }
-    ${ buttonStyle }
-    ${ buttonColorStyle }
-    ${ layoutStyle }
-    ${ brandingStyle }
-    ${ labelStyle }
-    ${ buttonResponsiveStyle }
-    ${ cardStyle }
-`;
+export function componentStyle({ height } : { height? : number }) : string {
+    return `
+        ${ pageStyle }
+        ${ buttonStyle }
+        ${ buttonColorStyle }
+        ${ layoutStyle }
+        ${ brandingStyle }
+        ${ labelStyle }
+        ${ buttonResponsiveStyle({ height }) }
+    `;
+}
