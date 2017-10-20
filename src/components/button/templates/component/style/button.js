@@ -24,7 +24,7 @@ export let buttonStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.BUTTON } {
+    .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;

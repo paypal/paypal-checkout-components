@@ -61,13 +61,13 @@ function determineButtons({ label, color, sources, multiple } : { label : $Value
     });
 }
 
-function renderCards({ funding, locale } : { funding : FundingSelection, locale : LocaleType }) : Array<JsxHTMLNode> {
+function renderCards({ funding, locale, button } : { funding : FundingSelection, locale : LocaleType, button? : boolean }) : Array<JsxHTMLNode> {
 
     return determineEligibleCards({ funding, count: 4, locale }).map(name => {
         let logo = cardLogos[name];
 
         return (
-            <span class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }>
+            <span { ...{ [ATTRIBUTE.BUTTON]: (button || false) } } class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }>
                 <img src={ `data:image/svg+xml;base64,${ btoa(logo) }` } alt={ name } />
             </span>
         );
@@ -81,7 +81,7 @@ function renderFundingIcons({ funding, fundingicons, locale } :
         return;
     }
 
-    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ funding, locale }) }</div>;
+    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ funding, locale, button: true }) }</div>;
 }
 
 function renderContent(text : string, { locale, color, branding, logoColor, funding, env } :
@@ -158,7 +158,12 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
     contentText = renderContent(contentText, { locale, color, branding, logoColor, funding, env });
 
     return (
-        <div { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source } } class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` } role='button' tabindex='0'>
+        <div
+            { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
+            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
+            role='button'
+            tabindex='0'>
+            
             { contentText }
         </div>
     );
@@ -245,7 +250,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let scriptNode = renderScript();
 
     return (
-        <div data-version={ __MINOR_VERSION__ } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
+        <div { ...{ [ ATTRIBUTE.VERSION ]: __MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
             { styleNode }
 
             { buttonNodes }

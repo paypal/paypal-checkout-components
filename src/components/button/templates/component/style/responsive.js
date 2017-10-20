@@ -17,7 +17,7 @@ let sizeResponsiveStyle = Object.keys(BUTTON_STYLE).map(size => {
                 font-size: ${ style.fontSize }px;
             }
 
-            .${ CLASS.BUTTON } {
+            .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
                 height: ${ style.height }px;
             }
 

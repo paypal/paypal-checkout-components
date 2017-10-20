@@ -150,7 +150,9 @@ export const CARD_PRIORITY = [
 ];
 
 export const ATTRIBUTE = {
-    FUNDING_SOURCE: 'data-funding-source'
+    BUTTON:         'data-button',
+    FUNDING_SOURCE: 'data-funding-source',
+    VERSION:        'data-version'
 };
 
 export const PLATFORM = {

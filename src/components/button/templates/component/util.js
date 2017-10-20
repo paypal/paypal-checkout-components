@@ -39,8 +39,11 @@ export class JsxHTMLNode {
         }
 
         return Object.keys(props).filter(key => {
-            return key !== 'innerHTML';
+            return key !== 'innerHTML' && props && props[key] !== false;
         }).map(key => {
+            if (props && props[key] === true) {
+                return `${ encode(key) }`;
+            }
             return props ? `${ encode(key) }="${ encode(props[key]) }"` : '';
         }).join(' ');
     }
