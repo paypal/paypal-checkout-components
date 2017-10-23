@@ -110,7 +110,8 @@
             MAXBUTTONS: "maxbuttons",
             FUNDINGICONS: "fundingicons",
             BRANDING: "branding",
-            TAGLINE: "tagline"
+            TAGLINE: "tagline",
+            HEIGHT: "height"
         }, BUTTON_LABEL = {
             PAYPAL: "paypal",
             CHECKOUT: "checkout",
@@ -245,7 +246,7 @@
         module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M 12 5.315 L 4.2 5.315 C 3.7 5.315 3.2 5.715 3.1 6.215 L 0 26.215 C -0.1 26.615 0.2 26.915 0.6 26.915 L 4.3 26.915 C 4.8 26.915 5.3 26.515 5.4 26.015 L 6.2 20.615 C 6.3 20.115 6.7 19.715 7.3 19.715 L 9.8 19.715 C 14.9 19.715 17.9 17.215 18.7 12.315 C 19 10.215 18.7 8.515 17.7 7.315 C 16.6 6.015 14.6 5.315 12 5.315 Z M 12.9 12.615 C 12.5 15.415 10.3 15.415 8.3 15.415 L 7.1 15.415 L 7.9 10.215 C 7.9 9.915 8.2 9.715 8.5 9.715 L 9 9.715 C 10.4 9.715 11.7 9.715 12.4 10.515 C 12.9 10.915 13.1 11.615 12.9 12.615 Z" fill="#333030"/>\n  <path d="M 35.2 12.515 L 31.5 12.515 C 31.2 12.515 30.9 12.715 30.9 13.015 L 30.7 14.015 L 30.4 13.615 C 29.6 12.415 27.8 12.015 26 12.015 C 21.9 12.015 18.4 15.115 17.7 19.515 C 17.3 21.715 17.8 23.815 19.1 25.215 C 20.2 26.515 21.9 27.115 23.8 27.115 C 27.1 27.115 29 25.015 29 25.015 L 28.8 26.015 C 28.7 26.415 29 26.815 29.4 26.815 L 32.8 26.815 C 33.3 26.815 33.8 26.415 33.9 25.915 L 35.9 13.115 C 36 12.915 35.6 12.515 35.2 12.515 Z M 30.1 19.815 C 29.7 21.915 28.1 23.415 25.9 23.415 C 24.8 23.415 24 23.115 23.4 22.415 C 22.8 21.715 22.6 20.815 22.8 19.815 C 23.1 17.715 24.9 16.215 27 16.215 C 28.1 16.215 28.9 16.615 29.5 17.215 C 30 17.815 30.2 18.715 30.1 19.815 Z" fill="#333030"/>\n  <path d="M 55.1 12.515 L 51.4 12.515 C 51 12.515 50.7 12.715 50.5 13.015 L 45.3 20.615 L 43.1 13.315 C 43 12.815 42.5 12.515 42.1 12.515 L 38.4 12.515 C 38 12.515 37.6 12.915 37.8 13.415 L 41.9 25.515 L 38 30.915 C 37.7 31.315 38 31.915 38.5 31.915 L 42.2 31.915 C 42.6 31.915 42.9 31.715 43.1 31.415 L 55.6 13.415 C 55.9 13.115 55.6 12.515 55.1 12.515 Z" fill="#333030"/>\n  <path d="M 67.5 5.315 L 59.7 5.315 C 59.2 5.315 58.7 5.715 58.6 6.215 L 55.5 26.115 C 55.4 26.515 55.7 26.815 56.1 26.815 L 60.1 26.815 C 60.5 26.815 60.8 26.515 60.8 26.215 L 61.7 20.515 C 61.8 20.015 62.2 19.615 62.8 19.615 L 65.3 19.615 C 70.4 19.615 73.4 17.115 74.2 12.215 C 74.5 10.115 74.2 8.415 73.2 7.215 C 72 6.015 70.1 5.315 67.5 5.315 Z M 68.4 12.615 C 68 15.415 65.8 15.415 63.8 15.415 L 62.6 15.415 L 63.4 10.215 C 63.4 9.915 63.7 9.715 64 9.715 L 64.5 9.715 C 65.9 9.715 67.2 9.715 67.9 10.515 C 68.4 10.915 68.5 11.615 68.4 12.615 Z" fill="#636363"/>\n  <path d="M 90.7 12.515 L 87 12.515 C 86.7 12.515 86.4 12.715 86.4 13.015 L 86.2 14.015 L 85.9 13.615 C 85.1 12.415 83.3 12.015 81.5 12.015 C 77.4 12.015 73.9 15.115 73.2 19.515 C 72.8 21.715 73.3 23.815 74.6 25.215 C 75.7 26.515 77.4 27.115 79.3 27.115 C 82.6 27.115 84.5 25.015 84.5 25.015 L 84.3 26.015 C 84.2 26.415 84.5 26.815 84.9 26.815 L 88.3 26.815 C 88.8 26.815 89.3 26.415 89.4 25.915 L 91.4 13.115 C 91.4 12.915 91.1 12.515 90.7 12.515 Z M 85.5 19.815 C 85.1 21.915 83.5 23.415 81.3 23.415 C 80.2 23.415 79.4 23.115 78.8 22.415 C 78.2 21.715 78 20.815 78.2 19.815 C 78.5 17.715 80.3 16.215 82.4 16.215 C 83.5 16.215 84.3 16.615 84.9 17.215 C 85.5 17.815 85.7 18.715 85.5 19.815 Z" fill="#636363"/>\n  <path d="M 95.1 5.915 L 91.9 26.215 C 91.8 26.615 92.1 26.915 92.5 26.915 L 95.7 26.915 C 96.2 26.915 96.7 26.515 96.8 26.015 L 100 6.115 C 100.1 5.715 99.8 5.415 99.4 5.415 L 95.8 5.415 C 95.4 5.315 95.2 5.515 95.1 5.915 Z" fill="#636363"/>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/paypal_blue.svg": function(module, exports) {
-        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 67.894 6.862 L 60.094 6.862 C 59.594 6.862 59.094 7.262 58.994 7.762 L 55.894 27.662 C 55.794 28.062 56.094 28.362 56.494 28.362 L 60.494 28.362 C 60.894 28.362 61.194 28.062 61.194 27.762 L 62.094 22.062 C 62.194 21.562 62.594 21.162 63.194 21.162 L 65.694 21.162 C 70.794 21.162 73.794 18.662 74.594 13.762 C 74.894 11.662 74.594 9.962 73.594 8.762 C 72.394 7.562 70.494 6.862 67.894 6.862 Z M 68.794 14.162 C 68.394 16.962 66.194 16.962 64.194 16.962 L 62.994 16.962 L 63.794 11.762 C 63.794 11.462 64.094 11.262 64.394 11.262 L 64.894 11.262 C 66.294 11.262 67.594 11.262 68.294 12.062 C 68.794 12.462 68.894 13.162 68.794 14.162 Z"></path>\n    <path fill="#ffffff" d="M 12.394 6.862 L 4.594 6.862 C 4.094 6.862 3.594 7.262 3.494 7.762 L 0.394 27.762 C 0.294 28.162 0.594 28.462 0.994 28.462 L 4.694 28.462 C 5.194 28.462 5.694 28.062 5.794 27.562 L 6.594 22.162 C 6.694 21.662 7.094 21.262 7.694 21.262 L 10.194 21.262 C 15.294 21.262 18.294 18.762 19.094 13.862 C 19.394 11.762 19.094 10.062 18.094 8.862 C 16.994 7.562 14.994 6.862 12.394 6.862 Z M 13.294 14.162 C 12.894 16.962 10.694 16.962 8.694 16.962 L 7.494 16.962 L 8.294 11.762 C 8.294 11.462 8.594 11.262 8.894 11.262 L 9.394 11.262 C 10.794 11.262 12.094 11.262 12.794 12.062 C 13.294 12.462 13.494 13.162 13.294 14.162 Z"></path>\n    <path fill="#ffffff" d="M 35.594 14.062 L 31.894 14.062 C 31.594 14.062 31.294 14.262 31.294 14.562 L 31.094 15.562 L 30.794 15.162 C 29.994 13.962 28.194 13.562 26.394 13.562 C 22.294 13.562 18.794 16.662 18.094 21.062 C 17.694 23.262 18.194 25.362 19.494 26.762 C 20.594 28.062 22.294 28.662 24.194 28.662 C 27.494 28.662 29.394 26.562 29.394 26.562 L 29.194 27.562 C 29.094 27.962 29.394 28.362 29.794 28.362 L 33.194 28.362 C 33.694 28.362 34.194 27.962 34.294 27.462 L 36.294 14.662 C 36.394 14.462 35.994 14.062 35.594 14.062 Z M 30.494 21.362 C 30.094 23.462 28.494 24.962 26.294 24.962 C 25.194 24.962 24.394 24.662 23.794 23.962 C 23.194 23.262 22.994 22.362 23.194 21.362 C 23.494 19.262 25.294 17.762 27.394 17.762 C 28.494 17.762 29.294 18.162 29.894 18.762 C 30.394 19.362 30.594 20.262 30.494 21.362 Z"></path>\n    <path fill="#ffffff" d="M 91.094 14.062 L 87.394 14.062 C 87.094 14.062 86.794 14.262 86.794 14.562 L 86.594 15.562 L 86.294 15.162 C 85.494 13.962 83.694 13.562 81.894 13.562 C 77.794 13.562 74.294 16.662 73.594 21.062 C 73.194 23.262 73.694 25.362 74.994 26.762 C 76.094 28.062 77.794 28.662 79.694 28.662 C 82.994 28.662 84.894 26.562 84.894 26.562 L 84.694 27.562 C 84.594 27.962 84.894 28.362 85.294 28.362 L 88.694 28.362 C 89.194 28.362 89.694 27.962 89.794 27.462 L 91.794 14.662 C 91.794 14.462 91.494 14.062 91.094 14.062 Z M 85.894 21.362 C 85.494 23.462 83.894 24.962 81.694 24.962 C 80.594 24.962 79.794 24.662 79.194 23.962 C 78.594 23.262 78.394 22.362 78.594 21.362 C 78.894 19.262 80.694 17.762 82.794 17.762 C 83.894 17.762 84.694 18.162 85.294 18.762 C 85.894 19.362 86.094 20.262 85.894 21.362 Z"></path>\n    <path fill="#ffffff" d="M 55.494 14.062 L 51.794 14.062 C 51.394 14.062 51.094 14.262 50.894 14.562 L 45.694 22.162 L 43.494 14.862 C 43.394 14.362 42.894 14.062 42.494 14.062 L 38.794 14.062 C 38.394 14.062 37.994 14.462 38.194 14.962 L 42.294 27.062 L 38.394 32.462 C 38.094 32.862 38.394 33.462 38.894 33.462 L 42.594 33.462 C 42.994 33.462 43.294 33.262 43.494 32.962 L 55.994 14.962 C 56.294 14.662 55.994 14.062 55.494 14.062 Z"></path>\n    <path fill="#ffffff" d="M 95.494 7.462 L 92.294 27.762 C 92.194 28.162 92.494 28.462 92.894 28.462 L 96.094 28.462 C 96.594 28.462 97.094 28.062 97.194 27.562 L 100.394 7.662 C 100.494 7.262 100.194 6.962 99.794 6.962 L 96.194 6.962 C 95.794 6.862 95.594 7.062 95.494 7.462 Z"></path>\n    <path fill="#003087" d="M 12 4.917 L 4.2 4.917 C 3.7 4.917 3.2 5.317 3.1 5.817 L 0 25.817 C -0.1 26.217 0.2 26.517 0.6 26.517 L 4.3 26.517 C 4.8 26.517 5.3 26.117 5.4 25.617 L 6.2 20.217 C 6.3 19.717 6.7 19.317 7.3 19.317 L 9.8 19.317 C 14.9 19.317 17.9 16.817 18.7 11.917 C 19 9.817 18.7 8.117 17.7 6.917 C 16.6 5.617 14.6 4.917 12 4.917 Z M 12.9 12.217 C 12.5 15.017 10.3 15.017 8.3 15.017 L 7.1 15.017 L 7.9 9.817 C 7.9 9.517 8.2 9.317 8.5 9.317 L 9 9.317 C 10.4 9.317 11.7 9.317 12.4 10.117 C 12.9 10.517 13.1 11.217 12.9 12.217 Z"></path>\n    <path fill="#003087" d="M 35.2 12.117 L 31.5 12.117 C 31.2 12.117 30.9 12.317 30.9 12.617 L 30.7 13.617 L 30.4 13.217 C 29.6 12.017 27.8 11.617 26 11.617 C 21.9 11.617 18.4 14.717 17.7 19.117 C 17.3 21.317 17.8 23.417 19.1 24.817 C 20.2 26.117 21.9 26.717 23.8 26.717 C 27.1 26.717 29 24.617 29 24.617 L 28.8 25.617 C 28.7 26.017 29 26.417 29.4 26.417 L 32.8 26.417 C 33.3 26.417 33.8 26.017 33.9 25.517 L 35.9 12.717 C 36 12.517 35.6 12.117 35.2 12.117 Z M 30.1 19.317 C 29.7 21.417 28.1 22.917 25.9 22.917 C 24.8 22.917 24 22.617 23.4 21.917 C 22.8 21.217 22.6 20.317 22.8 19.317 C 23.1 17.217 24.9 15.717 27 15.717 C 28.1 15.717 28.9 16.117 29.5 16.717 C 30 17.417 30.2 18.317 30.1 19.317 Z"></path>\n    <path fill="#003087" d="M 55.1 12.117 L 51.4 12.117 C 51 12.117 50.7 12.317 50.5 12.617 L 45.3 20.217 L 43.1 12.917 C 43 12.417 42.5 12.117 42.1 12.117 L 38.4 12.117 C 38 12.117 37.6 12.517 37.8 13.017 L 41.9 25.117 L 38 30.517 C 37.7 30.917 38 31.517 38.5 31.517 L 42.2 31.517 C 42.6 31.517 42.9 31.317 43.1 31.017 L 55.6 13.017 C 55.9 12.717 55.6 12.117 55.1 12.117 Z"></path>\n    <path fill="#009cde" d="M 67.5 4.917 L 59.7 4.917 C 59.2 4.917 58.7 5.317 58.6 5.817 L 55.5 25.717 C 55.4 26.117 55.7 26.417 56.1 26.417 L 60.1 26.417 C 60.5 26.417 60.8 26.117 60.8 25.817 L 61.7 20.117 C 61.8 19.617 62.2 19.217 62.8 19.217 L 65.3 19.217 C 70.4 19.217 73.4 16.717 74.2 11.817 C 74.5 9.717 74.2 8.017 73.2 6.817 C 72 5.617 70.1 4.917 67.5 4.917 Z M 68.4 12.217 C 68 15.017 65.8 15.017 63.8 15.017 L 62.6 15.017 L 63.4 9.817 C 63.4 9.517 63.7 9.317 64 9.317 L 64.5 9.317 C 65.9 9.317 67.2 9.317 67.9 10.117 C 68.4 10.517 68.5 11.217 68.4 12.217 Z"></path>\n    <path fill="#009cde" d="M 90.7 12.117 L 87 12.117 C 86.7 12.117 86.4 12.317 86.4 12.617 L 86.2 13.617 L 85.9 13.217 C 85.1 12.017 83.3 11.617 81.5 11.617 C 77.4 11.617 73.9 14.717 73.2 19.117 C 72.8 21.317 73.3 23.417 74.6 24.817 C 75.7 26.117 77.4 26.717 79.3 26.717 C 82.6 26.717 84.5 24.617 84.5 24.617 L 84.3 25.617 C 84.2 26.017 84.5 26.417 84.9 26.417 L 88.3 26.417 C 88.8 26.417 89.3 26.017 89.4 25.517 L 91.4 12.717 C 91.4 12.517 91.1 12.117 90.7 12.117 Z M 85.5 19.317 C 85.1 21.417 83.5 22.917 81.3 22.917 C 80.2 22.917 79.4 22.617 78.8 21.917 C 78.2 21.217 78 20.317 78.2 19.317 C 78.5 17.217 80.3 15.717 82.4 15.717 C 83.5 15.717 84.3 16.117 84.9 16.717 C 85.5 17.417 85.7 18.317 85.5 19.317 Z"></path>\n    <path fill="#009cde" d="M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"></path>\n</svg>\n';
+        module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#003087" d="M 12 4.917 L 4.2 4.917 C 3.7 4.917 3.2 5.317 3.1 5.817 L 0 25.817 C -0.1 26.217 0.2 26.517 0.6 26.517 L 4.3 26.517 C 4.8 26.517 5.3 26.117 5.4 25.617 L 6.2 20.217 C 6.3 19.717 6.7 19.317 7.3 19.317 L 9.8 19.317 C 14.9 19.317 17.9 16.817 18.7 11.917 C 19 9.817 18.7 8.117 17.7 6.917 C 16.6 5.617 14.6 4.917 12 4.917 Z M 12.9 12.217 C 12.5 15.017 10.3 15.017 8.3 15.017 L 7.1 15.017 L 7.9 9.817 C 7.9 9.517 8.2 9.317 8.5 9.317 L 9 9.317 C 10.4 9.317 11.7 9.317 12.4 10.117 C 12.9 10.517 13.1 11.217 12.9 12.217 Z"></path>\n    <path fill="#003087" d="M 35.2 12.117 L 31.5 12.117 C 31.2 12.117 30.9 12.317 30.9 12.617 L 30.7 13.617 L 30.4 13.217 C 29.6 12.017 27.8 11.617 26 11.617 C 21.9 11.617 18.4 14.717 17.7 19.117 C 17.3 21.317 17.8 23.417 19.1 24.817 C 20.2 26.117 21.9 26.717 23.8 26.717 C 27.1 26.717 29 24.617 29 24.617 L 28.8 25.617 C 28.7 26.017 29 26.417 29.4 26.417 L 32.8 26.417 C 33.3 26.417 33.8 26.017 33.9 25.517 L 35.9 12.717 C 36 12.517 35.6 12.117 35.2 12.117 Z M 30.1 19.317 C 29.7 21.417 28.1 22.917 25.9 22.917 C 24.8 22.917 24 22.617 23.4 21.917 C 22.8 21.217 22.6 20.317 22.8 19.317 C 23.1 17.217 24.9 15.717 27 15.717 C 28.1 15.717 28.9 16.117 29.5 16.717 C 30 17.417 30.2 18.317 30.1 19.317 Z"></path>\n    <path fill="#003087" d="M 55.1 12.117 L 51.4 12.117 C 51 12.117 50.7 12.317 50.5 12.617 L 45.3 20.217 L 43.1 12.917 C 43 12.417 42.5 12.117 42.1 12.117 L 38.4 12.117 C 38 12.117 37.6 12.517 37.8 13.017 L 41.9 25.117 L 38 30.517 C 37.7 30.917 38 31.517 38.5 31.517 L 42.2 31.517 C 42.6 31.517 42.9 31.317 43.1 31.017 L 55.6 13.017 C 55.9 12.717 55.6 12.117 55.1 12.117 Z"></path>\n    <path fill="#009cde" d="M 67.5 4.917 L 59.7 4.917 C 59.2 4.917 58.7 5.317 58.6 5.817 L 55.5 25.717 C 55.4 26.117 55.7 26.417 56.1 26.417 L 60.1 26.417 C 60.5 26.417 60.8 26.117 60.8 25.817 L 61.7 20.117 C 61.8 19.617 62.2 19.217 62.8 19.217 L 65.3 19.217 C 70.4 19.217 73.4 16.717 74.2 11.817 C 74.5 9.717 74.2 8.017 73.2 6.817 C 72 5.617 70.1 4.917 67.5 4.917 Z M 68.4 12.217 C 68 15.017 65.8 15.017 63.8 15.017 L 62.6 15.017 L 63.4 9.817 C 63.4 9.517 63.7 9.317 64 9.317 L 64.5 9.317 C 65.9 9.317 67.2 9.317 67.9 10.117 C 68.4 10.517 68.5 11.217 68.4 12.217 Z"></path>\n    <path fill="#009cde" d="M 90.7 12.117 L 87 12.117 C 86.7 12.117 86.4 12.317 86.4 12.617 L 86.2 13.617 L 85.9 13.217 C 85.1 12.017 83.3 11.617 81.5 11.617 C 77.4 11.617 73.9 14.717 73.2 19.117 C 72.8 21.317 73.3 23.417 74.6 24.817 C 75.7 26.117 77.4 26.717 79.3 26.717 C 82.6 26.717 84.5 24.617 84.5 24.617 L 84.3 25.617 C 84.2 26.017 84.5 26.417 84.9 26.417 L 88.3 26.417 C 88.8 26.417 89.3 26.017 89.4 25.517 L 91.4 12.717 C 91.4 12.517 91.1 12.117 90.7 12.117 Z M 85.5 19.317 C 85.1 21.417 83.5 22.917 81.3 22.917 C 80.2 22.917 79.4 22.617 78.8 21.917 C 78.2 21.217 78 20.317 78.2 19.317 C 78.5 17.217 80.3 15.717 82.4 15.717 C 83.5 15.717 84.3 16.117 84.9 16.717 C 85.5 17.417 85.7 18.317 85.5 19.317 Z"></path>\n    <path fill="#009cde" d="M 95.1 5.417 L 91.9 25.717 C 91.8 26.117 92.1 26.417 92.5 26.417 L 95.7 26.417 C 96.2 26.417 96.7 26.017 96.8 25.517 L 100 5.617 C 100.1 5.217 99.8 4.917 99.4 4.917 L 95.8 4.917 C 95.4 4.917 95.2 5.117 95.1 5.417 Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/paypal_white.svg": function(module, exports) {
         module.exports = '<svg width="100" height="32" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 12 5.315 L 4.2 5.315 C 3.7 5.315 3.2 5.715 3.1 6.215 L 0 26.215 C -0.1 26.615 0.2 26.915 0.6 26.915 L 4.3 26.915 C 4.8 26.915 5.3 26.515 5.4 26.015 L 6.2 20.615 C 6.3 20.115 6.7 19.715 7.3 19.715 L 9.8 19.715 C 14.9 19.715 17.9 17.215 18.7 12.315 C 19 10.215 18.7 8.515 17.7 7.315 C 16.6 6.015 14.6 5.315 12 5.315 Z M 12.9 12.615 C 12.5 15.415 10.3 15.415 8.3 15.415 L 7.1 15.415 L 7.9 10.215 C 7.9 9.915 8.2 9.715 8.5 9.715 L 9 9.715 C 10.4 9.715 11.7 9.715 12.4 10.515 C 12.9 10.915 13.1 11.615 12.9 12.615 Z"></path>\n    <path fill="#ffffff" d="M 35.2 12.515 L 31.5 12.515 C 31.2 12.515 30.9 12.715 30.9 13.015 L 30.7 14.015 L 30.4 13.615 C 29.6 12.415 27.8 12.015 26 12.015 C 21.9 12.015 18.4 15.115 17.7 19.515 C 17.3 21.715 17.8 23.815 19.1 25.215 C 20.2 26.515 21.9 27.115 23.8 27.115 C 27.1 27.115 29 25.015 29 25.015 L 28.8 26.015 C 28.7 26.415 29 26.815 29.4 26.815 L 32.8 26.815 C 33.3 26.815 33.8 26.415 33.9 25.915 L 35.9 13.115 C 36 12.915 35.6 12.515 35.2 12.515 Z M 30.1 19.815 C 29.7 21.915 28.1 23.415 25.9 23.415 C 24.8 23.415 24 23.115 23.4 22.415 C 22.8 21.715 22.6 20.815 22.8 19.815 C 23.1 17.715 24.9 16.215 27 16.215 C 28.1 16.215 28.9 16.615 29.5 17.215 C 30 17.815 30.2 18.715 30.1 19.815 Z"></path>\n    <path fill="#ffffff" d="M 55.1 12.515 L 51.4 12.515 C 51 12.515 50.7 12.715 50.5 13.015 L 45.3 20.615 L 43.1 13.315 C 43 12.815 42.5 12.515 42.1 12.515 L 38.4 12.515 C 38 12.515 37.6 12.915 37.8 13.415 L 41.9 25.515 L 38 30.915 C 37.7 31.315 38 31.915 38.5 31.915 L 42.2 31.915 C 42.6 31.915 42.9 31.715 43.1 31.415 L 55.6 13.415 C 55.9 13.115 55.6 12.515 55.1 12.515 Z"></path>\n    <path fill="#ffffff" d="M 67.5 5.315 L 59.7 5.315 C 59.2 5.315 58.7 5.715 58.6 6.215 L 55.5 26.115 C 55.4 26.515 55.7 26.815 56.1 26.815 L 60.1 26.815 C 60.5 26.815 60.8 26.515 60.8 26.215 L 61.7 20.515 C 61.8 20.015 62.2 19.615 62.8 19.615 L 65.3 19.615 C 70.4 19.615 73.4 17.115 74.2 12.215 C 74.5 10.115 74.2 8.415 73.2 7.215 C 72 6.015 70.1 5.315 67.5 5.315 Z M 68.4 12.615 C 68 15.415 65.8 15.415 63.8 15.415 L 62.6 15.415 L 63.4 10.215 C 63.4 9.915 63.7 9.715 64 9.715 L 64.5 9.715 C 65.9 9.715 67.2 9.715 67.9 10.515 C 68.4 10.915 68.5 11.615 68.4 12.615 Z"></path>\n    <path fill="#ffffff" d="M 90.7 12.515 L 87 12.515 C 86.7 12.515 86.4 12.715 86.4 13.015 L 86.2 14.015 L 85.9 13.615 C 85.1 12.415 83.3 12.015 81.5 12.015 C 77.4 12.015 73.9 15.115 73.2 19.515 C 72.8 21.715 73.3 23.815 74.6 25.215 C 75.7 26.515 77.4 27.115 79.3 27.115 C 82.6 27.115 84.5 25.015 84.5 25.015 L 84.3 26.015 C 84.2 26.415 84.5 26.815 84.9 26.815 L 88.3 26.815 C 88.8 26.815 89.3 26.415 89.4 25.915 L 91.4 13.115 C 91.4 12.915 91.1 12.515 90.7 12.515 Z M 85.5 19.815 C 85.1 21.915 83.5 23.415 81.3 23.415 C 80.2 23.415 79.4 23.115 78.8 22.415 C 78.2 21.715 78 20.815 78.2 19.815 C 78.5 17.715 80.3 16.215 82.4 16.215 C 83.5 16.215 84.3 16.615 84.9 17.215 C 85.5 17.815 85.7 18.715 85.5 19.815 Z"></path>\n    <path fill="#ffffff" d="M 95.1 5.915 L 91.9 26.215 C 91.8 26.615 92.1 26.915 92.5 26.915 L 95.7 26.915 C 96.2 26.915 96.7 26.515 96.8 26.015 L 100 6.115 C 100.1 5.715 99.8 5.415 99.4 5.415 L 95.8 5.415 C 95.4 5.315 95.2 5.515 95.1 5.915 Z"></path>\n</svg>\n';
@@ -254,7 +255,7 @@
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="24" height="32" viewBox="0 0 24 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446" style="fill: rgb(99, 99, 99);"/>\n  <path opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"/>\n  <path d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z" style="fill: rgb(51, 48, 48);"/>\n  <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n    <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"/>\n    <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"/>\n    <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"/>\n  </g>\n</svg>';
     },
     "./src/components/button/templates/component/logos/pp_blue.svg": function(module, exports) {
-        module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 6.675 30.9 C 6.581 31.2 6.862 31.6 7.236 31.6 L 11.356 31.6 C 11.825 31.6 12.292 31.2 12.386 30.7 L 12.386 30.5 L 13.228 25.3 L 13.228 25 C 13.322 24.5 13.79 24.1 14.258 24.1 L 14.821 24.1 C 18.845 24.1 21.935 22.4 22.871 17.5 C 23.339 15.4 23.153 13.7 22.029 12.4 C 21.748 12 21.279 11.7 20.905 11.5 L 20.905 11.5"></path>\n    <path fill="#ffffff" d="M 20.905 11.5 C 21.185 9.4 20.905 8 19.782 6.6 C 18.564 5.2 16.411 4.6 13.697 4.6 L 5.739 4.6 C 5.271 4.6 4.71 5 4.615 5.6 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 8.173 20.6 C 8.267 20 8.735 19.6 9.296 19.6 L 11.636 19.6 C 16.224 19.6 19.782 17.7 20.905 12 C 20.812 11.8 20.905 11.6 20.905 11.5"></path>\n    <path fill="#ffffff" d="M 9.485 11.5 C 9.577 11.1 9.765 10.8 10.046 10.7 C 10.232 10.6 10.326 10.6 10.513 10.6 L 16.692 10.6 C 17.442 10.6 18.189 10.6 18.753 10.7 C 18.939 10.8 19.127 10.8 19.314 10.8 C 19.501 10.9 19.688 10.9 19.782 11 C 19.875 11 19.968 11.1 20.063 11.1 C 20.343 11.2 20.624 11.3 20.905 11.4 C 21.185 9.3 20.905 7.9 19.782 6.6 C 18.658 5.2 16.506 4.5 13.79 4.5 L 5.739 4.5 C 5.271 4.5 4.71 5 4.615 5.5 L 1.339 27.8 C 1.339 28.2 1.62 28.6 2.088 28.6 L 6.956 28.6 L 8.267 20.4 L 9.485 11.5 Z"></path>\n    <path fill="#009cde" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 6.675 28.9 C 6.581 29.3 6.862 29.6 7.236 29.6 L 11.356 29.6 C 11.825 29.6 12.292 29.3 12.386 28.8 L 12.386 28.5 L 13.228 23.3 L 13.228 23.1 C 13.322 22.6 13.79 22.2 14.258 22.2 L 14.821 22.2 C 18.845 22.2 21.935 20.5 22.871 15.5 C 23.339 13.4 23.153 11.7 22.029 10.5 C 21.748 10.1 21.279 9.8 20.905 9.5 L 20.905 9.5"></path>\n    <path fill="#012169" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 8.173 18.7 C 8.267 18.1 8.735 17.7 9.296 17.7 L 11.636 17.7 C 16.224 17.7 19.782 15.7 20.905 10.1 C 20.812 9.8 20.905 9.7 20.905 9.5"></path>\n    <path fill="#003087" d="M 9.485 9.5 C 9.577 9.2 9.765 8.9 10.046 8.7 C 10.232 8.7 10.326 8.6 10.513 8.6 L 16.692 8.6 C 17.442 8.6 18.189 8.7 18.753 8.8 C 18.939 8.8 19.127 8.8 19.314 8.9 C 19.501 9 19.688 9 19.782 9.1 C 19.875 9.1 19.968 9.1 20.063 9.1 C 20.343 9.2 20.624 9.4 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.6 C 18.658 3.2 16.506 2.6 13.79 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 9.485 9.5 Z"></path>\n</svg>\n';
+        module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#009cde" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 6.675 28.9 C 6.581 29.3 6.862 29.6 7.236 29.6 L 11.356 29.6 C 11.825 29.6 12.292 29.3 12.386 28.8 L 12.386 28.5 L 13.228 23.3 L 13.228 23.1 C 13.322 22.6 13.79 22.2 14.258 22.2 L 14.821 22.2 C 18.845 22.2 21.935 20.5 22.871 15.5 C 23.339 13.4 23.153 11.7 22.029 10.5 C 21.748 10.1 21.279 9.8 20.905 9.5 L 20.905 9.5"></path>\n    <path fill="#012169" d="M 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.7 C 18.564 3.3 16.411 2.6 13.697 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3.1 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 8.173 18.7 C 8.267 18.1 8.735 17.7 9.296 17.7 L 11.636 17.7 C 16.224 17.7 19.782 15.7 20.905 10.1 C 20.812 9.8 20.905 9.7 20.905 9.5"></path>\n    <path fill="#003087" d="M 9.485 9.5 C 9.577 9.2 9.765 8.9 10.046 8.7 C 10.232 8.7 10.326 8.6 10.513 8.6 L 16.692 8.6 C 17.442 8.6 18.189 8.7 18.753 8.8 C 18.939 8.8 19.127 8.8 19.314 8.9 C 19.501 9 19.688 9 19.782 9.1 C 19.875 9.1 19.968 9.1 20.063 9.1 C 20.343 9.2 20.624 9.4 20.905 9.5 C 21.185 7.4 20.905 6 19.782 4.6 C 18.658 3.2 16.506 2.6 13.79 2.6 L 5.739 2.6 C 5.271 2.6 4.71 3 4.615 3.6 L 1.339 25.8 C 1.339 26.2 1.62 26.7 2.088 26.7 L 6.956 26.7 L 8.267 18.4 L 9.485 9.5 Z"></path>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/pp_white.svg": function(module, exports) {
         module.exports = '<svg width="24" height="32" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet">\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 6.378 28.938 C 6.285 29.238 6.659 29.638 6.94 29.638 L 11.153 29.638 C 11.621 29.638 11.995 29.238 12.089 28.739 L 12.182 28.539 L 12.931 23.341 L 13.025 23.041 C 13.119 22.441 13.493 22.141 13.961 22.141 L 14.616 22.141 C 18.642 22.141 21.731 20.342 22.668 15.443 C 23.042 13.344 22.855 11.545 21.825 10.345 C 21.451 10.046 21.076 9.646 20.702 9.446 L 20.702 9.446"></path>\n    <path fill="#ffffff" opacity="0.7" d="M 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.548 C 18.361 3.148 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 2.948 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 7.876 18.642 C 8.063 18.043 8.438 17.643 9.093 17.643 L 11.433 17.643 C 16.021 17.643 19.578 15.643 20.608 9.946 C 20.608 9.746 20.608 9.546 20.702 9.446"></path>\n    <path fill="#ffffff" d="M 9.28 9.446 C 9.28 9.146 9.468 8.846 9.842 8.646 C 9.936 8.646 10.123 8.546 10.216 8.546 L 16.489 8.546 C 17.238 8.546 17.893 8.646 18.548 8.746 C 18.736 8.746 18.829 8.746 19.11 8.846 C 19.204 8.946 19.391 8.946 19.578 9.046 C 19.672 9.046 19.672 9.046 19.859 9.146 C 20.14 9.246 20.421 9.346 20.702 9.446 C 20.982 7.347 20.702 5.947 19.578 4.648 C 18.361 3.248 16.208 2.548 13.493 2.548 L 5.536 2.548 C 4.974 2.548 4.506 3.048 4.412 3.548 L 1.136 25.74 C 1.042 26.239 1.323 26.639 1.791 26.639 L 6.753 26.639 L 7.97 18.342 L 9.28 9.446 Z"></path>\n    <g transform="matrix(0.497737, 0, 0, 0.52612, 1.10144, 0.638654)" opacity="0.2">\n        <path fill="#231f20" d="M39.3 16.7c0.9 0.5 1.7 1.1 2.3 1.8 1 1.1 1.6 2.5 1.9 4.1 0.3-3.2-0.2-5.8-1.9-7.8-0.6-0.7-1.3-1.2-2.1-1.7C39.5 14.2 39.5 15.4 39.3 16.7z"></path>\n        <path fill="#231f20" d="M0.4 45.2L6.7 5.6C6.8 4.5 7.8 3.7 8.9 3.7h16c5.5 0 9.8 1.2 12.2 3.9 1.2 1.4 1.9 3 2.2 4.8 0.4-3.6-0.2-6.1-2.2-8.4C34.7 1.2 30.4 0 24.9 0H8.9c-1.1 0-2.1 0.8-2.3 1.9L0 44.1C0 44.5 0.1 44.9 0.4 45.2z"></path>\n        <path fill="#231f20" d="M10.7 49.4l-0.1 0.6c-0.1 0.4 0.1 0.8 0.4 1.1l0.3-1.7H10.7z"></path>\n    </g>\n</svg>\n';
@@ -276,17 +277,18 @@
                     parent = parent || document;
                     return Array.prototype.slice.call(parent.querySelectorAll(selector));
                 }
-                function showElement(el, displayType) {
-                    el.style.display = displayType || "block";
+                function showElement(el) {
+                    var displayType = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : STYLE.INLINE_BLOCK;
+                    el.style.display = displayType;
                 }
                 function hideElement(el) {
-                    el.style.display = "none";
+                    el.style.display = STYLE.NONE;
                 }
                 function makeElementVisible(el) {
-                    el.style.visibility = "visible";
+                    el.style.visibility = STYLE.VISIBLE;
                 }
                 function makeElementInvisible(el) {
-                    el.style.visibility = "hidden";
+                    el.style.visibility = STYLE.HIDDEN;
                 }
                 function hasDimensions(el) {
                     var rect = el.getBoundingClientRect();
@@ -294,20 +296,12 @@
                 }
                 function isHidden(el) {
                     var computedStyle = window.getComputedStyle(el);
-                    return !computedStyle || "none" === computedStyle.display;
+                    return !computedStyle || computedStyle.display === STYLE.NONE;
                 }
                 function displayedElementsHaveDimensions(elements) {
                     return elements.every(function(el) {
                         return hasDimensions(el) || isHidden(el);
                     });
-                }
-                function onDisplay(elements, method) {
-                    if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
-                        if (displayedElementsHaveDimensions(elements)) {
-                            clearInterval(interval);
-                            method();
-                        }
-                    }, 5);
                 }
                 function isOverflowing(el) {
                     if (el.offsetWidth < el.scrollWidth || el.offsetHeight < el.scrollHeight) return !0;
@@ -316,29 +310,47 @@
                     var e = el.getBoundingClientRect(), p = parent.getBoundingClientRect();
                     return e.top < p.top || e.left < p.left || e.right > p.right || e.bottom > p.bottom || (e.left < 0 || e.top < 0 || e.left + e.width > window.innerWidth || e.top + e.height > window.innerHeight);
                 }
-                function toggleTagline() {
+                function toggleOptionals() {
                     tagline.some(isOverflowing) ? tagline.forEach(makeElementInvisible) : tagline.forEach(makeElementVisible);
+                    cards.forEach(function(el) {
+                        return showElement(el);
+                    });
+                    cards.filter(isOverflowing).forEach(hideElement);
+                    text.forEach(function(el) {
+                        return showElement(el);
+                    });
+                    optionals.forEach(function(el) {
+                        return showElement(el);
+                    });
+                    if (images.some(isOverflowing) || text.some(isOverflowing)) {
+                        text.forEach(hideElement);
+                        optionals.forEach(hideElement);
+                    } else {
+                        text.forEach(makeElementVisible);
+                        optionals.forEach(function(el) {
+                            return showElement(el);
+                        });
+                    }
                 }
-                var buttons = getElements(".{ CLASS.BUTTON }"), tagline = getElements(".{ CLASS.TAGLINE }");
-                buttons.forEach(function(button) {
-                    function showText() {
-                        text.forEach(function(el) {
-                            return showElement(el, "inline-block");
-                        });
-                    }
-                    function toggleText() {
-                        images.some(isOverflowing) || text.some(isOverflowing) ? text.forEach(hideElement) : text.forEach(makeElementVisible);
-                    }
-                    var images = getElements(".{ CLASS.LOGO }", button), text = getElements(".{ CLASS.TEXT }", button);
-                    onDisplay(images, function() {
-                        images.forEach(makeElementVisible);
-                        toggleTagline();
-                        toggleText();
-                        window.addEventListener("resize", function() {
-                            toggleTagline();
-                            showText();
-                            toggleText();
-                        });
+                var STYLE = {
+                    BLOCK: "block",
+                    INLINE_BLOCK: "inline-block",
+                    NONE: "none",
+                    VISIBLE: "visible",
+                    HIDDEN: "hidden"
+                }, images = getElements(".{ CLASS.BUTTON } .{ CLASS.LOGO }"), text = getElements(".{ CLASS.BUTTON } .{ CLASS.TEXT }"), tagline = getElements(".{ CLASS.TAGLINE }"), cards = getElements(".{ CLASS.FUNDINGICONS } .{ CLASS.CARD }"), optionals = getElements(".{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal");
+                !function(elements, method) {
+                    if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
+                        if (displayedElementsHaveDimensions(elements)) {
+                            clearInterval(interval);
+                            method();
+                        }
+                    }, 5);
+                }(images, function() {
+                    images.forEach(makeElementVisible);
+                    toggleOptionals();
+                    window.addEventListener("resize", function() {
+                        toggleOptionals();
                     });
                 });
                 try {
@@ -382,10 +394,14 @@
     },
     "./src/components/button/templates/component/style/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return componentStyle;
-        });
-        var __WEBPACK_IMPORTED_MODULE_0__page__ = __webpack_require__("./src/components/button/templates/component/style/page.js"), __WEBPACK_IMPORTED_MODULE_1__button__ = __webpack_require__("./src/components/button/templates/component/style/button.js"), __WEBPACK_IMPORTED_MODULE_2__layout__ = __webpack_require__("./src/components/button/templates/component/style/layout.js"), __WEBPACK_IMPORTED_MODULE_3__branding__ = __webpack_require__("./src/components/button/templates/component/style/branding.js"), __WEBPACK_IMPORTED_MODULE_4__labels__ = __webpack_require__("./src/components/button/templates/component/style/labels.js"), __WEBPACK_IMPORTED_MODULE_5__responsive__ = __webpack_require__("./src/components/button/templates/component/style/responsive.js"), __WEBPACK_IMPORTED_MODULE_6__color__ = __webpack_require__("./src/components/button/templates/component/style/color.js"), __WEBPACK_IMPORTED_MODULE_7__card__ = __webpack_require__("./src/components/button/templates/component/style/card.js"), componentStyle = "\n    " + __WEBPACK_IMPORTED_MODULE_0__page__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_1__button__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_6__color__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_2__layout__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_3__branding__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_4__labels__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_5__responsive__.a + "\n    " + __WEBPACK_IMPORTED_MODULE_7__card__.a + "\n";
+        function componentStyle(_ref) {
+            var height = _ref.height;
+            return "\n        " + __WEBPACK_IMPORTED_MODULE_0__page__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_1__button__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_6__color__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_2__layout__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_3__branding__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_4__labels__.a + "\n        " + Object(__WEBPACK_IMPORTED_MODULE_5__responsive__.a)({
+                height: height
+            }) + "\n    ";
+        }
+        __webpack_exports__.a = componentStyle;
+        var __WEBPACK_IMPORTED_MODULE_0__page__ = __webpack_require__("./src/components/button/templates/component/style/page.js"), __WEBPACK_IMPORTED_MODULE_1__button__ = __webpack_require__("./src/components/button/templates/component/style/button.js"), __WEBPACK_IMPORTED_MODULE_2__layout__ = __webpack_require__("./src/components/button/templates/component/style/layout.js"), __WEBPACK_IMPORTED_MODULE_3__branding__ = __webpack_require__("./src/components/button/templates/component/style/branding.js"), __WEBPACK_IMPORTED_MODULE_4__labels__ = __webpack_require__("./src/components/button/templates/component/style/labels.js"), __WEBPACK_IMPORTED_MODULE_5__responsive__ = __webpack_require__("./src/components/button/templates/component/style/responsive.js"), __WEBPACK_IMPORTED_MODULE_6__color__ = __webpack_require__("./src/components/button/templates/component/style/color.js");
     },
     "./src/components/button/templates/component/style/branding.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -399,14 +415,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return buttonStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ", ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PP + " {\n        margin-right: 2px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
-    },
-    "./src/components/button/templates/component/style/card.js": function(module, __webpack_exports__, __webpack_require__) {
-        "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return cardStyle;
-        });
-        var __WEBPACK_IMPORTED_MODULE_0__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), cardStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_0__class__.a.CARD + " img {\n        height: 100%;\n    }\n\n    @media only screen and (max-width: 150px) {\n        ." + __WEBPACK_IMPORTED_MODULE_0__class__.a.CARD + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width: 150px) {\n        ." + __WEBPACK_IMPORTED_MODULE_0__class__.a.CARD + " {\n            display: inline-block;\n        }\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), buttonStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.ENV + "-" + __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.GOLD + ":hover,\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ", ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: inline-block;\n        white-space: pre;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + ",\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.COLOR + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n";
     },
     "./src/components/button/templates/component/style/class.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -452,7 +461,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return labelStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.a[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.a[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
     },
     "./src/components/button/templates/component/style/layout.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -470,13 +479,15 @@
     },
     "./src/components/button/templates/component/style/responsive.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "a", function() {
-            return buttonResponsiveStyle;
-        });
-        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), sizeResponsiveStyle = Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.a).map(function(size) {
-            var style = __WEBPACK_IMPORTED_MODULE_1__style__.a[size];
-            return "\n        @media only screen and (min-width: " + style.minWidth + "px) {\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + " {\n                min-width: " + style.minWidth + "px;\n                max-width: " + style.maxWidth + "px;\n                font-size: " + style.fontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " {\n                height: " + style.height + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                font-size: " + style.largeFontSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                border-radius: " + Math.ceil(style.height / 2) + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                border-radius: " + style.rectRadius + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                margin-bottom: " + style.verticalMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + " {\n                height: " + style.horizontal.wordmarkSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.e.PP + " {\n                height: " + style.horizontal.logoSize + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.SEPARATOR + " {\n                margin: 0 " + style.horizontal.separatorMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n                height: " + style.taglineHeight + "px;\n                line-height: " + style.taglineHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " {\n                height: " + style.fundingHeight + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + style.cardLogoSize + "px;\n                margin: 0 " + style.cardLogoMargin + "px;\n            }\n\n            ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CARD + " {\n                height: " + (style.fundingLogoSize || style.cardLogoSize) + ";\n                margin: " + ((style.fundingHeight - (style.fundingLogoSize || style.cardLogoSize)) / 2).toFixed(1) + "px " + (style.fundingLogoMargin || style.cardLogoMargin) + "px;\n            }\n        }\n\n    ";
-        }).join("\n"), buttonResponsiveStyle = "\n\n    " + sizeResponsiveStyle + "\n\n    @media only screen and (max-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            width: 100%;\n            margin-right: 0;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: none;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width: " + __WEBPACK_IMPORTED_MODULE_1__style__.a[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-0 {\n            display: inline-block;\n            width: calc(50% - 2px);\n            margin-right: 4px;\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-1 {\n            display: inline-block;\n            width: calc(50% - 2px);\n        }\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TAGLINE + " {\n            display: block;\n        }\n    }\n";
+        function buttonResponsiveStyle(_ref) {
+            var height = _ref.height;
+            return Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.b).map(function(size) {
+                var style = __WEBPACK_IMPORTED_MODULE_1__style__.b[size], buttonHeight = Object(__WEBPACK_IMPORTED_MODULE_2__util__.c)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(height || style.defaultHeight, style.minHeight), style.maxHeight), minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
+                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + style.minHeight + "px;\n                    max-height: " + style.maxHeight + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 50), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LOGO + " {\n                    height: " + (Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 35) + 10) + "px;\n                    max-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 68) + "px;\n                    min-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 60) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                    border-radius: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 16) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                    margin-bottom: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SEPARATOR + " {\n                    margin: 0 " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 5) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                    line-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.FUNDINGICONS) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    width: 20%;\n                    max-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 160) + ";\n                    margin-top: 0;\n                    margin-left: 1.5%;\n                    margin-right: 1.5%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(style.minWidth, minDualWidth) + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+            }).join("\n");
+        }
+        __webpack_exports__.a = buttonResponsiveStyle;
+        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./src/components/button/templates/component/util.js"), __WEBPACK_IMPORTED_MODULE_3__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), DUAL_BUTTON_MIN_RATIO = 2.8;
     },
     "./src/components/button/templates/component/template.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -504,33 +515,36 @@
             });
         }
         function renderCards(_ref4) {
-            var funding = _ref4.funding, locale = _ref4.locale;
+            var funding = _ref4.funding, locale = _ref4.locale, button = _ref4.button;
             return Object(__WEBPACK_IMPORTED_MODULE_4__funding__.a)({
                 funding: funding,
                 count: 4,
                 locale: locale
             }).map(function(name) {
-                var logo = __WEBPACK_IMPORTED_MODULE_6__logos__.a[name];
-                return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("span", {
-                    class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + "-" + name
-                }, Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", {
+                var _ref5, logo = __WEBPACK_IMPORTED_MODULE_6__logos__.a[name];
+                return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("span", _extends({}, (_ref5 = {}, 
+                _ref5[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.BUTTON] = button || !1, 
+                _ref5), {
+                    class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + "-" + name + " " + (button ? __WEBPACK_IMPORTED_MODULE_10__style_class__.a.BUTTON : "")
+                }), Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", {
                     src: "data:image/svg+xml;base64," + Object(__WEBPACK_IMPORTED_MODULE_0_Base64__.btoa)(logo),
                     alt: name
                 }));
             });
         }
-        function renderFundingIcons(_ref5) {
-            var funding = _ref5.funding, fundingicons = _ref5.fundingicons, locale = _ref5.locale;
+        function renderFundingIcons(_ref6) {
+            var funding = _ref6.funding, fundingicons = _ref6.fundingicons, locale = _ref6.locale;
             if (fundingicons) return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
                 class: "" + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.FUNDINGICONS
             }, renderCards({
                 funding: funding,
-                locale: locale
+                locale: locale,
+                button: !0
             }));
         }
-        function renderContent(text, _ref6) {
-            var locale = _ref6.locale, color = _ref6.color, branding = _ref6.branding, logoColor = _ref6.logoColor, funding = _ref6.funding, env = _ref6.env, _content = getLocaleContent(locale);
-            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.b)(text, {
+        function renderContent(text, _ref7) {
+            var locale = _ref7.locale, color = _ref7.color, branding = _ref7.branding, logoColor = _ref7.logoColor, funding = _ref7.funding, env = _ref7.env, _content = getLocaleContent(locale);
+            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.e)(text, {
                 text: function(value) {
                     return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("span", {
                         class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.TEXT
@@ -549,16 +563,16 @@
                 },
                 content: function(name) {
                     for (var contentString = void 0, _iterator = name.split("|"), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref7;
+                        var _ref8;
                         if (_isArray) {
                             if (_i >= _iterator.length) break;
-                            _ref7 = _iterator[_i++];
+                            _ref8 = _iterator[_i++];
                         } else {
                             _i = _iterator.next();
                             if (_i.done) break;
-                            _ref7 = _i.value;
+                            _ref8 = _i.value;
                         }
-                        var key = _ref7;
+                        var key = _ref8;
                         if (_content[key]) {
                             contentString = _content[key];
                             break;
@@ -588,8 +602,8 @@
                 }
             });
         }
-        function renderButton(_ref8) {
-            var _ref9, label = _ref8.label, color = _ref8.color, locale = _ref8.locale, branding = _ref8.branding, multiple = _ref8.multiple, layout = _ref8.layout, shape = _ref8.shape, source = _ref8.source, funding = _ref8.funding, i = _ref8.i, env = _ref8.env, logoColor = Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoColors")[color], contentText = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoLabel") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "label");
+        function renderButton(_ref9) {
+            var _ref10, label = _ref9.label, color = _ref9.color, locale = _ref9.locale, branding = _ref9.branding, multiple = _ref9.multiple, layout = _ref9.layout, shape = _ref9.shape, source = _ref9.source, funding = _ref9.funding, i = _ref9.i, env = _ref9.env, logoColor = Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoColors")[color], contentText = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoLabel") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "label");
             contentText = renderContent(contentText, {
                 locale: locale,
                 color: color,
@@ -598,9 +612,9 @@
                 funding: funding,
                 env: env
             });
-            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref9 = {}, 
-            _ref9[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.FUNDING_SOURCE] = source, 
-            _ref9), {
+            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref10 = {}, 
+            _ref10[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.FUNDING_SOURCE] = source, 
+            _ref10[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.BUTTON] = !0, _ref10), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.BUTTON + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -616,8 +630,8 @@
                 tabindex: "0"
             }), contentText);
         }
-        function renderTagline(_ref10) {
-            var label = _ref10.label, tagline = _ref10.tagline, color = _ref10.color, locale = _ref10.locale, multiple = _ref10.multiple, env = _ref10.env;
+        function renderTagline(_ref11) {
+            var label = _ref11.label, tagline = _ref11.tagline, color = _ref11.color, locale = _ref11.locale, multiple = _ref11.multiple, env = _ref11.env;
             if (tagline) {
                 var tag = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "dualTag") || Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "tag") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "tag"), text = renderContent(tag, {
                     locale: locale,
@@ -641,17 +655,20 @@
                 innerHTML: "(" + script + ")();"
             });
         }
-        function renderStyle() {
+        function renderStyle(_ref12) {
+            var height = _ref12.height;
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("style", {
-                innerHTML: __WEBPACK_IMPORTED_MODULE_7__style__.a
+                innerHTML: Object(__WEBPACK_IMPORTED_MODULE_7__style__.a)({
+                    height: height
+                })
             });
         }
-        function componentTemplate(_ref11) {
-            var props = _ref11.props;
+        function componentTemplate(_ref13) {
+            var _ref14, props = _ref13.props;
             props && props.style && "generic" === props.style.label && (props.style.label = "paypal");
             props && props.style && "creditblue" === props.style.color && delete props.style.color;
             Object(__WEBPACK_IMPORTED_MODULE_12__validate__.a)(props);
-            var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, buttonNodes = determineButtons({
+            var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, height = _normalizeProps.height, buttonNodes = determineButtons({
                 label: label,
                 color: color,
                 sources: sources,
@@ -681,9 +698,11 @@
                 funding: funding,
                 fundingicons: fundingicons,
                 locale: locale
-            }), styleNode = renderStyle(), scriptNode = renderScript();
-            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
-                "data-version": "4.0.141",
+            }), styleNode = renderStyle({
+                height: height
+            }), scriptNode = renderScript();
+            return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.142", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -691,7 +710,7 @@
                     multiple: multiple,
                     env: env
                 })
-            }, styleNode, buttonNodes, taglineNode || fundingiconNode, scriptNode).toString();
+            }), styleNode, buttonNodes, taglineNode || fundingiconNode, scriptNode).toString();
         }
         __webpack_exports__.a = componentTemplate;
         var __WEBPACK_IMPORTED_MODULE_0_Base64__ = __webpack_require__("./node_modules/Base64/base64.js"), __WEBPACK_IMPORTED_MODULE_1__config_constants__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_Base64__), 
@@ -727,6 +746,15 @@
         function encode() {
             return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
         }
+        function perc(pixels, percentage) {
+            return Math.round(pixels * percentage / 100);
+        }
+        function min() {
+            return Math.min.apply(Math, arguments);
+        }
+        function max() {
+            return Math.max.apply(Math, arguments);
+        }
         function jsxToHTML(name, props) {
             for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) children[_key - 2] = arguments[_key];
             return new JsxHTMLNode(name, props, children);
@@ -748,8 +776,11 @@
             });
             return new JsxHTMLNodeContainer(nodes);
         }
+        __webpack_exports__.d = perc;
+        __webpack_exports__.c = min;
+        __webpack_exports__.b = max;
         __webpack_exports__.a = jsxToHTML;
-        __webpack_exports__.b = render;
+        __webpack_exports__.e = render;
         var JsxHTMLNode = function() {
             function JsxHTMLNode(name, props, children) {
                 _classCallCheck(this, JsxHTMLNode);
@@ -763,9 +794,9 @@
             JsxHTMLNode.prototype.propsToString = function() {
                 var props = this.props;
                 return props ? Object.keys(props).filter(function(key) {
-                    return "innerHTML" !== key;
+                    return "innerHTML" !== key && props && !1 !== props[key];
                 }).map(function(key) {
-                    return props ? encode(key) + '="' + encode(props[key]) + '"' : "";
+                    return props && !0 === props[key] ? "" + encode(key) : props ? encode(key) + '="' + encode(props[key]) + '"' : "";
                 }).join(" ") : "";
             };
             JsxHTMLNode.prototype.childrenToString = function() {
@@ -809,20 +840,19 @@
             if (!locale) throw new Error("Expected props.locale to be set");
             if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
             var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
-            if (!__WEBPACK_IMPORTED_MODULE_2__content__.a[country] || !__WEBPACK_IMPORTED_MODULE_2__content__.a[country][lang]) throw new Error("Expected props.locale to be valid");
+            if (!__WEBPACK_IMPORTED_MODULE_3__content__.a[country] || !__WEBPACK_IMPORTED_MODULE_3__content__.a[country][lang]) throw new Error("Expected props.locale to be valid");
         }
         function validateButtonStyle() {
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             if (!style) throw new Error("Expected props.style to be set");
             var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT] === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel");
             if (!__WEBPACK_IMPORTED_MODULE_1__config__.a[label]) throw new Error("Invalid button label: " + label + ", expected: " + Object.keys(__WEBPACK_IMPORTED_MODULE_1__config__.a[label]).join(", "));
-            var color = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], shape = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], size = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], branding = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], fundingicons = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], tagline = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], layout = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], maxbuttons = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS];
+            var color = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], shape = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], size = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], branding = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], fundingicons = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], tagline = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], layout = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], maxbuttons = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS], height = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.HEIGHT];
             if (color && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "colors").indexOf(color)) throw new Error("Unexpected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR + " for " + label + " button: " + color + ", expected " + Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "colors").join(", "));
             if (shape && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "shapes").indexOf(shape)) throw new Error("Unexpected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE + " for " + label + " button: " + shape + ", expected " + Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "shapes").join(", "));
             if (size && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "sizes").indexOf(size)) throw new Error("Unexpected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE + " for " + label + " button: " + size + ", expected " + Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "sizes").join(", "));
             if (!1 === branding) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING + ":false is not allowed");
             if (fundingicons && !Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "allowFundingIcons")) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS + ":true is not allowed for " + label + " button");
-            if (!0 === tagline) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE + ":true is not allowed for " + label + " button");
             if (layout && -1 === Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "layouts").indexOf(layout)) throw new Error("Unexpected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT + " for " + label + " button: " + layout + ", expected " + Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "layouts").join(", "));
             if (void 0 !== maxbuttons) {
                 if ("number" != typeof maxbuttons) throw new TypeError("Expected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS + " to be a number, got: " + maxbuttons);
@@ -830,11 +860,20 @@
                 var minButtons = layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "minVerticalButtons") : Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "minHorizontalButtons");
                 if (maxbuttons < minButtons) throw new Error("Expected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS + " to be no fewer than " + minButtons + ", got " + maxbuttons);
             }
+            if (void 0 !== height) {
+                if ("number" != typeof height) throw new TypeError("Expected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.HEIGHT + " to be a number, got: " + maxbuttons);
+                var buttonSize = size || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalSize" : "defaultSize"), _ref = size === __WEBPACK_IMPORTED_MODULE_0__constants__.i.RESPONSIVE ? {
+                    minHeight: __WEBPACK_IMPORTED_MODULE_2__style__.b[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL].minHeight,
+                    maxHeight: __WEBPACK_IMPORTED_MODULE_2__style__.b[__WEBPACK_IMPORTED_MODULE_0__constants__.i.LARGE].maxHeight
+                } : __WEBPACK_IMPORTED_MODULE_2__style__.b[buttonSize], minHeight = _ref.minHeight, maxHeight = _ref.maxHeight;
+                if (height < minHeight || height > maxHeight) throw new Error("Expected style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.HEIGHT + " to be between " + minHeight + "px and " + maxHeight + "px - got " + height + "px");
+            }
             if (!Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "allowPrimary")) throw new Error(label + " can not be used as primary button label");
             if (layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL) {
-                if (style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL]) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL + " option is not allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
-                if (!0 === fundingicons) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS + " not allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
                 if (size && -1 === [ __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM, __WEBPACK_IMPORTED_MODULE_0__constants__.i.LARGE, __WEBPACK_IMPORTED_MODULE_0__constants__.i.RESPONSIVE ].indexOf(size)) throw new Error("Button must be at least " + __WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM + " size for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout");
+                if (style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL]) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL + " option is not allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout - got " + label);
+                if (fundingicons) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS + " not allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout - got " + fundingicons);
+                if (tagline) throw new Error("style." + __WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE + " is not allowed for " + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " layout - got " + tagline);
             }
         }
         function validateButtonProps(props) {
@@ -844,7 +883,7 @@
             validateButtonStyle(style);
         }
         __webpack_exports__.a = validateButtonProps;
-        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/components/button/templates/config.js"), __WEBPACK_IMPORTED_MODULE_2__content__ = __webpack_require__("./src/components/button/templates/component/content.js");
+        var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/components/button/templates/config.js"), __WEBPACK_IMPORTED_MODULE_2__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_3__content__ = __webpack_require__("./src/components/button/templates/component/content.js");
     },
     "./src/components/button/templates/config.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -1013,8 +1052,8 @@
             allowSecondaryVertical: !0,
             allowSecondaryHorizontal: !0
         }, _BUTTON_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.c.IDEAL] = {
-            label: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.IDEAL + " }{separator}{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " }",
-            logoLabel: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.IDEAL + " }{separator}{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " }",
+            label: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.IDEAL + " } Online betalen",
+            logoLabel: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.IDEAL + " } Online betalen",
             defaultColor: __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER,
             colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK ],
             logoColors: (_logoColors4 = {}, _logoColors4[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLACK, 
@@ -1181,7 +1220,7 @@
         function normalizeProps(props) {
             var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding;
             locale = parseLocale(locale);
-            var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), _style$BUTTON_STYLE_O = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultTagline") : _style$BUTTON_STYLE_O6, _style$BUTTON_STYLE_O7 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], layout = void 0 === _style$BUTTON_STYLE_O7 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultLayout") : _style$BUTTON_STYLE_O7, max = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS];
+            var label = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LABEL] || Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)("DEFAULT", style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalLabel" : "defaultLabel"), _style$BUTTON_STYLE_O = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SIZE], size = void 0 === _style$BUTTON_STYLE_O ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalSize" : "defaultSize") : _style$BUTTON_STYLE_O, _style$BUTTON_STYLE_O2 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.COLOR], color = void 0 === _style$BUTTON_STYLE_O2 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultColor") : _style$BUTTON_STYLE_O2, _style$BUTTON_STYLE_O3 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.SHAPE], shape = void 0 === _style$BUTTON_STYLE_O3 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultShape") : _style$BUTTON_STYLE_O3, _style$BUTTON_STYLE_O4 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.BRANDING], branding = void 0 === _style$BUTTON_STYLE_O4 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, style.layout === __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL ? "defaultVerticalBranding" : "defaultBranding") : _style$BUTTON_STYLE_O4, _style$BUTTON_STYLE_O5 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.FUNDINGICONS], fundingicons = void 0 === _style$BUTTON_STYLE_O5 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultFundingIcons") : _style$BUTTON_STYLE_O5, _style$BUTTON_STYLE_O6 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.TAGLINE], tagline = void 0 === _style$BUTTON_STYLE_O6 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultTagline") : _style$BUTTON_STYLE_O6, _style$BUTTON_STYLE_O7 = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.LAYOUT], layout = void 0 === _style$BUTTON_STYLE_O7 ? Object(__WEBPACK_IMPORTED_MODULE_1__config__.e)(label, "defaultLayout") : _style$BUTTON_STYLE_O7, max = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.MAXBUTTONS], height = style[__WEBPACK_IMPORTED_MODULE_0__constants__.j.HEIGHT];
             max = determineMaxButtons({
                 label: label,
                 layout: layout,
@@ -1215,7 +1254,8 @@
                 sources: sources,
                 max: max,
                 multiple: multiple,
-                env: env
+                env: env,
+                height: height
             };
         }
         __webpack_exports__.a = normalizeProps;
@@ -1224,101 +1264,51 @@
     "./src/components/button/templates/style.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         __webpack_require__.d(__webpack_exports__, "a", function() {
+            return BUTTON_RELATIVE_STYLE;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
             return BUTTON_STYLE;
         });
-        var _BUTTON_STYLE, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), BUTTON_STYLE = (_BUTTON_STYLE = {}, 
-        _BUTTON_STYLE[__WEBPACK_IMPORTED_MODULE_0__constants__.i.TINY] = {
-            width: 75,
-            height: 25,
-            responsiveMin: 0,
+        var _BUTTON_STYLE, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/components/button/constants.js"), BUTTON_RELATIVE_STYLE = {
+            FUNDINGICONS: 100,
+            TAGLINE: 50,
+            VERTICAL_MARGIN: 30
+        }, BUTTON_STYLE = (_BUTTON_STYLE = {}, _BUTTON_STYLE[__WEBPACK_IMPORTED_MODULE_0__constants__.i.TINY] = {
+            defaultWidth: 75,
+            defaultHeight: 25,
             minWidth: 75,
             maxWidth: 150,
-            fontSize: 10,
-            largeFontSize: 13,
-            logoSize: 14,
-            wordmarkSize: 14,
-            rectRadius: 4,
-            taglineHeight: 0,
-            fundingHeight: 0,
-            verticalMargin: 8,
-            separatorMargin: 3,
-            cardLogoSize: 16,
-            cardLogoMargin: 3,
-            horizontal: {
-                logoSize: 15,
-                wordmarkSize: 14,
-                separatorMargin: 3
-            }
+            minHeight: 25,
+            maxHeight: 25,
+            allowFunding: !0,
+            allowTagline: !1
         }, _BUTTON_STYLE[__WEBPACK_IMPORTED_MODULE_0__constants__.i.SMALL] = {
-            width: 150,
-            height: 25,
-            responsiveMin: 150,
+            defaultWidth: 150,
+            defaultHeight: 25,
             minWidth: 150,
             maxWidth: 200,
-            fontSize: 10,
-            largeFontSize: 13,
-            logoSize: 17,
-            wordmarkSize: 17,
-            rectRadius: 4,
-            taglineHeight: 15,
-            fundingHeight: 30,
-            verticalMargin: 8,
-            separatorMargin: 6,
-            cardLogoSize: 19,
-            cardLogoMargin: 2,
-            horizontal: {
-                logoSize: 16,
-                wordmarkSize: 15,
-                separatorMargin: 3
-            }
+            minHeight: 25,
+            maxHeight: 45,
+            allowFunding: !0,
+            allowTagline: !0
         }, _BUTTON_STYLE[__WEBPACK_IMPORTED_MODULE_0__constants__.i.MEDIUM] = {
-            width: 250,
-            height: 35,
-            responsiveMin: 200,
+            defaultWidth: 250,
+            defaultHeight: 35,
             minWidth: 200,
             maxWidth: 300,
-            fontSize: 13,
-            largeFontSize: 15,
-            logoSize: 22,
-            wordmarkSize: 22,
-            rectRadius: 6,
-            taglineHeight: 15,
-            fundingHeight: 40,
-            verticalMargin: 9,
-            separatorMargin: 7,
-            fundingLogoSize: 25,
-            fundingLogoMargin: 3,
-            cardLogoSize: 30,
-            cardLogoMargin: 5,
-            horizontal: {
-                logoSize: 18,
-                wordmarkSize: 19,
-                separatorMargin: 4
-            }
+            minHeight: 35,
+            maxHeight: 45,
+            allowFunding: !0,
+            allowTagline: !0
         }, _BUTTON_STYLE[__WEBPACK_IMPORTED_MODULE_0__constants__.i.LARGE] = {
-            width: 350,
-            height: 40,
-            responsiveMin: 300,
+            defaultWidth: 350,
+            defaultHeight: 45,
             minWidth: 300,
             maxWidth: 500,
-            fontSize: 14,
-            largeFontSize: 18,
-            logoSize: 27,
-            wordmarkSize: 27,
-            rectRadius: 6,
-            taglineHeight: 20,
-            fundingHeight: 40,
-            verticalMargin: 10,
-            separatorMargin: 10,
-            cardLogoSize: 35,
-            cardLogoMargin: 7,
-            fundingLogoSize: 30,
-            fundingLogoMargin: 5,
-            horizontal: {
-                logoSize: 27,
-                wordmarkSize: 24,
-                separatorMargin: 5
-            }
+            minHeight: 40,
+            maxHeight: 45,
+            allowFunding: !0,
+            allowTagline: !0
         }, _BUTTON_STYLE);
     },
     "./src/config/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -1344,7 +1334,7 @@
         __webpack_require__.d(__webpack_exports__, "d", function() {
             return COUNTRY;
         });
-        var ENV = {
+        var _LANG_TO_DEFAULT_COUN, ENV = {
             LOCAL: "local",
             STAGE: "stage",
             SANDBOX: "sandbox",
@@ -1374,7 +1364,9 @@
             CETELEM: "cetelem",
             CBNATIONALE: "cbnationale"
         }, CARD_PRIORITY = [ CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE ], ATTRIBUTE = {
-            FUNDING_SOURCE: "data-funding-source"
+            BUTTON: "data-button",
+            FUNDING_SOURCE: "data-funding-source",
+            VERSION: "data-version"
         }, PLATFORM = {
             DESKTOP: "desktop",
             MOBILE: "mobile"
@@ -1583,7 +1575,38 @@
             ZA: "ZA",
             ZM: "ZM",
             ZW: "ZW"
+        }, LANG = {
+            EN: "en",
+            FR: "fr",
+            ES: "es",
+            ZH: "zh",
+            AR: "ar",
+            DE: "de",
+            NL: "nl",
+            PT: "pt",
+            DA: "da",
+            RU: "ru",
+            ID: "id",
+            HE: "he",
+            IT: "it",
+            JA: "ja",
+            KO: "ko",
+            NO: "no",
+            PL: "pl",
+            SV: "sv",
+            TH: "th",
+            TR: "tr"
         };
+        _LANG_TO_DEFAULT_COUN = {}, _LANG_TO_DEFAULT_COUN[LANG.EN] = COUNTRY.US, _LANG_TO_DEFAULT_COUN[LANG.FR] = COUNTRY.FR, 
+        _LANG_TO_DEFAULT_COUN[LANG.ES] = COUNTRY.ES, _LANG_TO_DEFAULT_COUN[LANG.ZH] = COUNTRY.CN, 
+        _LANG_TO_DEFAULT_COUN[LANG.DE] = COUNTRY.DE, _LANG_TO_DEFAULT_COUN[LANG.NL] = COUNTRY.NL, 
+        _LANG_TO_DEFAULT_COUN[LANG.PT] = COUNTRY.PT, _LANG_TO_DEFAULT_COUN[LANG.DA] = COUNTRY.DK, 
+        _LANG_TO_DEFAULT_COUN[LANG.RU] = COUNTRY.RU, _LANG_TO_DEFAULT_COUN[LANG.ID] = COUNTRY.ID, 
+        _LANG_TO_DEFAULT_COUN[LANG.HE] = COUNTRY.IL, _LANG_TO_DEFAULT_COUN[LANG.IT] = COUNTRY.IT, 
+        _LANG_TO_DEFAULT_COUN[LANG.JA] = COUNTRY.JP, _LANG_TO_DEFAULT_COUN[LANG.KO] = COUNTRY.KR, 
+        _LANG_TO_DEFAULT_COUN[LANG.NO] = COUNTRY.NO, _LANG_TO_DEFAULT_COUN[LANG.PL] = COUNTRY.PL, 
+        _LANG_TO_DEFAULT_COUN[LANG.SV] = COUNTRY.SE, _LANG_TO_DEFAULT_COUN[LANG.TH] = COUNTRY.TH, 
+        _LANG_TO_DEFAULT_COUN[LANG.TR] = COUNTRY.TR;
     }
 }));
 //# sourceMappingURL=checkout.button.render.js.map
