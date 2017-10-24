@@ -272,26 +272,40 @@ export function normalizeLocale(locale : string) : ?LocaleType {
     }
 }
 
-export function getBrowserLocale() : LocaleType {
+export function normalizeLang(lang : string) : ?LocaleType {
 
-    if (window.navigator.languages) {
-        for (let locale of Array.prototype.slice.apply(window.navigator.languages)) {
-            let loc = normalizeLocale(locale);
-            if (loc) {
-                return loc;
-            }
+    if (lang && lang.match(/^[a-z]{2}$/)) {
+        if (LANG_TO_DEFAULT_COUNTRY[lang]) {
+            return LANG_TO_DEFAULT_COUNTRY[lang];
         }
     }
+}
 
-    if (window.navigator.language) {
-        let loc = normalizeLocale(window.navigator.language);
+export function getBrowserLocale() : LocaleType {
+
+    let nav = window.navigator;
+
+    let locales = nav.languages
+        ? Array.prototype.slice.apply(nav.languages)
+        : [];
+
+    if (nav.language) {
+        locales.push(nav.language);
+    }
+
+    if (nav.userLanguage) {
+        locales.push(nav.userLanguage);
+    }
+
+    for (let locale of locales) {
+        let loc = normalizeLocale(locale);
         if (loc) {
             return loc;
         }
     }
 
-    if (window.navigator.userLanguage) {
-        let loc = normalizeLocale(window.navigator.userLanguage);
+    for (let locale of locales) {
+        let loc = normalizeLang(locale);
         if (loc) {
             return loc;
         }
