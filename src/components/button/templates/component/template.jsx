@@ -67,9 +67,12 @@ function renderCards({ funding, locale, button } : { funding : FundingSelection,
         let logo = cardLogos[name];
 
         return (
-            <span { ...{ [ATTRIBUTE.BUTTON]: (button || false) } } class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }>
-                <img src={ `data:image/svg+xml;base64,${ btoa(logo) }` } alt={ name } />
-            </span>
+            <img
+                { ...{ [ATTRIBUTE.BUTTON]: (button || false) } }
+                class={ `${CLASS.CARD} ${CLASS.CARD}-${name} ${button ? CLASS.BUTTON : ''}` }
+                src={`data:image/svg+xml;base64,${btoa(logo)}`}
+                alt={name}
+            />
         );
     });
 }
