@@ -7850,7 +7850,7 @@
     "./node_modules/xcomponent/src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function urlEncode(str) {
-            return str.replace(/\?/g, "%3F").replace(/\&/g, "%26").replace(/#/g, "%23");
+            return str.replace(/\?/g, "%3F").replace(/\&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
         }
         function dasherizeToCamel(string) {
             return string.replace(/-([a-z])/g, function(g) {
@@ -8235,24 +8235,18 @@
                 0 === count && promise.resolve(results);
                 return promise;
             };
-            ZalgoPromise.map = function(promises, method) {
-                var promise = new ZalgoPromise(), count = promises.length, results = [];
-                if (!count) {
-                    promise.resolve(results);
-                    return promise;
-                }
-                for (var i = 0; i < promises.length; i++) !function(i) {
-                    ZalgoPromise.try(function() {
-                        return method(promises[i]);
-                    }).then(function(result) {
-                        results[i] = result;
-                        count -= 1;
-                        0 === count && promise.resolve(results);
-                    }, function(err) {
-                        promise.reject(err);
+            ZalgoPromise.hash = function(promises) {
+                var result = {};
+                return ZalgoPromise.all(Object.keys(promises).map(function(key) {
+                    return ZalgoPromise.resolve(promises[key]).then(function(value) {
+                        result[key] = value;
                     });
-                }(i);
-                return promise;
+                })).then(function() {
+                    return result;
+                });
+            };
+            ZalgoPromise.map = function(items, method) {
+                return ZalgoPromise.all(items.map(method));
             };
             ZalgoPromise.onPossiblyUnhandledException = function(handler) {
                 return Object(__WEBPACK_IMPORTED_MODULE_1__exceptions__.b)(handler);
@@ -8269,17 +8263,6 @@
             ZalgoPromise.delay = function(_delay) {
                 return new ZalgoPromise(function(resolve) {
                     setTimeout(resolve, _delay);
-                });
-            };
-            ZalgoPromise.hash = function(obj) {
-                var results = {}, promises = [];
-                for (var key in obj) !function(key) {
-                    obj.hasOwnProperty(key) && promises.push(ZalgoPromise.resolve(obj[key]).then(function(result) {
-                        results[key] = result;
-                    }));
-                }(key);
-                return ZalgoPromise.all(promises).then(function() {
-                    return results;
                 });
             };
             ZalgoPromise.isPromise = function(value) {
@@ -8598,9 +8581,11 @@
     },
     "./src/components/button/braintree.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function awaitBraintreeClient(braintree, authorization) {
-            return braintree.client.create({
-                authorization: authorization
+        function awaitBraintreeClient(braintree, auth) {
+            return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve(auth).then(function(authorization) {
+                return braintree.client.create({
+                    authorization: authorization
+                });
             }).then(function(client) {
                 return braintree.paypalCheckout.create({
                     client: client
@@ -8658,12 +8643,11 @@
         }
         __webpack_exports__.a = awaitBraintreeClient;
         __webpack_exports__.b = mapPaymentToBraintree;
-        var _typeof = (__webpack_require__("./node_modules/zalgo-promise/src/index.js"), 
-        "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }), SUPPORTED_REST_FIELDS = {
+        }, SUPPORTED_REST_FIELDS = {
             intent: 1,
             transactions: [ {
                 amount: {
@@ -8764,7 +8748,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects, "4.0.142";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects, "4.0.143";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
@@ -8803,7 +8787,9 @@
                     validate: function(client, props) {
                         var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
                         if (!client[env]) throw new Error("Client ID not found for env: " + env);
-                        if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
+                        if ("string" == typeof client[env]) {
+                            if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
+                        } else if (!__WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.isPromise(client[env])) throw new Error("Expected client token to be either a string or a promise");
                     }
                 },
                 source: {
@@ -8834,8 +8820,10 @@
                         if (!props.client) throw new Error("Expected client prop to be passed with Braintree authorization keys");
                     },
                     decorate: function(braintree, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env, authorization = props.client[env];
-                        return Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.a)(braintree, authorization);
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+                        return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(props.client).then(function(client) {
+                            return Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.a)(braintree, client[env]);
+                        });
                     }
                 },
                 payment: {
@@ -8852,7 +8840,9 @@
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
                                             return client.createPayment(Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.b)(options.payment || options));
-                                        }) : __WEBPACK_IMPORTED_MODULE_7__api__.a.payment.create(_this2.props.env, _this2.props.client, options);
+                                        }) : __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(_this2.props.client).then(function(client) {
+                                            return __WEBPACK_IMPORTED_MODULE_7__api__.a.payment.create(_this2.props.env, client, options);
+                                        });
                                     }
                                 },
                                 braintree: {
@@ -9644,41 +9634,6 @@
                         toggleOptionals();
                     });
                 });
-                try {
-                    var val = window.setupButton;
-                    Object.defineProperty(window, "setupButton", {
-                        get: function() {
-                            return val;
-                        },
-                        set: function(value) {
-                            val = function() {
-                                try {
-                                    if (window.paypal && window.paypal.Promise) {
-                                        var resolve = window.paypal.Promise.prototype.resolve;
-                                        window.paypal.Promise.prototype.resolve = function(obj) {
-                                            try {
-                                                obj && obj.responseHeaders && (obj.headers = obj.responseHeaders);
-                                            } catch (err2) {}
-                                            return resolve.apply(this, arguments);
-                                        };
-                                    }
-                                    if (window.paypal && window.paypal.Checkout && window.paypal.Checkout.props) {
-                                        var props = window.paypal.Checkout.props;
-                                        props.style = props.style || {
-                                            type: "object",
-                                            required: !1
-                                        };
-                                        props.fundingSource = props.fundingSource || {
-                                            type: "string",
-                                            required: !1
-                                        };
-                                    }
-                                } catch (err3) {}
-                                return value.apply(this, arguments);
-                            };
-                        }
-                    });
-                } catch (err) {}
             };
         }
         __webpack_exports__.a = getComponentScript;
@@ -9993,7 +9948,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.142", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.143", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10786,7 +10741,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects, "4.0.142";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects, "4.0.143";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11489,7 +11444,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects, "4.0.142";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects, "4.0.143";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11615,9 +11570,9 @@
             return config;
         });
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.142.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.143.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.142",
+            version: "4.0.143",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11775,7 +11730,7 @@
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.142");
+                "4.0.143");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12845,7 +12800,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.142", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.143", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13628,7 +13583,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.142";
+                payload.version = "4.0.143";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                 var query = [];
@@ -13655,7 +13610,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.142".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.143".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13663,7 +13618,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.142",
+                v: "checkout.js.4.0.143",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -13885,8 +13840,14 @@
             }
             if (locale && locale.match(/^[a-z]{2}$/) && __WEBPACK_IMPORTED_MODULE_2__config__.h[locale]) return __WEBPACK_IMPORTED_MODULE_2__config__.h[locale];
         }
+        function normalizeLang(lang) {
+            if (lang && lang.match(/^[a-z]{2}$/) && __WEBPACK_IMPORTED_MODULE_2__config__.h[lang]) return __WEBPACK_IMPORTED_MODULE_2__config__.h[lang];
+        }
         function getBrowserLocale() {
-            if (window.navigator.languages) for (var _iterator3 = Array.prototype.slice.apply(window.navigator.languages), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+            var nav = window.navigator, locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+            nav.language && locales.push(nav.language);
+            nav.userLanguage && locales.push(nav.userLanguage);
+            for (var _iterator3 = locales, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                 var _ref4;
                 if (_isArray3) {
                     if (_i3 >= _iterator3.length) break;
@@ -13899,13 +13860,18 @@
                 var locale = _ref4, loc = normalizeLocale(locale);
                 if (loc) return loc;
             }
-            if (window.navigator.language) {
-                var _loc = normalizeLocale(window.navigator.language);
+            for (var _iterator4 = locales, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref5;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref5 = _iterator4[_i4++];
+                } else {
+                    _i4 = _iterator4.next();
+                    if (_i4.done) break;
+                    _ref5 = _i4.value;
+                }
+                var _locale = _ref5, _loc = normalizeLang(_locale);
                 if (_loc) return _loc;
-            }
-            if (window.navigator.userLanguage) {
-                var _loc2 = normalizeLocale(window.navigator.userLanguage);
-                if (_loc2) return _loc2;
             }
             return __WEBPACK_IMPORTED_MODULE_2__config__.m.defaultLocale;
         }
@@ -14340,7 +14306,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.142"
+                    ver: "4.0.143"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14753,7 +14719,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.142" === window.paypal.version) {
+        if (window.paypal && "4.0.143" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -14901,4 +14867,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.142.js.map
+//# sourceMappingURL=checkout.4.0.143.js.map

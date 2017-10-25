@@ -353,41 +353,6 @@
                         toggleOptionals();
                     });
                 });
-                try {
-                    var val = window.setupButton;
-                    Object.defineProperty(window, "setupButton", {
-                        get: function() {
-                            return val;
-                        },
-                        set: function(value) {
-                            val = function() {
-                                try {
-                                    if (window.paypal && window.paypal.Promise) {
-                                        var resolve = window.paypal.Promise.prototype.resolve;
-                                        window.paypal.Promise.prototype.resolve = function(obj) {
-                                            try {
-                                                obj && obj.responseHeaders && (obj.headers = obj.responseHeaders);
-                                            } catch (err2) {}
-                                            return resolve.apply(this, arguments);
-                                        };
-                                    }
-                                    if (window.paypal && window.paypal.Checkout && window.paypal.Checkout.props) {
-                                        var props = window.paypal.Checkout.props;
-                                        props.style = props.style || {
-                                            type: "object",
-                                            required: !1
-                                        };
-                                        props.fundingSource = props.fundingSource || {
-                                            type: "string",
-                                            required: !1
-                                        };
-                                    }
-                                } catch (err3) {}
-                                return value.apply(this, arguments);
-                            };
-                        }
-                    });
-                } catch (err) {}
             };
         }
         __webpack_exports__.a = getComponentScript;
@@ -702,7 +667,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.142", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.143", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
