@@ -1,6 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
+import { atob } from 'Base64';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed } from 'cross-domain-utils/src';
@@ -77,6 +78,10 @@ export const CHILD_REDIRECT_URI = `${ window.paypal.config.paypalUrl }/base/test
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 export const IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+
+export const MERCHANT_CLIENT_ID = 'abcxyz123';
+export const MERCHANT_ACCESS_TOKEN = 'xxxyyy987';
+export const MERCHANT_BRAINTREE_AUTH = 'aaabbb456';
 
 export function createElement(options : Object) : HTMLElement {
 
@@ -255,12 +260,18 @@ export function getAuthApiMock(options : Object = {}) : Object {
                 throw new Error(`Expected authorization header to be Basic XXXX, got "${ headers.authorization }"`);
             }
 
-            if (!data.grant_type === 'client_credentials') {
+            if (data !== 'grant_type=client_credentials') {
                 throw new Error(`Expected grant_type to be client_credentials, got "${ data.grant_type }"`);
             }
 
+            let clientID = atob(headers.authorization.replace('Basic ', '')).split(':')[0];
+
+            if (clientID !== MERCHANT_CLIENT_ID) {
+                throw new Error(`Expected client id to be ${ MERCHANT_CLIENT_ID }, got ${ clientID }`);
+            }
+
             return {
-                access_token: 'ABCDEFGH'
+                access_token: MERCHANT_ACCESS_TOKEN
             };
         },
         ...options
@@ -362,7 +373,6 @@ getAuthApiMock().listen();
 getPaymentApiMock().listen();
 getBillingApiMock().listen();
 getExperienceApiMock().listen();
-
 
 window.karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);
 

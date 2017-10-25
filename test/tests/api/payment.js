@@ -1,7 +1,8 @@
 /* @flow */
 
 
-import { getPaymentApiMock, getExperienceApiMock, generatePaymentID, generateExperienceToken } from '../common';
+import { getPaymentApiMock, getExperienceApiMock, generatePaymentID,
+    generateExperienceToken, MERCHANT_CLIENT_ID } from '../common';
 
 describe(`paypal checkout auth api`, () => {
 
@@ -9,7 +10,7 @@ describe(`paypal checkout auth api`, () => {
 
         let paymentApi = getPaymentApiMock().expectCalls();
 
-        return window.paypal.rest.payment.create('test', { test: '12345' }, {
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
             transactions: [
                 {
                     amount: { total: '1.00', currency: 'USD' }
@@ -56,7 +57,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        return window.paypal.rest.payment.create('test', { test: '12345' }, {
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
             transactions: [
                 {
                     amount: { total: '1.00', currency: 'USD' }
@@ -117,7 +118,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        return window.paypal.rest.payment.create('test', { test: '12345' }, {
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
             transactions: [
                 {
                     amount: { total: '1.00', currency: 'USD' }
@@ -191,7 +192,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        return window.paypal.rest.payment.create('test', { test: '12345' }, {
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
 
             payment: {
                 transactions: [
@@ -234,7 +235,7 @@ describe(`paypal checkout auth api`, () => {
             }
         }).expectCalls();
 
-        return window.paypal.rest.payment.create('test', { test: '12345' }, {
+        return window.paypal.rest.payment.create('test', { test: MERCHANT_CLIENT_ID }, {
             transactions: [
                 {
                     amount: { total: '1.00', currency: 'USD' }

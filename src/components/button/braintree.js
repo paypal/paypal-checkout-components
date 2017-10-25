@@ -16,8 +16,10 @@ export type BraintreePayPalClient = {
     tokenizePayment : Function
 };
 
-export function awaitBraintreeClient(braintree : Braintree, authorization : string) : ZalgoPromise<BraintreePayPalClient> {
-    return braintree.client.create({ authorization }).then(client => {
+export function awaitBraintreeClient(braintree : Braintree, auth : string | ZalgoPromise<string>) : ZalgoPromise<BraintreePayPalClient> {
+    return ZalgoPromise.resolve(auth).then(authorization => {
+        return braintree.client.create({ authorization });
+    }).then(client => {
         return braintree.paypalCheckout.create({ client });
     });
 }

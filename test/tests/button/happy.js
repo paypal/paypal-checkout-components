@@ -4,7 +4,9 @@
 import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createElement, createTestContainer, destroyTestContainer, onHashChange } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID,
+    createElement, createTestContainer, destroyTestContainer, onHashChange,
+    MERCHANT_CLIENT_ID } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -257,7 +259,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment() : string | ZalgoPromise<string> {
@@ -292,7 +294,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment(data) : string | ZalgoPromise<string> {
@@ -323,7 +325,38 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
+                },
+
+                payment(data, actions) : string | ZalgoPromise<string> {
+                    return actions.payment.create({
+                        transactions: [
+                            {
+                                amount: { total: '1.00', currency: 'USD' }
+                            }
+                        ]
+                    });
+                },
+
+                onAuthorize() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
+
+        it('should render a button into a container with a promise based client id and click on the button, call the REST api via actions.payment to create a payment, then complete the payment', (done) => {
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                client: {
+                    test: new ZalgoPromise(resolve => { setTimeout(resolve, 50); }).then(() => MERCHANT_CLIENT_ID)
                 },
 
                 payment(data, actions) : string | ZalgoPromise<string> {
@@ -354,7 +387,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment(data, actions) : string | ZalgoPromise<string> {
@@ -387,7 +420,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment(data, actions) : string | ZalgoPromise<string> {
@@ -431,7 +464,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment() : string | ZalgoPromise<string> {
@@ -469,7 +502,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment(actions) : string | ZalgoPromise<string> {
@@ -503,7 +536,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 test: { flow, action: 'checkout' },
 
                 client: {
-                    test: 'ewgwegegwegegegeg'
+                    test: MERCHANT_CLIENT_ID
                 },
 
                 payment() : string | ZalgoPromise<string> {

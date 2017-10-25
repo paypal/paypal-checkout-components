@@ -52,7 +52,7 @@ type ButtonOptions = {
         maxbuttons? : number
     |},
     client : {
-        [string] : string
+        [string] : (string | ZalgoPromise<string>)
     }
 };
 
@@ -183,8 +183,12 @@ export let Button : Component<ButtonOptions> = create({
                     throw new Error(`Client ID not found for env: ${ env }`);
                 }
 
-                if (client[env].match(/^(.)\1+$/)) {
-                    throw new Error(`Invalid client ID: ${ client[env] }`);
+                if (typeof client[env] === 'string') {
+                    if (client[env].match(/^(.)\1+$/)) {
+                        throw new Error(`Invalid client ID: ${ client[env] }`);
+                    }
+                } else if (!ZalgoPromise.isPromise(client[env])) {
+                    throw new Error(`Expected client token to be either a string or a promise`);
                 }
             }
         },
@@ -230,11 +234,11 @@ export let Button : Component<ButtonOptions> = create({
                 }
             },
             decorate(braintree, props) : ?ZalgoPromise<BraintreePayPalClient> {
-
                 let env = props.env || config.env;
-                let authorization = props.client[env];
-
-                return awaitBraintreeClient(braintree, authorization);
+                // $FlowFixMe
+                return ZalgoPromise.hash(props.client).then(client => {
+                    return awaitBraintreeClient(braintree, client[env]);
+                });
             }
         },
 
@@ -258,7 +262,9 @@ export let Button : Component<ButtonOptions> = create({
                                     ? this.props.braintree.then(client => {
                                         return client.createPayment(mapPaymentToBraintree(options.payment || options));
                                     })
-                                    : rest.payment.create(this.props.env, this.props.client, options);
+                                    : ZalgoPromise.hash(this.props.client).then(client => {
+                                        return rest.payment.create(this.props.env, client, options);
+                                    });
                             }
                         },
                         braintree: {

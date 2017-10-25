@@ -4,7 +4,10 @@
 import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, generateBillingToken, generatePaymentID, createTestContainer, destroyTestContainer, onHashChange, createElement, setupPopupBridge, destroyPopupBridge } from '../common';
+import { generateECToken, generateBillingToken, generatePaymentID,
+    createTestContainer, destroyTestContainer, onHashChange,
+    createElement, setupPopupBridge, destroyPopupBridge,
+    MERCHANT_CLIENT_ID } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -278,7 +281,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return window.paypal.Checkout.render({
 
                     client: {
-                        test: 'ewgwegegwegegegeg'
+                        test: MERCHANT_CLIENT_ID
                     },
 
                     payment() : string | ZalgoPromise<string> {
@@ -316,7 +319,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return window.paypal.Checkout.render({
 
                     client: {
-                        test: 'ewgwegegwegegegeg'
+                        test: MERCHANT_CLIENT_ID
                     },
 
                     payment() : string | ZalgoPromise<string> {
@@ -357,7 +360,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 return window.paypal.Checkout.render({
 
                     client: {
-                        test: 'ewgwegegwegegegeg'
+                        test: MERCHANT_CLIENT_ID
                     },
 
                     payment() : string | ZalgoPromise<string> {
