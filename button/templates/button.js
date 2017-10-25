@@ -40,9 +40,10 @@ export let buttonTemplate = (req, ctx) => {
         layout:       query(req, 'style.layout'),
         maxbuttons:   number(req, 'style.maxbuttons'),
 
-        fundingicons: bool(req, 'style.fundingicons'),
-        branding:     bool(req, 'style.branding'),
-        tagline:      bool(req, 'style.tagline')
+        fundingicons: bool(req,   'style.fundingicons'),
+        branding:     bool(req,   'style.branding'),
+        tagline:      bool(req,   'style.tagline'),
+        height:       number(req, 'style.height')
     };
 
     let funding = {
