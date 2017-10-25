@@ -38,12 +38,13 @@ export let buttonTemplate = (req, ctx) => {
         shape:        query(req, 'style.shape'),
         label:        query(req, 'style.label'),
         layout:       query(req, 'style.layout'),
+        
         maxbuttons:   number(req, 'style.maxbuttons'),
+        height:       number(req, 'style.height'),
 
-        fundingicons: bool(req,   'style.fundingicons'),
-        branding:     bool(req,   'style.branding'),
-        tagline:      bool(req,   'style.tagline'),
-        height:       number(req, 'style.height')
+        fundingicons: bool(req, 'style.fundingicons'),
+        branding:     bool(req, 'style.branding'),
+        tagline:      bool(req, 'style.tagline')
     };
 
     let funding = {
