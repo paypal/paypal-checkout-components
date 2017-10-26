@@ -37,7 +37,7 @@ export function buttonResponsiveStyle({ height } : { height? : number }) : strin
                 }
 
                 .${ CLASS.LOGO } {
-                    height: ${ perc(buttonHeight, 35) + 10 }px;
+                    height: ${ perc(buttonHeight, 35) + 7 }px;
                     max-height: ${ perc(buttonHeight, 68) }px;
                     min-height: ${ perc(buttonHeight, 60) }px;
                 }
