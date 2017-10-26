@@ -264,19 +264,13 @@ export function normalizeLocale(locale : string) : ?LocaleType {
             return { country, lang };
         }
     }
-
-    if (locale && locale.match(/^[a-z]{2}$/)) {
-        if (LANG_TO_DEFAULT_COUNTRY[locale]) {
-            return LANG_TO_DEFAULT_COUNTRY[locale];
-        }
-    }
 }
 
 export function normalizeLang(lang : string) : ?LocaleType {
 
     if (lang && lang.match(/^[a-z]{2}$/)) {
         if (LANG_TO_DEFAULT_COUNTRY[lang]) {
-            return LANG_TO_DEFAULT_COUNTRY[lang];
+            return { country: LANG_TO_DEFAULT_COUNTRY[lang], lang };
         }
     }
 }
