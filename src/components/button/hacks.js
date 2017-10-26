@@ -1,12 +1,12 @@
 /* @flow */
 
 import { info, warn, flush as flushLogs } from 'beaver-logger/client';
-import { CONSTANTS, PopupOpenError } from 'xcomponent/src';
+import { CONSTANTS } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { rest } from '../../api';
 import { config } from '../../config';
-import { patchMethod, isIE, getDomainSetting, noop, extend, extendUrl } from '../../lib';
+import { patchMethod, isIE, getDomainSetting, noop, extend, once, extendUrl } from '../../lib';
 import { Login } from '../login';
 import { Checkout } from '../checkout';
 
@@ -179,16 +179,21 @@ if (Button.isChild()) {
     }
 
     if (getDomainSetting('allow_full_page_fallback')) {
-        patchMethod(Checkout, 'renderTo', ({ callOriginal }) => {
-            return callOriginal().catch(err => {
-                if (err instanceof PopupOpenError) {
-                    return window.xprops.payment().then(token => {
-                        window.top.location = extendUrl(config.checkoutUrl, { token });
-                    });
-                } else {
-                    throw err;
+        patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
+            let handleError = once((err) => {
+                try {
+                    // eslint-disable-next-line no-console
+                    console.error(err && err.stack);
+                } catch (err2) { // eslint-disable-line unicorn/catch-error-name
+                    // pass
                 }
+                return window.xprops.payment().then(token => {
+                    window.top.location = extendUrl(config.checkoutUrl, { token });
+                });
             });
+
+            props.onError = handleError;
+            return callOriginal().catch(handleError);
         });
     }
 
