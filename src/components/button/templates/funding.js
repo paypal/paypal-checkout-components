@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ENV, CARD_PRIORITY } from '../../../config/constants';
+import { ENV, CARD_PRIORITY, FUNDING } from '../../../config/constants';
 import { BUTTON_LAYOUT } from '../constants';
 
 import { getButtonConfig, getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG, fundingToDefaultLabel } from './config';
@@ -36,6 +36,10 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
     }
 
     if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
+        return false;
+    }
+
+    if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
         return false;
     }
 

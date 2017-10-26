@@ -335,8 +335,14 @@ export let Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
-                    remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                if (!isDevice()) {
+                    if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
+                        remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
+                    }
+
+                    if (disallowed && disallowed.indexOf(FUNDING.VENMO) !== -1) {
+                        disallowed.push(FUNDING.VENMO);
+                    }
                 }
 
                 return {
