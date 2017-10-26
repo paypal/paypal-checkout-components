@@ -469,7 +469,7 @@ describe(`paypal button component remembered funding`, () => {
                 onRender({ fundingSources }) {
 
                     if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) !== -1) {
-                        throw new Error('Expected venmo button to not be present');
+                        throw new Error(`Expected venmo button to be present in first render, got ${ fundingSources.join(', ') }`);
                     }
 
                     window.paypal.Button.render({
@@ -478,7 +478,7 @@ describe(`paypal button component remembered funding`, () => {
                             onRender({ fundingSources: fundingSources2 }) {
 
                                 if (fundingSources2.indexOf(window.paypal.FUNDING.VENMO) === -1) {
-                                    throw new Error('Expected venmo button to be present');
+                                    throw new Error(`Expected venmo button to be present in second render, got ${ fundingSources2.join(', ') }`);
                                 }
 
                                 done();
