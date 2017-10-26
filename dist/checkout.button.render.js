@@ -487,11 +487,10 @@
                 locale: locale
             }).map(function(name) {
                 var _ref5, logo = __WEBPACK_IMPORTED_MODULE_6__logos__.a[name];
-                return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("span", _extends({}, (_ref5 = {}, 
+                return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", _extends({}, (_ref5 = {}, 
                 _ref5[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.BUTTON] = button || !1, 
                 _ref5), {
-                    class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + "-" + name + " " + (button ? __WEBPACK_IMPORTED_MODULE_10__style_class__.a.BUTTON : "")
-                }), Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", {
+                    class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + "-" + name + " " + (button ? __WEBPACK_IMPORTED_MODULE_10__style_class__.a.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(__WEBPACK_IMPORTED_MODULE_0_Base64__.btoa)(logo),
                     alt: name
                 }));
@@ -667,7 +666,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.143", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.144", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
