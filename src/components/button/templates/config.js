@@ -442,12 +442,20 @@ export const CARD_CONFIG = {
         priority: [
             CARD.VISA,
             CARD.MASTERCARD,
+            CARD.AMEX
+        ]
+    },
+
+    [ COUNTRY.US ]: {
+        priority: [
+            CARD.VISA,
+            CARD.MASTERCARD,
             CARD.AMEX,
             CARD.DISCOVER
         ]
     },
 
-    BR: {
+    [ COUNTRY.BR ]: {
         priority: [
             CARD.VISA,
             CARD.MASTERCARD,
