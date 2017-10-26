@@ -100,8 +100,8 @@ export let Button : Component<ButtonOptions> = create({
 
                 // eslint-disable-next-line promise/catch-or-return
                 checkout.openContainer().then(() => {
-                    checkout.event.triggerOnce(XCOMPONENT_CONSTANTS.EVENTS.CLOSE);
                     checkout.showContainer();
+                    checkout.event.triggerOnce(XCOMPONENT_CONSTANTS.EVENTS.CLOSE);
                 });
 
                 this.props.payment().then(token => {

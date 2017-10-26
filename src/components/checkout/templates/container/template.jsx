@@ -59,43 +59,47 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     let overlayColor = props.style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
     let logoColor = LOGO_COLOR[overlayColor];
 
+    let el = (
+        <div id={id} onClick={focus} class={`${tag}-context-${context} paypal-checkout-overlay ${tag}-background-color-${overlayColor} ${tag}-logo-color-${logoColor}`}>
+            <a href='#' class="paypal-checkout-close" onClick={close}></a>
+            <div class="paypal-checkout-modal">
+                <div class="paypal-checkout-logo">
+                    <img
+                        class="paypal-checkout-logo-pp" alt="pp"
+                        src={`data:image/svg+xml;base64,${btoa(componentLogos.pp[logoColor])}`} />
+                    <img
+                        class="paypal-checkout-logo-paypal" alt="paypal"
+                        src={`data:image/svg+xml;base64,${btoa(componentLogos.paypal[logoColor])}`} />
+                </div>
+                <div class="paypal-checkout-message">
+                    {content.windowMessage}
+                </div>
+                <div class="paypal-checkout-continue">
+                    <a onClick={focus} href='#'>{content.continue}</a>
+                </div>
+                <div class="paypal-checkout-loader">
+                    <div class="paypal-spinner"></div>
+                </div>
+            </div>
+
+            <div class="paypal-checkout-iframe-container">
+                {outlet}
+            </div>
+
+            <style>{getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION })}</style>
+        </div>
+    );
+
     let container = (
         <html>
             <body>
-                <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` }>
-                    <a href='#' class="paypal-checkout-close" onClick={ close }></a>
-                    <div class="paypal-checkout-modal">
-                        <div class="paypal-checkout-logo">
-                            <img
-                                class="paypal-checkout-logo-pp" alt="pp"
-                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.pp[logoColor]) }` } />
-                            <img
-                                class="paypal-checkout-logo-paypal" alt="paypal"
-                                src={ `data:image/svg+xml;base64,${ btoa(componentLogos.paypal[logoColor]) }` } />
-                        </div>
-                        <div class="paypal-checkout-message">
-                            { content.windowMessage }
-                        </div>
-                        <div class="paypal-checkout-continue">
-                            <a onClick={ focus } href='#'>{ content.continue }</a>
-                        </div>
-                        <div class="paypal-checkout-loader">
-                            <div class="paypal-spinner"></div>
-                        </div>
-                    </div>
-
-                    <div class="paypal-checkout-iframe-container">
-                        { outlet }
-                    </div>
-
-                    <style>{ getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION }) }</style>
-                </div>
+                { el }
             </body>
         </html>
     );
 
     on(EVENT.CLOSE, () => {
-        container.className += ` ${ tag }-loading`;
+        el.className += ` ${ tag }-loading`;
     });
 
     return (
