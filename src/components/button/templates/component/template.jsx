@@ -217,12 +217,23 @@ function renderStyle({ height } : { height? : number }) : JsxHTMLNode {
 
 export function componentTemplate({ props } : { props : Object }) : string {
 
-    if (props && props.style && props.style.label === 'generic') {
-        props.style.label = 'paypal';
-    }
+    if (props && props.style) {
+        let style = props.style;
 
-    if (props && props.style && props.style.color === 'creditblue') {
-        delete props.style.color;
+        if (style.label === 'generic') {
+            style.label = 'paypal';
+        }
+
+        if (style.color === 'creditblue') {
+            delete style.color;
+        }
+
+        if (style.maxbuttons === 1 && style.tagline === false &&
+            style.size === 'responsive' && style.layout === 'horizontal' &&
+            !style.height) {
+
+            style.height = 44;
+        }
     }
 
     validateButtonProps(props);
