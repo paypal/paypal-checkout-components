@@ -69,10 +69,9 @@ function renderCards({ funding, locale, button } : { funding : FundingSelection,
         return (
             <img
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false) } }
-                class={ `${CLASS.CARD} ${CLASS.CARD}-${name} ${button ? CLASS.BUTTON : ''}` }
-                src={`data:image/svg+xml;base64,${btoa(logo)}`}
-                alt={name}
-            />
+                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }
+                src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
+                alt={ name } />
         );
     });
 }
