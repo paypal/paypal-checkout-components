@@ -48,6 +48,7 @@ export let config = {
             memoize_payment:                 true,
             force_bridge:                    true,
             log_authorize:                   true,
+            disable_payment_timeout:         true,
             experiment_test_beacon_on_click: 'walmart_paypal_incontext_click'
         },
 
@@ -55,6 +56,7 @@ export let config = {
             ie_full_page:             false,
             allow_full_page_fallback: true,
             memoize_payment:          true,
+            disable_payment_timeout:  true,
             force_bridge:             false,
             log_authorize:            true
         }

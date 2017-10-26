@@ -288,8 +288,8 @@ export let Button : Component<ButtonOptions> = create({
 
                     this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ]);
 
-                    if (this.props.env === ENV.PRODUCTION) {
-                        this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
+                    if (this.props.env === ENV.PRODUCTION && !getDomainSetting('disable_payment_timeout')) {
+                        this.memoizedToken = this.memoizedToken.timeout(50, new Error(`Timed out waiting ${ timeout }ms for payment`));
                     }
                         
                     this.memoizedToken = this.memoizedToken.then(token => {
