@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { ENV, ATTRIBUTE } from '../../../../config/constants';
+import { ENV, ATTRIBUTE, FUNDING } from '../../../../config/constants';
 import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL } from '../../constants';
 import { getButtonConfig, fundingToDefaultLabel } from '../config';
 import { determineEligibleCards, type FundingSource, type FundingList, type FundingSelection } from '../funding';
@@ -68,7 +68,7 @@ function renderCards({ funding, locale, button } : { funding : FundingSelection,
 
         return (
             <img
-                { ...{ [ATTRIBUTE.BUTTON]: (button || false) } }
+                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: FUNDING.CARD } }
                 class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />

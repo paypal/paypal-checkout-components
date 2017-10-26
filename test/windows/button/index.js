@@ -112,7 +112,7 @@ if (action === 'auth') {
 
 if (onRender) {
     onRender({
-        fundingSources: getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')),
+        fundingSources: Array.from(new Set(getElements('[data-funding-source]').map(el => el.getAttribute('data-funding-source')))),
         click() {
             getElement('.paypal-button', document).click();
         }
