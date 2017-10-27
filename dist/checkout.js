@@ -8733,8 +8733,8 @@
                             onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.D
                         });
                         checkout.openContainer().then(function() {
-                            checkout.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.a.EVENTS.CLOSE);
                             checkout.showContainer();
+                            checkout.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.a.EVENTS.CLOSE);
                         });
                         _this.props.payment().then(function(token) {
                             window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.g)(__WEBPACK_IMPORTED_MODULE_5__config__.m.checkoutUrl, {
@@ -8748,7 +8748,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.145";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.146";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
@@ -8856,7 +8856,7 @@
                             };
                             if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(original, this, [ data, actions ]);
-                            this.props.env === __WEBPACK_IMPORTED_MODULE_5__config__.d.PRODUCTION && (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== __WEBPACK_IMPORTED_MODULE_5__config__.d.PRODUCTION || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(50, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
@@ -8896,7 +8896,10 @@
                         var remembered = Object(__WEBPACK_IMPORTED_MODULE_15__funding__.a)(function(sources) {
                             return sources;
                         });
-                        remembered && -1 !== remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && !Object(__WEBPACK_IMPORTED_MODULE_6__lib__.t)() && remembered.splice(remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
+                        if (!Object(__WEBPACK_IMPORTED_MODULE_6__lib__.t)()) {
+                            remembered && -1 !== remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && remembered.splice(remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
+                            disallowed && -1 !== disallowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && disallowed.push(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO);
+                        }
                         return {
                             allowed: allowed,
                             disallowed: disallowed,
@@ -9427,14 +9430,18 @@
                 });
             });
             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.i)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref8) {
-                return (0, _ref8.callOriginal)().catch(function(err) {
-                    if (err instanceof __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.b) return window.xprops.payment().then(function(token) {
+                var callOriginal = _ref8.callOriginal, _ref8$args = _ref8.args, props = _ref8$args[1], handleError = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.G)(function(err) {
+                    try {
+                        console.error(err && err.stack);
+                    } catch (err2) {}
+                    return window.xprops.payment().then(function(token) {
                         window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.g)(__WEBPACK_IMPORTED_MODULE_4__config__.m.checkoutUrl, {
                             token: token
                         });
                     });
-                    throw err;
                 });
+                props.onError = handleError;
+                return callOriginal().catch(handleError);
             });
             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.H)(__WEBPACK_IMPORTED_MODULE_6__login__.a, "prerender", function(_ref9) {
                 var callOriginal = _ref9.callOriginal;
@@ -9476,7 +9483,7 @@
         module.exports = '<svg width="100" height="32" viewBox="0 0 95 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path fill="#ffffff" d="M 52.732 6.347 C 52.83 5.963 53.122 5.675 53.512 5.675 L 60.626 5.675 C 66.571 5.675 70.664 10.187 69.69 15.851 C 68.813 21.515 63.16 25.931 57.313 25.931 L 50.004 25.931 C 49.711 25.931 49.516 25.739 49.614 25.451 L 52.732 6.347 Z M 55.753 21.515 L 57.02 21.515 C 60.236 21.515 63.355 19.787 64.037 15.851 C 64.622 12.203 62.478 10.187 58.97 10.187 L 57.995 10.187 C 57.8 10.187 57.605 10.283 57.605 10.475 L 55.753 21.515 Z"/>\n  <path fill="#ffffff" d="M 43.571 10.763 L 43.084 13.547 L 48.737 13.547 C 49.029 13.547 49.224 13.739 49.224 14.027 L 48.639 17.387 C 48.542 17.771 48.249 17.963 47.859 17.963 L 42.987 17.963 C 42.597 17.963 42.304 18.251 42.207 18.635 L 41.72 21.515 L 47.762 21.515 C 48.054 21.515 48.249 21.707 48.152 21.995 L 47.665 25.355 C 47.567 25.643 47.275 25.931 46.885 25.931 L 36.067 25.931 C 35.775 25.931 35.58 25.643 35.58 25.451 L 38.699 6.347 C 38.796 5.963 39.186 5.675 39.478 5.675 L 50.393 5.675 C 50.588 5.675 50.881 5.963 50.783 6.155 L 50.296 9.515 C 50.198 9.899 49.906 10.091 49.516 10.091 L 44.254 10.091 C 43.864 10.187 43.571 10.379 43.571 10.763 Z"/>\n  <path fill="#ffffff" d="M 74.563 25.931 L 70.274 25.931 C 69.982 25.931 69.787 25.739 69.787 25.451 L 73.003 6.347 C 73.003 5.963 73.393 5.675 73.685 5.675 L 78.071 5.675 C 78.266 5.675 78.558 5.963 78.461 6.251 L 75.342 25.355 C 75.245 25.643 74.952 25.931 74.563 25.931 Z"/>\n  <path fill="#ffffff" d="M 34.118 25.931 L 28.466 25.931 C 28.173 25.931 27.978 25.835 27.881 25.643 L 24.178 18.155 L 24.08 18.155 L 22.911 25.451 C 22.813 25.739 22.618 25.931 22.326 25.931 L 17.843 25.931 C 17.551 25.931 17.356 25.739 17.453 25.451 L 20.572 6.251 C 20.669 5.963 20.864 5.675 21.156 5.675 L 28.855 5.675 C 33.046 5.675 35.97 7.595 35.288 11.915 C 34.8 14.699 32.754 17.195 29.635 17.675 L 34.508 25.355 C 34.703 25.547 34.411 25.931 34.118 25.931 Z M 24.665 14.795 L 25.152 14.795 C 27.004 14.795 29.05 14.411 29.44 12.203 C 29.83 10.091 28.661 9.707 26.711 9.707 L 25.932 9.707 C 25.639 9.707 25.445 9.899 25.445 10.091 L 24.665 14.795 Z"/>\n  <path fill="#ffffff" d="M 86.16 25.931 L 81.872 25.931 C 81.579 25.931 81.384 25.739 81.482 25.451 L 83.918 10.187 L 79.923 10.187 C 79.63 10.187 79.435 9.899 79.533 9.611 L 80.02 6.347 C 80.118 5.963 80.41 5.675 80.8 5.675 L 94.249 5.675 C 94.444 5.675 94.736 5.963 94.639 6.251 L 94.054 9.515 C 94.054 9.899 93.761 10.187 93.372 10.187 L 89.473 10.187 L 86.939 25.355 C 86.939 25.643 86.647 25.931 86.16 25.931 Z"/>\n  <path fill="#ffffff" d="M 17.648 11.435 C 17.648 11.819 17.161 12.011 16.868 11.723 C 15.894 10.763 14.529 10.283 13.068 10.283 C 9.657 10.283 7.025 12.779 6.441 15.851 C 5.953 19.019 7.902 21.323 11.313 21.323 C 12.678 21.323 14.237 20.843 15.407 19.979 C 15.796 19.787 16.284 20.075 16.186 20.459 L 15.407 25.067 C 15.309 25.355 15.114 25.547 14.822 25.643 C 13.165 26.123 11.898 26.507 10.339 26.507 C 1.178 26.507 -0.284 19.019 0.203 15.851 C 1.47 6.923 9.072 4.907 13.652 5.195 C 15.114 5.195 16.479 5.387 17.745 5.867 C 18.233 6.059 18.428 6.443 18.33 6.923 L 17.648 11.435 Z"/>\n</svg>\n';
     },
     "./src/components/button/templates/component/logos/discover.svg": function(module, exports) {
-        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(244, 130, 36);"/>\n  <path d="M 5.498 13.349 C 5.16 13.654 4.722 13.787 4.028 13.787 L 3.738 13.787 L 3.738 10.141 L 4.028 10.141 C 4.722 10.141 5.143 10.265 5.498 10.587 C 5.868 10.917 6.093 11.431 6.093 11.959 C 6.093 12.489 5.869 13.019 5.498 13.349 Z M 4.243 9.206 L 2.666 9.206 L 2.666 14.721 L 4.236 14.721 C 5.069 14.721 5.671 14.524 6.199 14.084 C 6.829 13.564 7.199 12.779 7.199 11.968 C 7.199 10.34 5.985 9.206 4.243 9.206 Z M 7.696 14.721 L 8.77 14.721 L 8.77 9.207 L 7.696 9.207 M 11.393 11.323 C 10.748 11.083 10.559 10.926 10.559 10.628 C 10.559 10.281 10.897 10.018 11.359 10.018 C 11.681 10.018 11.946 10.15 12.226 10.464 L 12.788 9.727 C 12.326 9.322 11.773 9.115 11.17 9.115 C 10.195 9.115 9.452 9.793 9.452 10.695 C 9.452 11.455 9.798 11.845 10.807 12.208 C 11.227 12.356 11.442 12.455 11.55 12.522 C 11.765 12.662 11.872 12.862 11.872 13.092 C 11.872 13.54 11.518 13.872 11.038 13.872 C 10.528 13.872 10.114 13.614 9.868 13.136 L 9.173 13.806 C 9.668 14.532 10.263 14.856 11.08 14.856 C 12.196 14.856 12.98 14.111 12.98 13.044 C 12.98 12.168 12.617 11.771 11.395 11.324 Z M 13.316 11.968 C 13.316 13.588 14.586 14.845 16.223 14.845 C 16.685 14.845 17.081 14.755 17.57 14.525 L 17.57 13.258 C 17.14 13.688 16.76 13.862 16.273 13.862 C 15.191 13.862 14.423 13.077 14.423 11.962 C 14.423 10.902 15.215 10.067 16.223 10.067 C 16.735 10.067 17.123 10.25 17.57 10.687 L 17.57 9.421 C 17.098 9.181 16.71 9.081 16.248 9.081 C 14.621 9.081 13.316 10.364 13.316 11.968 Z M 26.088 12.911 L 24.62 9.206 L 23.446 9.206 L 25.783 14.862 L 26.361 14.862 L 28.741 9.207 L 27.576 9.207 M 29.226 14.721 L 32.272 14.721 L 32.272 13.787 L 30.299 13.787 L 30.299 12.299 L 32.199 12.299 L 32.199 11.365 L 30.299 11.365 L 30.299 10.141 L 32.272 10.141 L 32.272 9.206 L 29.226 9.206 M 34.373 11.745 L 34.059 11.745 L 34.059 10.075 L 34.389 10.075 C 35.059 10.075 35.423 10.355 35.423 10.893 C 35.423 11.447 35.059 11.745 34.373 11.745 Z M 36.528 10.835 C 36.528 9.802 35.818 9.207 34.578 9.207 L 32.986 9.207 L 32.986 14.721 L 34.059 14.721 L 34.059 12.506 L 34.199 12.506 L 35.686 14.721 L 37.006 14.721 L 35.273 12.398 C 36.083 12.233 36.528 11.678 36.528 10.835 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 23.766 11.968 C 23.766 13.588 22.456 14.898 20.839 14.898 C 19.222 14.9 17.911 13.588 17.911 11.968 C 17.911 10.348 19.221 9.036 20.839 9.036 C 22.457 9.036 23.767 10.348 23.767 11.968 Z" style="fill: rgb(255, 255, 255);"/>\n</svg>';
+        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(17, 49, 82);"/>\n  <path d="M 5.498 13.349 C 5.16 13.654 4.722 13.787 4.028 13.787 L 3.738 13.787 L 3.738 10.141 L 4.028 10.141 C 4.722 10.141 5.143 10.265 5.498 10.587 C 5.868 10.917 6.093 11.431 6.093 11.959 C 6.093 12.489 5.869 13.019 5.498 13.349 Z M 4.243 9.206 L 2.666 9.206 L 2.666 14.721 L 4.236 14.721 C 5.069 14.721 5.671 14.524 6.199 14.084 C 6.829 13.564 7.199 12.779 7.199 11.968 C 7.199 10.34 5.985 9.206 4.243 9.206 Z M 7.696 14.721 L 8.77 14.721 L 8.77 9.207 L 7.696 9.207 M 11.393 11.323 C 10.748 11.083 10.559 10.926 10.559 10.628 C 10.559 10.281 10.897 10.018 11.359 10.018 C 11.681 10.018 11.946 10.15 12.226 10.464 L 12.788 9.727 C 12.326 9.322 11.773 9.115 11.17 9.115 C 10.195 9.115 9.452 9.793 9.452 10.695 C 9.452 11.455 9.798 11.845 10.807 12.208 C 11.227 12.356 11.442 12.455 11.55 12.522 C 11.765 12.662 11.872 12.862 11.872 13.092 C 11.872 13.54 11.518 13.872 11.038 13.872 C 10.528 13.872 10.114 13.614 9.868 13.136 L 9.173 13.806 C 9.668 14.532 10.263 14.856 11.08 14.856 C 12.196 14.856 12.98 14.111 12.98 13.044 C 12.98 12.168 12.617 11.771 11.395 11.324 Z M 13.316 11.968 C 13.316 13.588 14.586 14.845 16.223 14.845 C 16.685 14.845 17.081 14.755 17.57 14.525 L 17.57 13.258 C 17.14 13.688 16.76 13.862 16.273 13.862 C 15.191 13.862 14.423 13.077 14.423 11.962 C 14.423 10.902 15.215 10.067 16.223 10.067 C 16.735 10.067 17.123 10.25 17.57 10.687 L 17.57 9.421 C 17.098 9.181 16.71 9.081 16.248 9.081 C 14.621 9.081 13.316 10.364 13.316 11.968 Z M 26.088 12.911 L 24.62 9.206 L 23.446 9.206 L 25.783 14.862 L 26.361 14.862 L 28.741 9.207 L 27.576 9.207 M 29.226 14.721 L 32.272 14.721 L 32.272 13.787 L 30.299 13.787 L 30.299 12.299 L 32.199 12.299 L 32.199 11.365 L 30.299 11.365 L 30.299 10.141 L 32.272 10.141 L 32.272 9.206 L 29.226 9.206 M 34.373 11.745 L 34.059 11.745 L 34.059 10.075 L 34.389 10.075 C 35.059 10.075 35.423 10.355 35.423 10.893 C 35.423 11.447 35.059 11.745 34.373 11.745 Z M 36.528 10.835 C 36.528 9.802 35.818 9.207 34.578 9.207 L 32.986 9.207 L 32.986 14.721 L 34.059 14.721 L 34.059 12.506 L 34.199 12.506 L 35.686 14.721 L 37.006 14.721 L 35.273 12.398 C 36.083 12.233 36.528 11.678 36.528 10.835 Z" style="fill: rgb(255, 255, 255);"/>\n  <g id="MarkingBase_1_" transform="matrix(0.089776, 0, 0, 0.089776, 2.192296, 5.72498)">\n    <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="224.3917" y1="44.1731" x2="201.33" y2="80.2807" gradientTransform="matrix(1 0 0 -1 0 141.7323)">\n      <stop offset="0" style="stop-color:#F89F21"/>\n      <stop offset="0.2502" style="stop-color:#F79A23"/>\n      <stop offset="0.5331" style="stop-color:#F78E22"/>\n      <stop offset="0.6196" style="stop-color:#F68721"/>\n      <stop offset="0.7232" style="stop-color:#F48220"/>\n      <stop offset="1" style="stop-color:#F27623"/>\n    </linearGradient>\n    <circle fill="url(#SVGID_1_)" cx="207.343" cy="70.866" r="33.307"/>\n    <linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="220.7487" y1="44.664" x2="187.0436" y2="110.5426" gradientTransform="matrix(1 0 0 -1 0 141.7323)">\n      <stop offset="0" style="stop-color:#F68721;stop-opacity:0"/>\n      <stop offset="0.3587" style="stop-color:#E27027;stop-opacity:0.2704"/>\n      <stop offset="0.703" style="stop-color:#D4612C;stop-opacity:0.5299"/>\n      <stop offset="0.9816" style="stop-color:#D15D2D;stop-opacity:0.74"/>\n    </linearGradient>\n    <circle opacity="0.65" fill="url(#SVGID_2_)" cx="207.343" cy="70.866" r="33.307"/>\n  </g>\n  <g id="Orange_1_" enable-background="new    " transform="matrix(0.469224, 0, 0, 0.469224, 13.785085, 6.199149)">\n    <g id="Orange">\n      <g>\n        <path d="M13,38c20.1,0,40,0,40,0c1.7,0,3-1.3,3-3V18C56,18,51.2,31.8,13,38z" style="fill: rgb(255, 129, 38);"/>\n      </g>\n    </g>\n  </g>\n</svg>';
     },
     "./src/components/button/templates/component/logos/elv.svg": function(module, exports) {
         module.exports = '<svg width="38" height="32" viewBox="0 0 38 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <mask id="mask-2" fill="white">\n    <polygon id="" points="0 35.8930957 31.9150829 35.8930957 31.9150829 0 0 0" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n  </mask>\n  <g transform="matrix(1, 0, 0, 1, 2.025162, 0.682172)">\n    <path d="M 4.557 0.468 L 29.28 0.468 C 30.98 0.468 32.371 1.578 32.371 2.934 L 32.371 27.771 C 32.371 29.127 30.98 30.237 29.28 30.237 L 4.557 30.237 C 2.857 30.237 1.466 29.127 1.466 27.771 L 1.466 2.934 C 1.466 1.578 2.857 0.468 4.557 0.468 Z" id="Fill-1" fill="#FEFEFE"/>\n    <path d="M 4.565 0.468 L 29.35 0.468 C 31.054 0.468 32.449 1.573 32.449 2.925 L 32.449 27.664 C 32.449 29.015 31.054 30.12 29.35 30.12 L 4.565 30.12 C 2.861 30.12 1.466 29.015 1.466 27.664 L 1.466 2.925 C 1.466 1.573 2.861 0.468 4.565 0.468 Z" id="Stroke-3" stroke-width="0.935373913" style="stroke: rgb(0, 112, 187); fill: rgb(255, 255, 255);"/>\n    <path d="M 29.189 26.783 L 16.549 26.783 C 15.513 26.783 14.811 25.744 14.811 25.005 C 14.811 24.318 14.828 6.133 14.811 5.429 C 14.793 4.725 16.022 3.634 16.847 3.634 C 17.672 3.651 29.171 3.634 29.171 3.634 L 29.171 12.805 L 22.465 12.805 L 22.465 8.457 C 22.465 8.457 22.026 8.44 21.464 8.457 C 21.183 8.475 20.709 8.756 20.709 9.214 C 20.692 10.165 20.709 21.15 20.709 21.431 C 20.709 21.695 20.885 22.047 21.464 22.065 C 22.044 22.1 22.483 22.065 22.483 22.065 L 22.483 17.365 L 29.189 17.365 L 29.189 26.783 Z" id="Fill-21" fill="#EE4123" mask="url(#mask-2)"/>\n    <path d="M 12.651 8.422 C 12.651 8.422 12.142 8.387 11.686 8.405 C 11.212 8.422 10.808 8.88 10.808 9.161 L 10.808 12.805 L 12.651 12.805 L 12.651 8.422 Z M 6.963 3.634 C 8.35 3.651 18.462 3.634 18.462 3.634 L 18.462 17.365 L 10.808 17.347 L 10.808 21.378 C 10.808 21.449 11.001 22.047 11.686 22.083 L 12.634 22.083 L 12.634 18.685 L 18.48 18.685 L 18.462 26.783 L 6.91 26.783 C 6.91 26.783 5.172 26.501 5.014 24.811 C 5.032 24.177 5.014 5.711 5.014 5.394 C 5.014 5.095 5.681 3.634 6.963 3.634 L 6.963 3.634 Z" id="Fill-22" fill="#0071BB" mask="url(#mask-2)"/>\n    <path d="M 18.48 18.685 L 14.811 18.685 L 14.811 25.005 C 14.811 25.727 15.513 26.765 16.531 26.783 L 18.462 26.783 L 18.48 18.685 Z" id="Fill-23" fill="#231F20" mask="url(#mask-2)"/>\n    <path d="M 18.462 17.365 L 18.462 3.634 L 16.847 3.634 C 16.022 3.634 14.793 4.725 14.811 5.43 L 14.811 17.365 L 18.462 17.365 Z" id="Fill-24" fill="#231F20" mask="url(#mask-2)"/>\n  </g>\n</svg>\n';
@@ -9729,7 +9736,7 @@
             var height = _ref.height;
             return Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.b).map(function(size) {
                 var style = __WEBPACK_IMPORTED_MODULE_1__style__.b[size], buttonHeight = Object(__WEBPACK_IMPORTED_MODULE_2__util__.c)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(height || style.defaultHeight, style.minHeight), style.maxHeight), minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + style.minHeight + "px;\n                    max-height: " + style.maxHeight + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 50), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LOGO + " {\n                    height: " + (Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 35) + 10) + "px;\n                    max-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 68) + "px;\n                    min-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 60) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                    border-radius: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 16) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                    margin-bottom: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SEPARATOR + " {\n                    margin: 0 " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 5) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                    line-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.FUNDINGICONS) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    width: 20%;\n                    max-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 160) + ";\n                    margin-top: 0;\n                    margin-left: 1.5%;\n                    margin-right: 1.5%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(style.minWidth, minDualWidth) + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + style.minHeight + "px;\n                    max-height: " + style.maxHeight + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 50), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LOGO + " {\n                    height: " + (Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 35) + 7) + "px;\n                    max-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 68) + "px;\n                    min-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 60) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                    border-radius: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 16) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                    margin-bottom: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SEPARATOR + " {\n                    margin: 0 " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 5) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                    line-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.FUNDINGICONS) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    width: 20%;\n                    max-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 160) + ";\n                    margin-top: 0;\n                    margin-left: 1.5%;\n                    margin-right: 1.5%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(style.minWidth, minDualWidth) + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
             }).join("\n");
         }
         __webpack_exports__.a = buttonResponsiveStyle;
@@ -9770,6 +9777,7 @@
                 var _ref5, logo = __WEBPACK_IMPORTED_MODULE_6__logos__.a[name];
                 return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", _extends({}, (_ref5 = {}, 
                 _ref5[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.BUTTON] = button || !1, 
+                _ref5[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.FUNDING_SOURCE] = __WEBPACK_IMPORTED_MODULE_1__config_constants__.g.CARD, 
                 _ref5), {
                     class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + " " + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CARD + "-" + name + " " + (button ? __WEBPACK_IMPORTED_MODULE_10__style_class__.a.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(__WEBPACK_IMPORTED_MODULE_0_Base64__.btoa)(logo),
@@ -9910,8 +9918,12 @@
         }
         function componentTemplate(_ref13) {
             var _ref14, props = _ref13.props;
-            props && props.style && "generic" === props.style.label && (props.style.label = "paypal");
-            props && props.style && "creditblue" === props.style.color && delete props.style.color;
+            if (props && props.style) {
+                var style = props.style;
+                "generic" === style.label && (style.label = "paypal");
+                "creditblue" === style.color && delete style.color;
+                1 !== style.maxbuttons || !1 !== style.tagline || "responsive" !== style.size || "horizontal" !== style.layout || style.height || (style.height = 44);
+            }
             Object(__WEBPACK_IMPORTED_MODULE_12__validate__.b)(props);
             var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, height = _normalizeProps.height, buttonNodes = determineButtons({
                 label: label,
@@ -9947,7 +9959,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.145", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.146", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10397,8 +10409,10 @@
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ],
             defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ]
         }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
+            priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX ]
+        }, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US] = {
             priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER ]
-        }, _CARD_CONFIG.BR = {
+        }, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.d.BR] = {
             priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER ]
         }, _CARD_CONFIG);
     },
@@ -10482,7 +10496,7 @@
             var locale = _ref.locale, funding = _ref.funding, env = _ref.env, layout = _ref.layout;
             if (!(Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "enabled") || env === __WEBPACK_IMPORTED_MODULE_0__config_constants__.e.TEST && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "test"))) return !1;
             var isVertical = layout === __WEBPACK_IMPORTED_MODULE_1__constants__.d.VERTICAL, label = Object(__WEBPACK_IMPORTED_MODULE_2__config__.d)(source);
-            return !(!Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, isVertical ? "allowSecondaryVertical" : "allowSecondaryHorizontal") || -1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut") || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) && (!isVertical || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultVerticalCountries", []).indexOf(locale.country)) && !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default") && (-1 === funding.allowed.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) && (-1 === funding.remembered.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
+            return !(!Object(__WEBPACK_IMPORTED_MODULE_2__config__.e)(label, isVertical ? "allowSecondaryVertical" : "allowSecondaryHorizontal") || -1 !== funding.disallowed.indexOf(source) && Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptOut") || -1 !== funding.disallowed.indexOf(source) && source === __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.VENMO || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultCountries", []).indexOf(locale.country) && (!isVertical || -1 === Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "defaultVerticalCountries", []).indexOf(locale.country)) && !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "default") && (-1 === funding.allowed.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) && (-1 === funding.remembered.indexOf(source) || !Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowRemember")));
         }
         function determineEligibleFunding(_ref2) {
             var funding = _ref2.funding, selected = _ref2.selected, locale = _ref2.locale, env = _ref2.env, layout = _ref2.layout, eligibleFunding = __WEBPACK_IMPORTED_MODULE_2__config__.c.filter(function(source) {
@@ -10740,7 +10754,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.145";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.146";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11304,7 +11318,7 @@
                 event.stopPropagation();
                 actions.focus();
             }
-            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], overlayColor = props.style.overlayColor || __WEBPACK_IMPORTED_MODULE_3__constants__.a.BLACK, logoColor = LOGO_COLOR[overlayColor], container = jsxDom("html", null, jsxDom("body", null, jsxDom("div", {
+            var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], overlayColor = props.style.overlayColor || __WEBPACK_IMPORTED_MODULE_3__constants__.a.BLACK, logoColor = LOGO_COLOR[overlayColor], el = jsxDom("div", {
                 id: id,
                 onClick: focus,
                 class: tag + "-context-" + context + " paypal-checkout-overlay " + tag + "-background-color-" + overlayColor + " " + tag + "-logo-color-" + logoColor
@@ -11343,9 +11357,9 @@
                 CONTEXT: CONTEXT,
                 CLASS: CLASS,
                 ANIMATION: ANIMATION
-            })))));
+            }))), container = jsxDom("html", null, jsxDom("body", null, el));
             on(EVENT.CLOSE, function() {
-                container.className += " " + tag + "-loading";
+                el.className += " " + tag + "-loading";
             });
             return jsxDom("div", {
                 id: id,
@@ -11443,7 +11457,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.145";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.146";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11571,7 +11585,7 @@
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.145",
+            version: "4.0.146",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11595,12 +11609,14 @@
                     memoize_payment: !0,
                     force_bridge: !0,
                     log_authorize: !0,
+                    disable_payment_timeout: !0,
                     experiment_test_beacon_on_click: "walmart_paypal_incontext_click"
                 },
                 mmgkjhtnrjqajdxjmwdbowxnegxd: {
                     ie_full_page: !1,
                     allow_full_page_fallback: !0,
                     memoize_payment: !0,
+                    disable_payment_timeout: !0,
                     force_bridge: !1,
                     log_authorize: !0
                 }
@@ -11728,7 +11744,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.145");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.146");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12798,7 +12814,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.145", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.146", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13581,7 +13597,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.145";
+                payload.version = "4.0.146";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                 var query = [];
@@ -13608,7 +13624,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.145".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.146".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13616,7 +13632,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.145",
+                v: "checkout.js.4.0.146",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -14306,7 +14322,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.145"
+                    ver: "4.0.146"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14719,7 +14735,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.145" === window.paypal.version) {
+        if (window.paypal && "4.0.146" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
