@@ -340,7 +340,7 @@ export let Button : Component<ButtonOptions> = create({
                         remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
                     }
 
-                    if (disallowed && disallowed.indexOf(FUNDING.VENMO) !== -1) {
+                    if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
                         disallowed.push(FUNDING.VENMO);
                     }
                 }
