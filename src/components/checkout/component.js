@@ -8,7 +8,7 @@ import { type Component } from 'xcomponent/src/component/component';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize } from '../../lib';
+    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize, extend } from '../../lib';
 import { config, ENV, FPTI, FUNDING } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -565,5 +565,14 @@ if (Checkout.isChild()) {
         }
     } catch (err) {
         // pass
+    }
+
+    if (!Object.assign) {
+        try {
+            // $FlowFixMe
+            Object.assign = extend;
+        } catch (err) {
+            // pass  
+        }
     }
 }
