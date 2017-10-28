@@ -8,7 +8,8 @@ import { type Component } from 'xcomponent/src/component/component';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
-    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize, extend } from '../../lib';
+    setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
+    extend, getDomainSetting } from '../../lib';
 import { config, ENV, FPTI, FUNDING } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -458,6 +459,12 @@ export let Checkout : Component<CheckoutPropsType> = create({
             def() : Function {
                 return function defaultFallback(url) : ZalgoPromise<void> {
                     warn('fallback', { url });
+
+                    if (getDomainSetting('allow_full_page_fallback')) {
+                        window.top.location = url;
+                        return this.close();
+                    }
+
                     return onLegacyPaymentAuthorize(this.props.onAuthorize);
                 };
             }
