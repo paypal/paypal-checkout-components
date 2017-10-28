@@ -55,4 +55,8 @@ export function checkForCommonErrors() {
     if (window.opener && window.parent !== window) {
         warn(`window_has_opener_and_parent`);
     }
+
+    if (window.name && window.name.indexOf('__prerender') === 0) {
+        warn(`prerender_running_checkoutjs`);
+    }
 }
