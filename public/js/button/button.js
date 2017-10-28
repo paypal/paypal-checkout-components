@@ -35,6 +35,13 @@ function clickButton(event, fundingSource = 'paypal') {
 }
 
 export function setupButton() {
+    if (window.name && window.name.indexOf('__prerender') === 0) {
+        if (window.console && window.console.warn) {
+            window.console.warn('Button setup inside prerender');
+        }
+        return;
+    }
+
     usePayPalPromise();
     setupLoginPreRender();
 
