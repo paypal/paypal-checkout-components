@@ -2116,7 +2116,7 @@
         "./node_modules/post-robot/src/bridge/common.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function needsBridgeForBrowser() {
-                return !!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.n)(window).match(/MSIE|trident|edge/i) || !__WEBPACK_IMPORTED_MODULE_3__conf__.a.ALLOW_POSTMESSAGE_POPUP;
+                return !!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.n)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !__WEBPACK_IMPORTED_MODULE_3__conf__.a.ALLOW_POSTMESSAGE_POPUP;
             }
             function needsBridgeForWin(win) {
                 return !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(window, win);
@@ -2951,22 +2951,26 @@
                     return win.postMessage(serializedMessage, dom);
                 });
             };
-            var sendBridgeMessage = __webpack_require__("./node_modules/post-robot/src/bridge/index.js").sendBridgeMessage;
+            var _require = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
             SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
-                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through bridge disabled between same domain windows");
-                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
-                return sendBridgeMessage(win, serializedMessage, domain);
+                if (needsBridgeForBrowser() || isBridge()) {
+                    if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through bridge disabled between same domain windows");
+                    if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
+                    return sendBridgeMessage(win, serializedMessage, domain);
+                }
             };
             SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage, domain) {
-                if (!Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through global disabled between different domain windows");
-                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
-                var foreignGlobal = win[__WEBPACK_IMPORTED_MODULE_1__conf__.b.WINDOW_PROPS.POSTROBOT];
-                if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
-                return foreignGlobal.receiveMessage({
-                    source: window,
-                    origin: Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f)(),
-                    data: serializedMessage
-                });
+                if (needsBridgeForBrowser()) {
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through global disabled between different domain windows");
+                    if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
+                    var foreignGlobal = win[__WEBPACK_IMPORTED_MODULE_1__conf__.b.WINDOW_PROPS.POSTROBOT];
+                    if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
+                    return foreignGlobal.receiveMessage({
+                        source: window,
+                        origin: Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f)(),
+                        data: serializedMessage
+                    });
+                }
             };
         },
         "./node_modules/post-robot/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -4974,7 +4978,12 @@
                         var propName = _ref;
                         _this.component.getProp(propName).allowDelegate && (_this.props[propName] = options.props[propName]);
                     }
-                    _this.focus = options.overrides.focus;
+                    _this.focus = function() {
+                        if (_this.driver.openOnFocus) try {
+                            window.open("", _this.childWindowName).focus();
+                        } catch (err) {}
+                        return options.overrides.focus.call(_this);
+                    };
                     _this.userClose = options.overrides.userClose;
                     _this.getDomain = options.overrides.getDomain;
                     _this.error = options.overrides.error;
@@ -5057,6 +5066,7 @@
                 renderedIntoContainerTemplate: !0,
                 allowResize: !0,
                 openOnClick: !1,
+                openOnFocus: !1,
                 open: function(url) {
                     var _this = this;
                     this.iframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)({
@@ -5167,6 +5177,7 @@
                 renderedIntoContainerTemplate: !1,
                 allowResize: !1,
                 openOnClick: !0,
+                openOnFocus: !0,
                 open: function() {
                     var _this5 = this, url = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                     return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
@@ -5921,6 +5932,9 @@
                 };
                 ParentComponent.prototype.focus = function() {
                     if (!this.window) throw new Error("No window to focus");
+                    if (this.driver.openOnFocus) try {
+                        window.open("", this.childWindowName);
+                    } catch (err) {}
                     this.component.log("focus");
                     this.window.focus();
                 };
@@ -5932,10 +5946,20 @@
                                 return _this31.prerenderWindow;
                             }) : _this31.prerenderWindow;
                         }).then(function(win) {
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__._4)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                jsxDom: __WEBPACK_IMPORTED_MODULE_6__lib__.F.bind(win.document),
-                                document: win.document
-                            }));
+                            var doc = void 0;
+                            try {
+                                doc = win.document;
+                            } catch (err) {
+                                return;
+                            }
+                            try {
+                                Object(__WEBPACK_IMPORTED_MODULE_6__lib__._4)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                    jsxDom: __WEBPACK_IMPORTED_MODULE_6__lib__.F.bind(document),
+                                    document: doc
+                                }));
+                            } catch (err) {
+                                return;
+                            }
                         }) : __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.resolve();
                     });
                 };
@@ -8749,7 +8773,7 @@
                     return jsxDom("html", null, jsxDom("body", null, template));
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.148";
+                    return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.149";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
@@ -9960,7 +9984,7 @@
                     height: height
                 }), scriptNode = renderScript();
                 return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.148", _ref14), {
+                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.149", _ref14), {
                     class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -10755,7 +10779,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.148";
+                    return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.149";
                 },
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11458,7 +11482,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.148";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.149";
                 },
                 sandboxContainer: !0,
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11586,7 +11610,7 @@
             var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.148",
+                version: "4.0.149",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11745,7 +11769,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.148");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.149");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -12577,6 +12601,8 @@
                         var _track;
                         Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)(event);
                         loggedEvents.push(event);
+                        var edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
+                        edge && (event = Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)(edge[0].toLowerCase().replace("/", "_") + "_" + event));
                         Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.e.STATE.CHECKOUT, 
                         _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TRANSITION] = state, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.EXPERIMENT_NAME] = experiment, 
                         _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TREATMENT_NAME] = treatment, 
@@ -12815,7 +12841,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.148", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.149", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13598,7 +13624,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.148";
+                    payload.version = "4.0.149";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                     var query = [];
@@ -13625,7 +13651,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.148".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.149".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -13633,7 +13659,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.148",
+                    v: "checkout.js.4.0.149",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14046,6 +14072,7 @@
                     a: 1
                 }).length && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("function_bind_arrity_overwritten");
                 window.opener && window.parent !== window && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("window_has_opener_and_parent");
+                window.name && 0 === window.name.indexOf("__prerender") && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("prerender_running_checkoutjs");
             }
             __webpack_exports__.a = checkForCommonErrors;
             var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__device__ = __webpack_require__("./src/lib/device.js");
@@ -14322,7 +14349,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                        ver: "4.0.148"
+                        ver: "4.0.149"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
