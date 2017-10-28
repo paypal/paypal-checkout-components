@@ -22,6 +22,12 @@ function log(experiment : string, treatment : string, token : ?string, state : s
             info(event);
             loggedEvents.push(event);
 
+            let edge = window.navigator && window.navigator.userAgent && window.navigator.userAgent.match(/Edge\/[0-9]{2}/);
+
+            if (edge) {
+                event = info(`${ edge[0].toLowerCase().replace('/', '_') }_${ event }`);
+            }
+
             track({
                 [ FPTI.KEY.STATE ]:           FPTI.STATE.CHECKOUT,
                 [ FPTI.KEY.TRANSITION ]:      state,
