@@ -3595,19 +3595,22 @@
                     if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.p)(window, win)) return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.resolve(Object(__WEBPACK_IMPORTED_MODULE_5__lib__.k)(win));
                 }).then(function() {
                     return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
-                        var responseListener = {
-                            name: name,
-                            window: win,
-                            domain: domain,
-                            respond: function(err, result) {
-                                if (!err) {
-                                    hasResult = !0;
-                                    requestPromises.splice(requestPromises.indexOf(requestPromise, 1));
+                        var responseListener = void 0;
+                        if (!options.fireAndForget) {
+                            responseListener = {
+                                name: name,
+                                window: win,
+                                domain: domain,
+                                respond: function(err, result) {
+                                    if (!err) {
+                                        hasResult = !0;
+                                        requestPromises.splice(requestPromises.indexOf(requestPromise, 1));
+                                    }
+                                    err ? reject(err) : resolve(result);
                                 }
-                                err ? reject(err) : resolve(result);
-                            }
-                        };
-                        Object(__WEBPACK_IMPORTED_MODULE_4__drivers__.b)(hash, responseListener);
+                            };
+                            Object(__WEBPACK_IMPORTED_MODULE_4__drivers__.b)(hash, responseListener);
+                        }
                         Object(__WEBPACK_IMPORTED_MODULE_4__drivers__.g)(win, {
                             type: __WEBPACK_IMPORTED_MODULE_3__conf__.b.POST_MESSAGE_TYPE.REQUEST,
                             hash: hash,
@@ -4000,13 +4003,19 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return ChildComponent;
         });
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_4__base__ = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_8__props__ = __webpack_require__("./node_modules/xcomponent/src/component/child/props.js"), __WEBPACK_IMPORTED_MODULE_9__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js"), _typeof = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_4__base__ = __webpack_require__("./node_modules/xcomponent/src/component/base.js"), __WEBPACK_IMPORTED_MODULE_5__window__ = __webpack_require__("./node_modules/xcomponent/src/component/window.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), __WEBPACK_IMPORTED_MODULE_8__props__ = __webpack_require__("./node_modules/xcomponent/src/component/child/props.js"), __WEBPACK_IMPORTED_MODULE_9__error__ = __webpack_require__("./node_modules/xcomponent/src/error.js"), _extends = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
         __webpack_require__("./node_modules/xcomponent/src/component/component/props.js"), 
-        "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }), ChildComponent = function(_BaseComponent) {
+        }, ChildComponent = function(_BaseComponent) {
             function ChildComponent(component) {
                 _classCallCheck(this, ChildComponent);
                 var _this = _possibleConstructorReturn(this, _BaseComponent.call(this));
@@ -4105,12 +4114,12 @@
                 }
             };
             ChildComponent.prototype.sendToParent = function(name) {
-                var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, parentWindow = Object(__WEBPACK_IMPORTED_MODULE_5__window__.c)();
+                var data = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, parentWindow = Object(__WEBPACK_IMPORTED_MODULE_5__window__.c)();
                 if (!parentWindow) throw new Error("Can not find parent component window to message");
                 this.component.log("send_to_parent_" + name);
-                return Object(__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.send)(parentWindow, name, data, {
+                return Object(__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.send)(parentWindow, name, data, _extends({
                     domain: Object(__WEBPACK_IMPORTED_MODULE_5__window__.d)()
-                });
+                }, options));
             };
             ChildComponent.prototype.setWindows = function() {
                 if (window.__activeXComponent__) throw this.component.createError("Can not attach multiple components to the same window");
@@ -4258,7 +4267,9 @@
                 });
             };
             ChildComponent.prototype.checkClose = function() {
-                this.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.CHECK_CLOSE);
+                this.sendToParent(__WEBPACK_IMPORTED_MODULE_7__constants__.POST_MESSAGE.CHECK_CLOSE, {}, {
+                    fireAndForget: !0
+                });
             };
             ChildComponent.prototype.destroy = function() {
                 __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g().then(function() {
@@ -7123,7 +7134,7 @@
             });
             awaitFrameLoad(frame);
             el.appendChild(frame);
-            options.url && frame.setAttribute("src", options.url);
+            (options.url || window.navigator.userAgent.match(/MSIE|Edge/i)) && frame.setAttribute("src", options.url || "about:blank");
             return frame;
         }
         function addEventListener(obj, event, handler) {
@@ -8772,7 +8783,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.149";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.150";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
@@ -9983,7 +9994,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.149", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.150", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10778,7 +10789,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.149";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.150";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11032,6 +11043,10 @@
                             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("fallback", {
                                 url: url
                             });
+                            if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.i)("allow_full_page_fallback")) {
+                                window.top.location = url;
+                                return this.close();
+                            }
                             return Object(__WEBPACK_IMPORTED_MODULE_7__compat__.a)(this.props.onAuthorize);
                         };
                     }
@@ -11110,6 +11125,9 @@
                         window.location = "/webapps/xoonboarding?token=" + token;
                     }
                 }
+            } catch (err) {}
+            if (!Object.assign) try {
+                Object.assign = __WEBPACK_IMPORTED_MODULE_5__lib__.f;
             } catch (err) {}
         }
     },
@@ -11481,7 +11499,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.149";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.150";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11609,7 +11627,7 @@
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.149",
+            version: "4.0.150",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11768,7 +11786,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.149");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.150");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12840,7 +12858,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.149", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.150", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13623,7 +13641,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.149";
+                payload.version = "4.0.150";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                 var query = [];
@@ -13650,7 +13668,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.149".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.150".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13658,7 +13676,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.149",
+                v: "checkout.js.4.0.150",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -14349,7 +14367,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.149"
+                    ver: "4.0.150"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14762,7 +14780,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.149" === window.paypal.version) {
+        if (window.paypal && "4.0.150" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
