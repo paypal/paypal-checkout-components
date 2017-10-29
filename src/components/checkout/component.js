@@ -579,7 +579,7 @@ if (Checkout.isChild()) {
             // $FlowFixMe
             Object.assign = extend;
         } catch (err) {
-            // pass  
+            // pass
         }
     }
 }
