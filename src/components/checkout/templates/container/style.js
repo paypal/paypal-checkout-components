@@ -376,7 +376,6 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
         #${ id }.${ tag }-context-${ CONTEXT.IFRAME } .${ CLASS.OUTLET } iframe {
             width: 1px;
             min-width: 100%;
-            *width: 100%;
             height: 100%;
         }
 
