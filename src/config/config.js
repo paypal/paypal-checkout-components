@@ -59,6 +59,10 @@ export let config = {
             disable_payment_timeout:  true,
             force_bridge:             false,
             log_authorize:            true
+        },
+
+        mmgkjhtnrjfbyugwzrm: {
+            disable_venmo: true
         }
     },
 

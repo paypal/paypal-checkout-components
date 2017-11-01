@@ -342,7 +342,7 @@ export let Button : Component<ButtonOptions> = create({
 
                 let remembered = getRememberedFunding(sources => sources);
 
-                if (!isDevice()) {
+                if (!isDevice() || getDomainSetting('disable_venmo')) {
                     if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
                         remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
                     }
