@@ -20,6 +20,15 @@ const HEADERS = {
 
 let headerBuilders = [];
 
+function parseHeaders(rawHeaders : string = '') : { [string] : string } {
+    let result = {};
+    for (let line of rawHeaders.trim().split('\n')) {
+        let [ key, ...values ] = line.split(':');
+        result[key.toLowerCase()] = values.join(':').trim();
+    }
+    return result;
+}
+
 export function request({ url, method = 'get', headers = {}, json, data, body, win = window, timeout = 0 } : RequestOptionsType) : ZalgoPromise<Object> {
 
     return new ZalgoPromise((resolve, reject) => {
@@ -54,21 +63,14 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
         xhr.addEventListener('load', function xhrLoad() : void {
 
-            let corrID;
-
-            try {
-                corrID = this.getResponseHeader('paypal-debug-id');
-            } catch (err) {
-                // pass
-            }
-
-            corrID = corrID || 'unknown';
+            let responseHeaders = parseHeaders(this.getAllResponseHeaders());
+            let corrID = responseHeaders['paypal-debug-id'] || 'unknown';
 
             if (!this.status) {
                 return reject(new Error(`Request to ${ method.toLowerCase() } ${ url } failed: no response status code. Correlation id: ${ corrID }`));
             }
-
-            let contentType = this.getResponseHeader('content-type');
+            
+            let contentType = responseHeaders['content-type'];
             let isJSON = contentType && (contentType.indexOf('application/json') === 0 || contentType.indexOf('text/json') === 0);
             let res = this.responseText;
 
@@ -84,7 +86,7 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
                 let message = `Request to ${ method.toLowerCase() } ${ url } failed with ${ this.status } error. Correlation id: ${ corrID }`;
 
                 if (res) {
-                    if (isJSON) {
+                    if (typeof res === 'object' && res !== null) {
                         res = JSON.stringify(res, null, 4);
                     }
 
