@@ -226,6 +226,7 @@ export let config = {
 
     authApiUri:       `/v1/oauth2/token`,
     paymentApiUri:    `/v1/payments/payment`,
+    orderApiUri:      `/v1/checkout/orders`,
     billingApiUri:    `/v1/billing-agreements/agreement-tokens`,
     experienceApiUri: `/v1/payment-experience/web-profiles`,
 
@@ -366,6 +367,20 @@ export let config = {
         };
     },
 
+    get orderApiUrls() : Object {
+
+        let apiUrls = config.apiUrls;
+        let orderApiUri = config.orderApiUri;
+
+        return {
+            [ENV.LOCAL]:      `${ apiUrls.local }${ orderApiUri }`,
+            [ENV.STAGE]:      `${ apiUrls.stage }${ orderApiUri }`,
+            [ENV.SANDBOX]:    `${ apiUrls.sandbox }${ orderApiUri }`,
+            [ENV.PRODUCTION]: `${ apiUrls.production }${ orderApiUri }`,
+            [ENV.TEST]:       `${ apiUrls.test }${ orderApiUri }`
+        };
+    },
+
     get billingApiUrls() : Object {
 
         let apiUrls       = config.apiUrls;
@@ -468,6 +483,10 @@ export let config = {
 
     get paymentApiUrl() : string {
         return `${ config.apiUrl }${ config.paymentApiUri }`;
+    },
+
+    get orderApiUrl() : string {
+        return `${ config.apiUrl }${ config.orderApiUri }`;
     },
 
     get billingApiUrl() : string {

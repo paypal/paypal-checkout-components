@@ -267,6 +267,13 @@ export let Button : Component<ButtonOptions> = create({
                                     });
                             }
                         },
+                        order: {
+                            create: (options) => {
+                                return ZalgoPromise.hash(this.props.client).then(client => {
+                                    return rest.order.create(this.props.env, client, options);
+                                });
+                            }
+                        },
                         braintree: {
                             create: (options) => {
                                 if (!this.props.braintree) {
