@@ -8858,7 +8858,7 @@
                     return jsxDom("html", null, jsxDom("body", null, template));
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.155";
+                    return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects ? "4" : "4.0.156";
                 },
                 get domain() {
                     return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
@@ -10076,7 +10076,7 @@
                     height: height
                 }), scriptNode = renderScript();
                 return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.155", _ref14), {
+                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.156", _ref14), {
                     class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -10871,7 +10871,7 @@
                     popup: !0
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.155";
+                    return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects ? "4" : "4.0.156";
                 },
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
                 containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11197,17 +11197,6 @@
                     }
                     return callOriginal();
                 });
-                try {
-                    var _fundingSource = window.xprops.fundingSource;
-                    if (_fundingSource === __WEBPACK_IMPORTED_MODULE_6__config__.f.ELV || _fundingSource === __WEBPACK_IMPORTED_MODULE_6__config__.f.CARD) {
-                        var token = window.meta && window.meta.token || window.PAYPAL && window.PAYPAL.ulData && window.PAYPAL.ulData.incontextData && window.PAYPAL.ulData.incontextData.paymentToken, isGuest = window.meta && "xoonboardingnodeweb" === window.meta.logAppName, isCheckout = "/checkoutnow" === window.location.pathname;
-                        if (token && isCheckout && !isGuest) {
-                            var spinner = document.querySelector(".spinnerWithLockIcon");
-                            spinner && (spinner.className = spinner.className.replace("hide", ""));
-                            window.location = "/webapps/xoonboarding?token=" + token;
-                        }
-                    }
-                } catch (err) {}
                 if (!Object.assign) try {
                     Object.assign = __WEBPACK_IMPORTED_MODULE_5__lib__.g;
                 } catch (err) {}
@@ -11234,7 +11223,7 @@
                                             reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
                                             topPayButton.addEventListener("click", function() {
                                                 logComplete();
-                                                var button = payButton && payButton.querySelector("button");
+                                                var button = payButton && payButton.querySelector("button, input");
                                                 button && button.click();
                                             });
                                         }
@@ -11614,7 +11603,7 @@
                     height: "535px"
                 },
                 get version() {
-                    return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.155";
+                    return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects ? "4" : "4.0.156";
                 },
                 sandboxContainer: !0,
                 prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11742,7 +11731,7 @@
             var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.155",
+                version: "4.0.156",
                 ppobjects: !1,
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11904,7 +11893,7 @@
                 loggerUri: "/webapps/hermes/api/logger",
                 pptmUri: "/tagmanager/pptm.js",
                 get postBridgeUri() {
-                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.155");
+                    return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.156");
                 },
                 paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
                 authApiUri: "/v1/oauth2/token",
@@ -12989,7 +12978,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.155", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.156", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13772,7 +13761,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.155";
+                    payload.version = "4.0.156";
                     payload.host = window.location.host;
                     payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
                     var query = [];
@@ -13799,7 +13788,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.155".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.156".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -13807,7 +13796,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.155",
+                    v: "checkout.js.4.0.156",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14522,7 +14511,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                        ver: "4.0.155"
+                        ver: "4.0.156"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
