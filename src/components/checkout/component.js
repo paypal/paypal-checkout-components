@@ -9,7 +9,7 @@ import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting } from '../../lib';
+    extend, getDomainSetting, documentReady, getThrottle } from '../../lib';
 import { config, ENV, FPTI, FUNDING } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -582,4 +582,71 @@ if (Checkout.isChild()) {
             // pass
         }
     }
+
+    // eslint-disable-next-line promise/catch-or-return
+    documentReady.then(() => {
+
+        if (!window.injector) {
+            return;
+        }
+
+        let $event = window.injector.get('$event');
+
+        if (!$event) {
+            return;
+        }
+
+        let experimentActive = false;
+        let loggedComplete = false;
+
+        $event.on('allLoaded', () => {
+            setTimeout(() => {
+                let payButton = document.querySelector('.buttons.reviewButton');
+                let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
+                let reviewSection = document.querySelector('section.review');
+
+                let throttle = getThrottle('top_pay_button', 1000);
+
+                let hash = window.location.hash;
+                
+                let logComplete = () => {
+                    if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
+                        throttle.logComplete();
+                        loggedComplete = true;
+                    }
+                };
+
+                if (payButton) {
+                    payButton.addEventListener('click', logComplete);
+                }
+
+                if (!reviewSection || !reviewSection.firstChild || !payButton || topPayButton) {
+                    return;
+                }
+
+                if (payButton.getBoundingClientRect().bottom < window.innerHeight) {
+                    return;
+                }
+
+                experimentActive = true;
+                throttle.logStart();
+
+                if (!throttle.isEnabled()) {
+                    return;
+                }
+
+                topPayButton = payButton.cloneNode(true);
+                topPayButton.className += ' topReviewButton';
+                reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
+
+                topPayButton.addEventListener('click', () => {
+                    logComplete();
+                    let button = payButton && payButton.querySelector('button');
+                    if (button) {
+                        button.click();
+                    }
+                });
+            }, 200);
+        });
+    });
 }

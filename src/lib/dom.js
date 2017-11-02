@@ -12,7 +12,7 @@ function isDocumentReady() : boolean {
     return Boolean(document.body) && document.readyState === 'complete';
 }
 
-let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
+export let documentReady : ZalgoPromise<void> = new ZalgoPromise(resolve => {
 
     if (isDocumentReady()) {
         return resolve();

@@ -22,14 +22,25 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
     let treatment = `${ name }_${ group }`;
 
+    let started = false;
+    let forced = false;
+
+    try {
+        if (window.localStorage && window.localStorage.getItem(name)) {
+            forced = true;
+        }
+    } catch (err) {
+        // pass
+    }
+
     return {
 
         isEnabled() : boolean {
-            return (group === 'test');
+            return (group === 'test') || forced;
         },
 
         isDisabled() : boolean {
-            return (group !== 'test');
+            return (group !== 'test') && !forced;
         },
 
         getTreatment() : string {
@@ -47,11 +58,16 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
         },
 
         logStart(payload : { [key : string] : ?string } = {}) : Object {
+            started = true;
             return this.log(`start`, payload);
         },
 
         logComplete(payload : { [key : string] : ?string }  = {}) : Object {
-            return this.log(`complete`, payload);
+            if (started) {
+                return this.log(`complete`, payload);
+            }
+
+            return this;
         }
     };
 }
