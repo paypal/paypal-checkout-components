@@ -550,30 +550,6 @@ if (Checkout.isChild()) {
         return callOriginal();
     });
 
-    try {
-        let fundingSource = window.xprops.fundingSource;
-
-        if (fundingSource === FUNDING.ELV || fundingSource === FUNDING.CARD) {
-
-            let token = (window.meta && window.meta.token) ||
-                (window.PAYPAL && window.PAYPAL.ulData && window.PAYPAL.ulData.incontextData && window.PAYPAL.ulData.incontextData.paymentToken);
-            let isGuest = (window.meta && window.meta.logAppName === 'xoonboardingnodeweb');
-            let isCheckout = window.location.pathname === '/checkoutnow';
-
-            if (token && isCheckout && !isGuest) {
-                let spinner = document.querySelector('.spinnerWithLockIcon');
-
-                if (spinner) {
-                    spinner.className = spinner.className.replace('hide', '');
-                }
-
-                window.location = `/webapps/xoonboarding?token=${ token }`;
-            }
-        }
-    } catch (err) {
-        // pass
-    }
-
     if (!Object.assign) {
         try {
             // $FlowFixMe
@@ -641,7 +617,7 @@ if (Checkout.isChild()) {
 
                 topPayButton.addEventListener('click', () => {
                     logComplete();
-                    let button = payButton && payButton.querySelector('button');
+                    let button = payButton && payButton.querySelector('button, input');
                     if (button) {
                         button.click();
                     }
