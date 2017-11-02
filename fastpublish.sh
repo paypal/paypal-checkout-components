@@ -17,6 +17,7 @@ fi;
 
 rm dist/*;
 
+gulp typecheck;
 gulp webpack;
 
 git add ./dist --all;
