@@ -75,6 +75,14 @@ export let Login = create({
             }
         },
 
+        style: {
+            type:     'object',
+            required: false,
+            def() : Object {
+                return {};
+            }
+        },
+
         locale: {
             type:          'string',
             required:      false,

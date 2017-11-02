@@ -56,7 +56,8 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         actions.focus();
     }
 
-    let overlayColor = props.style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
+    let style = props.style || {};
+    let overlayColor = style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
     let logoColor = LOGO_COLOR[overlayColor];
 
     let el = (
