@@ -581,7 +581,7 @@ if (Checkout.isChild()) {
                 let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
                 let reviewSection = document.querySelector('section.review');
 
-                let throttle = getThrottle('top_pay_button', 1000);
+                let throttle = getThrottle('top_pay_button', 5000);
 
                 let hash = window.location.hash;
                 
