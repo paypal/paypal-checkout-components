@@ -415,7 +415,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should call startFlow with no token and trigger an error', (done) => {
 
-            return window.paypal.checkout.setup('merchantID', {
+            window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',
 
@@ -432,7 +432,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }).then(() => {
 
                 getElement('#testContainer button').click();
-            });
+            }).catch(done);
         });
 
         it('should call startFlow with an invalid url for the env and trigger a full page redirect', () => {

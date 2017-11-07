@@ -46,7 +46,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should render a button into a container and provide a working click handler', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -57,12 +57,13 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             getElement('#testContainer button').click();
-        });
+
+        }).catch(done);
     });
 
     it('should render a button into a container using buttons array and provide a working click handler', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -76,13 +77,14 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             getElement('#testContainer button').click();
-        });
+
+        }).catch(done);
     });
 
 
     it('should render a button into a container and provide a working click handler which is passed an event', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: 'testContainer',
 
@@ -96,14 +98,14 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             getElement('#testContainer button').click();
-        });
+        }).catch(done);
     });
 
     it('should render multiple buttons into a container and provide a working click handler', (done) => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -133,7 +135,7 @@ describe('paypal legacy button rendering', () => {
 
             document.querySelectorAll('#testContainer button')[0].click();
             document.querySelectorAll('#testContainer button')[1].click();
-        });
+        }).catch(done);
     });
 
     it('should work with a link container', (done) => {
@@ -144,7 +146,7 @@ describe('paypal legacy button rendering', () => {
             container: 'testContainer'
         });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -158,7 +160,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             getElement('button', link).click();
-        });
+        }).catch(done);
     });
 
     it('should work with a link container when the container is clicked', (done) => {
@@ -169,7 +171,7 @@ describe('paypal legacy button rendering', () => {
             container: 'testContainer'
         });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -183,7 +185,8 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             link.click();
-        });
+
+        }).catch(done);
     });
 
     it('should not work with a non-link container when the container is clicked', (done) => {
@@ -221,7 +224,7 @@ describe('paypal legacy button rendering', () => {
 
     it('should prioritize buttons[i].container over options.container', (done) => {
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: 'fooContainer',
 
@@ -237,14 +240,14 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             document.querySelectorAll('#testContainer button')[0].click();
-        });
+        }).catch(done);
     });
 
     it('should render multiple buttons into a container and provide a working click handler with some invalid buttons', (done) => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -295,14 +298,14 @@ describe('paypal legacy button rendering', () => {
 
             document.querySelectorAll('#testContainer button')[0].click();
             document.querySelectorAll('#testContainer button')[1].click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom button and provide a working click handler', (done) => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
 
@@ -313,7 +316,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom button array with multiple buttons and provide a working click handler', (done) => {
@@ -323,7 +326,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButton', 'testButton2' ],
 
@@ -339,7 +342,7 @@ describe('paypal legacy button rendering', () => {
 
             testButton.click();
             testButton2.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom button array with multiple buttons, some non-existant and provide a working click handler', (done) => {
@@ -349,7 +352,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button: [ 'testButtonDOESNOTEXIST1', 'testButton', 'testButtonDOESNOTEXIST2', 'testButton2', 'testButtonDOESNOTEXIST3' ],
 
@@ -365,7 +368,7 @@ describe('paypal legacy button rendering', () => {
 
             testButton.click();
             testButton2.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom button array with mutiple buttons called button and provide a working click handler', (done) => {
@@ -375,7 +378,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [ 'testButton', 'testButton2' ],
 
@@ -391,14 +394,14 @@ describe('paypal legacy button rendering', () => {
 
             testButton.click();
             testButton2.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom buttons array and provide a working click handler', (done) => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -412,7 +415,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom buttons array with multiple buttons and provide a working click handler', (done) => {
@@ -422,7 +425,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -452,7 +455,7 @@ describe('paypal legacy button rendering', () => {
 
             testButton.click();
             testButton2.click();
-        });
+        }).catch(done);
     });
 
     it('should use a custom buttons array with multiple buttons, some non-existant, and provide a working click handler', (done) => {
@@ -462,7 +465,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             buttons: [
                 {
@@ -513,7 +516,7 @@ describe('paypal legacy button rendering', () => {
 
             testButton.click();
             testButton2.click();
-        });
+        }).catch(done);
     });
 
 
@@ -521,7 +524,7 @@ describe('paypal legacy button rendering', () => {
 
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button: 'testButton',
 
@@ -535,7 +538,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should render a button into a link container, click on a custom button, and provide a working click handler', (done) => {
@@ -553,7 +556,7 @@ describe('paypal legacy button rendering', () => {
             ]
         });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: 'customLink',
 
@@ -564,7 +567,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             getElement('#testButton', customLink).click();
-        });
+        }).catch(done);
     });
 
     it('should use a containers array and provide a working click handler', (done) => {
@@ -574,7 +577,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: [ 'buttonContainer1', 'buttonContainer2' ],
 
@@ -590,7 +593,7 @@ describe('paypal legacy button rendering', () => {
 
             getElement('button', buttonContainer1).click();
             getElement('button', buttonContainer2).click();
-        });
+        }).catch(done);
     });
 
     it('should use a containers array, some nonexistent, and provide a working click handler', (done) => {
@@ -600,7 +603,7 @@ describe('paypal legacy button rendering', () => {
 
         let clickCount = 0;
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             container: [ 'DOESNOTEXIST1', 'buttonContainer1', 'DOESNOTEXIST2', 'buttonContainer2', 'DOESNOTEXIST3' ],
 
@@ -616,7 +619,7 @@ describe('paypal legacy button rendering', () => {
 
             getElement('button', buttonContainer1).click();
             getElement('button', buttonContainer2).click();
-        });
+        }).catch(done);
     });
 
     it('should render a button into a non-link container, click on a custom button, and provide a working click handler', (done) => {
@@ -654,7 +657,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    'testButton',
             container: 'randomContainer',
@@ -666,7 +669,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should listen for click on button when passed both button array and container', (done) => {
@@ -674,7 +677,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    [ 'testButton' ],
             container: 'randomContainer',
@@ -686,7 +689,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should listen for click on button when passed both button array and container array', (done) => {
@@ -694,7 +697,7 @@ describe('paypal legacy button rendering', () => {
         let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    [ 'testButton' ],
             container: [ 'randomContainer' ],
@@ -706,7 +709,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             testButton.click();
-        });
+        }).catch(done);
     });
 
     it('should not render button to container when passed both button and container', (done) => {
@@ -714,7 +717,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    'testButton',
             container: 'randomContainer',
@@ -730,7 +733,7 @@ describe('paypal legacy button rendering', () => {
             }
 
             done();
-        });
+        }).catch(done);
     });
 
     it('should register clicks on container when passed both button and container', (done) => {
@@ -738,7 +741,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    'testButton',
             container: 'randomContainer',
@@ -750,7 +753,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             randomContainer.click();
-        });
+        }).catch(done);
     });
 
     it('should register clicks on container when passed both button and container array', (done) => {
@@ -758,7 +761,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    'testButton',
             container: [ 'randomContainer' ],
@@ -770,7 +773,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             randomContainer.click();
-        });
+        }).catch(done);
     });
 
     it('should register clicks on container when passed both button array and container', (done) => {
@@ -778,7 +781,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    [ 'testButton' ],
             container: 'randomContainer',
@@ -790,7 +793,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             randomContainer.click();
-        });
+        }).catch(done);
     });
 
     it('should register clicks on container when passed both button array and container array', (done) => {
@@ -798,7 +801,7 @@ describe('paypal legacy button rendering', () => {
         createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
         let randomContainer = createElement({ tag: 'div', id: 'randomContainer', container: 'testContainer' });
 
-        return window.paypal.checkout.setup('merchantID', {
+        window.paypal.checkout.setup('merchantID', {
 
             button:    [ 'testButton' ],
             container: [ 'randomContainer' ],
@@ -810,7 +813,7 @@ describe('paypal legacy button rendering', () => {
         }).then(() => {
 
             randomContainer.click();
-        });
+        }).catch(done);
     });
 });
 

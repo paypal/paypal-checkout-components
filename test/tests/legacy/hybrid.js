@@ -874,7 +874,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 ]
             });
 
-            return window.paypal.checkout.setup('merchantID', {
+            window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm'
 
@@ -913,7 +913,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
 
                 getElement('button', testForm).click();
-            });
+            }).catch(done);
         });
 
         it('should render a button into a form container and click on the button, with a custom listener, initXO and closeFlow', (done) => {
@@ -1010,7 +1010,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 ]
             });
 
-            return window.paypal.checkout.setup('merchantID', {
+            window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm'
 
@@ -1050,7 +1050,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }
 
                 getElement('button', testForm).click();
-            });
+            }).catch(done);
         });
 
         it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow, with a post-bridge', () => {

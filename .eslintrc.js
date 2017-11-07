@@ -11,7 +11,8 @@ module.exports = {
         'security',
         'import',
         'const-immutable',
-        'react'
+        'react',
+        'mocha'
     ],
 
     'env': {
@@ -371,6 +372,8 @@ module.exports = {
         'security/detect-disable-mustache-escape': 'error',
         'security/detect-object-injection': 'off',
         'security/detect-new-buffer': 'error',
+
+        'mocha/no-return-and-callback': 'error',
 
         'import/default': 'error',
         'import/export': 'error',

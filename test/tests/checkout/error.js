@@ -329,7 +329,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         if (flow === 'popup') {
             it('should render checkout without a click event and error out', (done) => {
 
-                return window.paypal.Checkout.render({
+                window.paypal.Checkout.render({
                     payment() : string | ZalgoPromise<string> {
                         return generateECToken();
                     },
