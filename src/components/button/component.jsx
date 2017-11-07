@@ -128,6 +128,12 @@ export let Button : Component<ButtonOptions> = create({
         return config.paypalDomains;
     },
 
+    attributes: {
+        iframe: {
+            allowpaymentrequest: 'allowpaymentrequest'
+        }
+    },
+
     validate() {
         if (!isEligible()) {
             warn('button_render_ineligible');
