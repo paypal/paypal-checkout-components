@@ -63,9 +63,8 @@ afterEach(() => {
             throw new Error(`Test memory exceeded ${MAX_TEST_MEMORY}mb - ${diff.toFixed(2)}`);
         }
     }
+    
+    window.paypal.postRobot.bridge.destroyBridges();
 
-    return window.paypal.destroyAll().then(() => {
-        // return new Promise(resolve => setTimeout(resolve, 2000))
-        // return postRobot.bridge.destroyBridges();
-    });
+    return window.paypal.destroyAll();
 });
