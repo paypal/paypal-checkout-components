@@ -52,7 +52,8 @@ module.exports = {
         '__FILE_NAME__': true,
         '__FILE_VERSION__': true,
         '__DEFAULT_LOG_LEVEL__': true,
-        '__LEGACY_SUPPORT__': true
+        '__LEGACY_SUPPORT__': true,
+        '__ALLOW_POSTMESSAGE_POPUP__': true
     },
 
     'rules': {

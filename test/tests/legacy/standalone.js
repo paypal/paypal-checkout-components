@@ -272,5 +272,23 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             testButton.click();
         });
+
+        it('should call startFlow, with a post-bridge', () => {
+
+            window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+            let token = generateECToken();
+
+            testButton.addEventListener('click', () => {
+                window.paypal.checkout.startFlow(token);
+            });
+
+            testButton.click();
+
+            return onHashChange().then(urlHash => {
+                assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+            }).toPromise();
+        });
     });
 }

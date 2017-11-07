@@ -665,6 +665,33 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         }
 
+        it('should render checkout, then complete the payment, with the post-bridge', (done) => {
+
+            window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
+
+            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
+
+            testButton.addEventListener('click', () => {
+                return window.paypal.Checkout.render({
+
+                    payment() : string | ZalgoPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() : void {
+                        return done();
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                });
+            });
+
+            testButton.click();
+        });
+
         if (flow === 'iframe') {
 
             it('should render checkout, popout, then complete the payment', (done) => {

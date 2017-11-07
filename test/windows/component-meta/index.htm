@@ -6,6 +6,8 @@
         window.mockDomain = 'mock://www.paypal.com';
         var parentWindow = (window.opener || window.parent);
         window.__coverage__ = parentWindow.__coverage__;
+        window.__ALLOW_POSTMESSAGE_POPUP__ =
+                parentWindow.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP;
     </script>
 
     <script src="/base/node_modules/babel-polyfill/dist/polyfill.js"></script>

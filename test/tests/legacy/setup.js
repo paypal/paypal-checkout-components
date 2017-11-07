@@ -678,5 +678,29 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
             });
         });
+
+        it('should render a button into a container and click on the button, then call startFlow, with the post-bridge', () => {
+
+            window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
+
+            let token = generateECToken();
+
+            return window.paypal.checkout.setup('merchantID', {
+
+                container: 'testContainer',
+
+                click() {
+                    window.paypal.checkout.startFlow(token);
+                }
+
+            }).then(() => {
+
+                getElement('#testContainer button').click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
     });
 }

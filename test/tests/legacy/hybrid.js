@@ -1052,5 +1052,50 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('button', testForm).click();
             });
         });
+
+        it('should render a button into a form container and click on the button, with a custom listener and immediate startFlow, with a post-bridge', () => {
+
+            window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = false;
+
+            let token = generateECToken();
+            let hash = uniqueID();
+
+            let testForm = createElement({
+                tag:       'form',
+                container: 'testContainer',
+                id:        'testForm',
+                props:     {
+                    action: `${ window.paypal.config.checkoutUrl }&token=${ token }#${ hash }`
+                },
+
+                children: [
+                    {
+                        tag:   'input',
+                        props: {
+                            name:  'token',
+                            value: token
+                        }
+                    }
+                ]
+            });
+
+            return window.paypal.checkout.setup('merchantID', {
+
+                container: 'testForm'
+
+            }).then(() => {
+
+                getElement('button', testForm).addEventListener('click', (event : Event) => {
+                    event.preventDefault();
+                    window.paypal.checkout.startFlow(token);
+                });
+
+                getElement('button', testForm).click();
+
+                return onHashChange().then(urlHash => {
+                    assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
+                });
+            });
+        });
     });
 }

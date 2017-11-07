@@ -172,17 +172,18 @@ module.exports = function(config) {
 
             plugins: [
                 new webpack.DefinePlugin({
-                    __TEST__:              JSON.stringify(true),
-                    __IE_POPUP_SUPPORT__:  JSON.stringify(true),
-                    __POPUP_SUPPORT__:     JSON.stringify(true),
-                    __LEGACY_SUPPORT__:    JSON.stringify(true),
-                    __FILE_NAME__:         JSON.stringify('checkout.js'),
-                    __FILE_VERSION__:      JSON.stringify('4'),
-                    __MAJOR_VERSION__:     JSON.stringify('4'),
-                    __MINOR_VERSION__:     JSON.stringify('4.0'),
-                    __DEFAULT_LOG_LEVEL__: JSON.stringify(debug ? 'debug' : logLevel || 'error'),
+                    __TEST__:                           JSON.stringify(true),
+                    __IE_POPUP_SUPPORT__:               JSON.stringify(true),
+                    __POPUP_SUPPORT__:                  JSON.stringify(true),
+                    __LEGACY_SUPPORT__:                 JSON.stringify(true),
+                    __FILE_NAME__:                      JSON.stringify('checkout.js'),
+                    __FILE_VERSION__:                   JSON.stringify('4'),
+                    __MAJOR_VERSION__:                  JSON.stringify('4'),
+                    __MINOR_VERSION__:                  JSON.stringify('4.0'),
+                    __DEFAULT_LOG_LEVEL__:              JSON.stringify(debug ? 'debug' : logLevel || 'error'),
                     __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
-                    __SEND_POPUP_LOGS_TO_OPENER__: JSON.stringify(true)
+                    __SEND_POPUP_LOGS_TO_OPENER__:      JSON.stringify(true),
+                    __ALLOW_POSTMESSAGE_POPUP__:        JSON.stringify(true)
                 })
             ]
         },

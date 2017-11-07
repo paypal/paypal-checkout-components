@@ -8,7 +8,7 @@ paypal.setup({
     env: 'test'
 });
 
-const MAX_OVERALL_MEMORY = 400;
+const MAX_OVERALL_MEMORY = 450;
 const MAX_TEST_MEMORY = 50;
 
 let memoryReported = (window.performance && window.performance.memory &&
@@ -32,6 +32,8 @@ beforeEach(() => {
     };
 
     originalUserAgent = window.navigator.userAgent;
+
+    window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = true;
 });
 
 afterEach(() => {
@@ -41,7 +43,7 @@ afterEach(() => {
     delete window.__paypal_global__;
 
     Object.defineProperty(window.navigator, 'userAgent', {
-        value: originalUserAgent,
+        value:        originalUserAgent,
         configurable: true
     });
 
@@ -56,11 +58,11 @@ afterEach(() => {
         let diff = mem - startMem;
 
         if (mem > MAX_OVERALL_MEMORY) {
-            throw new Error(`Overall memory exceeded ${MAX_OVERALL_MEMORY}mb - ${mem.toFixed(2)}`);
+            throw new Error(`Overall memory exceeded ${ MAX_OVERALL_MEMORY }mb - ${ mem.toFixed(2) }`);
         }
 
         if (diff > MAX_TEST_MEMORY) {
-            throw new Error(`Test memory exceeded ${MAX_TEST_MEMORY}mb - ${diff.toFixed(2)}`);
+            throw new Error(`Test memory exceeded ${ MAX_TEST_MEMORY }mb - ${ diff.toFixed(2) }`);
         }
     }
     
