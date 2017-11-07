@@ -98,7 +98,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     get bridgeUrl() : Object {
-        return config.postBridgeUrls;
+        return config.metaFrameUrls;
     },
 
     get bridgeDomain() : Object {

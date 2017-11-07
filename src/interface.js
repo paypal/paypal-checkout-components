@@ -15,7 +15,7 @@ export { rest } from './api';
 export { Button, allowIframe as forceIframe, allowIframe } from './components';
 export { setup } from './setup';
 export { config, ENV, USERS, SOURCE, FUNDING, CARD } from './config';
-export { request, isEligible, isWebView } from './lib';
+export { request, isEligible, isWebView, isFundingRemembered } from './lib';
 export { logExperimentTreatment } from './experiments';
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;

@@ -1,13 +1,12 @@
 /* @flow */
 
 import { info, track, debug, warn, error, flush as flushLogs } from 'beaver-logger/client';
-import { bridge } from 'post-robot/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
-    getDomainSetting, once } from './lib';
+    getDomainSetting, once, openMetaFrame, precacheRememberedFunding } from './lib';
 import { createPptmScript } from './lib/pptm';
 
 function domainToEnv(domain : string) : ?string {
@@ -132,7 +131,7 @@ function configure({ env, stage, apiStage, state, ppobjects, logLevel, merchantI
     }
 }
 
-export let init = once(() => {
+export let init = once(({ precacheRemembered }) => {
 
     if (!isEligible()) {
         warn('ineligible');
@@ -146,8 +145,12 @@ export let init = once(() => {
 
     initLogger();
 
-    if (getDomainSetting('force_bridge') && bridge && !isPayPalDomain()) {
-        bridge.openBridge(config.postBridgeUrls[config.env], config.paypalDomains[config.env]);
+    if (precacheRemembered) {
+        precacheRememberedFunding();
+    }
+
+    if (getDomainSetting('force_bridge') && !isPayPalDomain()) {
+        openMetaFrame(config.env);
     }
 
     info(`setup_${ config.env }`);
@@ -157,18 +160,19 @@ export let init = once(() => {
 
 export function setup(options : ConfigOptions = {}) {
     configure(options);
-    init();
+    init(options);
 }
 
 if (currentScript) {
     setup({
-        env:        currentScript.getAttribute('data-env'),
-        stage:      currentScript.getAttribute('data-stage'),
-        apiStage:   currentScript.getAttribute('data-api-stage'),
-        state:      currentScript.getAttribute('data-state'),
-        logLevel:   currentScript.getAttribute('data-log-level'),
-        merchantID: currentScript.getAttribute('data-merchant-id'),
-        ppobjects:  true
+        env:                currentScript.getAttribute('data-env'),
+        stage:              currentScript.getAttribute('data-stage'),
+        apiStage:           currentScript.getAttribute('data-api-stage'),
+        state:              currentScript.getAttribute('data-state'),
+        logLevel:           currentScript.getAttribute('data-log-level'),
+        merchantID:         currentScript.getAttribute('data-merchant-id'),
+        precacheRemembered: currentScript.hasAttribute('data-precache-remembered-funding'),
+        ppobjects:          true
     });
 
 } else {

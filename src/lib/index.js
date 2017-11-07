@@ -12,3 +12,5 @@ export * from './throttle';
 export * from './namespace';
 export * from './session';
 export * from './proxy';
+export * from './meta';
+export * from './funding';

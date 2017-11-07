@@ -20,7 +20,7 @@ export let Login = create({
     // allowedParentDomains: config.paypal_domain_regex,
 
     get bridgeUrl() : Object {
-        return config.postBridgeUrls;
+        return config.metaFrameUrls;
     },
 
     get bridgeDomain() : Object {

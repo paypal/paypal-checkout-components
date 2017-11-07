@@ -12,7 +12,7 @@ export function isPayPalDomain() : boolean {
 // eslint-disable-next-line flowtype/no-weak-types
 export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
 
-    let cache : { [key : string] : R } = {};
+    let cache : { [key : string] : { time : number, value : R } } = {};
 
     // eslint-disable-next-line no-unused-vars, flowtype/no-weak-types
     return function memoizedFunction(...args : Array<any>) : R {
@@ -20,24 +20,31 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
         let key : string;
 
         try {
-            key = JSON.stringify(arguments);
+            key = JSON.stringify(Array.prototype.slice.call(arguments));
         } catch (err) {
             throw new Error(`Arguments not serializable -- can not be used to memoize`);
         }
 
-        if (cache.hasOwnProperty(key)) {
-            return cache[key];
+        let time = options.time;
+
+        if (cache[key] && time && (Date.now() - cache[key].time) < time) {
+            delete cache[key];
         }
 
-        cache[key] = method.apply(this, arguments);
-
-        if (options.time) {
-            setTimeout(() => {
-                delete cache[key];
-            }, options.time);
+        if (window.__CACHE_START_TIME__ && cache[key] && cache[key].time < window.__CACHE_START_TIME__) {
+            delete cache[key];
         }
 
-        return cache[key];
+        if (cache[key]) {
+            return cache[key].value;
+        }
+
+        cache[key] = {
+            time:  Date.now(),
+            value: method.apply(this, arguments)
+        };
+
+        return cache[key].value;
     };
 }
 
@@ -326,4 +333,8 @@ export function reverseMap(obj : { [string] : string }) : { [string] : string } 
 
 export function arrayRemove<T>(arr : Array<T>, item : T) {
     arr.splice(arr.indexOf(item), 1);
+}
+
+export function identity<T : mixed>(item : T) : T {
+    return item;
 }

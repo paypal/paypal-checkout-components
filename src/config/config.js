@@ -316,7 +316,7 @@ export let config = {
         };
     },
 
-    get postBridgeUrls() : Object {
+    get metaFrameUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 

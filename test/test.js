@@ -26,10 +26,12 @@ beforeEach(() => {
         startMem = getMemory();
     }
 
-    window.console.clear();
+    // window.console.clear();
     window.onerror = () => {
         // pass
     };
+
+    window.__CACHE_START_TIME__ = Date.now();
 
     originalUserAgent = window.navigator.userAgent;
 

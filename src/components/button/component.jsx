@@ -12,17 +12,16 @@ import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../conf
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
-    getDomainSetting, extendUrl, noop, isDevice } from '../../lib';
+    getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
+    getRememberedFunding } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from './constants';
 import { containerTemplate, componentTemplate } from './templates';
-import { labelToFunding } from './templates/config';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
-import { rememberFunding, getRememberedFunding, onRememberFunding } from './funding';
 import { validateFunding } from './templates/funding';
 
 getSessionState(session => {
@@ -385,25 +384,9 @@ export let Button : Component<ButtonOptions> = create({
                     });
                     flushLogs();
 
-                    let source = labelToFunding(this.props.style && this.props.style.label);
-
-                    if (this.props.onRememberUser) {
-                        // eslint-disable-next-line promise/catch-or-return
-                        onRememberFunding(source).then(() => {
-                            this.props.onRememberUser({ funding: [ source ] });
-                        });
-                    }
-
                     return original.apply(this, arguments);
                 };
             }
-        },
-
-        onRememberUser: {
-            type:     'function',
-            alias:    'onRemembered',
-            required: false,
-            once:     true
         },
 
         onAuthorize: {

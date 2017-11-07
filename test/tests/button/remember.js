@@ -17,146 +17,189 @@ describe(`paypal button component remembered funding`, () => {
         window.location.hash = '';
     });
 
-    it('should not call onRememberUser for a non-remembered user', (done) => {
+    it('isFundingRemembered should return false by default for paypal', () => {
+        
+        let source = window.paypal.FUNDING.PAYPAL;
+        let expected = false;
 
-        let onRememberUserCalled = false;
-
-        window.paypal.Button.render({
-
-            test: {
-                onRender() {
-                    if (onRememberUserCalled) {
-                        throw new Error(`Expected onRememberUser to not be called`);
-                    }
-
-                    done();
-                }
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }, '#testContainer');
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
     });
 
-    it('should call onRememberUser for a remembered user', (done) => {
+    it('isFundingRemembered should return false by default for venmo', () => {
 
-        let onRememberUserCalled = false;
+        let source = window.paypal.FUNDING.VENMO;
+        let expected = false;
 
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return true for paypal when funding is remembered', () => {
+
+        let source = window.paypal.FUNDING.PAYPAL;
+        let expected = true;
+        
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return true for venmo when funding is remembered', () => {
+
+        let source = window.paypal.FUNDING.VENMO;
+        let expected = true;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return false for paypal when venmo is remembered user', () => {
+
+        let source = window.paypal.FUNDING.PAYPAL;
+        let expected = false;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return false for venmo when paypal is remembered user', () => {
+
+        let source = window.paypal.FUNDING.VENMO;
+        let expected = false;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.PAYPAL ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return true for paypal when multiple funding sources are remembered', () => {
+
+        let source = window.paypal.FUNDING.PAYPAL;
+        let expected = true;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO, window.paypal.FUNDING.PAYPAL ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return true for venmo when multiple funding sources are remembered', () => {
+
+        let source = window.paypal.FUNDING.VENMO;
+        let expected = true;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ window.paypal.FUNDING.VENMO, window.paypal.FUNDING.PAYPAL ]));
+
+        return window.paypal.isFundingRemembered(source).then(result => {
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+        });
+    });
+
+    it('isFundingRemembered should return true instantly for paypal when funding is remembered and cached', () => {
+
+        let source = window.paypal.FUNDING.PAYPAL;
+        let expected = true;
+
+        window.localStorage.setItem('rememberedFunding', JSON.stringify([ source ]));
+
+        let firstThenCalled = false;
+
+        let promise1 =  window.paypal.isFundingRemembered(source).then(result => {
+            firstThenCalled = true;
+
+            if (result !== expected) {
+                throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+            }
+
+            let secondThenCalled = false;
+
+            let promise2 = window.paypal.isFundingRemembered(source).then(result2 => {
+                secondThenCalled = true;
+
+                if (result2 !== expected) {
+                    throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+                }
+            });
+
+            if (!secondThenCalled) {
+                throw new Error(`Expected then to be called immediately`);
+            }
+
+            return promise2;
+        });
+
+        if (firstThenCalled) {
+            throw new Error(`Expected then to not be called immediately`);
+        }
+
+        return promise1;
+    });
+
+    it('should render a button then get an immediate result for isFundingRemembered', (done) => {
+        
+        let source = window.paypal.FUNDING.VENMO;
+        
         window.paypal.Button.render({
 
             test: {
                 action:     'remember',
-                remembered: window.paypal.FUNDING.PAYPAL,
-                onRender() {
-                    if (!onRememberUserCalled) {
-                        throw new Error(`Expected onRememberUser to be called`);
+                remembered: source,
+                onRender:   () => {
+                    
+                    let thenCalled = false;
+                    let expected = true;
+
+                    let promise = window.paypal.isFundingRemembered(source).then(result => {
+                        thenCalled = true;
+
+                        if (result !== expected) {
+                            throw new Error(`Expected ${ source } to be ${ expected ? 'remembered' : 'not remembered' }`);
+                        }
+                    });
+
+                    if (!thenCalled) {
+                        throw new Error(`Expected then to be called immediately`);
                     }
 
-                    done();
-                }
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }, '#testContainer');
-    });
-
-    it('should not call onRememberUser on paypal button for remembered venmo user', (done) => {
-
-        let onRememberUserCalled = false;
-
-        window.paypal.Button.render({
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.VENMO,
-                onRender() {
-                    if (onRememberUserCalled) {
-                        throw new Error(`Expected onRememberUser to not be called`);
-                    }
-
-                    done();
-                }
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }, '#testContainer');
-    });
-
-    it('should not call onRememberUser on venmo button for remembered paypal user', (done) => {
-
-        let onRememberUserCalled = false;
-
-        window.paypal.Button.render({
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.PAYPAL,
-                onRender() {
-                    if (onRememberUserCalled) {
-                        throw new Error(`Expected onRememberUser to not be called`);
-                    }
-
-                    done();
+                    return promise.then(() => done()).catch(done);
                 }
             },
 
             style: {
-                label: 'venmo'
+                layout: 'vertical'
             },
 
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
+            locale: 'en_US',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -173,290 +216,6 @@ describe(`paypal button component remembered funding`, () => {
             onError: done
 
         }, '#testContainer');
-    });
-
-    it('should call onRememberUser instantly on second render for a paypal user', () => {
-
-        let onRememberUserCalled = false;
-
-        return window.paypal.Button.render({
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.PAYPAL
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            }
-
-        }, '#testContainer').then(() => {
-
-            if (onRememberUserCalled) {
-                throw new Error(`Expected onRememberUser to not be called`);
-            }
-
-            let onRememberUserCalled2 = false;
-
-            return window.paypal.Button.render({
-
-                test: {
-                    action:     'remember',
-                    remembered: window.paypal.FUNDING.PAYPAL
-                },
-
-                onRememberUser() {
-                    onRememberUserCalled2 = true;
-                },
-
-                payment() : string | ZalgoPromise<string> {
-                    throw new Error('Expected payment to not be called');
-                },
-
-                onAuthorize() {
-                    throw new Error('Expected onAuthorize to not be called');
-                },
-
-                onCancel() {
-                    throw new Error('Expected onCancel to not be called');
-                }
-
-            }, '#testContainer').then(() => {
-
-                if (!onRememberUserCalled2) {
-                    throw new Error(`Expected onRememberUser to be called`);
-                }
-            });
-        });
-    });
-
-    it('should call onRememberUser instantly on second render for a venmo user', () => {
-
-        let onRememberUserCalled = false;
-
-        return window.paypal.Button.render({
-
-            style: {
-                label: 'venmo'
-            },
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.VENMO
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            }
-
-        }, '#testContainer').then(() => {
-
-            if (onRememberUserCalled) {
-                throw new Error(`Expected onRememberUser to not be called`);
-            }
-
-            let onRememberUserCalled2 = false;
-
-            return window.paypal.Button.render({
-
-                style: {
-                    label: 'venmo'
-                },
-
-                test: {
-                    action:     'remember',
-                    remembered: window.paypal.FUNDING.VENMO
-                },
-
-                onRememberUser() {
-                    onRememberUserCalled2 = true;
-                },
-
-                payment() : string | ZalgoPromise<string> {
-                    throw new Error('Expected payment to not be called');
-                },
-
-                onAuthorize() {
-                    throw new Error('Expected onAuthorize to not be called');
-                },
-
-                onCancel() {
-                    throw new Error('Expected onCancel to not be called');
-                }
-
-            }, '#testContainer').then(() => {
-
-                if (!onRememberUserCalled2) {
-                    throw new Error(`Expected onRememberUser to be called`);
-                }
-            });
-        });
-    });
-
-    it('should not call onRememberUser on second render for a venmo user after rendering a paypal button', () => {
-
-        let onRememberUserCalled = false;
-
-        return window.paypal.Button.render({
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.PAYPAL
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            }
-
-        }, '#testContainer').then(() => {
-
-            if (onRememberUserCalled) {
-                throw new Error(`Expected onRememberUser to not be called`);
-            }
-
-            let onRememberUserCalled2 = false;
-
-            return window.paypal.Button.render({
-
-                test: {
-                    action:     'remember',
-                    remembered: window.paypal.FUNDING.VENMO
-                },
-
-                style: {
-                    label: 'venmo'
-                },
-
-                onRememberUser() {
-                    onRememberUserCalled2 = true;
-                },
-
-                payment() : string | ZalgoPromise<string> {
-                    throw new Error('Expected payment to not be called');
-                },
-
-                onAuthorize() {
-                    throw new Error('Expected onAuthorize to not be called');
-                },
-
-                onCancel() {
-                    throw new Error('Expected onCancel to not be called');
-                }
-
-            }, '#testContainer').then(() => {
-
-                if (onRememberUserCalled2) {
-                    throw new Error(`Expected onRememberUser to not be called`);
-                }
-            });
-        });
-    });
-
-    it('should not call onRememberUser on second render for a paypal user after rendering a venmo button', () => {
-
-        let onRememberUserCalled = false;
-
-        return window.paypal.Button.render({
-
-            test: {
-                action:     'remember',
-                remembered: window.paypal.FUNDING.VENMO
-            },
-
-            style: {
-                label: 'venmo'
-            },
-
-            onRememberUser() {
-                onRememberUserCalled = true;
-            },
-
-            payment() : string | ZalgoPromise<string> {
-                throw new Error('Expected payment to not be called');
-            },
-
-            onAuthorize() {
-                throw new Error('Expected onAuthorize to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            }
-
-        }, '#testContainer').then(() => {
-
-            if (onRememberUserCalled) {
-                throw new Error(`Expected onRememberUser to not be called`);
-            }
-
-            let onRememberUserCalled2 = false;
-
-            return window.paypal.Button.render({
-
-                test: {
-                    action:     'remember',
-                    remembered: window.paypal.FUNDING.PAYPAL
-                },
-
-                onRememberUser() {
-                    onRememberUserCalled2 = true;
-                },
-
-                payment() : string | ZalgoPromise<string> {
-                    throw new Error('Expected payment to not be called');
-                },
-
-                onAuthorize() {
-                    throw new Error('Expected onAuthorize to not be called');
-                },
-
-                onCancel() {
-                    throw new Error('Expected onCancel to not be called');
-                }
-
-            }, '#testContainer').then(() => {
-
-                if (onRememberUserCalled2) {
-                    throw new Error(`Expected onRememberUser to not be called`);
-                }
-            });
-        });
     });
 
     it('should only show venmo button in vertical layout after venmo has been remembered', (done) => {

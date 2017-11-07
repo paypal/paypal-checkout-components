@@ -14,8 +14,6 @@ window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
     }
 };
 
-window.paypal.postRobot.CONFIG.ACK_TIMEOUT = 60 * 1000;
-
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
 
