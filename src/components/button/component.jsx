@@ -314,9 +314,7 @@ export let Button : Component<ButtonOptions> = create({
                         track({
                             [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
                             [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
-                            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
-                            [ FPTI.KEY.TOKEN ]:        token,
-                            [ FPTI.KEY.CONTEXT_ID ]:   token
+                            [ FPTI.KEY.TOKEN ]:        token
                         });
 
                         flushLogs();
