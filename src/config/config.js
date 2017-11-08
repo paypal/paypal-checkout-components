@@ -63,6 +63,13 @@ export let config = {
 
         mmgkjhtnrjfbyugwzrm: {
             disable_venmo: true
+        },
+
+        mmgukkxdrvsehdkwnxcqigccbpfvtp: {
+            disable_venmo: true
+        },
+        mmgukkxdrvscuutpltdbwqaykqthk: {
+            disable_venmo: true
         }
     },
 
