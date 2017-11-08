@@ -13,6 +13,16 @@ export function getComponentScript() : () => void {
             HIDDEN:       'hidden'
         };
 
+        function loop(method : Function, delay : number, instances : number) {
+            setTimeout(() => {
+                method();
+                instances -= 1;
+                if (instances) {
+                    loop(method, delay, instances);
+                }
+            }, delay);
+        }
+
         function getElements(selector, parent) : Array<HTMLElement> {
             parent = parent || document;
             return Array.prototype.slice.call(parent.querySelectorAll(selector));
@@ -125,9 +135,10 @@ export function getComponentScript() : () => void {
             images.forEach(makeElementVisible);
             toggleOptionals();
 
-            window.addEventListener('resize', () => {
-                toggleOptionals();
-            });
+            document.addEventListener('DOMContentLoaded', toggleOptionals);
+            window.addEventListener('load', toggleOptionals);
+            window.addEventListener('resize', toggleOptionals);
+            loop(toggleOptionals, 10, 10);
         });
     };
 }
