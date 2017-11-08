@@ -653,8 +653,11 @@ if (Button.isChild()) {
     // eslint-disable-next-line promise/catch-or-return
     getPageRenderTime().then(pageRenderTime => {
 
-        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`))
-            .map(el => el.getAttribute(ATTRIBUTE.FUNDING_SOURCE));
+        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
+            return el.getAttribute(ATTRIBUTE.CARD) || el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
+        }).filter(source => {
+            return source && source !== FUNDING.CARD;
+        });
 
         track({
             [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,

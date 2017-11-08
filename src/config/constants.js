@@ -67,6 +67,7 @@ export const FPTI = {
 
     CONTEXT_TYPE: {
         BUTTON_SESSION_ID: 'button_session_id',
+        PAY_ID:            'Pay-ID',
         EC_TOKEN:          'EC-Token'
     },
 
@@ -152,6 +153,7 @@ export const CARD_PRIORITY = [
 export const ATTRIBUTE = {
     BUTTON:         'data-button',
     FUNDING_SOURCE: 'data-funding-source',
+    CARD:           'data-card',
     VERSION:        'data-version'
 };
 

@@ -68,7 +68,7 @@ function renderCards({ funding, locale, button } : { funding : FundingSelection,
 
         return (
             <img
-                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: FUNDING.CARD } }
+                { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
                 class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
