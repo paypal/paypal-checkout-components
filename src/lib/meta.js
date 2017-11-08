@@ -41,30 +41,3 @@ export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<Fr
         });
     });
 });
-
-try {
-    if ((window.location.href.indexOf('/component-meta') !== -1) && window.ppxo) {
-        let sendToParent = window.ppxo.postRobot.sendToParent;
-        
-        window.ppxo.postRobot.sendToParent = function sendToParentOverride(name : string, message : Object) : ZalgoPromise<void> {
-            
-            if (name !== 'meta') {
-                return sendToParent.apply(this, arguments);
-            }
-
-            if (!message || message.rememberedFunding) {
-                return sendToParent.apply(this, arguments);
-            }
-
-            return window.paypal.request.get('/webapps/hermes/api/button/funding')
-                .then(res => {
-                    message.rememberedFunding = res.data.remembered;
-                    return sendToParent.apply(this, arguments);
-                }).catch(() => {
-                    return sendToParent.apply(this, arguments);
-                });
-        };
-    }
-} catch (err) {
-    // pass
-}

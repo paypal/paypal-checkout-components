@@ -6,12 +6,13 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { rest } from '../../api';
 import { config } from '../../config';
-import { patchMethod, isIE, getDomainSetting, noop, extend, once, extendUrl } from '../../lib';
+import { patchMethod, isIE, getDomainSetting, noop, extend, once, extendUrl, isFundingRemembered } from '../../lib';
 import { Login } from '../login';
 import { Checkout } from '../checkout';
 
 import { Button } from './component';
 import { BUTTON_LABEL, BUTTON_SIZE, BUTTON_COLOR } from './constants';
+import { labelToFunding } from './templates/config';
 
 patchMethod(rest.payment, 'create', ({ original : createOriginal, context : createContext, args : [ env, client, options, experience ] }) => {
     if (!options.payment) {
@@ -51,6 +52,23 @@ patchMethod(Button, 'render', ({ callOriginal, args : [ props ] }) => {
 
     return callOriginal();
 });
+
+Button.props.onRememberUser = {
+    type:     'function',
+    required: false,
+    decorate(original : ?Function, props : Object) : ?Function {
+        if (original) {
+            let source = labelToFunding(props.style && props.style.label);
+            // eslint-disable-next-line promise/catch-or-return
+            isFundingRemembered(source).then(result => {
+                if (result && original) {
+                    original();
+                }
+            });
+            return original;
+        }
+    }
+};
 
 patchMethod(Button.props.payment, 'decorate', ({ original, context, args: [ originalPayment ] }) => {
     return original.call(context, function payment(data : Object, actions : Object) : ZalgoPromise<string> {
