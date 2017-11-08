@@ -164,6 +164,7 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
             class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             role='button'
+            aria-label={ source }
             tabindex='0'>
             
             { contentText }
