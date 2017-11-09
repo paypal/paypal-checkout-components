@@ -110,7 +110,8 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
                         paymentToken: query.token,
                         billingToken: query.billingToken,
                         paymentID:    query.paymentId,
-                        payerID:      query.payerID
+                        payerID:      query.payerId,
+                        intent:       query.intent
                     };
 
                     let actions : Object = {

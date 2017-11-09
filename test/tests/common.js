@@ -596,6 +596,7 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
                     queryItems.opType = 'payment';
                     queryItems.payerId = 'YYYYYYYYYYYYY';
                     queryItems.redirect_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
+                    queryItems.intent = 'sale';
                     if (hash) {
                         queryItems.redirect_uri = `${ queryItems.redirect_uri }&hash=${ hash }`;
                     }

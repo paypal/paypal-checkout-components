@@ -29,15 +29,28 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then complete the payment', (done) => {
 
+            let token = generateECToken();
+
             window.paypal.Button.render({
 
                 test: { flow, action: 'checkout', bridge: true },
 
                 payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
+                    return token;
                 },
 
-                onAuthorize() : void {
+                onAuthorize(data) : void {
+
+                    if (data.paymentToken !== token) {
+                        return done(new Error(`Expected data.paymentToken to be ${ token }, got ${ data.paymentToken }`));
+                    }
+                    if (!data.payerID) {
+                        return done(new Error(`Expected data.payerID to be present`));
+                    }
+                    if (!data.intent) {
+                        return done(new Error(`Expected data.intent to be present`));
+                    }
+                    
                     return done();
                 },
 
@@ -490,7 +503,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return paymentID;
                 },
 
-                onAuthorize() : void {
+                onAuthorize(data) : void {
+
+                    if (data.paymentID !== paymentID) {
+                        return done(new Error(`Expected data.paymentID to be ${ paymentID }, got ${ data.paymentID }`));
+                    }
+                    if (!data.payerID) {
+                        return done(new Error(`Expected data.payerID to be present`));
+                    }
+                    if (!data.intent) {
+                        return done(new Error(`Expected data.intent to be present`));
+                    }
+
                     if (flow === 'iframe') {
                         return done();
                     } else {
@@ -526,7 +550,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return billingToken;
                 },
 
-                onAuthorize() : void {
+                onAuthorize(data) : void {
+
+                    if (data.billingToken !== billingToken) {
+                        return done(new Error(`Expected data.paymentID to be ${ billingToken }, got ${ data.billingToken }`));
+                    }
+                    if (!data.payerID) {
+                        return done(new Error(`Expected data.payerID to be present`));
+                    }
+                    if (!data.intent) {
+                        return done(new Error(`Expected data.intent to be present`));
+                    }
+
                     if (flow === 'iframe') {
                         return done();
                     } else {
