@@ -7,6 +7,7 @@ import { btoa } from 'Base64';
 import { componentLogos } from '../../../button/templates/component/logos';
 import { BUTTON_LOGO_COLOR } from '../../../button/constants';
 import { CHECKOUT_OVERLAY_COLOR } from '../../constants';
+import { isIos } from '../../../../lib';
 
 import componentContentJSON from './content.json';
 import { getContainerStyle, getSandboxStyle } from './style';
@@ -53,7 +54,13 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     function focus(event) {
         event.preventDefault();
         event.stopPropagation();
-        actions.focus();
+
+        if (isIos()) {
+            // eslint-disable-next-line no-alert
+            window.alert('Please switch tabs to reactivate the PayPal window');
+        } else {
+            actions.focus();
+        }
     }
 
     let style = props.style || {};
