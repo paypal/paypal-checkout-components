@@ -61,7 +61,7 @@ export let config = {
             log_authorize:            true
         },
 
-        mmgkjhtnrjfbyugwzrm: {
+        mmgukkxdrvsmsoztlbdr: {
             disable_venmo: true
         },
 
