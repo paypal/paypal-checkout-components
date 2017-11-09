@@ -116,6 +116,9 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
                     let actions : Object = {
                         close() {
                             // pass
+                        },
+                        closeComponent() {
+                            // pass
                         }
                     };
 
