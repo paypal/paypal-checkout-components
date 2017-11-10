@@ -13,7 +13,7 @@ import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
-    getRememberedFunding } from '../../lib';
+    getRememberedFunding, memoize } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -433,33 +433,35 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
-                    if (this.props.braintree) {
-                        return this.props.braintree.then(client => {
-                            return client.tokenizePayment(data).then(res => {
-                                return original.call(this, {
-                                    ...data,
-                                    nonce: res.nonce
-                                }, {
-                                    payment: {
-                                        get: actions.payment.get
-                                    }
-                                });
-                            });
+                    let restart = actions.restart;
+                    actions.restart = () => {
+                        return restart().then(() => {
+                            return new ZalgoPromise();
                         });
-                    }
+                    };
 
-                    let redirect = (win, url) => {
+                    actions.redirect = (win, url) => {
                         return ZalgoPromise.all([
                             redir(win || window.top, url || data.returnUrl),
                             actions.close()
                         ]);
                     };
 
-                    let restart = () => {
-                        return actions.restart().then(() => {
-                            return new ZalgoPromise();
+                    actions.payment.tokenize = memoize(() => {
+                        if (!this.props.braintree) {
+                            throw new Error(`Must pass in Braintree client to tokenize payment`);
+                        }
+
+                        return this.props.braintree
+                            .then(client => client.tokenizePayment(data))
+                            .then(res => res.nonce);
+                    });
+
+                    if (this.props.braintree) {
+                        return actions.payment.tokenize().then(nonce => {
+                            return original.call(this, { nonce, ...data }, actions);
                         });
-                    };
+                    }
 
                     let execute = actions.payment.execute;
                     actions.payment.execute = () => {
@@ -479,7 +481,7 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     return ZalgoPromise.try(() => {
-                        return original.call(this, data, { ...actions, redirect, restart });
+                        return original.call(this, data, actions);
                     }).catch(err => {
                         return this.error(err);
                     });
