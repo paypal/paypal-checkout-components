@@ -42,6 +42,10 @@ export function setupButton() {
         return;
     }
 
+    if (!window.paypal && (!window.name || window.name.indexOf('xcomponent__ppbutton') === -1)) {
+        return;
+    }
+
     usePayPalPromise();
     setupLoginPreRender();
 
