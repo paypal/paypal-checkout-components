@@ -346,7 +346,7 @@
                         }
                         var builder = _ref2;
                         try {
-                            Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(meta, builder(), !1);
+                            Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(meta, builder(meta), !1);
                         } catch (err) {
                             console.error("Error in custom meta builder:", err.stack || err.toString());
                         }
@@ -363,7 +363,7 @@
                         }
                         var _builder = _ref3;
                         try {
-                            Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(headers, _builder(), !1);
+                            Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(headers, _builder(headers), !1);
                         } catch (err) {
                             console.error("Error in custom header builder:", err.stack || err.toString());
                         }
@@ -415,7 +415,7 @@
                 }
                 var builder = _ref4;
                 try {
-                    Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(), !1);
+                    Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(payload), !1);
                 } catch (err) {
                     console.error("Error in custom payload builder:", err.stack || err.toString());
                 }
@@ -476,7 +476,7 @@
                     }
                     var builder = _ref5;
                     try {
-                        Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(), !1);
+                        Object(__WEBPACK_IMPORTED_MODULE_0__util__.b)(payload, builder(payload), !1);
                     } catch (err) {
                         console.error("Error in custom tracking builder:", err.stack || err.toString());
                     }
@@ -1662,12 +1662,25 @@
         __webpack_exports__.b = noop;
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
-        (function(global) {
-            !function(root, undefined) {
+        (function(process, global, module) {
+            var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            /*
+ * [hi-base32]{@link https://github.com/emn178/hi-base32}
+ *
+ * @version 0.3.0
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2017
+ * @license MIT
+ */
+            !function() {
                 "use strict";
-                var NODE_JS = void 0 !== module;
-                NODE_JS && (root = global);
-                var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
+                var root = "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) ? window : {};
+                !root.HI_BASE32_NO_NODE_JS && "object" === (void 0 === process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
+                var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" === _typeof(module) && module.exports, AMD = __webpack_require__("./node_modules/webpack/buildin/amd-options.js"), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
                     A: 0,
                     B: 1,
                     C: 2,
@@ -1749,18 +1762,18 @@
                         bytes[index++] = 255 & (v7 << 5 | v8);
                     }
                     var remain = length - count;
-                    if (2 == remain) {
+                    if (2 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
                         bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                    } else if (5 == remain) {
+                    } else if (5 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -1769,7 +1782,7 @@
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
                         bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
                         bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
-                    } else if (7 == remain) {
+                    } else if (7 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -1793,19 +1806,19 @@
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
                     }
                     var remain = length - count;
-                    if (1 == remain) {
+                    if (1 === remain) {
                         v1 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
+                    } else if (2 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
+                    } else if (3 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i++);
                         v3 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i++);
                         v3 = str.charCodeAt(i++);
@@ -1838,7 +1851,7 @@
                         }
                         bytes += i - start;
                         start = i - 5;
-                        index == length && ++index;
+                        index === length && ++index;
                         index > length && i < 6 && (end = !0);
                         v1 = blocks[0];
                         if (i > 4) {
@@ -1847,14 +1860,14 @@
                             v4 = blocks[3];
                             v5 = blocks[4];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
-                        } else if (1 == i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 == i) {
+                        } else if (1 === i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 === i) {
                             v2 = blocks[1];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                        } else if (3 == i) {
+                        } else if (3 === i) {
                             v2 = blocks[1];
                             v3 = blocks[2];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                        } else if (4 == i) {
+                        } else if (4 === i) {
                             v2 = blocks[1];
                             v3 = blocks[2];
                             v4 = blocks[3];
@@ -1872,19 +1885,19 @@
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
                     }
                     var remain = length - count;
-                    if (1 == remain) {
+                    if (1 === remain) {
                         v1 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
+                    } else if (2 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
+                    } else if (3 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i++];
                         v3 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i++];
                         v3 = bytes[i++];
@@ -1894,12 +1907,12 @@
                     return base32Str;
                 }, encode = function(input, asciiOnly) {
                     var notString = "string" != typeof input;
-                    notString && input.constructor == ArrayBuffer && (input = new Uint8Array(input));
+                    notString && input.constructor === ArrayBuffer && (input = new Uint8Array(input));
                     return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
                 }, decode = function(base32Str, asciiOnly) {
                     if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
                     var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
-                    -1 == length && (length = base32Str.length);
+                    -1 === length && (length = base32Str.length);
                     for (var i = 0, count = length >> 3 << 3; i < count; ) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -1912,24 +1925,24 @@
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3)) + String.fromCharCode(255 & (v7 << 5 | v8));
                     }
                     var remain = length - count;
-                    if (2 == remain) {
+                    if (2 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2));
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4));
-                    } else if (5 == remain) {
+                    } else if (5 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1));
-                    } else if (7 == remain) {
+                    } else if (7 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -1940,16 +1953,19 @@
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3));
                     }
                     return str;
-                };
-                decode.asBytes = decodeAsBytes;
-                var exports = {
+                }, exports = {
                     encode: encode,
                     decode: decode
                 };
-                root.HI_BASE32_TEST && (exports.toUtf8String = toUtf8String);
-                !root.HI_BASE32_TEST && NODE_JS ? module.exports = exports : root && (root.base32 = exports);
-            }(this);
-        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+                decode.asBytes = decodeAsBytes;
+                if (COMMON_JS) module.exports = exports; else {
+                    root.base32 = exports;
+                    AMD && void 0 !== (__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+                        return exports;
+                    }.call(exports, __webpack_require__, exports, module)) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__);
+                }
+            }();
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"), __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
     },
     "./node_modules/post-robot/src/bridge/bridge.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -3890,10 +3906,136 @@
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
         };
     },
+    "./node_modules/process/browser.js": function(module, exports) {
+        function defaultSetTimout() {
+            throw new Error("setTimeout has not been defined");
+        }
+        function defaultClearTimeout() {
+            throw new Error("clearTimeout has not been defined");
+        }
+        function runTimeout(fun) {
+            if (cachedSetTimeout === setTimeout) return setTimeout(fun, 0);
+            if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+                cachedSetTimeout = setTimeout;
+                return setTimeout(fun, 0);
+            }
+            try {
+                return cachedSetTimeout(fun, 0);
+            } catch (e) {
+                try {
+                    return cachedSetTimeout.call(null, fun, 0);
+                } catch (e) {
+                    return cachedSetTimeout.call(this, fun, 0);
+                }
+            }
+        }
+        function runClearTimeout(marker) {
+            if (cachedClearTimeout === clearTimeout) return clearTimeout(marker);
+            if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+                cachedClearTimeout = clearTimeout;
+                return clearTimeout(marker);
+            }
+            try {
+                return cachedClearTimeout(marker);
+            } catch (e) {
+                try {
+                    return cachedClearTimeout.call(null, marker);
+                } catch (e) {
+                    return cachedClearTimeout.call(this, marker);
+                }
+            }
+        }
+        function cleanUpNextTick() {
+            if (draining && currentQueue) {
+                draining = !1;
+                currentQueue.length ? queue = currentQueue.concat(queue) : queueIndex = -1;
+                queue.length && drainQueue();
+            }
+        }
+        function drainQueue() {
+            if (!draining) {
+                var timeout = runTimeout(cleanUpNextTick);
+                draining = !0;
+                for (var len = queue.length; len; ) {
+                    currentQueue = queue;
+                    queue = [];
+                    for (;++queueIndex < len; ) currentQueue && currentQueue[queueIndex].run();
+                    queueIndex = -1;
+                    len = queue.length;
+                }
+                currentQueue = null;
+                draining = !1;
+                runClearTimeout(timeout);
+            }
+        }
+        function Item(fun, array) {
+            this.fun = fun;
+            this.array = array;
+        }
+        function noop() {}
+        var cachedSetTimeout, cachedClearTimeout, process = module.exports = {};
+        !function() {
+            try {
+                cachedSetTimeout = "function" == typeof setTimeout ? setTimeout : defaultSetTimout;
+            } catch (e) {
+                cachedSetTimeout = defaultSetTimout;
+            }
+            try {
+                cachedClearTimeout = "function" == typeof clearTimeout ? clearTimeout : defaultClearTimeout;
+            } catch (e) {
+                cachedClearTimeout = defaultClearTimeout;
+            }
+        }();
+        var currentQueue, queue = [], draining = !1, queueIndex = -1;
+        process.nextTick = function(fun) {
+            var args = new Array(arguments.length - 1);
+            if (arguments.length > 1) for (var i = 1; i < arguments.length; i++) args[i - 1] = arguments[i];
+            queue.push(new Item(fun, args));
+            1 !== queue.length || draining || runTimeout(drainQueue);
+        };
+        Item.prototype.run = function() {
+            this.fun.apply(null, this.array);
+        };
+        process.title = "browser";
+        process.browser = !0;
+        process.env = {};
+        process.argv = [];
+        process.version = "";
+        process.versions = {};
+        process.on = noop;
+        process.addListener = noop;
+        process.once = noop;
+        process.off = noop;
+        process.removeListener = noop;
+        process.removeAllListeners = noop;
+        process.emit = noop;
+        process.prependListener = noop;
+        process.prependOnceListener = noop;
+        process.listeners = function(name) {
+            return [];
+        };
+        process.binding = function(name) {
+            throw new Error("process.binding is not supported");
+        };
+        process.cwd = function() {
+            return "/";
+        };
+        process.chdir = function(dir) {
+            throw new Error("process.chdir is not supported");
+        };
+        process.umask = function() {
+            return 0;
+        };
+    },
     "./node_modules/webpack/buildin/amd-define.js": function(module, exports) {
         module.exports = function() {
             throw new Error("define cannot be used indirect");
         };
+    },
+    "./node_modules/webpack/buildin/amd-options.js": function(module, exports) {
+        (function(__webpack_amd_options__) {
+            module.exports = __webpack_amd_options__;
+        }).call(exports, {});
     },
     "./node_modules/webpack/buildin/global.js": function(module, exports) {
         var g, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
@@ -3910,6 +4052,319 @@
             "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) && (g = window);
         }
         module.exports = g;
+    },
+    "./node_modules/webpack/buildin/module.js": function(module, exports) {
+        module.exports = function(module) {
+            if (!module.webpackPolyfill) {
+                module.deprecate = function() {};
+                module.paths = [];
+                module.children || (module.children = []);
+                Object.defineProperty(module, "loaded", {
+                    enumerable: !0,
+                    get: function() {
+                        return module.l;
+                    }
+                });
+                Object.defineProperty(module, "id", {
+                    enumerable: !0,
+                    get: function() {
+                        return module.i;
+                    }
+                });
+                module.webpackPolyfill = 1;
+            }
+            return module;
+        };
+    },
+    "./node_modules/xcomponent/node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
+        (function(global) {
+            !function(root, undefined) {
+                "use strict";
+                var NODE_JS = void 0 !== module;
+                NODE_JS && (root = global);
+                var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
+                    A: 0,
+                    B: 1,
+                    C: 2,
+                    D: 3,
+                    E: 4,
+                    F: 5,
+                    G: 6,
+                    H: 7,
+                    I: 8,
+                    J: 9,
+                    K: 10,
+                    L: 11,
+                    M: 12,
+                    N: 13,
+                    O: 14,
+                    P: 15,
+                    Q: 16,
+                    R: 17,
+                    S: 18,
+                    T: 19,
+                    U: 20,
+                    V: 21,
+                    W: 22,
+                    X: 23,
+                    Y: 24,
+                    Z: 25,
+                    "2": 26,
+                    "3": 27,
+                    "4": 28,
+                    "5": 29,
+                    "6": 30,
+                    "7": 31
+                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], toUtf8String = function(bytes) {
+                    for (var b, c, str = "", length = bytes.length, i = 0, followingChars = 0; i < length; ) {
+                        b = bytes[i++];
+                        if (b <= 127) str += String.fromCharCode(b); else {
+                            if (b > 191 && b <= 223) {
+                                c = 31 & b;
+                                followingChars = 1;
+                            } else if (b <= 239) {
+                                c = 15 & b;
+                                followingChars = 2;
+                            } else {
+                                if (!(b <= 247)) throw "not a UTF-8 string";
+                                c = 7 & b;
+                                followingChars = 3;
+                            }
+                            for (var j = 0; j < followingChars; ++j) {
+                                b = bytes[i++];
+                                if (b < 128 || b > 191) throw "not a UTF-8 string";
+                                c <<= 6;
+                                c += 63 & b;
+                            }
+                            if (c >= 55296 && c <= 57343) throw "not a UTF-8 string";
+                            if (c > 1114111) throw "not a UTF-8 string";
+                            if (c <= 65535) str += String.fromCharCode(c); else {
+                                c -= 65536;
+                                str += String.fromCharCode(55296 + (c >> 10));
+                                str += String.fromCharCode(56320 + (1023 & c));
+                            }
+                        }
+                    }
+                    return str;
+                }, decodeAsBytes = function(base32Str) {
+                    base32Str = base32Str.replace(/=/g, "");
+                    for (var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index = 0, length = base32Str.length, i = 0, count = length >> 3 << 3; i < count; ) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                        bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
+                        bytes[index++] = 255 & (v7 << 5 | v8);
+                    }
+                    var remain = length - count;
+                    if (2 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                    } else if (4 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                    } else if (5 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                    } else if (7 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                        bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
+                    }
+                    return bytes;
+                }, encodeAscii = function(str) {
+                    for (var v1, v2, v3, v4, v5, base32Str = "", length = str.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
+                        v1 = str.charCodeAt(i++);
+                        v2 = str.charCodeAt(i++);
+                        v3 = str.charCodeAt(i++);
+                        v4 = str.charCodeAt(i++);
+                        v5 = str.charCodeAt(i++);
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                    }
+                    var remain = length - count;
+                    if (1 == remain) {
+                        v1 = str.charCodeAt(i);
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+                    } else if (2 == remain) {
+                        v1 = str.charCodeAt(i++);
+                        v2 = str.charCodeAt(i);
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                    } else if (3 == remain) {
+                        v1 = str.charCodeAt(i++);
+                        v2 = str.charCodeAt(i++);
+                        v3 = str.charCodeAt(i);
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                    } else if (4 == remain) {
+                        v1 = str.charCodeAt(i++);
+                        v2 = str.charCodeAt(i++);
+                        v3 = str.charCodeAt(i++);
+                        v4 = str.charCodeAt(i);
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                    }
+                    return base32Str;
+                }, encodeUtf8 = function(str) {
+                    var v1, v2, v3, v4, v5, code, i, end = !1, base32Str = "", index = 0, start = 0, bytes = 0, length = str.length;
+                    do {
+                        blocks[0] = blocks[5];
+                        blocks[1] = blocks[6];
+                        blocks[2] = blocks[7];
+                        for (i = start; index < length && i < 5; ++index) {
+                            code = str.charCodeAt(index);
+                            if (code < 128) blocks[i++] = code; else if (code < 2048) {
+                                blocks[i++] = 192 | code >> 6;
+                                blocks[i++] = 128 | 63 & code;
+                            } else if (code < 55296 || code >= 57344) {
+                                blocks[i++] = 224 | code >> 12;
+                                blocks[i++] = 128 | code >> 6 & 63;
+                                blocks[i++] = 128 | 63 & code;
+                            } else {
+                                code = 65536 + ((1023 & code) << 10 | 1023 & str.charCodeAt(++index));
+                                blocks[i++] = 240 | code >> 18;
+                                blocks[i++] = 128 | code >> 12 & 63;
+                                blocks[i++] = 128 | code >> 6 & 63;
+                                blocks[i++] = 128 | 63 & code;
+                            }
+                        }
+                        bytes += i - start;
+                        start = i - 5;
+                        index == length && ++index;
+                        index > length && i < 6 && (end = !0);
+                        v1 = blocks[0];
+                        if (i > 4) {
+                            v2 = blocks[1];
+                            v3 = blocks[2];
+                            v4 = blocks[3];
+                            v5 = blocks[4];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                        } else if (1 == i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 == i) {
+                            v2 = blocks[1];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                        } else if (3 == i) {
+                            v2 = blocks[1];
+                            v3 = blocks[2];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                        } else if (4 == i) {
+                            v2 = blocks[1];
+                            v3 = blocks[2];
+                            v4 = blocks[3];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                        }
+                    } while (!end);
+                    return base32Str;
+                }, encodeBytes = function(bytes) {
+                    for (var v1, v2, v3, v4, v5, base32Str = "", length = bytes.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
+                        v1 = bytes[i++];
+                        v2 = bytes[i++];
+                        v3 = bytes[i++];
+                        v4 = bytes[i++];
+                        v5 = bytes[i++];
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                    }
+                    var remain = length - count;
+                    if (1 == remain) {
+                        v1 = bytes[i];
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+                    } else if (2 == remain) {
+                        v1 = bytes[i++];
+                        v2 = bytes[i];
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                    } else if (3 == remain) {
+                        v1 = bytes[i++];
+                        v2 = bytes[i++];
+                        v3 = bytes[i];
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                    } else if (4 == remain) {
+                        v1 = bytes[i++];
+                        v2 = bytes[i++];
+                        v3 = bytes[i++];
+                        v4 = bytes[i];
+                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                    }
+                    return base32Str;
+                }, encode = function(input, asciiOnly) {
+                    var notString = "string" != typeof input;
+                    notString && input.constructor == ArrayBuffer && (input = new Uint8Array(input));
+                    return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
+                }, decode = function(base32Str, asciiOnly) {
+                    if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
+                    var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
+                    -1 == length && (length = base32Str.length);
+                    for (var i = 0, count = length >> 3 << 3; i < count; ) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3)) + String.fromCharCode(255 & (v7 << 5 | v8));
+                    }
+                    var remain = length - count;
+                    if (2 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2));
+                    } else if (4 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4));
+                    } else if (5 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1));
+                    } else if (7 == remain) {
+                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3));
+                    }
+                    return str;
+                };
+                decode.asBytes = decodeAsBytes;
+                var exports = {
+                    encode: encode,
+                    decode: decode
+                };
+                root.HI_BASE32_TEST && (exports.toUtf8String = toUtf8String);
+                !root.HI_BASE32_TEST && NODE_JS ? module.exports = exports : root && (root.base32 = exports);
+            }(this);
+        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
     },
     "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -5059,10 +5514,14 @@
                 }
                 _this.focus = function() {
                     if (_this.driver.openOnFocus) try {
-                        window.open("", _this.childWindowName).focus();
+                        var win = window.open("", _this.childWindowName);
+                        win && win.focus();
                     } catch (err) {}
                     return options.overrides.focus.call(_this);
                 };
+                _this.clean.register("destroyFocusOverride", function() {
+                    _this.focus = function() {};
+                });
                 _this.userClose = options.overrides.userClose;
                 _this.getDomain = options.overrides.getDomain;
                 _this.error = options.overrides.error;
@@ -6030,9 +6489,9 @@
                 });
             };
             ParentComponent.prototype.focus = function() {
-                if (!this.window) throw new Error("No window to focus");
+                if (!this.window || Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(this.window)) throw new Error("No window to focus");
                 if (this.driver.openOnFocus) try {
-                    window.open("", this.childWindowName);
+                    window.open("", this.childWindowName).focus();
                 } catch (err) {}
                 this.component.log("focus");
                 this.window.focus();
@@ -6451,7 +6910,7 @@
             return getParentRenderWindow;
         });
         __webpack_exports__.f = getPosition;
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/xcomponent/node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
         }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
@@ -8458,14 +8917,14 @@
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.BUTTON, 
                 _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.CREATE_PAYMENT, 
-                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.CONTEXT_TYPE.EC_TOKEN, 
+                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.CONTEXT_TYPE[__WEBPACK_IMPORTED_MODULE_5__config__.j.EC_TOKEN], 
                 _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.PAY_ID] = paymentID, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TOKEN] = paymentToken, 
                 _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_ID] = paymentToken, _track));
             }
         }
         function createCheckoutToken(env, client, paymentDetails) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_checkout_token");
-            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta;
             if (!payment) throw new Error("Expected payment details to be passed");
@@ -8492,7 +8951,7 @@
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
                     return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.P)({
                         method: "post",
-                        url: __WEBPACK_IMPORTED_MODULE_5__config__.m.paymentApiUrls[env],
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.paymentApiUrls[env],
                         headers: headers,
                         json: payment
                     });
@@ -8505,7 +8964,7 @@
         }
         function createOrderToken(env, client, paymentDetails) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_order_token");
-            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             var order = paymentDetails.order, meta = paymentDetails.meta;
             if (!order) throw new Error("Expected order details to be passed");
@@ -8530,7 +8989,7 @@
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
                 return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.P)({
                     method: "post",
-                    url: __WEBPACK_IMPORTED_MODULE_5__config__.m.orderApiUrls[env],
+                    url: __WEBPACK_IMPORTED_MODULE_5__config__.n.orderApiUrls[env],
                     headers: headers,
                     json: order
                 });
@@ -8542,7 +9001,7 @@
         }
         function createBillingToken(env, client, billingDetails, experienceDetails) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_billing_token");
-            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createBillingToken && !proxyRest.createBillingToken.source.closed) return proxyRest.createBillingToken(env, client, billingDetails, experienceDetails);
             billingDetails = _extends({}, billingDetails);
@@ -8559,7 +9018,7 @@
                     experienceID && (billingDetails.experience_profile_id = experienceID);
                     return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.P)({
                         method: "post",
-                        url: __WEBPACK_IMPORTED_MODULE_5__config__.m.billingApiUrls[env],
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.billingApiUrls[env],
                         headers: {
                             Authorization: "Bearer " + accessToken
                         },
@@ -8583,14 +9042,14 @@
             return target;
         }, proxyRest = {}, createAccessToken = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(function(env, client) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_access_token");
-            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             var clientID = client[env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(__WEBPACK_IMPORTED_MODULE_2_Base64__.btoa)(clientID + ":");
             return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.P)({
                 method: "post",
-                url: __WEBPACK_IMPORTED_MODULE_5__config__.m.authApiUrls[env],
+                url: __WEBPACK_IMPORTED_MODULE_5__config__.n.authApiUrls[env],
                 headers: {
                     Authorization: "Basic " + basicAuth
                 },
@@ -8607,7 +9066,7 @@
         }), createExperienceProfile = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_experience_profile");
-            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+            env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             if (!client[env]) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) return proxyRest.createExperienceProfile(env, client, experienceDetails);
             experienceDetails.temporary = !0;
@@ -8615,7 +9074,7 @@
             return createAccessToken(env, client).then(function(accessToken) {
                 return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.P)({
                     method: "post",
-                    url: __WEBPACK_IMPORTED_MODULE_5__config__.m.experienceApiUrls[env],
+                    url: __WEBPACK_IMPORTED_MODULE_5__config__.n.experienceApiUrls[env],
                     headers: {
                         Authorization: "Bearer " + accessToken
                     },
@@ -8643,12 +9102,12 @@
             }
         }, parentWin = Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.d)();
         Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.on)("proxy_rest", {
-            domain: __WEBPACK_IMPORTED_MODULE_5__config__.m.paypal_domain_regex
+            domain: __WEBPACK_IMPORTED_MODULE_5__config__.n.paypal_domain_regex
         }, function(_ref) {
             var data = _ref.data;
             proxyRest = data;
         });
-        parentWin && Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.t)(parentWin) && Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send)(parentWin, "proxy_rest", {
+        parentWin && Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_5__config__.n.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.t)(parentWin) && Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send)(parentWin, "proxy_rest", {
             createAccessToken: createAccessToken,
             createExperienceProfile: createExperienceProfile,
             createCheckoutToken: createCheckoutToken,
@@ -8665,11 +9124,11 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.B)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.m.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.m.postBridgeDomain).then(function(postBridge) {
+                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.B)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeDomain).then(function(postBridge) {
                     return Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send)(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
-                        domain: __WEBPACK_IMPORTED_MODULE_3__config__.m.paypalDomain
+                        domain: __WEBPACK_IMPORTED_MODULE_3__config__.n.paypalDomain
                     }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.G);
                 });
             });
@@ -8846,19 +9305,19 @@
             return Button;
         });
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__ = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
-        __webpack_require__("./node_modules/beaver-logger/client/index.js")), __WEBPACK_IMPORTED_MODULE_4__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_8__experiments__ = __webpack_require__("./src/experiments.js"), __WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_10__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_11__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_12__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_13__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_14__templates_funding__ = __webpack_require__("./src/components/button/templates/funding.js"), _extends = Object.assign || function(target) {
+        __webpack_require__("./node_modules/beaver-logger/client/index.js")), __WEBPACK_IMPORTED_MODULE_4__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_8__experiments__ = __webpack_require__("./src/experiments.js"), __WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_10__checkout_util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_11__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_12__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_13__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_14__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_15__templates_funding__ = __webpack_require__("./src/components/button/templates/funding.js"), __WEBPACK_IMPORTED_MODULE_16__templates_config__ = __webpack_require__("./src/components/button/templates/config.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
         };
-        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
             session.buttonClicked = !1;
             session.buttonCancelled = !1;
             session.buttonAuthorized = !1;
         });
-        var customButtonSelector = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("custom_button_selector");
+        var customButtonSelector = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("custom_button_selector");
         customButtonSelector && setInterval(function() {
             var el = window.document.querySelector(customButtonSelector);
             if (el && !el.hasAttribute("ppxo-merchant-custom-click-listener")) {
@@ -8873,26 +9332,26 @@
             tag: "paypal-button",
             name: "ppbutton",
             buildUrl: function(props) {
-                var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.buttonUrls[env];
+                var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                return __WEBPACK_IMPORTED_MODULE_5__config__.n.buttonUrls[env];
             },
             contexts: {
                 iframe: !0,
                 popup: !1
             },
             scrolling: !1,
-            containerTemplate: __WEBPACK_IMPORTED_MODULE_11__templates__.b,
+            containerTemplate: __WEBPACK_IMPORTED_MODULE_12__templates__.b,
             prerenderTemplate: function(_ref) {
                 var _this = this, props = _ref.props, jsxDom = _ref.jsxDom, template = jsxDom("div", {
-                    innerHTML: Object(__WEBPACK_IMPORTED_MODULE_11__templates__.a)({
+                    innerHTML: Object(__WEBPACK_IMPORTED_MODULE_12__templates__.a)({
                         props: props
                     })
                 });
                 template.addEventListener("click", function() {
                     Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.p)("button_pre_template_click");
-                    if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("allow_full_page_fallback")) {
+                    if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("allow_full_page_fallback")) {
                         Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("pre_template_force_full_page");
-                        var experimentTestBeacon = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("experiment_test_beacon_on_click");
+                        var experimentTestBeacon = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("experiment_test_beacon_on_click");
                         experimentTestBeacon && Object(__WEBPACK_IMPORTED_MODULE_8__experiments__.a)(experimentTestBeacon, "test");
                         var checkout = __WEBPACK_IMPORTED_MODULE_4__checkout__.a.init({
                             onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.G
@@ -8902,7 +9361,7 @@
                             checkout.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.a.EVENTS.CLOSE);
                         });
                         _this.props.payment().then(function(token) {
-                            window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.h)(__WEBPACK_IMPORTED_MODULE_5__config__.m.checkoutUrl, {
+                            window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.h)(__WEBPACK_IMPORTED_MODULE_5__config__.n.checkoutUrl, {
                                 token: token
                             });
                         }).catch(function(err) {
@@ -8913,10 +9372,10 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.ppobjects, "4.0.161";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.n.ppobjects, "4.0.162";
             },
             get domain() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.m.paypalDomains;
+                return __WEBPACK_IMPORTED_MODULE_5__config__.n.paypalDomains;
             },
             attributes: {
                 iframe: {
@@ -8930,9 +9389,17 @@
             props: {
                 sessionID: {
                     type: "string",
-                    value: Object(__WEBPACK_IMPORTED_MODULE_6__lib__.q)(),
+                    required: !1,
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)();
+                    },
+                    queryParam: !0
+                },
+                buttonSessionID: {
+                    type: "string",
+                    required: !1,
+                    def: function() {
+                        return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.V)();
                     },
                     queryParam: !0
                 },
@@ -8941,10 +9408,10 @@
                     required: !1,
                     queryParam: !0,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+                        return __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                     },
                     validate: function(env) {
-                        if (env && !__WEBPACK_IMPORTED_MODULE_5__config__.m.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                        if (env && !__WEBPACK_IMPORTED_MODULE_5__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
                 client: {
@@ -8955,7 +9422,7 @@
                     },
                     sendToChild: !1,
                     validate: function(client, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                         if (!client[env]) throw new Error("Client ID not found for env: " + env);
                         if ("string" == typeof client[env]) {
                             if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
@@ -8966,20 +9433,33 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.k.MANUAL;
+                        return __WEBPACK_IMPORTED_MODULE_5__config__.l.MANUAL;
                     }
                 },
                 prefetchLogin: {
                     type: "boolean",
                     required: !1
                 },
+                onRememberUser: {
+                    type: "function",
+                    required: !1,
+                    decorate: function(original, props) {
+                        if (original) {
+                            var source = Object(__WEBPACK_IMPORTED_MODULE_16__templates_config__.h)(props.style && props.style.label);
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.x)(source).then(function(result) {
+                                result && original && original();
+                            });
+                            return original;
+                        }
+                    }
+                },
                 stage: {
                     type: "string",
                     required: !1,
                     queryParam: !0,
                     def: function(props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
-                        if (env === __WEBPACK_IMPORTED_MODULE_5__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_5__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_5__config__.m.stage;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                        if (env === __WEBPACK_IMPORTED_MODULE_5__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_5__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_5__config__.n.stage;
                     }
                 },
                 braintree: {
@@ -8990,9 +9470,9 @@
                         if (!props.client) throw new Error("Expected client prop to be passed with Braintree authorization keys");
                     },
                     decorate: function(braintree, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.m.env;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                         return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(props.client).then(function(client) {
-                            return Object(__WEBPACK_IMPORTED_MODULE_13__braintree__.a)(braintree, client[env]);
+                            return Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.a)(braintree, client[env]);
                         });
                     }
                 },
@@ -9009,7 +9489,7 @@
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
-                                            return client.createPayment(Object(__WEBPACK_IMPORTED_MODULE_13__braintree__.b)(options.payment || options));
+                                            return client.createPayment(Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.b)(options.payment || options));
                                         }) : __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(_this2.props.client).then(function(client) {
                                             return __WEBPACK_IMPORTED_MODULE_7__api__.a.payment.create(_this2.props.env, client, options);
                                         });
@@ -9031,9 +9511,9 @@
                                     }
                                 }
                             };
-                            if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
+                            if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(original, this, [ data, actions ]);
-                            this.props.env !== __WEBPACK_IMPORTED_MODULE_5__config__.d.PRODUCTION || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== __WEBPACK_IMPORTED_MODULE_5__config__.d.PRODUCTION || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
@@ -9042,7 +9522,9 @@
                                 }
                                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
                                 _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.RECIEVE_PAYMENT, 
-                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TOKEN] = token, _track));
+                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.CONTEXT_TYPE[Object(__WEBPACK_IMPORTED_MODULE_10__checkout_util__.c)(token)], 
+                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_ID] = token, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
+                                _track));
                                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                                 return token;
                             });
@@ -9056,7 +9538,7 @@
                     queryParam: !0,
                     validate: function() {
                         var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref2$allowed = _ref2.allowed, allowed = void 0 === _ref2$allowed ? [] : _ref2$allowed, _ref2$disallowed = _ref2.disallowed, disallowed = void 0 === _ref2$disallowed ? [] : _ref2$disallowed;
-                        Object(__WEBPACK_IMPORTED_MODULE_14__templates_funding__.c)({
+                        Object(__WEBPACK_IMPORTED_MODULE_15__templates_funding__.c)({
                             allowed: allowed,
                             disallowed: disallowed,
                             remembered: []
@@ -9068,10 +9550,10 @@
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed;
                         allowed && -1 !== allowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && !Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)() && allowed.splice(allowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
-                        var remembered = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.n)(function(sources) {
+                        var remembered = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.o)(function(sources) {
                             return sources;
                         });
-                        if (!Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)() || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("disable_venmo")) {
+                        if (!Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)() || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("disable_venmo")) {
                             remembered && -1 !== remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && remembered.splice(remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
                             disallowed && -1 === disallowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && disallowed.push(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO);
                         }
@@ -9103,6 +9585,7 @@
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track2 = {}, _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.LOAD, 
                             _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.BUTTON_RENDER, 
                             _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.BUTTON_TYPE.IFRAME, 
+                            _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
@@ -9121,39 +9604,40 @@
                                 token: data.paymentToken
                             });
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_authorize");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonAuthorized;
                             }) ? Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_authorize_multiple") : Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_authorize_unique");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonCancelled;
                             }) && Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_authorize_after_cancel");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 session.buttonAuthorized = !0;
                             });
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track3 = {}, _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
                             _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.CHECKOUT_AUTHORIZE, 
+                            _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track3));
                             Object(__WEBPACK_IMPORTED_MODULE_6__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_authorize_ineligible");
                             Object(__WEBPACK_IMPORTED_MODULE_6__lib__.c)("authorize");
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
-                            if (this.props.braintree) return this.props.braintree.then(function(client) {
-                                return client.tokenizePayment(data).then(function(res) {
-                                    return original.call(_this3, _extends({}, data, {
-                                        nonce: res.nonce
-                                    }), {
-                                        payment: {
-                                            get: actions.payment.get
-                                        }
-                                    });
-                                });
-                            });
-                            var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.N)(win || window.top, url || data.returnUrl), actions.close() ]);
-                            }, restart = function() {
-                                return actions.restart().then(function() {
+                            var restart = actions.restart;
+                            actions.restart = function() {
+                                return restart().then(function() {
                                     return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a();
                                 });
-                            }, execute = actions.payment.execute;
+                            };
+                            actions.redirect = function(win, url) {
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.N)(win || window.top, url || data.returnUrl), actions.close() ]);
+                            };
+                            actions.payment.tokenize = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.F)(function() {
+                                if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
+                                return _this3.props.braintree.then(function(client) {
+                                    return client.tokenizePayment(data);
+                                }).then(function(res) {
+                                    return res.nonce;
+                                });
+                            });
+                            var execute = actions.payment.execute;
                             actions.payment.execute = function() {
                                 return execute().then(function(result) {
                                     if (!(result && result.id && result.intent && result.state)) {
@@ -9167,10 +9651,17 @@
                                 paymentToken: data.paymentToken
                             });
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                                return original.call(_this3, data, _extends({}, actions, {
-                                    redirect: redirect,
-                                    restart: restart
-                                }));
+                                if (_this3.props.braintree) return actions.payment.tokenize().then(function(nonce) {
+                                    Object.defineProperty(data, "nonce", {
+                                        get: function() {
+                                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("nonce_getter");
+                                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
+                                            return nonce;
+                                        }
+                                    });
+                                });
+                            }).then(function() {
+                                return original.call(_this3, data, actions);
                             }).catch(function(err) {
                                 return _this3.error(err);
                             });
@@ -9185,17 +9676,18 @@
                         return function(data, actions) {
                             var _track4;
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_cancel");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonCancelled;
                             }) ? Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_cancel_multiple") : Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_cancel_unique");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonCancelled;
                             }) && Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("checkout_cancel_after_cancel");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 session.buttonCancelled = !0;
                             });
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track4 = {}, _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
                             _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.CHECKOUT_CANCEL, 
+                            _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track4));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                             var redirect = function(win, url) {
@@ -9215,22 +9707,23 @@
                         return function(data) {
                             var _track5;
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_click");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonClicked;
                             }) ? Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_click_multiple") : Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_click_unique");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 return session.buttonCancelled;
                             }) && Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_click_after_cancel");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.r)(function(session) {
+                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.s)(function(session) {
                                 session.buttonClicked = !0;
                             });
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track5 = {}, _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.BUTTON, 
                             _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.BUTTON_CLICK, 
                             _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.BUTTON_TYPE.IFRAME, 
-                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CHOSEN_FUNDING] = data && data.fundingSource, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
-                            var experimentTestBeacon = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("experiment_test_beacon_on_click");
+                            var experimentTestBeacon = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("experiment_test_beacon_on_click");
                             experimentTestBeacon && Object(__WEBPACK_IMPORTED_MODULE_8__experiments__.a)(experimentTestBeacon, "test");
                             return original.apply(this, arguments);
                         };
@@ -9244,7 +9737,7 @@
                         var _getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.i)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     },
-                    validate: __WEBPACK_IMPORTED_MODULE_12__templates_component_validate__.a
+                    validate: __WEBPACK_IMPORTED_MODULE_13__templates_component_validate__.a
                 },
                 style: {
                     type: "object",
@@ -9253,23 +9746,23 @@
                     alias: "buttonStyle",
                     def: function() {
                         return {
-                            color: __WEBPACK_IMPORTED_MODULE_10__constants__.b.GOLD,
-                            shape: __WEBPACK_IMPORTED_MODULE_10__constants__.h.PILL,
-                            size: __WEBPACK_IMPORTED_MODULE_10__constants__.i.SMALL,
-                            label: __WEBPACK_IMPORTED_MODULE_10__constants__.c.CHECKOUT,
+                            color: __WEBPACK_IMPORTED_MODULE_11__constants__.b.GOLD,
+                            shape: __WEBPACK_IMPORTED_MODULE_11__constants__.h.PILL,
+                            size: __WEBPACK_IMPORTED_MODULE_11__constants__.i.SMALL,
+                            label: __WEBPACK_IMPORTED_MODULE_11__constants__.c.CHECKOUT,
                             fundingicons: !1
                         };
                     },
                     validate: function() {
                         var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                        Object(__WEBPACK_IMPORTED_MODULE_12__templates_component_validate__.c)(style);
+                        Object(__WEBPACK_IMPORTED_MODULE_13__templates_component_validate__.c)(style);
                     }
                 },
                 displayTo: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.l.ALL;
+                        return __WEBPACK_IMPORTED_MODULE_5__config__.m.ALL;
                     }
                 },
                 validate: {
@@ -9280,7 +9773,7 @@
                     type: "string",
                     required: !1,
                     get value() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.m.logLevel;
+                        return __WEBPACK_IMPORTED_MODULE_5__config__.n.logLevel;
                     }
                 },
                 popupBridge: {
@@ -9305,7 +9798,7 @@
             }
         });
         if (Button.isChild()) {
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.l)().then(function(pageRenderTime) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.m)().then(function(pageRenderTime) {
                 var _track6, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_5__config__.a.FUNDING_SOURCE + "]")).map(function(el) {
                     return el.getAttribute(__WEBPACK_IMPORTED_MODULE_5__config__.a.CARD) || el.getAttribute(__WEBPACK_IMPORTED_MODULE_5__config__.a.FUNDING_SOURCE);
                 }).filter(function(source) {
@@ -9317,7 +9810,7 @@
                 _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.FUNDING_LIST] = fundingSources.join(":"), 
                 _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.FUNDING_COUNT] = fundingSources.length, 
                 _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_LAYOUT] = window.xprops && window.xprops.style && window.xprops.style.layout || __WEBPACK_IMPORTED_MODULE_10__constants__.d.HORIZONTAL, 
+                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_LAYOUT] = window.xprops && window.xprops.style && window.xprops.style.layout || __WEBPACK_IMPORTED_MODULE_11__constants__.d.HORIZONTAL, 
                 _track6));
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
             });
@@ -9428,7 +9921,7 @@
     },
     "./src/components/button/hacks.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_10__templates_config__ = __webpack_require__("./src/components/button/templates/config.js");
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js");
         Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(__WEBPACK_IMPORTED_MODULE_3__api__.a.payment, "create", function(_ref) {
             var createOriginal = _ref.original, createContext = _ref.context, _ref$args = _ref.args, env = _ref$args[0], client = _ref$args[1], options = _ref$args[2], experience = _ref$args[3];
             options.payment || (options = {
@@ -9456,19 +9949,6 @@
             }
             return callOriginal();
         });
-        __WEBPACK_IMPORTED_MODULE_8__component__.a.props.onRememberUser = {
-            type: "function",
-            required: !1,
-            decorate: function(original, props) {
-                if (original) {
-                    var source = Object(__WEBPACK_IMPORTED_MODULE_10__templates_config__.h)(props.style && props.style.label);
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.x)(source).then(function(result) {
-                        result && original && original();
-                    });
-                    return original;
-                }
-            }
-        };
         Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.payment, "decorate", function(_ref4) {
             var original = _ref4.original, context = _ref4.context, _ref4$args = _ref4.args, originalPayment = _ref4$args[0];
             return original.call(context, function(data, actions) {
@@ -9539,7 +10019,7 @@
                     if (enabled) return callOriginal();
                 });
             }
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.y)() && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_7__checkout__.a.renderTo = function(win) {
+            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.y)() && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.k)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_7__checkout__.a.renderTo = function(win) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("force_ie_full_page");
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g)();
                 var checkout = __WEBPACK_IMPORTED_MODULE_7__checkout__.a.init({
@@ -9551,20 +10031,20 @@
                     checkout.showContainer();
                 });
                 window.xprops.payment().then(function(token) {
-                    window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.h)(__WEBPACK_IMPORTED_MODULE_4__config__.m.checkoutUrl, {
+                    window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.h)(__WEBPACK_IMPORTED_MODULE_4__config__.n.checkoutUrl, {
                         token: token
                     });
                 }).catch(function(err) {
                     checkout.error(err);
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref8) {
+            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.k)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref8) {
                 var callOriginal = _ref8.callOriginal, _ref8$args = _ref8.args, props = _ref8$args[1], handleError = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.J)(function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
                     return window.xprops.payment().then(function(token) {
-                        window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.h)(__WEBPACK_IMPORTED_MODULE_4__config__.m.checkoutUrl, {
+                        window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.h)(__WEBPACK_IMPORTED_MODULE_4__config__.n.checkoutUrl, {
                             token: token
                         });
                     });
@@ -10101,7 +10581,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.161", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.162", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10540,7 +11020,7 @@
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.CREDIT] = {
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.GB, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE ],
             defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ],
-            platforms: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.k.MOBILE ]
+            platforms: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.l.MOBILE ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL] = {
             enabled: !1,
             test: !0,
@@ -10873,7 +11353,7 @@
             name: "ppcheckout",
             scrolling: !0,
             buildUrl: function(props) {
-                var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.m.env;
+                var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                 if (!props.payment) throw new Error("Can not build url without payment prop");
                 return props.payment().then(function(token) {
                     if (!token) throw new Error("Expected payment id or token to be passed, got " + token);
@@ -10881,13 +11361,13 @@
                 });
             },
             get domain() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.paypalDomains;
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.paypalDomains;
             },
             get bridgeUrl() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.metaFrameUrls;
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.metaFrameUrls;
             },
             get bridgeDomain() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.paypalDomains;
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.paypalDomains;
             },
             contexts: {
                 iframe: function() {
@@ -10896,16 +11376,24 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.m.ppobjects, "4.0.161";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.ppobjects, "4.0.162";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
             props: {
                 sessionID: {
                     type: "string",
-                    value: Object(__WEBPACK_IMPORTED_MODULE_5__lib__.q)(),
+                    required: !1,
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.r)();
+                    },
+                    queryParam: !0
+                },
+                buttonSessionID: {
+                    type: "string",
+                    required: !1,
+                    def: function() {
+                        return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)();
                     },
                     queryParam: !0
                 },
@@ -10914,10 +11402,10 @@
                     required: !1,
                     queryParam: !0,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_6__config__.m.env;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                     },
                     validate: function(env) {
-                        if (!__WEBPACK_IMPORTED_MODULE_6__config__.m.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                        if (!__WEBPACK_IMPORTED_MODULE_6__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
                 stage: {
@@ -10925,8 +11413,8 @@
                     required: !1,
                     queryParam: !0,
                     def: function(props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.m.env;
-                        if (env === __WEBPACK_IMPORTED_MODULE_6__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_6__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_6__config__.m.stage;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
+                        if (env === __WEBPACK_IMPORTED_MODULE_6__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_6__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_6__config__.n.stage;
                     }
                 },
                 locale: {
@@ -10947,7 +11435,7 @@
                     },
                     sendToChild: !1,
                     validate: function(client, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.m.env;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                         if (!client[env]) throw new Error("Client ID not found for env: " + env);
                         if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
                     }
@@ -10966,7 +11454,7 @@
                         return payment();
                     },
                     childDecorate: function(payment) {
-                        var token = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.m)("token");
+                        var token = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.n)("token");
                         return token ? Object(__WEBPACK_IMPORTED_MODULE_5__lib__.F)(function() {
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve(token);
                         }) : payment;
@@ -11097,7 +11585,7 @@
                             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.j)("checkout_init");
                             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.CHECKOUT, 
                             _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.CHECKOUT_INIT, 
-                            _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.CONTEXT_TYPE.EC_TOKEN, 
+                            _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.CONTEXT_TYPE[__WEBPACK_IMPORTED_MODULE_6__config__.j.EC_TOKEN], 
                             _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TOKEN] = data.paymentToken, _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.SELLER_ID] = data.merchantID, 
                             _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CONTEXT_ID] = data.paymentToken, 
                             _track));
@@ -11150,7 +11638,7 @@
                             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("fallback", {
                                 url: url
                             });
-                            if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("allow_full_page_fallback")) {
+                            if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.k)("allow_full_page_fallback")) {
                                 window.top.location = url;
                                 return this.close();
                             }
@@ -11162,7 +11650,7 @@
                     type: "string",
                     required: !1,
                     get value() {
-                        return __WEBPACK_IMPORTED_MODULE_6__config__.m.logLevel;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.n.logLevel;
                     }
                 },
                 popupBridge: {
@@ -11203,24 +11691,26 @@
         if (Checkout.isChild()) {
             window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.R)(window.xprops.logLevel);
             Object(__WEBPACK_IMPORTED_MODULE_10__popupBridge__.a)();
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(window.xprops, "onAuthorize", function(_ref) {
-                var callOriginal = _ref.callOriginal, _ref$args = _ref.args, data = _ref$args[0];
-                if (data && !data.intent) {
-                    Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("hermes_authorize_no_intent", {
-                        paymentID: data.paymentID,
-                        token: data.paymentToken
-                    });
-                    try {
-                        var intent = window.injector.get("$CheckoutCartModel").instance(data.paymentToken).payment_action;
-                        Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("hermes_intent", {
+            window.xchild.onProps(function() {
+                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.L)(window.xprops, "onAuthorize", function(_ref) {
+                    var callOriginal = _ref.callOriginal, _ref$args = _ref.args, data = _ref$args[0];
+                    if (data && !data.intent) {
+                        Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("hermes_authorize_no_intent", {
                             paymentID: data.paymentID,
-                            token: data.paymentToken,
-                            intent: intent
+                            token: data.paymentToken
                         });
-                    } catch (err) {}
-                    Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i)();
-                }
-                return callOriginal();
+                        try {
+                            var intent = window.injector.get("$CheckoutCartModel").instance(data.paymentToken).payment_action;
+                            Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("hermes_intent", {
+                                paymentID: data.paymentID,
+                                token: data.paymentToken,
+                                intent: intent
+                            });
+                        } catch (err) {}
+                        Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.i)();
+                    }
+                    return callOriginal();
+                });
             });
             if (!Object.assign) try {
                 Object.assign = __WEBPACK_IMPORTED_MODULE_5__lib__.g;
@@ -11228,34 +11718,20 @@
             __WEBPACK_IMPORTED_MODULE_5__lib__.e.then(function() {
                 if (window.injector) {
                     var $event = window.injector.get("$event");
-                    if ($event) {
-                        var experimentActive = !1, loggedComplete = !1;
-                        $event.on("allLoaded", function() {
-                            setTimeout(function() {
-                                var payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.s)("top_pay_button", 5e3), hash = window.location.hash, logComplete = function() {
-                                    if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
-                                        throttle.logComplete();
-                                        loggedComplete = !0;
-                                    }
-                                };
-                                payButton && payButton.addEventListener("click", logComplete);
-                                if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
-                                    experimentActive = !0;
-                                    throttle.logStart();
-                                    if (throttle.isEnabled()) {
-                                        topPayButton = payButton.cloneNode(!0);
-                                        topPayButton.className += " topReviewButton";
-                                        reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
-                                        topPayButton.addEventListener("click", function() {
-                                            logComplete();
-                                            var button = payButton && payButton.querySelector("button, input");
-                                            button && button.click();
-                                        });
-                                    }
-                                }
-                            }, 200);
-                        });
-                    }
+                    $event && $event.on("allLoaded", function() {
+                        setTimeout(function() {
+                            var payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topPayButton"), reviewSection = document.querySelector("section.review");
+                            if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
+                                topPayButton = payButton.cloneNode(!0);
+                                topPayButton.className += " topPayButton";
+                                reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
+                                topPayButton.addEventListener("click", function() {
+                                    var button = payButton && payButton.querySelector("button, input");
+                                    button && button.click();
+                                });
+                            }
+                        }, 200);
+                    });
                 }
             });
         }
@@ -11319,8 +11795,8 @@
             return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
                 if (!props.payment && !props.url) throw new Error("Expected props.payment or props.url to be passed");
                 if (!props.onAuthorize) throw new Error("Expected props.onAuthorize to be passed");
-                if (props.env && !__WEBPACK_IMPORTED_MODULE_4__config__.m.checkoutUrls[props.env]) throw new Error("Invalid props.env: " + props.env);
-                var env = props.env = props.env || __WEBPACK_IMPORTED_MODULE_4__config__.m.env, onAuthorize = Object(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.L)(props.onAuthorize), onCancel = Object(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.L)(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.I);
+                if (props.env && !__WEBPACK_IMPORTED_MODULE_4__config__.n.checkoutUrls[props.env]) throw new Error("Invalid props.env: " + props.env);
+                var env = props.env = props.env || __WEBPACK_IMPORTED_MODULE_4__config__.n.env, onAuthorize = Object(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.L)(props.onAuthorize), onCancel = Object(__WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.L)(props.onCancel || __WEBPACK_IMPORTED_MODULE_0_xcomponent_src_lib__.I);
                 return ternary(props.url, function() {
                     return props.url;
                 }, function() {
@@ -11569,17 +12045,17 @@
         function determineParameterFromToken(token) {
             return token && 0 === token.indexOf("BA-") ? "ba_token" : "token";
         }
-        function determineUrl(env, fundingSource, token) {
-            if (0 === token.indexOf("BA-")) {
-                Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_billing");
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.billingUrls[env];
-            }
-            0 === token.indexOf("PAY-") || 0 === token.indexOf("PAYID-") ? Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_payment") : 0 === token.indexOf("EC-") ? Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_checkout") : Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("url_default");
-            return fundingSource === __WEBPACK_IMPORTED_MODULE_2__config__.f.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_2__config__.f.ELV ? __WEBPACK_IMPORTED_MODULE_2__config__.m.guestUrls[env] : __WEBPACK_IMPORTED_MODULE_2__config__.m.checkoutUrls[env];
+        function getPaymentType(payment) {
+            return 0 === payment.indexOf("BA-") ? __WEBPACK_IMPORTED_MODULE_1__config__.j.BA_TOKEN : 0 === payment.indexOf("PAY-") || 0 === payment.indexOf("PAYID-") ? __WEBPACK_IMPORTED_MODULE_1__config__.j.PAY_ID : (payment.indexOf("EC-"), 
+            __WEBPACK_IMPORTED_MODULE_1__config__.j.EC_TOKEN);
+        }
+        function determineUrl(env, fundingSource, payment) {
+            return getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__config__.j.BA_TOKEN ? __WEBPACK_IMPORTED_MODULE_1__config__.n.billingUrls[env] : fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.ELV ? __WEBPACK_IMPORTED_MODULE_1__config__.n.guestUrls[env] : __WEBPACK_IMPORTED_MODULE_1__config__.n.checkoutUrls[env];
         }
         __webpack_exports__.a = determineParameterFromToken;
+        __webpack_exports__.c = getPaymentType;
         __webpack_exports__.b = determineUrl;
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = (__webpack_require__("./src/lib/index.js"), 
+        var __WEBPACK_IMPORTED_MODULE_1__config__ = (__webpack_require__("./src/lib/index.js"), 
         __webpack_require__("./src/config/index.js"));
     },
     "./src/components/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -11612,13 +12088,13 @@
             tag: "paypal-checkout-login",
             scrolling: !0,
             get url() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.loginUrls;
+                return __WEBPACK_IMPORTED_MODULE_2__config__.n.loginUrls;
             },
             get bridgeUrl() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.metaFrameUrls;
+                return __WEBPACK_IMPORTED_MODULE_2__config__.n.metaFrameUrls;
             },
             get bridgeDomain() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.paypalDomains;
+                return __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomains;
             },
             defaultEnv: __WEBPACK_IMPORTED_MODULE_2__config__.d.PRODUCTION,
             contexts: {
@@ -11630,7 +12106,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects, "4.0.161";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects, "4.0.162";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11638,9 +12114,9 @@
             props: {
                 sessionID: {
                     type: "string",
-                    value: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.q)(),
+                    value: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.r)(),
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.r)();
                     },
                     queryParam: !0
                 },
@@ -11649,10 +12125,10 @@
                     required: !1,
                     queryParam: !0,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_2__config__.m.env;
+                        return __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
                     },
                     validate: function(env) {
-                        if (!__WEBPACK_IMPORTED_MODULE_2__config__.m.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                        if (!__WEBPACK_IMPORTED_MODULE_2__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
                 style: {
@@ -11677,8 +12153,8 @@
                     required: !1,
                     queryParam: !0,
                     def: function(props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_2__config__.m.env;
-                        if (env === __WEBPACK_IMPORTED_MODULE_2__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_2__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_2__config__.m.stage;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
+                        if (env === __WEBPACK_IMPORTED_MODULE_2__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_2__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_2__config__.n.stage;
                     }
                 },
                 onAuthenticate: {
@@ -11719,7 +12195,7 @@
                     type: "string",
                     required: !1,
                     get value() {
-                        return __WEBPACK_IMPORTED_MODULE_2__config__.m.logLevel;
+                        return __WEBPACK_IMPORTED_MODULE_2__config__.n.logLevel;
                     }
                 },
                 test: {
@@ -11750,9 +12226,9 @@
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__component__ = __webpack_require__("./src/components/login/component.js"), prerender = __WEBPACK_IMPORTED_MODULE_1__component__.a.prerender;
         __WEBPACK_IMPORTED_MODULE_1__component__.a.prerender = function(props) {
-            var component = prerender.apply(this, arguments), env = props && props.env || __WEBPACK_IMPORTED_MODULE_0__config__.m.env;
+            var component = prerender.apply(this, arguments), env = props && props.env || __WEBPACK_IMPORTED_MODULE_0__config__.n.env;
             component.html = component.html.then(function(html) {
-                return "\n            " + html + '\n\n            <script src="' + __WEBPACK_IMPORTED_MODULE_0__config__.m.scriptUrl + "\" async><\/script>\n\n            <script>\n                (function() {\n\n                    function ajaxifyForms() {\n                        Array.prototype.slice.call(document.querySelectorAll('form')).forEach(function(form) {\n                            form.addEventListener('submit', function(event) {\n                                event.preventDefault();\n\n                                var data = {};\n\n                                Array.prototype.slice.call(form.elements).forEach(function(el) {\n\n                                    if (el.disabled || !el.name) {\n                                        return;\n                                    }\n\n                                    if (['file', 'reset', 'submit', 'button'].indexOf(el.type) !== -1) {\n                                        return;\n                                    }\n\n                                    var value;\n\n                                    if (['checkbox', 'radio'].indexOf(el.type) !== -1 && el.checked) {\n                                        value = 'on';\n                                    } else {\n                                        value = el.value;\n                                    }\n\n                                    data[el.name] = value;\n                                });\n\n                                var serializedData = Object.keys(data).map(function(key) {\n                                    return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])\n                                }).join('&').replace(/%20/g, '+');\n\n                                var req = new XMLHttpRequest();\n                                req.open(form.method || 'GET', '" + __WEBPACK_IMPORTED_MODULE_0__config__.m.paypalUrls[env] + "' + form.getAttribute('action'));\n                                req.setRequestHeader('Accept', 'application/json');\n                                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\n                                req.setRequestHeader('x-csrf-token', data._csrf);\n                                req.setRequestHeader('is-inline-ul', 'true');\n                                req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');\n                                req.send(serializedData);\n\n                                req.onload = function() {\n                                    if (req.status !== 200) {\n                                        return window.xchild.error(new Error('Login returned status: ' + req.status));\n                                    }\n\n                                    var data;\n\n                                    try {\n                                        data = JSON.parse(req.responseText);\n                                    } catch (err) {\n                                        return window.xchild.error(err + '\\n\\n' + req.responseText);\n                                    }\n\n                                    if (data.htmlResponse) {\n                                        document.write(data.htmlResponse);\n                                        return setTimeout(ajaxifyForms);\n                                    }\n\n                                    if (!data || !data.accessToken) {\n                                        return window.xchild.error('Could not find access token: \\n\\n' + JSON.stringify(data, null, 2));\n                                    }\n\n                                    window.xprops.onAuthenticate({\n                                        accessToken: data.accessToken\n                                    });\n                                };\n\n                                req.onerror = function() {\n                                    return window.xchild.error(new Error('Login error'));\n                                };\n                            });\n                        });\n                    }\n\n                    ajaxifyForms();\n\n                })();\n            <\/script>\n        ";
+                return "\n            " + html + '\n\n            <script src="' + __WEBPACK_IMPORTED_MODULE_0__config__.n.scriptUrl + "\" async><\/script>\n\n            <script>\n                (function() {\n\n                    function ajaxifyForms() {\n                        Array.prototype.slice.call(document.querySelectorAll('form')).forEach(function(form) {\n                            form.addEventListener('submit', function(event) {\n                                event.preventDefault();\n\n                                var data = {};\n\n                                Array.prototype.slice.call(form.elements).forEach(function(el) {\n\n                                    if (el.disabled || !el.name) {\n                                        return;\n                                    }\n\n                                    if (['file', 'reset', 'submit', 'button'].indexOf(el.type) !== -1) {\n                                        return;\n                                    }\n\n                                    var value;\n\n                                    if (['checkbox', 'radio'].indexOf(el.type) !== -1 && el.checked) {\n                                        value = 'on';\n                                    } else {\n                                        value = el.value;\n                                    }\n\n                                    data[el.name] = value;\n                                });\n\n                                var serializedData = Object.keys(data).map(function(key) {\n                                    return encodeURIComponent(key) + '=' + encodeURIComponent(data[key])\n                                }).join('&').replace(/%20/g, '+');\n\n                                var req = new XMLHttpRequest();\n                                req.open(form.method || 'GET', '" + __WEBPACK_IMPORTED_MODULE_0__config__.n.paypalUrls[env] + "' + form.getAttribute('action'));\n                                req.setRequestHeader('Accept', 'application/json');\n                                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\n                                req.setRequestHeader('x-csrf-token', data._csrf);\n                                req.setRequestHeader('is-inline-ul', 'true');\n                                req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');\n                                req.send(serializedData);\n\n                                req.onload = function() {\n                                    if (req.status !== 200) {\n                                        return window.xchild.error(new Error('Login returned status: ' + req.status));\n                                    }\n\n                                    var data;\n\n                                    try {\n                                        data = JSON.parse(req.responseText);\n                                    } catch (err) {\n                                        return window.xchild.error(err + '\\n\\n' + req.responseText);\n                                    }\n\n                                    if (data.htmlResponse) {\n                                        document.write(data.htmlResponse);\n                                        return setTimeout(ajaxifyForms);\n                                    }\n\n                                    if (!data || !data.accessToken) {\n                                        return window.xchild.error('Could not find access token: \\n\\n' + JSON.stringify(data, null, 2));\n                                    }\n\n                                    window.xprops.onAuthenticate({\n                                        accessToken: data.accessToken\n                                    });\n                                };\n\n                                req.onerror = function() {\n                                    return window.xchild.error(new Error('Login error'));\n                                };\n                            });\n                        });\n                    }\n\n                    ajaxifyForms();\n\n                })();\n            <\/script>\n        ";
             });
             return component;
         };
@@ -11763,9 +12239,9 @@
             return config;
         });
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.161.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.162.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.161",
+            version: "4.0.162",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11808,6 +12284,15 @@
                 },
                 mmgukkxdrvscuutpltdbwqaykqthk: {
                     disable_venmo: !0
+                },
+                mmgukkxdrvsotjewaypfbb: {
+                    log_domain_prefix: !0,
+                    ie_full_page: !1,
+                    allow_full_page_fallback: !0,
+                    memoize_payment: !0,
+                    force_bridge: !0,
+                    log_authorize: !0,
+                    disable_payment_timeout: !0
                 }
             },
             customCountry: !1,
@@ -11934,7 +12419,7 @@
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
                 return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.161");
+                "4.0.162");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12339,19 +12824,22 @@
         __webpack_require__.d(__webpack_exports__, "e", function() {
             return ENV;
         });
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return USERS;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return SOURCE;
         });
         __webpack_require__.d(__webpack_exports__, "j", function() {
             return LOG_LEVEL;
         });
+        __webpack_require__.d(__webpack_exports__, "k", function() {
+            return PAYMENT_TYPE;
+        });
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return FPTI;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return PPTM_ID;
         });
         __webpack_require__.d(__webpack_exports__, "g", function() {
@@ -12366,7 +12854,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return ATTRIBUTE;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return PLATFORM;
         });
         __webpack_require__.d(__webpack_exports__, "d", function() {
@@ -12378,7 +12866,7 @@
         __webpack_require__.d(__webpack_exports__, "i", function() {
             return LANG_TO_DEFAULT_COUNTRY;
         });
-        var _LANG_TO_DEFAULT_COUN, ENV = {
+        var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, ENV = {
             LOCAL: "local",
             STAGE: "stage",
             SANDBOX: "sandbox",
@@ -12396,13 +12884,18 @@
             INFO: "info",
             WARN: "warn",
             ERROR: "error"
+        }, PAYMENT_TYPE = {
+            EC_TOKEN: "ec_token",
+            BA_TOKEN: "ba_token",
+            PAY_ID: "pay_id"
         }, FPTI = {
             KEY: {
                 FEED: "feed_name",
                 STATE: "state_name",
                 TRANSITION: "transition_name",
                 BUTTON_TYPE: "button_type",
-                SESSION_UID: "button_session_id",
+                SESSION_UID: "page_session_id",
+                BUTTON_SESSION_UID: "button_session_id",
                 TOKEN: "token",
                 CONTEXT_ID: "context_id",
                 CONTEXT_TYPE: "context_type",
@@ -12430,11 +12923,10 @@
             DATA_SOURCE: {
                 CHECKOUT: "checkout"
             },
-            CONTEXT_TYPE: {
-                BUTTON_SESSION_ID: "button_session_id",
-                PAY_ID: "Pay-ID",
-                EC_TOKEN: "EC-Token"
-            },
+            CONTEXT_TYPE: (_CONTEXT_TYPE = {
+                BUTTON_SESSION_ID: "button_session_id"
+            }, _CONTEXT_TYPE[PAYMENT_TYPE.PAY_ID] = "Pay-ID", _CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] = "EC-Token", 
+            _CONTEXT_TYPE[PAYMENT_TYPE.BA_TOKEN] = "EC-Token", _CONTEXT_TYPE),
             FEED: {
                 CHECKOUTJS: "checkoutjs"
             },
@@ -12731,7 +13223,7 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/config.js");
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_0__config__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/config/constants.js");
@@ -12763,7 +13255,7 @@
             return __WEBPACK_IMPORTED_MODULE_1__constants__.j;
         });
         __webpack_require__.d(__webpack_exports__, "j", function() {
-            return __WEBPACK_IMPORTED_MODULE_1__constants__.l;
+            return __WEBPACK_IMPORTED_MODULE_1__constants__.k;
         });
         __webpack_require__.d(__webpack_exports__, "k", function() {
             return __WEBPACK_IMPORTED_MODULE_1__constants__.m;
@@ -12771,11 +13263,14 @@
         __webpack_require__.d(__webpack_exports__, "l", function() {
             return __WEBPACK_IMPORTED_MODULE_1__constants__.n;
         });
+        __webpack_require__.d(__webpack_exports__, "m", function() {
+            return __WEBPACK_IMPORTED_MODULE_1__constants__.o;
+        });
     },
     "./src/experiments.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function log(experiment, treatment, token, state) {
-            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.s)(function(session) {
                 var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
                 if (-1 !== loggedEvents.indexOf(event)) Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_" + event); else {
                     var _track;
@@ -12787,7 +13282,7 @@
                     _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TRANSITION] = state, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.EXPERIMENT_NAME] = experiment, 
                     _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TREATMENT_NAME] = treatment, 
                     _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TOKEN] = token, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.CONTEXT_ID] = token, 
-                    _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.CONTEXT_TYPE] = token ? __WEBPACK_IMPORTED_MODULE_1__config__.e.CONTEXT_TYPE.EC_TOKEN : __WEBPACK_IMPORTED_MODULE_1__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID, 
+                    _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.CONTEXT_TYPE] = token ? __WEBPACK_IMPORTED_MODULE_1__config__.e.CONTEXT_TYPE[__WEBPACK_IMPORTED_MODULE_1__config__.j.EC_TOKEN] : __WEBPACK_IMPORTED_MODULE_1__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _track));
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.i)();
                 }
@@ -12805,7 +13300,7 @@
                 exp = experiment;
                 state = "start";
             }
-            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.s)(function(session) {
                 session.externalExperiment = exp;
                 session.externalExperimentTreatment = treatment;
                 token && (session.externalExperimentToken = token);
@@ -12813,7 +13308,7 @@
             log(exp, treatment, token, state);
         }
         function logReturn(token) {
-            var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+            var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.s)(function(session) {
                 return session;
             }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
             externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("experiment_mismatch", {
@@ -12828,14 +13323,14 @@
         });
         __webpack_exports__.a = logExperimentTreatment;
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), onAuthorizeListener = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.f)();
-        if (Object(__WEBPACK_IMPORTED_MODULE_2__lib__.j)("log_authorize")) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)("log_authorize")) {
             onAuthorizeListener.once(function(_ref) {
                 var paymentToken = _ref.paymentToken;
                 setTimeout(function() {
                     logReturn(paymentToken);
                 }, 1);
             });
-            var returnToken = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.p)();
+            var returnToken = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)();
             returnToken && setTimeout(function() {
                 returnToken && logReturn(returnToken);
             }, 1);
@@ -12994,16 +13489,16 @@
         });
         var __WEBPACK_IMPORTED_MODULE_7__config__ = __webpack_require__("./src/config/index.js");
         __webpack_require__.d(__webpack_exports__, "config", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.m;
+            return __WEBPACK_IMPORTED_MODULE_7__config__.n;
         });
         __webpack_require__.d(__webpack_exports__, "ENV", function() {
             return __WEBPACK_IMPORTED_MODULE_7__config__.d;
         });
         __webpack_require__.d(__webpack_exports__, "USERS", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.l;
+            return __WEBPACK_IMPORTED_MODULE_7__config__.m;
         });
         __webpack_require__.d(__webpack_exports__, "SOURCE", function() {
-            return __WEBPACK_IMPORTED_MODULE_7__config__.k;
+            return __WEBPACK_IMPORTED_MODULE_7__config__.l;
         });
         __webpack_require__.d(__webpack_exports__, "FUNDING", function() {
             return __WEBPACK_IMPORTED_MODULE_7__config__.f;
@@ -13027,7 +13522,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.161", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.162", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13048,7 +13543,7 @@
                     var _normalizeLocale = Object(__WEBPACK_IMPORTED_MODULE_6__common__.a)(locale), country = _normalizeLocale.country, lang = _normalizeLocale.lang;
                     locale = lang + "_" + country;
                 }
-                locale = locale || __WEBPACK_IMPORTED_MODULE_2__config__.m.locale.lang + "_" + __WEBPACK_IMPORTED_MODULE_2__config__.m.locale.country;
+                locale = locale || __WEBPACK_IMPORTED_MODULE_2__config__.n.locale.lang + "_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.locale.country;
                 color = color || __WEBPACK_IMPORTED_MODULE_4__components_button_constants__.b.GOLD;
                 shape = shape || __WEBPACK_IMPORTED_MODULE_4__components_button_constants__.h.PILL;
                 size = size || __WEBPACK_IMPORTED_MODULE_4__components_button_constants__.i.SMALL;
@@ -13123,11 +13618,11 @@
         __webpack_exports__.a = getHijackTargetElement;
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__components_button_constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_5__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_6__common__ = __webpack_require__("./src/legacy/common.js"), _prefix = Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m)(__WEBPACK_IMPORTED_MODULE_5__constants__.c), info = _prefix.info, debug = _prefix.debug, error = _prefix.error, loadButtonJS = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.F)(function() {
             debug("buttonjs_load");
-            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)(__WEBPACK_IMPORTED_MODULE_2__config__.m.buttonJSUrl).catch(function(err) {
+            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl).catch(function(err) {
                 info("buttonjs_load_error_retry", {
                     error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.S)(err)
                 });
-                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)(__WEBPACK_IMPORTED_MODULE_2__config__.m.buttonJSUrl);
+                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl);
             }).then(function(result) {
                 debug("buttonjs_load_success");
                 return result;
@@ -13143,22 +13638,22 @@
         "use strict";
         function normalizeLocale(locale) {
             var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
-            if (!country) if (__WEBPACK_IMPORTED_MODULE_1__config__.m.locales[lang]) {
+            if (!country) if (__WEBPACK_IMPORTED_MODULE_1__config__.n.locales[lang]) {
                 country = lang;
                 lang = null;
             } else country = DEFAULT_COUNTRY;
-            if (!__WEBPACK_IMPORTED_MODULE_1__config__.m.locales[country]) {
+            if (!__WEBPACK_IMPORTED_MODULE_1__config__.n.locales[country]) {
                 warn("invalid_user_country", {
                     country: country
                 });
                 country = DEFAULT_COUNTRY;
             }
             lang || (lang = DEFAULT_LANG);
-            if (-1 === __WEBPACK_IMPORTED_MODULE_1__config__.m.locales[country].indexOf(lang)) {
+            if (-1 === __WEBPACK_IMPORTED_MODULE_1__config__.n.locales[country].indexOf(lang)) {
                 warn("invalid_user_lang", {
                     lang: lang
                 });
-                lang = -1 !== __WEBPACK_IMPORTED_MODULE_1__config__.m.locales[country].indexOf(DEFAULT_LANG) ? DEFAULT_LANG : __WEBPACK_IMPORTED_MODULE_1__config__.m.locales[country][0];
+                lang = -1 !== __WEBPACK_IMPORTED_MODULE_1__config__.n.locales[country].indexOf(DEFAULT_LANG) ? DEFAULT_LANG : __WEBPACK_IMPORTED_MODULE_1__config__.n.locales[country][0];
             }
             return {
                 country: country,
@@ -13261,7 +13756,7 @@
                 }) : info("startflow_relative_url_no_token", {
                     url: url
                 });
-                0 === url.toLowerCase().indexOf("ec-") && paymentToken && (url = "" + __WEBPACK_IMPORTED_MODULE_3__config__.m.checkoutUrl + url);
+                0 === url.toLowerCase().indexOf("ec-") && paymentToken && (url = "" + __WEBPACK_IMPORTED_MODULE_3__config__.n.checkoutUrl + url);
             } else {
                 if (!paymentToken) {
                     error("startflow_no_url_or_token", {
@@ -13269,7 +13764,7 @@
                     });
                     throw new Error('Could not determine url or token from "' + item + '"');
                 }
-                url = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.h)(__WEBPACK_IMPORTED_MODULE_3__config__.m.checkoutUrl, {
+                url = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.h)(__WEBPACK_IMPORTED_MODULE_3__config__.n.checkoutUrl, {
                     token: paymentToken
                 });
                 debug("startflow_with_token", {
@@ -13282,7 +13777,7 @@
             };
         }
         function checkUrlAgainstEnv(url) {
-            for (var paypalUrls = __WEBPACK_IMPORTED_MODULE_3__config__.m.paypalUrls, _iterator = Object.keys(paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            for (var paypalUrls = __WEBPACK_IMPORTED_MODULE_3__config__.n.paypalUrls, _iterator = Object.keys(paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
@@ -13293,13 +13788,13 @@
                     _ref = _i.value;
                 }
                 var env = _ref, paypalUrl = paypalUrls[env];
-                if (env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.TEST && env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.DEMO && (env !== __WEBPACK_IMPORTED_MODULE_3__config__.m.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
+                if (env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.TEST && env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.DEMO && (env !== __WEBPACK_IMPORTED_MODULE_3__config__.n.env && (0 === url.indexOf(paypalUrl) || 0 === url.indexOf(paypalUrl.replace("//www.", "//"))))) {
                     warn("mismatched_env_startflow_url", {
-                        env: __WEBPACK_IMPORTED_MODULE_3__config__.m.env,
+                        env: __WEBPACK_IMPORTED_MODULE_3__config__.n.env,
                         url: url
                     });
                     Object(__WEBPACK_IMPORTED_MODULE_9__util__.c)(url);
-                    throw new Error(url + " is not a " + __WEBPACK_IMPORTED_MODULE_3__config__.m.env + " url");
+                    throw new Error(url + " is not a " + __WEBPACK_IMPORTED_MODULE_3__config__.n.env + " url");
                 }
             }
         }
@@ -13332,7 +13827,7 @@
         function initPayPalCheckout() {
             var props = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             info("init_checkout");
-            paypalCheckoutInited && __WEBPACK_IMPORTED_MODULE_3__config__.m.env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.TEST && warn("multiple_init_paypal_checkout");
+            paypalCheckoutInited && __WEBPACK_IMPORTED_MODULE_3__config__.n.env !== __WEBPACK_IMPORTED_MODULE_3__config__.d.TEST && warn("multiple_init_paypal_checkout");
             closeFlowCalled && debug("init_after_closeflow");
             paypalCheckoutInited = !0;
             var paypalCheckout = __WEBPACK_IMPORTED_MODULE_2__components__.b.init(_extends({
@@ -13387,7 +13882,7 @@
                 });
                 paymentToken.then(function(token) {
                     warn("render_error_redirect_using_token");
-                    return Object(__WEBPACK_IMPORTED_MODULE_9__util__.c)(Object(__WEBPACK_IMPORTED_MODULE_4__lib__.h)(__WEBPACK_IMPORTED_MODULE_3__config__.m.checkoutUrl, {
+                    return Object(__WEBPACK_IMPORTED_MODULE_9__util__.c)(Object(__WEBPACK_IMPORTED_MODULE_4__lib__.h)(__WEBPACK_IMPORTED_MODULE_3__config__.n.checkoutUrl, {
                         token: token
                     }));
                 });
@@ -13484,7 +13979,7 @@
             setupCalled = !0;
             Object(__WEBPACK_IMPORTED_MODULE_10__options__.a)(options);
             Object(__WEBPACK_IMPORTED_MODULE_10__options__.b)(options);
-            Object(__WEBPACK_IMPORTED_MODULE_5__postBridge__.a)(__WEBPACK_IMPORTED_MODULE_3__config__.m.env);
+            Object(__WEBPACK_IMPORTED_MODULE_5__postBridge__.a)(__WEBPACK_IMPORTED_MODULE_3__config__.n.env);
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 return options.buttons.length ? Object(__WEBPACK_IMPORTED_MODULE_8__button__.b)(id, options.buttons).then(function(buttons) {
                     buttons.forEach(function(button) {
@@ -13559,7 +14054,7 @@
         checkout.reset = reset;
         Object.defineProperty(checkout, "urlPrefix", {
             get: function() {
-                return __WEBPACK_IMPORTED_MODULE_3__config__.m.checkoutUrl + (-1 === __WEBPACK_IMPORTED_MODULE_3__config__.m.checkoutUrl.indexOf("?") ? "?" : "&") + "token=";
+                return __WEBPACK_IMPORTED_MODULE_3__config__.n.checkoutUrl + (-1 === __WEBPACK_IMPORTED_MODULE_3__config__.n.checkoutUrl.indexOf("?") ? "?" : "&") + "token=";
             }
         });
         window.xchild && !window.paypalCheckout && (window.paypalCheckout = window.xchild);
@@ -13574,18 +14069,18 @@
         function normalizeOptions(options) {
             if (options.environment) {
                 "live" === options.environment && (options.environment = __WEBPACK_IMPORTED_MODULE_1__config__.d.PRODUCTION);
-                if (!__WEBPACK_IMPORTED_MODULE_1__config__.m.paypalUrls[options.environment]) {
+                if (!__WEBPACK_IMPORTED_MODULE_1__config__.n.paypalUrls[options.environment]) {
                     warn("invalid_env", {
                         badenv: options.environment
                     });
-                    options.environment = __WEBPACK_IMPORTED_MODULE_1__config__.m.env;
+                    options.environment = __WEBPACK_IMPORTED_MODULE_1__config__.n.env;
                 }
             }
             if (options.button && !Array.isArray(options.button)) {
                 info("options_button_single_button_passed");
                 options.button = [ options.button ];
             }
-            if (options.buttons && Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.buttons).length) {
+            if (options.buttons && Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.buttons).length) {
                 info("options_buttons_with_elements_passed");
                 options.button = options.buttons;
                 delete options.buttons;
@@ -13603,7 +14098,7 @@
                 delete options.container;
             }
             if (options.button) {
-                var button = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.button);
+                var button = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.button);
                 if (button.length) options.button = button; else {
                     warn("options_button_element_not_found", {
                         element: JSON.stringify(options.button)
@@ -13630,7 +14125,7 @@
                             options: options.container,
                             button: button.container
                         });
-                        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(button.container || button.button).forEach(function(element) {
+                        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(button.container || button.button).forEach(function(element) {
                             var _buttons$push;
                             buttons.push((_buttons$push = {}, _buttons$push[button.container ? "container" : "button"] = element, 
                             _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -13652,7 +14147,7 @@
                 buttons.length && (options.buttons = buttons);
             } else if (options.container && !Array.isArray(options.buttons)) {
                 var _buttons = [];
-                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.container).forEach(function(container, i) {
+                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.container).forEach(function(container, i) {
                     _buttons.push({
                         container: container,
                         click: options.click,
@@ -13679,10 +14174,10 @@
             options.buttons || (options.buttons = []);
         }
         function setupConfig(options) {
-            options.environment && __WEBPACK_IMPORTED_MODULE_1__config__.m.paypalUrls[options.environment] && (__WEBPACK_IMPORTED_MODULE_1__config__.m.env = options.environment);
+            options.environment && __WEBPACK_IMPORTED_MODULE_1__config__.n.paypalUrls[options.environment] && (__WEBPACK_IMPORTED_MODULE_1__config__.n.env = options.environment);
             if (options.locale) {
-                __WEBPACK_IMPORTED_MODULE_1__config__.m.locale = Object(__WEBPACK_IMPORTED_MODULE_3__common__.a)(options.locale);
-                __WEBPACK_IMPORTED_MODULE_1__config__.m.customCountry = !0;
+                __WEBPACK_IMPORTED_MODULE_1__config__.n.locale = Object(__WEBPACK_IMPORTED_MODULE_3__common__.a)(options.locale);
+                __WEBPACK_IMPORTED_MODULE_1__config__.n.customCountry = !0;
             }
         }
         __webpack_exports__.a = normalizeOptions;
@@ -13693,7 +14188,7 @@
         "use strict";
         function setupPostBridge(env) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                var metaFrameDomain = __WEBPACK_IMPORTED_MODULE_3__config__.m.paypalDomains[env];
+                var metaFrameDomain = __WEBPACK_IMPORTED_MODULE_3__config__.n.paypalDomains[env];
                 if (!__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge || !__WEBPACK_IMPORTED_MODULE_2_post_robot_src__.bridge.needsBridge({
                     domain: metaFrameDomain
                 })) return Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.e)("post_bridge_not_required", {
@@ -13765,13 +14260,13 @@
         "use strict";
         function logRedirect(location) {
             redirected && warn("multiple_redirects");
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(location) && (redirected = !0);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.W)(location) && (redirected = !0);
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.g)();
         }
         function redirect(url) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.m.env === __WEBPACK_IMPORTED_MODULE_2__config__.d.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(window, "#fullpageRedirect?url=" + url);
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.n.env === __WEBPACK_IMPORTED_MODULE_2__config__.d.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.W)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
                 return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(window, url);
             });
@@ -13797,20 +14292,20 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.161";
+                payload.version = "4.0.162";
                 payload.host = window.location.host;
-                payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.b)();
+                payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.c)();
                 var query = [];
                 for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
                 query = query.join("&");
                 new window.Image().src = BEACON_URL + "?" + query;
                 setTimeout(function() {
-                    __WEBPACK_IMPORTED_MODULE_0__config__.m.logLevel === __WEBPACK_IMPORTED_MODULE_0__config__.i.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
+                    __WEBPACK_IMPORTED_MODULE_0__config__.n.logLevel === __WEBPACK_IMPORTED_MODULE_0__config__.i.DEBUG && window.console && window.console.log && window.console.log("*", event, payload);
                 }, 1);
             } catch (err) {}
         }
         function isCheckpointUnique(name) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1__session__.c)(function(state) {
+            return Object(__WEBPACK_IMPORTED_MODULE_1__session__.d)(function(state) {
                 state.loggedBeacons = state.loggedBeacons || [];
                 if (-1 === state.loggedBeacons.indexOf(name)) {
                     state.loggedBeacons.push(name);
@@ -13824,7 +14319,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.161".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.162".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13832,7 +14327,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.161",
+                v: "checkout.js.4.0.162",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -14048,7 +14543,7 @@
         function normalizeLocale(locale) {
             if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
                 var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.m.locales[country] && -1 !== __WEBPACK_IMPORTED_MODULE_2__config__.m.locales[country].indexOf(lang)) return {
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.n.locales[country] && -1 !== __WEBPACK_IMPORTED_MODULE_2__config__.n.locales[country].indexOf(lang)) return {
                     country: country,
                     lang: lang
                 };
@@ -14090,7 +14585,7 @@
                 var _locale = _ref5, _loc = normalizeLang(_locale);
                 if (_loc) return _loc;
             }
-            return __WEBPACK_IMPORTED_MODULE_2__config__.m.defaultLocale;
+            return __WEBPACK_IMPORTED_MODULE_2__config__.n.defaultLocale;
         }
         function isElementVisible(el) {
             return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
@@ -14173,7 +14668,7 @@
             if (Object(__WEBPACK_IMPORTED_MODULE_2__device__.e)()) return !1;
             for (var bowser = getBowser({
                 clearCache: !0
-            }), _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_1__config__.m.SUPPORTED_BROWSERS), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            }), _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_1__config__.n.SUPPORTED_BROWSERS), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref2;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
@@ -14184,7 +14679,7 @@
                     _ref2 = _i.value;
                 }
                 var browser = _ref2;
-                if (bowser[browser] && bowser.version && bowser[browser] && -1 === bowser.compareVersions([ bowser.version, __WEBPACK_IMPORTED_MODULE_1__config__.m.SUPPORTED_BROWSERS[browser] ])) return !1;
+                if (bowser[browser] && bowser.version && bowser[browser] && -1 === bowser.compareVersions([ bowser.version, __WEBPACK_IMPORTED_MODULE_1__config__.n.SUPPORTED_BROWSERS[browser] ])) return !1;
             }
             return !0;
         }
@@ -14201,7 +14696,7 @@
             return checkRecognizedBrowser;
         });
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__device__ = __webpack_require__("./src/lib/device.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/lib/util.js"), bowserCache = {}, eligibilityResults = {}, checkRecognizedBrowser = Object(__WEBPACK_IMPORTED_MODULE_3__util__.l)(function(state) {
-            for (var bowser = getBowser(), _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_1__config__.m.SUPPORTED_BROWSERS), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+            for (var bowser = getBowser(), _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_1__config__.n.SUPPORTED_BROWSERS), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref3;
                 if (_isArray2) {
                     if (_i2 >= _iterator2.length) break;
@@ -14258,7 +14753,7 @@
     "./src/lib/funding.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function getRememberedFunding(handler) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.d)(function(storage) {
+            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.e)(function(storage) {
                 storage.rememberedFunding = storage.rememberedFunding || [];
                 return handler(storage.rememberedFunding);
             });
@@ -14266,7 +14761,7 @@
         function hasRememberedFunding(source) {
             return !!getRememberedFunding(function(rememberedFunding) {
                 return -1 !== rememberedFunding.indexOf(source);
-            }) || !!Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)(function(session) {
+            }) || !!Object(__WEBPACK_IMPORTED_MODULE_2__session__.d)(function(session) {
                 return session.recentlyCheckedRemembered;
             });
         }
@@ -14274,13 +14769,13 @@
             if (getRememberedFunding(function(rememberedFunding) {
                 return -1 !== rememberedFunding.indexOf(source);
             })) return !0;
-            if (Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)(function(session) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_2__session__.d)(function(session) {
                 return session.recentlyCheckedRemembered;
             })) return !1;
             throw new Error("Can not find remembered funding result");
         }
         function getRememberedFundingPromises() {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.a)(function(global) {
+            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.b)(function(global) {
                 global.rememberFundingPromises = global.rememberFundingPromises || {};
                 return global.rememberFundingPromises;
             });
@@ -14326,7 +14821,7 @@
                     }
                 }
             });
-            Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)(function(session) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__session__.d)(function(session) {
                 session.recentlyCheckedRemembered = !0;
             });
         }
@@ -14342,7 +14837,7 @@
             });
         }
         function precacheRememberedFunding() {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)(function(session) {
+            return Object(__WEBPACK_IMPORTED_MODULE_2__session__.d)(function(session) {
                 return session.recentlyCheckedRemembered;
             }) ? __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve() : loadMeta();
         }
@@ -14416,6 +14911,7 @@
                 var xhr = new win.XMLHttpRequest();
                 xhr.addEventListener("load", function() {
                     var responseHeaders = parseHeaders(this.getAllResponseHeaders()), corrID = responseHeaders["paypal-debug-id"] || "unknown";
+                    responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
                     if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
                     var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), res = this.responseText;
                     try {
@@ -14450,7 +14946,7 @@
             });
         }
         __webpack_exports__.a = request;
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), _extends = Object.assign || function(target) {
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -14463,7 +14959,12 @@
         }, HEADERS = {
             CONTENT_TYPE: "content-type",
             ACCEPT: "accept"
-        }, headerBuilders = [];
+        }, headerBuilders = [], corrids = [];
+        Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.b)(function() {
+            return {
+                prev_corr_ids: corrids.join(",")
+            };
+        });
         request.get = function(url) {
             var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             return request(_extends({
@@ -14514,7 +15015,7 @@
         __webpack_require__.d(__webpack_exports__, "g", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.d;
         });
         __webpack_require__.d(__webpack_exports__, "B", function() {
@@ -14547,6 +15048,9 @@
         __webpack_require__.d(__webpack_exports__, "T", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.p;
         });
+        __webpack_require__.d(__webpack_exports__, "V", function() {
+            return __WEBPACK_IMPORTED_MODULE_1__util__.q;
+        });
         var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./src/lib/logger.js");
         __webpack_require__.d(__webpack_exports__, "t", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.a;
@@ -14575,16 +15079,16 @@
         __webpack_require__.d(__webpack_exports__, "i", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.h;
         });
         __webpack_require__.d(__webpack_exports__, "v", function() {
@@ -14599,7 +15103,7 @@
         __webpack_require__.d(__webpack_exports__, "N", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.m;
         });
         var __WEBPACK_IMPORTED_MODULE_6__http__ = __webpack_require__("./src/lib/http.js");
@@ -14611,19 +15115,19 @@
             return __WEBPACK_IMPORTED_MODULE_7__beacon__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_8__throttle__ = __webpack_require__("./src/lib/throttle.js");
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return __WEBPACK_IMPORTED_MODULE_8__throttle__.a;
-        });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
-            return __WEBPACK_IMPORTED_MODULE_8__throttle__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_10__session__ = (__webpack_require__("./src/lib/namespace.js"), 
         __webpack_require__("./src/lib/session.js"));
-        __webpack_require__.d(__webpack_exports__, "q", function() {
-            return __WEBPACK_IMPORTED_MODULE_10__session__.b;
+        __webpack_require__.d(__webpack_exports__, "j", function() {
+            return __WEBPACK_IMPORTED_MODULE_10__session__.a;
         });
         __webpack_require__.d(__webpack_exports__, "r", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.c;
+        });
+        __webpack_require__.d(__webpack_exports__, "s", function() {
+            return __WEBPACK_IMPORTED_MODULE_10__session__.d;
         });
         var __WEBPACK_IMPORTED_MODULE_12__meta__ = (__webpack_require__("./src/lib/proxy.js"), 
         __webpack_require__("./src/lib/meta.js"));
@@ -14631,7 +15135,7 @@
             return __WEBPACK_IMPORTED_MODULE_12__meta__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_13__funding__ = __webpack_require__("./src/lib/funding.js");
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return __WEBPACK_IMPORTED_MODULE_13__funding__.a;
         });
         __webpack_require__.d(__webpack_exports__, "x", function() {
@@ -14656,33 +15160,32 @@
                     referer: getRefererDomain(),
                     host: window.location.host,
                     path: window.location.pathname,
-                    env: __WEBPACK_IMPORTED_MODULE_3__config__.m.env,
-                    country: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.country,
-                    lang: __WEBPACK_IMPORTED_MODULE_3__config__.m.locale.lang,
-                    uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(),
-                    ver: "4.0.161"
+                    env: __WEBPACK_IMPORTED_MODULE_3__config__.n.env,
+                    country: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.country,
+                    lang: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.lang,
+                    uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(),
+                    ver: "4.0.162"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
                 return {
-                    state: __WEBPACK_IMPORTED_MODULE_3__config__.m.state
+                    state: __WEBPACK_IMPORTED_MODULE_3__config__.n.state
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.c)(function() {
-                var _ref;
+                var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(), buttonSessionID = payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.BUTTON_SESSION_UID] || Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(), contextType = buttonSessionID ? __WEBPACK_IMPORTED_MODULE_3__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID : payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE], contextID = buttonSessionID || payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID];
                 return _ref = {}, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.FEED] = __WEBPACK_IMPORTED_MODULE_3__config__.e.FEED.CHECKOUTJS, 
                 _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.DATA_SOURCE] = __WEBPACK_IMPORTED_MODULE_3__config__.e.DATA_SOURCE.CHECKOUT, 
-                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_3__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID, 
-                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SELLER_ID] = __WEBPACK_IMPORTED_MODULE_3__config__.m.merchantID, 
-                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SESSION_UID] = Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(), 
-                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID] = Object(__WEBPACK_IMPORTED_MODULE_4__session__.b)(), 
+                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE] = contextType, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID] = contextID, 
+                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SELLER_ID] = __WEBPACK_IMPORTED_MODULE_3__config__.n.merchantID, 
+                _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SESSION_UID] = sessionID, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.BUTTON_SESSION_UID] = buttonSessionID, 
                 _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.REFERER] = getRefererDomain(), 
                 _ref;
             });
             var prefix = "ppxo";
             Object(__WEBPACK_IMPORTED_MODULE_6__util__.d)("log_domain_prefix") && (prefix = prefix + "_" + window.location.host.replace(/[^a-zA-Z0-9_]/g, "_").replace(/^www_/, "").replace(/_com$/, ""));
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.k)({
-                uri: __WEBPACK_IMPORTED_MODULE_3__config__.m.loggerUrl,
+                uri: __WEBPACK_IMPORTED_MODULE_3__config__.n.loggerUrl,
                 heartbeat: !1,
                 logPerformance: !1,
                 prefix: prefix,
@@ -14691,7 +15194,7 @@
         }
         function setLogLevel(logLevel) {
             if (-1 === __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-            __WEBPACK_IMPORTED_MODULE_3__config__.m.logLevel = logLevel;
+            __WEBPACK_IMPORTED_MODULE_3__config__.n.logLevel = logLevel;
             __WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.d.logLevel = logLevel;
             __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.CONFIG.LOG_LEVEL = logLevel;
             window.LOG_LEVEL = logLevel;
@@ -14708,14 +15211,14 @@
             return openMetaFrame;
         });
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__device__ = __webpack_require__("./src/lib/device.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/lib/util.js"), openMetaFrame = Object(__WEBPACK_IMPORTED_MODULE_4__util__.i)(function() {
-            var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_2__config__.m.env;
+            var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (Object(__WEBPACK_IMPORTED_MODULE_3__device__.e)()) return {
                     iframeEligible: !1,
                     iframeEligibleReason: "ie_intranet",
                     rememberedFunding: []
                 };
-                var metaFrameUrl = __WEBPACK_IMPORTED_MODULE_2__config__.m.metaFrameUrls[env], metaFrameDomain = __WEBPACK_IMPORTED_MODULE_2__config__.m.paypalDomains[env];
+                var metaFrameUrl = __WEBPACK_IMPORTED_MODULE_2__config__.n.metaFrameUrls[env], metaFrameDomain = __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomains[env];
                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                     if (__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge) return __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(metaFrameUrl, metaFrameDomain).then(__WEBPACK_IMPORTED_MODULE_4__util__.j);
                     throw new Error("Opening meta window without bridge support is not currently supported");
@@ -14788,18 +15291,18 @@
         "use strict";
         function createPptmScript() {
             var _track;
-            if (window.location.hostname) if (Boolean(Object(__WEBPACK_IMPORTED_MODULE_3__dom__.d)(__WEBPACK_IMPORTED_MODULE_1__config__.j))) Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("pptm_tried_loading_twice"); else {
+            if (window.location.hostname) if (Boolean(Object(__WEBPACK_IMPORTED_MODULE_3__dom__.d)(__WEBPACK_IMPORTED_MODULE_1__config__.k))) Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("pptm_tried_loading_twice"); else {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.e.STATE.PPTM, 
                 _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_1__config__.e.TRANSITION.PPTM_LOAD, 
                 _track));
-                var fullUrl = Object(__WEBPACK_IMPORTED_MODULE_3__dom__.b)(__WEBPACK_IMPORTED_MODULE_1__config__.m.pptmUrl, {
+                var fullUrl = Object(__WEBPACK_IMPORTED_MODULE_3__dom__.b)(__WEBPACK_IMPORTED_MODULE_1__config__.n.pptmUrl, {
                     t: "xo",
                     id: window.location.hostname,
-                    mrid: __WEBPACK_IMPORTED_MODULE_1__config__.m.merchantID
+                    mrid: __WEBPACK_IMPORTED_MODULE_1__config__.n.merchantID
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_3__dom__.j)(fullUrl, 0, {
                     async: !0,
-                    id: __WEBPACK_IMPORTED_MODULE_1__config__.j
+                    id: __WEBPACK_IMPORTED_MODULE_1__config__.k
                 }).then(function() {
                     var _track2;
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track2 = {}, _track2[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.e.STATE.PPTM, 
@@ -14818,7 +15321,7 @@
     "./src/lib/proxy.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function proxyMethod(name, win, originalMethod) {
-            if (win && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_2__config__.m.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(win)) {
+            if (win && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(win)) {
                 win && Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send)(win, "proxy_" + name, {
                     originalMethod: originalMethod
                 }).catch(__WEBPACK_IMPORTED_MODULE_3__util__.j);
@@ -14826,7 +15329,7 @@
             }
             var methods = [];
             Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)("proxy_" + name, {
-                domain: __WEBPACK_IMPORTED_MODULE_2__config__.m.paypal_domain_regex
+                domain: __WEBPACK_IMPORTED_MODULE_2__config__.n.paypal_domain_regex
             }, function(_ref) {
                 var data = _ref.data;
                 methods.push(data.originalMethod);
@@ -14861,7 +15364,7 @@
         function getSession(handler) {
             return getStorageState(function(storage) {
                 var session = storage[SESSION_KEY], now = Date.now();
-                session && now - session.created > __WEBPACK_IMPORTED_MODULE_0__config__.m.session_uid_lifetime && (session = null);
+                session && now - session.created > __WEBPACK_IMPORTED_MODULE_0__config__.n.session_uid_lifetime && (session = null);
                 session || (session = {
                     guid: Object(__WEBPACK_IMPORTED_MODULE_1__util__.q)(),
                     created: now
@@ -14877,81 +15380,43 @@
             });
         }
         function getSessionID() {
-            return window.xprops && window.xprops.sessionID ? window.xprops.sessionID : getSession(function(session) {
+            if (window.xprops && window.xprops.sessionID) return window.xprops.sessionID;
+            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("sessionID");
+            return Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID ? querySessionID : getSession(function(session) {
                 return session.guid;
             });
+        }
+        function getButtonSessionID() {
+            if (window.xprops && window.xprops.buttonSessionID) return window.xprops.sessionID;
+            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("buttonSessionID");
+            return Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID ? querySessionID : void 0;
         }
         function getGlobalState(handler) {
             window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
             return handler(window[GLOBAL_KEY]);
         }
-        __webpack_exports__.d = getStorageState;
-        __webpack_exports__.c = getSessionState;
-        __webpack_exports__.b = getSessionID;
-        __webpack_exports__.a = getGlobalState;
-        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js"), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__", accessedStorage = void 0;
+        __webpack_exports__.e = getStorageState;
+        __webpack_exports__.d = getSessionState;
+        __webpack_exports__.c = getSessionID;
+        __webpack_exports__.a = getButtonSessionID;
+        __webpack_exports__.b = getGlobalState;
+        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_2__dom__ = __webpack_require__("./src/lib/dom.js"), LOCAL_STORAGE_KEY = "__paypal_storage__", SESSION_KEY = "__paypal_session__", GLOBAL_KEY = "__paypal_global__", accessedStorage = void 0;
     },
     "./src/lib/throttle.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function getThrottle(name, sample, id) {
-            var uid = id || Object(__WEBPACK_IMPORTED_MODULE_2__session__.b)(), throttle = Object(__WEBPACK_IMPORTED_MODULE_1__util__.e)(name + "_" + uid) % 1e4, group = void 0;
-            group = throttle < sample ? "test" : sample >= 5e3 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle";
-            var treatment = name + "_" + group, started = !1, forced = !1;
-            try {
-                window.localStorage && window.localStorage.getItem(name) && (forced = !0);
-            } catch (err) {}
-            return {
-                isEnabled: function() {
-                    return "test" === group || forced;
-                },
-                isDisabled: function() {
-                    return "test" !== group && !forced;
-                },
-                getTreatment: function() {
-                    return treatment;
-                },
-                log: function(checkpointName) {
-                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, event = treatment + "_" + checkpointName;
-                    Object(__WEBPACK_IMPORTED_MODULE_0__beacon__.b)(event, _extends({}, payload, {
-                        expuid: uid
-                    }), {
-                        version: options.version
-                    });
-                    Object(__WEBPACK_IMPORTED_MODULE_0__beacon__.c)(_extends({}, payload, {
-                        expuid: uid,
-                        eligibility_reason: event
-                    }));
-                    return this;
-                },
-                logStart: function() {
-                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    started = !0;
-                    return this.log("start", payload);
-                },
-                logComplete: function() {
-                    var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return started ? this.log("complete", payload) : this;
-                }
-            };
-        }
         function getReturnToken() {
             var token = Object(__WEBPACK_IMPORTED_MODULE_1__util__.h)(window.location.href, /token=((EC-)?[A-Z0-9]+)/), payer = Object(__WEBPACK_IMPORTED_MODULE_1__util__.h)(window.location.href, /PayerID=([A-Z0-9]+)/);
             if (token && payer) return token;
         }
-        __webpack_exports__.b = getThrottle;
         __webpack_exports__.a = getReturnToken;
-        var __WEBPACK_IMPORTED_MODULE_0__beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_2__session__ = __webpack_require__("./src/lib/session.js"), _extends = Object.assign || function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
-            }
-            return target;
-        };
+        var __WEBPACK_IMPORTED_MODULE_1__util__ = (__webpack_require__("./src/lib/beacon.js"), 
+        __webpack_require__("./src/lib/util.js"));
+        __webpack_require__("./src/lib/session.js"), Object.assign;
     },
     "./src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function isPayPalDomain() {
-            return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_2__config__.m.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+            return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.n.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
         }
         function memoize(method) {
             var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, cache = {};
@@ -14988,7 +15453,7 @@
             var chars = "0123456789abcdef";
             return "xxxxxxxxxx".replace(/./g, function() {
                 return chars.charAt(Math.floor(Math.random() * chars.length));
-            });
+            }) + "_" + __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         }
         function hashStr(str) {
             for (var hash = 0, i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
@@ -15070,7 +15535,7 @@
             }
         }
         function awaitKey(obj, key) {
-            return new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
+            return new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve) {
                 return onKey(obj, key, resolve);
             });
         }
@@ -15082,9 +15547,9 @@
             return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message ? err.message || defaultMessage : defaultMessage : defaultMessage;
         }
         function getDomainSetting(name, def) {
-            var domain = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)();
-            if (__WEBPACK_IMPORTED_MODULE_2__config__.m.domain_settings) {
-                var hash = strHashStr(domain), settings = __WEBPACK_IMPORTED_MODULE_2__config__.m.domain_settings[hash];
+            var domain = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)();
+            if (__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings) {
+                var hash = strHashStr(domain), settings = __WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings[hash];
                 if (settings) return settings[name];
             }
             return def;
@@ -15127,7 +15592,7 @@
         __webpack_exports__.d = getDomainSetting;
         __webpack_exports__.m = patchMethod;
         __webpack_exports__.c = extend;
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
             return typeof obj;
         } : function(obj) {
             return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -15150,7 +15615,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.161" === window.paypal.version) {
+        if (window.paypal && "4.0.162" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -15168,7 +15633,7 @@
     "./src/setup.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function domainToEnv(domain) {
-            for (var _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_2__config__.m.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            for (var _iterator = Object.keys(__WEBPACK_IMPORTED_MODULE_2__config__.n.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
@@ -15179,31 +15644,31 @@
                     _ref = _i.value;
                 }
                 var _env = _ref;
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.m.paypalUrls[_env] === domain) return _env;
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.n.paypalUrls[_env] === domain) return _env;
             }
         }
         function configure() {
             var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref3.env, stage = _ref3.stage, apiStage = _ref3.apiStage, state = _ref3.state, ppobjects = _ref3.ppobjects, logLevel = _ref3.logLevel, merchantID = _ref3.merchantID;
             if (env) {
-                if (!__WEBPACK_IMPORTED_MODULE_2__config__.m.paypalUrls[env]) throw new Error("Invalid env: " + env);
-                delete __WEBPACK_IMPORTED_MODULE_2__config__.m.env;
-                __WEBPACK_IMPORTED_MODULE_2__config__.m.env = env;
+                if (!__WEBPACK_IMPORTED_MODULE_2__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                delete __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
+                __WEBPACK_IMPORTED_MODULE_2__config__.n.env = env;
             }
             if (stage) {
-                delete __WEBPACK_IMPORTED_MODULE_2__config__.m.stage;
-                __WEBPACK_IMPORTED_MODULE_2__config__.m.stage = stage;
+                delete __WEBPACK_IMPORTED_MODULE_2__config__.n.stage;
+                __WEBPACK_IMPORTED_MODULE_2__config__.n.stage = stage;
             }
             if (apiStage) {
-                delete __WEBPACK_IMPORTED_MODULE_2__config__.m.apiStage;
-                __WEBPACK_IMPORTED_MODULE_2__config__.m.apiStage = apiStage;
+                delete __WEBPACK_IMPORTED_MODULE_2__config__.n.apiStage;
+                __WEBPACK_IMPORTED_MODULE_2__config__.n.apiStage = apiStage;
             }
             if (state) {
-                delete __WEBPACK_IMPORTED_MODULE_2__config__.m.state;
-                __WEBPACK_IMPORTED_MODULE_2__config__.m.state = state;
+                delete __WEBPACK_IMPORTED_MODULE_2__config__.n.state;
+                __WEBPACK_IMPORTED_MODULE_2__config__.n.state = state;
             }
-            ppobjects && (__WEBPACK_IMPORTED_MODULE_2__config__.m.ppobjects = !0);
-            merchantID && (__WEBPACK_IMPORTED_MODULE_2__config__.m.merchantID = merchantID);
-            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(__WEBPACK_IMPORTED_MODULE_2__config__.m.logLevel);
+            ppobjects && (__WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects = !0);
+            merchantID && (__WEBPACK_IMPORTED_MODULE_2__config__.n.merchantID = merchantID);
+            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(__WEBPACK_IMPORTED_MODULE_2__config__.n.logLevel);
         }
         function setup() {
             var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -15214,7 +15679,7 @@
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__lib_pptm__ = __webpack_require__("./src/lib/pptm.js");
         !function(domain) {
             var currentDomainEnv = domainToEnv(domain);
-            currentDomainEnv && "test" !== currentDomainEnv && (__WEBPACK_IMPORTED_MODULE_2__config__.m.env = currentDomainEnv);
+            currentDomainEnv && "test" !== currentDomainEnv && (__WEBPACK_IMPORTED_MODULE_2__config__.n.env = currentDomainEnv);
         }(window.location.protocol + "//" + window.location.host);
         __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException(function(err) {
             var _track;
@@ -15247,7 +15712,7 @@
                     _ref2 = _i2.value;
                 }
                 var script = _ref2;
-                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === __WEBPACK_IMPORTED_MODULE_2__config__.m.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === __WEBPACK_IMPORTED_MODULE_2__config__.n.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
                 if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
             }
             document.currentScript && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_not_recognized", {
@@ -15257,11 +15722,11 @@
             var precacheRemembered = _ref4.precacheRemembered;
             Object(__WEBPACK_IMPORTED_MODULE_3__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("ineligible");
             Object(__WEBPACK_IMPORTED_MODULE_3__lib__.b)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
             Object(__WEBPACK_IMPORTED_MODULE_3__lib__.t)();
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
             precacheRemembered && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.j)("force_bridge") && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(__WEBPACK_IMPORTED_MODULE_2__config__.m.env);
-            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("setup_" + __WEBPACK_IMPORTED_MODULE_2__config__.m.env);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.k)("force_bridge") && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(__WEBPACK_IMPORTED_MODULE_2__config__.n.env);
+            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("setup_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.env);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_protocol_" + currentProtocol);
         });
         currentScript ? setup({
@@ -15275,10 +15740,10 @@
             ppobjects: !0
         }) : setup();
         if (!Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)()) if (currentScript) {
-            var _track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.o)(currentScript.src);
+            var _track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.p)(currentScript.src);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_protocol_" + scriptProtocol);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
-            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_version_" + __WEBPACK_IMPORTED_MODULE_2__config__.m.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_version_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.version.replace(/[^0-9a-zA-Z]+/g, "_"));
             if (loadTime) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_time", {
                     loadTime: loadTime
@@ -15292,7 +15757,7 @@
         } else {
             var _track3;
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("no_current_script");
-            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("no_current_script_version_" + __WEBPACK_IMPORTED_MODULE_2__config__.m.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+            Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("no_current_script_version_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.version.replace(/[^0-9a-zA-Z]+/g, "_"));
             document.currentScript && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_not_recognized", {
                 src: document.currentScript.src
             });
@@ -15302,4 +15767,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.161.js.map
+//# sourceMappingURL=checkout.4.0.162.js.map

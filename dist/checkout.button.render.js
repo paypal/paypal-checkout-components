@@ -684,7 +684,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.161", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.162", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -1318,21 +1318,28 @@
         __webpack_require__.d(__webpack_exports__, "d", function() {
             return COUNTRY;
         });
-        var _LANG_TO_DEFAULT_COUN, ENV = {
+        var _CONTEXT_TYPE, _LANG_TO_DEFAULT_COUN, ENV = {
             LOCAL: "local",
             STAGE: "stage",
             SANDBOX: "sandbox",
             PRODUCTION: "production",
             TEST: "test",
             DEMO: "demo"
-        }, FUNDING = {
+        }, PAYMENT_TYPE = {
+            EC_TOKEN: "ec_token",
+            BA_TOKEN: "ba_token",
+            PAY_ID: "pay_id"
+        }, FUNDING = (_CONTEXT_TYPE = {
+            BUTTON_SESSION_ID: "button_session_id"
+        }, _CONTEXT_TYPE[PAYMENT_TYPE.PAY_ID] = "Pay-ID", _CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] = "EC-Token", 
+        _CONTEXT_TYPE[PAYMENT_TYPE.BA_TOKEN] = "EC-Token", {
             PAYPAL: "paypal",
             VENMO: "venmo",
             CREDIT: "credit",
             CARD: "card",
             IDEAL: "ideal",
             ELV: "elv"
-        }, CARD = {
+        }), CARD = {
             VISA: "visa",
             MASTERCARD: "mastercard",
             AMEX: "amex",
