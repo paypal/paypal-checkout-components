@@ -9,7 +9,7 @@ import { KEY_CODES } from './constants';
 import { getButtonFunding } from './api';
 import { querySelectorAll } from './util';
 
-function clickButton(event, fundingSource = 'paypal') {
+function clickButton(event, { fundingSource = 'paypal', card }) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -30,7 +30,7 @@ function clickButton(event, fundingSource = 'paypal') {
     renderCheckout({ fundingSource });
 
     if (window.xprops.onClick) {
-        window.xprops.onClick({ fundingSource });
+        window.xprops.onClick({ fundingSource, card });
     }
 }
 
@@ -51,14 +51,15 @@ export function setupButton() {
 
     querySelectorAll('.paypal-button').forEach(button => {
         let fundingSource = button.getAttribute('data-funding-source');
+        let card = button.getAttribute('data-card');
 
         button.addEventListener('click', event => {
-            return clickButton(event, fundingSource);
+            return clickButton(event, { fundingSource, card });
         });
 
         button.addEventListener('keypress', event => {
             if (event.keyCode === KEY_CODES.ENTER) {
-                return clickButton(event, fundingSource);
+                return clickButton(event, { fundingSource, card });
             }
         });
     });
