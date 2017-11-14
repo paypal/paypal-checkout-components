@@ -543,20 +543,22 @@ if (Checkout.isChild()) {
 
     awaitPopupBridgeOpener();
 
-    patchMethod(window.xprops, 'onAuthorize', ({ callOriginal, args : [ data ] }) => {
-        if (data && !data.intent) {
-            warn(`hermes_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
+    window.xchild.onProps(() => {
+        patchMethod(window.xprops, 'onAuthorize', ({ callOriginal, args: [ data ] }) => {
+            if (data && !data.intent) {
+                warn(`hermes_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
 
-            try {
-                let intent = window.injector.get('$CheckoutCartModel').instance(data.paymentToken).payment_action;
-                warn(`hermes_intent`, { paymentID: data.paymentID, token: data.paymentToken, intent });
-            } catch (err) {
-                // pass
+                try {
+                    let intent = window.injector.get('$CheckoutCartModel').instance(data.paymentToken).payment_action;
+                    warn(`hermes_intent`, { paymentID: data.paymentID, token: data.paymentToken, intent });
+                } catch (err) {
+                    // pass
+                }
+
+                immediateFlush();
             }
-
-            immediateFlush();
-        }
-        return callOriginal();
+            return callOriginal();
+        });
     });
 
     if (!Object.assign) {
