@@ -68,8 +68,19 @@ export let config = {
         mmgukkxdrvsehdkwnxcqigccbpfvtp: {
             disable_venmo: true
         },
+
         mmgukkxdrvscuutpltdbwqaykqthk: {
             disable_venmo: true
+        },
+
+        mmgukkxdrvsotjewaypfbb: {
+            log_domain_prefix:               true,
+            ie_full_page:                    false,
+            allow_full_page_fallback:        true,
+            memoize_payment:                 true,
+            force_bridge:                    true,
+            log_authorize:                   true,
+            disable_payment_timeout:         true
         }
     },
 
