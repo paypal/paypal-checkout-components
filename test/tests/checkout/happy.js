@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, generateBillingToken, generatePaymentID,
     createTestContainer, destroyTestContainer, onHashChange, createElement,
-    getElementRecursive, onWindowOpen, MERCHANT_CLIENT_ID } from '../common';
+    getElementRecursive, onWindowOpen, MERCHANT_CLIENT_ID, once } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -588,6 +588,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         if (flow === 'popup') {
             it('should render checkout, and click the focus button to focus the popup', (done) => {
+                done = once(done);
 
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 

@@ -166,6 +166,17 @@ export function createFrame(options : Object) : HTMLIFrameElement {
     return frame;
 }
 
+export function once<T : Function>(method : T) : T {
+    let called = false;
+    // $FlowFixMe
+    return function onceWrapper() : mixed {
+        if (!called) {
+            called = true;
+            return method.apply(this, arguments);
+        }
+    };
+}
+
 export function getElement(el : string | HTMLElement, container : HTMLElement | Document = document) : HTMLElement {
 
     if (!el) {
