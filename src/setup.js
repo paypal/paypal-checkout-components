@@ -139,11 +139,11 @@ export let init = once(({ precacheRemembered }) => {
 
     checkForCommonErrors();
 
+    initLogger();
+
     if (!isPayPalDomain()) {
         createPptmScript();
     }
-
-    initLogger();
 
     if (precacheRemembered) {
         precacheRememberedFunding();

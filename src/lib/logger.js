@@ -1,12 +1,13 @@
 /* @flow */
 
 import { CONFIG as POSTROBOT_CONFIG } from 'post-robot/src';
-import { setTransport, getTransport, addPayloadBuilder, addMetaBuilder, addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
+import { setTransport, getTransport, addPayloadBuilder, addMetaBuilder,
+    addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
 
 import { config, FPTI } from '../config';
 
-import { getSessionID } from './session';
+import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
 import { getDomainSetting, once } from './util';
 
@@ -43,15 +44,22 @@ export function initLogger() {
         };
     });
 
-    addTrackingBuilder(() => {
+    addTrackingBuilder((payload = {}) => {
+
+        let sessionID       = getSessionID();
+        let buttonSessionID = payload[FPTI.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
+        let contextType     = buttonSessionID ? FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID : payload[FPTI.KEY.CONTEXT_TYPE];
+        let contextID       = buttonSessionID ? buttonSessionID : payload[FPTI.KEY.CONTEXT_ID];
+
         return {
-            [ FPTI.KEY.FEED ]:         FPTI.FEED.CHECKOUTJS,
-            [ FPTI.KEY.DATA_SOURCE ]:  FPTI.DATA_SOURCE.CHECKOUT,
-            [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID,
-            [ FPTI.KEY.SELLER_ID ]:    config.merchantID,
-            [ FPTI.KEY.SESSION_UID ]:  getSessionID(),
-            [ FPTI.KEY.CONTEXT_ID ]:   getSessionID(),
-            [ FPTI.KEY.REFERER ]:      getRefererDomain()
+            [ FPTI.KEY.FEED ]:               FPTI.FEED.CHECKOUTJS,
+            [ FPTI.KEY.DATA_SOURCE ]:        FPTI.DATA_SOURCE.CHECKOUT,
+            [ FPTI.KEY.CONTEXT_TYPE ]:       contextType,
+            [ FPTI.KEY.CONTEXT_ID ]:         contextID,
+            [ FPTI.KEY.SELLER_ID ]:          config.merchantID,
+            [ FPTI.KEY.SESSION_UID ]:        sessionID,
+            [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
+            [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
     });
 

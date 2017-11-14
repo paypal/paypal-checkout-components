@@ -1,5 +1,6 @@
 /* @flow */
 
+import base32 from 'hi-base32';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { getDomain } from 'cross-domain-utils/src';
 
@@ -68,9 +69,15 @@ export function uniqueID() : string {
 
     let chars = '0123456789abcdef';
 
-    return 'xxxxxxxxxx'.replace(/./g, () => {
+    let randomID = 'xxxxxxxxxx'.replace(/./g, () => {
         return chars.charAt(Math.floor(Math.random() * chars.length));
     });
+
+    let timeID = base32.encode(
+        new Date().toISOString().slice(11, 19).replace('T', '.')
+    ).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    
+    return `${ randomID }_${ timeID }`;
 }
 
 export function hashStr(str : string) : number {

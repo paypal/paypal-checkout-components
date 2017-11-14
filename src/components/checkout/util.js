@@ -1,25 +1,30 @@
 /* @flow */
 
-import { info } from 'beaver-logger/client';
-
 import { match } from '../../lib';
-import { config, FUNDING } from '../../config';
+import { config, FUNDING, PAYMENT_TYPE } from '../../config';
 
 export function determineParameterFromToken(token : string) : string {
     return (token && token.indexOf('BA-') === 0) ? 'ba_token' : 'token';
 }
 
-export function determineUrl(env : string, fundingSource : ?string, token : string) : string {
+export function getPaymentType(payment : string) : string {
+    if (payment.indexOf('BA-') === 0) {
+        return PAYMENT_TYPE.BA_TOKEN;
+    } else if (payment.indexOf('PAY-') === 0 || payment.indexOf('PAYID-') === 0) {
+        return PAYMENT_TYPE.PAY_ID;
+    } else if (payment.indexOf('EC-') === 0) {
+        return PAYMENT_TYPE.EC_TOKEN;
+    }
 
-    if (token.indexOf('BA-') === 0) {
-        info(`url_billing`);
+    return PAYMENT_TYPE.EC_TOKEN;
+}
+
+export function determineUrl(env : string, fundingSource : ?string, payment : string) : string {
+
+    let paymentType = getPaymentType(payment);
+
+    if (paymentType === PAYMENT_TYPE.BA_TOKEN) {
         return config.billingUrls[env];
-    } else if (token.indexOf('PAY-') === 0 || token.indexOf('PAYID-') === 0) {
-        info(`url_payment`);
-    } else if (token.indexOf('EC-') === 0) {
-        info(`url_checkout`);
-    } else {
-        info(`url_default`);
     }
 
     if (fundingSource === FUNDING.CARD || fundingSource === FUNDING.ELV) {

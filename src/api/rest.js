@@ -6,7 +6,7 @@ import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, getDomain } from 'cross-domain-utils/src';
 
-import { config, FPTI } from '../config';
+import { config, FPTI, PAYMENT_TYPE } from '../config';
 import { request, memoize } from '../lib';
 
 let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<string> } = {};
@@ -127,7 +127,7 @@ function logPaymentResponse(res) {
     track({
         [ FPTI.KEY.STATE ]:        FPTI.STATE.BUTTON,
         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CREATE_PAYMENT,
-        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN],
         [ FPTI.KEY.PAY_ID ]:       paymentID,
         [ FPTI.KEY.TOKEN ]:        paymentToken,
         [ FPTI.KEY.CONTEXT_ID ]:   paymentToken

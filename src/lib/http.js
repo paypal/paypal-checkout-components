@@ -1,6 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { addPayloadBuilder } from 'beaver-logger/client';
 
 type RequestOptionsType = {
     url : string,
@@ -19,6 +20,13 @@ const HEADERS = {
 };
 
 let headerBuilders = [];
+let corrids = [];
+
+addPayloadBuilder(() => {
+    return {
+        prev_corr_ids: corrids.join(',')
+    };
+});
 
 function parseHeaders(rawHeaders : string = '') : { [string] : string } {
     let result = {};
@@ -70,6 +78,10 @@ export function request({ url, method = 'get', headers = {}, json, data, body, w
 
             let responseHeaders = parseHeaders(this.getAllResponseHeaders());
             let corrID = responseHeaders['paypal-debug-id'] || 'unknown';
+
+            if (responseHeaders['paypal-debug-id']) {
+                corrids.push(responseHeaders['paypal-debug-id']);
+            }
 
             if (!this.status) {
                 return reject(new Error(`Request to ${ method.toLowerCase() } ${ url } failed: no response status code. Correlation id: ${ corrID }`));

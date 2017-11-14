@@ -9,8 +9,8 @@ import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting, documentReady, getThrottle } from '../../lib';
-import { config, ENV, FPTI } from '../../config';
+    extend, getDomainSetting, documentReady, getThrottle, getButtonSessionID } from '../../lib';
+import { config, ENV, FPTI, PAYMENT_TYPE } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
 import { containerTemplate, componentTemplate } from './templates';
@@ -120,10 +120,19 @@ export let Checkout : Component<CheckoutPropsType> = create({
     props: {
 
         sessionID: {
-            type:  'string',
-            value: getSessionID(),
+            type:     'string',
+            required: false,
             def() : string {
                 return getSessionID();
+            },
+            queryParam: true
+        },
+
+        buttonSessionID: {
+            type:     'string',
+            required: false,
+            def() : ?string {
+                return getButtonSessionID();
             },
             queryParam: true
         },
@@ -382,7 +391,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
                     track({
                         [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
                         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CHECKOUT_INIT,
-                        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE.EC_TOKEN,
+                        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN],
                         [ FPTI.KEY.TOKEN ]:        data.paymentToken,
                         [ FPTI.KEY.SELLER_ID ]:    data.merchantID,
                         [ FPTI.KEY.CONTEXT_ID ]:   data.paymentToken

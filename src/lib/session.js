@@ -2,7 +2,8 @@
 
 import { config } from '../config';
 
-import { uniqueID, isLocalStorageEnabled } from './util';
+import { uniqueID, isLocalStorageEnabled, isPayPalDomain } from './util';
+import { getQueryParam } from './dom';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';
 const SESSION_KEY       = '__paypal_session__';
@@ -84,7 +85,26 @@ export function getSessionID() : string {
         return window.xprops.sessionID;
     }
 
+    let querySessionID = getQueryParam('sessionID');
+
+    if (isPayPalDomain() && querySessionID) {
+        return querySessionID;
+    }
+
     return getSession(session => session.guid);
+}
+
+export function getButtonSessionID() : ?string {
+
+    if (window.xprops && window.xprops.buttonSessionID) {
+        return window.xprops.sessionID;
+    }
+
+    let querySessionID = getQueryParam('buttonSessionID');
+
+    if (isPayPalDomain() && querySessionID) {
+        return querySessionID;
+    }
 }
 
 export function getGlobalState<T>(handler : (state : Object) => T) : T {

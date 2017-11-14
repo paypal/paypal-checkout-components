@@ -13,10 +13,11 @@ import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
-    getRememberedFunding, memoize } from '../../lib';
+    getRememberedFunding, memoize, uniqueID } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
+import { getPaymentType } from '../checkout/util';
 
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from './constants';
 import { containerTemplate, componentTemplate } from './templates';
@@ -147,10 +148,19 @@ export let Button : Component<ButtonOptions> = create({
     props: {
 
         sessionID: {
-            type:  'string',
-            value: getSessionID(),
+            type:     'string',
+            required: false,
             def() : string {
                 return getSessionID();
+            },
+            queryParam: true
+        },
+
+        buttonSessionID: {
+            type:     'string',
+            required: false,
+            def() : ?string {
+                return uniqueID();
             },
             queryParam: true
         },
@@ -312,9 +322,11 @@ export let Button : Component<ButtonOptions> = create({
                         }
 
                         track({
-                            [ FPTI.KEY.STATE ]:        FPTI.STATE.CHECKOUT,
-                            [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.RECIEVE_PAYMENT,
-                            [ FPTI.KEY.TOKEN ]:        token
+                            [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
+                            [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.RECIEVE_PAYMENT,
+                            [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE[getPaymentType(token)],
+                            [ FPTI.KEY.CONTEXT_ID ]:         token,
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
 
                         flushLogs();
@@ -381,10 +393,11 @@ export let Button : Component<ButtonOptions> = create({
 
                     checkpoint('render_iframe_button', { version: true });
                     track({
-                        [ FPTI.KEY.STATE ]:         FPTI.STATE.LOAD,
-                        [ FPTI.KEY.TRANSITION ]:    FPTI.TRANSITION.BUTTON_RENDER,
-                        [ FPTI.KEY.BUTTON_TYPE ]:   FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.BUTTON_SOURCE ]: this.props.source
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,
+                        [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
                     });
                     flushLogs();
 
@@ -421,8 +434,9 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     track({
-                        [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_AUTHORIZE
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_AUTHORIZE,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
 
                     if (!isEligible()) {
@@ -523,8 +537,9 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     track({
-                        [ FPTI.KEY.STATE ]:      FPTI.STATE.CHECKOUT,
-                        [ FPTI.KEY.TRANSITION ]: FPTI.TRANSITION.CHECKOUT_CANCEL
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.CHECKOUT_CANCEL,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                     });
 
                     flushLogs();
@@ -565,10 +580,11 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     track({
-                        [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
-                        [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_CLICK,
-                        [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
-                        [ FPTI.KEY.CHOSEN_FUNDING ]: data && data.fundingSource
+                        [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
+                        [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
+                        [ FPTI.KEY.BUTTON_TYPE ]:        FPTI.BUTTON_TYPE.IFRAME,
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
+                        [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
                     flushLogs();
