@@ -13,7 +13,7 @@ import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, checkpoint,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID } from '../../lib';
+    getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../../lib';
 import { rest } from '../../api';
 import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
@@ -24,6 +24,7 @@ import { containerTemplate, componentTemplate } from './templates';
 import { validateButtonLocale, validateButtonStyle } from './templates/component/validate';
 import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
 import { validateFunding } from './templates/funding';
+import { labelToFunding } from './templates/config';
 
 getSessionState(session => {
     session.buttonClicked = false;
@@ -219,6 +220,23 @@ export let Button : Component<ButtonOptions> = create({
         prefetchLogin: {
             type:     'boolean',
             required: false
+        },
+
+        onRememberUser: {
+            type:     'function',
+            required: false,
+            decorate(original : ?Function, props : Object) : ?Function {
+                if (original) {
+                    let source = labelToFunding(props.style && props.style.label);
+                    // eslint-disable-next-line promise/catch-or-return
+                    isFundingRemembered(source).then(result => {
+                        if (result && original) {
+                            original();
+                        }
+                    });
+                    return original;
+                }
+            }
         },
 
         stage: {
