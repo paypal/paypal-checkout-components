@@ -9,7 +9,7 @@ import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting, documentReady, getThrottle, getButtonSessionID } from '../../lib';
+    extend, getDomainSetting, documentReady, getButtonSessionID } from '../../lib';
 import { config, ENV, FPTI, PAYMENT_TYPE } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -583,29 +583,11 @@ if (Checkout.isChild()) {
             return;
         }
 
-        let experimentActive = false;
-        let loggedComplete = false;
-
         $event.on('allLoaded', () => {
             setTimeout(() => {
-                let payButton = document.querySelector('.buttons.reviewButton');
-                let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
+                let payButton     = document.querySelector('.buttons.reviewButton');
+                let topPayButton  = document.querySelector('.buttons.reviewButton.topPayButton');
                 let reviewSection = document.querySelector('section.review');
-
-                let throttle = getThrottle('top_pay_button', 5000);
-
-                let hash = window.location.hash;
-                
-                let logComplete = () => {
-                    if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
-                        throttle.logComplete();
-                        loggedComplete = true;
-                    }
-                };
-
-                if (payButton) {
-                    payButton.addEventListener('click', logComplete);
-                }
 
                 if (!reviewSection || !reviewSection.firstChild || !payButton || topPayButton) {
                     return;
@@ -615,19 +597,11 @@ if (Checkout.isChild()) {
                     return;
                 }
 
-                experimentActive = true;
-                throttle.logStart();
-
-                if (!throttle.isEnabled()) {
-                    return;
-                }
-
                 topPayButton = payButton.cloneNode(true);
-                topPayButton.className += ' topReviewButton';
+                topPayButton.className += ' topPayButton';
                 reviewSection.insertBefore(topPayButton, reviewSection.firstChild);
 
                 topPayButton.addEventListener('click', () => {
-                    logComplete();
                     let button = payButton && payButton.querySelector('button, input');
                     if (button) {
                         button.click();
