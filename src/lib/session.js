@@ -85,7 +85,13 @@ export function getSessionID() : string {
         return window.xprops.sessionID;
     }
 
-    let querySessionID = getQueryParam('sessionID');
+    let querySessionID;
+
+    try {
+        querySessionID = getQueryParam('sessionID');
+    } catch (err) {
+        // pass
+    }
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;
@@ -100,7 +106,13 @@ export function getButtonSessionID() : ?string {
         return window.xprops.buttonSessionID;
     }
 
-    let querySessionID = getQueryParam('buttonSessionID');
+    let querySessionID;
+
+    try {
+        querySessionID = getQueryParam('buttonSessionID');
+    } catch (err) {
+        // pass
+    }
 
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;
