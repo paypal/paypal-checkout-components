@@ -8793,7 +8793,7 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.n.ppobjects ? "4" : "4.0.164";
+                return __WEBPACK_IMPORTED_MODULE_5__config__.n.ppobjects ? "4" : "4.0.165";
             },
             get domain() {
                 return __WEBPACK_IMPORTED_MODULE_5__config__.n.paypalDomains;
@@ -10002,7 +10002,7 @@
                 height: height
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.164", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.165", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10797,7 +10797,7 @@
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.n.ppobjects ? "4" : "4.0.164";
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.ppobjects ? "4" : "4.0.165";
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11527,7 +11527,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects ? "4" : "4.0.164";
+                return __WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects ? "4" : "4.0.165";
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -11662,7 +11662,7 @@
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.164",
+            version: "4.0.165",
             ppobjects: !1,
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
@@ -11839,7 +11839,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.164");
+                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects ? "4" : "4.0.165");
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12942,7 +12942,7 @@
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.164", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.165", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -13712,7 +13712,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.164";
+                payload.version = "4.0.165";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.c)();
                 var query = [];
@@ -13739,7 +13739,7 @@
             try {
                 var checkpointName = name;
                 if (options.version) {
-                    checkpointName = "4.0.164".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                    checkpointName = "4.0.165".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                 }
                 if (!isCheckpointUnique(checkpointName)) return;
                 return beacon(checkpointName, payload);
@@ -13747,7 +13747,7 @@
         }
         function buildPayload() {
             return {
-                v: "checkout.js.4.0.164",
+                v: "checkout.js.4.0.165",
                 t: Date.now(),
                 g: new Date().getTimezoneOffset(),
                 flnm: "ec:hermes:",
@@ -14584,7 +14584,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(),
-                    ver: "4.0.164"
+                    ver: "4.0.165"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -14801,14 +14801,20 @@
         }
         function getSessionID() {
             if (window.xprops && window.xprops.sessionID) return window.xprops.sessionID;
-            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("sessionID");
+            var querySessionID = void 0;
+            try {
+                querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("sessionID");
+            } catch (err) {}
             return Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID ? querySessionID : getSession(function(session) {
                 return session.guid;
             });
         }
         function getButtonSessionID() {
             if (window.xprops && window.xprops.buttonSessionID) return window.xprops.buttonSessionID;
-            var querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("buttonSessionID");
+            var querySessionID = void 0;
+            try {
+                querySessionID = Object(__WEBPACK_IMPORTED_MODULE_2__dom__.g)("buttonSessionID");
+            } catch (err) {}
             return Object(__WEBPACK_IMPORTED_MODULE_1__util__.g)() && querySessionID ? querySessionID : void 0;
         }
         function getGlobalState(handler) {
@@ -15035,7 +15041,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.164" === window.paypal.version) {
+        if (window.paypal && "4.0.165" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
