@@ -97,7 +97,7 @@ export function getSessionID() : string {
 export function getButtonSessionID() : ?string {
 
     if (window.xprops && window.xprops.buttonSessionID) {
-        return window.xprops.sessionID;
+        return window.xprops.buttonSessionID;
     }
 
     let querySessionID = getQueryParam('buttonSessionID');
