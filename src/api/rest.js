@@ -127,10 +127,10 @@ function logPaymentResponse(res) {
     track({
         [ FPTI.KEY.STATE ]:        FPTI.STATE.BUTTON,
         [ FPTI.KEY.TRANSITION ]:   FPTI.TRANSITION.CREATE_PAYMENT,
-        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN],
+        [ FPTI.KEY.CONTEXT_TYPE ]: FPTI.CONTEXT_TYPE[PAYMENT_TYPE.PAY_ID],
         [ FPTI.KEY.PAY_ID ]:       paymentID,
         [ FPTI.KEY.TOKEN ]:        paymentToken,
-        [ FPTI.KEY.CONTEXT_ID ]:   paymentToken
+        [ FPTI.KEY.CONTEXT_ID ]:   paymentID
     });
 }
 
