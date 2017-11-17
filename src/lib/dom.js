@@ -157,7 +157,7 @@ export let parseQuery = memoize((queryString : string) : Object => {
     }
 
     if (queryString.indexOf('=') === -1) {
-        throw new Error(`Can not parse query string params: ${ queryString }`);
+        return params;
     }
 
     for (let pair of queryString.split('&')) {
