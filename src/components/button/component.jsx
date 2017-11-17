@@ -10,7 +10,7 @@ import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/clie
 import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, checkpoint,
+    getBrowserLocale, getSessionID, request,
     isIEIntranet, getPageRenderTime, isEligible, getSessionState,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../../lib';
@@ -409,7 +409,6 @@ export let Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
 
-                    checkpoint('render_iframe_button', { version: true });
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_RENDER,

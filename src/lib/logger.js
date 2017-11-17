@@ -72,6 +72,7 @@ export function initLogger() {
             [ FPTI.KEY.SELLER_ID ]:          config.merchantID,
             [ FPTI.KEY.SESSION_UID ]:        sessionID,
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
+            [ FPTI.KEY.VERSION ]:            config.version,
             [ FPTI.KEY.TOKEN ]:              getToken(),
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };

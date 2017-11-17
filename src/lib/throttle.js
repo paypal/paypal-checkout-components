@@ -1,8 +1,24 @@
 /* @flow */
 
-import { checkpoint, fpti } from './beacon';
+import { info, track, flush as flushLogs } from 'beaver-logger/client';
+
+import { FPTI } from '../config';
+
 import { hashStr, match } from './util';
-import { getSessionID } from './session';
+import { getSessionID, getSessionState } from './session';
+
+function isCheckpointUnique(name : string) : boolean {
+    return getSessionState(state => {
+        state.loggedBeacons = state.loggedBeacons || [];
+
+        if (state.loggedBeacons.indexOf(name) === -1) {
+            state.loggedBeacons.push(name);
+            return true;
+        }
+
+        return false;
+    });
+}
 
 export function getThrottle(name : string, sample : number, id? : string) : Object {
 
@@ -47,12 +63,22 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
             return treatment;
         },
 
-        log(checkpointName : string, payload : { [key : string] : ?string } = {}, options : Object = {}) : Object {
+        log(checkpointName : string, payload : { [key : string] : ?string } = {}) : Object {
 
             let event = `${ treatment }_${ checkpointName }`;
 
-            checkpoint(event, { ...payload, expuid: uid }, { version: options.version });
-            fpti({ ...payload, expuid: uid, eligibility_reason: event });
+            if (!isCheckpointUnique(event)) {
+                return this;
+            }
+
+            info(event, { ...payload, expuid: uid });
+            track({
+                [ FPTI.KEY.TRANSITION ]:      event,
+                [ FPTI.KEY.EXPERIMENT_NAME ]: name,
+                [ FPTI.KEY.TREATMENT_NAME ]:  treatment
+            });
+
+            flushLogs();
 
             return this;
         },
