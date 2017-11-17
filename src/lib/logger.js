@@ -10,6 +10,7 @@ import { config, FPTI } from '../config';
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
 import { getDomainSetting, once } from './util';
+import { getQueryParam } from './dom';
 
 function getRefererDomain() : string {
     return (window.xchild && window.xchild.getParentDomain)
@@ -20,6 +21,18 @@ function getRefererDomain() : string {
 let setupProxyLogTransport = once(() => {
     setTransport(proxyMethod('log', getParent(window), getTransport()));
 });
+
+function getToken() : ?string {
+    if (window.root && window.root.token) {
+        return window.root.token;
+    }
+
+    let queryToken = getQueryParam('token');
+
+    if (queryToken) {
+        return queryToken;
+    }
+}
 
 export function initLogger() {
 
@@ -59,6 +72,7 @@ export function initLogger() {
             [ FPTI.KEY.SELLER_ID ]:          config.merchantID,
             [ FPTI.KEY.SESSION_UID ]:        sessionID,
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
+            [ FPTI.KEY.TOKEN ]:              getToken(),
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
     });
