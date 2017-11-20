@@ -11,11 +11,11 @@ import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request,
-    isIEIntranet, getPageRenderTime, isEligible, getSessionState,
+    isIEIntranet, getPageRenderTime, isEligible,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../../lib';
 import { rest } from '../../api';
-import { logExperimentTreatment, onAuthorizeListener } from '../../experiments';
+import { onAuthorizeListener } from '../../experiments';
 import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
 import { getPaymentType } from '../checkout/util';
 
@@ -25,28 +25,6 @@ import { validateButtonLocale, validateButtonStyle } from './templates/component
 import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
 import { validateFunding } from './templates/funding';
 import { labelToFunding } from './templates/config';
-
-getSessionState(session => {
-    session.buttonClicked = false;
-    session.buttonCancelled = false;
-    session.buttonAuthorized = false;
-});
-
-let customButtonSelector = getDomainSetting('custom_button_selector');
-if (customButtonSelector) {
-    setInterval(() => {
-        let el = window.document.querySelector(customButtonSelector);
-
-        if (el && !el.hasAttribute('ppxo-merchant-custom-click-listener')) {
-
-            el.setAttribute('ppxo-merchant-custom-click-listener', '');
-            el.addEventListener('click', () => {
-                info('custom_merchant_button_click');
-                flushLogs();
-            });
-        }
-    }, 500);
-}
 
 type ButtonOptions = {
     style : {|
@@ -89,11 +67,6 @@ export let Button : Component<ButtonOptions> = create({
 
             if (getDomainSetting('allow_full_page_fallback')) {
                 info('pre_template_force_full_page');
-
-                let experimentTestBeacon = getDomainSetting('experiment_test_beacon_on_click');
-                if (experimentTestBeacon) {
-                    logExperimentTreatment(experimentTestBeacon, 'test');
-                }
                 
                 let checkout = Checkout.init({
                     onAuthorize: noop
@@ -434,21 +407,7 @@ export let Button : Component<ButtonOptions> = create({
                         warn(`button_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
                     }
 
-                    info('checkout_authorize');
-
-                    if (getSessionState(session => session.buttonAuthorized)) {
-                        info('checkout_authorize_multiple');
-                    } else {
-                        info('checkout_authorize_unique');
-                    }
-
-                    if (getSessionState(session => session.buttonCancelled)) {
-                        info('checkout_authorize_after_cancel');
-                    }
-
-                    getSessionState(session => {
-                        session.buttonAuthorized = true;
-                    });
+                    info('button_authorize');
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -537,21 +496,7 @@ export let Button : Component<ButtonOptions> = create({
             decorate(original) : Function {
                 return function decorateOnCancel(data, actions) : void | ZalgoPromise<void> {
 
-                    info('checkout_cancel');
-
-                    if (getSessionState(session => session.buttonCancelled)) {
-                        info('checkout_cancel_multiple');
-                    } else {
-                        info('checkout_cancel_unique');
-                    }
-
-                    if (getSessionState(session => session.buttonCancelled)) {
-                        info('checkout_cancel_after_cancel');
-                    }
-
-                    getSessionState(session => {
-                        session.buttonCancelled = true;
-                    });
+                    info('button_cancel');
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
@@ -582,20 +527,6 @@ export let Button : Component<ButtonOptions> = create({
 
                     info('button_click');
 
-                    if (getSessionState(session => session.buttonClicked)) {
-                        info('button_click_multiple');
-                    } else {
-                        info('button_click_unique');
-                    }
-
-                    if (getSessionState(session => session.buttonCancelled)) {
-                        info('button_click_after_cancel');
-                    }
-
-                    getSessionState(session => {
-                        session.buttonClicked = true;
-                    });
-
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.BUTTON,
                         [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.BUTTON_CLICK,
@@ -605,11 +536,6 @@ export let Button : Component<ButtonOptions> = create({
                     });
 
                     flushLogs();
-
-                    let experimentTestBeacon = getDomainSetting('experiment_test_beacon_on_click');
-                    if (experimentTestBeacon) {
-                        logExperimentTreatment(experimentTestBeacon, 'test');
-                    }
 
                     return original.apply(this, arguments);
                 };

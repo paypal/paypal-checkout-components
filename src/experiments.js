@@ -43,24 +43,14 @@ function log(experiment : string, treatment : string, token : ?string, state : s
     });
 }
 
-export function logExperimentTreatment(experiment : string, treatment : string, token : ?string) {
+export function logExperimentTreatment({ experiment, treatment, state, token } : { experiment : string, treatment : string, state : string, token : ?string }) {
 
-    let exp;
-    let state;
-
-    if (experiment === 'walmart_paypal_incontext' || experiment === 'walmart_paypal_incontext_redirect') {
-        exp   = 'walmart_paypal_incontext';
-        state = 'redirect';
-    } else if (experiment === 'walmart_paypal_incontext_click') {
-        exp   = 'walmart_paypal_incontext';
-        state = 'click';
-    } else {
-        exp = experiment;
-        state = 'start';
+    if (!experiment || !treatment) {
+        return;
     }
 
     getSessionState(session => {
-        session.externalExperiment          = exp;
+        session.externalExperiment          = experiment;
         session.externalExperimentTreatment = treatment;
 
         if (token) {
@@ -68,7 +58,7 @@ export function logExperimentTreatment(experiment : string, treatment : string, 
         }
     });
 
-    log(exp, treatment, token, state);
+    log(experiment, treatment, token, state);
 }
 
 function logReturn(token : string) {
