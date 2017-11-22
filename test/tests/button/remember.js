@@ -261,7 +261,7 @@ describe(`paypal button component remembered funding`, () => {
                         onCancel() {
                             throw new Error('Expected onCancel to not be called');
                         }
-                    });
+                    }, '#testContainer');
                 }
             },
 

@@ -899,7 +899,32 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done();
                     }
 
-                });
+                }, '#testContainer');
+            });
+
+            it('should render a button into a container and click on the button, block the popup, fall back to iframe, then complete the payment', (done) => {
+
+                window.paypal.Button.render({
+
+                    test: {
+                        flow,
+                        action: 'checkout',
+                        bridge: true
+                    },
+
+                    payment() : string | ZalgoPromise<string> {
+                        return generateECToken();
+                    },
+
+                    onAuthorize() : void {
+                        return done();
+                    },
+
+                    onCancel() : void {
+                        return done(new Error('Expected onCancel to not be called'));
+                    }
+
+                }, '#testContainer');
             });
         }
 

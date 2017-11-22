@@ -3,13 +3,14 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
-import { create, CONSTANTS } from 'xcomponent/src';
+import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting, documentReady, getThrottle, getButtonSessionID } from '../../lib';
+    extend, getDomainSetting, documentReady, getThrottle,
+    getButtonSessionID, isPayPalDomain } from '../../lib';
 import { config, ENV, FPTI, PAYMENT_TYPE } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
 
@@ -637,3 +638,22 @@ if (Checkout.isChild()) {
         });
     });
 }
+
+patchMethod(Checkout, 'init', ({ args: [ props, _context ], original, context }) => {
+    return original.call(context, props, _context, 'body');
+});
+
+patchMethod(Checkout, 'render', ({ args: [ props ], original, context }) => {
+    return original.call(context, props, 'body');
+});
+
+patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) => {
+    return original.call(context, win, props, 'body').catch(err => {
+        if (err instanceof PopupOpenError && isPayPalDomain()) {
+            Checkout.contexts.iframe = true;
+            return original.call(context, win, props, 'body');
+        }
+        throw err;
+    });
+});
+

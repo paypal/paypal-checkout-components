@@ -442,12 +442,12 @@ window.open = function patchedWindowOpen() : CrossDomainWindowType {
     return windowOpen.apply(this, arguments);
 };
 
-export function preventOpenWindow(flow : string) {
+export function preventOpenWindow(flow : string, win : SameDomainWindowType = window) {
 
     if (flow === 'popup') {
-        let winOpen = window.open;
-        window.open = () => {
-            window.open = winOpen;
+        let winOpen = win.open;
+        win.open = () => {
+            win.open = winOpen;
             return {
                 closed: true,
                 close() {
@@ -457,10 +457,10 @@ export function preventOpenWindow(flow : string) {
         };
     } else if (flow === 'iframe') {
 
-        let documentCreateElement = document.createElement;
+        let documentCreateElement = win.document.createElement;
         // $FlowFixMe
-        document.createElement = () => { // $FlowFixMe
-            document.createElement = documentCreateElement;
+        win.document.createElement = () => { // $FlowFixMe
+            win.document.createElement = documentCreateElement;
             throw new Error('Can not create element');
         };
 
