@@ -44,6 +44,10 @@ export function isGoogleSearchApp(ua? : string = getUserAgent()) : boolean {
     return (/\bGSA\b/).test(ua);
 }
 
+export function isQQBrowser(ua? : string = getUserAgent()) : boolean {
+    return (/QQBrowser/).test(ua);
+}
+
 export function isIosWebview(ua? : string = getUserAgent()) : boolean {
     if (isIos(ua)) {
         if (isGoogleSearchApp(ua)) {
@@ -111,5 +115,5 @@ export function isIEIntranet() : boolean {
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
-    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua));
+    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua));
 }
