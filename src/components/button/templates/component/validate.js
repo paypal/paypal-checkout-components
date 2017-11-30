@@ -99,7 +99,7 @@ export function validateButtonStyle(style : Object = {}) {
 
         let { minHeight, maxHeight } = (size === BUTTON_SIZE.RESPONSIVE) ? {
             minHeight: BUTTON_STYLE[BUTTON_SIZE.SMALL].minHeight,
-            maxHeight: BUTTON_STYLE[BUTTON_SIZE.LARGE].maxHeight
+            maxHeight: BUTTON_STYLE[BUTTON_SIZE.HUGE].maxHeight
         } : BUTTON_STYLE[buttonSize];
 
         if (height < minHeight || height > maxHeight) {

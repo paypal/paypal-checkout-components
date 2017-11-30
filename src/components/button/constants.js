@@ -58,13 +58,14 @@ export const BUTTON_LOGO_COLOR : BUTTON_LOGO_COLOR_ENUM = {
 };
 
 type BUTTON_SIZE_ENUM =
-    Enum<'tiny' | 'small' | 'medium' | 'large' | 'responsive'>;
+    Enum<'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'responsive'>;
 
 export const BUTTON_SIZE : BUTTON_SIZE_ENUM = {
     TINY:       'tiny',
     SMALL:      'small',
     MEDIUM:     'medium',
     LARGE:      'large',
+    HUGE:       'huge',
     RESPONSIVE: 'responsive'
 };
 

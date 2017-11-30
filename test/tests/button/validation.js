@@ -1132,7 +1132,7 @@ let buttonConfigs = [
             },
 
             {
-                height: 50,
+                height: 60,
                 valid:  false
             },
 
@@ -1154,7 +1154,7 @@ let buttonConfigs = [
 
             {
                 size:   'small',
-                height: 50,
+                height: 60,
                 valid:  false
             },
 
@@ -1178,7 +1178,7 @@ let buttonConfigs = [
 
             {
                 size:   'medium',
-                height: 50,
+                height: 60,
                 valid:  false
             },
 
@@ -1202,7 +1202,7 @@ let buttonConfigs = [
 
             {
                 size:   'large',
-                height: 50,
+                height: 60,
                 valid:  false
             },
 
@@ -1238,7 +1238,7 @@ let buttonConfigs = [
 
             {
                 size:   'responsive',
-                height: 50,
+                height: 60,
                 valid:  false
             },
 

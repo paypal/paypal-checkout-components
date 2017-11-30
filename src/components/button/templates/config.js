@@ -83,8 +83,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
         minimumSize:         BUTTON_SIZE.TINY,
         minimumVerticalSize: BUTTON_SIZE.MEDIUM,
 
-        maximumSize:         BUTTON_SIZE.LARGE,
-        maximumVerticalSize: BUTTON_SIZE.LARGE,
+        maximumSize:         BUTTON_SIZE.HUGE,
+        maximumVerticalSize: BUTTON_SIZE.HUGE,
 
         minHorizontalButtons: 1,
         minVerticalButtons:   1,

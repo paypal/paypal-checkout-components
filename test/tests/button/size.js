@@ -385,14 +385,14 @@ describe(`paypal button component sizes`, () => {
 
         let container = createElement({
             style: {
-                width:  '700px',
+                width:  '800px',
                 height: '100px'
             },
             container: '#testContainer'
         });
 
-        let expectedWidth = 500;
-        let expectedHeight = 68;
+        let expectedWidth = 750;
+        let expectedHeight = 83;
 
         window.paypal.Button.render({
 

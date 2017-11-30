@@ -47,7 +47,7 @@ export function buttonResponsiveStyle({ height } : { height? : number }) : strin
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.RECT } {
-                    border-radius: ${ perc(buttonHeight, 16) }px;
+                    border-radius: 4px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.LAYOUT }-${ BUTTON_LAYOUT.VERTICAL } {
