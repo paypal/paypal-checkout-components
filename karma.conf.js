@@ -183,7 +183,9 @@ module.exports = function(config) {
                     __DEFAULT_LOG_LEVEL__:              JSON.stringify(debug ? 'debug' : logLevel || 'error'),
                     __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
                     __SEND_POPUP_LOGS_TO_OPENER__:      JSON.stringify(true),
-                    __ALLOW_POSTMESSAGE_POPUP__:        JSON.stringify(true)
+                    __ALLOW_POSTMESSAGE_POPUP__:        JSON.stringify(true),
+                    __MAJOR__:                          JSON.stringify(true),
+                    __MINIFIED__:                       JSON.stringify(true)
                 })
             ]
         },

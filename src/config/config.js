@@ -14,8 +14,6 @@ export let config = {
 
     version: __MINOR_VERSION__,
 
-    ppobjects: false,
-
     cors: true,
 
     env: __TEST__
@@ -241,7 +239,7 @@ export let config = {
     pptmUri: `/tagmanager/pptm.js`,
 
     get postBridgeUri() : string {
-        return `${ config.postBridgeUris[config.env] }?xcomponent=1&version=${ config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__ }`;
+        return `${ config.postBridgeUris[config.env] }?xcomponent=1`;
     },
 
     paymentStandardUri: `/webapps/xorouter?cmd=_s-xclick`,
@@ -479,7 +477,7 @@ export let config = {
     },
 
     get postBridgeUrl() : string {
-        return `${ config.paypalUrl }${ config.postBridgeUri }&env=${ config.env }`;
+        return `${ config.paypalUrl }${ config.postBridgeUri }`;
     },
 
     get postBridgeDomain() : string {

@@ -3,7 +3,7 @@
 import { on, send, bridge } from 'post-robot/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { isPayPalDomain, noop } from '../lib';
+import { isPayPalDomain, noop, getScriptVersion, extendUrl } from '../lib';
 import { config } from '../config';
 
 function match(str : string, pattern : RegExp) : ?string {
@@ -30,7 +30,7 @@ export function onLegacyPaymentAuthorize(method : Function) : ZalgoPromise<void>
 
     return ZalgoPromise.try(() => {
         if (bridge && !isPayPalDomain()) {
-            return bridge.openBridge(config.postBridgeUrl, config.postBridgeDomain).then((postBridge : CrossDomainWindowType) => {
+            return bridge.openBridge(extendUrl(config.postBridgeUrl, { version: getScriptVersion() }), config.postBridgeDomain).then((postBridge : CrossDomainWindowType) => {
                 return send(postBridge, 'onLegacyPaymentAuthorize', { method }, { domain: config.paypalDomain })
                     .then(noop);
             });

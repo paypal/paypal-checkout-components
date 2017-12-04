@@ -9,7 +9,7 @@ import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting, documentReady, getThrottle,
+    extend, getDomainSetting, documentReady, getThrottle, getScriptVersion,
     getButtonSessionID, isPayPalDomain } from '../../lib';
 import { config, ENV, FPTI, PAYMENT_TYPE } from '../../config';
 import { onLegacyPaymentAuthorize } from '../../compat';
@@ -112,7 +112,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     get version() : string {
-        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+        return getScriptVersion();
     },
 
     prerenderTemplate: componentTemplate,

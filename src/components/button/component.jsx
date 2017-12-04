@@ -10,7 +10,7 @@ import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/clie
 import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../config';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request,
+    getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, getPageRenderTime, isEligible,
     getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../../lib';
@@ -96,7 +96,7 @@ export let Button : Component<ButtonOptions> = create({
     },
 
     get version() : string {
-        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+        return getScriptVersion();
     },
 
     get domain() : Object {

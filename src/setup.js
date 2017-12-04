@@ -6,7 +6,8 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { config, FPTI } from './config';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
-    getDomainSetting, once, openMetaFrame, precacheRememberedFunding } from './lib';
+    getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
+    getCurrentScript } from './lib';
 import { createPptmScript } from './lib/pptm';
 
 function domainToEnv(domain : string) : ?string {
@@ -56,26 +57,6 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
     });
 });
 
-
-function getCurrentScript() : ? HTMLScriptElement {
-
-    let scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
-
-    for (let script of scripts) {
-        if (script.src && (script.src.replace(/^https?:/, '').split('?')[0] === config.scriptUrl || script.hasAttribute('data-paypal-checkout'))) {
-            return script;
-        }
-
-        if (script.src && (script.src.indexOf('paypal.checkout.v4.js') !== -1)) {
-            return script;
-        }
-    }
-
-    if (document.currentScript) { // eslint-disable-line compat/compat
-        debug(`current_script_not_recognized`, { src: document.currentScript.src }); // eslint-disable-line compat/compat
-    }
-}
-
 let currentScript = getCurrentScript();
 let currentProtocol = window.location.protocol.split(':')[0];
 
@@ -85,12 +66,11 @@ type ConfigOptions = {
     stage? : ?string,
     apiStage? : ?string,
     state? : ?string,
-    ppobjects? : ?boolean,
     logLevel? : ?string,
     merchantID? : ?string
 };
 
-function configure({ env, stage, apiStage, state, ppobjects, logLevel, merchantID } : ConfigOptions = {}) {
+function configure({ env, stage, apiStage, state, logLevel, merchantID } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -114,10 +94,6 @@ function configure({ env, stage, apiStage, state, ppobjects, logLevel, merchantI
     if (state) {
         delete config.state;
         config.state = state;
-    }
-
-    if (ppobjects) {
-        config.ppobjects = true;
     }
 
     if (merchantID) {
@@ -171,8 +147,7 @@ if (currentScript) {
         state:              currentScript.getAttribute('data-state'),
         logLevel:           currentScript.getAttribute('data-log-level'),
         merchantID:         currentScript.getAttribute('data-merchant-id'),
-        precacheRemembered: currentScript.hasAttribute('data-precache-remembered-funding'),
-        ppobjects:          true
+        precacheRemembered: currentScript.hasAttribute('data-precache-remembered-funding')
     });
 
 } else {

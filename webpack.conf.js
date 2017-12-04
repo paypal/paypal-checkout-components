@@ -36,7 +36,7 @@ function getVersionVars() {
     };
 }
 
-function getWebpackConfig({ version, filename, modulename, target = 'window', minify = false, vars = {} }) {
+function getWebpackConfig({ filename, modulename, target = 'window', major = true, minify = false, vars = {} }) {
 
     vars = {
         __TEST__:                           false,
@@ -44,8 +44,9 @@ function getWebpackConfig({ version, filename, modulename, target = 'window', mi
         __POPUP_SUPPORT__:                  true,
         __LEGACY_SUPPORT__:                 true,
         __FILE_NAME__:                      JSON.stringify(filename),
-        __FILE_VERSION__:                   JSON.stringify(version),
         __DEFAULT_LOG_LEVEL__:              JSON.stringify('warn'),
+        __MAJOR__:                          major,
+        __MINIFIED__:                       minify,
         __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: true,
         __SEND_POPUP_LOGS_TO_OPENER__:      false,
         __ALLOW_POSTMESSAGE_POPUP__:        true,
@@ -129,8 +130,8 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
-            filename: `${ FILE_NAME }.js`
+            filename: `${ FILE_NAME }.js`,
+            major:    true
         })
     },
 
@@ -138,8 +139,8 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
             filename: `${ FILE_NAME }.v${ nextMajorVersion }.js`,
+            major:    true,
             vars:     {
                 __IE_POPUP_SUPPORT__: false,
                 __LEGACY_SUPPORT__:   true
@@ -151,7 +152,6 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMinorVersion,
             filename: `${ FILE_NAME }.${ nextMinorVersion }.js`
         })
     },
@@ -160,9 +160,9 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
             filename: `${ FILE_NAME }.min.js`,
-            minify:   true
+            minify:   true,
+            major:    true
         })
     },
 
@@ -170,7 +170,6 @@ module.exports.webpack_tasks = {
         src: 'src/load.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMinorVersion,
             filename: `${ FILE_NAME }.${ nextMinorVersion }.min.js`,
             minify:   true
         })
@@ -181,10 +180,10 @@ module.exports.webpack_tasks = {
         src: 'src/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:    nextMajorVersion,
             filename:   `${ FILE_NAME }.lib.js`,
             target:     `umd`,
-            modulename: `paypal`
+            modulename: `paypal`,
+            major:      true
         })
     },
 
@@ -192,7 +191,6 @@ module.exports.webpack_tasks = {
         src: 'src/components/button/templates/component/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
             filename: `${ FILE_NAME }.button.render.js`,
             target:   `commonjs`
         })
@@ -203,7 +201,6 @@ module.exports.webpack_tasks = {
         src: 'src/loader/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
             filename: `checkout.child.loader.js`
         })
     },
@@ -212,7 +209,6 @@ module.exports.webpack_tasks = {
         src: 'src/loader/index.js',
         out: 'dist',
         cfg: getWebpackConfig({
-            version:  nextMajorVersion,
             filename: `checkout.child.loader.min.js`,
             minify:   true
         })

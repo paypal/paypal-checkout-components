@@ -7,6 +7,8 @@ import { config } from '../config';
 
 import { isIEIntranet  } from './device';
 import { memoize, noop } from './util';
+import { getScriptVersion } from './script';
+import { extendUrl } from './dom';
 
 type FrameMetaData = {
     iframeEligible : boolean,
@@ -30,7 +32,7 @@ export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<Fr
 
         return ZalgoPromise.try(() => {
             if (bridge) {
-                return bridge.openBridge(metaFrameUrl, metaFrameDomain).then(noop);
+                return bridge.openBridge(extendUrl(metaFrameUrl, { version: getScriptVersion() }), metaFrameDomain).then(noop);
             } else {
                 throw new Error(`Opening meta window without bridge support is not currently supported`);
             }

@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { config, ENV } from '../../config';
 import { containerTemplate, componentTemplate } from '../checkout/templates';
-import { getSessionID, getBrowserLocale } from '../../lib';
+import { getSessionID, getBrowserLocale, getScriptVersion } from '../../lib';
 
 export let Login = create({
 
@@ -40,7 +40,7 @@ export let Login = create({
     },
 
     get version() : string {
-        return config.ppobjects ? __FILE_VERSION__ : __MINOR_VERSION__;
+        return getScriptVersion();
     },
 
     sandboxContainer: true,
