@@ -3,7 +3,9 @@ import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
 
 import { setupButton } from '../../public/js/button/button';
 
-import { createButtonHTML, getPaymentApiMock, executePaymentApiMock, getMockCheckoutInstance, getLocaleApiMock, getFundingApiMock } from './mocks';
+import { createButtonHTML, getPaymentApiMock, executePaymentApiMock,
+    getMockCheckoutInstance, getLocaleApiMock, getFundingApiMock,
+    getOrderApiMock, captureOrderApiMock } from './mocks';
 import { triggerKeyPress } from './util';
 
 describe('happy cases', () => {
@@ -426,6 +428,168 @@ describe('happy cases', () => {
 
         window.paypal.Checkout.renderTo = async (win, props) => {
             onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { paymentID, payerID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onAuthorize;
+
+        if (!onAuthorize || !onAuthorizeCalled) {
+            throw new Error(`Expected onAuthorize to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.order.get', async () => {
+
+        let orderID = 'XXXXXXXXXX';
+        let payerID = 'YYYYYYYYYY';
+
+        let onAuthorize;
+        let onAuthorizeCalled = false;
+
+        window.xprops.onAuthorize = async (data, actions) => {
+
+            let getOrderMock = getOrderApiMock();
+            getOrderMock.expectCalls();
+            await actions.order.get();
+            getOrderMock.done();
+
+            onAuthorizeCalled = true;
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onAuthorize;
+
+        if (!onAuthorize || !onAuthorizeCalled) {
+            throw new Error(`Expected onAuthorize to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.order.capture', async () => {
+
+        let orderID = 'XXXXXXXXXX';
+        let payerID = 'YYYYYYYYYY';
+
+        let onAuthorize;
+        let onAuthorizeCalled = false;
+
+        window.xprops.onAuthorize = async (data, actions) => {
+
+            let captureOrderMock = captureOrderApiMock();
+            captureOrderMock.expectCalls();
+            await actions.order.capture();
+            captureOrderMock.done();
+
+            onAuthorizeCalled = true;
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onAuthorize;
+
+        if (!onAuthorize || !onAuthorizeCalled) {
+            throw new Error(`Expected onAuthorize to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.order.capture call and automatic restart on CC_PROCESSOR_DECLINED', async () => {
+
+        let orderID = 'XXXXXXXXXX';
+        let payerID = 'YYYYYYYYYY';
+
+        let onAuthorize;
+        let onAuthorizeCalled = false;
+        let didRestart = false;
+
+        window.xprops.onAuthorize = async (data, actions) => {
+            if (didRestart) {
+                onAuthorizeCalled = true;
+            } else {
+                didRestart = true;
+                onAuthorize = null;
+
+                let captureOrderMock = captureOrderApiMock({
+                    data: {
+                        ack: 'contingency',
+                        contingency: 'CC_PROCESSOR_DECLINED'
+                    }
+                });
+
+                captureOrderMock.expectCalls();
+                actions.order.capture();
+                captureOrderMock.done();
+            }
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
+        };
+
+        window.document.body.innerHTML = createButtonHTML();
+
+        await setupButton();
+
+        window.document.querySelector('.paypal-button').click();
+
+        await onAuthorize;
+
+        if (!onAuthorize || !onAuthorizeCalled) {
+            throw new Error(`Expected onAuthorize to have been called`);
+        }
+    });
+
+    it('should render a button, click the button, and render checkout, then pass onAuthorize callback to the parent with actions.order.capture call and automatic restart on INSTRUMENT_DECLINED', async () => {
+
+        let orderID = 'XXXXXXXXXX';
+        let payerID = 'YYYYYYYYYY';
+
+        let onAuthorize;
+        let onAuthorizeCalled = false;
+        let didRestart = false;
+
+        window.xprops.onAuthorize = async (data, actions) => {
+            if (didRestart) {
+                onAuthorizeCalled = true;
+            } else {
+                didRestart = true;
+                onAuthorize = null;
+
+                let captureOrderMock = captureOrderApiMock({
+                    data: {
+                        ack: 'contingency',
+                        contingency: 'INSTRUMENT_DECLINED'
+                    }
+                });
+
+                captureOrderMock.expectCalls();
+                actions.order.capture();
+                captureOrderMock.done();
+            }
+        };
+
+        window.paypal.Checkout.renderTo = async (win, props) => {
+            onAuthorize = props.onAuthorize.call(getMockCheckoutInstance(), { orderID, payerID });
         };
 
         window.document.body.innerHTML = createButtonHTML();

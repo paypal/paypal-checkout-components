@@ -184,8 +184,44 @@ export function executePaymentApiMock(options = {}) {
     });
 }
 
+export function getOrderApiMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri: new RegExp('/webapps/hermes/api/order/[^/]+'),
+        data: {
+            ack: 'success',
+            data: {
+
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function captureOrderApiMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: new RegExp('/webapps/hermes/api/order/[^/]+/capture'),
+        data: {
+            ack: 'success',
+            data: {
+
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
 getLocaleApiMock().listen();
 getAuthApiMock().listen();
 getFundingApiMock().listen();
 getPaymentApiMock().listen();
 executePaymentApiMock().listen();
+getOrderApiMock().listen();
+captureOrderApiMock().listen();

@@ -15,6 +15,10 @@ export let $paymentApi = new $Api({
     uri: '/api/payment/:id'
 });
 
+export let $orderApi = new $Api({
+    uri: '/api/order/:id'
+});
+
 export let $localeApi = new $Api({
     uri: '/api/locale'
 });
@@ -55,7 +59,7 @@ export function getPayment(paymentID) {
         }
     }).then(res => {
         if (res.ack !== 'success') {
-            throw new Error('Execute payment failed');
+            throw new Error('Get payment failed');
         }
 
         return res.data;
@@ -76,6 +80,36 @@ export function executePayment(paymentID, payerID) {
     }).then(res => {
         if (res.ack !== 'success') {
             throw new Error('Execute payment failed');
+        }
+
+        return res.data;
+    });
+}
+
+export function getOrder(orderID) {
+    return $orderApi.retrieve({
+        model: {
+            id: orderID
+        }
+    }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Get order failed');
+        }
+
+        return res.data;
+    });
+}
+
+export function captureOrder(orderID) {
+    return $orderApi.action('capture', {
+
+        model: {
+            id: orderID
+        }
+
+    }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Capture order failed');
         }
 
         return res.data;

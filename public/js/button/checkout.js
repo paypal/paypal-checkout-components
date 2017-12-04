@@ -1,7 +1,7 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
 import { memoize, noop } from './util';
-import { getPayment, executePayment } from './api';
+import { getPayment, executePayment, getOrder, captureOrder } from './api';
 import { persistAccessToken } from './user';
 
 function buildActions(checkout, data, actions, intent) {
@@ -14,53 +14,70 @@ function buildActions(checkout, data, actions, intent) {
         });
     };
 
-    actions = {
+    let handleExecuteError = (err) => {
+        if (err && err.message === 'CC_PROCESSOR_DECLINED') {
+            return restartFlow();
+        }
 
-        ...actions,
+        if (err && err.message === 'INSTRUMENT_DECLINED') {
+            return restartFlow();
+        }
 
-        payment: {
-
-            execute: memoize(() => {
-
-                checkout.closeComponent();
-
-                if (!data.paymentID) {
-                    throw new Error('Client side execute is only available for REST based transactions');
-                }
-
-                return executePayment(data.paymentID, data.payerID).finally(() => {
-                    actions.payment.get.reset();
-
-                }).catch(err => { // eslint-disable-line
-
-                    // processor decline use case, we re-render the flow.
-
-                    if (err && err.message === 'CC_PROCESSOR_DECLINED') {
-                        return restartFlow();
-                    }
-
-                    if (err && err.message === 'INSTRUMENT_DECLINED') {
-                        return restartFlow();
-                    }
-
-                    throw new Error('Payment could not be executed');
-                });
-            }),
-
-            get: memoize(() => {
-
-                if (!data.paymentID) {
-                    throw new Error('Client side get is only available for REST based transactions');
-                }
-
-                return getPayment(data.paymentID);
-            })
-        },
-
-        restart: restartFlow
+        throw new Error('Payment could not be executed');
     };
 
-    return actions;
+    let paymentGet = memoize(() => {
+        if (!data.paymentID) {
+            throw new Error('Client side payment get is only available for REST based transactions');
+        }
+
+        return getPayment(data.paymentID);
+    });
+
+    let paymentExecute = memoize(() => {
+        if (!data.paymentID) {
+            throw new Error('Client side payment execute is only available for REST based transactions');
+        }
+
+        checkout.closeComponent();
+
+        return executePayment(data.paymentID, data.payerID)
+            .catch(handleExecuteError)
+            .finally(paymentGet.reset);
+    });
+
+    let orderGet = memoize(() => {
+        if (!data.orderID) {
+            throw new Error('Client side order get is only available for REST based transactions');
+        }
+
+        return getOrder(data.orderID);
+    });
+
+    let orderCapture = memoize(() => {
+        if (!data.orderID) {
+            throw new Error('Client side order capture is only available for REST based transactions');
+        }
+        
+        checkout.closeComponent();
+
+        return captureOrder(data.orderID)
+            .catch(handleExecuteError)
+            .finally(orderGet.reset);
+    });
+
+    return {
+        ...actions,
+        payment: {
+            execute: paymentExecute,
+            get:     paymentGet
+        },
+        order: {
+            capture: orderCapture,
+            get:     orderGet
+        },
+        restart: restartFlow
+    };
 }
 
 
