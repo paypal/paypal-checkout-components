@@ -6,6 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, CONSTANTS as XCOMPONENT_CONSTANTS } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
+import { get as getShared, KEY as SHARED_KEY } from 'braintree-paypal-client-config';
 
 import { Checkout } from '../checkout';
 import { config, USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING } from '../../config';
@@ -355,6 +356,12 @@ export let Button : Component<ButtonOptions> = create({
 
                     if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
                         disallowed.push(FUNDING.VENMO);
+                    }
+                }
+
+                for (let source of getShared(SHARED_KEY.PAYPAL_FUNDING_DISALLOW, [])) {
+                    if (disallowed.indexOf(source) === -1) {
+                        disallowed.push(source);
                     }
                 }
 
