@@ -73,7 +73,7 @@ export function buttonResponsiveStyle({ height } : { height? : number }) : strin
 
                 .${ CLASS.BUTTON } .${ CLASS.CARD } {
                     width: 20%;
-                    max-width: ${ perc(buttonHeight, 160) };
+                    max-width: ${ perc(buttonHeight, 160) }px;
                     margin-top: 0;
                     margin-left: 1.5%;
                     margin-right: 1.5%;
