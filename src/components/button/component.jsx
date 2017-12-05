@@ -451,7 +451,7 @@ export let Button : Component<ButtonOptions> = create({
 
                         return this.props.braintree
                             .then(client => client.tokenizePayment(data))
-                            .then(res => res.nonce);
+                            .then(res => ({ nonce: res.nonce }));
                     });
 
                     let execute = actions.payment.execute;
@@ -474,7 +474,7 @@ export let Button : Component<ButtonOptions> = create({
                     return ZalgoPromise.try(() => {
 
                         if (this.props.braintree) {
-                            return actions.payment.tokenize().then(nonce => {
+                            return actions.payment.tokenize().then(({ nonce }) => {
                                 // $FlowFixMe
                                 Object.defineProperty(data, 'nonce', {
                                     get: () => {
