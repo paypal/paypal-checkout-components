@@ -489,7 +489,7 @@ export let Button : Component<ButtonOptions> = create({
                     }).then(() => {
                         return original.call(this, data, actions);
                     }).catch(err => {
-                        return this.error(err);
+                        return this.props.onError(err);
                     });
                 };
             }
