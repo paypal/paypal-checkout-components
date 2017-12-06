@@ -12,6 +12,7 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 #### [Learn more in our Dev Docs](https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/add-paypal-button/)
 #### [Deep Dive in our YouTube Training](https://www.youtube.com/playlist?list=PLAlKnErU5lvhRl28KciytVHc5b8HS_tYP)
 #### [Demo App Source](https://github.com/paypal/paypal-checkout-demo)
+#### [Create a PayPal REST Application](https://youtu.be/mhUg73r3-Vk)
 
 -----
 
@@ -29,6 +30,8 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 
 - Do you have a mark integration? In this case, you should look at the [Mark Integration](https://github.com/paypal/paypal-checkout/tree/master/docs/mark.md) docs to decide how best
   to integrate PayPal Checkout
+
+## [Create a PayPal REST Application](https://youtu.be/mhUg73r3-Vk)
 
 ## Usage
 
