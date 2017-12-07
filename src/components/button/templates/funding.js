@@ -81,22 +81,11 @@ export function determineEligibleFunding({ funding, selected, locale, env, layou
     return eligibleFunding;
 }
 
-export function determineEligibleCards({ funding, count, locale } :
-    { funding : FundingSelection, count : number, locale : LocaleType }) : FundingList {
+export function determineEligibleCards({ funding, locale } :
+    { funding : FundingSelection, locale : LocaleType }) : FundingList {
 
-    let cards = [];
-
-    for (let card of getCardConfig(locale.country, 'priority')) {
-        if (funding.disallowed.indexOf(card) === -1) {
-            cards.push(card);
-
-            if (cards.length === count) {
-                break;
-            }
-        }
-    }
-
-    return cards;
+    return getCardConfig(locale.country, 'priority')
+        .filter(card => funding.disallowed.indexOf(card) === -1);
 }
 
 export function validateFunding(funding : FundingSelection = { allowed: [], disallowed: [], remembered: [] }) {

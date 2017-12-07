@@ -131,6 +131,8 @@ export function getComponentScript() : () => void {
             }
         }
 
+        toggleOptionals();
+
         onDisplay(images, () => {
             images.forEach(makeElementVisible);
             toggleOptionals();

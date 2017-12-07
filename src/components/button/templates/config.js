@@ -459,6 +459,7 @@ export const CARD_CONFIG = {
         priority: [
             CARD.VISA,
             CARD.MASTERCARD,
+            CARD.AMEX,
             CARD.HIPER,
             CARD.ELO
         ]

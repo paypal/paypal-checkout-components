@@ -3,7 +3,7 @@
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS } from '../constants';
 
 import { getButtonConfig, labelToFunding } from './config';
-import { determineEligibleFunding } from './funding';
+import { determineEligibleFunding, determineEligibleCards } from './funding';
 
 function parseLocale(locale : string) : LocaleType {
     let [ lang, country ] = locale.split('_');
@@ -70,6 +70,8 @@ export function normalizeProps(props : Object) : Object {
 
     tagline = enableTagline({ tagline, branding, fundingicons, layout });
 
+    let cards = determineEligibleCards({ funding, locale });
+
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height };
+        tagline, funding, layout, sources, max, multiple, env, height, cards };
 }

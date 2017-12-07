@@ -8,7 +8,7 @@ import { CLASS } from './class';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
 
-export function buttonResponsiveStyle({ height } : { height? : number }) : string {
+export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : number, cardNumber? : number }) : string {
 
     return Object.keys(BUTTON_STYLE).map(size => {
 
@@ -72,11 +72,11 @@ export function buttonResponsiveStyle({ height } : { height? : number }) : strin
                 }
 
                 .${ CLASS.BUTTON } .${ CLASS.CARD } {
-                    width: 20%;
+                    width: ${ (90 / cardNumber).toFixed(2) }%;
                     max-width: ${ perc(buttonHeight, 160) }px;
                     margin-top: 0;
-                    margin-left: 1.5%;
-                    margin-right: 1.5%;
+                    margin-left: ${ (5 / cardNumber).toFixed(2) }%;
+                    margin-right: ${ (5 / cardNumber).toFixed(2) }%;
                 }
 
                 .${ CLASS.BUTTON } .${ CLASS.CARD } img {

@@ -6,7 +6,7 @@ import { btoa } from 'Base64';
 import { ENV, ATTRIBUTE, FUNDING } from '../../../../config/constants';
 import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL } from '../../constants';
 import { getButtonConfig, fundingToDefaultLabel } from '../config';
-import { determineEligibleCards, type FundingSource, type FundingList, type FundingSelection } from '../funding';
+import { type FundingSource, type FundingList, type FundingSelection } from '../funding';
 import { normalizeProps } from '../props';
 
 import { componentLogos, cardLogos } from './logos';
@@ -61,9 +61,9 @@ function determineButtons({ label, color, sources, multiple } : { label : $Value
     });
 }
 
-function renderCards({ funding, locale, button } : { funding : FundingSelection, locale : LocaleType, button? : boolean }) : Array<JsxHTMLNode> {
+function renderCards({ cards, button } : { cards : Array<string>, button : ?boolean }) : Array<JsxHTMLNode> {
 
-    return determineEligibleCards({ funding, count: 4, locale }).map(name => {
+    return cards.map(name => {
         let logo = cardLogos[name];
 
         return (
@@ -76,18 +76,18 @@ function renderCards({ funding, locale, button } : { funding : FundingSelection,
     });
 }
 
-function renderFundingIcons({ funding, fundingicons, locale } :
-    { funding : FundingSelection, fundingicons : boolean, locale : LocaleType }) : ?JsxHTMLNode {
+function renderFundingIcons({ cards, fundingicons } :
+    { cards : Array<string>, fundingicons : boolean }) : ?JsxHTMLNode {
 
     if (!fundingicons) {
         return;
     }
 
-    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ funding, locale, button: true }) }</div>;
+    return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
 }
 
-function renderContent(text : string, { locale, color, branding, logoColor, funding, env } :
-    { locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string }) : JsxHTMLNode {
+function renderContent(text : string, { locale, color, branding, logoColor, funding, env, cards } :
+    { locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string> }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
@@ -131,7 +131,7 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { locale, color, branding, logoColor, funding, env });
+            return renderContent(contentString || '', { locale, color, branding, logoColor, funding, env, cards });
         },
 
         cards() : Array<JsxHTMLNode> {
@@ -139,7 +139,7 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ funding, locale });
+            return renderCards({ cards, button: false });
         },
 
         separator() : JsxHTMLNode {
@@ -148,8 +148,8 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env } :
-    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string }) : JsxHTMLNode {
+function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards } :
+    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string> }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -157,7 +157,7 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
         ? getButtonConfig(label, 'logoLabel')
         : getButtonConfig(label, 'label');
 
-    contentText = renderContent(contentText, { locale, color, branding, logoColor, funding, env });
+    contentText = renderContent(contentText, { locale, color, branding, logoColor, funding, env, cards });
 
     return (
         <div
@@ -172,7 +172,7 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
     );
 }
 
-function renderTagline({ label, tagline, color, locale, multiple, env } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string }) : ?JsxHTMLNode {
+function renderTagline({ label, tagline, color, locale, multiple, env, cards } : { label : string, color : string, tagline : boolean, locale : LocaleType, multiple : boolean, env : string, cards : Array<string> }) : ?JsxHTMLNode {
 
     if (!tagline) {
         return;
@@ -182,7 +182,7 @@ function renderTagline({ label, tagline, color, locale, multiple, env } : { labe
         ? (getButtonConfig(label, 'dualTag') || getButtonConfig(label, 'tag'))
         : getButtonConfig(label, 'tag');
 
-    let text = renderContent(tag, { locale, color, env });
+    let text = renderContent(tag, { locale, color, env, cards });
 
     if (!text) {
         return;
@@ -210,9 +210,9 @@ function renderScript() : JsxHTMLNode {
     );
 }
 
-function renderStyle({ height } : { height? : number }) : JsxHTMLNode {
+function renderStyle({ height, cardNumber } : { height? : number, cardNumber? : number }) : JsxHTMLNode {
     return (
-        <style innerHTML={ componentStyle({ height }) } />
+        <style innerHTML={ componentStyle({ height, cardNumber }) } />
     );
 }
 
@@ -239,8 +239,9 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     validateButtonProps(props);
 
-    let { label, locale, color, shape, branding, tagline, funding,
-        layout, sources, multiple, fundingicons, env, height } = normalizeProps(props);
+    let { label, locale, color, shape, branding,
+        tagline, funding, layout, sources, multiple,
+        fundingicons, env, height, cards } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({
@@ -254,13 +255,14 @@ export function componentTemplate({ props } : { props : Object }) : string {
             locale,
             branding,
             layout,
-            shape
+            shape,
+            cards
         }));
 
-    let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env });
-    let fundingiconNode = renderFundingIcons({ funding, fundingicons, locale });
+    let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
+    let fundingiconNode = renderFundingIcons({ cards, fundingicons });
 
-    let styleNode  = renderStyle({ height });
+    let styleNode  = renderStyle({ height, cardNumber: cards.length });
     let scriptNode = renderScript();
 
     return (

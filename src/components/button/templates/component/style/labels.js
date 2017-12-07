@@ -7,7 +7,11 @@ import { CLASS } from './class';
 
 export let labelStyle = `
 
-    .${ CLASS.BUTTON } .${ CLASS.LABEL }-${ BUTTON_LABEL.CREDIT } .${ CLASS.TEXT } {
+    .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CARD } {
+        border-radius: 0 !important;
+    }
+
+    .${ CLASS.BUTTON }.${ CLASS.LABEL }-${ BUTTON_LABEL.CREDIT } .${ CLASS.TEXT } {
         display: none !important;
     }
 
