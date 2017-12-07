@@ -3,6 +3,7 @@
 import { info, warn, flush as flushLogs } from 'beaver-logger/client';
 import { CONSTANTS } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { getParent, getTop } from 'cross-domain-utils/src';
 
 import { rest } from '../../api';
 import { config } from '../../config';
@@ -201,4 +202,27 @@ if (Button.isChild()) {
         delete props.env;
         return callOriginal();
     });
+
+    let parent = getParent(window);
+    let top    = getTop(window);
+
+    if (top && parent) {
+        let canRenderTop = (top === parent);
+
+        if (!canRenderTop) {
+            // eslint-disable-next-line promise/catch-or-return
+            Checkout.canRenderTo(top).then(result => {
+                canRenderTop = result;
+            });
+
+            patchMethod(Checkout, 'renderTo', ({ args: [ win, props, el ], original, context }) => {
+
+                if (!canRenderTop) {
+                    win = getParent(window);
+                }
+
+                return original.call(context, win, props, el);
+            });
+        }
+    }
 }
