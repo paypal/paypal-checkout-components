@@ -266,8 +266,8 @@ export const BUTTON_CONFIG : ButtonConfig = {
 
     [ BUTTON_LABEL.ELV ]: {
 
-        label:     `{ logo: ${ BUTTON_LOGO.ELV } } Lastschrift`,
-        logoLabel: `{ logo: ${ BUTTON_LOGO.ELV } } Lastschrift`,
+        label:     `{ logo: ${ BUTTON_LOGO.ELV } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.ELV } }`,
 
         defaultColor: BUTTON_COLOR.SILVER,
 

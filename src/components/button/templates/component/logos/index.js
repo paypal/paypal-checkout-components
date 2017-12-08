@@ -14,6 +14,7 @@ import venmo_white  from './venmo_white.svg';
 import venmo_blue   from './venmo_blue.svg';
 import ideal        from './ideal.svg';
 import elv          from './elv.svg';
+import elv_white    from './elv_white.svg';
 import visa         from './visa.svg';
 import amex         from './amex.svg';
 import mastercard   from './mastercard.svg';
@@ -50,7 +51,8 @@ export let componentLogos = {
     },
 
     [ BUTTON_LOGO.ELV ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]: elv
+        [ BUTTON_LOGO_COLOR.ANY ]:   elv,
+        [ BUTTON_LOGO_COLOR.WHITE ]: elv_white
     }
 };
 
