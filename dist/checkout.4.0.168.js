@@ -999,6 +999,226 @@
             n;
         });
     },
+    "./node_modules/braintree-paypal-client-config/dist/braintree-paypal-client-config.js": function(module, exports, __webpack_require__) {
+        (function(module) {
+            var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            !function(root, factory) {
+                "object" == _typeof(exports) && "object" == _typeof(module) ? module.exports = factory() : (__WEBPACK_AMD_DEFINE_ARRAY__ = [], 
+                __WEBPACK_AMD_DEFINE_FACTORY__ = factory, void 0 !== (__WEBPACK_AMD_DEFINE_RESULT__ = "function" == typeof __WEBPACK_AMD_DEFINE_FACTORY__ ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+            }(0, function() {
+                return function(modules) {
+                    function __webpack_require__(moduleId) {
+                        if (installedModules[moduleId]) return installedModules[moduleId].exports;
+                        var module = installedModules[moduleId] = {
+                            i: moduleId,
+                            l: !1,
+                            exports: {}
+                        };
+                        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+                        module.l = !0;
+                        return module.exports;
+                    }
+                    var installedModules = {};
+                    __webpack_require__.m = modules;
+                    __webpack_require__.c = installedModules;
+                    __webpack_require__.d = function(exports, name, getter) {
+                        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+                            configurable: !1,
+                            enumerable: !0,
+                            get: getter
+                        });
+                    };
+                    __webpack_require__.n = function(module) {
+                        var getter = module && module.__esModule ? function() {
+                            return module.default;
+                        } : function() {
+                            return module;
+                        };
+                        __webpack_require__.d(getter, "a", getter);
+                        return getter;
+                    };
+                    __webpack_require__.o = function(object, property) {
+                        return Object.prototype.hasOwnProperty.call(object, property);
+                    };
+                    __webpack_require__.p = "";
+                    return __webpack_require__(__webpack_require__.s = "./src/index.js");
+                }({
+                    "./src/config.js": function(module, __webpack_exports__, __webpack_require__) {
+                        "use strict";
+                        function get(key, def) {
+                            return __WEBPACK_IMPORTED_MODULE_0__store__.a.has(key) ? __WEBPACK_IMPORTED_MODULE_0__store__.a.get(key) : def;
+                        }
+                        function set(key, value) {
+                            __WEBPACK_IMPORTED_MODULE_0__store__.a.set(key, value);
+                            if (listeners[key]) for (var _iterator = listeners[key], _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                                var _ref;
+                                if (_isArray) {
+                                    if (_i >= _iterator.length) break;
+                                    _ref = _iterator[_i++];
+                                } else {
+                                    _i = _iterator.next();
+                                    if (_i.done) break;
+                                    _ref = _i.value;
+                                }
+                                var listener = _ref;
+                                listener(value);
+                            }
+                            return value;
+                        }
+                        function get_or_set(key, value) {
+                            return __WEBPACK_IMPORTED_MODULE_0__store__.a.has(key) ? get(key) : set(key, value);
+                        }
+                        function on(key, handler) {
+                            listeners[key] = listeners[key] || [];
+                            listeners[key].push(handler);
+                            return {
+                                cancel: function() {
+                                    listeners[key].splice(listeners[key].indexOf(handler), 1);
+                                }
+                            };
+                        }
+                        __webpack_exports__.a = get;
+                        __webpack_exports__.d = set;
+                        __webpack_exports__.b = get_or_set;
+                        __webpack_exports__.c = on;
+                        var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__("./src/store.js"), listeners = {};
+                    },
+                    "./src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
+                        "use strict";
+                        __webpack_require__.d(__webpack_exports__, "a", function() {
+                            return CONFIG_KEY;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "d", function() {
+                            return STORE;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "b", function() {
+                            return KEY;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "c", function() {
+                            return PAYPAL_FUNDING;
+                        });
+                        var CONFIG_KEY = "__braintree_paypal_config__", STORE = {
+                            SESSIONSTORAGE: "sessionstorage",
+                            GLOBAL: "global"
+                        }, KEY = {
+                            LOGGER_SESSION_ID: "logger_session_id",
+                            PAYPAL_FUNDING_DISALLOW: "paypal_funding_disallow"
+                        }, PAYPAL_FUNDING = {
+                            PAYPAL: "paypal",
+                            VENMO: "venmo",
+                            CREDIT: "credit",
+                            CARD: "card",
+                            IDEAL: "ideal",
+                            ELV: "elv"
+                        };
+                    },
+                    "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+                        "use strict";
+                        Object.defineProperty(__webpack_exports__, "__esModule", {
+                            value: !0
+                        });
+                        var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config.js");
+                        __webpack_require__.d(__webpack_exports__, "get", function() {
+                            return __WEBPACK_IMPORTED_MODULE_0__config__.a;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "set", function() {
+                            return __WEBPACK_IMPORTED_MODULE_0__config__.d;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "get_or_set", function() {
+                            return __WEBPACK_IMPORTED_MODULE_0__config__.b;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "on", function() {
+                            return __WEBPACK_IMPORTED_MODULE_0__config__.c;
+                        });
+                        var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants.js");
+                        __webpack_require__.d(__webpack_exports__, "CONFIG_KEY", function() {
+                            return __WEBPACK_IMPORTED_MODULE_1__constants__.a;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "STORE", function() {
+                            return __WEBPACK_IMPORTED_MODULE_1__constants__.d;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "KEY", function() {
+                            return __WEBPACK_IMPORTED_MODULE_1__constants__.b;
+                        });
+                        __webpack_require__.d(__webpack_exports__, "PAYPAL_FUNDING", function() {
+                            return __WEBPACK_IMPORTED_MODULE_1__constants__.c;
+                        });
+                    },
+                    "./src/store.js": function(module, __webpack_exports__, __webpack_require__) {
+                        "use strict";
+                        function _defineProperty(obj, key, value) {
+                            key in obj ? Object.defineProperty(obj, key, {
+                                value: value,
+                                enumerable: !0,
+                                configurable: !0,
+                                writable: !0
+                            }) : obj[key] = value;
+                            return obj;
+                        }
+                        __webpack_require__.d(__webpack_exports__, "a", function() {
+                            return store;
+                        });
+                        var _stores, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/constants.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/util.js"), stores = (_stores = {}, 
+                        _defineProperty(_stores, __WEBPACK_IMPORTED_MODULE_0__constants__.d.GLOBAL, {
+                            get: function(key) {
+                                return (window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {})[key];
+                            },
+                            set: function(key, value) {
+                                var storage = window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {};
+                                storage[key] = value;
+                                window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] = storage;
+                                return value;
+                            },
+                            has: function(key) {
+                                return (window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {}).hasOwnProperty(key);
+                            }
+                        }), _defineProperty(_stores, __WEBPACK_IMPORTED_MODULE_0__constants__.d.SESSIONSTORAGE, {
+                            get: function(key) {
+                                var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
+                                storage = storage ? JSON.parse(storage) : {};
+                                return storage[key];
+                            },
+                            set: function(key, value) {
+                                var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
+                                storage = storage ? JSON.parse(storage) : {};
+                                storage[key] = value;
+                                window.sessionStorage.setItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a, JSON.stringify(storage));
+                                return value;
+                            },
+                            has: function(key) {
+                                var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
+                                storage = storage ? JSON.parse(storage) : {};
+                                return storage.hasOwnProperty(key);
+                            }
+                        }), _stores), store = Object(__WEBPACK_IMPORTED_MODULE_1__util__.a)() ? stores[__WEBPACK_IMPORTED_MODULE_0__constants__.d.SESSIONSTORAGE] : stores[__WEBPACK_IMPORTED_MODULE_0__constants__.d.GLOBAL];
+                    },
+                    "./src/util.js": function(module, __webpack_exports__, __webpack_require__) {
+                        "use strict";
+                        function isSessionStorageEnabled() {
+                            try {
+                                if (window.sessionStorage) {
+                                    var value = Math.random().toString();
+                                    window.sessionStorage.setItem("__test__sessionStorage__", value);
+                                    var result = window.sessionStorage.getItem("__test__sessionStorage__");
+                                    window.sessionStorage.removeItem("__test__sessionStorage__");
+                                    if (value === result) return !0;
+                                }
+                            } catch (err) {}
+                            return !1;
+                        }
+                        __webpack_exports__.a = isSessionStorageEnabled;
+                    }
+                });
+            });
+        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
+    },
+    "./node_modules/braintree-paypal-client-config/index.js": function(module, exports, __webpack_require__) {
+        module.exports = __webpack_require__("./node_modules/braintree-paypal-client-config/dist/braintree-paypal-client-config.js");
+    },
     "./node_modules/cross-domain-safe-weakmap/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__interface__ = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/interface.js");
@@ -1066,7 +1286,7 @@
             CrossDomainSafeWeakMap.prototype._cleanupClosedWindows = function() {
                 for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
                     var value = keys[i];
-                    if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w)(value) && Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(value)) {
+                    if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(value) && Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(value)) {
                         if (weakmap) try {
                             weakmap.delete(value);
                         } catch (err) {}
@@ -1077,7 +1297,7 @@
                 }
             };
             CrossDomainSafeWeakMap.prototype.isSafeToReadWrite = function(key) {
-                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.w)(key)) return !1;
+                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(key)) return !1;
                 try {
                     Object(__WEBPACK_IMPORTED_MODULE_2__util__.a)(key && key.self);
                     Object(__WEBPACK_IMPORTED_MODULE_2__util__.a)(key && key[this.name]);
@@ -1166,12 +1386,15 @@
     },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        function isFileProtocol() {
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === CONSTANTS.FILE_PROTOCOL;
+        }
         function getActualDomain(win) {
             var location = win.location;
             if (!location) throw new Error("Can not read window location");
             var protocol = location.protocol;
             if (!protocol) throw new Error("Can not read window protocol");
-            if (protocol === CONSTANTS.FILE_PROTOCOL) return "file://";
+            if (protocol === CONSTANTS.FILE_PROTOCOL) return CONSTANTS.FILE_PROTOCOL + "//";
             var host = location.host;
             if (!host) throw new Error("Can not read window host");
             return protocol + "//" + host;
@@ -1619,33 +1842,34 @@
             }
             return !1;
         }
+        __webpack_exports__.q = isFileProtocol;
         __webpack_exports__.b = getActualDomain;
         __webpack_exports__.f = getDomain;
         __webpack_exports__.o = isActuallySameDomain;
-        __webpack_exports__.t = isSameDomain;
+        __webpack_exports__.u = isSameDomain;
         __webpack_exports__.l = getParent;
         __webpack_exports__.k = getOpener;
         __webpack_exports__.i = getFrames;
         __webpack_exports__.m = getTop;
         __webpack_exports__.c = getAllFramesInWindow;
-        __webpack_exports__.v = isTop;
-        __webpack_exports__.x = isWindowClosed;
-        __webpack_exports__.y = linkFrameWindow;
+        __webpack_exports__.w = isTop;
+        __webpack_exports__.y = isWindowClosed;
+        __webpack_exports__.z = linkFrameWindow;
         __webpack_exports__.n = getUserAgent;
         __webpack_exports__.h = getFrameByName;
         __webpack_exports__.a = findFrameByName;
-        __webpack_exports__.r = isOpener;
+        __webpack_exports__.s = isOpener;
         __webpack_exports__.d = getAncestor;
         __webpack_exports__.p = isAncestor;
-        __webpack_exports__.s = isPopup;
-        __webpack_exports__.q = isIframe;
+        __webpack_exports__.t = isPopup;
+        __webpack_exports__.r = isIframe;
         __webpack_exports__.e = getDistanceFromTop;
         __webpack_exports__.j = getNthParentFromTop;
-        __webpack_exports__.u = isSameTopWindow;
-        __webpack_exports__.z = matchDomain;
+        __webpack_exports__.v = isSameTopWindow;
+        __webpack_exports__.A = matchDomain;
         __webpack_exports__.g = getDomainFromUrl;
-        __webpack_exports__.A = onCloseWindow;
-        __webpack_exports__.w = isWindow;
+        __webpack_exports__.B = onCloseWindow;
+        __webpack_exports__.x = isWindow;
         var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__("./node_modules/cross-domain-utils/src/util.js"), CONSTANTS = {
             MOCK_PROTOCOL: "mock:",
             FILE_PROTOCOL: "file:",
@@ -1993,7 +2217,7 @@
                     deleteTunnelWindow(key);
                     continue;
                 }
-                Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(tunnelWindow.source) && deleteTunnelWindow(key);
+                Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(tunnelWindow.source) && deleteTunnelWindow(key);
             }
         }
         function addTunnelWindow(_ref2) {
@@ -2034,7 +2258,7 @@
                         deleteTunnelWindow(id);
                         return;
                     }
-                    if (tunnelWindow && tunnelWindow.source && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(tunnelWindow.source)) {
+                    if (tunnelWindow && tunnelWindow.source && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(tunnelWindow.source)) {
                         try {
                             tunnelWindow.canary();
                         } catch (err) {
@@ -2105,7 +2329,7 @@
                     }
                     var _frame = _ref;
                     try {
-                        if (_frame && _frame !== window && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(_frame) && _frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) return _frame;
+                        if (_frame && _frame !== window && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.u)(_frame) && _frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) return _frame;
                     } catch (err) {
                         continue;
                     }
@@ -2113,10 +2337,10 @@
                 try {
                     var frame = Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.h)(win, Object(__WEBPACK_IMPORTED_MODULE_5__common__.c)(Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)()));
                     if (!frame) return;
-                    return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] ? frame : new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
+                    return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.u)(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] ? frame : new __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a(function(resolve) {
                         var interval = void 0, timeout = void 0;
                         interval = setInterval(function() {
-                            if (frame && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) {
+                            if (frame && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.u)(frame) && frame[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT]) {
                                 clearInterval(interval);
                                 clearTimeout(timeout);
                                 return resolve(frame);
@@ -2139,12 +2363,12 @@
             return !!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.n)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !__WEBPACK_IMPORTED_MODULE_3__conf__.a.ALLOW_POSTMESSAGE_POPUP;
         }
         function needsBridgeForWin(win) {
-            return !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(window, win);
+            return !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.v)(window, win);
         }
         function needsBridgeForDomain(domain, win) {
             if (domain) {
                 if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)() !== Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g)(domain)) return !0;
-            } else if (win && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t)(win)) return !0;
+            } else if (win && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(win)) return !0;
             return !1;
         }
         function needsBridge(_ref) {
@@ -2173,7 +2397,7 @@
             if (!remoteWindow) throw new Error("Window not found to register sendMessage to");
             var sendMessageWrapper = function(remoteWin, message, remoteDomain) {
                 if (remoteWin !== win) throw new Error("Remote window does not match window");
-                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.z)(remoteDomain, domain)) throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
+                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(remoteDomain, domain)) throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
                 sendMessage(message);
             };
             remoteWindow.sendMessagePromise.resolve(sendMessageWrapper);
@@ -2185,7 +2409,7 @@
             remoteWindow.sendMessagePromise.asyncReject(err);
         }
         function sendBridgeMessage(win, message, domain) {
-            var messagingChild = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.r)(window, win), messagingParent = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.r)(win, window);
+            var messagingChild = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s)(window, win), messagingParent = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.s)(win, window);
             if (!messagingChild && !messagingParent) throw new Error("Can only send messages to and from parent and popup windows");
             var remoteWindow = findRemoteWindow(win);
             if (!remoteWindow) throw new Error("Window not found to send message to");
@@ -2454,7 +2678,7 @@
                     _ref2 = _i.value;
                 }
                 var winName = _ref2;
-                Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(__WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName].win) && delete __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName];
+                Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(__WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName].win) && delete __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[winName];
             }
             if (name && win) {
                 var winOptions = __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByWin.get(win) || __WEBPACK_IMPORTED_MODULE_5__global__.a.popupWindowsByName[name] || {};
@@ -2496,7 +2720,7 @@
     "./node_modules/post-robot/src/compat/ie.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function emulateIERestrictions(sourceWindow, targetWindow) {
-            if (!__WEBPACK_IMPORTED_MODULE_1__conf__.a.ALLOW_POSTMESSAGE_POPUP && !1 === Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
+            if (!__WEBPACK_IMPORTED_MODULE_1__conf__.a.ALLOW_POSTMESSAGE_POPUP && !1 === Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.v)(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
         }
         __webpack_exports__.a = emulateIERestrictions;
         var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1__conf__ = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
@@ -2665,7 +2889,7 @@
                                 _ref3 = _i2.value;
                             }
                             var _ref4 = _ref3, regex = _ref4.regex, listener = _ref4.listener;
-                            if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.z)(regex, domain)) return listener;
+                            if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(regex, domain)) return listener;
                         }
                     }
                     if (winListeners[__WEBPACK_IMPORTED_MODULE_5__conf__.b.WILDCARD]) return winListeners[__WEBPACK_IMPORTED_MODULE_5__conf__.b.WILDCARD];
@@ -2830,7 +3054,7 @@
                     var level = void 0;
                     level = -1 !== __WEBPACK_IMPORTED_MODULE_1__conf__.c.indexOf(message.name) || message.type === __WEBPACK_IMPORTED_MODULE_1__conf__.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
                     __WEBPACK_IMPORTED_MODULE_2__lib__.i.logLevel(level, [ "\n\n\t", "#receive", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", origin, "\n\n", message ]);
-                    if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(source)) __WEBPACK_IMPORTED_MODULE_2__lib__.i.debug("Source window is closed - can not send " + message.type + " " + message.name); else {
+                    if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(source)) __WEBPACK_IMPORTED_MODULE_2__lib__.i.debug("Source window is closed - can not send " + message.type + " " + message.name); else {
                         message.data && (message.data = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.b)(source, origin, message.data));
                         __WEBPACK_IMPORTED_MODULE_4__types__.a[message.type](source, origin, message);
                     }
@@ -2883,12 +3107,12 @@
             if (!Object(__WEBPACK_IMPORTED_MODULE_5__listeners__.f)(message.hash)) {
                 var options = Object(__WEBPACK_IMPORTED_MODULE_5__listeners__.e)(message.hash);
                 if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
+                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.A)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
                 options.ack = !0;
             }
         }, _RECEIVE_MESSAGE_TYPE[__WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
             function respond(data) {
-                return message.fireAndForget || Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x)(source) ? __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve() : Object(__WEBPACK_IMPORTED_MODULE_4__send__.a)(source, _extends({
+                return message.fireAndForget || Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.y)(source) ? __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve() : Object(__WEBPACK_IMPORTED_MODULE_4__send__.a)(source, _extends({
                     target: message.originalSource,
                     hash: message.hash,
                     name: message.name
@@ -2903,7 +3127,7 @@
                 type: __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.ACK
             }), __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
+                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.A)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
                 var data = message.data;
                 return options.handler({
                     source: source,
@@ -2931,7 +3155,7 @@
             if (!Object(__WEBPACK_IMPORTED_MODULE_5__listeners__.f)(message.hash)) {
                 var options = Object(__WEBPACK_IMPORTED_MODULE_5__listeners__.e)(message.hash);
                 if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
-                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + options.domain);
+                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.A)(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + options.domain);
                 Object(__WEBPACK_IMPORTED_MODULE_5__listeners__.c)(message.hash);
                 if (message.ack === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_ACK.ERROR) return options.respond(new Error(message.error), null);
                 if (message.ack === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_ACK.SUCCESS) {
@@ -2966,7 +3190,7 @@
                 level = -1 !== __WEBPACK_IMPORTED_MODULE_2__conf__.c.indexOf(message.name) || message.type === __WEBPACK_IMPORTED_MODULE_2__conf__.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
                 __WEBPACK_IMPORTED_MODULE_3__lib__.i.logLevel(level, [ "\n\n\t", "#send", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", domain || __WEBPACK_IMPORTED_MODULE_2__conf__.b.WILDCARD, "\n\n", message ]);
                 if (win === window) throw new Error("Attemping to send message to self");
-                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(win)) throw new Error("Window is closed");
+                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(win)) throw new Error("Window is closed");
                 __WEBPACK_IMPORTED_MODULE_3__lib__.i.debug("Running send message strategies", message);
                 var messages = [], serializedMessage = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.g)((_jsonStringify = {}, 
                 _jsonStringify[__WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_PROPS.POSTROBOT] = message, 
@@ -3027,15 +3251,15 @@
         var _require = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
         SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
             if (needsBridgeForBrowser() || isBridge()) {
-                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through bridge disabled between same domain windows");
-                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
+                if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(win)) throw new Error("Post message through bridge disabled between same domain windows");
+                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.v)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
                 return sendBridgeMessage(win, serializedMessage, domain);
             }
         };
         SEND_MESSAGE_STRATEGIES[__WEBPACK_IMPORTED_MODULE_1__conf__.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage, domain) {
             if (needsBridgeForBrowser()) {
-                if (!Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) throw new Error("Post message through global disabled between different domain windows");
-                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
+                if (!Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(win)) throw new Error("Post message through global disabled between different domain windows");
+                if (!1 !== Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.v)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
                 var foreignGlobal = win[__WEBPACK_IMPORTED_MODULE_1__conf__.b.WINDOW_PROPS.POSTROBOT];
                 if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
                 return foreignGlobal.receiveMessage({
@@ -3482,7 +3706,7 @@
                 if (!methods) throw new Error("Could not find any methods this window has privileges to call");
                 var meth = methods[data.id];
                 if (!meth) throw new Error("Could not find method with id: " + data.id);
-                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
+                if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.A)(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
                 __WEBPACK_IMPORTED_MODULE_6__log__.a.debug("Call local method", data.name, data.args);
                 return __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a.try(function() {
                     return meth.method.apply({
@@ -3574,7 +3798,7 @@
             return "[object RegExp]" === Object.prototype.toString.call(item);
         }
         function getWindowType() {
-            return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.s)() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.POPUP : Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.q)() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.IFRAME : __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.FULLPAGE;
+            return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.POPUP : Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.r)() ? __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.IFRAME : __WEBPACK_IMPORTED_MODULE_2__conf__.b.WINDOW_TYPES.FULLPAGE;
         }
         function jsonStringify(obj, replacer, indent) {
             var objectToJSON = void 0, arrayToJSON = void 0;
@@ -3665,7 +3889,7 @@
                 var win = targetWindow;
                 domain = options.domain || __WEBPACK_IMPORTED_MODULE_3__conf__.b.WILDCARD;
                 var hash = options.name + "_" + Object(__WEBPACK_IMPORTED_MODULE_5__lib__.p)();
-                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(win)) throw new Error("Target window is closed");
+                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(win)) throw new Error("Target window is closed");
                 var hasResult = !1, requestPromises = __WEBPACK_IMPORTED_MODULE_6__global__.a.requestPromises.get(win);
                 if (!requestPromises) {
                     requestPromises = [];
@@ -3701,7 +3925,7 @@
                         if (options.fireAndForget) return resolve();
                         var ackTimeout = __WEBPACK_IMPORTED_MODULE_3__conf__.a.ACK_TIMEOUT, resTimeout = options.timeout || __WEBPACK_IMPORTED_MODULE_3__conf__.a.RES_TIMEOUT, cycleTime = 100, cycle = function cycle() {
                             if (!hasResult) {
-                                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(win)) return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
+                                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(win)) return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
                                 ackTimeout -= cycleTime;
                                 resTimeout -= cycleTime;
                                 if (responseListener.ack) {
@@ -3841,7 +4065,7 @@
                 });
             }
             if (listenerOptions.window && options.errorOnClose) var interval = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.m)(function() {
-                if (win && "object" === (void 0 === win ? "undefined" : _typeof(win)) && Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(win)) {
+                if (win && "object" === (void 0 === win ? "undefined" : _typeof(win)) && Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(win)) {
                     interval.cancel();
                     listenerOptions.handleError(new Error("Post message target window is closed"));
                 }
@@ -4576,7 +4800,7 @@
                 });
             };
             ChildComponent.prototype.hasValidParentDomain = function() {
-                return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.z)(this.component.allowedParentDomains, this.getParentDomain());
+                return Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.A)(this.component.allowedParentDomains, this.getParentDomain());
             };
             ChildComponent.prototype.init = function() {
                 return this.onInit;
@@ -4598,7 +4822,7 @@
                 if (props.type === __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.RAW) props = props.value; else {
                     if (props.type !== __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID) throw new Error("Unrecognized props type: " + props.type);
                     var parentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_5__window__.c)();
-                    if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(parentComponentWindow)) {
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.u)(parentComponentWindow)) {
                         if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                         throw new Error("Parent component window is on a different domain - expected " + Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)() + " - can not retrieve props");
                     }
@@ -5020,10 +5244,14 @@
             };
             Component.prototype.listenDelegate = function() {
                 var _this3 = this;
-                Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)(__WEBPACK_IMPORTED_MODULE_9__constants__.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref3) {
-                    var source = _ref3.source, origin = _ref3.origin, data = _ref3.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
+                Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)(__WEBPACK_IMPORTED_MODULE_9__constants__.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name, function(_ref3) {
+                    _ref3.source, _ref3.origin, _ref3.data;
+                    return !0;
+                });
+                Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)(__WEBPACK_IMPORTED_MODULE_9__constants__.POST_MESSAGE.DELEGATE + "_" + this.name, function(_ref4) {
+                    var source = _ref4.source, origin = _ref4.origin, data = _ref4.data, domain = _this3.getDomain(null, data.env || _this3.defaultEnv);
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
-                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.z)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(domain, origin)) throw new Error("Can not render from " + origin + " - expected " + domain.toString());
                     var delegate = _this3.delegate(source, data.options);
                     return {
                         overrides: delegate.getOverrides(data.context),
@@ -5033,21 +5261,28 @@
                     };
                 });
             };
+            Component.prototype.canRenderTo = function(win) {
+                return Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send)(win, __WEBPACK_IMPORTED_MODULE_9__constants__.POST_MESSAGE.ALLOW_DELEGATE + "_" + this.name).then(function(_ref5) {
+                    return _ref5.data;
+                }).catch(function() {
+                    return !1;
+                });
+            };
             Component.prototype.getValidDomain = function(url) {
                 if (url) {
                     var domain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.g)(url);
                     if ("string" == typeof this.domain && domain === this.domain) return domain;
                     if (this.domain && "object" === _typeof(this.domain)) for (var _iterator3 = Object.keys(this.domain), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                        var _ref4;
+                        var _ref6;
                         if (_isArray3) {
                             if (_i3 >= _iterator3.length) break;
-                            _ref4 = _iterator3[_i3++];
+                            _ref6 = _iterator3[_i3++];
                         } else {
                             _i3 = _iterator3.next();
                             if (_i3.done) break;
-                            _ref4 = _i3.value;
+                            _ref6 = _i3.value;
                         }
-                        var env = _ref4;
+                        var env = _ref6;
                         if ("test" !== env && domain === this.domain[env]) return domain;
                     }
                 }
@@ -5542,7 +5777,7 @@
             }
             _inherits(DelegateComponent, _BaseComponent);
             DelegateComponent.prototype.watchForClose = function() {
-                var _this2 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.A)(this.source, function() {
+                var _this2 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.B)(this.source, function() {
                     return _this2.destroy();
                 }, 3e3);
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
@@ -5796,7 +6031,7 @@
                 getOutlet: __WEBPACK_IMPORTED_MODULE_4__constants__.DELEGATE.CALL_ORIGINAL
             },
             loadUrl: function(url) {
-                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t)(this.window)) try {
+                if (Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(this.window)) try {
                     if (this.window.location && this.window.location.replace) {
                         this.window.location.replace(url);
                         return;
@@ -5980,13 +6215,13 @@
             };
             ParentComponent.prototype.validateParentDomain = function() {
                 var domain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)();
-                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.z)(this.component.allowedParentDomains, domain)) throw new __WEBPACK_IMPORTED_MODULE_11__error__.c("Can not be rendered by domain: " + domain);
+                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(this.component.allowedParentDomains, domain)) throw new __WEBPACK_IMPORTED_MODULE_11__error__.c("Can not be rendered by domain: " + domain);
             };
             ParentComponent.prototype.renderTo = function(win, element) {
                 var _this3 = this;
                 return this.tryInit(function() {
                     if (win === window) return _this3.render(element);
-                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(window, win)) throw new Error("Can only renderTo an adjacent frame");
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.v)(window, win)) throw new Error("Can only renderTo an adjacent frame");
                     if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : _typeof(element)) + " " + element);
                     _this3.checkAllowRenderTo(win);
                     _this3.component.log("render_" + _this3.context + "_to_win", {
@@ -6021,10 +6256,10 @@
             };
             ParentComponent.prototype.checkAllowRenderTo = function(win) {
                 if (!win) throw this.component.createError("Must pass window to renderTo");
-                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t)(win)) {
+                if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(win)) {
                     var origin = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)(), domain = this.component.getDomain(null, this.props.env);
                     if (!domain) throw new Error("Could not determine domain to allow remote render");
-                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.z)(domain, origin)) throw new Error("Can not render remotely to " + domain.toString() + " - can only render to " + origin);
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(domain, origin)) throw new Error("Can not render remotely to " + domain.toString() + " - can only render to " + origin);
                 }
             };
             ParentComponent.prototype.registerActiveComponent = function() {
@@ -6039,7 +6274,7 @@
                 if (this.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP) return {
                     ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.OPENER
                 };
-                if (renderToWindow === window) return Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.v)(window) ? {
+                if (renderToWindow === window) return Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.w)(window) ? {
                     ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.TOP
                 } : {
                     ref: __WEBPACK_IMPORTED_MODULE_7__constants__.WINDOW_REFERENCES.PARENT,
@@ -6069,7 +6304,7 @@
                 };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.t)(renderTo), uid = Object(__WEBPACK_IMPORTED_MODULE_6__lib__._0)(), tag = this.component.tag, sProps = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain, props = secureProps ? {
+                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(renderTo), uid = Object(__WEBPACK_IMPORTED_MODULE_6__lib__._0)(), tag = this.component.tag, sProps = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain, props = secureProps ? {
                     type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID,
                     uid: uid
                 } : {
@@ -6168,6 +6403,11 @@
                         domain && (needsBridgeParams.domain = domain);
                         var needsBridge = __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
                         if (bridgeUrl) {
+                            bridgeUrl = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)(bridgeUrl, {
+                                query: {
+                                    version: _this10.component.version
+                                }
+                            });
                             var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
                             if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
                             return needsBridge ? __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(bridgeUrl, bridgeDomain).then(function(result) {
@@ -6288,7 +6528,7 @@
                 }
             };
             ParentComponent.prototype.watchForClose = function() {
-                var _this16 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(this.window, function() {
+                var _this16 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.B)(this.window, function() {
                     _this16.component.log("detect_close_child");
                     return __WEBPACK_IMPORTED_MODULE_3_zalgo_promise_src__.a.try(function() {
                         return _this16.props.onClose(__WEBPACK_IMPORTED_MODULE_7__constants__.CLOSE_REASONS.CLOSE_DETECTED);
@@ -6395,7 +6635,7 @@
                 return this.driver.show.call(this);
             };
             ParentComponent.prototype.checkClose = function() {
-                var _this22 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.A)(this.window, function() {
+                var _this22 = this, closeWindowListener = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.B)(this.window, function() {
                     _this22.userClose();
                 }, 50, 500);
                 this.clean.register(closeWindowListener.cancel);
@@ -6447,7 +6687,7 @@
                 }).then(function() {
                     return _this26.destroyComponent();
                 }).then(function() {
-                    _this26.childExports && _this26.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(win) && _this26.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.I);
+                    _this26.childExports && _this26.context === __WEBPACK_IMPORTED_MODULE_7__constants__.CONTEXT_TYPES.POPUP && !Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(win) && _this26.childExports.close().catch(__WEBPACK_IMPORTED_MODULE_6__lib__.I);
                 });
             };
             ParentComponent.prototype.destroyComponent = function() {
@@ -6485,7 +6725,7 @@
                 });
             };
             ParentComponent.prototype.focus = function() {
-                if (!this.window || Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.x)(this.window)) throw new Error("No window to focus");
+                if (!this.window || Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.y)(this.window)) throw new Error("No window to focus");
                 if (this.driver.openOnFocus) try {
                     window.open("", this.childWindowName).focus();
                 } catch (err) {}
@@ -6999,6 +7239,7 @@
             RESIZE: XCOMPONENT + "_resize",
             ONRESIZE: XCOMPONENT + "_onresize",
             DELEGATE: XCOMPONENT + "_delegate",
+            ALLOW_DELEGATE: XCOMPONENT + "_allow_delegate",
             ERROR: XCOMPONENT + "_error",
             HIDE: XCOMPONENT + "_hide",
             SHOW: XCOMPONENT + "_show"
@@ -7587,7 +7828,7 @@
             } catch (err) {
                 throw new __WEBPACK_IMPORTED_MODULE_5__error__.b("Can not open popup window - " + (err.stack || err.message));
             }
-            if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.x)(win)) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(win)) {
                 throw new __WEBPACK_IMPORTED_MODULE_5__error__.b("Can not open popup window - blocked");
             }
             return win;
@@ -7647,7 +7888,7 @@
             }
             var promise = new __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a(function(resolve, reject) {
                 frame.addEventListener("load", function() {
-                    Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.y)(frame);
+                    Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.z)(frame);
                     resolve(frame);
                 });
                 frame.addEventListener("error", function(err) {
@@ -8167,7 +8408,7 @@
     "./node_modules/xcomponent/src/lib/global.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function globalFor(win) {
-            if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.t)(win)) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.u)(win)) {
                 win[__WEBPACK_IMPORTED_MODULE_1__constants__.__XCOMPONENT__] || (win[__WEBPACK_IMPORTED_MODULE_1__constants__.__XCOMPONENT__] = {});
                 return win[__WEBPACK_IMPORTED_MODULE_1__constants__.__XCOMPONENT__];
             }
@@ -8917,6 +9158,9 @@
                 _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_ID] = paymentID, _track));
             }
         }
+        function getDefaultReturnUrl() {
+            return Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.q)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
+        }
         function createCheckoutToken(env, client, paymentDetails) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_checkout_token");
             env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
@@ -8931,8 +9175,8 @@
             payment = _extends({}, payment);
             payment.intent = payment.intent || "sale";
             payment.redirect_urls = payment.redirect_urls || {};
-            payment.redirect_urls.return_url = payment.redirect_urls.return_url || window.location.protocol + "//" + window.location.host;
-            payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || window.location.protocol + "//" + window.location.host;
+            payment.redirect_urls.return_url = payment.redirect_urls.return_url || getDefaultReturnUrl();
+            payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || getDefaultReturnUrl();
             payment.payer = payment.payer || {};
             payment.payer.payment_method = payment.payer.payment_method || "paypal";
             return createAccessToken(env, client).then(function(accessToken) {
@@ -8944,7 +9188,7 @@
                         Authorization: "Bearer " + accessToken
                     };
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)({
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_5__config__.n.paymentApiUrls[env],
                         headers: headers,
@@ -8970,8 +9214,8 @@
             order = _extends({}, order);
             order.intent = order.intent || "CAPTURE";
             order.redirect_urls = order.redirect_urls || {};
-            order.redirect_urls.return_url = order.redirect_urls.return_url || window.location.protocol + "//" + window.location.host;
-            order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || window.location.protocol + "//" + window.location.host;
+            order.redirect_urls.return_url = order.redirect_urls.return_url || getDefaultReturnUrl();
+            order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || getDefaultReturnUrl();
             order.purchase_units = order.purchase_units || [];
             order.purchase_units[0] = order.purchase_units[0] || {};
             order.purchase_units.forEach(function(unit) {
@@ -8982,7 +9226,7 @@
                     Authorization: "Bearer " + accessToken
                 };
                 meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)({
+                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
                     method: "post",
                     url: __WEBPACK_IMPORTED_MODULE_5__config__.n.orderApiUrls[env],
                     headers: headers,
@@ -9002,8 +9246,8 @@
             billingDetails = _extends({}, billingDetails);
             billingDetails.plan = billingDetails.plan || {};
             billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
-            billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || window.location.protocol + "//" + window.location.host;
-            billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || window.location.protocol + "//" + window.location.host;
+            billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || getDefaultReturnUrl();
+            billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || getDefaultReturnUrl();
             billingDetails.payer = billingDetails.payer || {};
             billingDetails.payer.payment_method = billingDetails.payer.payment_method || "paypal";
             return createAccessToken(env, client).then(function(accessToken) {
@@ -9011,7 +9255,7 @@
                     if (experienceDetails) return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve(createExperienceProfile(env, client, experienceDetails));
                 }).then(function(experienceID) {
                     experienceID && (billingDetails.experience_profile_id = experienceID);
-                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)({
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
                         method: "post",
                         url: __WEBPACK_IMPORTED_MODULE_5__config__.n.billingApiUrls[env],
                         headers: {
@@ -9035,14 +9279,14 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, proxyRest = {}, createAccessToken = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(function(env, client) {
+        }, proxyRest = {}, createAccessToken = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(function(env, client) {
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_access_token");
             env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
             var clientID = client[env];
             if (!clientID) throw new Error("Client ID not found for env: " + env);
             if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
             var basicAuth = Object(__WEBPACK_IMPORTED_MODULE_2_Base64__.btoa)(clientID + ":");
-            return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)({
+            return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
                 method: "post",
                 url: __WEBPACK_IMPORTED_MODULE_5__config__.n.authApiUrls[env],
                 headers: {
@@ -9058,7 +9302,7 @@
             });
         }, {
             time: 6e5
-        }), createExperienceProfile = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(function(env, client) {
+        }), createExperienceProfile = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.G)(function(env, client) {
             var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_experience_profile");
             env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
@@ -9067,7 +9311,7 @@
             experienceDetails.temporary = !0;
             experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
             return createAccessToken(env, client).then(function(accessToken) {
-                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.O)({
+                return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
                     method: "post",
                     url: __WEBPACK_IMPORTED_MODULE_5__config__.n.experienceApiUrls[env],
                     headers: {
@@ -9102,7 +9346,7 @@
             var data = _ref.data;
             proxyRest = data;
         });
-        parentWin && Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_5__config__.n.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.t)(parentWin) && Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send)(parentWin, "proxy_rest", {
+        parentWin && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.D)() && !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.u)(parentWin) && Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send)(parentWin, "proxy_rest", {
             createAccessToken: createAccessToken,
             createExperienceProfile: createExperienceProfile,
             createCheckoutToken: createCheckoutToken,
@@ -9119,18 +9363,20 @@
         function onLegacyPaymentAuthorize(method) {
             onAuthorize = method;
             return __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.try(function() {
-                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.B)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(__WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeUrl, __WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeDomain).then(function(postBridge) {
+                if (__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge && !Object(__WEBPACK_IMPORTED_MODULE_2__lib__.D)()) return __WEBPACK_IMPORTED_MODULE_0_post_robot_src__.bridge.openBridge(Object(__WEBPACK_IMPORTED_MODULE_2__lib__.g)(__WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeUrl, {
+                    version: Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)()
+                }), __WEBPACK_IMPORTED_MODULE_3__config__.n.postBridgeDomain).then(function(postBridge) {
                     return Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send)(postBridge, "onLegacyPaymentAuthorize", {
                         method: method
                     }, {
                         domain: __WEBPACK_IMPORTED_MODULE_3__config__.n.paypalDomain
-                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.F);
+                    }).then(__WEBPACK_IMPORTED_MODULE_2__lib__.H);
                 });
             });
         }
         __webpack_exports__.a = onLegacyPaymentAuthorize;
         var __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), onAuthorize = void 0;
-        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.B)() && Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)("onLegacyPaymentAuthorize", {
+        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.D)() && Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.on)("onLegacyPaymentAuthorize", {
             window: window.parent
         }, function(_ref) {
             var data = _ref.data;
@@ -9162,7 +9408,7 @@
                                     win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                         value: Math.random().toString()
                                     });
-                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.F);
+                                    win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = __WEBPACK_IMPORTED_MODULE_2__lib__.H);
                                 }
                             } catch (err) {
                                 return;
@@ -9300,7 +9546,8 @@
             return Button;
         });
         var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__ = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
-        __webpack_require__("./node_modules/beaver-logger/client/index.js")), __WEBPACK_IMPORTED_MODULE_4__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_8__experiments__ = __webpack_require__("./src/experiments.js"), __WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_10__checkout_util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_11__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_12__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_13__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_14__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_15__templates_funding__ = __webpack_require__("./src/components/button/templates/funding.js"), __WEBPACK_IMPORTED_MODULE_16__templates_config__ = __webpack_require__("./src/components/button/templates/config.js"), _extends = Object.assign || function(target) {
+        __webpack_require__("./node_modules/beaver-logger/client/index.js")), __WEBPACK_IMPORTED_MODULE_4_braintree_paypal_client_config__ = __webpack_require__("./node_modules/braintree-paypal-client-config/index.js"), __WEBPACK_IMPORTED_MODULE_5__checkout__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_braintree_paypal_client_config__), 
+        __webpack_require__("./src/components/checkout/index.js")), __WEBPACK_IMPORTED_MODULE_6__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_7__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_8__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_9__experiments__ = __webpack_require__("./src/experiments.js"), __WEBPACK_IMPORTED_MODULE_10__checkout_popupBridge__ = __webpack_require__("./src/components/checkout/popupBridge.js"), __WEBPACK_IMPORTED_MODULE_11__checkout_util__ = __webpack_require__("./src/components/checkout/util.js"), __WEBPACK_IMPORTED_MODULE_12__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_13__templates__ = __webpack_require__("./src/components/button/templates/index.js"), __WEBPACK_IMPORTED_MODULE_14__templates_component_validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), __WEBPACK_IMPORTED_MODULE_15__braintree__ = __webpack_require__("./src/components/button/braintree.js"), __WEBPACK_IMPORTED_MODULE_16__templates_funding__ = __webpack_require__("./src/components/button/templates/funding.js"), __WEBPACK_IMPORTED_MODULE_17__templates_config__ = __webpack_require__("./src/components/button/templates/config.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -9310,34 +9557,34 @@
             tag: "paypal-button",
             name: "ppbutton",
             buildUrl: function(props) {
-                var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
-                return __WEBPACK_IMPORTED_MODULE_5__config__.n.buttonUrls[env];
+                var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.buttonUrls[env];
             },
             contexts: {
                 iframe: !0,
                 popup: !1
             },
             scrolling: !1,
-            containerTemplate: __WEBPACK_IMPORTED_MODULE_12__templates__.b,
+            containerTemplate: __WEBPACK_IMPORTED_MODULE_13__templates__.b,
             prerenderTemplate: function(_ref) {
                 var _this = this, props = _ref.props, jsxDom = _ref.jsxDom, template = jsxDom("div", {
-                    innerHTML: Object(__WEBPACK_IMPORTED_MODULE_12__templates__.a)({
+                    innerHTML: Object(__WEBPACK_IMPORTED_MODULE_13__templates__.a)({
                         props: props
                     })
                 });
                 template.addEventListener("click", function() {
                     Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.p)("button_pre_template_click");
-                    if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("allow_full_page_fallback")) {
+                    if (Object(__WEBPACK_IMPORTED_MODULE_7__lib__.k)("allow_full_page_fallback")) {
                         Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("pre_template_force_full_page");
-                        var checkout = __WEBPACK_IMPORTED_MODULE_4__checkout__.a.init({
-                            onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.F
+                        var checkout = __WEBPACK_IMPORTED_MODULE_5__checkout__.a.init({
+                            onAuthorize: __WEBPACK_IMPORTED_MODULE_7__lib__.H
                         });
                         checkout.openContainer().then(function() {
                             checkout.showContainer();
                             checkout.event.triggerOnce(__WEBPACK_IMPORTED_MODULE_1_xcomponent_src__.a.EVENTS.CLOSE);
                         });
                         _this.props.payment().then(function(token) {
-                            window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.g)(__WEBPACK_IMPORTED_MODULE_5__config__.n.checkoutUrl, {
+                            window.top.location = Object(__WEBPACK_IMPORTED_MODULE_7__lib__.g)(__WEBPACK_IMPORTED_MODULE_6__config__.n.checkoutUrl, {
                                 token: token
                             });
                         }).catch(function(err) {
@@ -9348,10 +9595,10 @@
                 return jsxDom("html", null, jsxDom("body", null, template));
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.n.ppobjects, "4.0.167";
+                return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.r)();
             },
             get domain() {
-                return __WEBPACK_IMPORTED_MODULE_5__config__.n.paypalDomains;
+                return __WEBPACK_IMPORTED_MODULE_6__config__.n.paypalDomains;
             },
             attributes: {
                 iframe: {
@@ -9359,15 +9606,15 @@
                 }
             },
             validate: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.p)("button_render_ineligible");
-                if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.z)()) throw new Error("Can not render button in IE intranet mode");
+                Object(__WEBPACK_IMPORTED_MODULE_7__lib__.y)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.p)("button_render_ineligible");
+                if (Object(__WEBPACK_IMPORTED_MODULE_7__lib__.B)()) throw new Error("Can not render button in IE intranet mode");
             },
             props: {
                 sessionID: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.s)();
                     },
                     queryParam: !0
                 },
@@ -9375,7 +9622,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.U)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_7__lib__.W)();
                     },
                     queryParam: !0
                 },
@@ -9384,10 +9631,10 @@
                     required: !1,
                     queryParam: !0,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                     },
                     validate: function(env) {
-                        if (env && !__WEBPACK_IMPORTED_MODULE_5__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                        if (env && !__WEBPACK_IMPORTED_MODULE_6__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
                 client: {
@@ -9398,7 +9645,7 @@
                     },
                     sendToChild: !1,
                     validate: function(client, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                         if (!client[env]) throw new Error("Client ID not found for env: " + env);
                         if ("string" == typeof client[env]) {
                             if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
@@ -9409,7 +9656,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.l.MANUAL;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.l.MANUAL;
                     }
                 },
                 prefetchLogin: {
@@ -9421,8 +9668,8 @@
                     required: !1,
                     decorate: function(original, props) {
                         if (original) {
-                            var source = Object(__WEBPACK_IMPORTED_MODULE_16__templates_config__.h)(props.style && props.style.label);
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.x)(source).then(function(result) {
+                            var source = Object(__WEBPACK_IMPORTED_MODULE_17__templates_config__.h)(props.style && props.style.label);
+                            Object(__WEBPACK_IMPORTED_MODULE_7__lib__.z)(source).then(function(result) {
                                 result && original && original();
                             });
                             return original;
@@ -9434,8 +9681,8 @@
                     required: !1,
                     queryParam: !0,
                     def: function(props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
-                        if (env === __WEBPACK_IMPORTED_MODULE_5__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_5__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_5__config__.n.stage;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
+                        if (env === __WEBPACK_IMPORTED_MODULE_6__config__.d.STAGE || env === __WEBPACK_IMPORTED_MODULE_6__config__.d.LOCAL) return __WEBPACK_IMPORTED_MODULE_6__config__.n.stage;
                     }
                 },
                 braintree: {
@@ -9446,9 +9693,9 @@
                         if (!props.client) throw new Error("Expected client prop to be passed with Braintree authorization keys");
                     },
                     decorate: function(braintree, props) {
-                        var env = props.env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                        var env = props.env || __WEBPACK_IMPORTED_MODULE_6__config__.n.env;
                         return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(props.client).then(function(client) {
-                            return Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.a)(braintree, client[env]);
+                            return Object(__WEBPACK_IMPORTED_MODULE_15__braintree__.a)(braintree, client[env]);
                         });
                     }
                 },
@@ -9461,20 +9708,20 @@
                     decorate: function(original) {
                         return function() {
                             var _this2 = this, data = {}, actions = {
-                                request: __WEBPACK_IMPORTED_MODULE_6__lib__.O,
+                                request: __WEBPACK_IMPORTED_MODULE_7__lib__.Q,
                                 payment: {
                                     create: function(options) {
                                         return _this2.props.braintree ? _this2.props.braintree.then(function(client) {
-                                            return client.createPayment(Object(__WEBPACK_IMPORTED_MODULE_14__braintree__.b)(options.payment || options));
+                                            return client.createPayment(Object(__WEBPACK_IMPORTED_MODULE_15__braintree__.b)(options.payment || options));
                                         }) : __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(_this2.props.client).then(function(client) {
-                                            return __WEBPACK_IMPORTED_MODULE_7__api__.a.payment.create(_this2.props.env, client, options);
+                                            return __WEBPACK_IMPORTED_MODULE_8__api__.a.payment.create(_this2.props.env, client, options);
                                         });
                                     }
                                 },
                                 order: {
                                     create: function(options) {
                                         return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.hash(_this2.props.client).then(function(client) {
-                                            return __WEBPACK_IMPORTED_MODULE_7__api__.a.order.create(_this2.props.env, client, options);
+                                            return __WEBPACK_IMPORTED_MODULE_8__api__.a.order.create(_this2.props.env, client, options);
                                         });
                                     }
                                 },
@@ -9487,19 +9734,19 @@
                                     }
                                 }
                             };
-                            if (Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
+                            if (Object(__WEBPACK_IMPORTED_MODULE_7__lib__.k)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                             this.memoizedToken = __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(original, this, [ data, actions ]);
-                            this.props.env !== __WEBPACK_IMPORTED_MODULE_5__config__.d.PRODUCTION || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
+                            this.props.env !== __WEBPACK_IMPORTED_MODULE_6__config__.d.PRODUCTION || Object(__WEBPACK_IMPORTED_MODULE_7__lib__.k)("disable_payment_timeout") || (this.memoizedToken = this.memoizedToken.timeout(1e4, new Error("Timed out waiting 10000ms for payment")));
                             this.memoizedToken = this.memoizedToken.then(function(token) {
                                 var _track;
                                 if (!token) {
                                     Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.f)("no_token_passed_to_payment");
                                     throw new Error("No value passed to payment");
                                 }
-                                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
-                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.RECIEVE_PAYMENT, 
-                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.CONTEXT_TYPE[Object(__WEBPACK_IMPORTED_MODULE_10__checkout_util__.c)(token)], 
-                                _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CONTEXT_ID] = token, _track[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
+                                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.CHECKOUT, 
+                                _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.RECIEVE_PAYMENT, 
+                                _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CONTEXT_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.CONTEXT_TYPE[Object(__WEBPACK_IMPORTED_MODULE_11__checkout_util__.c)(token)], 
+                                _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CONTEXT_ID] = token, _track[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SESSION_UID] = _this2.props.buttonSessionID, 
                                 _track));
                                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                                 return token;
@@ -9514,7 +9761,7 @@
                     queryParam: !0,
                     validate: function() {
                         var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref2$allowed = _ref2.allowed, allowed = void 0 === _ref2$allowed ? [] : _ref2$allowed, _ref2$disallowed = _ref2.disallowed, disallowed = void 0 === _ref2$disallowed ? [] : _ref2$disallowed;
-                        Object(__WEBPACK_IMPORTED_MODULE_15__templates_funding__.c)({
+                        Object(__WEBPACK_IMPORTED_MODULE_16__templates_funding__.c)({
                             allowed: allowed,
                             disallowed: disallowed,
                             remembered: []
@@ -9525,20 +9772,33 @@
                     },
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed;
-                        allowed && -1 !== allowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && !Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)() && allowed.splice(allowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
-                        var remembered = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.n)(function(sources) {
+                        allowed && -1 !== allowed.indexOf(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO) && !Object(__WEBPACK_IMPORTED_MODULE_7__lib__.w)() && allowed.splice(allowed.indexOf(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO), 1);
+                        var remembered = Object(__WEBPACK_IMPORTED_MODULE_7__lib__.o)(function(sources) {
                             return sources;
                         });
-                        if (!Object(__WEBPACK_IMPORTED_MODULE_6__lib__.u)() || Object(__WEBPACK_IMPORTED_MODULE_6__lib__.j)("disable_venmo")) {
-                            remembered && -1 !== remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && remembered.splice(remembered.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO), 1);
-                            disallowed && -1 === disallowed.indexOf(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO) && disallowed.push(__WEBPACK_IMPORTED_MODULE_5__config__.f.VENMO);
+                        if (!Object(__WEBPACK_IMPORTED_MODULE_7__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_7__lib__.k)("disable_venmo")) {
+                            remembered && -1 !== remembered.indexOf(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO) && remembered.splice(remembered.indexOf(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO), 1);
+                            disallowed && -1 === disallowed.indexOf(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO) && disallowed.push(__WEBPACK_IMPORTED_MODULE_6__config__.f.VENMO);
+                        }
+                        for (var _iterator = Object(__WEBPACK_IMPORTED_MODULE_4_braintree_paypal_client_config__.get)(__WEBPACK_IMPORTED_MODULE_4_braintree_paypal_client_config__.KEY.PAYPAL_FUNDING_DISALLOW, []), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref4;
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref4 = _iterator[_i++];
+                            } else {
+                                _i = _iterator.next();
+                                if (_i.done) break;
+                                _ref4 = _i.value;
+                            }
+                            var source = _ref4;
+                            -1 === disallowed.indexOf(source) && disallowed.push(source);
                         }
                         return {
                             allowed: allowed,
                             disallowed: disallowed,
                             remembered: remembered,
                             remember: function(sources) {
-                                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.N)(sources);
+                                Object(__WEBPACK_IMPORTED_MODULE_7__lib__.P)(sources);
                             }
                         };
                     }
@@ -9555,11 +9815,11 @@
                     decorate: function(original) {
                         return function() {
                             var _track2;
-                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track2 = {}, _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.LOAD, 
-                            _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.BUTTON_RENDER, 
-                            _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.BUTTON_TYPE.IFRAME, 
-                            _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _track2[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SOURCE] = this.props.source, 
+                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track2 = {}, _track2[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.LOAD, 
+                            _track2[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.BUTTON_RENDER, 
+                            _track2[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.BUTTON_TYPE.IFRAME, 
+                            _track2[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _track2[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                             return original.apply(this, arguments);
@@ -9577,12 +9837,12 @@
                                 token: data.paymentToken
                             });
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_authorize");
-                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track3 = {}, _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
-                            _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.CHECKOUT_AUTHORIZE, 
-                            _track3[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track3 = {}, _track3[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.CHECKOUT, 
+                            _track3[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.CHECKOUT_AUTHORIZE, 
+                            _track3[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track3));
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_authorize_ineligible");
-                            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.c)("authorize");
+                            Object(__WEBPACK_IMPORTED_MODULE_7__lib__.y)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_authorize_ineligible");
+                            Object(__WEBPACK_IMPORTED_MODULE_7__lib__.c)("authorize");
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                             var restart = actions.restart;
                             actions.restart = function() {
@@ -9591,14 +9851,16 @@
                                 });
                             };
                             actions.redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(win || window.top, url || data.returnUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)(win || window.top, url || data.returnUrl), actions.close() ]);
                             };
-                            actions.payment.tokenize = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.E)(function() {
+                            actions.payment.tokenize = Object(__WEBPACK_IMPORTED_MODULE_7__lib__.G)(function() {
                                 if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                                 return _this3.props.braintree.then(function(client) {
                                     return client.tokenizePayment(data);
                                 }).then(function(res) {
-                                    return res.nonce;
+                                    return {
+                                        nonce: res.nonce
+                                    };
                                 });
                             });
                             var execute = actions.payment.execute;
@@ -9611,11 +9873,12 @@
                                     return result;
                                 });
                             };
-                            __WEBPACK_IMPORTED_MODULE_8__experiments__.b.trigger({
+                            __WEBPACK_IMPORTED_MODULE_9__experiments__.b.trigger({
                                 paymentToken: data.paymentToken
                             });
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                                if (_this3.props.braintree) return actions.payment.tokenize().then(function(nonce) {
+                                if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref5) {
+                                    var nonce = _ref5.nonce;
                                     Object.defineProperty(data, "nonce", {
                                         get: function() {
                                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("nonce_getter");
@@ -9627,7 +9890,7 @@
                             }).then(function() {
                                 return original.call(_this3, data, actions);
                             }).catch(function(err) {
-                                return _this3.error(err);
+                                return _this3.props.onError(err);
                             });
                         };
                     }
@@ -9640,13 +9903,13 @@
                         return function(data, actions) {
                             var _track4;
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_cancel");
-                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track4 = {}, _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.CHECKOUT, 
-                            _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.CHECKOUT_CANCEL, 
-                            _track4[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track4 = {}, _track4[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.CHECKOUT, 
+                            _track4[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.CHECKOUT_CANCEL, 
+                            _track4[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track4));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                             var redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_7__lib__.O)(win || window.top, url || data.cancelUrl), actions.close() ]);
                             };
                             return original.call(this, data, _extends({}, actions, {
                                 redirect: redirect
@@ -9662,11 +9925,11 @@
                         return function(data) {
                             var _track5;
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_click");
-                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track5 = {}, _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.BUTTON, 
-                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.BUTTON_CLICK, 
-                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.BUTTON_TYPE.IFRAME, 
-                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _track5[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
+                            Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track5 = {}, _track5[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.BUTTON, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.BUTTON_CLICK, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.BUTTON_TYPE.IFRAME, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                            _track5[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
                             Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
                             return original.apply(this, arguments);
@@ -9678,10 +9941,10 @@
                     required: !1,
                     queryParam: "locale.x",
                     def: function() {
-                        var _getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.h)();
+                        var _getBrowserLocale = Object(__WEBPACK_IMPORTED_MODULE_7__lib__.h)();
                         return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                     },
-                    validate: __WEBPACK_IMPORTED_MODULE_13__templates_component_validate__.a
+                    validate: __WEBPACK_IMPORTED_MODULE_14__templates_component_validate__.a
                 },
                 style: {
                     type: "object",
@@ -9690,23 +9953,23 @@
                     alias: "buttonStyle",
                     def: function() {
                         return {
-                            color: __WEBPACK_IMPORTED_MODULE_11__constants__.b.GOLD,
-                            shape: __WEBPACK_IMPORTED_MODULE_11__constants__.h.PILL,
-                            size: __WEBPACK_IMPORTED_MODULE_11__constants__.i.SMALL,
-                            label: __WEBPACK_IMPORTED_MODULE_11__constants__.c.CHECKOUT,
+                            color: __WEBPACK_IMPORTED_MODULE_12__constants__.b.GOLD,
+                            shape: __WEBPACK_IMPORTED_MODULE_12__constants__.h.PILL,
+                            size: __WEBPACK_IMPORTED_MODULE_12__constants__.i.SMALL,
+                            label: __WEBPACK_IMPORTED_MODULE_12__constants__.c.CHECKOUT,
                             fundingicons: !1
                         };
                     },
                     validate: function() {
                         var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                        Object(__WEBPACK_IMPORTED_MODULE_13__templates_component_validate__.c)(style);
+                        Object(__WEBPACK_IMPORTED_MODULE_14__templates_component_validate__.c)(style);
                     }
                 },
                 displayTo: {
                     type: "string",
                     required: !1,
                     def: function() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.m.ALL;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.m.ALL;
                     }
                 },
                 validate: {
@@ -9717,7 +9980,7 @@
                     type: "string",
                     required: !1,
                     get value() {
-                        return __WEBPACK_IMPORTED_MODULE_5__config__.n.logLevel;
+                        return __WEBPACK_IMPORTED_MODULE_6__config__.n.logLevel;
                     }
                 },
                 popupBridge: {
@@ -9725,8 +9988,8 @@
                     required: !1,
                     get value() {
                         return {
-                            open: Object(__WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__.b)(),
-                            awaitOpener: __WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__.a
+                            open: Object(__WEBPACK_IMPORTED_MODULE_10__checkout_popupBridge__.b)(),
+                            awaitOpener: __WEBPACK_IMPORTED_MODULE_10__checkout_popupBridge__.a
                         };
                     }
                 },
@@ -9742,24 +10005,24 @@
             }
         });
         if (Button.isChild()) {
-            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.l)().then(function(pageRenderTime) {
-                var _track6, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_5__config__.a.FUNDING_SOURCE + "]")).map(function(el) {
-                    return el.getAttribute(__WEBPACK_IMPORTED_MODULE_5__config__.a.CARD) || el.getAttribute(__WEBPACK_IMPORTED_MODULE_5__config__.a.FUNDING_SOURCE);
+            Object(__WEBPACK_IMPORTED_MODULE_7__lib__.m)().then(function(pageRenderTime) {
+                var _track6, fundingSources = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_6__config__.a.FUNDING_SOURCE + "]")).map(function(el) {
+                    return el.getAttribute(__WEBPACK_IMPORTED_MODULE_6__config__.a.CARD) || el.getAttribute(__WEBPACK_IMPORTED_MODULE_6__config__.a.FUNDING_SOURCE);
                 }).filter(function(source) {
-                    return source && source !== __WEBPACK_IMPORTED_MODULE_5__config__.f.CARD;
+                    return source && source !== __WEBPACK_IMPORTED_MODULE_6__config__.f.CARD;
                 });
-                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track6 = {}, _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.STATE.BUTTON, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_5__config__.e.TRANSITION.BUTTON_LOAD, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_5__config__.e.BUTTON_TYPE.IFRAME, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.FUNDING_LIST] = fundingSources.join(":"), 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.FUNDING_COUNT] = fundingSources.length, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
-                _track6[__WEBPACK_IMPORTED_MODULE_5__config__.e.KEY.BUTTON_LAYOUT] = window.xprops && window.xprops.style && window.xprops.style.layout || __WEBPACK_IMPORTED_MODULE_11__constants__.d.HORIZONTAL, 
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.o)((_track6 = {}, _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.STATE.BUTTON, 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_6__config__.e.TRANSITION.BUTTON_LOAD, 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_TYPE] = __WEBPACK_IMPORTED_MODULE_6__config__.e.BUTTON_TYPE.IFRAME, 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.FUNDING_LIST] = fundingSources.join(":"), 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.FUNDING_COUNT] = fundingSources.length, 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.PAGE_LOAD_TIME] = pageRenderTime, 
+                _track6[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.BUTTON_LAYOUT] = window.xprops && window.xprops.style && window.xprops.style.layout || __WEBPACK_IMPORTED_MODULE_12__constants__.d.HORIZONTAL, 
                 _track6));
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
             });
-            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)(window.xprops.logLevel);
-            Object(__WEBPACK_IMPORTED_MODULE_9__checkout_popupBridge__.a)();
+            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_7__lib__.S)(window.xprops.logLevel);
+            Object(__WEBPACK_IMPORTED_MODULE_10__checkout_popupBridge__.a)();
         }
     },
     "./src/components/button/constants.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9866,8 +10129,8 @@
     },
     "./src/components/button/hacks.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_5__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_6__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_7__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_8__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_9__constants__ = __webpack_require__("./src/components/button/constants.js");
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_3__api__.a.payment, "create", function(_ref) {
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_xcomponent_src__ = __webpack_require__("./node_modules/xcomponent/src/index.js"), __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_4__api__ = __webpack_require__("./src/api/index.js"), __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_6__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_7__login__ = __webpack_require__("./src/components/login/index.js"), __WEBPACK_IMPORTED_MODULE_8__checkout__ = __webpack_require__("./src/components/checkout/index.js"), __WEBPACK_IMPORTED_MODULE_9__component__ = __webpack_require__("./src/components/button/component.jsx"), __WEBPACK_IMPORTED_MODULE_10__constants__ = __webpack_require__("./src/components/button/constants.js");
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_4__api__.a.payment, "create", function(_ref) {
             var createOriginal = _ref.original, createContext = _ref.context, _ref$args = _ref.args, env = _ref$args[0], client = _ref$args[1], options = _ref$args[2], experience = _ref$args[3];
             options.payment || (options = {
                 payment: options,
@@ -9875,18 +10138,18 @@
             });
             return createOriginal.call(createContext, env, client, options);
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.style, "validate", function(_ref2) {
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_9__component__.a.props.style, "validate", function(_ref2) {
             var callOriginal = _ref2.callOriginal, _ref2$args = _ref2.args, style = _ref2$args[0];
             if (!style) return callOriginal();
-            style && "creditblue" === style.color && (style.color = __WEBPACK_IMPORTED_MODULE_9__constants__.b.DARKBLUE);
-            style && "generic" === style.label && (style.label = __WEBPACK_IMPORTED_MODULE_9__constants__.c.PAYPAL);
-            if (style && (!style.label || style.label === __WEBPACK_IMPORTED_MODULE_9__constants__.c.CHECKOUT) && "tiny" === style.size) {
+            style && "creditblue" === style.color && (style.color = __WEBPACK_IMPORTED_MODULE_10__constants__.b.DARKBLUE);
+            style && "generic" === style.label && (style.label = __WEBPACK_IMPORTED_MODULE_10__constants__.c.PAYPAL);
+            if (style && (!style.label || style.label === __WEBPACK_IMPORTED_MODULE_10__constants__.c.CHECKOUT) && "tiny" === style.size) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("unsupported_button_size_tiny");
-                style.size = __WEBPACK_IMPORTED_MODULE_9__constants__.i.SMALL;
+                style.size = __WEBPACK_IMPORTED_MODULE_10__constants__.i.SMALL;
             }
             return callOriginal();
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_8__component__.a, "render", function(_ref3) {
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_9__component__.a, "render", function(_ref3) {
             var callOriginal = _ref3.callOriginal, _ref3$args = _ref3.args, props = _ref3$args[0];
             if (props.billingAgreement) {
                 props.payment = props.billingAgreement;
@@ -9894,7 +10157,7 @@
             }
             return callOriginal();
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_8__component__.a.props.payment, "decorate", function(_ref4) {
+        Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_9__component__.a.props.payment, "decorate", function(_ref4) {
             var original = _ref4.original, context = _ref4.context, _ref4$args = _ref4.args, originalPayment = _ref4$args[0];
             return original.call(context, function(data, actions) {
                 var _this = this;
@@ -9905,7 +10168,7 @@
                     function rejectActions(err) {
                         reject(err);
                     }
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(actions.payment, "create", function(_ref5) {
+                    Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(actions.payment, "create", function(_ref5) {
                         var createOriginal = _ref5.original, createContext = _ref5.context, _ref5$args = _ref5.args, options = _ref5$args[0], experience = _ref5$args[1];
                         options.payment || (options = {
                             payment: options,
@@ -9913,9 +10176,9 @@
                         });
                         return createOriginal.call(createContext, options);
                     });
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.f)(resolveData, data);
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.f)(resolveData, actions);
-                    Object(__WEBPACK_IMPORTED_MODULE_5__lib__.f)(rejectActions, actions);
+                    Object(__WEBPACK_IMPORTED_MODULE_6__lib__.f)(resolveData, data);
+                    Object(__WEBPACK_IMPORTED_MODULE_6__lib__.f)(resolveData, actions);
+                    Object(__WEBPACK_IMPORTED_MODULE_6__lib__.f)(rejectActions, actions);
                     var ctx = {
                         props: {
                             env: _this.props.env,
@@ -9931,10 +10194,10 @@
                 });
             });
         });
-        if (__WEBPACK_IMPORTED_MODULE_8__component__.a.isChild()) {
+        if (__WEBPACK_IMPORTED_MODULE_9__component__.a.isChild()) {
             window.Promise || (window.Promise = __WEBPACK_IMPORTED_MODULE_2_zalgo_promise_src__.a);
             var debounce = !1;
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref6) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_8__checkout__.a, "renderTo", function(_ref6) {
                 var callOriginal = _ref6.callOriginal, _ref6$args = _ref6.args, props = _ref6$args[1];
                 if (!debounce) {
                     debounce = !0;
@@ -9959,16 +10222,16 @@
                         enabled = !1;
                     }
                 });
-                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref7) {
+                Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_8__checkout__.a, "renderTo", function(_ref7) {
                     var callOriginal = _ref7.callOriginal;
                     if (enabled) return callOriginal();
                 });
             }
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.y)() && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_7__checkout__.a.renderTo = function(win) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.A)() && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("ie_full_page") && (__WEBPACK_IMPORTED_MODULE_8__checkout__.a.renderTo = function(win) {
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("force_ie_full_page");
                 Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g)();
-                var checkout = __WEBPACK_IMPORTED_MODULE_7__checkout__.a.init({
-                    onAuthorize: __WEBPACK_IMPORTED_MODULE_5__lib__.F
+                var checkout = __WEBPACK_IMPORTED_MODULE_8__checkout__.a.init({
+                    onAuthorize: __WEBPACK_IMPORTED_MODULE_6__lib__.H
                 });
                 checkout.delegate(win);
                 checkout.openContainer().then(function() {
@@ -9976,20 +10239,20 @@
                     checkout.showContainer();
                 });
                 window.xprops.payment().then(function(token) {
-                    window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.g)(__WEBPACK_IMPORTED_MODULE_4__config__.n.checkoutUrl, {
+                    window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.g)(__WEBPACK_IMPORTED_MODULE_5__config__.n.checkoutUrl, {
                         token: token
                     });
                 }).catch(function(err) {
                     checkout.error(err);
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_7__checkout__.a, "renderTo", function(_ref8) {
-                var callOriginal = _ref8.callOriginal, _ref8$args = _ref8.args, props = _ref8$args[1], handleError = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.I)(function(err) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.k)("allow_full_page_fallback") && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_8__checkout__.a, "renderTo", function(_ref8) {
+                var callOriginal = _ref8.callOriginal, _ref8$args = _ref8.args, props = _ref8$args[1], handleError = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.K)(function(err) {
                     try {
                         console.error(err && err.stack);
                     } catch (err2) {}
                     return window.xprops.payment().then(function(token) {
-                        window.top.location = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.g)(__WEBPACK_IMPORTED_MODULE_4__config__.n.checkoutUrl, {
+                        window.top.location = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.g)(__WEBPACK_IMPORTED_MODULE_5__config__.n.checkoutUrl, {
                             token: token
                         });
                     });
@@ -9997,11 +10260,25 @@
                 props.onError = handleError;
                 return callOriginal().catch(handleError);
             });
-            Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(__WEBPACK_IMPORTED_MODULE_6__login__.a, "prerender", function(_ref9) {
+            Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_7__login__.a, "prerender", function(_ref9) {
                 var callOriginal = _ref9.callOriginal;
                 delete _ref9.args[0].env;
                 return callOriginal();
             });
+            var parent = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.l)(window), top = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.m)(window);
+            if (top && parent) {
+                var canRenderTop = top === parent;
+                if (!canRenderTop) {
+                    __WEBPACK_IMPORTED_MODULE_8__checkout__.a.canRenderTo(top).then(function(result) {
+                        canRenderTop = result;
+                    });
+                    Object(__WEBPACK_IMPORTED_MODULE_6__lib__.M)(__WEBPACK_IMPORTED_MODULE_8__checkout__.a, "renderTo", function(_ref10) {
+                        var _ref10$args = _ref10.args, win = _ref10$args[0], props = _ref10$args[1], el = _ref10$args[2], original = _ref10.original, context = _ref10.context;
+                        canRenderTop || (win = Object(__WEBPACK_IMPORTED_MODULE_3_cross_domain_utils_src__.l)(window));
+                        return original.call(context, win, props, el);
+                    });
+                }
+            }
         }
     },
     "./src/components/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -10043,7 +10320,10 @@
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M38.333 24H1.667C.75 24 0 23.28 0 22.4V1.6C0 .72.75 0 1.667 0h36.666C39.25 0 40 .72 40 1.6v20.8c0 .88-.75 1.6-1.667 1.6z" style="fill: rgb(21, 21, 21);"/>\n  <path class="st0" d="M 9.229 8.55 C 9.592 8.431 9.977 8.365 10.382 8.365 C 12.14 8.365 13.602 9.613 13.939 11.268 L 16.427 10.762 C 15.855 7.946 13.365 5.824 10.379 5.824 C 9.693 5.824 9.037 5.935 8.42 6.142 L 9.229 8.55 Z" style="fill: rgb(255, 205, 5);"/>\n  <path class="st1" d="M 6.292 16.616 L 7.973 14.716 C 7.221 14.052 6.749 13.08 6.749 11.999 C 6.749 10.917 7.221 9.945 7.973 9.279 L 6.292 7.38 C 5.015 8.51 4.209 10.16 4.209 11.999 C 4.209 13.836 5.019 15.488 6.292 16.616" style="fill: rgb(0, 164, 224);"/>\n  <path class="st2" d="M 13.939 12.723 C 13.602 14.379 12.136 15.626 10.382 15.626 C 9.977 15.626 9.592 15.562 9.229 15.442 L 8.422 17.849 C 9.039 18.055 9.698 18.167 10.382 18.167 C 13.365 18.167 15.855 16.05 16.427 13.235 L 13.939 12.723 Z" style="fill: rgb(239, 66, 35);"/>\n  <path d="M 18.603 14.794 C 18.521 14.663 18.412 14.453 18.343 14.296 C 17.948 13.381 17.932 12.434 18.264 11.526 C 18.631 10.527 19.33 9.765 20.233 9.378 C 21.366 8.889 22.626 8.986 23.713 9.632 C 24.406 10.028 24.897 10.641 25.269 11.506 C 25.319 11.615 25.358 11.737 25.398 11.835 L 18.603 14.794 Z M 20.87 10.845 C 20.066 11.194 19.65 11.949 19.734 12.834 L 23.151 11.363 C 22.565 10.675 21.802 10.444 20.87 10.845 Z M 23.578 14.044 C 23.578 14.044 23.578 14.044 23.578 14.044 L 23.508 13.998 C 23.302 14.331 22.985 14.595 22.584 14.768 C 21.82 15.1 21.113 15.014 20.602 14.569 L 20.559 14.643 C 20.559 14.643 20.559 14.643 20.559 14.643 L 19.688 15.936 C 19.905 16.088 20.134 16.213 20.376 16.315 C 21.333 16.712 22.311 16.693 23.279 16.273 C 23.978 15.971 24.527 15.509 24.9 14.924 L 23.578 14.044 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 27.77 7.466 L 27.77 14.673 L 28.891 15.13 L 28.254 16.614 L 27.018 16.1 C 26.742 15.979 26.552 15.797 26.409 15.588 C 26.272 15.377 26.171 15.085 26.171 14.698 L 26.171 7.466 L 27.77 7.466 Z" style="fill: rgb(255, 255, 255);"/>\n  <g transform="matrix(0.037801, 0, 0, 0.037801, 1.0913, 0.089785)">\n    <path d="M782.7,337.2c0-16.2,7.2-30.8,18.5-40.7l-30.4-33.9c-20.6,18.2-33.6,44.9-33.6,74.6c0,29.7,12.9,56.4,33.6,74.7l30.4-34&#10;&#9;&#9;C789.8,367.9,782.6,353.4,782.7,337.2z" style="fill: rgb(255, 255, 255);"/>\n    <path d="M836.7,391.4c-6,0-11.8-1-17.1-2.8L805,431.7c9.9,3.3,20.6,5.1,31.6,5.2c48.2,0,88.4-34.1,97.7-79.6l-44.7-9.1&#10;&#9;&#9;C884.6,372.9,862.8,391.4,836.7,391.4z" style="fill: rgb(255, 255, 255);"/>\n    <path d="M836.8,237.6c-11,0-21.7,1.8-31.6,5.1l14.4,43.2c5.4-1.8,11.2-2.8,17.1-2.8c26.2,0,48,18.6,53,43.3l44.7-9.1&#10;&#9;&#9;C925.2,272,885,237.7,836.8,237.6z" style="fill: rgb(255, 255, 255);"/>\n  </g>\n</svg>';
     },
     "./src/components/button/templates/component/logos/elv.svg": function(module, exports) {
-        module.exports = '<svg width="38" height="32" viewBox="0 0 38 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <mask id="mask-2" fill="white">\n    <polygon id="" points="0 35.8930957 31.9150829 35.8930957 31.9150829 0 0 0" transform="matrix(1, 0, 0, 1, 0, 0)"/>\n  </mask>\n  <g transform="matrix(1, 0, 0, 1, 2.025162, 0.682172)">\n    <path d="M 4.557 0.468 L 29.28 0.468 C 30.98 0.468 32.371 1.578 32.371 2.934 L 32.371 27.771 C 32.371 29.127 30.98 30.237 29.28 30.237 L 4.557 30.237 C 2.857 30.237 1.466 29.127 1.466 27.771 L 1.466 2.934 C 1.466 1.578 2.857 0.468 4.557 0.468 Z" id="Fill-1" fill="#FEFEFE"/>\n    <path d="M 4.565 0.468 L 29.35 0.468 C 31.054 0.468 32.449 1.573 32.449 2.925 L 32.449 27.664 C 32.449 29.015 31.054 30.12 29.35 30.12 L 4.565 30.12 C 2.861 30.12 1.466 29.015 1.466 27.664 L 1.466 2.925 C 1.466 1.573 2.861 0.468 4.565 0.468 Z" id="Stroke-3" stroke-width="0.935373913" style="stroke: rgb(0, 112, 187); fill: rgb(255, 255, 255);"/>\n    <path d="M 29.189 26.783 L 16.549 26.783 C 15.513 26.783 14.811 25.744 14.811 25.005 C 14.811 24.318 14.828 6.133 14.811 5.429 C 14.793 4.725 16.022 3.634 16.847 3.634 C 17.672 3.651 29.171 3.634 29.171 3.634 L 29.171 12.805 L 22.465 12.805 L 22.465 8.457 C 22.465 8.457 22.026 8.44 21.464 8.457 C 21.183 8.475 20.709 8.756 20.709 9.214 C 20.692 10.165 20.709 21.15 20.709 21.431 C 20.709 21.695 20.885 22.047 21.464 22.065 C 22.044 22.1 22.483 22.065 22.483 22.065 L 22.483 17.365 L 29.189 17.365 L 29.189 26.783 Z" id="Fill-21" fill="#EE4123" mask="url(#mask-2)"/>\n    <path d="M 12.651 8.422 C 12.651 8.422 12.142 8.387 11.686 8.405 C 11.212 8.422 10.808 8.88 10.808 9.161 L 10.808 12.805 L 12.651 12.805 L 12.651 8.422 Z M 6.963 3.634 C 8.35 3.651 18.462 3.634 18.462 3.634 L 18.462 17.365 L 10.808 17.347 L 10.808 21.378 C 10.808 21.449 11.001 22.047 11.686 22.083 L 12.634 22.083 L 12.634 18.685 L 18.48 18.685 L 18.462 26.783 L 6.91 26.783 C 6.91 26.783 5.172 26.501 5.014 24.811 C 5.032 24.177 5.014 5.711 5.014 5.394 C 5.014 5.095 5.681 3.634 6.963 3.634 L 6.963 3.634 Z" id="Fill-22" fill="#0071BB" mask="url(#mask-2)"/>\n    <path d="M 18.48 18.685 L 14.811 18.685 L 14.811 25.005 C 14.811 25.727 15.513 26.765 16.531 26.783 L 18.462 26.783 L 18.48 18.685 Z" id="Fill-23" fill="#231F20" mask="url(#mask-2)"/>\n    <path d="M 18.462 17.365 L 18.462 3.634 L 16.847 3.634 C 16.022 3.634 14.793 4.725 14.811 5.43 L 14.811 17.365 L 18.462 17.365 Z" id="Fill-24" fill="#231F20" mask="url(#mask-2)"/>\n  </g>\n</svg>\n';
+        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="100" height="32" viewBox="0 0 100 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path fill="#005DA0" d="M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z"/>\n  <path fill="#005DA0" d="M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z"/>\n  <path fill="#005DA0" d="M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z"/>\n  <path fill="#005DA0" d="M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z"/>\n  <path fill="#005DA0" d="M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z"/>\n  <path fill="#005DA0" d="M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z"/>\n  <path fill="#005DA0" d="M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z"/>\n  <path fill="#005DA0" d="M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z"/>\n  <path fill="#005DA0" d="M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z"/>\n  <path fill="#005DA0" d="M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z"/>\n  <path fill="#005DA0" d="M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z"/>\n  <path fill="#005DA0" d="M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z"/>\n  <path fill="#005DA0" d="M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z"/>\n  <path fill="#005DA0" d="M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z"/>\n  <path fill="#005DA0" d="M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z"/>\n  <path fill="#AEB1BC" d="M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z"/>\n  <g transform="matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)">\n    <path fill="#005DA0" d="M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z"/>\n    <path fill="#005DA0" d="M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z"/>\n    <polygon fill="#005DA0" points="161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;"/>\n  </g>\n</svg>';
+    },
+    "./src/components/button/templates/component/logos/elv_white.svg": function(module, exports) {
+        module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="100" height="32" viewBox="0 0 100 32" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M 39.871 18.772 C 37.78 18.772 35.843 18.278 34.272 17.425 L 34.81 13.935 C 36.409 14.769 38.051 15.263 39.826 15.263 C 41.809 15.263 42.661 14.544 42.661 13.284 C 42.661 10.45 34.34 11.641 34.34 5.59 C 34.34 2.53 36.319 0.055 40.885 0.055 C 42.639 0.055 44.549 0.416 45.946 0.999 L 45.474 4.395 C 43.989 3.926 42.481 3.633 41.108 3.633 C 38.86 3.633 38.275 4.395 38.275 5.364 C 38.275 8.175 46.598 6.895 46.598 13.013 C 46.576 16.569 44.101 18.772 39.871 18.772 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 62.233 14.881 L 62.233 18.413 L 49.951 18.413 L 49.951 0.345 L 62.233 0.345 L 62.233 3.946 L 54.022 3.946 L 54.022 7.549 L 60.705 7.549 L 60.705 10.787 L 54.022 10.787 L 54.022 14.905 L 62.233 14.905 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 72.313 12.565 L 69.905 12.565 L 69.905 18.437 L 65.834 18.437 L 65.834 0.345 L 72.313 0.345 C 77.328 0.345 79.376 2.328 79.376 6.534 C 79.376 10.361 77.355 12.565 72.313 12.565 Z M 72.313 3.766 L 69.905 3.766 L 69.905 9.302 L 72.313 9.302 C 74.314 9.302 75.194 8.808 75.194 6.534 C 75.194 4.352 74.428 3.766 72.313 3.766 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 91.797 14.924 L 85.246 14.924 L 84.234 18.437 L 79.939 18.437 L 86.193 0.345 L 91.031 0.345 L 97.352 18.437 L 92.808 18.437 L 91.797 14.924 Z M 88.04 5.318 L 86.238 11.506 L 90.85 11.506 L 89.118 5.318 L 88.645 3.408 L 88.578 3.408 L 88.04 5.318 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 39.736 30.157 L 39.692 31.867 L 34.382 31.867 L 34.382 23.475 L 36.299 23.475 L 36.299 30.157 L 39.736 30.157 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 44.798 31.215 L 44.778 31.215 C 44.371 31.71 43.722 31.977 42.931 31.977 C 41.648 31.977 40.818 31.257 40.818 29.727 C 40.818 28.468 41.695 27.613 43.222 27.613 C 43.722 27.613 44.168 27.68 44.527 27.796 L 44.527 27.411 C 44.527 26.736 44.168 26.421 43.244 26.421 C 42.505 26.421 42.007 26.534 41.382 26.782 L 41.245 25.387 C 41.919 25.095 42.707 24.936 43.563 24.936 C 45.563 24.936 46.263 25.792 46.263 27.658 L 46.263 31.867 L 44.933 31.867 L 44.798 31.215 Z M 44.549 28.966 C 44.393 28.896 44.056 28.828 43.583 28.828 C 42.819 28.828 42.46 29.12 42.46 29.727 C 42.46 30.38 42.842 30.63 43.427 30.63 C 44.012 30.63 44.549 30.271 44.549 29.842 L 44.549 28.966 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 50.02 32.002 C 49.21 32.002 48.466 31.842 47.883 31.529 L 48.062 30.088 C 48.625 30.405 49.41 30.561 49.996 30.561 C 50.693 30.561 50.986 30.29 50.986 29.887 C 50.986 28.807 47.84 29.436 47.84 27.051 C 47.84 25.838 48.667 24.959 50.403 24.959 C 51.075 24.959 51.752 25.095 52.336 25.32 L 52.201 26.736 C 51.64 26.512 50.897 26.396 50.381 26.396 C 49.816 26.396 49.503 26.625 49.503 26.961 C 49.503 27.995 52.603 27.366 52.603 29.707 C 52.603 31.101 51.862 32.002 50.02 32.002 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 56.026 26.375 L 56.026 29.842 C 56.026 30.36 56.295 30.582 56.836 30.582 C 57.014 30.582 57.239 30.561 57.374 30.514 L 57.464 31.776 C 57.239 31.888 56.789 31.956 56.295 31.956 C 54.946 31.956 54.27 31.169 54.27 29.887 L 54.27 26.352 L 53.506 26.352 L 53.506 25.095 L 54.337 25.095 L 54.631 23.562 L 56.002 23.451 L 56.002 25.116 L 57.51 25.116 L 57.51 26.421 L 56.026 26.421 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 60.885 32.002 C 60.073 32.002 59.331 31.842 58.748 31.529 L 58.929 30.088 C 59.49 30.405 60.275 30.561 60.862 30.561 C 61.561 30.561 61.851 30.29 61.851 29.887 C 61.851 28.807 58.702 29.436 58.702 27.051 C 58.702 25.838 59.534 24.959 61.269 24.959 C 61.943 24.959 62.615 25.095 63.203 25.32 L 63.069 26.736 C 62.505 26.512 61.764 26.396 61.246 26.396 C 60.681 26.396 60.367 26.625 60.367 26.961 C 60.367 27.995 63.47 27.366 63.47 29.707 C 63.47 31.101 62.729 32.002 60.885 32.002 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 69.365 26.736 C 69.028 26.625 68.603 26.534 68.22 26.534 C 66.958 26.534 66.53 27.051 66.53 28.49 C 66.53 29.954 67.116 30.514 68.174 30.514 C 68.623 30.514 69.05 30.425 69.41 30.271 L 69.525 31.616 C 69.119 31.867 68.511 32.002 67.792 32.002 C 65.787 32.002 64.732 30.854 64.732 28.49 C 64.732 26.242 65.653 24.981 67.835 24.981 C 68.397 24.981 69.05 25.095 69.479 25.276 L 69.365 26.736 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 75.078 31.867 L 75.078 27.546 C 75.078 26.849 74.743 26.491 74.001 26.491 C 73.508 26.491 73.055 26.714 72.855 27.008 L 72.855 31.867 L 71.122 31.867 L 71.122 23.16 L 72.855 23.069 L 72.855 24.622 L 72.83 25.52 L 72.855 25.545 C 73.348 25.116 73.979 24.959 74.541 24.959 C 75.98 24.959 76.812 25.926 76.812 27.546 L 76.812 31.867 L 75.078 31.867 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 78.658 31.867 L 78.658 25.139 L 80.052 25.072 L 80.21 26.199 L 80.231 26.199 C 80.66 25.387 81.313 24.981 82.098 24.981 C 82.39 24.981 82.663 25.028 82.84 25.072 L 82.731 26.782 C 82.528 26.714 82.257 26.667 81.985 26.667 C 81.088 26.667 80.413 27.321 80.413 28.468 L 80.413 31.867 L 78.658 31.867 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 85.382 24.35 C 84.708 24.35 84.395 24.172 84.395 23.609 C 84.395 23.136 84.708 22.867 85.382 22.867 C 86.058 22.867 86.375 23.113 86.375 23.609 C 86.354 24.105 86.058 24.35 85.382 24.35 Z M 84.484 31.867 L 84.484 25.139 L 86.259 25.072 L 86.259 31.888 L 84.484 31.888 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 88.757 31.867 L 88.757 26.375 L 87.902 26.375 L 87.902 25.095 L 88.757 25.095 L 88.757 24.798 C 88.757 23.79 89.454 22.935 91.076 22.935 C 91.459 22.935 91.885 22.979 92.178 23.069 L 92.063 24.195 C 91.863 24.147 91.636 24.126 91.411 24.126 C 90.738 24.126 90.466 24.399 90.466 24.825 L 90.466 25.072 L 91.907 25.072 L 91.907 26.352 L 90.466 26.352 L 90.466 31.842 L 88.757 31.842 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 95.486 26.375 L 95.486 29.842 C 95.486 30.36 95.754 30.582 96.296 30.582 C 96.473 30.582 96.698 30.561 96.834 30.514 L 96.924 31.776 C 96.698 31.888 96.249 31.956 95.754 31.956 C 94.406 31.956 93.729 31.169 93.729 29.887 L 93.729 26.352 L 92.965 26.352 L 92.965 25.095 L 93.798 25.095 L 94.09 23.562 L 95.461 23.451 L 95.461 25.116 L 96.969 25.116 L 96.969 26.421 L 95.486 26.421 Z" style="fill: rgb(255, 255, 255);"/>\n  <path d="M 20.357 8.826 L 15.368 5.081 L 10.379 1.334 C 10.033 1.074 9.54 1.146 9.281 1.493 L 4.883 7.322 C 4.811 7.409 4.768 7.51 4.754 7.624 C 4.68 7.93 4.782 8.248 5.043 8.45 L 8.022 10.677 L 12.042 13.698 L 15.021 15.926 C 15.281 16.13 15.629 16.13 15.888 15.97 C 15.991 15.912 16.062 15.854 16.136 15.752 L 20.531 9.91 C 20.763 9.578 20.706 9.087 20.357 8.826 Z M 10.047 1.769 L 13.012 3.995 L 13.012 3.995 L 15.021 5.5 L 17.046 7.017 L 17.046 7.017 L 20.025 9.245 C 20.142 9.332 20.156 9.491 20.082 9.607 L 19.374 10.591 L 16.005 8.058 L 12.36 5.326 L 8.976 2.809 L 9.684 1.826 C 9.772 1.709 9.931 1.682 10.047 1.769 Z M 15.673 15.463 C 15.629 15.507 15.585 15.536 15.528 15.55 C 15.469 15.564 15.398 15.55 15.339 15.507 L 12.345 13.265 L 8.34 10.257 L 5.361 8.001 C 5.302 7.958 5.275 7.9 5.259 7.842 C 5.259 7.785 5.259 7.726 5.302 7.669 L 6.113 6.585 C 6.113 6.585 7.009 5.427 7.791 4.386 L 11.16 6.917 L 14.804 9.65 L 18.173 12.181 C 17.393 13.222 16.496 14.379 16.496 14.379 L 15.673 15.463 Z" style="fill: rgb(255, 255, 255);"/>\n  <g transform="matrix(0.144619, 0, 0, 0.144619, -7.250457, -3.988513)">\n    <path d="M197.1,150.4l52-69.6l5.3-7c0,0,0.1-0.2,0.2-0.2c0.4-0.5,0.3-1.2-0.2-1.6l-14.7-10.7&#10;&#9;&#9;&#9;c-0.5-0.4-1.2-0.2-1.6,0.3c-0.1,0.1-0.2,0.2-0.2,0.2l-2,2.5l-64.3,86l-70.8,0l-26.5,87.4h177.1l-25-87.4L197.1,150.4z M79.1,234.3&#10;&#9;&#9;&#9;l24.2-80.5l65.7,0l-5.7,7.6l-8.1,11.3l-0.9,1.7l-0.9,1.9l-0.9,2.2l-0.9,2.3l-0.9,2.5l-0.9,2.5l-0.8,2.5l-0.8,2.4l-0.7,2.3&#10;&#9;&#9;&#9;l-0.7,2.1l-0.6,1.9l-0.4,1.6l-0.3,1.2l-0.3,0.7c0,0-0.1,0.2-0.2,0.4c-0.2,0.2-1.2,1.1-2,0.5c-0.8-0.6-0.7-2.6-0.6-3.6&#10;&#9;&#9;&#9;c0.2-3,0.5-6,0.7-8.9c0.1-1-1.2-1.6-2-1.2c-3.6,2.1-5.8,4.6-7.8,7.5c0.2-0.7,0.4-1.4,0.6-2c0.8-3.1,2-6.2,2.5-9.4&#10;&#9;&#9;&#9;c0.3-1.8-0.2-3.9-2.3-4.3c-2.4-0.4-3.9,2.1-5.1,3.7c-3.5,5-5.6,11.2-9.9,15.5c-1.6,1.6-3.5,2.8-5.8,2.1c-2.7-0.8-3.8,2.4,1,2.9&#10;&#9;&#9;&#9;c4.7,0.4,8.3-4.6,10.4-8.1c1.6-2.5,2.9-5.2,4.5-7.8c0.7-1.2,1.5-2.4,2.3-3.6c0.4-0.5,1-1.8,1.7-2c0.8-0.2,0.6,0.3,0.6,0.9&#10;&#9;&#9;&#9;c-0.1,1.5-0.7,3-1.1,4.5c-0.4,1.6-0.9,3.2-1.3,4.7c-0.9,3.4-1.8,6.8-2.8,10.1c-0.4,1.5,1.6,2.2,2.5,1c3.4-4.8,5.1-8.9,9.2-12.1&#10;&#9;&#9;&#9;c-0.1,1.1-0.2,2.1-0.3,3.2c-0.1,1.7-0.5,3.6-0.4,5.3c0.2,2.9,2.4,4.8,5.1,3.6c1.4-0.7,2.4-1.7,2.4-1.7l0.2-0.1l0.6-0.4l1-0.7&#10;&#9;&#9;&#9;l1.4-1l1.6-1.2l1.7-1.2l2.1-1.4l2.1-1.5l2.1-1.5l2.1-1.5l2-1.5l1.9-1.4l1.8-1.4l1.5-1.2l1.2-1.1l1-0.9l0-0.1l0,0l6.5-7.6&#10;&#9;&#9;&#9;l16.6-22.1l29.4,0l22.9,80.5H79.1z" style="fill: rgb(255, 255, 255);"/>\n    <path d="M261.1,77.1l-1.9-1.5c-0.4-0.3-0.9-0.2-1.2,0.2l-24.7,32.9c-0.3,0.4-0.2,0.9,0.2,1.2l1.9,1.5&#10;&#9;&#9;&#9;c0.4,0.3,0.9,0.2,1.2-0.2l24.7-32.9C261.5,77.9,261.5,77.4,261.1,77.1z" style="fill: rgb(255, 255, 255);"/>\n    <polygon points="161.7,217.2 210.9,217.2 209.9,213.3 161.7,213.3 113.6,213.3 112.5,217.2 &#9;&#9;" style="fill: rgb(255, 255, 255);"/>\n  </g>\n</svg>';
     },
     "./src/components/button/templates/component/logos/hiper.svg": function(module, exports) {
         module.exports = '<?xml version="1.0" encoding="utf-8"?>\n<svg width="40" height="24" viewBox="0 0 40 24" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">\n  <path d="M0 1.927C0 .863.892 0 1.992 0h36.016C39.108 0 40 .863 40 1.927v20.146C40 23.137 39.108 24 38.008 24H1.992C.892 24 0 23.137 0 22.073V1.927z" style="fill: rgb(243, 97, 24);"/>\n  <path id="path16" style="fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;" d="M 3.206 6.45 L 3.206 16.929 L 5.586 16.929 L 5.586 12.545 L 9.489 12.545 L 9.489 16.929 L 11.853 16.929 L 11.853 6.45 L 9.489 6.45 L 9.489 10.477 L 5.586 10.477 L 5.586 6.45 L 3.206 6.45"/>\n  <path id="path18" style="fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;" d="M 32.319 13.882 C 32.351 13.71 32.397 13.353 32.397 12.949 C 32.397 11.068 31.464 9.155 29.008 9.155 C 26.364 9.155 25.167 11.285 25.167 13.213 C 25.167 15.592 26.644 17.085 29.225 17.085 C 30.251 17.085 31.2 16.929 31.977 16.618 L 31.666 15.017 C 31.029 15.219 30.376 15.328 29.567 15.328 C 28.463 15.328 27.499 14.861 27.422 13.882 Z M 27.406 12.265 C 27.468 11.628 27.873 10.725 28.868 10.725 C 29.956 10.725 30.205 11.689 30.205 12.265 L 27.406 12.265"/>\n  <path id="path20" style="fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: nonzero; stroke: none;" d="M 33.155 16.929 L 35.519 16.929 L 35.519 13.073 C 35.519 12.887 35.533 12.7 35.565 12.545 C 35.72 11.814 36.31 11.348 37.182 11.348 C 37.446 11.348 37.648 11.378 37.819 11.41 L 37.819 9.186 C 37.648 9.155 37.539 9.155 37.321 9.155 C 36.591 9.155 35.658 9.621 35.269 10.725 L 35.207 10.725 L 35.129 9.326 L 33.092 9.326 C 33.123 9.979 33.155 10.709 33.155 11.829 L 33.155 16.929"/>\n  <path id="path22" style="fill: rgb(254, 234, 1); fill-opacity: 1; fill-rule: evenodd; stroke: none;" d="M 14.256 6.028 C 14.927 6.028 15.472 6.572 15.472 7.243 C 15.472 7.914 14.927 8.458 14.256 8.458 C 13.585 8.458 13.041 7.914 13.041 7.243 C 13.041 6.572 13.585 6.028 14.256 6.028"/>\n  <path id="path24" style="fill: rgb(255, 255, 255); fill-opacity: 1; fill-rule: evenodd; stroke: none;" d="M 19.247 15.159 L 20.433 15.159 C 21.624 15.159 22.163 14.395 22.163 13.6 C 22.163 12.805 22.106 11.006 20.633 11.006 C 18.943 11.006 19.218 13.238 19.224 14.408 C 19.226 14.658 19.24 14.908 19.247 15.159 Z M 13.041 9.315 L 15.472 9.315 L 15.472 13.6 C 15.472 14.395 15.912 15.157 16.887 15.159 C 16.894 13.229 16.886 11.243 16.822 9.315 L 18.852 9.315 C 18.896 9.687 18.936 10.059 18.973 10.432 C 19.932 8.514 22.954 8.937 23.971 10.555 C 25.022 12.228 25.379 17.017 20.433 17.017 L 19.282 17.017 C 19.293 17.988 19.295 18.963 19.295 19.936 L 16.865 19.936 C 16.865 19.001 16.871 18.022 16.878 17.016 C 14.252 17.007 13.041 15.339 13.041 13.6 L 13.041 9.315"/>\n</svg>';
@@ -10059,7 +10339,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return cardLogos;
         });
-        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _componentLogos, _cardLogos, __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__pp_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_white.svg"), __WEBPACK_IMPORTED_MODULE_2__pp_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__pp_white_svg__), __WEBPACK_IMPORTED_MODULE_3__pp_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_blue.svg"), __WEBPACK_IMPORTED_MODULE_3__pp_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__pp_blue_svg__), __WEBPACK_IMPORTED_MODULE_4__pp_black_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_black.svg"), __WEBPACK_IMPORTED_MODULE_4__pp_black_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pp_black_svg__), __WEBPACK_IMPORTED_MODULE_5__paypal_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_white.svg"), __WEBPACK_IMPORTED_MODULE_5__paypal_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__paypal_white_svg__), __WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_blue.svg"), __WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg__), __WEBPACK_IMPORTED_MODULE_7__paypal_black_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_black.svg"), __WEBPACK_IMPORTED_MODULE_7__paypal_black_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__paypal_black_svg__), __WEBPACK_IMPORTED_MODULE_8__credit_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/credit_white.svg"), __WEBPACK_IMPORTED_MODULE_8__credit_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__credit_white_svg__), __WEBPACK_IMPORTED_MODULE_9__venmo_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/venmo_white.svg"), __WEBPACK_IMPORTED_MODULE_9__venmo_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__venmo_white_svg__), __WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/venmo_blue.svg"), __WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg__), __WEBPACK_IMPORTED_MODULE_11__ideal_svg__ = __webpack_require__("./src/components/button/templates/component/logos/ideal.svg"), __WEBPACK_IMPORTED_MODULE_11__ideal_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ideal_svg__), __WEBPACK_IMPORTED_MODULE_12__elv_svg__ = __webpack_require__("./src/components/button/templates/component/logos/elv.svg"), __WEBPACK_IMPORTED_MODULE_12__elv_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__elv_svg__), __WEBPACK_IMPORTED_MODULE_13__visa_svg__ = __webpack_require__("./src/components/button/templates/component/logos/visa.svg"), __WEBPACK_IMPORTED_MODULE_13__visa_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__visa_svg__), __WEBPACK_IMPORTED_MODULE_14__amex_svg__ = __webpack_require__("./src/components/button/templates/component/logos/amex.svg"), __WEBPACK_IMPORTED_MODULE_14__amex_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__amex_svg__), __WEBPACK_IMPORTED_MODULE_15__mastercard_svg__ = __webpack_require__("./src/components/button/templates/component/logos/mastercard.svg"), __WEBPACK_IMPORTED_MODULE_15__mastercard_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__mastercard_svg__), __WEBPACK_IMPORTED_MODULE_16__discover_svg__ = __webpack_require__("./src/components/button/templates/component/logos/discover.svg"), __WEBPACK_IMPORTED_MODULE_16__discover_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__discover_svg__), __WEBPACK_IMPORTED_MODULE_17__hiper_svg__ = __webpack_require__("./src/components/button/templates/component/logos/hiper.svg"), __WEBPACK_IMPORTED_MODULE_17__hiper_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__hiper_svg__), __WEBPACK_IMPORTED_MODULE_18__elo_svg__ = __webpack_require__("./src/components/button/templates/component/logos/elo.svg"), __WEBPACK_IMPORTED_MODULE_18__elo_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__elo_svg__), componentLogos = (_componentLogos = {}, 
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _componentLogos, _cardLogos, __WEBPACK_IMPORTED_MODULE_0__config_constants__ = __webpack_require__("./src/config/constants.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__pp_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_white.svg"), __WEBPACK_IMPORTED_MODULE_2__pp_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__pp_white_svg__), __WEBPACK_IMPORTED_MODULE_3__pp_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_blue.svg"), __WEBPACK_IMPORTED_MODULE_3__pp_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__pp_blue_svg__), __WEBPACK_IMPORTED_MODULE_4__pp_black_svg__ = __webpack_require__("./src/components/button/templates/component/logos/pp_black.svg"), __WEBPACK_IMPORTED_MODULE_4__pp_black_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pp_black_svg__), __WEBPACK_IMPORTED_MODULE_5__paypal_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_white.svg"), __WEBPACK_IMPORTED_MODULE_5__paypal_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__paypal_white_svg__), __WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_blue.svg"), __WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__paypal_blue_svg__), __WEBPACK_IMPORTED_MODULE_7__paypal_black_svg__ = __webpack_require__("./src/components/button/templates/component/logos/paypal_black.svg"), __WEBPACK_IMPORTED_MODULE_7__paypal_black_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__paypal_black_svg__), __WEBPACK_IMPORTED_MODULE_8__credit_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/credit_white.svg"), __WEBPACK_IMPORTED_MODULE_8__credit_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__credit_white_svg__), __WEBPACK_IMPORTED_MODULE_9__venmo_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/venmo_white.svg"), __WEBPACK_IMPORTED_MODULE_9__venmo_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__venmo_white_svg__), __WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg__ = __webpack_require__("./src/components/button/templates/component/logos/venmo_blue.svg"), __WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__venmo_blue_svg__), __WEBPACK_IMPORTED_MODULE_11__ideal_svg__ = __webpack_require__("./src/components/button/templates/component/logos/ideal.svg"), __WEBPACK_IMPORTED_MODULE_11__ideal_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ideal_svg__), __WEBPACK_IMPORTED_MODULE_12__elv_svg__ = __webpack_require__("./src/components/button/templates/component/logos/elv.svg"), __WEBPACK_IMPORTED_MODULE_12__elv_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__elv_svg__), __WEBPACK_IMPORTED_MODULE_13__elv_white_svg__ = __webpack_require__("./src/components/button/templates/component/logos/elv_white.svg"), __WEBPACK_IMPORTED_MODULE_13__elv_white_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__elv_white_svg__), __WEBPACK_IMPORTED_MODULE_14__visa_svg__ = __webpack_require__("./src/components/button/templates/component/logos/visa.svg"), __WEBPACK_IMPORTED_MODULE_14__visa_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__visa_svg__), __WEBPACK_IMPORTED_MODULE_15__amex_svg__ = __webpack_require__("./src/components/button/templates/component/logos/amex.svg"), __WEBPACK_IMPORTED_MODULE_15__amex_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__amex_svg__), __WEBPACK_IMPORTED_MODULE_16__mastercard_svg__ = __webpack_require__("./src/components/button/templates/component/logos/mastercard.svg"), __WEBPACK_IMPORTED_MODULE_16__mastercard_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__mastercard_svg__), __WEBPACK_IMPORTED_MODULE_17__discover_svg__ = __webpack_require__("./src/components/button/templates/component/logos/discover.svg"), __WEBPACK_IMPORTED_MODULE_17__discover_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__discover_svg__), __WEBPACK_IMPORTED_MODULE_18__hiper_svg__ = __webpack_require__("./src/components/button/templates/component/logos/hiper.svg"), __WEBPACK_IMPORTED_MODULE_18__hiper_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__hiper_svg__), __WEBPACK_IMPORTED_MODULE_19__elo_svg__ = __webpack_require__("./src/components/button/templates/component/logos/elo.svg"), __WEBPACK_IMPORTED_MODULE_19__elo_svg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__elo_svg__), componentLogos = (_componentLogos = {}, 
         _componentLogos[__WEBPACK_IMPORTED_MODULE_1__constants__.e.PP] = (_BUTTON_LOGO$PP = {}, 
         _BUTTON_LOGO$PP[__WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE] = __WEBPACK_IMPORTED_MODULE_2__pp_white_svg___default.a, 
         _BUTTON_LOGO$PP[__WEBPACK_IMPORTED_MODULE_1__constants__.f.BLUE] = __WEBPACK_IMPORTED_MODULE_3__pp_blue_svg___default.a, 
@@ -10077,12 +10357,13 @@
         _BUTTON_LOGO$IDEAL[__WEBPACK_IMPORTED_MODULE_1__constants__.f.ANY] = __WEBPACK_IMPORTED_MODULE_11__ideal_svg___default.a, 
         _BUTTON_LOGO$IDEAL), _componentLogos[__WEBPACK_IMPORTED_MODULE_1__constants__.e.ELV] = (_BUTTON_LOGO$ELV = {}, 
         _BUTTON_LOGO$ELV[__WEBPACK_IMPORTED_MODULE_1__constants__.f.ANY] = __WEBPACK_IMPORTED_MODULE_12__elv_svg___default.a, 
-        _BUTTON_LOGO$ELV), _componentLogos), cardLogos = (_cardLogos = {}, _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA] = __WEBPACK_IMPORTED_MODULE_13__visa_svg___default.a, 
-        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX] = __WEBPACK_IMPORTED_MODULE_14__amex_svg___default.a, 
-        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD] = __WEBPACK_IMPORTED_MODULE_15__mastercard_svg___default.a, 
-        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER] = __WEBPACK_IMPORTED_MODULE_16__discover_svg___default.a, 
-        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER] = __WEBPACK_IMPORTED_MODULE_17__hiper_svg___default.a, 
-        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.ELO] = __WEBPACK_IMPORTED_MODULE_18__elo_svg___default.a, 
+        _BUTTON_LOGO$ELV[__WEBPACK_IMPORTED_MODULE_1__constants__.f.WHITE] = __WEBPACK_IMPORTED_MODULE_13__elv_white_svg___default.a, 
+        _BUTTON_LOGO$ELV), _componentLogos), cardLogos = (_cardLogos = {}, _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA] = __WEBPACK_IMPORTED_MODULE_14__visa_svg___default.a, 
+        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX] = __WEBPACK_IMPORTED_MODULE_15__amex_svg___default.a, 
+        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD] = __WEBPACK_IMPORTED_MODULE_16__mastercard_svg___default.a, 
+        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER] = __WEBPACK_IMPORTED_MODULE_17__discover_svg___default.a, 
+        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER] = __WEBPACK_IMPORTED_MODULE_18__hiper_svg___default.a, 
+        _cardLogos[__WEBPACK_IMPORTED_MODULE_0__config_constants__.b.ELO] = __WEBPACK_IMPORTED_MODULE_19__elo_svg___default.a, 
         _cardLogos);
     },
     "./src/components/button/templates/component/logos/mastercard.svg": function(module, exports) {
@@ -10192,6 +10473,7 @@
                     VISIBLE: "visible",
                     HIDDEN: "hidden"
                 }, images = getElements(".{ CLASS.BUTTON } .{ CLASS.LOGO }"), text = getElements(".{ CLASS.BUTTON } .{ CLASS.TEXT }"), tagline = getElements(".{ CLASS.TAGLINE }"), cards = getElements(".{ CLASS.FUNDINGICONS } .{ CLASS.CARD }"), optionals = getElements(".{ CLASS.BUTTON }-label-credit .{ CLASS.BUTTON }-logo-paypal");
+                toggleOptionals();
                 !function(elements, method) {
                     if (displayedElementsHaveDimensions(elements)) method(); else var interval = setInterval(function() {
                         if (displayedElementsHaveDimensions(elements)) {
@@ -10214,9 +10496,10 @@
     "./src/components/button/templates/component/style/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function componentStyle(_ref) {
-            var height = _ref.height;
+            var height = _ref.height, cardNumber = _ref.cardNumber;
             return "\n        " + __WEBPACK_IMPORTED_MODULE_0__page__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_1__button__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_6__color__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_2__layout__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_3__branding__.a + "\n        " + __WEBPACK_IMPORTED_MODULE_4__labels__.a + "\n        " + Object(__WEBPACK_IMPORTED_MODULE_5__responsive__.a)({
-                height: height
+                height: height,
+                cardNumber: cardNumber
             }) + "\n    ";
         }
         __webpack_exports__.a = componentStyle;
@@ -10280,7 +10563,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return labelStyle;
         });
-        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
+        var __WEBPACK_IMPORTED_MODULE_0__style__ = __webpack_require__("./src/components/button/templates/style.js"), __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_2__class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), labelStyle = "\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.TEXT + " {\n        display: none !important;\n    }\n\n    ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + __WEBPACK_IMPORTED_MODULE_0__style__.b[__WEBPACK_IMPORTED_MODULE_1__constants__.i.SMALL].minWidth + "px) {\n\n        ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LABEL + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.c.CREDIT + " ." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "." + __WEBPACK_IMPORTED_MODULE_2__class__.a.LOGO + "-" + __WEBPACK_IMPORTED_MODULE_1__constants__.e.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n";
     },
     "./src/components/button/templates/component/style/layout.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -10299,10 +10582,10 @@
     "./src/components/button/templates/component/style/responsive.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function buttonResponsiveStyle(_ref) {
-            var height = _ref.height;
+            var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
             return Object.keys(__WEBPACK_IMPORTED_MODULE_1__style__.b).map(function(size) {
                 var style = __WEBPACK_IMPORTED_MODULE_1__style__.b[size], buttonHeight = Object(__WEBPACK_IMPORTED_MODULE_2__util__.c)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(height || style.defaultHeight, style.minHeight), style.maxHeight), minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + style.minHeight + "px;\n                    max-height: " + style.maxHeight + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 50), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LOGO + " {\n                    height: " + (Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 35) + 7) + "px;\n                    max-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 68) + "px;\n                    min-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 60) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                    margin-bottom: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SEPARATOR + " {\n                    margin: 0 " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 5) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                    line-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.FUNDINGICONS) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    width: 20%;\n                    max-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 160) + ";\n                    margin-top: 0;\n                    margin-left: 1.5%;\n                    margin-right: 1.5%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(style.minWidth, minDualWidth) + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + ":not(." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + style.minHeight + "px;\n                    max-height: " + style.maxHeight + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BRANDING + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.a.UNBRANDED + " {\n                    font-size: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 50), 10) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LOGO + " {\n                    height: " + (Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 35) + 7) + "px;\n                    max-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 68) + "px;\n                    min-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 60) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SHAPE + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.h.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.VERTICAL + " {\n                    margin-bottom: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.SEPARATOR + " {\n                    margin: 0 " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 5) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                    line-height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.TAGLINE) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, __WEBPACK_IMPORTED_MODULE_1__style__.a.FUNDINGICONS) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " {\n                    height: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.d)(buttonHeight, 7) + "px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.FUNDINGICONS + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(__WEBPACK_IMPORTED_MODULE_2__util__.b)(style.minWidth, minDualWidth) + "px) {\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.BUTTON + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.CONTAINER + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.LAYOUT + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.d.HORIZONTAL + "." + __WEBPACK_IMPORTED_MODULE_3__class__.a.NUMBER + "-" + __WEBPACK_IMPORTED_MODULE_0__constants__.g.MULTIPLE + " ." + __WEBPACK_IMPORTED_MODULE_3__class__.a.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
             }).join("\n");
         }
         __webpack_exports__.a = buttonResponsiveStyle;
@@ -10334,12 +10617,8 @@
             });
         }
         function renderCards(_ref4) {
-            var funding = _ref4.funding, locale = _ref4.locale, button = _ref4.button;
-            return Object(__WEBPACK_IMPORTED_MODULE_4__funding__.a)({
-                funding: funding,
-                count: 4,
-                locale: locale
-            }).map(function(name) {
+            var cards = _ref4.cards, button = _ref4.button;
+            return cards.map(function(name) {
                 var _ref5, logo = __WEBPACK_IMPORTED_MODULE_6__logos__.a[name];
                 return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("img", _extends({}, (_ref5 = {}, 
                 _ref5[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.BUTTON] = button || !1, 
@@ -10352,17 +10631,16 @@
             });
         }
         function renderFundingIcons(_ref6) {
-            var funding = _ref6.funding, fundingicons = _ref6.fundingicons, locale = _ref6.locale;
-            if (fundingicons) return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
+            var cards = _ref6.cards;
+            if (_ref6.fundingicons) return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", {
                 class: "" + __WEBPACK_IMPORTED_MODULE_10__style_class__.a.FUNDINGICONS
             }, renderCards({
-                funding: funding,
-                locale: locale,
+                cards: cards,
                 button: !0
             }));
         }
         function renderContent(text, _ref7) {
-            var locale = _ref7.locale, color = _ref7.color, branding = _ref7.branding, logoColor = _ref7.logoColor, funding = _ref7.funding, env = _ref7.env, _content = getLocaleContent(locale);
+            var locale = _ref7.locale, color = _ref7.color, branding = _ref7.branding, logoColor = _ref7.logoColor, funding = _ref7.funding, env = _ref7.env, _cards = _ref7.cards, _content = getLocaleContent(locale);
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.e)(text, {
                 text: function(value) {
                     return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("span", {
@@ -10404,14 +10682,15 @@
                         branding: branding,
                         logoColor: logoColor,
                         funding: funding,
-                        env: env
+                        env: env,
+                        cards: _cards
                     });
                 },
                 cards: function() {
                     if (!funding) throw new Error("Can not determine card types without funding");
                     return renderCards({
-                        funding: funding,
-                        locale: locale
+                        cards: _cards,
+                        button: !1
                     });
                 },
                 separator: function() {
@@ -10422,14 +10701,15 @@
             });
         }
         function renderButton(_ref9) {
-            var _ref10, label = _ref9.label, color = _ref9.color, locale = _ref9.locale, branding = _ref9.branding, multiple = _ref9.multiple, layout = _ref9.layout, shape = _ref9.shape, source = _ref9.source, funding = _ref9.funding, i = _ref9.i, env = _ref9.env, logoColor = Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoColors")[color], contentText = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoLabel") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "label");
+            var _ref10, label = _ref9.label, color = _ref9.color, locale = _ref9.locale, branding = _ref9.branding, multiple = _ref9.multiple, layout = _ref9.layout, shape = _ref9.shape, source = _ref9.source, funding = _ref9.funding, i = _ref9.i, env = _ref9.env, cards = _ref9.cards, logoColor = Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoColors")[color], contentText = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "logoLabel") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "label");
             contentText = renderContent(contentText, {
                 locale: locale,
                 color: color,
                 branding: branding,
                 logoColor: logoColor,
                 funding: funding,
-                env: env
+                env: env,
+                cards: cards
             });
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref10 = {}, 
             _ref10[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.FUNDING_SOURCE] = source, 
@@ -10451,12 +10731,13 @@
             }), contentText);
         }
         function renderTagline(_ref11) {
-            var label = _ref11.label, tagline = _ref11.tagline, color = _ref11.color, locale = _ref11.locale, multiple = _ref11.multiple, env = _ref11.env;
+            var label = _ref11.label, tagline = _ref11.tagline, color = _ref11.color, locale = _ref11.locale, multiple = _ref11.multiple, env = _ref11.env, cards = _ref11.cards;
             if (tagline) {
                 var tag = multiple ? Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "dualTag") || Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "tag") : Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "tag"), text = renderContent(tag, {
                     locale: locale,
                     color: color,
-                    env: env
+                    env: env,
+                    cards: cards
                 });
                 if (text) {
                     var tagColor = Object(__WEBPACK_IMPORTED_MODULE_3__config__.e)(label, "tagLineColors")[color];
@@ -10476,10 +10757,11 @@
             });
         }
         function renderStyle(_ref12) {
-            var height = _ref12.height;
+            var height = _ref12.height, cardNumber = _ref12.cardNumber;
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("style", {
                 innerHTML: Object(__WEBPACK_IMPORTED_MODULE_7__style__.a)({
-                    height: height
+                    height: height,
+                    cardNumber: cardNumber
                 })
             });
         }
@@ -10492,7 +10774,7 @@
                 1 !== style.maxbuttons || !1 !== style.tagline || "responsive" !== style.size || "horizontal" !== style.layout || style.height || (style.height = 44);
             }
             Object(__WEBPACK_IMPORTED_MODULE_12__validate__.b)(props);
-            var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, height = _normalizeProps.height, buttonNodes = determineButtons({
+            var _normalizeProps = Object(__WEBPACK_IMPORTED_MODULE_5__props__.a)(props), label = _normalizeProps.label, locale = _normalizeProps.locale, color = _normalizeProps.color, shape = _normalizeProps.shape, branding = _normalizeProps.branding, tagline = _normalizeProps.tagline, funding = _normalizeProps.funding, layout = _normalizeProps.layout, sources = _normalizeProps.sources, multiple = _normalizeProps.multiple, fundingicons = _normalizeProps.fundingicons, env = _normalizeProps.env, height = _normalizeProps.height, cards = _normalizeProps.cards, buttonNodes = determineButtons({
                 label: label,
                 color: color,
                 sources: sources,
@@ -10509,7 +10791,8 @@
                     locale: locale,
                     branding: branding,
                     layout: layout,
-                    shape: shape
+                    shape: shape,
+                    cards: cards
                 });
             }), taglineNode = renderTagline({
                 label: label,
@@ -10517,16 +10800,17 @@
                 color: color,
                 locale: locale,
                 multiple: multiple,
-                env: env
+                env: env,
+                cards: cards
             }), fundingiconNode = renderFundingIcons({
-                funding: funding,
-                fundingicons: fundingicons,
-                locale: locale
+                cards: cards,
+                fundingicons: fundingicons
             }), styleNode = renderStyle({
-                height: height
+                height: height,
+                cardNumber: cards.length
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.167", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.168", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -10538,7 +10822,8 @@
         }
         __webpack_exports__.a = componentTemplate;
         var __WEBPACK_IMPORTED_MODULE_0_Base64__ = __webpack_require__("./node_modules/Base64/base64.js"), __WEBPACK_IMPORTED_MODULE_1__config_constants__ = (__webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_Base64__), 
-        __webpack_require__("./src/config/constants.js")), __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/components/button/templates/config.js"), __WEBPACK_IMPORTED_MODULE_4__funding__ = __webpack_require__("./src/components/button/templates/funding.js"), __WEBPACK_IMPORTED_MODULE_5__props__ = __webpack_require__("./src/components/button/templates/props.js"), __WEBPACK_IMPORTED_MODULE_6__logos__ = __webpack_require__("./src/components/button/templates/component/logos/index.js"), __WEBPACK_IMPORTED_MODULE_7__style__ = __webpack_require__("./src/components/button/templates/component/style/index.js"), __WEBPACK_IMPORTED_MODULE_8__script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_9__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_10__style_class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__("./src/components/button/templates/component/util.js"), __WEBPACK_IMPORTED_MODULE_12__validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), _extends = Object.assign || function(target) {
+        __webpack_require__("./src/config/constants.js")), __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/components/button/templates/config.js"), __WEBPACK_IMPORTED_MODULE_5__props__ = (__webpack_require__("./src/components/button/templates/funding.js"), 
+        __webpack_require__("./src/components/button/templates/props.js")), __WEBPACK_IMPORTED_MODULE_6__logos__ = __webpack_require__("./src/components/button/templates/component/logos/index.js"), __WEBPACK_IMPORTED_MODULE_7__style__ = __webpack_require__("./src/components/button/templates/component/style/index.js"), __WEBPACK_IMPORTED_MODULE_8__script__ = __webpack_require__("./src/components/button/templates/component/script.js"), __WEBPACK_IMPORTED_MODULE_9__content__ = __webpack_require__("./src/components/button/templates/component/content.js"), __WEBPACK_IMPORTED_MODULE_10__style_class__ = __webpack_require__("./src/components/button/templates/component/style/class.js"), __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__("./src/components/button/templates/component/util.js"), __WEBPACK_IMPORTED_MODULE_12__validate__ = __webpack_require__("./src/components/button/templates/component/validate.js"), _extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -10897,8 +11182,8 @@
             allowSecondaryVertical: !0,
             allowSecondaryHorizontal: !0
         }, _BUTTON_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.c.ELV] = {
-            label: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.ELV + " } Lastschrift",
-            logoLabel: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.ELV + " } Lastschrift",
+            label: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.ELV + " }",
+            logoLabel: "{ logo: " + __WEBPACK_IMPORTED_MODULE_1__constants__.e.ELV + " }",
             defaultColor: __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER,
             colors: [ __WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER, __WEBPACK_IMPORTED_MODULE_1__constants__.b.BLACK ],
             logoColors: (_logoColors5 = {}, _logoColors5[__WEBPACK_IMPORTED_MODULE_1__constants__.b.SILVER] = __WEBPACK_IMPORTED_MODULE_1__constants__.f.BLACK, 
@@ -10980,7 +11265,7 @@
         }, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US] = {
             priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.DISCOVER ]
         }, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.d.BR] = {
-            priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.ELO ]
+            priority: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.VISA, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.MASTERCARD, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.AMEX, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.HIPER, __WEBPACK_IMPORTED_MODULE_0__config_constants__.b.ELO ]
         }, _CARD_CONFIG);
     },
     "./src/components/button/templates/container/index.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -11078,7 +11363,18 @@
             return eligibleFunding;
         }
         function determineEligibleCards(_ref3) {
-            for (var funding = _ref3.funding, count = _ref3.count, locale = _ref3.locale, cards = [], _iterator = Object(__WEBPACK_IMPORTED_MODULE_2__config__.f)(locale.country, "priority"), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            var funding = _ref3.funding, locale = _ref3.locale;
+            return Object(__WEBPACK_IMPORTED_MODULE_2__config__.f)(locale.country, "priority").filter(function(card) {
+                return -1 === funding.disallowed.indexOf(card);
+            });
+        }
+        function validateFunding() {
+            var funding = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {
+                allowed: [],
+                disallowed: [],
+                remembered: []
+            };
+            if (funding.allowed) for (var _iterator = funding.allowed, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                 var _ref4;
                 if (_isArray) {
                     if (_i >= _iterator.length) break;
@@ -11088,21 +11384,14 @@
                     if (_i.done) break;
                     _ref4 = _i.value;
                 }
-                var card = _ref4;
-                if (-1 === funding.disallowed.indexOf(card)) {
-                    cards.push(card);
-                    if (cards.length === count) break;
+                var source = _ref4;
+                if (-1 === __WEBPACK_IMPORTED_MODULE_0__config_constants__.c.indexOf(source)) {
+                    if (!__WEBPACK_IMPORTED_MODULE_2__config__.b.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
+                    if (!Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
+                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
                 }
             }
-            return cards;
-        }
-        function validateFunding() {
-            var funding = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {
-                allowed: [],
-                disallowed: [],
-                remembered: []
-            };
-            if (funding.allowed) for (var _iterator2 = funding.allowed, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+            if (funding.disallowed) for (var _iterator2 = funding.disallowed, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                 var _ref5;
                 if (_isArray2) {
                     if (_i2 >= _iterator2.length) break;
@@ -11112,24 +11401,7 @@
                     if (_i2.done) break;
                     _ref5 = _i2.value;
                 }
-                var source = _ref5;
-                if (-1 === __WEBPACK_IMPORTED_MODULE_0__config_constants__.c.indexOf(source)) {
-                    if (!__WEBPACK_IMPORTED_MODULE_2__config__.b.hasOwnProperty(source)) throw new Error("Invalid funding source: " + source);
-                    if (!Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(source, "allowOptIn")) throw new Error("Can not allow funding source: " + source);
-                    if (funding.disallowed && -1 !== funding.disallowed.indexOf(source)) throw new Error("Can not allow and disallow funding source: " + source);
-                }
-            }
-            if (funding.disallowed) for (var _iterator3 = funding.disallowed, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
-                var _ref6;
-                if (_isArray3) {
-                    if (_i3 >= _iterator3.length) break;
-                    _ref6 = _iterator3[_i3++];
-                } else {
-                    _i3 = _iterator3.next();
-                    if (_i3.done) break;
-                    _ref6 = _i3.value;
-                }
-                var _source = _ref6;
+                var _source = _ref5;
                 if (-1 === __WEBPACK_IMPORTED_MODULE_0__config_constants__.c.indexOf(_source)) {
                     if (!__WEBPACK_IMPORTED_MODULE_2__config__.b.hasOwnProperty(_source)) throw new Error("Invalid funding source: " + _source);
                     if (!Object(__WEBPACK_IMPORTED_MODULE_2__config__.g)(_source, "allowOptOut")) throw new Error("Can not disallow funding source: " + _source);
@@ -11209,7 +11481,11 @@
                 max: max,
                 multiple: multiple,
                 env: env,
-                height: height
+                height: height,
+                cards: Object(__WEBPACK_IMPORTED_MODULE_2__funding__.a)({
+                    funding: funding,
+                    locale: locale
+                })
             };
         }
         __webpack_exports__.a = normalizeProps;
@@ -11280,11 +11556,11 @@
             if (window.$Api) return window.$Api.addHeader ? window.$Api.addHeader(name, value) : void 0;
         }
         function allowIframe() {
-            if (!Object(__WEBPACK_IMPORTED_MODULE_5__lib__.T)()) return !0;
+            if (!Object(__WEBPACK_IMPORTED_MODULE_5__lib__.V)()) return !0;
             var parentWindow = Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.l)(window);
-            if (parentWindow && Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.t)(parentWindow)) return !0;
+            if (parentWindow && Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.u)(parentWindow)) return !0;
             var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
-            return !(!parentComponentWindow || !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.t)(parentComponentWindow));
+            return !(!parentComponentWindow || !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.u)(parentComponentWindow));
         }
         function enableCheckoutIframe() {
             delete Checkout.contexts.iframe;
@@ -11325,12 +11601,12 @@
             },
             contexts: {
                 iframe: function() {
-                    return !Object(__WEBPACK_IMPORTED_MODULE_5__lib__.T)();
+                    return !Object(__WEBPACK_IMPORTED_MODULE_5__lib__.V)();
                 }(),
                 popup: !0
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_6__config__.n.ppobjects, "4.0.167";
+                return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.r)();
             },
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.a,
             containerTemplate: __WEBPACK_IMPORTED_MODULE_8__templates__.b,
@@ -11339,7 +11615,7 @@
                     type: "string",
                     required: !1,
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.s)();
                     },
                     queryParam: !0
                 },
@@ -11408,8 +11684,8 @@
                         return payment();
                     },
                     childDecorate: function(payment) {
-                        var token = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.m)("token");
-                        return token ? Object(__WEBPACK_IMPORTED_MODULE_5__lib__.E)(function() {
+                        var token = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.n)("token");
+                        return token ? Object(__WEBPACK_IMPORTED_MODULE_5__lib__.G)(function() {
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.resolve(token);
                         }) : payment;
                     },
@@ -11464,12 +11740,12 @@
                                     return _this.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(win || window.top, url || data.returnUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.O)(win || window.top, url || data.returnUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 try {
                                     var isButton = -1 !== window.location.href.indexOf("/webapps/hermes/button"), isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                    if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.O)({
+                                    if (isButton && isGuest) return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.Q)({
                                         win: _this.window,
                                         method: "get",
                                         url: "/webapps/hermes/api/auth"
@@ -11515,7 +11791,7 @@
                                     return _this2.closeComponent();
                                 });
                             }, redirect = function(win, url) {
-                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(win || window.top, url || data.cancelUrl), close() ]);
+                                return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.all([ Object(__WEBPACK_IMPORTED_MODULE_5__lib__.O)(win || window.top, url || data.cancelUrl), close() ]);
                             };
                             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                                 return original.call(_this2, data, _extends({}, actions, {
@@ -11592,7 +11868,7 @@
                             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("fallback", {
                                 url: url
                             });
-                            if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.j)("allow_full_page_fallback")) {
+                            if (Object(__WEBPACK_IMPORTED_MODULE_5__lib__.k)("allow_full_page_fallback")) {
                                 window.top.location = url;
                                 return this.close();
                             }
@@ -11632,7 +11908,7 @@
                 height: !1
             },
             get dimensions() {
-                return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.u)() ? {
+                return Object(__WEBPACK_IMPORTED_MODULE_5__lib__.w)() ? {
                     width: "100%",
                     height: "535px"
                 } : {
@@ -11643,10 +11919,10 @@
         });
         Object(__WEBPACK_IMPORTED_MODULE_10__popupBridge__.c)(Checkout);
         if (Checkout.isChild()) {
-            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.Q)(window.xprops.logLevel);
+            window.xprops.logLevel && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.S)(window.xprops.logLevel);
             Object(__WEBPACK_IMPORTED_MODULE_10__popupBridge__.a)();
             window.xchild.onProps(function() {
-                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(window.xprops, "onAuthorize", function(_ref) {
+                Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(window.xprops, "onAuthorize", function(_ref) {
                     var callOriginal = _ref.callOriginal, _ref$args = _ref.args, data = _ref$args[0];
                     if (data && !data.intent) {
                         Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.p)("hermes_authorize_no_intent", {
@@ -11676,16 +11952,19 @@
                         var experimentActive = !1, loggedComplete = !1;
                         $event.on("allLoaded", function() {
                             setTimeout(function() {
-                                var payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.s)("top_pay_button", 5e3), hash = window.location.hash, logComplete = function() {
+                                var _throttle$logStart, payButton = document.querySelector(".buttons.reviewButton"), topPayButton = document.querySelector(".buttons.reviewButton.topReviewButton"), reviewSection = document.querySelector("section.review"), throttle = Object(__WEBPACK_IMPORTED_MODULE_5__lib__.u)("top_pay_button", 5e3), hash = window.location.hash, logComplete = function() {
                                     if (experimentActive && !loggedComplete && hash && -1 !== hash.indexOf("checkout/review")) {
-                                        throttle.logComplete();
+                                        var _throttle$logComplete;
+                                        throttle.logComplete((_throttle$logComplete = {}, _throttle$logComplete[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.FEED] = "hermesnodeweb", 
+                                        _throttle$logComplete));
                                         loggedComplete = !0;
                                     }
                                 };
                                 payButton && payButton.addEventListener("click", logComplete);
                                 if (reviewSection && reviewSection.firstChild && payButton && !topPayButton && !(payButton.getBoundingClientRect().bottom < window.innerHeight)) {
                                     experimentActive = !0;
-                                    throttle.logStart();
+                                    throttle.logStart((_throttle$logStart = {}, _throttle$logStart[__WEBPACK_IMPORTED_MODULE_6__config__.e.KEY.FEED] = "hermesnodeweb", 
+                                    _throttle$logStart));
                                     if (throttle.isEnabled()) {
                                         topPayButton = payButton.cloneNode(!0);
                                         topPayButton.className += " topReviewButton";
@@ -11703,18 +11982,18 @@
                 }
             });
         }
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(Checkout, "init", function(_ref2) {
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(Checkout, "init", function(_ref2) {
             var _ref2$args = _ref2.args, props = _ref2$args[0], _context = _ref2$args[1], original = _ref2.original, context = _ref2.context;
             return original.call(context, props, _context, "body");
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(Checkout, "render", function(_ref3) {
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(Checkout, "render", function(_ref3) {
             var _ref3$args = _ref3.args, props = _ref3$args[0], original = _ref3.original, context = _ref3.context;
             return original.call(context, props, "body");
         });
-        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.K)(Checkout, "renderTo", function(_ref4) {
+        Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(Checkout, "renderTo", function(_ref4) {
             var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context;
             return original.call(context, win, props, "body").catch(function(err) {
-                if (err instanceof __WEBPACK_IMPORTED_MODULE_2_xcomponent_src__.b && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.B)()) {
+                if (err instanceof __WEBPACK_IMPORTED_MODULE_2_xcomponent_src__.b && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.D)()) {
                     Checkout.contexts.iframe = !0;
                     return original.call(context, win, props, "body");
                 }
@@ -11815,7 +12094,7 @@
                                 data.returnUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.returnUrl;
-                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(win, redirectUrl);
+                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(win, redirectUrl);
                                 };
                                 onAuthorize(data, actions);
                                 resolve();
@@ -11824,7 +12103,7 @@
                                 data.cancelUrl = query.redirect_uri;
                                 actions.redirect = function() {
                                     var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : data.cancelUrl;
-                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(win, redirectUrl);
+                                    return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(win, redirectUrl);
                                 };
                                 onCancel(data, actions);
                                 resolve();
@@ -11839,7 +12118,7 @@
                 var openBridge = getPopupBridgeOpener();
                 return openBridge ? renderThroughPopupBridge(props, openBridge).catch(function(err) {
                     Object(__WEBPACK_IMPORTED_MODULE_2_beaver_logger_client__.f)("popup_bridge_error", {
-                        err: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(err)
+                        err: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.T)(err)
                     });
                     return original();
                 }) : original();
@@ -11951,7 +12230,7 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(__WEBPACK_IMPORTED_MODULE_4__lib__.A)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                Object(__WEBPACK_IMPORTED_MODULE_4__lib__.C)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
             }
             var id = _ref.id, props = _ref.props, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION, CONTEXT = _ref.CONTEXT, EVENT = _ref.EVENT, on = _ref.on, tag = _ref.tag, context = _ref.context, actions = _ref.actions, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _props$locale$split = props.locale.split("_"), lang = _props$locale$split[0], country = _props$locale$split[1], content = componentContent[country][lang], style = props.style || {}, overlayColor = style.overlayColor || __WEBPACK_IMPORTED_MODULE_3__constants__.a.BLACK, logoColor = LOGO_COLOR[overlayColor], el = jsxDom("div", {
                 id: id,
@@ -12092,7 +12371,7 @@
                 height: "535px"
             },
             get version() {
-                return __WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects, "4.0.167";
+                return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.r)();
             },
             sandboxContainer: !0,
             prerenderTemplate: __WEBPACK_IMPORTED_MODULE_3__checkout_templates__.a,
@@ -12100,9 +12379,9 @@
             props: {
                 sessionID: {
                     type: "string",
-                    value: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.q)(),
+                    value: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.s)(),
                     def: function() {
-                        return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.q)();
+                        return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.s)();
                     },
                     queryParam: !0
                 },
@@ -12225,10 +12504,9 @@
             return config;
         });
         var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.167.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.168.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.167",
-            ppobjects: !1,
+            version: "4.0.168",
             cors: !0,
             env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
             state: "checkoutjs",
@@ -12243,35 +12521,31 @@
                 v4_mobile_device: 0
             },
             domain_settings: {
-                mmgukkxdrvsgzjrdmykehng: {
+                "walmart.com": {
                     log_domain_prefix: !0,
-                    custom_button_selector: ".paypal-payment-option",
                     ie_full_page: !1,
                     allow_full_page_fallback: !0,
                     memoize_payment: !0,
                     force_bridge: !0,
                     log_authorize: !0,
-                    disable_payment_timeout: !0,
-                    experiment_test_beacon_on_click: "walmart_paypal_incontext_click"
+                    disable_payment_timeout: !0
                 },
-                mmgkjhtnrjqajdxjmwdbowxnegxd: {
-                    ie_full_page: !1,
-                    allow_full_page_fallback: !0,
-                    memoize_payment: !0,
-                    disable_payment_timeout: !0,
-                    force_bridge: !1,
-                    log_authorize: !0
-                },
-                mmgukkxdrvsmsoztlbdr: {
+                "ulta.com": {
                     disable_venmo: !0
                 },
-                mmgukkxdrvsehdkwnxcqigccbpfvtp: {
+                "barnesandnoble.com": {
                     disable_venmo: !0
                 },
-                mmgukkxdrvscuutpltdbwqaykqthk: {
+                "bn.com": {
                     disable_venmo: !0
                 },
-                mmgukkxdrvsotjewaypfbb: {
+                "agoratix.com": {
+                    disable_venmo: !0
+                },
+                "tractorsupply.com": {
+                    disable_venmo: !0
+                },
+                "etsy.com": {
                     log_domain_prefix: !0,
                     ie_full_page: !1,
                     allow_full_page_fallback: !0,
@@ -12404,8 +12678,7 @@
             loggerUri: "/webapps/hermes/api/logger",
             pptmUri: "/tagmanager/pptm.js",
             get postBridgeUri() {
-                return config.postBridgeUris[config.env] + "?xcomponent=1&version=" + (config.ppobjects, 
-                "4.0.167");
+                return config.postBridgeUris[config.env] + "?xcomponent=1";
             },
             paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
             authApiUri: "/v1/oauth2/token",
@@ -12568,7 +12841,7 @@
                 return config.legacyCheckoutUrls[config.env];
             },
             get postBridgeUrl() {
-                return "" + config.paypalUrl + config.postBridgeUri + "&env=" + config.env;
+                return "" + config.paypalUrl + config.postBridgeUri;
             },
             get postBridgeDomain() {
                 return "" + config.paypalDomain;
@@ -12921,7 +13194,8 @@
                 LOAD: "checkoutjs_load",
                 BUTTON: "checkoutjs_button",
                 CHECKOUT: "checkoutjs_checkout",
-                PPTM: "checkoutjs_pptm"
+                PPTM: "checkoutjs_pptm",
+                PXP: "PXP_CHECK"
             },
             TRANSITION: {
                 SCRIPT_LOAD: "process_script_load",
@@ -12937,7 +13211,8 @@
                 EXTERNAL_EXPERIMENT: "process_external_experiment",
                 EXTERNAL_EXPERIMENT_COMPLETE: "process_external_experiment_complete",
                 PPTM_LOAD: "process_pptm_load",
-                PPTM_LOADED: "process_pptm_loaded"
+                PPTM_LOADED: "process_pptm_loaded",
+                PXP: "process_pxp_check"
             }
         }, PPTM_ID = "xo-pptm", FUNDING = {
             PAYPAL: "paypal",
@@ -13257,7 +13532,7 @@
     "./src/experiments.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function log(experiment, treatment, token, state) {
-            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__lib__.t)(function(session) {
                 var event = experiment + "_" + treatment + "_" + state, loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
                 if (-1 !== loggedEvents.indexOf(event)) Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("duplicate_" + event); else {
                     var _track;
@@ -13278,7 +13553,7 @@
         function logExperimentTreatment(_ref) {
             var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
             if (experiment && treatment) {
-                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.t)(function(session) {
                     session.externalExperiment = experiment;
                     session.externalExperimentTreatment = treatment;
                     token && (session.externalExperimentToken = token);
@@ -13287,7 +13562,7 @@
             }
         }
         function logReturn(token) {
-            var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.r)(function(session) {
+            var _getSessionState = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.t)(function(session) {
                 return session;
             }), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
             externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("experiment_mismatch", {
@@ -13302,14 +13577,14 @@
         });
         __webpack_exports__.a = logExperimentTreatment;
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./src/lib/index.js"), onAuthorizeListener = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.e)();
-        if (Object(__WEBPACK_IMPORTED_MODULE_2__lib__.j)("log_authorize")) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)("log_authorize")) {
             onAuthorizeListener.once(function(_ref2) {
                 var paymentToken = _ref2.paymentToken;
                 setTimeout(function() {
                     logReturn(paymentToken);
                 }, 1);
             });
-            var returnToken = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.p)();
+            var returnToken = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.q)();
             returnToken && setTimeout(function() {
                 returnToken && logReturn(returnToken);
             }, 1);
@@ -13489,23 +13764,23 @@
             return __WEBPACK_IMPORTED_MODULE_7__config__.b;
         });
         __webpack_require__.d(__webpack_exports__, "request", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__lib__.O;
+            return __WEBPACK_IMPORTED_MODULE_3__lib__.Q;
         });
         __webpack_require__.d(__webpack_exports__, "isEligible", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__lib__.w;
+            return __WEBPACK_IMPORTED_MODULE_3__lib__.y;
         });
         __webpack_require__.d(__webpack_exports__, "isFundingRemembered", function() {
-            return __WEBPACK_IMPORTED_MODULE_3__lib__.x;
+            return __WEBPACK_IMPORTED_MODULE_3__lib__.z;
         });
         var __WEBPACK_IMPORTED_MODULE_8__experiments__ = __webpack_require__("./src/experiments.js");
         __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
             return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
         });
-        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.167", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.168", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         checkout = legacy.checkout;
         apps = legacy.apps;
         var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
-        if (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)()) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)()) {
             Checkout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             PayPalCheckout = __WEBPACK_IMPORTED_MODULE_4__components__.b;
             Login = __WEBPACK_IMPORTED_MODULE_4__components__.c;
@@ -13543,7 +13818,7 @@
                 }).el;
                 container.appendChild(el);
                 try {
-                    info("in_page_button_" + (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.v)(el) ? "visible" : "not_visible"));
+                    info("in_page_button_" + (Object(__WEBPACK_IMPORTED_MODULE_3__lib__.x)(el) ? "visible" : "not_visible"));
                 } catch (err) {}
                 return el.childNodes[0];
             });
@@ -13595,19 +13870,19 @@
         }
         __webpack_exports__.b = renderButtons;
         __webpack_exports__.a = getHijackTargetElement;
-        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__components_button_constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_5__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_6__common__ = __webpack_require__("./src/legacy/common.js"), _prefix = Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m)(__WEBPACK_IMPORTED_MODULE_5__constants__.c), info = _prefix.info, debug = _prefix.debug, error = _prefix.error, loadButtonJS = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.E)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_4__components_button_constants__ = __webpack_require__("./src/components/button/constants.js"), __WEBPACK_IMPORTED_MODULE_5__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_6__common__ = __webpack_require__("./src/legacy/common.js"), _prefix = Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m)(__WEBPACK_IMPORTED_MODULE_5__constants__.c), info = _prefix.info, debug = _prefix.debug, error = _prefix.error, loadButtonJS = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.G)(function() {
             debug("buttonjs_load");
-            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl).catch(function(err) {
+            return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.E)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl).catch(function(err) {
                 info("buttonjs_load_error_retry", {
-                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(err)
+                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.T)(err)
                 });
-                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl);
+                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.E)(__WEBPACK_IMPORTED_MODULE_2__config__.n.buttonJSUrl);
             }).then(function(result) {
                 debug("buttonjs_load_success");
                 return result;
             }).catch(function(err) {
                 error("buttonjs_load_error", {
-                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(err)
+                    error: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.T)(err)
                 });
                 throw err;
             });
@@ -13665,7 +13940,7 @@
     "./src/legacy/eligibility.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function isLegacyEligible() {
-            return !!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.w)() && (!!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.T)() && !Object(__WEBPACK_IMPORTED_MODULE_0__lib__.u)());
+            return !!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.y)() && (!!Object(__WEBPACK_IMPORTED_MODULE_0__lib__.V)() && !Object(__WEBPACK_IMPORTED_MODULE_0__lib__.w)());
         }
         __webpack_exports__.a = isLegacyEligible;
         var __WEBPACK_IMPORTED_MODULE_0__lib__ = __webpack_require__("./src/lib/index.js");
@@ -13782,7 +14057,7 @@
                 checkout.initXO = function() {
                     warn("gettoken_initxo");
                 };
-                checkout.startFlow = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.I)(function(item) {
+                checkout.startFlow = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.K)(function(item) {
                     debug("gettoken_startflow", {
                         item: item
                     });
@@ -13847,7 +14122,7 @@
                 props.init = function(data) {
                     resolve(data.paymentToken);
                 };
-            }), errorHandler = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.I)(function(err) {
+            }), errorHandler = Object(__WEBPACK_IMPORTED_MODULE_4__lib__.K)(function(err) {
                 error("component_error", {
                     error: err.stack || err.toString()
                 });
@@ -13915,7 +14190,7 @@
             element.addEventListener("click", function(event) {
                 tracker();
                 var eligible = Object(__WEBPACK_IMPORTED_MODULE_6__eligibility__.a)();
-                if (Object(__WEBPACK_IMPORTED_MODULE_4__lib__.T)()) {
+                if (Object(__WEBPACK_IMPORTED_MODULE_4__lib__.V)()) {
                     debug("click_popups_supported");
                     eligible || debug("click_popups_supported_but_ineligible");
                 } else {
@@ -13952,7 +14227,7 @@
             info("setup", {
                 id: id,
                 env: options.environment,
-                options: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.P)(options)
+                options: Object(__WEBPACK_IMPORTED_MODULE_4__lib__.R)(options)
             });
             setupCalled && debug("setup_called_multiple_times");
             setupCalled = !0;
@@ -14059,7 +14334,7 @@
                 info("options_button_single_button_passed");
                 options.button = [ options.button ];
             }
-            if (options.buttons && Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.buttons).length) {
+            if (options.buttons && Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.buttons).length) {
                 info("options_buttons_with_elements_passed");
                 options.button = options.buttons;
                 delete options.buttons;
@@ -14077,7 +14352,7 @@
                 delete options.container;
             }
             if (options.button) {
-                var button = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.button);
+                var button = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.button);
                 if (button.length) options.button = button; else {
                     warn("options_button_element_not_found", {
                         element: JSON.stringify(options.button)
@@ -14104,7 +14379,7 @@
                             options: options.container,
                             button: button.container
                         });
-                        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(button.container || button.button).forEach(function(element) {
+                        Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(button.container || button.button).forEach(function(element) {
                             var _buttons$push;
                             buttons.push((_buttons$push = {}, _buttons$push[button.container ? "container" : "button"] = element, 
                             _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -14126,7 +14401,7 @@
                 buttons.length && (options.buttons = buttons);
             } else if (options.container && !Array.isArray(options.buttons)) {
                 var _buttons = [];
-                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.k)(options.container).forEach(function(container, i) {
+                Object(__WEBPACK_IMPORTED_MODULE_2__lib__.l)(options.container).forEach(function(container, i) {
                     _buttons.push({
                         container: container,
                         click: options.click,
@@ -14176,7 +14451,7 @@
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.e)("setup_post_bridge", {
                     env: env
                 });
-                return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.J)(env).then(__WEBPACK_IMPORTED_MODULE_4__lib__.F);
+                return Object(__WEBPACK_IMPORTED_MODULE_4__lib__.L)(env).then(__WEBPACK_IMPORTED_MODULE_4__lib__.H);
             });
         }
         __webpack_exports__.a = setupPostBridge;
@@ -14185,7 +14460,7 @@
     "./src/legacy/ready.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function invokeReady(method) {
-            Object(__WEBPACK_IMPORTED_MODULE_1__lib__.G)(function() {
+            Object(__WEBPACK_IMPORTED_MODULE_1__lib__.I)(function() {
                 debug("paypal_checkout_ready");
                 setTimeout(function() {
                     window.paypal || error("paypal_checkout_ready_no_window_paypal");
@@ -14194,7 +14469,7 @@
             });
         }
         var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__lib__ = __webpack_require__("./src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./src/legacy/constants.js"), __WEBPACK_IMPORTED_MODULE_4__interface__ = __webpack_require__("./src/legacy/interface.js"), _prefix = Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.m)(__WEBPACK_IMPORTED_MODULE_3__constants__.c), error = _prefix.error, debug = _prefix.debug;
-        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.H)(window, "paypalCheckoutReady", function(method) {
+        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.J)(window, "paypalCheckoutReady", function(method) {
             if ("function" == typeof method) {
                 var oneTimeReady = function() {
                     if (!method.called) {
@@ -14206,7 +14481,7 @@
                 return oneTimeReady;
             }
         });
-        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.G)(function() {
+        Object(__WEBPACK_IMPORTED_MODULE_1__lib__.I)(function() {
             var buttons = Array.prototype.slice.call(document.querySelectorAll("[" + __WEBPACK_IMPORTED_MODULE_3__constants__.a.BUTTON + "]"));
             if (buttons && buttons.length) {
                 debug("data_paypal_button", {
@@ -14239,15 +14514,15 @@
         "use strict";
         function logRedirect(location) {
             redirected && warn("multiple_redirects");
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(location) && (redirected = !0);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.X)(location) && (redirected = !0);
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.g)();
         }
         function redirect(url) {
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (!url) throw new Error("Redirect url undefined");
-                if (__WEBPACK_IMPORTED_MODULE_2__config__.n.env === __WEBPACK_IMPORTED_MODULE_2__config__.d.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(window, "#fullpageRedirect?url=" + url);
+                if (__WEBPACK_IMPORTED_MODULE_2__config__.n.env === __WEBPACK_IMPORTED_MODULE_2__config__.d.TEST && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.X)(url)) return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(window, "#fullpageRedirect?url=" + url);
                 logRedirect(url);
-                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(window, url);
+                return Object(__WEBPACK_IMPORTED_MODULE_3__lib__.O)(window, url);
             });
         }
         function parseToken(token) {
@@ -14271,7 +14546,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.167";
+                payload.version = "4.0.168";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_1__session__.c)();
                 var query = [];
@@ -14913,19 +15188,19 @@
     "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var __WEBPACK_IMPORTED_MODULE_0__device__ = __webpack_require__("./src/lib/device.js");
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "y", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "z", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return __WEBPACK_IMPORTED_MODULE_0__device__.g;
         });
         var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/lib/util.js");
@@ -14938,54 +15213,54 @@
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "j", function() {
+        __webpack_require__.d(__webpack_exports__, "k", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.d;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.m;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.n;
         });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.o;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.p;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return __WEBPACK_IMPORTED_MODULE_1__util__.q;
         });
         var __WEBPACK_IMPORTED_MODULE_2__logger__ = __webpack_require__("./src/lib/logger.js");
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return __WEBPACK_IMPORTED_MODULE_2__logger__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_3__eligibility__ = __webpack_require__("./src/lib/eligibility.js");
         __webpack_require__.d(__webpack_exports__, "c", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return __WEBPACK_IMPORTED_MODULE_3__eligibility__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_4__errors__ = __webpack_require__("./src/lib/errors.js");
@@ -15002,43 +15277,43 @@
         __webpack_require__.d(__webpack_exports__, "h", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "k", function() {
+        __webpack_require__.d(__webpack_exports__, "l", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.e;
         });
-        __webpack_require__.d(__webpack_exports__, "l", function() {
+        __webpack_require__.d(__webpack_exports__, "m", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.f;
         });
-        __webpack_require__.d(__webpack_exports__, "m", function() {
+        __webpack_require__.d(__webpack_exports__, "n", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.g;
         });
-        __webpack_require__.d(__webpack_exports__, "o", function() {
+        __webpack_require__.d(__webpack_exports__, "p", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.h;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.i;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.j;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.k;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.l;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return __WEBPACK_IMPORTED_MODULE_5__dom__.m;
         });
         var __WEBPACK_IMPORTED_MODULE_6__http__ = __webpack_require__("./src/lib/http.js");
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return __WEBPACK_IMPORTED_MODULE_6__http__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_8__throttle__ = (__webpack_require__("./src/lib/beacon.js"), 
         __webpack_require__("./src/lib/throttle.js"));
-        __webpack_require__.d(__webpack_exports__, "p", function() {
+        __webpack_require__.d(__webpack_exports__, "q", function() {
             return __WEBPACK_IMPORTED_MODULE_8__throttle__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "s", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return __WEBPACK_IMPORTED_MODULE_8__throttle__.b;
         });
         var __WEBPACK_IMPORTED_MODULE_10__session__ = (__webpack_require__("./src/lib/namespace.js"), 
@@ -15046,29 +15321,36 @@
         __webpack_require__.d(__webpack_exports__, "i", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "q", function() {
+        __webpack_require__.d(__webpack_exports__, "s", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "r", function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return __WEBPACK_IMPORTED_MODULE_10__session__.d;
         });
         var __WEBPACK_IMPORTED_MODULE_12__meta__ = (__webpack_require__("./src/lib/proxy.js"), 
         __webpack_require__("./src/lib/meta.js"));
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return __WEBPACK_IMPORTED_MODULE_12__meta__.a;
         });
         var __WEBPACK_IMPORTED_MODULE_13__funding__ = __webpack_require__("./src/lib/funding.js");
-        __webpack_require__.d(__webpack_exports__, "n", function() {
+        __webpack_require__.d(__webpack_exports__, "o", function() {
             return __WEBPACK_IMPORTED_MODULE_13__funding__.a;
         });
-        __webpack_require__.d(__webpack_exports__, "x", function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return __WEBPACK_IMPORTED_MODULE_13__funding__.b;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return __WEBPACK_IMPORTED_MODULE_13__funding__.c;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return __WEBPACK_IMPORTED_MODULE_13__funding__.d;
+        });
+        var __WEBPACK_IMPORTED_MODULE_14__script__ = __webpack_require__("./src/lib/script.js");
+        __webpack_require__.d(__webpack_exports__, "j", function() {
+            return __WEBPACK_IMPORTED_MODULE_14__script__.a;
+        });
+        __webpack_require__.d(__webpack_exports__, "r", function() {
+            return __WEBPACK_IMPORTED_MODULE_14__script__.b;
         });
     },
     "./src/lib/logger.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -15092,7 +15374,7 @@
                     country: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.country,
                     lang: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.lang,
                     uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(),
-                    ver: "4.0.167"
+                    ver: "4.0.168"
                 };
             });
             Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -15139,7 +15421,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return openMetaFrame;
         });
-        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__device__ = __webpack_require__("./src/lib/device.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/lib/util.js"), openMetaFrame = Object(__WEBPACK_IMPORTED_MODULE_4__util__.i)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__ = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__device__ = __webpack_require__("./src/lib/device.js"), __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./src/lib/util.js"), __WEBPACK_IMPORTED_MODULE_5__script__ = __webpack_require__("./src/lib/script.js"), __WEBPACK_IMPORTED_MODULE_6__dom__ = __webpack_require__("./src/lib/dom.js"), openMetaFrame = Object(__WEBPACK_IMPORTED_MODULE_4__util__.i)(function() {
             var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
             return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                 if (Object(__WEBPACK_IMPORTED_MODULE_3__device__.e)()) return {
@@ -15149,7 +15431,9 @@
                 };
                 var metaFrameUrl = __WEBPACK_IMPORTED_MODULE_2__config__.n.metaFrameUrls[env], metaFrameDomain = __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomains[env];
                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
-                    if (__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge) return __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(metaFrameUrl, metaFrameDomain).then(__WEBPACK_IMPORTED_MODULE_4__util__.j);
+                    if (__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge) return __WEBPACK_IMPORTED_MODULE_1_post_robot_src__.bridge.openBridge(Object(__WEBPACK_IMPORTED_MODULE_6__dom__.b)(metaFrameUrl, {
+                        version: Object(__WEBPACK_IMPORTED_MODULE_5__script__.b)()
+                    }), metaFrameDomain).then(__WEBPACK_IMPORTED_MODULE_4__util__.j);
                     throw new Error("Opening meta window without bridge support is not currently supported");
                 }).then(function(win) {
                     return Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.once)("meta", {
@@ -15250,7 +15534,7 @@
     "./src/lib/proxy.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function proxyMethod(name, win, originalMethod) {
-            if (win && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.t)(win)) {
+            if (win && Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.f)() === __WEBPACK_IMPORTED_MODULE_2__config__.n.paypalDomain && !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.u)(win)) {
                 win && Object(__WEBPACK_IMPORTED_MODULE_0_post_robot_src__.send)(win, "proxy_" + name, {
                     originalMethod: originalMethod
                 }).catch(__WEBPACK_IMPORTED_MODULE_3__util__.j);
@@ -15266,7 +15550,7 @@
             return function() {
                 var _this = this, _arguments = arguments;
                 methods = methods.filter(function(method) {
-                    return !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.x)(method.source);
+                    return !Object(__WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__.y)(method.source);
                 });
                 return methods.length ? methods[methods.length - 1].apply(this, arguments).catch(function() {
                     return originalMethod.apply(_this, _arguments);
@@ -15275,6 +15559,38 @@
         }
         __webpack_exports__.a = proxyMethod;
         var __WEBPACK_IMPORTED_MODULE_0_post_robot_src__ = __webpack_require__("./node_modules/post-robot/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./src/lib/util.js");
+    },
+    "./src/lib/script.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function isPayPalObjects() {
+            return Boolean(getCurrentScript());
+        }
+        function getScriptVersion() {
+            return isPayPalObjects() ? "4" : "4.0.168";
+        }
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return getCurrentScript;
+        });
+        __webpack_exports__.b = getScriptVersion;
+        var __WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__ = __webpack_require__("./node_modules/beaver-logger/client/index.js"), __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__("./src/config/index.js"), __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./src/lib/util.js"), getCurrentScript = Object(__WEBPACK_IMPORTED_MODULE_2__util__.i)(function() {
+            for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _iterator = scripts, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var script = _ref;
+                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === __WEBPACK_IMPORTED_MODULE_1__config__.n.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+                if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
+            }
+            document.currentScript && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_not_recognized", {
+                src: document.currentScript.src
+            });
+        });
     },
     "./src/lib/session.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -15343,8 +15659,8 @@
                 return !1;
             });
         }
-        function getThrottle(name, sample, id) {
-            var uid = id || Object(__WEBPACK_IMPORTED_MODULE_3__session__.c)(), throttle = Object(__WEBPACK_IMPORTED_MODULE_2__util__.e)(name + "_" + uid) % 1e4, group = void 0;
+        function getThrottle(name, sample) {
+            var uid = Object(__WEBPACK_IMPORTED_MODULE_3__session__.c)(), throttle = Object(__WEBPACK_IMPORTED_MODULE_2__util__.e)(name + "_" + uid) % 1e4, group = void 0;
             group = throttle < sample ? "test" : sample >= 5e3 || sample <= throttle && throttle < 2 * sample ? "control" : "throttle";
             var treatment = name + "_" + group, started = !1, forced = !1;
             try {
@@ -15361,14 +15677,19 @@
                     return treatment;
                 },
                 log: function(checkpointName) {
-                    var _track, payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, event = treatment + "_" + checkpointName;
-                    if (!isCheckpointUnique(event)) return this;
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)(event, _extends({}, payload, {
+                    var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                    if (isCheckpointUnique(name + "_" + treatment)) {
+                        var _extends2;
+                        Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)(_extends((_extends2 = {}, 
+                        _extends2[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.STATE] = __WEBPACK_IMPORTED_MODULE_1__config__.e.STATE.PXP, 
+                        _extends2[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TRANSITION] = __WEBPACK_IMPORTED_MODULE_1__config__.e.TRANSITION.PXP, 
+                        _extends2[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.EXPERIMENT_NAME] = name, _extends2[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TREATMENT_NAME] = treatment, 
+                        _extends2), payload));
+                    }
+                    var event = name + "_" + treatment + "_" + checkpointName;
+                    isCheckpointUnique(event) && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)(event, _extends({}, payload, {
                         expuid: uid
                     }));
-                    Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TRANSITION] = event, 
-                    _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.EXPERIMENT_NAME] = name, _track[__WEBPACK_IMPORTED_MODULE_1__config__.e.KEY.TREATMENT_NAME] = treatment, 
-                    _track));
                     Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g)();
                     return this;
                 },
@@ -15442,14 +15763,6 @@
         function hashStr(str) {
             for (var hash = 0, i = 0; i < str.length; i++) hash += str[i].charCodeAt(0) * Math.pow(i % 10 + 1, 5);
             return Math.floor(Math.pow(Math.sqrt(hash), 5));
-        }
-        function strHashStr(str) {
-            for (var hash = "", i = 0; i < str.length; i++) {
-                var total = str[i].charCodeAt(0) * i;
-                str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
-                hash += String.fromCharCode(97 + Math.abs(total) % 26);
-            }
-            return hash;
         }
         function match(str, pattern) {
             var regmatch = str.match(pattern);
@@ -15531,10 +15844,20 @@
             return err ? err instanceof Error ? err.message || defaultMessage : "string" == typeof err.message ? err.message || defaultMessage : defaultMessage : defaultMessage;
         }
         function getDomainSetting(name, def) {
-            var domain = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)();
-            if (__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings) {
-                var hash = strHashStr(domain), settings = __WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings[hash];
-                if (settings) return settings[name];
+            var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)();
+            hostname = hostname.split(":")[0];
+            if (__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings) for (var _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                }
+                var domain = _ref2, index = hostname.indexOf(domain);
+                if (-1 !== index && hostname.slice(index) === domain) return __WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings[domain][name];
             }
             return def;
         }
@@ -15599,7 +15922,7 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.167" === window.paypal.version) {
+        if (window.paypal && "4.0.168" === window.paypal.version) {
             var error = "PayPal Checkout Integration Script already loaded on page";
             window.console && (window.console.warn ? window.console.warn(error) : window.console.log(error));
         } else try {
@@ -15632,7 +15955,7 @@
             }
         }
         function configure() {
-            var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref3.env, stage = _ref3.stage, apiStage = _ref3.apiStage, state = _ref3.state, ppobjects = _ref3.ppobjects, logLevel = _ref3.logLevel, merchantID = _ref3.merchantID;
+            var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
             if (env) {
                 if (!__WEBPACK_IMPORTED_MODULE_2__config__.n.paypalUrls[env]) throw new Error("Invalid env: " + env);
                 delete __WEBPACK_IMPORTED_MODULE_2__config__.n.env;
@@ -15650,9 +15973,8 @@
                 delete __WEBPACK_IMPORTED_MODULE_2__config__.n.state;
                 __WEBPACK_IMPORTED_MODULE_2__config__.n.state = state;
             }
-            ppobjects && (__WEBPACK_IMPORTED_MODULE_2__config__.n.ppobjects = !0);
             merchantID && (__WEBPACK_IMPORTED_MODULE_2__config__.n.merchantID = merchantID);
-            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(__WEBPACK_IMPORTED_MODULE_2__config__.n.logLevel);
+            logLevel ? Object(__WEBPACK_IMPORTED_MODULE_3__lib__.S)(logLevel) : Object(__WEBPACK_IMPORTED_MODULE_3__lib__.S)(__WEBPACK_IMPORTED_MODULE_2__config__.n.logLevel);
         }
         function setup() {
             var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -15668,11 +15990,11 @@
         __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException(function(err) {
             var _track;
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.f)("unhandled_error", {
-                stack: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.R)(err),
+                stack: Object(__WEBPACK_IMPORTED_MODULE_3__lib__.T)(err),
                 errtype: {}.toString.call(err)
             });
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.o)((_track = {}, _track[__WEBPACK_IMPORTED_MODULE_2__config__.e.KEY.ERROR_CODE] = "checkoutjs_error", 
-            _track[__WEBPACK_IMPORTED_MODULE_2__config__.e.KEY.ERROR_DESC] = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.S)(err), 
+            _track[__WEBPACK_IMPORTED_MODULE_2__config__.e.KEY.ERROR_DESC] = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.U)(err), 
             _track));
             return Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.g)().catch(function(err2) {
                 if (window.console) try {
@@ -15684,32 +16006,14 @@
                 }
             });
         });
-        var currentScript = function() {
-            for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _iterator2 = scripts, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
-                var _ref2;
-                if (_isArray2) {
-                    if (_i2 >= _iterator2.length) break;
-                    _ref2 = _iterator2[_i2++];
-                } else {
-                    _i2 = _iterator2.next();
-                    if (_i2.done) break;
-                    _ref2 = _i2.value;
-                }
-                var script = _ref2;
-                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === __WEBPACK_IMPORTED_MODULE_2__config__.n.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
-                if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
-            }
-            document.currentScript && Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_not_recognized", {
-                src: document.currentScript.src
-            });
-        }(), currentProtocol = window.location.protocol.split(":")[0], init = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.I)(function(_ref4) {
-            var precacheRemembered = _ref4.precacheRemembered;
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.w)() || Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("ineligible");
+        var currentScript = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.j)(), currentProtocol = window.location.protocol.split(":")[0], init = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(function(_ref3) {
+            var precacheRemembered = _ref3.precacheRemembered;
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.y)() || Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.p)("ineligible");
             Object(__WEBPACK_IMPORTED_MODULE_3__lib__.b)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.t)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
-            precacheRemembered && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)();
-            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.j)("force_bridge") && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)() && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.J)(__WEBPACK_IMPORTED_MODULE_2__config__.n.env);
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.v)();
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)() || Object(__WEBPACK_IMPORTED_MODULE_4__lib_pptm__.a)();
+            precacheRemembered && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)();
+            Object(__WEBPACK_IMPORTED_MODULE_3__lib__.k)("force_bridge") && !Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)() && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.L)(__WEBPACK_IMPORTED_MODULE_2__config__.n.env);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.j)("setup_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.env);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_protocol_" + currentProtocol);
         });
@@ -15720,11 +16024,10 @@
             state: currentScript.getAttribute("data-state"),
             logLevel: currentScript.getAttribute("data-log-level"),
             merchantID: currentScript.getAttribute("data-merchant-id"),
-            precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding"),
-            ppobjects: !0
+            precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
         }) : setup();
-        if (!Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)()) if (currentScript) {
-            var _track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.o)(currentScript.src);
+        if (!Object(__WEBPACK_IMPORTED_MODULE_3__lib__.D)()) if (currentScript) {
+            var _track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.p)(currentScript.src);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_protocol_" + scriptProtocol);
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
             Object(__WEBPACK_IMPORTED_MODULE_0_beaver_logger_client__.e)("current_script_version_" + __WEBPACK_IMPORTED_MODULE_2__config__.n.version.replace(/[^0-9a-zA-Z]+/g, "_"));
@@ -15751,4 +16054,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.4.0.167.js.map
+//# sourceMappingURL=checkout.4.0.168.js.map
