@@ -4,10 +4,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { on, send } from 'post-robot/src';
 import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
-import { getAncestor, isSameDomain, getDomain } from 'cross-domain-utils/src';
+import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
 
 import { config, FPTI, PAYMENT_TYPE } from '../config';
-import { request, memoize } from '../lib';
+import { request, memoize, isPayPalDomain } from '../lib';
 
 let proxyRest : { [key : string] : (...args : Array<mixed>) => ZalgoPromise<string> } = {};
 
@@ -134,6 +134,12 @@ function logPaymentResponse(res) {
     });
 }
 
+function getDefaultReturnUrl() : string {
+    return isFileProtocol()
+        ? `https://www.paypal.com`
+        : `${ window.location.protocol }//${ window.location.host }`;
+}
+
 function createCheckoutToken(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
 
     info(`rest_api_create_checkout_token`);
@@ -159,8 +165,8 @@ function createCheckoutToken(env : string, client : { [key : string] : string },
     payment = { ...payment };
     payment.intent = payment.intent || 'sale';
     payment.redirect_urls = payment.redirect_urls || {};
-    payment.redirect_urls.return_url = payment.redirect_urls.return_url || `${ window.location.protocol }//${ window.location.host }`;
-    payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || `${ window.location.protocol }//${ window.location.host }`;
+    payment.redirect_urls.return_url = payment.redirect_urls.return_url || getDefaultReturnUrl();
+    payment.redirect_urls.cancel_url = payment.redirect_urls.cancel_url || getDefaultReturnUrl();
     payment.payer = payment.payer || {};
     payment.payer.payment_method = payment.payer.payment_method || 'paypal';
 
@@ -231,8 +237,8 @@ function createOrderToken(env : string, client : { [key : string] : string }, pa
     order = { ...order };
     order.intent = order.intent || 'CAPTURE';
     order.redirect_urls = order.redirect_urls || {};
-    order.redirect_urls.return_url = order.redirect_urls.return_url || `${ window.location.protocol }//${ window.location.host }`;
-    order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || `${ window.location.protocol }//${ window.location.host }`;
+    order.redirect_urls.return_url = order.redirect_urls.return_url || getDefaultReturnUrl();
+    order.redirect_urls.cancel_url = order.redirect_urls.cancel_url || getDefaultReturnUrl();
     order.purchase_units = order.purchase_units || [];
     order.purchase_units[0] = order.purchase_units[0] || {};
     order.purchase_units.forEach(unit => {
@@ -287,8 +293,8 @@ export function createBillingToken(env : string, client : { [key : string] : str
     billingDetails = { ...billingDetails };
     billingDetails.plan = billingDetails.plan || {};
     billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
-    billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || `${ window.location.protocol }//${ window.location.host }`;
-    billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || `${ window.location.protocol }//${ window.location.host }`;
+    billingDetails.plan.merchant_preferences.return_url = billingDetails.plan.merchant_preferences.return_url || getDefaultReturnUrl();
+    billingDetails.plan.merchant_preferences.cancel_url = billingDetails.plan.merchant_preferences.cancel_url || getDefaultReturnUrl();
     billingDetails.payer = billingDetails.payer || {};
     billingDetails.payer.payment_method = billingDetails.payer.payment_method || 'paypal';
 
@@ -349,7 +355,7 @@ on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
     proxyRest = data;
 });
 
-if (parentWin && getDomain() === config.paypalDomain && !isSameDomain(parentWin)) {
+if (parentWin && isPayPalDomain() && !isSameDomain(parentWin)) {
     send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createCheckoutToken, createBillingToken, createOrderToken })
         .catch(() => {
             // pass
