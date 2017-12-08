@@ -599,7 +599,7 @@ if (Checkout.isChild()) {
                 
                 let logComplete = () => {
                     if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
-                        throttle.logComplete();
+                        throttle.logComplete({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
                         loggedComplete = true;
                     }
                 };
@@ -617,7 +617,7 @@ if (Checkout.isChild()) {
                 }
 
                 experimentActive = true;
-                throttle.logStart();
+                throttle.logStart({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
 
                 if (!throttle.isEnabled()) {
                     return;

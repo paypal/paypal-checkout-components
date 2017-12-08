@@ -88,7 +88,8 @@ export const FPTI = {
         LOAD:     'checkoutjs_load',
         BUTTON:   'checkoutjs_button',
         CHECKOUT: 'checkoutjs_checkout',
-        PPTM:     'checkoutjs_pptm'
+        PPTM:     'checkoutjs_pptm',
+        PXP:      'PXP_CHECK'
     },
 
     TRANSITION: {
@@ -110,7 +111,9 @@ export const FPTI = {
         EXTERNAL_EXPERIMENT_COMPLETE: 'process_external_experiment_complete',
 
         PPTM_LOAD:   'process_pptm_load',
-        PPTM_LOADED: 'process_pptm_loaded'
+        PPTM_LOADED: 'process_pptm_loaded',
+
+        PXP: 'process_pxp_check'
     }
 };
 

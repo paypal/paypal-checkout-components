@@ -20,9 +20,9 @@ function isCheckpointUnique(name : string) : boolean {
     });
 }
 
-export function getThrottle(name : string, sample : number, id? : string) : Object {
+export function getThrottle(name : string, sample : number) : Object {
 
-    let uid = id || getSessionID();
+    let uid = getSessionID();
 
     let throttle = hashStr(`${ name }_${ uid }`) % 10000;
 
@@ -65,18 +65,21 @@ export function getThrottle(name : string, sample : number, id? : string) : Obje
 
         log(checkpointName : string, payload : { [key : string] : ?string } = {}) : Object {
 
-            let event = `${ treatment }_${ checkpointName }`;
-
-            if (!isCheckpointUnique(event)) {
-                return this;
+            if (isCheckpointUnique(`${ name }_${ treatment }`)) {
+                track({
+                    [ FPTI.KEY.STATE ]:           FPTI.STATE.PXP,
+                    [ FPTI.KEY.TRANSITION ]:      FPTI.TRANSITION.PXP,
+                    [ FPTI.KEY.EXPERIMENT_NAME ]: name,
+                    [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
+                    ...payload
+                });
             }
 
-            info(event, { ...payload, expuid: uid });
-            track({
-                [ FPTI.KEY.TRANSITION ]:      event,
-                [ FPTI.KEY.EXPERIMENT_NAME ]: name,
-                [ FPTI.KEY.TREATMENT_NAME ]:  treatment
-            });
+            let event = `${ name }_${ treatment }_${ checkpointName }`;
+
+            if (isCheckpointUnique(event)) {
+                info(event, { ...payload, expuid: uid });
+            }
 
             flushLogs();
 
