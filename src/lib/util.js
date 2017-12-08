@@ -266,16 +266,18 @@ export let isLocalStorageEnabled = memoize(() : boolean => {
 
 export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
 
-    let domain = window.xchild
+    let hostname = window.xchild
         ? window.xchild.getParentDomain()
         : getDomain();
 
-    if (config.domain_settings) {
-        let hash = strHashStr(domain);
-        let settings = config.domain_settings[hash];
+    hostname = hostname.split(':')[0];
 
-        if (settings) {
-            return settings[name];
+    if (config.domain_settings) {
+        for (let domain of Object.keys(config.domain_settings)) {
+            let index = hostname.indexOf(domain);
+            if (index !== -1 && hostname.slice(index) === domain) {
+                return config.domain_settings[domain][name];
+            }
         }
     }
 

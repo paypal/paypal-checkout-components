@@ -38,7 +38,7 @@ export let config = {
     },
 
     domain_settings: {
-        mmgukkxdrvsgzjrdmykehng: {
+        'walmart.com': {
             log_domain_prefix:               true,
             ie_full_page:                    false,
             allow_full_page_fallback:        true,
@@ -47,29 +47,28 @@ export let config = {
             log_authorize:                   true,
             disable_payment_timeout:         true
         },
-
-        mmgkjhtnrjqajdxjmwdbowxnegxd: {
-            ie_full_page:             false,
-            allow_full_page_fallback: true,
-            memoize_payment:          true,
-            disable_payment_timeout:  true,
-            force_bridge:             false,
-            log_authorize:            true
-        },
-
-        mmgukkxdrvsmsoztlbdr: {
+        
+        'ulta.com': {
             disable_venmo: true
         },
 
-        mmgukkxdrvsehdkwnxcqigccbpfvtp: {
+        'barnesandnoble.com': {
             disable_venmo: true
         },
 
-        mmgukkxdrvscuutpltdbwqaykqthk: {
+        'bn.com': {
             disable_venmo: true
         },
 
-        mmgukkxdrvsotjewaypfbb: {
+        'agoratix.com': {
+            disable_venmo: true
+        },
+
+        'tractorsupply.com': {
+            disable_venmo: true
+        },
+
+        'etsy.com': {
             log_domain_prefix:               true,
             ie_full_page:                    false,
             allow_full_page_fallback:        true,
