@@ -467,6 +467,8 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     };
 
+                    actions.request = request;
+
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
