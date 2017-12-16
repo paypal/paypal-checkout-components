@@ -20,56 +20,79 @@ function type(field : HTMLInputElement, chars : string, interval : number = 50) 
     });
 }
 
-export function prefillSandboxLogin(emailText : string, passwordText : string) {
+function waitForPageLoad() : ZalgoPromise<Object> {
+    return new ZalgoPromise(resolve => {
 
-    if (!Checkout.isChild()) {
-        return;
-    }
+        let count = 1;
 
-    if (window.location.href.indexOf('sandbox.paypal.com') === -1) {
-        return;
-    }
+        let interval = setInterval(() => {
 
-    if (!window.root || !window.root.token || !window.$CheckoutPayeeModel) {
-        return;
-    }
+            count += 1;
+            if (count >= 50) {
+                return clearInterval(interval);
+            }
 
-    if (window.$CheckoutPayeeModel.instance(window.root.token).merchant.id !== 'YQZCHTGHUK5P8') {
-        return;
-    }
-    
-    if (!window.injector) {
-        return;
-    }
+            if (window.injector) {
+                clearInterval(interval);
+                return resolve(window.injector);
+            }
 
-    let $event = window.injector.get('$event');
+        }, 500);
 
-    if (!$event) {
-        return;
-    }
+    }).then(injector => {
 
-    $event.on('allLoaded', () => {
-        let win = window.injectedUl || window;
-
-        let email = win.document.querySelector('#email');
-        let password = win.document.querySelector('#password');
-
-        if (!email || !password) {
+        if (!injector.get('$loader').isLoading()) {
             return;
         }
 
-        email.value = '';
-        password.value = '';
+        return new ZalgoPromise(resolve =>
+            injector.get('$event').on('allLoaded', resolve));
+    });
+}
 
-        ZalgoPromise
-            .try(() => type(email, emailText))
-            .then(() => type(password, passwordText))
-            .catch(noop);
+export function prefillSandboxLogin(emailText : string, passwordText : string) : ZalgoPromise<void> {
+    return ZalgoPromise.try(() => {
+
+        if (!Checkout.isChild()) {
+            return;
+        }
+
+        if (window.location.href.indexOf('sandbox.paypal.com') === -1) {
+            return;
+        }
+
+        return waitForPageLoad().then(() => {
+            
+            if (!window.root || !window.root.token || !window.$CheckoutPayeeModel) {
+                return;
+            }
+
+            if (window.$CheckoutPayeeModel.instance(window.root.token).merchant.id !== 'YQZCHTGHUK5P8') {
+                return;
+            }
+
+            let win = window.injectedUl || window;
+
+            let email = win.document.querySelector('#email');
+            let password = win.document.querySelector('#password');
+
+            if (!email || !password) {
+                return;
+            }
+
+            email.value = '';
+            password.value = '';
+
+            return ZalgoPromise
+                .try(() => type(email, emailText))
+                .then(() => type(password, passwordText))
+                .catch(noop);
+        });
     });
 }
 
 try {
-    prefillSandboxLogin('sandbox-user@paypal.com', 'passw0rd');
+    prefillSandboxLogin('sandbox-user@paypal.com', 'passw0rd').catch(noop);
 } catch (err) {
     // pass
 }
