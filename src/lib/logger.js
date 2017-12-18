@@ -5,7 +5,7 @@ import { setTransport, getTransport, addPayloadBuilder, addMetaBuilder,
     addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
 
-import { config, FPTI } from '../config';
+import { config, FPTI, PAYMENT_TYPE } from '../config';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
@@ -60,9 +60,22 @@ export function initLogger() {
     addTrackingBuilder((payload = {}) => {
 
         let sessionID       = getSessionID();
+        let paymentToken    = getToken();
         let buttonSessionID = payload[FPTI.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
-        let contextType     = buttonSessionID ? FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID : payload[FPTI.KEY.CONTEXT_TYPE];
-        let contextID       = buttonSessionID ? buttonSessionID : payload[FPTI.KEY.CONTEXT_ID];
+
+        let contextType;
+        let contextID;
+
+        if (paymentToken) {
+            contextType = FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN];
+            contextID   = paymentToken;
+        } else if (buttonSessionID) {
+            contextType = FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID;
+            contextID   = buttonSessionID;
+        } else {
+            contextType = payload[FPTI.KEY.CONTEXT_TYPE];
+            contextID   = payload[FPTI.KEY.CONTEXT_ID];
+        }
 
         return {
             [ FPTI.KEY.FEED ]:               FPTI.FEED.CHECKOUTJS,
@@ -73,7 +86,7 @@ export function initLogger() {
             [ FPTI.KEY.SESSION_UID ]:        sessionID,
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
             [ FPTI.KEY.VERSION ]:            config.version,
-            [ FPTI.KEY.TOKEN ]:              getToken(),
+            [ FPTI.KEY.TOKEN ]:              paymentToken,
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
     });
