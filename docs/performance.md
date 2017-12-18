@@ -20,15 +20,13 @@ There is a minified version of the checkout.js script available at https://www.p
 
 If you are rendering the PayPal button immediately on the page, after a server-side render, you should:
 
-1. Load the `checkout.js` script synchronously in your `<head>`:
+1. Load the `checkout.js` script prior to the element you want to render into:
 
    ```html
-   <head>
-       <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-   </head>
+   <script src="https://www.paypalobjects.com/api/checkout.js"></script>
    ```
 
-2. Call `paypal.Button.render()` as soon as possible, once the container element is ready:
+2. Call `paypal.Button.render()` as soon as possible once the container element is ready:
 
    ```html
    <div id="paypal-button-container"></div>
@@ -44,10 +42,11 @@ If you are rendering the PayPal button immediately on the page, after a server-s
 
    ```html
    <!-- On one of your landing pages or pre-checkout pages -->
-
-   <head>
+   <body>
+	...
+	
        <script src="https://www.paypalobjects.com/api/checkout.js" async></script>
-   </head>
+   </body>
    ```
 
    
