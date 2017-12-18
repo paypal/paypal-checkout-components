@@ -79,7 +79,7 @@ If your app is client-side rendered, or there is a user action on the page befor
                 script.onload = function() { callback() };
                 script.onerror = function(err) { callback(err) };
 					 
-					 container.appendChild(script);
+                container.appendChild(script);
             }
 
             loadPayPalCheckout();
