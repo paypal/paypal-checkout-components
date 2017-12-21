@@ -333,9 +333,65 @@ export function createBillingToken(env : string, client : { [key : string] : str
     });
 }
 
+function executeToken(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
+
+    info(`rest_api_execute_token`);
+
+    env = env || config.env;
+
+    let clientID = client[env];
+
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${ env }`);
+    }
+
+    let { payer_id, payment_id, meta } = paymentDetails;
+
+    if (!payment_id || !payer_id) {
+        throw new Error(`Expected payer_id and payment_id to be passed`);
+    }
+    /*
+    if (proxyRest.createCheckoutToken && !proxyRest.createCheckoutToken.source.closed) {
+        return proxyRest.createCheckoutToken(env, client, { payment, experience, meta });
+    }
+    */
+
+    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
+
+        return ZalgoPromise.try(() : ZalgoPromise<Object> => {
+
+            let headers : Object = {
+                Authorization: `Bearer ${ accessToken }`
+            };
+
+            if (meta && meta.partner_attribution_id) {
+                headers['PayPal-Partner-Attribution-Id'] = meta.partner_attribution_id;
+            }
+
+            return request({
+                method: `post`,
+                url:    `${ config.paymentApiUrls[env] }/${ payment_id }/execute`,
+                headers,
+                json:   { payer_id }
+            });
+        });
+
+    }).then((res) : string => {
+
+        logPaymentResponse(res);
+
+        if (res && res.id) {
+            return res;
+        }
+
+        throw new Error(`Payment Execute Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
+    });
+}
+
 export let rest = {
     payment: {
-        create: createCheckoutToken
+        create: createCheckoutToken,
+        execute: executeToken
     },
     order: {
         create: createOrderToken
