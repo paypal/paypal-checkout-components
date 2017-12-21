@@ -381,7 +381,7 @@ function executeToken(env : string, client : { [key : string] : string }, paymen
         logPaymentResponse(res);
 
         if (res && res.id) {
-            return res.id;
+            return res;
         }
 
         throw new Error(`Payment Execute Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
