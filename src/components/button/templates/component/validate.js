@@ -23,7 +23,6 @@ export function validateButtonLocale(locale : string) {
     }
 }
 
-// eslint-disable-next-line complexity
 export function validateButtonStyle(style : Object = {}) {
 
     if (!style) {

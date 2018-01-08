@@ -648,6 +648,10 @@ patchMethod(Checkout, 'render', ({ args: [ props ], original, context }) => {
 });
 
 patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) => {
+
+    let payment = props.payment();
+    props.payment = () => payment;
+
     return original.call(context, win, props, 'body').catch(err => {
         if (err instanceof PopupOpenError && isPayPalDomain()) {
             Checkout.contexts.iframe = true;
