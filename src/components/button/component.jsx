@@ -503,7 +503,10 @@ export let Button : Component<ButtonOptions> = create({
                     }).then(() => {
                         return original.call(this, data, actions);
                     }).catch(err => {
-                        return this.props.onError(err);
+                        if (this.props.onError) {
+                            return this.props.onError(err);
+                        }
+                        throw err;
                     });
                 };
             }
