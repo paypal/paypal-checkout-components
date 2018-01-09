@@ -30,6 +30,10 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
     if (fundingSource === FUNDING.CARD || fundingSource === FUNDING.ELV) {
         return config.guestUrls[env];
     }
+
+    if (fundingSource === FUNDING.IDEAL) {
+        return config.altpayUrls[env];
+    }
     
     return config.checkoutUrls[env];
 }

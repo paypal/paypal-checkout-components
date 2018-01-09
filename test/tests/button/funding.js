@@ -445,7 +445,7 @@ describe(`paypal button component funding mix`, () => {
         }, '#testContainer');
     });
 
-    it('should render ideal by default for eligible country', (done) => {
+    it.skip('should render ideal by default for eligible country', (done) => {
 
         window.paypal.Button.render({
 

@@ -106,9 +106,17 @@ export let config = {
         config._apiStage = value;
     },
 
+    ports: {
+        default:  8000,
+        button:   8000,
+        checkout: 8000,
+        guest:    8001,
+        altpay:   3000
+    },
+
     get paypalUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
+            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
             [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -119,7 +127,7 @@ export let config = {
 
     get paypalDomains() : Object {
         return {
-            [ ENV.LOCAL ]:      `http://localhost.paypal.com:8000`,
+            [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
             [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
@@ -168,6 +176,15 @@ export let config = {
         [ ENV.STAGE ]:      `/webapps/hermes`,
         [ ENV.SANDBOX ]:    `/checkoutnow`,
         [ ENV.PRODUCTION ]: `/checkoutnow`,
+        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
+        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
+    },
+
+    altpayUris: {
+        [ ENV.LOCAL ]:      `/latinumcheckout`,
+        [ ENV.STAGE ]:      `/latinumcheckout`,
+        [ ENV.SANDBOX ]:    `/latinumcheckout`,
+        [ ENV.PRODUCTION ]: `/latinumcheckout`,
         [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?checkouturl=true`,
         [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
     },
@@ -252,7 +269,7 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.checkoutUris.local }`,
+            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.checkoutUris.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.checkoutUris.stage }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.checkoutUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.checkoutUris.production }`,
@@ -266,7 +283,7 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.guestUris.local }`,
+            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.guest }`) }${ config.guestUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.guestUris.stage }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.guestUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.guestUris.production }`,
@@ -275,12 +292,26 @@ export let config = {
         };
     },
 
+    get altpayUrls() : Object {
+
+        let paypalUrls = config.paypalUrls;
+
+        return {
+            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.altpay }`) }${ config.altpayUris.local }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.altpayUris.stage }`,
+            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.altpayUris.sandbox }`,
+            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.altpayUris.production }`,
+            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.altpayUris.test }`,
+            [ ENV.DEMO ]:       `${ paypalUrls.test }${ config.altpayUris.demo }`
+        };
+    },
+
     get billingUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
 
         return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.billingUris.local }`,
+            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }${ config.billingUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.billingUris.stage }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.billingUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.billingUris.production }`,
@@ -294,7 +325,7 @@ export let config = {
         let paypalUrls = config.paypalUrls;
 
         return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.buttonUris.local }`,
+            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.buttonUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.buttonUris.stage }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.buttonUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.buttonUris.production }`,

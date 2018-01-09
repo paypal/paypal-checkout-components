@@ -4,7 +4,7 @@
 import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -30,9 +30,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             },
 
             {
-                source:   window.paypal.FUNDING.VENMO,
-                fragment: 'checkouturl=true',
-                locale:   'en_US'
+                source:    window.paypal.FUNDING.VENMO,
+                fragment:  'checkouturl=true',
+                locale:    'en_US',
+                userAgent: IPHONE6_USER_AGENT
             },
 
             {
@@ -55,8 +56,13 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         ];
 
-        for (let { source, fragment, locale } of cases) {
+        // $FlowFixMe
+        for (let { source, fragment, locale, userAgent } of cases) {
             it(`should render multiple buttons including ${ source }, click on the ${ source } button, and send the correct url params`, (done) => {
+
+                if (userAgent) {
+                    window.navigator.mockUserAgent = userAgent;
+                }
 
                 let checkoutToken = generateECToken();
 

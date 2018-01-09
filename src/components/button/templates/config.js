@@ -411,20 +411,12 @@ export const FUNDING_CONFIG = {
     },
 
     [ FUNDING.IDEAL ]: {
-        enabled: false,
-        test:    true,
-
         allowedCountries: [
-            COUNTRY.NL
-        ],
-        defaultCountries: [
             COUNTRY.NL
         ]
     },
 
     [ FUNDING.ELV ]: {
-        enabled: true,
-
         allowedCountries: [
             COUNTRY.DE,
             COUNTRY.AT
