@@ -270,7 +270,7 @@ export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
         ? window.xchild.getParentDomain()
         : getDomain();
 
-    hostname = hostname.split(':')[0];
+    hostname = hostname.split('://')[1];
 
     if (config.domain_settings) {
         for (let domain of Object.keys(config.domain_settings)) {
