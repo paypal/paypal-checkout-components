@@ -94,8 +94,15 @@ export let Checkout : Component<CheckoutPropsType> = create({
         });
     },
 
+    get unsafeRenderTo() : boolean {
+        return config.env === ENV.LOCAL;
+    },
+
     get domain() : Object {
-        return config.paypalDomains;
+        return {
+            ...config.paypalDomains,
+            [ ENV.LOCAL ]: /^http:\/\/localhost.paypal.com:\d+$/
+        };
     },
 
     get bridgeUrl() : Object {
