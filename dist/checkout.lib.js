@@ -5184,6 +5184,7 @@
                     _this.addProp(options, "containerTemplate", __WEBPACK_IMPORTED_MODULE_11__templates__.a);
                     _this.addProp(options, "prerenderTemplate", __WEBPACK_IMPORTED_MODULE_11__templates__.b);
                     _this.addProp(options, "validate");
+                    _this.addProp(options, "unsafeRenderTo", !1);
                     Component.components[_this.tag] = _this;
                     _this.registerDrivers();
                     _this.registerChild();
@@ -6305,7 +6306,7 @@
                     };
                 };
                 ParentComponent.prototype.buildChildWindowName = function() {
-                    var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(renderTo), uid = Object(__WEBPACK_IMPORTED_MODULE_6__lib__._0)(), tag = this.component.tag, sProps = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain, props = secureProps ? {
+                    var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.u)(renderTo), uid = Object(__WEBPACK_IMPORTED_MODULE_6__lib__._0)(), tag = this.component.tag, sProps = Object(__WEBPACK_IMPORTED_MODULE_6__lib__.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain && !this.component.unsafeRenderTo, props = secureProps ? {
                         type: __WEBPACK_IMPORTED_MODULE_7__constants__.INITIAL_PROPS.UID,
                         uid: uid
                     } : {
@@ -8256,7 +8257,10 @@
                     if ("string" != typeof content) throw new Error("Expected " + name + " tag content to be string, got " + (void 0 === content ? "undefined" : _typeof(content)));
                     if (arguments.length > 3) throw new Error("Expected only text content for " + name + " tag");
                     el.text = content;
-                } else for (var i = 2; i < arguments.length; i++) "string" == typeof arguments[i] ? el.textContent = arguments[i] : appendChild(el, arguments[i]);
+                } else for (var i = 2; i < arguments.length; i++) if ("string" == typeof arguments[i]) {
+                    var textNode = document.createTextNode(arguments[i]);
+                    appendChild(el, textNode);
+                } else appendChild(el, arguments[i]);
                 return el;
             }
             __webpack_exports__.d = appendChild;
@@ -9162,13 +9166,13 @@
             function getDefaultReturnUrl() {
                 return Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.q)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
             }
-            function createCheckoutToken(env, client, paymentDetails) {
+            function createPayment(env, client, paymentDetails) {
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_checkout_token");
                 env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta;
                 if (!payment) throw new Error("Expected payment details to be passed");
-                if (proxyRest.createCheckoutToken && !proxyRest.createCheckoutToken.source.closed) return proxyRest.createCheckoutToken(env, client, {
+                if (proxyRest.createPayment && !proxyRest.createPayment.source.closed) return proxyRest.createPayment(env, client, {
                     payment: payment,
                     experience: experience,
                     meta: meta
@@ -9202,13 +9206,48 @@
                     throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, null, 4));
                 });
             }
-            function createOrderToken(env, client, paymentDetails) {
+            function getPayment(env, client, paymentID) {
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_get_order");
+                env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                if (!client[env]) throw new Error("Client ID not found for env: " + env);
+                if (!paymentID) throw new Error("Expected payment id");
+                return proxyRest.getPayment && !proxyRest.getPayment.source.closed ? proxyRest.getPayment(env, client, paymentID) : createAccessToken(env, client).then(function(accessToken) {
+                    var headers = {
+                        Authorization: "Bearer " + accessToken
+                    };
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
+                        method: "get",
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.paymentApiUrls[env] + "/" + paymentID,
+                        headers: headers
+                    });
+                });
+            }
+            function executePayment(env, client, paymentID, payerID) {
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_get_order");
+                env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                if (!client[env]) throw new Error("Client ID not found for env: " + env);
+                if (!paymentID) throw new Error("Expected payment id");
+                return proxyRest.executePayment && !proxyRest.executePayment.source.closed ? proxyRest.executePayment(env, client, paymentID) : createAccessToken(env, client).then(function(accessToken) {
+                    var headers = {
+                        Authorization: "Bearer " + accessToken
+                    };
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
+                        method: "post",
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.paymentApiUrls[env] + "/" + paymentID + "/execute",
+                        headers: headers,
+                        json: {
+                            payer_id: payerID
+                        }
+                    });
+                });
+            }
+            function createOrder(env, client, paymentDetails) {
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_order_token");
                 env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var order = paymentDetails.order, meta = paymentDetails.meta;
                 if (!order) throw new Error("Expected order details to be passed");
-                if (proxyRest.createOrderToken && !proxyRest.createOrderToken.source.closed) return proxyRest.createOrderToken(env, client, {
+                if (proxyRest.createOrder && !proxyRest.createOrder.source.closed) return proxyRest.createOrder(env, client, {
                     order: order,
                     meta: meta
                 });
@@ -9239,11 +9278,46 @@
                     throw new Error("Payment Api response error:\n\n" + JSON.stringify(res, null, 4));
                 });
             }
-            function createBillingToken(env, client, billingDetails, experienceDetails) {
+            function getOrder(env, client, orderID) {
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_get_order");
+                env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                if (!client[env]) throw new Error("Client ID not found for env: " + env);
+                if (!orderID) throw new Error("Expected order id");
+                return proxyRest.getOrder && !proxyRest.getOrder.source.closed ? proxyRest.getOrder(env, client, orderID) : createAccessToken(env, client).then(function(accessToken) {
+                    var headers = {
+                        Authorization: "Bearer " + accessToken
+                    };
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
+                        method: "get",
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.orderApiUrls[env] + "/" + orderID,
+                        headers: headers
+                    });
+                });
+            }
+            function captureOrder(env, client, orderID) {
+                Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_get_order");
+                env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
+                if (!client[env]) throw new Error("Client ID not found for env: " + env);
+                if (!orderID) throw new Error("Expected order id");
+                return proxyRest.captureOrder && !proxyRest.captureOrder.source.closed ? proxyRest.captureOrder(env, client, orderID) : createAccessToken(env, client).then(function(accessToken) {
+                    var headers = {
+                        Authorization: "Bearer " + accessToken
+                    };
+                    return Object(__WEBPACK_IMPORTED_MODULE_6__lib__.Q)({
+                        method: "post",
+                        url: __WEBPACK_IMPORTED_MODULE_5__config__.n.orderApiUrls[env] + "/" + orderID + "/capture",
+                        headers: headers,
+                        json: {
+                            is_final_capture: !0
+                        }
+                    });
+                });
+            }
+            function createBillingAgreement(env, client, billingDetails, experienceDetails) {
                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("rest_api_create_billing_token");
                 env = env || __WEBPACK_IMPORTED_MODULE_5__config__.n.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
-                if (proxyRest.createBillingToken && !proxyRest.createBillingToken.source.closed) return proxyRest.createBillingToken(env, client, billingDetails, experienceDetails);
+                if (proxyRest.createBillingAgreement && !proxyRest.createBillingAgreement.source.closed) return proxyRest.createBillingAgreement(env, client, billingDetails, experienceDetails);
                 billingDetails = _extends({}, billingDetails);
                 billingDetails.plan = billingDetails.plan || {};
                 billingDetails.plan.merchant_preferences = billingDetails.plan.merchant_preferences || {};
@@ -9329,13 +9403,17 @@
                 time: 6e5
             }), rest = {
                 payment: {
-                    create: createCheckoutToken
+                    create: createPayment,
+                    get: getPayment,
+                    execute: executePayment
                 },
                 order: {
-                    create: createOrderToken
+                    create: createOrder,
+                    get: getOrder,
+                    capture: captureOrder
                 },
                 billingAgreement: {
-                    create: createBillingToken
+                    create: createBillingAgreement
                 },
                 experience: {
                     create: createExperienceProfile
@@ -9350,9 +9428,13 @@
             parentWin && Object(__WEBPACK_IMPORTED_MODULE_6__lib__.D)() && !Object(__WEBPACK_IMPORTED_MODULE_4_cross_domain_utils_src__.u)(parentWin) && Object(__WEBPACK_IMPORTED_MODULE_1_post_robot_src__.send)(parentWin, "proxy_rest", {
                 createAccessToken: createAccessToken,
                 createExperienceProfile: createExperienceProfile,
-                createCheckoutToken: createCheckoutToken,
-                createBillingToken: createBillingToken,
-                createOrderToken: createOrderToken
+                createPayment: createPayment,
+                getPayment: getPayment,
+                executePayment: executePayment,
+                createBillingAgreement: createBillingAgreement,
+                createOrder: createOrder,
+                getOrder: getOrder,
+                captureOrder: captureOrder
             }).catch(function() {});
         },
         "./src/compat/fallback.js": function(module, __webpack_exports__, __webpack_require__) {
@@ -9850,6 +9932,14 @@
                                 Object(__WEBPACK_IMPORTED_MODULE_7__lib__.y)() || Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.j)("button_authorize_ineligible");
                                 Object(__WEBPACK_IMPORTED_MODULE_7__lib__.c)("authorize");
                                 Object(__WEBPACK_IMPORTED_MODULE_3_beaver_logger_client__.g)();
+                                actions.order = {
+                                    get: function() {
+                                        return __WEBPACK_IMPORTED_MODULE_8__api__.a.order.get(_this3.props.env, _this3.props.client, data.orderID || data.paymentToken);
+                                    },
+                                    capture: function() {
+                                        return __WEBPACK_IMPORTED_MODULE_8__api__.a.order.capture(_this3.props.env, _this3.props.client, data.orderID || data.paymentToken);
+                                    }
+                                };
                                 var restart = actions.restart;
                                 actions.restart = function() {
                                     return restart().then(function() {
@@ -9897,7 +9987,8 @@
                                 }).then(function() {
                                     return original.call(_this3, data, actions);
                                 }).catch(function(err) {
-                                    return _this3.props.onError(err);
+                                    if (_this3.props.onError) return _this3.props.onError(err);
+                                    throw err;
                                 });
                             };
                         }
@@ -10817,7 +10908,7 @@
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
                 return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.171", _ref14), {
+                _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.172", _ref14), {
                     class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -11259,12 +11350,8 @@
                 defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ],
                 platforms: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.l.MOBILE ]
             }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.IDEAL] = {
-                enabled: !1,
-                test: !0,
-                allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ],
-                defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ]
+                allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ]
             }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.g.ELV] = {
-                enabled: !0,
                 allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ],
                 defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ]
             }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
@@ -11597,8 +11684,14 @@
                         return Object(__WEBPACK_IMPORTED_MODULE_9__util__.b)(env, props.fundingSource, token);
                     });
                 },
+                get unsafeRenderTo() {
+                    return __WEBPACK_IMPORTED_MODULE_6__config__.n.env === __WEBPACK_IMPORTED_MODULE_6__config__.d.LOCAL;
+                },
                 get domain() {
-                    return __WEBPACK_IMPORTED_MODULE_6__config__.n.paypalDomains;
+                    var _extends2;
+                    return _extends({}, __WEBPACK_IMPORTED_MODULE_6__config__.n.paypalDomains, (_extends2 = {}, 
+                    _extends2[__WEBPACK_IMPORTED_MODULE_6__config__.d.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
+                    _extends2));
                 },
                 get bridgeUrl() {
                     return __WEBPACK_IMPORTED_MODULE_6__config__.n.metaFrameUrls;
@@ -11998,7 +12091,10 @@
                 return original.call(context, props, "body");
             });
             Object(__WEBPACK_IMPORTED_MODULE_5__lib__.M)(Checkout, "renderTo", function(_ref4) {
-                var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context;
+                var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context, payment = props.payment();
+                props.payment = function() {
+                    return payment;
+                };
                 return original.call(context, win, props, "body").catch(function(err) {
                     if (err instanceof __WEBPACK_IMPORTED_MODULE_2_xcomponent_src__.b && Object(__WEBPACK_IMPORTED_MODULE_5__lib__.D)()) {
                         Checkout.contexts.iframe = !0;
@@ -12374,7 +12470,7 @@
                 __WEBPACK_IMPORTED_MODULE_1__config__.j.EC_TOKEN);
             }
             function determineUrl(env, fundingSource, payment) {
-                return getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__config__.j.BA_TOKEN ? __WEBPACK_IMPORTED_MODULE_1__config__.n.billingUrls[env] : fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.ELV ? __WEBPACK_IMPORTED_MODULE_1__config__.n.guestUrls[env] : __WEBPACK_IMPORTED_MODULE_1__config__.n.checkoutUrls[env];
+                return getPaymentType(payment) === __WEBPACK_IMPORTED_MODULE_1__config__.j.BA_TOKEN ? __WEBPACK_IMPORTED_MODULE_1__config__.n.billingUrls[env] : fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.CARD || fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.ELV ? __WEBPACK_IMPORTED_MODULE_1__config__.n.guestUrls[env] : fundingSource === __WEBPACK_IMPORTED_MODULE_1__config__.f.IDEAL ? __WEBPACK_IMPORTED_MODULE_1__config__.n.altpayUrls[env] : __WEBPACK_IMPORTED_MODULE_1__config__.n.checkoutUrls[env];
             }
             __webpack_exports__.a = determineParameterFromToken;
             __webpack_exports__.c = getPaymentType;
@@ -12562,10 +12658,10 @@
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return config;
             });
-            var _checkoutUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
+            var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.171",
+                version: "4.0.172",
                 cors: !0,
                 env: __WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION,
                 state: "checkoutjs",
@@ -12635,9 +12731,16 @@
                 set apiStage(value) {
                     config._apiStage = value;
                 },
+                ports: {
+                    default: 8e3,
+                    button: 8e3,
+                    checkout: 8e3,
+                    guest: 8001,
+                    altpay: 3e3
+                },
                 get paypalUrls() {
                     var _ref;
-                    return _ref = {}, _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "http://localhost.paypal.com:8000", 
+                    return _ref = {}, _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
                     _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "https://www." + config.stage + ".qa.paypal.com", 
                     _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "https://www.sandbox.paypal.com", 
                     _ref[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "https://www.paypal.com", 
@@ -12647,7 +12750,7 @@
                 },
                 get paypalDomains() {
                     var _ref2;
-                    return _ref2 = {}, _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "http://localhost.paypal.com:8000", 
+                    return _ref2 = {}, _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "http://localhost.paypal.com:" + config.ports.default, 
                     _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "https://www." + config.stage + ".qa.paypal.com", 
                     _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "https://www.sandbox.paypal.com", 
                     _ref2[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "https://www.paypal.com", 
@@ -12689,6 +12792,13 @@
                 _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
                 _checkoutUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "/demo/dev/checkout.htm", 
                 _checkoutUris),
+                altpayUris: (_altpayUris = {}, _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "/latinumcheckout", 
+                _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "/latinumcheckout", 
+                _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "/latinumcheckout", 
+                _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "/latinumcheckout", 
+                _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+                _altpayUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "/demo/dev/checkout.htm", 
+                _altpayUris),
                 guestUris: (_guestUris = {}, _guestUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "/webapps/xoonboarding", 
                 _guestUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "/webapps/xoonboarding", 
                 _guestUris[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "/webapps/xoonboarding", 
@@ -12747,7 +12857,7 @@
                 experienceApiUri: "/v1/payment-experience/web-profiles",
                 get checkoutUrls() {
                     var _ref6, paypalUrls = config.paypalUrls;
-                    return _ref6 = {}, _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local, 
+                    return _ref6 = {}, _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
                     _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, 
                     _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
                     _ref6[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
@@ -12757,7 +12867,7 @@
                 },
                 get guestUrls() {
                     var _ref7, paypalUrls = config.paypalUrls;
-                    return _ref7 = {}, _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.guestUris.local, 
+                    return _ref7 = {}, _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
                     _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, 
                     _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
                     _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
@@ -12765,107 +12875,117 @@
                     _ref7[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
                     _ref7;
                 },
-                get billingUrls() {
+                get altpayUrls() {
                     var _ref8, paypalUrls = config.paypalUrls;
-                    return _ref8 = {}, _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.billingUris.local, 
-                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, 
-                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.billingUris.test, 
-                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+                    return _ref8 = {}, _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, 
+                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.altpayUris.test, 
+                    _ref8[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
                     _ref8;
                 },
-                get buttonUrls() {
+                get billingUrls() {
                     var _ref9, paypalUrls = config.paypalUrls;
-                    return _ref9 = {}, _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.buttonUris.local, 
-                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, 
-                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.buttonUris.test, 
-                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+                    return _ref9 = {}, _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, 
+                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.billingUris.test, 
+                    _ref9[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
                     _ref9;
                 },
-                get loginUrls() {
+                get buttonUrls() {
                     var _ref10, paypalUrls = config.paypalUrls;
-                    return _ref10 = {}, _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.loginUri, 
-                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.loginUri, 
-                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.loginUri, 
+                    return _ref10 = {}, _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, 
+                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.buttonUris.test, 
+                    _ref10[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
                     _ref10;
                 },
-                get paymentsStandardUrls() {
+                get loginUrls() {
                     var _ref11, paypalUrls = config.paypalUrls;
-                    return _ref11 = {}, _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, 
-                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.paymentStandardUri, 
+                    return _ref11 = {}, _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.loginUri, 
+                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.loginUri, 
+                    _ref11[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.loginUri, 
                     _ref11;
                 },
-                get metaFrameUrls() {
+                get paymentsStandardUrls() {
                     var _ref12, paypalUrls = config.paypalUrls;
-                    return _ref12 = {}, _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                    return _ref12 = {}, _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, 
+                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                    _ref12[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.paymentStandardUri, 
                     _ref12;
                 },
-                get legacyCheckoutUrls() {
+                get metaFrameUrls() {
                     var _ref13, paypalUrls = config.paypalUrls;
-                    return _ref13 = {}, _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+                    return _ref13 = {}, _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                    _ref13[__WEBPACK_IMPORTED_MODULE_0__constants__.e.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
                     _ref13;
                 },
-                get authApiUrls() {
-                    var _ref14, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
-                    return _ref14 = {}, _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + authApiUri, 
-                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + authApiUri, 
-                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + authApiUri, 
-                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + authApiUri, 
+                get legacyCheckoutUrls() {
+                    var _ref14, paypalUrls = config.paypalUrls;
+                    return _ref14 = {}, _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                    _ref14[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
                     _ref14;
                 },
-                get paymentApiUrls() {
-                    var _ref15, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
-                    return _ref15 = {}, _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + paymentApiUri, 
-                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, 
-                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + paymentApiUri, 
+                get authApiUrls() {
+                    var _ref15, apiUrls = config.apiUrls, authApiUri = config.authApiUri;
+                    return _ref15 = {}, _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + authApiUri, 
+                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + authApiUri, 
+                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + authApiUri, 
+                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                    _ref15[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + authApiUri, 
                     _ref15;
                 },
-                get orderApiUrls() {
-                    var _ref16, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
-                    return _ref16 = {}, _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + orderApiUri, 
-                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + orderApiUri, 
-                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, 
-                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + orderApiUri, 
+                get paymentApiUrls() {
+                    var _ref16, apiUrls = config.apiUrls, paymentApiUri = config.paymentApiUri;
+                    return _ref16 = {}, _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + paymentApiUri, 
+                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, 
+                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                    _ref16[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + paymentApiUri, 
                     _ref16;
                 },
-                get billingApiUrls() {
-                    var _ref17, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
-                    return _ref17 = {}, _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + billingApiUri, 
-                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, 
-                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + billingApiUri, 
+                get orderApiUrls() {
+                    var _ref17, apiUrls = config.apiUrls, orderApiUri = config.orderApiUri;
+                    return _ref17 = {}, _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + orderApiUri, 
+                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, 
+                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                    _ref17[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + orderApiUri, 
                     _ref17;
                 },
-                get experienceApiUrls() {
-                    var _ref18, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
-                    return _ref18 = {}, _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + experienceApiUri, 
-                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
-                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + experienceApiUri, 
+                get billingApiUrls() {
+                    var _ref18, apiUrls = config.apiUrls, billingApiUri = config.billingApiUri;
+                    return _ref18 = {}, _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + billingApiUri, 
+                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, 
+                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                    _ref18[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + billingApiUri, 
                     _ref18;
+                },
+                get experienceApiUrls() {
+                    var _ref19, apiUrls = config.apiUrls, experienceApiUri = config.experienceApiUri;
+                    return _ref19 = {}, _ref19[__WEBPACK_IMPORTED_MODULE_0__constants__.e.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                    _ref19[__WEBPACK_IMPORTED_MODULE_0__constants__.e.STAGE] = "" + apiUrls.stage + experienceApiUri, 
+                    _ref19[__WEBPACK_IMPORTED_MODULE_0__constants__.e.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                    _ref19[__WEBPACK_IMPORTED_MODULE_0__constants__.e.PRODUCTION] = "" + apiUrls.production + experienceApiUri, 
+                    _ref19[__WEBPACK_IMPORTED_MODULE_0__constants__.e.TEST] = "" + apiUrls.test + experienceApiUri, 
+                    _ref19;
                 },
                 _paypalUrl: "",
                 get paypalUrl() {
@@ -13835,7 +13955,7 @@
             __webpack_require__.d(__webpack_exports__, "logExperimentTreatment", function() {
                 return __WEBPACK_IMPORTED_MODULE_8__experiments__.a;
             });
-            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.171", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = __WEBPACK_IMPORTED_MODULE_2_post_robot_src__, onPossiblyUnhandledException = __WEBPACK_IMPORTED_MODULE_1_zalgo_promise_src__.a.onPossiblyUnhandledException, version = "4.0.172", checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, Login = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -15416,7 +15536,7 @@
                         country: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.country,
                         lang: __WEBPACK_IMPORTED_MODULE_3__config__.n.locale.lang,
                         uid: Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(),
-                        ver: "4.0.171"
+                        ver: "4.0.172"
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.a)(function() {
@@ -15425,14 +15545,24 @@
                     };
                 });
                 Object(__WEBPACK_IMPORTED_MODULE_1_beaver_logger_client__.c)(function() {
-                    var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(), buttonSessionID = payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.BUTTON_SESSION_UID] || Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(), contextType = buttonSessionID ? __WEBPACK_IMPORTED_MODULE_3__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID : payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE], contextID = buttonSessionID || payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID];
+                    var _ref, payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, sessionID = Object(__WEBPACK_IMPORTED_MODULE_4__session__.c)(), paymentToken = getToken(), buttonSessionID = payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.BUTTON_SESSION_UID] || Object(__WEBPACK_IMPORTED_MODULE_4__session__.a)(), contextType = void 0, contextID = void 0;
+                    if (paymentToken) {
+                        contextType = __WEBPACK_IMPORTED_MODULE_3__config__.e.CONTEXT_TYPE[__WEBPACK_IMPORTED_MODULE_3__config__.j.EC_TOKEN];
+                        contextID = paymentToken;
+                    } else if (buttonSessionID) {
+                        contextType = __WEBPACK_IMPORTED_MODULE_3__config__.e.CONTEXT_TYPE.BUTTON_SESSION_ID;
+                        contextID = buttonSessionID;
+                    } else {
+                        contextType = payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE];
+                        contextID = payload[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID];
+                    }
                     return _ref = {}, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.FEED] = __WEBPACK_IMPORTED_MODULE_3__config__.e.FEED.CHECKOUTJS, 
                     _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.DATA_SOURCE] = __WEBPACK_IMPORTED_MODULE_3__config__.e.DATA_SOURCE.CHECKOUT, 
                     _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_TYPE] = contextType, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.CONTEXT_ID] = contextID, 
                     _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SELLER_ID] = __WEBPACK_IMPORTED_MODULE_3__config__.n.merchantID, 
                     _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.SESSION_UID] = sessionID, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.BUTTON_SESSION_UID] = buttonSessionID, 
                     _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.VERSION] = __WEBPACK_IMPORTED_MODULE_3__config__.n.version, 
-                    _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.TOKEN] = getToken(), _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.REFERER] = getRefererDomain(), 
+                    _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.TOKEN] = paymentToken, _ref[__WEBPACK_IMPORTED_MODULE_3__config__.e.KEY.REFERER] = getRefererDomain(), 
                     _ref;
                 });
                 var prefix = "ppxo";
@@ -15558,7 +15688,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return isPayPalObjects() ? "4" : "4.0.171";
+                return isPayPalObjects() ? "4" : "4.0.172";
             }
             __webpack_require__.d(__webpack_exports__, "a", function() {
                 return getCurrentScript;
@@ -15837,7 +15967,7 @@
             }
             function getDomainSetting(name, def) {
                 var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.f)();
-                hostname = hostname.split(":")[0];
+                hostname = hostname.split("://")[1];
                 if (__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings) for (var _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.n.domain_settings), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
                     var _ref2;
                     if (_isArray2) {

@@ -692,7 +692,7 @@
                 cardNumber: cards.length
             }), scriptNode = renderScript();
             return Object(__WEBPACK_IMPORTED_MODULE_11__util__.a)("div", _extends({}, (_ref14 = {}, 
-            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.171", _ref14), {
+            _ref14[__WEBPACK_IMPORTED_MODULE_1__config_constants__.a.VERSION] = "4.0.172", _ref14), {
                 class: __WEBPACK_IMPORTED_MODULE_10__style_class__.a.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -1132,12 +1132,8 @@
             defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.US ],
             platforms: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.g.MOBILE ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.IDEAL] = {
-            enabled: !1,
-            test: !0,
-            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ],
-            defaultCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ]
+            allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.NL ]
         }, _FUNDING_CONFIG[__WEBPACK_IMPORTED_MODULE_0__config_constants__.f.ELV] = {
-            enabled: !0,
             allowedCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ],
             defaultVerticalCountries: [ __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.DE, __WEBPACK_IMPORTED_MODULE_0__config_constants__.d.AT ]
         }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[__WEBPACK_IMPORTED_MODULE_1__constants__.l] = {
