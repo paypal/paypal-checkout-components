@@ -76,6 +76,18 @@ export let config = {
             force_bridge:                    true,
             log_authorize:                   true,
             disable_payment_timeout:         true
+        },
+
+        'ticketmaster.com': {
+            disable_venmo: true
+        },
+
+        'livenation.com': {
+            disable_venmo: true
+        },
+        
+        'frontgatetickets.com': {
+            disable_venmo: true
         }
     },
 
