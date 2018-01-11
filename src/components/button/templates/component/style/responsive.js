@@ -2,7 +2,7 @@
 
 import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER } from '../../../constants';
 import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../style';
-import { min, max, perc } from '../util';
+import { max, perc } from '../util';
 
 import { CLASS } from './class';
 
@@ -13,7 +13,7 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : n
     return Object.keys(BUTTON_STYLE).map(size => {
 
         let style = BUTTON_STYLE[size];
-        let buttonHeight = min(max(height || style.defaultHeight, style.minHeight), style.maxHeight);
+        let buttonHeight = height || style.defaultHeight;
         let minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
 
         return `
@@ -28,18 +28,18 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : n
 
                 .${ CLASS.BUTTON }:not(.${ CLASS.CARD }) {
                     height: ${ buttonHeight }px;
-                    min-height: ${ style.minHeight }px;
-                    max-height: ${ style.maxHeight }px;
+                    min-height: ${ height || style.minHeight }px;
+                    max-height: ${ height || style.maxHeight }px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } {
-                    font-size: ${ max(perc(buttonHeight, 50), 10) }px;
+                    font-size: ${ max(perc(buttonHeight, 45), 10) }px;
                 }
 
                 .${ CLASS.LOGO } {
-                    height: ${ perc(buttonHeight, 35) + 7 }px;
-                    max-height: ${ perc(buttonHeight, 68) }px;
-                    min-height: ${ perc(buttonHeight, 60) }px;
+                    height: ${ perc(buttonHeight, 35) + 5 }px;
+                    max-height: ${ perc(buttonHeight, 60) }px;
+                    min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
                 .${ CLASS.BUTTON }.${ CLASS.SHAPE }-${ BUTTON_SHAPE.PILL } {

@@ -48,7 +48,7 @@ export const BUTTON_STYLE = {
         defaultHeight:     45,
         minWidth:          300,
         maxWidth:          500,
-        minHeight:         40,
+        minHeight:         30,
         maxHeight:         55,
         allowFunding:      true,
         allowTagline:      true
@@ -59,7 +59,7 @@ export const BUTTON_STYLE = {
         defaultHeight: 55,
         minWidth:      500,
         maxWidth:      750,
-        minHeight:     55,
+        minHeight:     40,
         maxHeight:     55,
         allowFunding:  true,
         allowTagline:  true

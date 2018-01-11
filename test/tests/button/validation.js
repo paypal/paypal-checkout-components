@@ -1215,7 +1215,7 @@ let buttonConfigs = [
             {
                 size:   'large',
                 height: 35,
-                valid:  false
+                valid:  true
             },
 
             {

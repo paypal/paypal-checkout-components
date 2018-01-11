@@ -6,6 +6,7 @@ import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../style';
 import { getButtonConfig } from '../config';
 import { normalizeProps } from '../props';
 import { min, max, perc } from '../component/util';
+import { values } from '../../../../lib';
 
 type ContainerTemplateOptions = {
     id : string,
@@ -48,13 +49,12 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
 function getDimensions({  label, size, tagline, fundingicons, layout, number, viewport, height: buttonHeight }) : DimensionsType {
 
     if (size === BUTTON_SIZE.RESPONSIVE) {
-        size = determineResponsiveSize({ label, layout, width: viewport.width });
+        size = determineResponsiveSize({ label, layout, width: viewport.width, height: buttonHeight });
     }
 
     let { defaultWidth, defaultHeight, minHeight, maxHeight, allowFunding, allowTagline } = BUTTON_STYLE[size];
 
-    buttonHeight = buttonHeight || defaultHeight;
-    buttonHeight = min(max(buttonHeight, minHeight), maxHeight);
+    buttonHeight = buttonHeight || min(max(defaultHeight, minHeight), maxHeight);
 
     let width  = defaultWidth;
     let height = buttonHeight;
@@ -96,6 +96,20 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
 
     let minimumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'minimumVerticalSize' : 'minimumSize');
     let maximumSize = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'maximumVerticalSize' : 'maximumSize');
+
+    if (buttonHeight) {
+        let possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
+            return BUTTON_STYLE[possibleSize] &&
+                BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
+        });
+
+        possibleSizes.sort((sizeA : string, sizeB : string) : number => {
+            return BUTTON_STYLE[sizeA].defaultWidth - BUTTON_STYLE[sizeB].defaultWidth;
+        });
+
+        minimumSize = possibleSizes[0];
+        maximumSize = possibleSizes[possibleSizes.length - 1];
+    }
 
     return (
         <div id={ id } class={ `${ tag } ${ tag }-context-${ context } ${ tag }-label-${ label } ${ tag }-size-${ size } ${ tag }-layout-${ layout }` }>

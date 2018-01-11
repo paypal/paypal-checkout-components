@@ -347,3 +347,13 @@ export function arrayRemove<T>(arr : Array<T>, item : T) {
 export function identity<T : mixed>(item : T) : T {
     return item;
 }
+
+export function values<T>(obj : { [string] : T }) : Array<T> {
+    let result = [];
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result.push(obj[key]);
+        }
+    }
+    return result;
+}
