@@ -21,6 +21,7 @@ import mastercard   from './mastercard.svg';
 import discover     from './discover.svg';
 import hiper        from './hiper.svg';
 import elo          from './elo.svg';
+import jcb          from './jcb.svg';
 
 
 export let componentLogos = {
@@ -62,5 +63,6 @@ export let cardLogos = {
     [ CARD.MASTERCARD ]: mastercard,
     [ CARD.DISCOVER ]:   discover,
     [ CARD.HIPER ]:      hiper,
-    [ CARD.ELO ]:        elo
+    [ CARD.ELO ]:        elo,
+    [ CARD.JCB ]:        jcb
 };

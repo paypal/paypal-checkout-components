@@ -455,6 +455,15 @@ export const CARD_CONFIG = {
             CARD.HIPER,
             CARD.ELO
         ]
+    },
+
+    [ COUNTRY.JP ]: {
+        priority: [
+            CARD.VISA,
+            CARD.MASTERCARD,
+            CARD.AMEX,
+            CARD.JCB
+        ]
     }
 };
 
