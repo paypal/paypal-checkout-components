@@ -42,6 +42,9 @@ export function setupMocks() {
     };
 
     window.xprops = {
+        payment: () => {
+            return ZalgoPromise.resolve('PAY-XXXXXXXXXX');
+        },
         style: {
 
         },
@@ -218,6 +221,61 @@ export function captureOrderApiMock(options = {}) {
     });
 }
 
+export function mapTokenMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri: '/webapps/hermes/api/payment/[^/]+/ectoken',
+        data: {
+            ack: 'success',
+            data: {
+                token: 'EC-XXXXXXXXXX'
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function getCheckoutAppDataMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri: '/webapps/hermes/api/checkout/[^/]+/appData',
+        data: {
+            ack: 'success',
+            data: {
+                payment_id: 'PAY-XXXXXXXXX',
+                urls: {
+                    return_url: 'http://foo.com/return?token=EC-XXXXXXXXXX&paymentID=PAY-XXXXXXXXX',
+                    cancel_url: 'http://foo.com/cancel?token=EC-XXXXXXXXXX'
+                }
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
+export function getCheckoutCartMock(options = {}) {
+    return $mockEndpoint.register({
+        method: 'GET',
+        uri: '/webapps/hermes/api/checkout/[^/]+/cart',
+        data: {
+            ack: 'success',
+            data: {
+                payment_action: 'sale'
+            }
+        },
+        headers: {
+            'x-csrf-jwt': 'xxxxxx'
+        },
+        ...options
+    });
+}
+
 getLocaleApiMock().listen();
 getAuthApiMock().listen();
 getFundingApiMock().listen();
@@ -225,3 +283,6 @@ getPaymentApiMock().listen();
 executePaymentApiMock().listen();
 getOrderApiMock().listen();
 captureOrderApiMock().listen();
+getCheckoutAppDataMock().listen();
+getCheckoutCartMock().listen();
+mapTokenMock().listen();

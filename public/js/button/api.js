@@ -7,6 +7,15 @@ export let $authApi = new $Api({
     uri: '/api/auth'
 });
 
+export let $checkoutAppDataApi = new $Api({
+    uri: '/api/checkout/:id/appData'
+});
+
+export let $checkoutCartApi = new $Api({
+    uri: '/api/checkout/:id/cart'
+});
+
+
 export let $checkoutSessionApi = new $Api({
     uri: '/api/checkout/:id/session'
 });
@@ -110,6 +119,51 @@ export function captureOrder(orderID) {
     }).then(res => {
         if (res.ack !== 'success') {
             throw new Error('Capture order failed');
+        }
+
+        return res.data;
+    });
+}
+
+export function mapToToken(id) {
+    return $paymentApi.action('ectoken', {
+
+        model: {
+            id
+        }
+
+    }).then(res => {
+
+        if (res.ack !== 'success') {
+            throw new Error('Map payment failed');
+        }
+
+        return res.data.token;
+    });
+}
+
+export function getCheckoutAppData(token) {
+    return $checkoutAppDataApi.retrieve({
+        model: {
+            id: token
+        }
+    }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Get payment failed');
+        }
+
+        return res.data;
+    });
+}
+
+export function getCheckoutCart(token) {
+    return $checkoutCartApi.retrieve({
+        model: {
+            id: token
+        }
+    }).then(res => {
+        if (res.ack !== 'success') {
+            throw new Error('Get payment failed');
         }
 
         return res.data;

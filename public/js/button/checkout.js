@@ -1,7 +1,7 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
-import { memoize, noop } from './util';
-import { getPayment, executePayment, getOrder, captureOrder } from './api';
+import { memoize, noop, match } from './util';
+import { getPayment, executePayment, getOrder, captureOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
 import { persistAccessToken } from './user';
 
 function buildActions(checkout, data, actions, intent) {
@@ -80,12 +80,34 @@ function buildActions(checkout, data, actions, intent) {
     };
 }
 
+function getCancelData(payment, data) {
+    return window.paypal.Promise.try(() => {
+        return data.paymentToken || payment().then(id => mapToToken(id));
+    }).then(paymentToken => {
+        return window.paypal.Promise.all([
+            getCheckoutAppData(paymentToken),
+            getCheckoutCart(paymentToken)
+        ]).then(([ appData, cart ]) => {
+
+            let paymentID = appData.payment_id;
+            let cancelUrl = appData.urls.cancel_url;
+            let intent = cart.payment_action;
+            let billingID = paymentToken;
+            let billingToken = match(cancelUrl, /ba_token=((BA-)?[A-Z0-9]+)/);
+
+            return { paymentToken, paymentID, intent, billingID, billingToken, cancelUrl };
+        });
+    });
+}
+
 
 export function renderCheckout(props = {}) {
 
+    let payment = memoize(window.xprops.payment);
+
     window.paypal.Checkout.renderTo(window.top, {
 
-        payment: window.xprops.payment,
+        payment,
 
         locale: window.xprops.locale,
         commit: window.xprops.commit,
@@ -102,8 +124,11 @@ export function renderCheckout(props = {}) {
         },
 
         onCancel(data, actions) {
-
-            return window.xprops.onCancel(data, actions).catch(err => {
+            return window.paypal.Promise.try(() => {
+                return getCancelData(payment, data);
+            }).then(cancelData => {
+                return window.xprops.onCancel(cancelData, actions);
+            }).catch(err => {
                 return window.xchild.error(err);
             });
         },

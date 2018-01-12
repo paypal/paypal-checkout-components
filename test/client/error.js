@@ -132,7 +132,7 @@ describe('error cases', () => {
 
         window.xchild.error = (err) => {
             if (err !== error) {
-                throw new Error(`Expected errors to match`);
+                throw new Error(`Expected errors to match -- got "${ err.message }", expected "${ error.message }"`);
             }
 
             errorCalled = true;
@@ -144,7 +144,7 @@ describe('error cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onCancel = props.onCancel.call(getMockCheckoutInstance());
+            onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
         };
 
         window.document.body.innerHTML = createButtonHTML();

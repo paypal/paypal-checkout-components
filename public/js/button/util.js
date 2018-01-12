@@ -30,3 +30,11 @@ export function querySelectorAll(selector, doc = window.document) {
 export function noop() {
     // pass
 }
+
+export function match(str, pattern) {
+    let regmatch = str.match(pattern);
+
+    if (regmatch) {
+        return regmatch[1];
+    }
+}

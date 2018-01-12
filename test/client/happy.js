@@ -191,7 +191,7 @@ describe('happy cases', () => {
         };
 
         window.paypal.Checkout.renderTo = async (win, props) => {
-            onCancel = props.onCancel.call(getMockCheckoutInstance());
+            onCancel = props.onCancel.call(getMockCheckoutInstance(), {});
         };
 
         window.document.body.innerHTML = createButtonHTML();
