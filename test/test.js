@@ -8,7 +8,7 @@ paypal.setup({
     env: 'test'
 });
 
-const MAX_OVERALL_MEMORY = 450;
+const MAX_OVERALL_MEMORY = 500;
 const MAX_TEST_MEMORY = 50;
 
 let memoryReported = (window.performance && window.performance.memory &&
