@@ -108,7 +108,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
                     let data : Object = {
                         paymentToken: query.token,
-                        billingToken: query.billingToken,
+                        billingToken: query.ba_token,
                         paymentID:    query.paymentId,
                         payerID:      query.payerId,
                         intent:       query.intent
@@ -125,7 +125,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
                     if (query.opType === 'payment') {
 
-                        data.returnUrl = query.redirect_uri;
+                        data.returnUrl = query.return_uri;
 
                         actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = data.returnUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);
@@ -136,7 +136,7 @@ function renderThroughPopupBridge(props : Object, openBridge : Function) : Zalgo
 
                     } else if (query.opType === 'cancel') {
 
-                        data.cancelUrl = query.redirect_uri;
+                        data.cancelUrl = query.cancel_uri;
 
                         actions.redirect = (win : CrossDomainWindowType = window, redirectUrl : string = data.cancelUrl) : ZalgoPromise<void> => {
                             return redirect(win, redirectUrl);

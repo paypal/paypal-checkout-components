@@ -33,6 +33,19 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let token = generateECToken();
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+                
                 return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
@@ -48,6 +61,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         }
                         if (!data.intent) {
                             return done(new Error(`Expected data.intent to be present`));
+                        }
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
                         return done();
                     },
@@ -69,12 +85,28 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let token = generateECToken();
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 return window.paypal.Checkout.render({
 
                     test: { action: 'cancel' },
 
                     payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
+                        return token;
                     },
 
                     onAuthorize() : void {
@@ -82,6 +114,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onCancel() : void {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
                         return done();
                     }
 
@@ -98,6 +133,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+                
                 window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
@@ -105,11 +154,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            throw new Error(`Expected window.popupBridge.open to have been called`);
+                        }
                         return actions.redirect(window);
                     },
 
-                    onCancel(data, actions) : ZalgoPromise<void> {
-                        return actions.redirect(window);
+                    onCancel() : ZalgoPromise<void> {
+                        throw new Error('Expected onCancel to not be called');
                     }
 
                 });
@@ -129,6 +181,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+                
                 return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
@@ -136,6 +202,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
@@ -157,6 +227,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
@@ -164,6 +248,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            throw new Error(`Expected window.popupBridge.open to have been called`);
+                        }
+
                         return actions.redirect(window, '#successUrl');
                     },
 
@@ -190,6 +278,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 window.paypal.Checkout.render({
 
                     test: { action: 'cancel' },
@@ -203,6 +305,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onCancel(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            throw new Error(`Expected window.popupBridge.open to have been called`);
+                        }
+
                         return actions.redirect(window);
                     }
 
@@ -225,6 +331,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 return window.paypal.Checkout.render({
 
                     test: { action: 'cancel' },
@@ -238,6 +358,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onCancel(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return actions.redirect(window).then(() => {
                             return done();
                         }).catch(done);
@@ -257,6 +381,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 window.paypal.Checkout.render({
 
                     test: { action: 'cancel' },
@@ -270,6 +408,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onCancel(data, actions) : ZalgoPromise<void> {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            throw new Error(`Expected window.popupBridge.open to have been called`);
+                        }
+
                         return actions.redirect(window, '#cancelUrl');
                     }
 
@@ -288,6 +430,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+                
                 return window.paypal.Checkout.render({
 
                     client: {
@@ -309,6 +465,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return done();
                     },
 
@@ -326,6 +486,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 return window.paypal.Checkout.render({
 
                     client: {
@@ -350,6 +524,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return done();
                     },
 
@@ -367,6 +545,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) === -1);
+                    assert.isOk(url.indexOf(`ba_token=`) !== -1);
+                    assert.isOk(url.indexOf(`billingurl`) !== -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
                 
                 return window.paypal.Checkout.render({
 
@@ -387,6 +577,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return done();
                     },
 
@@ -404,15 +598,35 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
             testButton.addEventListener('click', () => {
+
+                let token = generateECToken();
+
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
+                window.popupBridge.open = (url) => {
+                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
+                };
+
                 return window.paypal.Checkout.render({
 
                     payment() : string | ZalgoPromise<string> {
                         return new ZalgoPromise(resolve => {
-                            return resolve(generateECToken());
+                            return resolve(token);
                         });
                     },
 
                     onAuthorize() : void {
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
+                        }
+
                         return done();
                     },
 
@@ -433,13 +647,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             testButton.addEventListener('click', () => {
 
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
                 window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`token=${ checkoutToken }`) !== -1);
                     assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(url.indexOf(`&ba_token=`) === -1);
                     assert.isOk(url.indexOf(`?ba_token=`) === -1);
                     assert.isOk(url.indexOf(`billingurl`) === -1);
-                    return done();
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
                 };
 
                 return window.paypal.Checkout.render({
@@ -449,9 +667,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
-                        if (flow === 'iframe') {
-                            return done();
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
+                        return done();
                     },
 
                     onCancel() : void {
@@ -471,13 +690,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             testButton.addEventListener('click', () => {
 
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
                 window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`token=${ paymentID }`) !== -1);
                     assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
                     assert.isOk(url.indexOf(`&ba_token=`) === -1);
                     assert.isOk(url.indexOf(`?ba_token=`) === -1);
                     assert.isOk(url.indexOf(`billingurl`) === -1);
-                    return done();
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
                 };
 
                 return window.paypal.Checkout.render({
@@ -487,7 +710,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-
                         if (data.paymentID !== paymentID) {
                             return done(new Error(`Expected data.paymentID to be ${ paymentID }, got ${ data.paymentID }`));
                         }
@@ -497,10 +719,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         if (!data.intent) {
                             return done(new Error(`Expected data.intent to be present`));
                         }
-
-                        if (flow === 'iframe') {
-                            return done();
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
+                        return done();
                     },
 
                     onCancel() : void {
@@ -520,13 +742,17 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             testButton.addEventListener('click', () => {
 
+                let openPopupBridgeCalled = false;
+                let openPopupBridge = window.popupBridge.open;
+
                 window.popupBridge.open = (url) => {
                     assert.isOk(url.indexOf(`ba_token=${ billingToken }`) !== -1);
                     assert.isOk(url.indexOf(`billingurl=true`) !== -1);
                     assert.isOk(url.indexOf(`&token=`) === -1);
                     assert.isOk(url.indexOf(`?token=`) === -1);
                     assert.isOk(url.indexOf(`checkouturl`) === -1);
-                    return done();
+                    openPopupBridgeCalled = true;
+                    return openPopupBridge(url);
                 };
 
                 return window.paypal.Checkout.render({
@@ -536,7 +762,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-
                         if (data.billingToken !== billingToken) {
                             return done(new Error(`Expected data.paymentID to be ${ billingToken }, got ${ data.billingToken }`));
                         }
@@ -546,10 +771,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         if (!data.intent) {
                             return done(new Error(`Expected data.intent to be present`));
                         }
-
-                        if (flow === 'iframe') {
-                            return done();
+                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                            return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
+                        return done();
                     },
 
                     onCancel() : void {
@@ -569,15 +794,34 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
+
+                    let token = generateECToken();
+
+                    let openPopupBridgeCalled = false;
+                    let openPopupBridge = window.popupBridge.open;
+
+                    window.popupBridge.open = (url) => {
+                        assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                        assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                        assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`billingurl`) === -1);
+                        openPopupBridgeCalled = true;
+                        return openPopupBridge(url);
+                    };
+                    
                     return window.paypal.Checkout.render({
 
                         test: { action: 'popout' },
 
                         payment() : string | ZalgoPromise<string> {
-                            return generateECToken();
+                            return token;
                         },
 
                         onAuthorize() : void {
+                            if (flow === 'popup' && !openPopupBridgeCalled) {
+                                return done(new Error(`Expected window.popupBridge.open to have been called`));
+                            }
                             return done();
                         },
 
@@ -599,6 +843,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
+
+                    let openPopupBridgeCalled = false;
+                    let openPopupBridge = window.popupBridge.open;
+
+                    window.popupBridge.open = (url) => {
+                        assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                        assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                        assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`billingurl`) === -1);
+                        openPopupBridgeCalled = true;
+                        return openPopupBridge(url);
+                    };
+
                     window.paypal.Checkout.render({
 
                         test: { action: 'popout' },
@@ -608,6 +866,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         },
 
                         onAuthorize(data, actions) : ZalgoPromise<void> {
+                            if (flow === 'popup' && !openPopupBridgeCalled) {
+                                throw new Error(`Expected window.popupBridge.open to have been called`);
+                            }
                             return actions.redirect(window);
                         }
                     });
@@ -629,6 +890,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
 
                 testButton.addEventListener('click', () => {
+
+                    let openPopupBridgeCalled = false;
+                    let openPopupBridge = window.popupBridge.open;
+
+                    window.popupBridge.open = (url) => {
+                        assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                        assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                        assert.isOk(url.indexOf(`&ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`?ba_token=`) === -1);
+                        assert.isOk(url.indexOf(`billingurl`) === -1);
+                        openPopupBridgeCalled = true;
+                        return openPopupBridge(url);
+                    };
+                    
                     window.paypal.Checkout.render({
 
                         test: { action: 'popout' },
@@ -638,6 +913,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         },
 
                         onAuthorize(data, actions) : ZalgoPromise<void> {
+                            if (flow === 'popup' && !openPopupBridgeCalled) {
+                                return done(new Error(`Expected window.popupBridge.open to have been called`));
+                            }
                             return actions.redirect(window).then(() => {
                                 done();
                             });

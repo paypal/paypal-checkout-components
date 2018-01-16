@@ -599,23 +599,36 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
 
                 let { query, hash } = parseUrl(url);
 
-                let queryItems : Object = {
-                    token: query.token || 'EC-XXXXXXXXXXXXXXXXX'
-                };
+                let queryItems: Object = {};
+
+                if (query.token && query.token.match(/^EC-[A-Z0-9]+$/)) {
+                    queryItems.token = query.token;
+                } else {
+                    queryItems.token = 'EC-XXXXXXXXXXXXXXXXX';
+                }
+
+                if (query.token && query.token.match(/^PAY(ID)?-[A-Z0-9]+$/)) {
+                    queryItems.paymentId = query.token;
+                }
+
+                if (query.ba_token) {
+                    queryItems.ba_token = query.ba_token;
+                }
 
                 if (isAuthorize) {
                     queryItems.opType = 'payment';
                     queryItems.payerId = 'YYYYYYYYYYYYY';
-                    queryItems.redirect_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
+                    queryItems.return_uri = `#return?token=${ queryItems.token }&PayerID=YYYYYYYYYYYYY`;
                     queryItems.intent = 'sale';
                     if (hash) {
-                        queryItems.redirect_uri = `${ queryItems.redirect_uri }&hash=${ hash }`;
+                        queryItems.return_uri = `${ queryItems.return_uri }&hash=${ hash }`;
                     }
+
                 } else {
                     queryItems.opType = 'cancel';
-                    queryItems.redirect_uri = `#cancel?token=${ queryItems.token }`;
+                    queryItems.cancel_uri = `#cancel?token=${ queryItems.token }`;
                     if (hash) {
-                        queryItems.redirect_uri = `${ queryItems.redirect_uri }&hash=${ hash }`;
+                        queryItems.cancel_uri = `${ queryItems.cancel_uri }&hash=${ hash }`;
                     }
                 }
 
