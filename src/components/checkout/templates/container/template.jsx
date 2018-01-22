@@ -114,7 +114,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
         <div id={ id } class="paypal-checkout-sandbox">
             <style>{ getSandboxStyle({ id, ANIMATION }) }</style>
 
-            <iframe name={ `__paypal_checkout_sandbox_${ id }__` } scrolling="no" class="paypal-checkout-sandbox-iframe">
+            <iframe title="PayPal Checkout Overlay" name={ `__paypal_checkout_sandbox_${ id }__` } scrolling="no" class="paypal-checkout-sandbox-iframe">
                 { container }
             </iframe>
         </div>
