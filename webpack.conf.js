@@ -1,11 +1,15 @@
-let webpack = require('webpack');
-let CircularDependencyPlugin = require('circular-dependency-plugin');
-let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-let path = require('path');
-let fs = require('fs');
-let qs = require('querystring');
+/* @flow */
+/* eslint import/unambiguous: 0 */
+/* eslint import/no-nodejs-modules: 0 */
 
-let babelConfig = JSON.parse(fs.readFileSync('./.babelrc'));
+import fs from 'fs';
+import qs from 'querystring';
+
+import webpack from 'webpack';
+import CircularDependencyPlugin from 'circular-dependency-plugin';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+
+let babelConfig = JSON.parse(fs.readFileSync('./.babelrc').toString()); // eslint-disable-line no-sync
 
 babelConfig.babelrc = false;
 babelConfig.cacheDirectory = true;
@@ -13,30 +17,39 @@ babelConfig.presets[0][1].modules = false;
 
 const FILE_NAME = 'checkout';
 
-function getNextVersion() {
+function getNextVersion() : string {
     let version = require('./package.json').version;
     version = version.split('.');
-    version[2] = (parseInt(version[2]) + 1).toString();
+    version[2] = (parseInt(version[2], 10) + 1).toString();
     version = version.join('.');
     return version;
 }
 
-function getNextMajorVersion() {
+function getNextMajorVersion() : string {
     return getNextVersion().split('.')[0];
 }
 
-function getNextMinorVersion() {
+function getNextMinorVersion() : string {
     return getNextVersion();
 }
 
-function getVersionVars() {
+function getVersionVars() : { [string] : string } {
     return {
         __MAJOR_VERSION__: JSON.stringify(getNextMajorVersion()),
         __MINOR_VERSION__: JSON.stringify(getNextMinorVersion())
     };
 }
 
-function getWebpackConfig({ filename, modulename, target = 'window', major = true, minify = false, vars = {} }) {
+type WebPackConfig = {
+    filename : string,
+    modulename? : string,
+    target? : string,
+    major? : boolean,
+    minify? : boolean,
+    vars? : { [string] : (string | number | boolean) }
+};
+
+function getWebpackConfig({ filename, modulename, target = 'window', major = true, minify = false, vars = {} } : WebPackConfig) : Object {
 
     vars = {
         __TEST__:                           false,
@@ -124,7 +137,7 @@ function getWebpackConfig({ filename, modulename, target = 'window', major = tru
 let nextMajorVersion = getNextMajorVersion();
 let nextMinorVersion = getNextMinorVersion();
 
-module.exports.webpack_tasks = {
+export let webpack_tasks = {
 
     base: {
         src: 'src/load.js',
