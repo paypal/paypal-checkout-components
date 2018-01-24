@@ -1,7 +1,7 @@
 /* @flow weak */
 /* eslint max-lines: 0 */
 
-import { ENV, COUNTRY, LANG } from './constants';
+import { ENV, COUNTRY, LANG } from '../constants';
 
 export let config = {
 

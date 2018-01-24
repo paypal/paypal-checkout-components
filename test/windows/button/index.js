@@ -2,7 +2,7 @@
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
 
-import { componentTemplate } from '../../../src/components/button/templates';
+import { componentTemplate } from '../../../src/button/template';
 import { getElement, getElements, errorOnWindowOpen } from '../../tests/common';
 
 let { action, flow = 'popup', authed = false, bridge = false, delay = 0, onRender, checkout, selector, remembered } = window.xprops.test;

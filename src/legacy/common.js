@@ -2,7 +2,8 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { config, COUNTRY, LANG } from '../config';
+import { config } from '../config';
+import { COUNTRY, LANG } from '../constants';
 
 import { LOG_PREFIX } from './constants';
 

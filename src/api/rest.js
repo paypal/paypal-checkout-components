@@ -6,7 +6,8 @@ import { btoa } from 'Base64';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/src';
 
-import { config, FPTI, PAYMENT_TYPE } from '../config';
+import { config } from '../config';
+import { FPTI, PAYMENT_TYPE } from '../constants';
 import { request, memoize, isPayPalDomain } from '../lib';
 
 let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};

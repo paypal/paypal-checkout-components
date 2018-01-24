@@ -1,6 +1,7 @@
 /* @flow */
 
-import { config, LOG_LEVEL } from '../config';
+import { config } from '../config';
+import { LOG_LEVEL } from '../constants';
 
 import { getSessionID, getSessionState } from './session';
 

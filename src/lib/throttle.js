@@ -2,7 +2,7 @@
 
 import { info, track, flush as flushLogs } from 'beaver-logger/client';
 
-import { FPTI } from '../config';
+import { FPTI } from '../constants';
 
 import { hashStr, match } from './util';
 import { getSessionID, getSessionState } from './session';

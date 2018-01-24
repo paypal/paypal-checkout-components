@@ -5,7 +5,8 @@ import { setTransport, getTransport, addPayloadBuilder, addMetaBuilder,
     addTrackingBuilder, init, logLevels, config as loggerConfig } from 'beaver-logger/client';
 import { getParent } from 'cross-domain-utils/src';
 
-import { config, FPTI, PAYMENT_TYPE } from '../config';
+import { config } from '../config';
+import { FPTI, PAYMENT_TYPE } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';

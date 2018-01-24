@@ -4,8 +4,9 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { prefix, flush as flushLogs } from 'beaver-logger/client';
 
-import { Checkout } from '../components';
-import { config, ENV, FPTI } from '../config';
+import { Checkout } from '../checkout';
+import { config } from '../config';
+import { ENV, FPTI } from '../constants';
 import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
 
 import { setupPostBridge } from './postBridge';

@@ -3,7 +3,8 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { flush as flushLogs, prefix } from 'beaver-logger/client';
 
-import { config, ENV } from '../config';
+import { config } from '../config';
+import { ENV } from '../constants';
 import { urlWillRedirectPage, redirect as redir } from '../lib';
 
 import { LOG_PREFIX } from './constants';

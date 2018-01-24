@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { FUNDING } from '../config/constants';
+import { FUNDING } from '../constants';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { isDevice } from './device';

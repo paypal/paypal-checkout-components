@@ -3,9 +3,9 @@
 import { prefix } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { config, FPTI } from '../config';
+import { config } from '../config';
+import { FPTI, BUTTON_COLOR, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_LABEL } from '../constants';
 import { loadScript, memoize, isElementVisible, stringifyError } from '../lib';
-import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_LABEL } from '../components/button/constants';
 
 import { LOG_PREFIX } from './constants';
 import { normalizeLocale } from './common';

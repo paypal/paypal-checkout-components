@@ -2,7 +2,8 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { config, ENV } from '../config';
+import { config } from '../config';
+import { ENV } from '../constants';
 import { getElements } from '../lib';
 
 import { normalizeLocale } from './common';

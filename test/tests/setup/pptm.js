@@ -1,6 +1,6 @@
 /* @flow */
 
-import { PPTM_ID } from '../../../src/config';
+import { PPTM_ID } from '../../../src/constants';
 
 import { testSetup } from './common';
 

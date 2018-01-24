@@ -3,7 +3,7 @@
 import { prefix } from 'beaver-logger/client';
 
 import { onDocumentReady, onKey } from '../lib';
-import { ENV } from '../config';
+import { ENV } from '../constants';
 
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
 import { setup } from './interface';

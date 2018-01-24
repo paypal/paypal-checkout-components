@@ -15,3 +15,4 @@ export * from './proxy';
 export * from './meta';
 export * from './funding';
 export * from './script';
+export * from './jsx';

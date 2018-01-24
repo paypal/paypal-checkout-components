@@ -29,6 +29,9 @@ module.exports = {
             'node': {
                 'extensions': [ '.js', '.jsx' ]
             }
+        },
+        'react': {
+            'pragma': 'jsxDom'
         }
     },
 

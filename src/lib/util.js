@@ -357,3 +357,26 @@ export function values<T>(obj : { [string] : T }) : Array<T> {
     }
     return result;
 }
+
+export function perc(pixels : number, percentage : number) : number {
+    return Math.round((pixels * percentage) / 100);
+}
+
+export function min(...args : Array<number>) : number {
+    return Math.min(...args);
+}
+
+export function max(...args : Array<number>) : number {
+    return Math.max(...args);
+}
+
+export function regexMap<T>(str : string, regex : RegExp, handler : () => T) : Array<T> {
+    let results = [];
+
+    // $FlowFixMe
+    str.replace(regex, function regexMapMatcher() {
+        results.push(handler.apply(null, arguments));
+    });
+
+    return results;
+}

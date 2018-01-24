@@ -1,8 +1,7 @@
 /* @flow */
 
-import { getButtonConfig } from '../../src/components/button/templates/config';
-import { BUTTON_LABEL, BUTTON_SIZE } from '../../src/components/button/constants';
-import { FUNDING, CARD } from '../../src/config/constants';
+import { getButtonConfig } from '../../src/button/config';
+import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
 
 /*
 

@@ -2,7 +2,7 @@
 
 import { info, track, immediateFlush } from 'beaver-logger/client';
 
-import { FPTI, PAYMENT_TYPE } from './config';
+import { FPTI, PAYMENT_TYPE } from './constants';
 import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
 
 export let onAuthorizeListener = eventEmitter();

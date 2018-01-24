@@ -3,7 +3,8 @@
 import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { config, LANG_TO_DEFAULT_COUNTRY } from '../config';
+import { config } from '../config';
+import { LANG_TO_DEFAULT_COUNTRY } from '../constants';
 
 import { memoize } from './util';
 import { isDevice } from './device';
@@ -358,4 +359,14 @@ export function getResourceLoadTime(url : string) : ?number {
             return Math.floor(entry.duration);
         }
     }
+}
+
+export function htmlEncode(html : string = '') : string {
+    return html.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/\//g, '&#x2F;');
 }

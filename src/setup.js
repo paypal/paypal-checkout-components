@@ -3,12 +3,13 @@
 import { info, track, debug, warn, error, flush as flushLogs } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { config, FPTI } from './config';
+import { config } from './config';
+import { FPTI } from './constants';
 import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     stringifyErrorMessage, getResourceLoadTime, isPayPalDomain, isEligible,
     getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
     getCurrentScript } from './lib';
-import { createPptmScript } from './lib/pptm';
+import { createPptmScript } from './external';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
