@@ -22,8 +22,7 @@ npm run postinstall
 
 rm dist/*;
 
-gulp build;
-npm run buttondiff;
+npm run build;
 
 git add ./dist --all;
 git add ./test/screenshot/images --all;

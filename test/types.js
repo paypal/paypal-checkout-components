@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint import/unambiguous: 0 */
 
 declare var jest;
 declare var beforeAll;

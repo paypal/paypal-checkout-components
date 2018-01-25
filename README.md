@@ -73,7 +73,7 @@ Please feel free to follow the [Contribution Guidelines](./CONTRIBUTING.md) to c
 Set up your env:
 
 ```bash
-npm install -g gulp flow-bin flow-typed
+npm install -g flow-typed
 npm install
 flow-typed install
 ```
@@ -81,13 +81,13 @@ flow-typed install
 Run tests:
 
 ```bash
-gulp test
+npm test
 ```
 
 Build checkout.js:
 
 ```bash
-gulp build
+npm run build
 ```
 
 ### Debugging messages
@@ -100,7 +100,7 @@ To enable output of additional debugging messages to the console, set the `data-
 
 ## Test Tasks
 ```
-gulp test
+npm test
 ```
 
 | Flags  | Description |

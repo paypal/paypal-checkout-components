@@ -17,8 +17,9 @@ fi;
 
 rm dist/*;
 
-gulp typecheck;
-gulp webpack;
+npm run flow;
+npm run lint;
+npm run webpack;
 
 git add ./dist --all;
 git add ./test/screenshot/images --all;

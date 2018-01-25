@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 
-import { webpack_tasks } from '../../webpack.conf';
+import { BASE } from '../../webpack.config';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -14,14 +14,7 @@ import { dotifyToString } from './lib/util';
 import { diffPNG, readPNG, uploadToImgur } from './lib/image';
 import { buttonConfigs } from './config';
 
-const CHECKOUTJS_SCRIPT = `${ __dirname }/../../${ webpack_tasks.base.src }`;
-
 const IMAGE_DIR = `${ __dirname }/images`;
-
-const WEBPACK_CONFIG = {
-    ...webpack_tasks.base.cfg,
-    entry: CHECKOUTJS_SCRIPT
-};
 
 const DIFF_THRESHOLD = 50;
 
@@ -35,7 +28,7 @@ let browser;
 let page;
 
 beforeAll(async () => {
-    ({ browser, page } = await openPage(await webpackCompile(WEBPACK_CONFIG)));
+    ({ browser, page } = await openPage(await webpackCompile(BASE)));
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
@@ -109,6 +102,7 @@ for (let config of buttonConfigs) {
 
                 let imgurUrl = '';
 
+                // eslint-disable-next-line no-process-env
                 if (process.env.TRAVIS) {
                     imgurUrl = await uploadToImgur(filepath);
                 }

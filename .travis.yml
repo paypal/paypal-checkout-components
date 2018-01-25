@@ -10,11 +10,10 @@ before_install:
   - sudo aptitude -y install ttf-mscorefonts-installer > /dev/null
   - sudo fc-cache
 before_script:
-  - npm install -g gulp
   - npm install -g flow-typed
   - flow-typed install
 script:
-  - npm run buttondiff && gulp build
+  - npm run build
 sudo: required
 dist: trusty
 addons:

@@ -1,10 +1,10 @@
-
-window.mockDomain = 'mock://www.merchant-site.com';
+/* @flow */
 
 import './tests';
 
+window.mockDomain = 'mock://www.merchant-site.com';
 
-paypal.setup({
+window.paypal.setup({
     env: 'test'
 });
 
@@ -14,7 +14,7 @@ const MAX_TEST_MEMORY = 50;
 let memoryReported = (window.performance && window.performance.memory &&
                       window.performance.memory.usedJSHeapSize);
 
-function getMemory() {
+function getMemory() : number {
     return window.performance.memory.usedJSHeapSize / Math.pow(2, 20);
 }
 
