@@ -103,19 +103,7 @@ export default function karmaConfig(config) {
                     '--js-flags="--expose-gc"'
                 ],
                 debug
-            },
-
-            xPhantom: {
-                base:  'PhantomJS',
-                flags: [
-                    '--load-images=true',
-                    '--disk-cache=true',
-                    '--disk-cache-path=node_modules/.cache/phantomjs',
-                    '--max-disk-cache-size=1000000'
-                ],
-                debug
             }
-
         },
 
         webpack: {
@@ -218,12 +206,10 @@ export default function karmaConfig(config) {
         plugins: [
             require('karma-webpack'),
             require('karma-mocha'),
-            require('karma-phantomjs-launcher'),
             require('karma-chrome-launcher'),
             require('karma-safari-launcher'),
             require('karma-firefox-launcher'),
             require('karma-ie-launcher'),
-            require('karma-slimerjs-launcher'),
             require('karma-sinon-chai'),
             require('karma-coverage'),
             require('karma-spec-reporter'),
