@@ -15,6 +15,7 @@
         "react"
     ],
     "plugins": [
+        [ "syntax-dynamic-import", { "loose": true } ],
         [ "transform-flow-strip-types", { "loose": true } ],
         [ "transform-object-rest-spread", { "loose": true } ],
         [ "syntax-object-rest-spread", { "loose": true } ],

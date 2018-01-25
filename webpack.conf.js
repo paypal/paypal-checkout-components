@@ -46,10 +46,11 @@ type WebPackConfig = {
     target? : string,
     major? : boolean,
     minify? : boolean,
-    vars? : { [string] : (string | number | boolean) }
+    vars? : { [string] : (string | number | boolean) },
+    chunkname? : string
 };
 
-function getWebpackConfig({ filename, modulename, target = 'window', major = true, minify = false, vars = {} } : WebPackConfig) : Object {
+function getWebpackConfig({ filename, modulename, target = 'window', major = true, minify = false, vars = {}, chunkname } : WebPackConfig) : Object {
 
     vars = {
         __TEST__:                           false,
@@ -100,7 +101,9 @@ function getWebpackConfig({ filename, modulename, target = 'window', major = tru
             libraryTarget:  target,
             umdNamedDefine: true,
             library:        modulename,
+            chunkFilename:  chunkname,
             pathinfo:       false
+            // promiseGlobal:  '__zalgo_promise__'
         },
         bail:    true,
         resolve: {
@@ -109,6 +112,9 @@ function getWebpackConfig({ filename, modulename, target = 'window', major = tru
         plugins: [
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
+            }),
+            new webpack.optimize.LimitChunkCountPlugin({
+                maxChunks: (chunkname ? 2 : 1)
             }),
             new webpack.DefinePlugin(vars),
             new webpack.NamedModulesPlugin(),
