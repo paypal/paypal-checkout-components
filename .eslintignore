@@ -1,1 +1,3 @@
 test/lib
+dist
+node_modules
