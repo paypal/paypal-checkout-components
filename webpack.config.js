@@ -81,7 +81,7 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
             rules: [
                 {
                     test:   /\.js$/,
-                    loader: `ifdef-loader?${ qs.encode(PREPROCESSOR_OPTS) }`
+                    loader: `ifdef-loader?${ qs.stringify(PREPROCESSOR_OPTS) }`
                 },
                 {
                     test:   /sinon\.js$/,
