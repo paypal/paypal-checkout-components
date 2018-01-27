@@ -9,6 +9,7 @@ import path from 'path';
 import webpack from 'webpack';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import { WebpackPromiseShimPlugin } from 'webpack-promise-shim-plugin';
 
 let babelConfig = JSON.parse(fs.readFileSync('./.babelrc').toString()); // eslint-disable-line no-sync
 
@@ -100,14 +101,15 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
             ]
         },
         output: {
-            path:           path.resolve('./dist'),
+            path:                path.resolve('./dist'),
             filename,
-            libraryTarget:  target,
-            umdNamedDefine: true,
-            library:        modulename,
-            chunkFilename:  chunkname,
-            pathinfo:       false
-            // promiseGlobal:  '__zalgo_promise__'
+            libraryTarget:       target,
+            umdNamedDefine:      true,
+            library:             modulename,
+            chunkFilename:       chunkname,
+            pathinfo:            false,
+            jsonpFunction:       '__paypal_checkout_jsonp__',
+            publicPath:          'https://www.paypalobjects.com/api/'
         },
         bail:    true,
         resolve: {
@@ -116,6 +118,10 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
         plugins: [
             new webpack.SourceMapDevToolPlugin({
                 filename: '[file].map'
+            }),
+            new WebpackPromiseShimPlugin({
+                module: 'zalgo-promise/src',
+                key:    'ZalgoPromise'
             }),
             new webpack.optimize.LimitChunkCountPlugin({
                 maxChunks: (chunkname ? 2 : 1)
