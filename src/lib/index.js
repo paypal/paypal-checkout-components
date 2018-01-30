@@ -16,3 +16,4 @@ export * from './meta';
 export * from './funding';
 export * from './script';
 export * from './jsx';
+export * from './security';

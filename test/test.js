@@ -36,6 +36,8 @@ beforeEach(() => {
     originalUserAgent = window.navigator.userAgent;
 
     window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = true;
+
+    delete window.__test__;
 });
 
 afterEach(() => {

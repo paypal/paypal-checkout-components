@@ -1,6 +1,5 @@
 /* @flow */
 
-import { match } from '../lib';
 import { config } from '../config';
 import { FUNDING, PAYMENT_TYPE } from '../constants';
 
@@ -35,15 +34,6 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
     if (fundingSource === FUNDING.IDEAL) {
         return config.altpayUrls[env];
     }
-    
-    return config.checkoutUrls[env];
-}
 
-export function parseParamsFromUrl(url : string) : { [key : string] : ?string } {
-    return {
-        paymentToken: match(url, /token=((EC-)?[A-Z0-9]+)/),
-        billingToken: match(url, /ba_token=((BA-)?[A-Z0-9]+)/),
-        payerID:      match(url, /PayerID=([A-Z0-9]+)/),
-        paymentID:    match(url, /paymentId=((PAY-)?[A-Z0-9]+)/)
-    };
+    return config.checkoutUrls[env];
 }

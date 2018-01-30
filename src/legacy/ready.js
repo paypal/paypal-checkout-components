@@ -2,7 +2,7 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { onDocumentReady, onKey } from '../lib';
+import { onDocumentReady, awaitKey } from '../lib';
 import { ENV } from '../constants';
 
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
@@ -32,7 +32,7 @@ function invokeReady(method) {
 }
 
 
-onKey(window, 'paypalCheckoutReady', method => {
+awaitKey(window, 'paypalCheckoutReady').then(method => {
 
     if (typeof method === 'function') {
 
@@ -45,7 +45,18 @@ onKey(window, 'paypalCheckoutReady', method => {
 
         invokeReady(oneTimeReady);
 
-        return oneTimeReady;
+        delete window.paypalCheckoutReady;
+
+        // $FlowFixMe
+        Object.defineProperty(window, 'paypalCheckoutReady', {
+            get: () => {
+                return oneTimeReady;
+            },
+            set: (val) => {
+                method = val;
+                oneTimeReady();
+            }
+        });
     }
 });
 

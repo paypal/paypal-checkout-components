@@ -166,19 +166,14 @@ export function eventEmitter() : Listener {
     };
 }
 
-export function onKey(obj : Object, key : string, callback : Function) {
+export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T> {
+    return new ZalgoPromise(resolve => {
 
-    if (!obj) {
-        return;
-    }
+        let value = obj[key];
 
-    let value = obj[key];
-
-    if (value) {
-        value = callback(value) || value;
-    }
-
-    try {
+        if (value) {
+            return resolve(value);
+        }
 
         delete obj[key];
 
@@ -190,7 +185,7 @@ export function onKey(obj : Object, key : string, callback : Function) {
                 value = item;
 
                 if (value) {
-                    value = callback(value) || value;
+                    resolve(value);
                 }
             },
 
@@ -198,15 +193,6 @@ export function onKey(obj : Object, key : string, callback : Function) {
                 return value;
             }
         });
-
-    } catch (err) {
-        // pass
-    }
-}
-
-export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T> {
-    return new ZalgoPromise(resolve => {
-        return onKey(obj, key, resolve);
     });
 }
 

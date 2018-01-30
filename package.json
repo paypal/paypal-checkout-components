@@ -12,6 +12,7 @@
     "babel": "babel src/ --out-dir dist/module",
     "webpack": "babel-node ./node_modules/.bin/webpack --progress",
     "webpack-base": "babel-node ./node_modules/.bin/webpack --progress --config webpack.base.config.js",
+    "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
     "test": "npm run lint && npm run flow && npm run karma && npm run buttondiff",
     "build": "npm run test && npm run webpack",
     "release": "./publish.sh",

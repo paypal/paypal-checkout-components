@@ -3,29 +3,28 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, CONSTANTS as XCOMPONENT_CONSTANTS } from 'xcomponent/src';
+import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { get as getShared, KEY as SHARED_KEY } from 'braintree-paypal-client-config';
 
-import { Checkout } from '../checkout';
 import { config } from '../config';
 import { USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from '../constants';
 import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, getPageRenderTime, isEligible,
-    getDomainSetting, extendUrl, noop, isDevice, rememberFunding,
+    getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../lib';
 import { rest } from '../api';
 import { onAuthorizeListener } from '../experiments';
-import { getPopupBridgeOpener, awaitPopupBridgeOpener } from '../checkout/popupBridge';
-import { getPaymentType } from '../checkout/payment';
+import { getPaymentType, awaitBraintreeClient,
+    mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
+import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding } from '../funding';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
-import { awaitBraintreeClient, mapPaymentToBraintree, type BraintreePayPalClient } from './braintree';
 import { labelToFunding } from './config';
 
 type ButtonOptions = {
@@ -69,21 +68,9 @@ export let Button : Component<ButtonOptions> = create({
 
             if (getDomainSetting('allow_full_page_fallback')) {
                 info('pre_template_force_full_page');
-                
-                let checkout = Checkout.init({
-                    onAuthorize: noop
-                });
-
-                // eslint-disable-next-line promise/catch-or-return
-                checkout.openContainer().then(() => {
-                    checkout.showContainer();
-                    checkout.event.triggerOnce(XCOMPONENT_CONSTANTS.EVENTS.CLOSE);
-                });
 
                 this.props.payment().then(token => {
                     window.top.location = extendUrl(config.checkoutUrl, { token });
-                }).catch(err => {
-                    checkout.error(err);
                 });
             }
         });
@@ -215,7 +202,6 @@ export let Button : Component<ButtonOptions> = create({
             decorate(original : ?Function, props : Object) : ?Function {
                 if (original) {
                     let source = labelToFunding(props.style && props.style.label);
-                    // eslint-disable-next-line promise/catch-or-return
                     isFundingRemembered(source).then(result => {
                         if (result && original) {
                             original();
@@ -627,15 +613,10 @@ export let Button : Component<ButtonOptions> = create({
             }
         },
 
-        popupBridge: {
+        awaitPopupBridge: {
             type:     'object',
             required: false,
-            get value() : Object {
-                return {
-                    open:        getPopupBridgeOpener(),
-                    awaitOpener: awaitPopupBridgeOpener
-                };
-            }
+            value:    awaitPopupBridge
         },
 
         test: {
@@ -649,32 +630,7 @@ export let Button : Component<ButtonOptions> = create({
 });
 
 if (Button.isChild()) {
-
-    // eslint-disable-next-line promise/catch-or-return
-    getPageRenderTime().then(pageRenderTime => {
-
-        let fundingSources = Array.prototype.slice.call(document.querySelectorAll(`[${ ATTRIBUTE.FUNDING_SOURCE }]`)).map(el => {
-            return el.getAttribute(ATTRIBUTE.CARD) || el.getAttribute(ATTRIBUTE.FUNDING_SOURCE);
-        }).filter(source => {
-            return source && source !== FUNDING.CARD;
-        });
-
-        track({
-            [ FPTI.KEY.STATE ]:          FPTI.STATE.BUTTON,
-            [ FPTI.KEY.TRANSITION ]:     FPTI.TRANSITION.BUTTON_LOAD,
-            [ FPTI.KEY.BUTTON_TYPE ]:    FPTI.BUTTON_TYPE.IFRAME,
-            [ FPTI.KEY.FUNDING_LIST ]:   fundingSources.join(':'),
-            [ FPTI.KEY.FUNDING_COUNT ]:  fundingSources.length,
-            [ FPTI.KEY.PAGE_LOAD_TIME ]: pageRenderTime,
-            [ FPTI.KEY.BUTTON_LAYOUT ]:  (window.xprops && window.xprops.style && window.xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
-        });
-
-        flushLogs();
+    import('./child').then(({ setupButtonChild }) => {
+        setupButtonChild();
     });
-
-    if (window.xprops.logLevel) {
-        setLogLevel(window.xprops.logLevel);
-    }
-
-    awaitPopupBridgeOpener();
 }

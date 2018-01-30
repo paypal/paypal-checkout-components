@@ -56,12 +56,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'cancel' });
+                window.__test__ = { action: 'cancel' };
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
@@ -542,7 +541,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container and click on the button, then call initXO and then closeFlow', (done) => {
 
-            // eslint-disable-next-line promise/catch-or-return
             window.paypal.checkout.setup('merchantID', {
 
                 container: 'testContainer',

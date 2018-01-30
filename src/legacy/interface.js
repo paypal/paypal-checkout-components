@@ -244,13 +244,13 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
             hijackTarget.removeAttribute('target');
         }
 
-        // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
+        // eslint-disable-next-line promise/no-promise-in-callback
         urlProp.then(url => {
             warn(`render_error_redirect_using_url`);
             return redirect(url);
         });
 
-        // eslint-disable-next-line promise/catch-or-return, promise/no-promise-in-callback
+        // eslint-disable-next-line promise/no-promise-in-callback
         paymentToken.then(token => {
             warn(`render_error_redirect_using_token`);
             return redirect(extendUrl(config.checkoutUrl, { token }));
@@ -270,7 +270,6 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
         paypalCheckout.hijack(hijackTarget);
         paypalCheckout.runTimeout();
 
-        // eslint-disable-next-line promise/catch-or-return
         urlProp.then(url => {
             warn(`hijack_then_url_passed`);
             paypalCheckout.loadUrl(url);
@@ -312,8 +311,7 @@ function handleClickHijack(element) : void {
     let { url, paymentToken } = awaitPaymentTokenAndUrl();
 
     let token;
-
-    // eslint-disable-next-line promise/catch-or-return
+    
     paymentToken.then(result => {
         token = result;
     });

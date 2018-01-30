@@ -199,7 +199,6 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        // eslint-disable-next-line promise/catch-or-return
         window.paypal.checkout.setup('merchantID', {
 
             buttons: [
@@ -628,7 +627,6 @@ describe('paypal legacy button rendering', () => {
 
         let clicked = false;
 
-        // eslint-disable-next-line promise/catch-or-return
         window.paypal.checkout.setup('merchantID', {
 
             container: 'testButton',

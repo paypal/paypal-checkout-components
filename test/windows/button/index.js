@@ -19,6 +19,7 @@ if (flow === 'iframe') {
 
 if (bridge) {
     errorOnWindowOpen();
+    delay = 100;
 }
 
 function renderCheckout(props = {}) {

@@ -595,8 +595,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let childWindow;
 
                 testButton.addEventListener('click', () => {
-
-                    // eslint-disable-next-line promise/catch-or-return
+                    
                     onWindowOpen().then(win => {
                         childWindow = win;
                     });

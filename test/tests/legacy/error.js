@@ -48,13 +48,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 window.paypal.checkout.startFlow(token);
             });
 
-            window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+            window.__test__ = { action: 'error' };
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-
                 assert.equal(urlHash, `#fullpageRedirect?url=${ extendUrl(window.paypal.config.checkoutUrl, { token }) }`);
             }).toPromise();
         });
@@ -98,13 +96,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+                window.__test__ = { action: 'error' };
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-
                     assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
@@ -157,12 +153,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+                window.__test__ = { action: 'error' };
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
@@ -213,13 +208,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+                window.__test__ = { action: 'error' };
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-
                     assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
@@ -303,7 +296,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+                window.__test__ = { action: 'error' };
 
                 getElement('button', testForm).click();
 
@@ -313,8 +306,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 window.paypal.config.checkoutUrl = '#errorRedirectUrl';
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
-
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', CheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
@@ -402,12 +393,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.paypal.checkout.startFlow(redirectUrl);
                 });
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'error' });
+                window.__test__ = { action: 'error' };
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fullpageRedirect?url=${ redirectUrl }`);
                 });
             });
@@ -497,12 +487,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'fallback' });
+                window.__test__ = { action: 'fallback' };
 
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#fallbackUrl?token=${ token }`);
                 });
             });

@@ -8,7 +8,6 @@ import './hijack';
 import './hybrid';
 import './customclick';
 import './error';
-import './popupBridge';
 
 beforeEach(() => {
     window.paypal.checkout.reset();

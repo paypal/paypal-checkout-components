@@ -647,7 +647,7 @@ export function destroyPopupBridge(win : SameDomainWindowType = window) {
     delete win.popupBridge;
 
     if (window.popupBridge) {
-        delete window.popupBridge.popupBridgeOpener;
+        delete window.popupBridge;
     }
 
     if (win.open.reset) {

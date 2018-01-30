@@ -185,6 +185,9 @@ export default function karmaConfig(config) {
                     __ALLOW_POSTMESSAGE_POPUP__:        JSON.stringify(true),
                     __MAJOR__:                          JSON.stringify(true),
                     __MINIFIED__:                       JSON.stringify(true)
+                }),
+                new webpack.optimize.LimitChunkCountPlugin({
+                    maxChunks: 1
                 })
             ]
         },

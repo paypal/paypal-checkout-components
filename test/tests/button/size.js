@@ -965,7 +965,6 @@ describe(`paypal button component sizes`, () => {
             onEnter() {
                 let frame = getElement('#testContainer iframe');
 
-                // eslint-disable-next-line promise/catch-or-return
                 onElementResize(frame).then(() => {
 
                     let height = frame.offsetHeight;
@@ -1031,7 +1030,6 @@ describe(`paypal button component sizes`, () => {
 
                 let frame = getElement('#testContainer iframe');
 
-                // eslint-disable-next-line promise/catch-or-return
                 onElementResize(frame).then(() => {
                     let width = frame.offsetWidth;
                     let height = frame.offsetHeight;

@@ -85,12 +85,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }).then(() => {
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'cancel' });
+                window.__test__ = { action: 'cancel' };
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });

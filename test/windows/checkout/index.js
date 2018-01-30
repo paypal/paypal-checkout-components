@@ -16,7 +16,6 @@ let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '
 
 if (action === 'checkout') {
 
-    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
 
         return window.paypal.Promise.try(() => {
@@ -39,6 +38,7 @@ if (action === 'checkout') {
             window.xprops.onAuthorize({
                 paymentToken,
                 paymentID:  paymentToken,
+                intent:     'sale',
                 payerID:    'YYYYYYYYYYYYY',
                 cancelUrl:  `#cancel?token=${ paymentToken }${ hash }`,
                 returnUrl:  `#return?token=${ paymentToken }&PayerID=YYYYYYYYYYYYY${ hash }`,
@@ -49,7 +49,6 @@ if (action === 'checkout') {
 
 } else if (action === 'cancel') {
 
-    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
 
         window.xprops.onCancel({
@@ -83,7 +82,6 @@ if (action === 'checkout') {
 
     let parent = window.xchild.getParentComponentWindow();
 
-    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
         return window.xprops.fallback(`#fallbackUrl?token=${ paymentToken }`).then(() => {
 
@@ -121,7 +119,6 @@ if (action === 'checkout') {
 
 } else if (action === 'error') {
 
-    // eslint-disable-next-line promise/catch-or-return
     window.xprops.payment().then(paymentToken => {
 
         return window.paypal.Promise.try(() => {
@@ -139,8 +136,7 @@ if (action === 'checkout') {
         });
     });
 } else if (action === 'init') {
-
-    // eslint-disable-next-line promise/catch-or-return
+    
     window.xprops.payment().then(paymentToken => {
         if (window.xprops.init) {
             return window.xprops.init({

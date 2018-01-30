@@ -212,6 +212,17 @@ export let CHILD_LOADER_MIN = getWebpackConfig({
     minify:   true
 });
 
+export let BUTTON = getWebpackConfig({
+    src:       './src/load.js',
+    filename:  `${ FILE_NAME }.button.v${ nextMajorVersion }.js`,
+    chunkname: `${ FILE_NAME }.button.v${ nextMajorVersion }.chunk.js`,
+    
+    major:    true,
+    vars:     {
+        __LEGACY_SUPPORT__:   false
+    }
+});
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
     BASE,

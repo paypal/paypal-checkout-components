@@ -5,7 +5,6 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { info, track, warn, flush as flushLogs, immediateFlush } from 'beaver-logger/client';
 import { create, CONSTANTS, PopupOpenError } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
-import { getParent, isSameDomain } from 'cross-domain-utils/src';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
@@ -14,10 +13,9 @@ import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR } from '../constants';
 import { onLegacyPaymentAuthorize } from '../compat';
+import { determineParameterFromToken, determineUrl } from '../integrations';
 
 import { containerTemplate, componentTemplate } from './template';
-import { determineParameterFromToken, determineUrl } from './payment';
-import { setupPopupBridgeProxy, getPopupBridgeOpener, awaitPopupBridgeOpener } from './popupBridge';
 
 function addHeader(name, value) : void {
 
@@ -28,38 +26,6 @@ function addHeader(name, value) : void {
     if (window.$Api.addHeader) {
         return window.$Api.addHeader(name, value);
     }
-}
-
-export function allowIframe() : boolean {
-
-    if (!supportsPopups()) {
-        return true;
-    }
-
-    let parentWindow = getParent(window);
-    if (parentWindow && isSameDomain(parentWindow)) {
-        return true;
-    }
-
-    let parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
-    if (parentComponentWindow && isSameDomain(parentComponentWindow)) {
-        return true;
-    }
-
-    if (__TEST__) {
-        return true;
-    }
-
-    return false;
-}
-
-function forceIframe() : boolean {
-
-    if (!supportsPopups()) {
-        return true;
-    }
-
-    return false;
 }
 
 type CheckoutPropsType = {
@@ -113,7 +79,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
     },
 
     contexts: {
-        iframe: forceIframe(),
+        iframe: (!supportsPopups()),
         popup:  true
     },
 
@@ -494,22 +460,11 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
-        popupBridge: {
-            type:     'object',
-            required: false,
-            get value() : Object {
-                return {
-                    open:        getPopupBridgeOpener(),
-                    awaitOpener: awaitPopupBridgeOpener
-                };
-            }
-        },
-
         test: {
             type:     'object',
             required: false,
             def() : Object {
-                return { action: 'checkout' };
+                return window.__test__ || { action: 'checkout' };
             }
         }
     },
@@ -535,20 +490,11 @@ export let Checkout : Component<CheckoutPropsType> = create({
     }
 });
 
-setupPopupBridgeProxy(Checkout);
-
-export function enableCheckoutIframe() {
-    delete Checkout.contexts.iframe;
-    Checkout.contexts.iframe = true;
-}
-
 if (Checkout.isChild()) {
 
     if (window.xprops.logLevel) {
         setLogLevel(window.xprops.logLevel);
     }
-
-    awaitPopupBridgeOpener();
 
     window.xchild.onProps(() => {
         patchMethod(window.xprops, 'onAuthorize', ({ callOriginal, args: [ data ] }) => {
@@ -577,7 +523,6 @@ if (Checkout.isChild()) {
         }
     }
 
-    // eslint-disable-next-line promise/catch-or-return
     documentReady.then(() => {
 
         if (!window.injector) {

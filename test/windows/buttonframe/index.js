@@ -2,7 +2,6 @@
 
 import { generateECToken } from '../../tests/common';
 
-// eslint-disable-next-line promise/catch-or-return
 window.paypal.Button.render({
 
     payment() : string {

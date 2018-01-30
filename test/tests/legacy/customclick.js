@@ -261,12 +261,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     window.paypal.checkout.startFlow(token);
                 });
 
-                window.paypal.Checkout.props.test.def = () => ({ action: 'cancel' });
+                window.__test__ = { action: 'cancel' };
 
                 getElement('button', testForm).click();
 
                 return onHashChange().then(urlHash => {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     assert.equal(urlHash, `#cancel?token=${ token }`);
                 });
             });
@@ -1158,7 +1157,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 ]
             });
 
-            // eslint-disable-next-line promise/catch-or-return
             window.paypal.checkout.setup('merchantID', {
 
                 container: 'testForm',

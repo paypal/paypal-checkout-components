@@ -62,7 +62,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     if (!data.intent) {
                         return done(new Error(`Expected data.intent to be present`));
                     }
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     return done();
@@ -106,7 +106,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onCancel() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     return done();
@@ -120,7 +120,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let token = generateECToken();
 
-            setupPopupBridge({ isAuthorize: false, bridge: true });
+            setupPopupBridge({ isAuthorize: false });
 
             let openPopupBridgeCalled = false;
             let openPopupBridge = window.popupBridge.open;
@@ -136,7 +136,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             window.paypal.Button.render({
 
-                test: { flow, action: 'cancel' },
+                test: { flow, action: 'cancel', bridge: true },
 
                 payment() : string | ZalgoPromise<string> {
                     return token;
@@ -147,7 +147,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onCancel() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     return done();
@@ -191,7 +191,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         throw new Error(`Expected window.popupBridge.open to have been called`);
                     }
                     assert.equal(urlHash, `#return?token=${ token }&PayerID=YYYYYYYYYYYYY`);
@@ -224,7 +224,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize(data, actions) : ZalgoPromise<void> {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -275,7 +275,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         throw new Error(`Expected window.popupBridge.open to have been called`);
                     }
 
@@ -320,7 +320,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         throw new Error(`Expected window.popupBridge.open to have been called`);
                     }
 
@@ -359,7 +359,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onCancel(data, actions) : ZalgoPromise<void> {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -407,7 +407,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer').then(() => {
 
                 return onHashChange().then(urlHash => {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         throw new Error(`Expected window.popupBridge.open to have been called`);
                     }
 
@@ -453,7 +453,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -507,7 +507,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -556,7 +556,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -595,7 +595,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -632,7 +632,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -673,7 +673,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     
@@ -712,7 +712,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -761,7 +761,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     if (!data.intent) {
                         return done(new Error(`Expected data.intent to be present`));
                     }
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     return done();
@@ -809,7 +809,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     if (!data.intent) {
                         return done(new Error(`Expected data.intent to be present`));
                     }
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
                     return done();
@@ -851,7 +851,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                     if (isRestarted) {
-                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                        if (!openPopupBridgeCalled) {
                             return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
 
@@ -877,7 +877,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let openPopupBridgeCalled = false;
 
-            // eslint-disable-next-line promise/catch-or-return
             window.paypal.Button.render({
 
                 test: { flow, action: 'checkout', delay: 50, bridge: true },
@@ -887,7 +886,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    if (flow === 'popup' && !openPopupBridgeCalled) {
+                    if (!openPopupBridgeCalled) {
                         return done(new Error(`Expected window.popupBridge.open to have been called`));
                     }
 
@@ -942,7 +941,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize() : void {
-                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                        if (!openPopupBridgeCalled) {
                             return done(new Error(`Expected window.popupBridge.open to have been called`));
                         }
 
@@ -971,8 +970,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };
-
-                // eslint-disable-next-line promise/catch-or-return
+                
                 window.paypal.Button.render({
 
                     test: { flow, action: 'popout', bridge: true },
@@ -988,7 +986,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 }, '#testContainer').then(() => {
 
                     return onHashChange().then(urlHash => {
-                        if (flow === 'popup' && !openPopupBridgeCalled) {
+                        if (!openPopupBridgeCalled) {
                             throw new Error(`Expected window.popupBridge.open to have been called`);
                         }
 
@@ -1023,7 +1021,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     onAuthorize(data, actions) : ZalgoPromise<void> {
                         return actions.redirect(window).then(() => {
-                            if (flow === 'popup' && !openPopupBridgeCalled) {
+                            if (!openPopupBridgeCalled) {
                                 return done(new Error(`Expected window.popupBridge.open to have been called`));
                             }
 
@@ -1067,7 +1065,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     onAuthorize(data, actions) : void | ZalgoPromise<void> {
 
                         if (isRestarted) {
-                            if (flow === 'popup' && !openPopupBridgeCalled) {
+                            if (!openPopupBridgeCalled) {
                                 return done(new Error(`Expected window.popupBridge.open to have been called`));
                             }
 

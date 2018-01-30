@@ -45,12 +45,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 window.paypal.checkout.startFlow(token);
             });
 
-            window.paypal.Checkout.props.test.def = () => ({ action: 'cancel' });
+            window.__test__ = { action: 'cancel' };
 
             testButton.click();
 
             return onHashChange().then(urlHash => {
-                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                 assert.equal(urlHash, `#cancel?token=${ token }`);
             }).toPromise();
         });

@@ -28,7 +28,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 render() : Object {
 
-                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+                    window.__test__ = { flow, action: 'checkout' };
 
                     return window.React.createElement(
                         'div',
@@ -40,7 +40,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                             },
 
                             onAuthorize() : void {
-                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                                 return done();
                             },
 
@@ -69,7 +68,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 render() : Object {
 
-                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+                    window.__test__ = { flow, action: 'checkout' };
 
                     return window.React.createElement(
                         'div',
@@ -83,7 +82,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                             },
 
                             onAuthorize() : void {
-                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                                 return done();
                             },
 
@@ -112,7 +110,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 render() : Object {
 
-                    window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+                    window.__test__ = { flow, action: 'checkout' };
 
                     return window.React.createElement(
                         'div',
@@ -129,7 +127,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                             },
 
                             onAuthorize() : void {
-                                window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                                 return done();
                             },
 
@@ -160,7 +157,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let $scope = $rootScope.$new();
 
-            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+            window.__test__ = { flow, action: 'checkout' };
 
             $scope.opts = {
 
@@ -169,7 +166,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     return done();
                 },
 
@@ -200,7 +196,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let $scope = $rootScope.$new();
 
-            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+            window.__test__ = { flow, action: 'checkout' };
 
             $scope.opts = {
 
@@ -211,7 +207,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     return done();
                 },
 
@@ -242,7 +237,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             let $scope = $rootScope.$new();
 
-            window.paypal.Checkout.props.test.def = () => ({ flow, action: 'checkout' });
+            window.__test__ = { flow, action: 'checkout' };
 
             $scope.opts = {
 
@@ -256,7 +251,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    window.paypal.Checkout.props.test.def = () => ({ action: 'checkout' });
                     return done();
                 },
 
