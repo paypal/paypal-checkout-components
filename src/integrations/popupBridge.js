@@ -84,10 +84,10 @@ function extractDataFromQuery(query : Object) : Object {
         paymentToken: query.token,
         billingToken: query.ba_token,
         paymentID:    query.paymentId,
-        payerID:      query.payerId,
+        payerID:      query.PayerID,
         intent:       query.intent
     };
-
+    
     let { opType, return_uri, cancel_uri } = query;
 
     if (opType === OPTYPE.PAYMENT) {
