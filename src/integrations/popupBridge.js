@@ -88,6 +88,10 @@ function extractDataFromQuery(query : Object) : Object {
         intent:       query.intent
     };
 
+    if (!data.payerID) {
+        data.payerID = query.PayerID;
+    }
+    
     let { opType, return_uri, cancel_uri } = query;
 
     if (opType === OPTYPE.PAYMENT) {
