@@ -192,10 +192,12 @@ function initPayPalCheckout(props = {}) : Object {
             return actions.redirect(window);
         },
 
-        onCancel(data, actions) : ZalgoPromise<void> {
-            info(`payment_canceled`);
-            logRedirect(data.cancelUrl);
-            return actions.redirect(window);
+        onCancel(data, actions) : ?ZalgoPromise<void> {
+            if (data.cancelUrl) {
+                info(`payment_canceled`);
+                logRedirect(data.cancelUrl);
+                return actions.redirect(window);
+            }
         },
 
         fallback(url) : ZalgoPromise<void> {

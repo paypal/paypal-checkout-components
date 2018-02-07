@@ -398,26 +398,12 @@ export let Checkout : Component<CheckoutPropsType> = create({
                         this.props.onCancel &&
                         [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) !== -1;
 
-                    let hasDetails =
-                        this.paymentToken &&
-                        this.cancelUrl;
-
-                    if (shouldCancel && !hasDetails) {
-                        warn(`close_no_token_cancelurl`);
-                        return onClose;
-                    }
-
                     if (shouldCancel) {
                         info(`close_trigger_cancel`);
-                        return ZalgoPromise.all([
-                            onClose,
-                            this.props.onCancel({
-                                paymentToken: this.paymentToken,
-                                cancelUrl:    this.cancelUrl
-                            })
-                        ]).then(() => {
-                            return onClose;
-                        });
+                        return this.props.onCancel({
+                            paymentToken: this.paymentToken,
+                            cancelUrl:    this.cancelUrl
+                        }).then(() => onClose);
                     }
 
                     return onClose;
