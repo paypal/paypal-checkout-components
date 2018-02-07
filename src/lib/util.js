@@ -288,6 +288,10 @@ export function extend<T : Object | Function>(obj : T, source : Object) : T {
         return obj;
     }
 
+    if (Object.assign) {
+        return Object.assign(obj, source);
+    }
+
     for (let key in source) {
         if (source.hasOwnProperty(key)) {
             obj[key] = source[key];
