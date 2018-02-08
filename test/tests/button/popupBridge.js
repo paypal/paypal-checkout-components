@@ -914,6 +914,48 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
         });
 
+        it('should render a button into a container and click on the button, then cancel the payment by closing the window', (done) => {
+
+            setupPopupBridge({ isAuthorize: false });
+
+            let token = generateECToken();
+
+            let openPopupBridgeCalled = false;
+            let openPopupBridge = window.popupBridge.open;
+
+            window.popupBridge.open = (url) => {
+                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
+                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
+                assert.isOk(url.indexOf(`ba_token=`) === -1);
+                assert.isOk(url.indexOf(`billingurl`) === -1);
+                openPopupBridgeCalled = true;
+                return openPopupBridge(url);
+            };
+
+            window.popupBridge.action = 'cancel';
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout', bridge: true },
+
+                payment() : string | ZalgoPromise<string> {
+                    return token;
+                },
+
+                onAuthorize() : void {
+                    return done(new Error('Expected onAuthorize to not be called'));
+                },
+
+                onCancel() : void {
+                    if (!openPopupBridgeCalled) {
+                        return done(new Error(`Expected window.popupBridge.open to have been called`));
+                    }
+                    return done();
+                }
+
+            }, '#testContainer');
+        });
+
         if (flow === 'iframe') {
 
             it('should render a button into a container and click on the button, popout, then complete the payment', (done) => {

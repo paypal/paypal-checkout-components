@@ -15,6 +15,10 @@ const OPTYPE = {
     CANCEL:  'cancel'
 };
 
+const CONTINGENCY = {
+    PAYMENT_CANCELLED: 'PAYMENT_CANCELLED'
+};
+
 type PopupBridge = {
     open : (string) => ZalgoPromise<Object>
 };
@@ -23,6 +27,7 @@ function wrapPopupBridge(popupBridge : Object) : PopupBridge {
     return {
         open(url : string) : ZalgoPromise<Object> {
             return new ZalgoPromise((resolve, reject) => {
+
                 popupBridge.onComplete = (err, result) => {
                     if (!result) {
                         return reject(new Error('No payload passed in popupBridge.onComplete'));
@@ -30,6 +35,14 @@ function wrapPopupBridge(popupBridge : Object) : PopupBridge {
 
                     return err ? reject(err) : resolve(result);
                 };
+
+                popupBridge.onCancel = () => {
+                    let err = new Error(CONTINGENCY.PAYMENT_CANCELLED);
+                    // $FlowFixMe
+                    err.code = CONTINGENCY.PAYMENT_CANCELLED;
+                    return reject(err);
+                };
+
                 popupBridge.open(extendUrl(url, { redirect_uri: popupBridge.getReturnUrlPrefix() }));
             });
         }
@@ -154,6 +167,14 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
             throw new Error(`Invalid opType: ${ opType }`);
         }
 
+    }).catch(err => {
+
+        if (err && err.code === CONTINGENCY.PAYMENT_CANCELLED) {
+            let { onCancel } = normalizeCheckoutProps(props);
+            return onCancel({}, {});
+        }
+
+        throw err;
     });
 }
 

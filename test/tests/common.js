@@ -632,7 +632,9 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
                     }
                 }
 
-                if (win.popupBridge.onComplete) {
+                if (win.popupBridge.action === 'cancel') {
+                    win.popupBridge.onCancel();
+                } else {
                     return win.popupBridge.onComplete(null, {
                         queryItems
                     });
