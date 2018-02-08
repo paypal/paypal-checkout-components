@@ -1,6 +1,6 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
-import { memoize, noop, match } from './util';
+import { memoize, noop, match, redirect as redir } from './util';
 import { getPayment, executePayment, getOrder, captureOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
 import { persistAccessToken } from './user';
 
@@ -80,6 +80,21 @@ function buildActions(checkout, data, actions, intent) {
     };
 }
 
+function buildCancelActions(checkout, data, actions) {
+
+    let redirect = (win, url) => {
+        return window.paypal.Promise.all([
+            redir(win || window.top, url || data.cancelUrl),
+            actions.close()
+        ]);
+    }; 
+    
+    return {
+        ...actions,
+        redirect
+    };
+}
+
 function getCancelData(payment, data) {
     return window.paypal.Promise.try(() => {
         return data.paymentToken || payment().then(id => mapToToken(id));
@@ -127,7 +142,8 @@ export function renderCheckout(props = {}) {
             return window.paypal.Promise.try(() => {
                 return getCancelData(payment, data);
             }).then(cancelData => {
-                return window.xprops.onCancel(cancelData, actions);
+                let cancelActions = buildCancelActions(this, cancelData, actions);
+                return window.xprops.onCancel(cancelData, cancelActions);
             }).catch(err => {
                 return window.xchild.error(err);
             });

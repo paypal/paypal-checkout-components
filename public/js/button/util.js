@@ -38,3 +38,32 @@ export function match(str, pattern) {
         return regmatch[1];
     }
 }
+
+export function urlWillRedirectPage(url) {
+
+    if (url.indexOf('#') === -1) {
+        return true;
+    }
+
+    if (url.indexOf('#') === 0) {
+        return false;
+    }
+
+    if (url.split('#')[0] === window.location.href.split('#')[0]) {
+        return false;
+    }
+
+    return true;
+}
+
+
+export function redirect(win = window, url) {
+    return new window.paypal.Promise(resolve => {
+        setTimeout(() => {
+            win.location = url;
+            if (!urlWillRedirectPage(url)) {
+                resolve();
+            }
+        }, 1);
+    });
+}
