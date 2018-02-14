@@ -9,11 +9,11 @@ import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/clie
 import { get as getShared, KEY as SHARED_KEY } from 'braintree-paypal-client-config';
 
 import { config } from '../config';
-import { USERS, SOURCE, ENV, FPTI, ATTRIBUTE, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from '../constants';
-import { redirect as redir, setLogLevel, checkRecognizedBrowser,
+import { USERS, SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
+    BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
+import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, getPageRenderTime, isEligible,
+    isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails } from '../api';

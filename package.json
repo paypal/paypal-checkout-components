@@ -4,7 +4,7 @@
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/ test/",
+    "lint": "eslint --ext .js --ext .jsx src/ test/",
     "flow-typed": "flow-typed install",
     "flow": "flow",
     "flow:build": "flow gen-flow-files ./src/index.js --out-dir ./dist/module",
