@@ -8,7 +8,9 @@ import { getAncestor, isSameDomain, isFileProtocol } from 'cross-domain-utils/sr
 
 import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
-import { request, memoize, isPayPalDomain } from '../lib';
+import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
+
+import { addPaymentOptions, mergePaymentDetails, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
 
 let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
 
@@ -141,6 +143,39 @@ function getDefaultReturnUrl() : string {
         : `${ window.location.protocol }//${ window.location.host }`;
 }
 
+function createTracking(env : string, client : { [key : string] : string }, merchantID, trackingData) : Object {
+    
+    env = env || config.env;
+
+    let clientID = client[env];
+
+    if (!clientID) {
+        throw new Error(`Client ID not found for env: ${ env }`);
+    }
+
+    let trackingID = uniqueID();
+
+    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
+
+        let headers: Object = {
+            Authorization: `Bearer ${ accessToken }`
+        };
+
+        return request({
+            method: `put`,
+            url:    `${ config.trackingApiUrls[env] }/${ merchantID }/${ trackingID }`,
+            headers,
+            json:   {
+                'tracking_id':     trackingID,
+                'additional_data': trackingData
+            }
+        });
+
+    }).then(() => {
+        return trackingID;
+    });
+}
+
 function createPayment(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
 
     info(`rest_api_create_checkout_token`);
@@ -153,14 +188,20 @@ function createPayment(env : string, client : { [key : string] : string }, payme
         throw new Error(`Client ID not found for env: ${ env }`);
     }
 
-    let { payment, experience, meta } = paymentDetails;
+    let { payment, experience, meta, tracking } = paymentDetails;
 
     if (!payment) {
         throw new Error(`Expected payment details to be passed`);
     }
 
+    validateExtraPaymentOptions(payment);
+
     if (proxyRest.createPayment && !proxyRest.createPayment.source.closed) {
-        return proxyRest.createPayment(env, client, { payment, experience, meta });
+        return proxyRest.createPayment(env, client, { payment, experience, meta, tracking })
+            .then(id => {
+                addPaymentOptions(id, payment);
+                return id;
+            });
     }
 
     payment = { ...payment };
@@ -181,23 +222,36 @@ function createPayment(env : string, client : { [key : string] : string }, payme
 
         }).then((experienceID) : ZalgoPromise<Object> => {
 
-            if (experienceID) {
-                payment.experience_profile_id = experienceID;
-            }
+            return ZalgoPromise.try(() => {
 
-            let headers : Object = {
-                Authorization: `Bearer ${ accessToken }`
-            };
+                if (tracking) {
+                    return ZalgoPromise.resolve(createTracking(env, client, tracking.id, tracking.data));
+                }
 
-            if (meta && meta.partner_attribution_id) {
-                headers['PayPal-Partner-Attribution-Id'] = meta.partner_attribution_id;
-            }
+            }).then((trackingID) : ZalgoPromise<Object> => {
 
-            return request({
-                method: `post`,
-                url:    config.paymentApiUrls[env],
-                headers,
-                json:   payment
+                if (experienceID) {
+                    payment.experience_profile_id = experienceID;
+                }
+
+                let headers: Object = {
+                    Authorization: `Bearer ${ accessToken }`
+                };
+
+                if (trackingID) {
+                    headers['Paypal-Client-Metadata-Id'] = trackingID;
+                }
+
+                if (meta && meta.partner_attribution_id) {
+                    headers['PayPal-Partner-Attribution-Id'] = meta.partner_attribution_id;
+                }
+
+                return request({
+                    method: `post`,
+                    url:    config.paymentApiUrls[env],
+                    headers,
+                    json:   removeExtraPaymentOptions(payment)
+                });
             });
         });
 
@@ -210,6 +264,11 @@ function createPayment(env : string, client : { [key : string] : string }, payme
         }
 
         throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
+
+    }).then(id => {
+
+        addPaymentOptions(id, payment);
+        return id;
     });
 }
 
@@ -244,6 +303,9 @@ function getPayment(env : string, client : { [key : string] : string }, paymentI
             url:    `${ config.paymentApiUrls[env] }/${ paymentID }`,
             headers
         });
+
+    }).then(payment => {
+        return mergePaymentDetails(paymentID, payment);
     });
 }
 
@@ -281,6 +343,9 @@ function executePayment(env : string, client : { [key : string] : string }, paym
                 payer_id: payerID
             }
         });
+
+    }).then(payment => {
+        return mergePaymentDetails(paymentID, payment);
     });
 }
 

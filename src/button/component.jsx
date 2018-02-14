@@ -16,7 +16,7 @@ import { redirect as redir, setLogLevel, checkRecognizedBrowser,
     isIEIntranet, getPageRenderTime, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
     getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../lib';
-import { rest } from '../api';
+import { rest, getPaymentOptions, addPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
@@ -617,6 +617,12 @@ export let Button : Component<ButtonOptions> = create({
             type:     'object',
             required: false,
             value:    awaitPopupBridge
+        },
+
+        supplement: {
+            type:     'object',
+            required: false,
+            value:    { getPaymentOptions, addPaymentDetails }
         },
 
         test: {

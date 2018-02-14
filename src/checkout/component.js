@@ -446,6 +446,14 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
+        supplement: {
+            type:     'object',
+            required: false,
+            get value() : Object {
+                return window.xprops && window.xprops.supplement;
+            }
+        },
+
         test: {
             type:     'object',
             required: false,

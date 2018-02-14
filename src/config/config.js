@@ -275,6 +275,7 @@ export let config = {
     orderApiUri:      `/v1/checkout/orders`,
     billingApiUri:    `/v1/billing-agreements/agreement-tokens`,
     experienceApiUri: `/v1/payment-experience/web-profiles`,
+    trackingApiUri:   `/v1/risk/transaction-contexts`,
 
     get checkoutUrls() : Object {
 
@@ -466,6 +467,20 @@ export let config = {
             [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ experienceApiUri }`,
             [ ENV.PRODUCTION ]: `${ apiUrls.production }${ experienceApiUri }`,
             [ ENV.TEST ]:       `${ apiUrls.test }${ experienceApiUri }`
+        };
+    },
+
+    get trackingApiUrls() : Object {
+
+        let apiUrls       = config.apiUrls;
+        let trackingApiUri = config.trackingApiUri;
+
+        return {
+            [ ENV.LOCAL ]:      `${ apiUrls.local }${ trackingApiUri }`,
+            [ ENV.STAGE ]:      `${ apiUrls.stage }${ trackingApiUri }`,
+            [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ trackingApiUri }`,
+            [ ENV.PRODUCTION ]: `${ apiUrls.production }${ trackingApiUri }`,
+            [ ENV.TEST ]:       `${ apiUrls.test }${ trackingApiUri }`
         };
     },
 
