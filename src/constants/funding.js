@@ -26,6 +26,19 @@ export const CARD = {
     CBNATIONALE: 'cbnationale'
 };
 
+export const FUNDING_ELIGIBILITY_REASON = {
+    PRIMARY:              'The funding source is the primary source',
+    NOT_ENABLED:          'The funding source is not currently enabled for use',
+    SECONDARY_DISALLOWED: 'The funding source is disallowed as a secondary button',
+    OPT_OUT:              'The funding source was disallowed in funding.disallowed',
+    OPT_IN:               'The funding source was allowed in funding.allowed',
+    DISALLOWED_COUNTRY:   'The funding source is not enabled for the current locale',
+    DEFAULT_COUNTRY:      'The funding source is enabled by default for the current locale',
+    DEFAULT:              'The funding source is enabled by default for all users',
+    REMEMBERED:           'The funding source was remembered for the current user',
+    NEED_OPT_IN:          'The funding source needs to be allowed in funding.allowed'
+};
+
 export const CARD_PRIORITY = [
     CARD.VISA,
     CARD.MASTERCARD,

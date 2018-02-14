@@ -1,19 +1,21 @@
 /* @flow */
 
-import { ENV, CARD_PRIORITY, FUNDING, BUTTON_LAYOUT } from '../constants';
+import { ENV, CARD_PRIORITY, FUNDING, BUTTON_LAYOUT, FUNDING_ELIGIBILITY_REASON } from '../constants';
 
 import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } from './config';
 
+let fundingEligibilityReasons = [];
+
 function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected : string }) : boolean {
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected : string }) : { eligible : boolean, reason : string } {
 
     if (source === selected) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.PRIMARY };
     }
 
     if (!getFundingConfig(source, 'enabled')) {
         if (!(env === ENV.TEST && getFundingConfig(source, 'test'))) {
-            return false;
+            return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NOT_ENABLED };
         }
     }
 
@@ -22,49 +24,56 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
     let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
 
     if (!allowSecondary) {
-        return false;
+        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED };
     }
 
     if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
-        return false;
+        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.OPT_OUT };
     }
 
     if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
-        return false;
+        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.OPT_OUT };
     }
 
     if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
-        return false;
+        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY };
     }
 
     if (getFundingConfig(source, 'defaultCountries', []).indexOf(locale.country) !== -1) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY };
     }
 
     if (isVertical && getFundingConfig(source, 'defaultVerticalCountries', []).indexOf(locale.country) !== -1) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY };
     }
 
     if (getFundingConfig(source, 'default')) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT };
     }
 
     if (funding.allowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptIn')) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.OPT_IN };
     }
 
     if (funding.remembered.indexOf(source) !== -1 && getFundingConfig(source, 'allowRemember')) {
-        return true;
+        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.REMEMBERED };
     }
 
-    return false;
+    return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NEED_OPT_IN };
 }
 
 export function determineEligibleFunding({ funding, selected, locale, env, layout } :
     { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string }) : FundingList {
 
-    let eligibleFunding = FUNDING_PRIORITY.filter(source =>
-        isFundingEligible(source, { selected, locale, funding, env, layout }));
+    let reasons = {};
+
+    let eligibleFunding = FUNDING_PRIORITY.filter(source => {
+        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout });
+        reasons[source] = { eligible, reason, factors: { env, locale, layout } };
+        return eligible;
+    });
+
+    fundingEligibilityReasons.push(reasons);
 
     eligibleFunding.splice(eligibleFunding.indexOf(selected), 1);
     eligibleFunding.unshift(selected);
@@ -116,4 +125,21 @@ export function validateFunding(funding : FundingSelection = { allowed: [], disa
             }
         }
     }
+}
+
+export function logFundingEligibility() {
+    fundingEligibilityReasons.forEach((reasons, i) => {
+        console.log(`\nButton ${ i + 1 }:\n`); // eslint-disable-line no-console
+
+        console.table(Object.keys(reasons).map(source => {  // eslint-disable-line no-console
+            let { reason, eligible, factors } = reasons[source];
+
+            return {
+                'Funding':     source,
+                'Reason':      reason,
+                'Eligibility': eligible ? 'eligible' : 'ineligible',
+                'Factors':     JSON.stringify(factors)
+            };
+        }));
+    });
 }

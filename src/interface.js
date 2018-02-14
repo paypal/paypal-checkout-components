@@ -18,6 +18,7 @@ export { config } from './config';
 export { ENV, USERS, SOURCE, FUNDING, CARD } from './constants';
 export { request, isEligible, isFundingRemembered, allowIframe as forceIframe, allowIframe as isWebView, allowIframe } from './lib';
 export { logExperimentTreatment } from './experiments';
+export { logFundingEligibility } from './funding';
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 

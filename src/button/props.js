@@ -2,6 +2,7 @@
 
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
+import { memoize } from '../lib';
 
 import { getButtonConfig, labelToFunding } from './config';
 
@@ -33,7 +34,7 @@ function enableTagline({ tagline, branding, fundingicons, layout }) : boolean {
     return Boolean(tagline && branding && !fundingicons && layout === BUTTON_LAYOUT.HORIZONTAL);
 }
 
-export function normalizeProps(props : Object) : Object {
+export let normalizeProps = memoize((props : Object) : Object => {
 
     let {
         env,
@@ -74,4 +75,4 @@ export function normalizeProps(props : Object) : Object {
 
     return { size, label, locale, color, shape, branding, fundingicons,
         tagline, funding, layout, sources, max, multiple, env, height, cards };
-}
+});
