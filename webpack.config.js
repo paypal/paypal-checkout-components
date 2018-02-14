@@ -140,10 +140,9 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
                 sourceMap: true
             }),
             new CircularDependencyPlugin({
-                exclude:     /node_modules/,
                 failOnError: true
-            })
-            // new webpack.optimize.ModuleConcatenationPlugin()
+            }),
+            new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
 

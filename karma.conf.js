@@ -188,7 +188,9 @@ export default function karmaConfig(config) {
                 }),
                 new webpack.optimize.LimitChunkCountPlugin({
                     maxChunks: 1
-                })
+                }),
+                new webpack.optimize.ModuleConcatenationPlugin()
+
             ]
         },
 
