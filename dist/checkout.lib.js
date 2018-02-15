@@ -9682,7 +9682,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.174",
+                version: "4.0.175",
                 cors: !0,
                 env: constants.r.PRODUCTION,
                 state: "checkoutjs",
@@ -11578,7 +11578,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(lib.I)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.174", 
+                return Object(lib.I)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.175", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12830,7 +12830,7 @@
                 setup__track3[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.SCRIPT_LOAD, 
                 setup__track3));
             }
-            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.ZalgoPromise.onPossiblyUnhandledException, version = "4.0.174", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            var postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.ZalgoPromise.onPossiblyUnhandledException, version = "4.0.175", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             var Checkout = void 0, PayPalCheckout = void 0, destroyAll = void 0, enableCheckoutIframe = void 0;
@@ -14441,7 +14441,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.174"
+                        ver: "4.0.175"
                     };
                 });
                 Object(client.a)(function() {
@@ -14646,7 +14646,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.174";
+                    payload.version = "4.0.175";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14673,7 +14673,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.174".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.175".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14681,7 +14681,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.174",
+                    v: "checkout.js.4.0.175",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14806,7 +14806,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return isPayPalObjects() ? "4" : "4.0.174";
+                return isPayPalObjects() ? "4" : "4.0.175";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
