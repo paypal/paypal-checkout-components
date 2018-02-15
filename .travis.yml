@@ -10,8 +10,7 @@ before_install:
   - sudo aptitude -y install ttf-mscorefonts-installer > /dev/null
   - sudo fc-cache
 before_script:
-  - npm install -g flow-typed
-  - flow-typed install
+  - npm run flow-typed
 script:
   - npm run build
 sudo: required

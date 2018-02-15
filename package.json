@@ -21,7 +21,6 @@
     "release:major": "./publish.sh major",
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
-    "postinstall": "flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
     "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
