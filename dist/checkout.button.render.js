@@ -3793,7 +3793,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.175";
+            return isPayPalObjects() ? "4" : "4.0.176";
         }
         function _possibleConstructorReturn(self, call) {
             if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -4211,7 +4211,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return jsxToHTML("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[ATTRIBUTE.VERSION] = "4.0.175", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[ATTRIBUTE.VERSION] = "4.0.176", 
             _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -4993,7 +4993,7 @@
         __webpack_require__("./node_modules/zalgo-promise/src/index.js")), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.175",
+            version: "4.0.176",
             cors: !0,
             env: misc_ENV.PRODUCTION,
             state: "checkoutjs",
