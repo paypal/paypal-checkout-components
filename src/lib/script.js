@@ -30,7 +30,7 @@ export function isPayPalObjects() : boolean {
 }
 
 export function getScriptVersion() : string {
-    if (isPayPalObjects() && __MAJOR__) {
+    if (__MAJOR__ && isPayPalObjects()) {
         return __MINIFIED__ ? 'min' : __MAJOR_VERSION__;
     } else {
         return __MINIFIED__ ? `${ __MINOR_VERSION__ }.min` : __MINOR_VERSION__;

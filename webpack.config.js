@@ -170,7 +170,8 @@ export let MAJOR = getWebpackConfig({
 
 export let MINOR = getWebpackConfig({
     src:      './src/load.js',
-    filename: `${ FILE_NAME }.${ nextMinorVersion }.js`
+    filename: `${ FILE_NAME }.${ nextMinorVersion }.js`,
+    major:    false
 });
 
 export let MAJOR_MIN = getWebpackConfig({
@@ -183,7 +184,8 @@ export let MAJOR_MIN = getWebpackConfig({
 export let MINOR_MIN = getWebpackConfig({
     src:      './src/load.js',
     filename: `${ FILE_NAME }.${ nextMinorVersion }.min.js`,
-    minify:   true
+    minify:   true,
+    major:    false
 });
 
 export let LIB = getWebpackConfig({
