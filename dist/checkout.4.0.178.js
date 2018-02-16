@@ -12654,7 +12654,7 @@
             return config;
         });
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/config/constants.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.178.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
             version: "4.0.178",
             cors: !0,
@@ -15762,7 +15762,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.178";
+            return isPayPalObjects(), "4.0.178";
         }
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return getCurrentScript;
@@ -16256,4 +16256,4 @@
         }
     }
 }));
-//# sourceMappingURL=checkout.js.map
+//# sourceMappingURL=checkout.4.0.178.js.map
