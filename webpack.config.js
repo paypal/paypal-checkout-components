@@ -193,7 +193,7 @@ export let LIB = getWebpackConfig({
     filename:   `${ FILE_NAME }.lib.js`,
     target:     `umd`,
     modulename: `paypal`,
-    major:      true
+    major:      false
 });
 
 export let BUTTON_RENDER = getWebpackConfig({
