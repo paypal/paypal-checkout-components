@@ -88,6 +88,30 @@ export let config = {
         
         'frontgatetickets.com': {
             disable_venmo: true
+        },
+
+        'williams-sonoma.com': {
+            disable_venmo: true
+        },
+
+        'westelm.com': {
+            disable_venmo: true
+        },
+
+        'markandgraham.com': {
+            disable_venmo: true
+        },
+
+        'potterybarn.com': {
+            disable_venmo: true
+        },
+
+        'potterybarnkids.com': {
+            disable_venmo: true
+        },
+
+        'pbteen.com': {
+            disable_venmo: true
         }
     },
 
