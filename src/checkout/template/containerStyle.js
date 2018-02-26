@@ -170,7 +170,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             -moz-box-sizing: border-box;
             -ms-box-sizing: border-box;
             box-sizing: border-box;
-            width: 350px;
+            max-width: 350px;
             top: 50%;
             left: 50%;
             position: absolute;
