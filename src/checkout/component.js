@@ -248,8 +248,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
                             warn(`checkout_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
                         }
 
-                        Checkout.contexts.iframe = false;
-
                         let close = () => {
                             return ZalgoPromise.try(() => {
                                 if (actions.close) {
@@ -322,8 +320,6 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
             decorate(original) : ?Function {
                 return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
-
-                    Checkout.contexts.iframe = false;
 
                     let close = () => {
                         return ZalgoPromise.try(() => {
