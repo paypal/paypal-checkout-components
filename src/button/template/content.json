@@ -710,13 +710,6 @@
         }
     },
     "BZ": {
-        "es": {
-            "checkout": "{logo:pp} {logo:paypal} Pagar",
-            "safer_tag": "La forma r\u00e1pida y segura de pagar",
-            "later_tag": "Compre ahora y pague m\u00e1s adelante.",
-            "pay": "Pagar con {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Comprar ahora"
-        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -724,6 +717,13 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now"
+        },
+        "es": {
+            "checkout": "{logo:pp} {logo:paypal} Pagar",
+            "safer_tag": "La forma r\u00e1pida y segura de pagar",
+            "later_tag": "Compre ahora y pague m\u00e1s adelante.",
+            "pay": "Pagar con {logo:paypal}",
+            "buynow": "{logo:pp} {logo:paypal} Comprar ahora"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -1057,6 +1057,13 @@
         }
     },
     "CZ": {
+        "cs": {
+            "checkout": "Zaplatit p\u0159es {logo:pp} {logo:paypal}",
+            "safer_tag": "Jednodu\u0161\u0161\u00ed a\u00a0bezpe\u010dn\u011bj\u0161\u00ed zp\u016fsob placen\u00ed",
+            "later_tag": "Nakupujte nyn\u00ed, pla\u0165te pozd\u011bji.",
+            "pay": "Zaplatit p\u0159es {logo: paypal}",
+            "buynow": "Koupit ihned p\u0159es {logo:pp} {logo:paypal}"
+        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -1430,6 +1437,14 @@
         }
     },
     "FI": {
+        "fi": {
+            "checkout": "{logo:pp} {logo:paypal}-maksu",
+            "safer_tag": "Turvallisempi ja helpompi maksutapa",
+
+            "later_tag": "Osta nyt. Maksa v\u00e4hitellen.",
+            "pay": "{logo:paypal}-maksu",
+            "buynow": "{logo:pp} {logo:paypal} Osta nyt"
+        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -1926,6 +1941,14 @@
         }
     },
     "GR": {
+        "el": {
+            "checkout": "\u039f\u03bb\u03bf\u03ba\u03bb\u03ae\u03c1\u03c9\u03c3\u03b7 \u03b1\u03b3\u03bf\u03c1\u03ac\u03c2 \u03bc\u03ad\u03c3\u03c9 {logo:pp} {logo:paypal}",
+            "safer_tag": "\u039f \u03b1\u03c3\u03c6\u03b1\u03bb\u03ad\u03c3\u03c4\u03b5\u03c1\u03bf\u03c2 \u03ba\u03b1\u03b9 \u03b5\u03c5\u03ba\u03bf\u03bb\u03cc\u03c4\u03b5\u03c1\u03bf\u03c2 \u03c4\u03c1\u03cc\u03c0\u03bf\u03c2 \u03c0\u03bb\u03b7\u03c1\u03c9\u03bc\u03ae\u03c2",
+
+            "later_tag": "\u0391\u03b3\u03bf\u03c1\u03ac\u03c3\u03c4\u03b5 \u03c4\u03ce\u03c1\u03b1.  \u03a0\u03bb\u03b7\u03c1\u03ce\u03c3\u03c4\u03b5 \u03c3\u03b5 \u03b4\u03cc\u03c3\u03b5\u03b9\u03c2.",
+            "pay": "\u03a0\u03bb\u03b7\u03c1\u03c9\u03bc\u03ae \u03bc\u03ad\u03c3\u03c9 {logo:paypal}",
+            "buynow": "{logo:pp} {logo:paypal} \u0391\u03b3\u03bf\u03c1\u03ac \u03c4\u03ce\u03c1\u03b1"
+        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -2124,6 +2147,14 @@
         }
     },
     "HU": {
+        "hu": {
+            "checkout": "{logo:pp} {logo:paypal}-fizet\u00e9s",
+            "safer_tag": "Biztons\u00e1gosabb, k\u00f6nnyebb fizet\u00e9si m\u00f3d.",
+
+            "later_tag": "V\u00e1s\u00e1roljon most. Fizessen k\u00e9s\u0151bb.",
+            "pay": "{logo:paypal}-fizet\u00e9s",
+            "buynow": "{logo:pp} {logo:paypal} V\u00e1s\u00e1rl\u00e1s"
+        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -2266,14 +2297,6 @@
         }
     },
     "JM": {
-        "es": {
-            "checkout": "{logo:pp} {logo:paypal} Pagar",
-            "safer_tag": "La forma r\u00e1pida y segura de pagar",
-
-            "later_tag": "Compre ahora y pague m\u00e1s adelante.",
-            "pay": "Pagar con {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Comprar ahora"
-        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
@@ -2281,6 +2304,14 @@
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now"
+        },
+        "es": {
+            "checkout": "{logo:pp} {logo:paypal} Pagar",
+            "safer_tag": "La forma r\u00e1pida y segura de pagar",
+
+            "later_tag": "Compre ahora y pague m\u00e1s adelante.",
+            "pay": "Pagar con {logo:paypal}",
+            "buynow": "{logo:pp} {logo:paypal} Comprar ahora"
         },
         "fr": {
             "checkout": "Payer avec {logo:pp} {logo:paypal}",
@@ -4472,6 +4503,13 @@
         }
     },
     "SK": {
+        "sk": {
+            "checkout": "Zaplati\u0165 cez {logo:pp} {logo:paypal}",
+            "safer_tag": "Jednoduch\u0161\u00ed a\u00a0bezpe\u010dnej\u0161\u00ed sp\u00f4sob platby",
+            "later_tag": "Nak\u00fapte teraz, zapla\u0165te postupne",
+            "pay": "Zaplati\u0165 cez {logo: paypal}",
+            "buynow": "{logo:pp} {logo:paypal} K\u00fapi\u0165"
+        },
         "en": {
             "checkout": "Check out with {logo:pp} {logo:paypal}",
             "safer_tag": "The safer, easier way to pay",
