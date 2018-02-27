@@ -2,7 +2,7 @@
 
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
-import { memoize } from '../lib';
+import { memoize } from '../lib/util';
 
 import { getButtonConfig, labelToFunding } from './config';
 

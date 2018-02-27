@@ -4,7 +4,7 @@
 import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
-import { values, min, max, perc } from '../../lib';
+import { values, min, max, perc } from '../../lib/util';
 
 type ContainerTemplateOptions = {
     id : string,

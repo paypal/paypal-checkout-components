@@ -6,7 +6,7 @@ import { btoa } from 'Base64';
 import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
-import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib'; // eslint-disable-line no-unused-vars
+import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
 

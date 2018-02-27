@@ -1,13 +1,22 @@
 /* @flow */
 /* @jsx jsxToHTML */
 
-import { htmlEncode } from './dom';
 import { regexMap } from './util';
 
 // eslint-disable-next-line no-use-before-define
 type ChildType = $ReadOnlyArray<ChildType> | JsxHTMLNode | string | void | null;
 type ChildrenType = $ReadOnlyArray<ChildType>;
 type PropsType = ?{ class? : string, id? : string, innerHTML? : string };
+
+function htmlEncode(html : string = '') : string {
+    return html.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/\//g, '&#x2F;');
+}
 
 export class JsxHTMLNode {
     name : string

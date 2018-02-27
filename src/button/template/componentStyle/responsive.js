@@ -2,7 +2,7 @@
 
 import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER } from '../../../constants';
 import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
-import { max, perc } from '../../../lib';
+import { max, perc } from '../../../lib/util';
 
 import { CLASS } from './class';
 
