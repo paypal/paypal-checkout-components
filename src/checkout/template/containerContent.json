@@ -2621,6 +2621,10 @@
         }
     },
     "SK": {
+        "sk": {
+            "windowMessage": "Nezobrazuje sa v\u00e1m zabezpe\u010den\u00fd prehliada\u010d PayPal? Pom\u00f4\u017eeme v\u00e1m znova otvori\u0165 okno, aby ste mohli n\u00e1kup dokon\u010di\u0165.\u00A0 ",
+            "continue": "Pokra\u010dova\u0165"
+        },
         "zh": {
             "windowMessage": "\u6CA1\u6709\u627E\u5230\u5B89\u5168\u7684PayPal\u6D4F\u89C8\u5668\uFF1F\u6211\u4EEC\u5C06\u5E2E\u52A9\u60A8\u91CD\u542F\u7A97\u53E3\u4EE5\u5B8C\u6210\u8D2D\u7269\u3002\u00A0 ",
             "continue": "\u7EE7\u7EED"
@@ -2911,6 +2915,10 @@
         }
     },
     "HU": {
+        "hu": {
+            "windowMessage": "Nem l\u00e1tja a biztons\u00e1gos PayPal-b\u00f6ng\u00e9sz\u0151t? Seg\u00edt\u00fcnk \u00fajra bet\u00f6lteni az ablakot, hogy befejezhesse a v\u00e1s\u00e1rl\u00e1st.\u00A0 ",
+            "continue": "Folytat\u00e1s"
+        },
         "zh": {
             "windowMessage": "\u6CA1\u6709\u627E\u5230\u5B89\u5168\u7684PayPal\u6D4F\u89C8\u5668\uFF1F\u6211\u4EEC\u5C06\u5E2E\u52A9\u60A8\u91CD\u542F\u7A97\u53E3\u4EE5\u5B8C\u6210\u8D2D\u7269\u3002\u00A0 ",
             "continue": "\u7EE7\u7EED"
@@ -3031,6 +3039,10 @@
         }
     },
     "GR": {
+        "el": {
+            "windowMessage": "\u0394\u03b5\u03bd \u03b2\u03bb\u03ad\u03c0\u03b5\u03c4\u03b5 \u03c4\u03bf \u03b1\u03c3\u03c6\u03b1\u03bb\u03ad\u03c2 \u03c0\u03c1\u03cc\u03b3\u03c1\u03b1\u03bc\u03bc\u03b1 \u03c0\u03b5\u03c1\u03b9\u03ae\u03b3\u03b7\u03c3\u03b7\u03c2 PayPal; \u0398\u03b1 \u03c3\u03b1\u03c2 \u03b2\u03bf\u03b7\u03b8\u03ae\u03c3\u03bf\u03c5\u03bc\u03b5 \u03bd\u03b1 \u03b5\u03c0\u03b1\u03bd\u03b5\u03ba\u03ba\u03b9\u03bd\u03ae\u03c3\u03b5\u03c4\u03b5 \u03c4\u03bf \u03c0\u03b1\u03c1\u03ac\u03b8\u03c5\u03c1\u03bf \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03bf\u03bb\u03bf\u03ba\u03bb\u03b7\u03c1\u03ce\u03c3\u03b5\u03c4\u03b5 \u03c4\u03b7\u03bd \u03b1\u03b3\u03bf\u03c1\u03ac \u03c3\u03b1\u03c2.\u00A0 ",
+            "continue": "\u03a3\u03c5\u03bd\u03ad\u03c7\u03b5\u03b9\u03b1"
+        },
         "zh": {
             "windowMessage": "\u6CA1\u6709\u627E\u5230\u5B89\u5168\u7684PayPal\u6D4F\u89C8\u5668\uFF1F\u6211\u4EEC\u5C06\u5E2E\u52A9\u60A8\u91CD\u542F\u7A97\u53E3\u4EE5\u5B8C\u6210\u8D2D\u7269\u3002\u00A0 ",
             "continue": "\u7EE7\u7EED"
@@ -3069,6 +3081,10 @@
         }
     },
     "FI": {
+        "fi": {
+            "windowMessage": "Eik\u00f6 suojattua PayPal-selainta n\u00e4y? Autamme avaamaan ikkunan uudelleen oston viimeistely\u00e4 varten.\u00A0 ",
+            "continue": "Jatka"
+        },
         "zh": {
             "windowMessage": "\u6CA1\u6709\u627E\u5230\u5B89\u5168\u7684PayPal\u6D4F\u89C8\u5668\uFF1F\u6211\u4EEC\u5C06\u5E2E\u52A9\u60A8\u91CD\u542F\u7A97\u53E3\u4EE5\u5B8C\u6210\u8D2D\u7269\u3002\u00A0 ",
             "continue": "\u7EE7\u7EED"
@@ -3119,6 +3135,10 @@
         }
     },
     "CZ": {
+        "cs": {
+            "windowMessage": "Nezobrazuje se v\u00e1m bezpe\u010dn\u00fd prohl\u00ed\u017ee\u010d PayPal? Pom\u016f\u017eeme v\u00e1m okno znovu otev\u0159\u00edt, abyste mohli n\u00e1kup dokon\u010dit.",
+            "continue": "Pokra\u010dovat"
+        },
         "zh": {
             "windowMessage": "\u6CA1\u6709\u627E\u5230\u5B89\u5168\u7684PayPal\u6D4F\u89C8\u5668\uFF1F\u6211\u4EEC\u5C06\u5E2E\u52A9\u60A8\u91CD\u542F\u7A97\u53E3\u4EE5\u5B8C\u6210\u8D2D\u7269\u3002\u00A0 ",
             "continue": "\u7EE7\u7EED"
