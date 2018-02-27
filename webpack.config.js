@@ -76,6 +76,39 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
         ...vars
     };
 
+    const plugins = [
+        new webpack.SourceMapDevToolPlugin({
+            filename: '[file].map'
+        }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: (chunkname ? 2 : 1)
+        }),
+        new webpack.DefinePlugin(vars),
+        new webpack.NamedModulesPlugin(),
+        new UglifyJSPlugin({
+            test:     /\.js$/,
+            beautify: !minify,
+            minimize: minify,
+            compress: {
+                warnings:  false,
+                sequences: minify
+            },
+            mangle:    minify,
+            sourceMap: true
+        }),
+        new CircularDependencyPlugin({
+            failOnError: true
+        }),
+        new webpack.optimize.ModuleConcatenationPlugin()
+    ];
+
+    if (chunkname) {
+        plugins.push(new WebpackPromiseShimPlugin({
+            module: 'zalgo-promise/src',
+            key:    'ZalgoPromise'
+        }));
+    }
+
     let config = {
         entry:  path.resolve(src),
         module: {
@@ -115,35 +148,7 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
         resolve: {
             extensions: [ '.js', '.jsx' ]
         },
-        plugins: [
-            new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map'
-            }),
-            new WebpackPromiseShimPlugin({
-                module: 'zalgo-promise/src',
-                key:    'ZalgoPromise'
-            }),
-            new webpack.optimize.LimitChunkCountPlugin({
-                maxChunks: (chunkname ? 2 : 1)
-            }),
-            new webpack.DefinePlugin(vars),
-            new webpack.NamedModulesPlugin(),
-            new UglifyJSPlugin({
-                test:     /\.js$/,
-                beautify: !minify,
-                minimize: minify,
-                compress: {
-                    warnings:  false,
-                    sequences: minify
-                },
-                mangle:    minify,
-                sourceMap: true
-            }),
-            new CircularDependencyPlugin({
-                failOnError: true
-            }),
-            new webpack.optimize.ModuleConcatenationPlugin()
-        ]
+        plugins
     };
 
     return config;
