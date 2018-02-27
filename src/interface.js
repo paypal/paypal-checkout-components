@@ -7,6 +7,8 @@ import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-n
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
 
+import './hacks'; // eslint-disable-line import/no-unassigned-import
+
 export const postRobot = _postRobot;
 export { ZalgoPromise as Promise } from 'zalgo-promise/src';
 export { PopupOpenError } from 'xcomponent/src';

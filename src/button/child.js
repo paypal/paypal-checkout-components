@@ -8,7 +8,9 @@ import { setupPopupBridgeProxy } from '../integrations/popupBridge';
 import { getPageRenderTime, setLogLevel } from '../lib';
 import { ATTRIBUTE, FUNDING, FPTI, BUTTON_LAYOUT } from '../constants';
 
-export function setupButtonChild() {
+import typeof { Button } from './component';
+
+export function setupButtonChild(ButtonComponent : Button) {
 
     setupPopupBridgeProxy(Checkout);
 
@@ -20,6 +22,8 @@ export function setupButtonChild() {
             return source && source !== FUNDING.CARD;
         });
 
+        let xprops = ButtonComponent.xprops;
+
         track({
             [FPTI.KEY.STATE]:          FPTI.STATE.BUTTON,
             [FPTI.KEY.TRANSITION]:     FPTI.TRANSITION.BUTTON_LOAD,
@@ -27,13 +31,15 @@ export function setupButtonChild() {
             [FPTI.KEY.FUNDING_LIST]:   fundingSources.join(':'),
             [FPTI.KEY.FUNDING_COUNT]:  fundingSources.length,
             [FPTI.KEY.PAGE_LOAD_TIME]: pageRenderTime,
-            [FPTI.KEY.BUTTON_LAYOUT]:  (window.xprops && window.xprops.style && window.xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
+            [FPTI.KEY.BUTTON_LAYOUT]:  (xprops && xprops.style && xprops.style.layout) || BUTTON_LAYOUT.HORIZONTAL
         });
 
         flushLogs();
     });
 
-    if (window.xprops.logLevel) {
-        setLogLevel(window.xprops.logLevel);
+    let xprops = ButtonComponent.xprops || Checkout.xprops;
+
+    if (xprops && xprops.logLevel) {
+        setLogLevel(xprops.logLevel);
     }
 }

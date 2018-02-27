@@ -26,6 +26,7 @@ import { validateFunding } from '../funding';
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
 import { labelToFunding } from './config';
+import { setupButtonChild } from './child';
 
 type ButtonOptions = {
     style : {|
@@ -33,7 +34,13 @@ type ButtonOptions = {
     |},
     client : {
         [string] : (string | ZalgoPromise<string>)
-    }
+    },
+    logLevel : string,
+    supplement : {
+        getPaymentOptions : Function,
+        addPaymentDetails : Function
+    },
+    awaitPopupBridge : Function
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -636,7 +643,5 @@ export let Button : Component<ButtonOptions> = create({
 });
 
 if (Button.isChild()) {
-    import('./child').then(({ setupButtonChild }) => {
-        setupButtonChild();
-    });
+    setupButtonChild(Button);
 }

@@ -81,8 +81,10 @@ export function getSessionState<T>(handler : (state : Object) => T) : T {
 
 export function getSessionID() : string {
 
-    if (window.xprops && window.xprops.sessionID) {
-        return window.xprops.sessionID;
+    let xprops = window.xprops;
+
+    if (xprops && xprops.sessionID) {
+        return xprops.sessionID;
     }
 
     let querySessionID = getQueryParam('sessionID');
@@ -94,7 +96,7 @@ export function getSessionID() : string {
     return getSession(session => session.guid);
 }
 
-export function getButtonSessionID() : string {
+export function getButtonSessionID() : ?string {
 
     if (window.xprops && window.xprops.buttonSessionID) {
         return window.xprops.buttonSessionID;
@@ -105,8 +107,6 @@ export function getButtonSessionID() : string {
     if (isPayPalDomain() && querySessionID) {
         return querySessionID;
     }
-
-    return getSessionID();
 }
 
 export function getGlobalState<T>(handler : (state : Object) => T) : T {

@@ -33,7 +33,12 @@ type CheckoutPropsType = {
     onAuthorize : ({ returnUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     onCancel? : ({ cancelUrl : string }, { redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> }) => ?ZalgoPromise<void>,
     fallback? : (string) => ?ZalgoPromise<void>,
-    fundingSource? : string
+    fundingSource? : string,
+    logLevel? : string,
+    supplement? : {
+        getPaymentOptions : Function,
+        addPaymentDetails : Function
+    }
 };
 
 export let Checkout : Component<CheckoutPropsType> = create({
@@ -445,7 +450,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
         supplement: {
             type:     'object',
             required: false,
-            get value() : Object {
+            get value() : ?Object {
                 return window.xprops && window.xprops.supplement;
             }
         },
@@ -480,14 +485,14 @@ export let Checkout : Component<CheckoutPropsType> = create({
     }
 });
 
-if (Checkout.isChild()) {
+if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
 
-    if (window.xprops.logLevel) {
-        setLogLevel(window.xprops.logLevel);
+    if (Checkout.xprops && Checkout.xprops.logLevel) {
+        setLogLevel(Checkout.xprops.logLevel);
     }
 
-    window.xchild.onProps(() => {
-        patchMethod(window.xprops, 'onAuthorize', ({ callOriginal, args: [ data ] }) => {
+    Checkout.xchild.onProps(xprops => {
+        patchMethod(xprops, 'onAuthorize', ({ callOriginal, args: [ data ] }) => {
             if (data && !data.intent) {
                 warn(`hermes_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
 
