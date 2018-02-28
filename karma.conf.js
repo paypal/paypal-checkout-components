@@ -2,6 +2,8 @@ import { argv } from 'yargs';
 import path from 'path';
 import webpack from 'webpack';
 
+import { getWebpackConfig } from './webpack.config';
+
 export default function karmaConfig(config) {
 
     let debug          = Boolean(argv.debug);
@@ -106,93 +108,10 @@ export default function karmaConfig(config) {
             }
         },
 
-        webpack: {
-            devtool: 'inline-source-map',
-
-            resolve: {
-                modules: [
-                    __dirname,
-                    'node_modules'
-                ],
-                extensions: [ '.js', '.jsx' ]
-            },
-
-            module: {
-                rules: [
-
-                    {
-                        test:    /\.jsx?$/,
-                        exclude: /(dist|chai)/,
-                        loader:  'babel-loader',
-                        query:   {
-                            cacheDirectory: true,
-
-                            presets: [
-                                [
-                                    'env', {
-                                        'targets': {
-                                            'ie':      9,
-                                            'chrome':  27,
-                                            'firefox': 30,
-                                            'safari':  5,
-                                            'opera':   23
-                                        },
-                                        'modules': false,
-                                        'loose':   true
-                                    }
-                                ],
-                                'react'
-                            ],
-
-                            plugins: [
-                                [ 'transform-flow-strip-types', { 'loose': true } ],
-                                [ 'transform-object-rest-spread', { 'loose': true } ],
-                                [ 'syntax-object-rest-spread', { 'loose': true } ],
-                                [ 'transform-class-properties', { 'loose': true } ],
-                                [ 'transform-es3-property-literals', { 'loose': true } ],
-                                [ 'transform-es3-member-expression-literals', { 'loose': true } ],
-                                [ 'transform-decorators-legacy', { 'loose': true } ],
-                                [ 'transform-es2015-for-of', { 'loose': true } ],
-                                [ 'babel-plugin-transform-react-jsx', { 'pragma': 'jsxDom' } ]
-                                // [ "flow-runtime", { "assert": true, "annotate": true } ]
-                            ]
-                        }
-                    },
-
-                    {
-                        test:   /\.(html?|css|json|svg)$/,
-                        loader: 'raw-loader'
-                    }
-
-                ]
-            },
-
-            bail: false,
-
-            plugins: [
-                new webpack.DefinePlugin({
-                    __TEST__:                           JSON.stringify(true),
-                    __IE_POPUP_SUPPORT__:               JSON.stringify(true),
-                    __POPUP_SUPPORT__:                  JSON.stringify(true),
-                    __LEGACY_SUPPORT__:                 JSON.stringify(true),
-                    __FILE_NAME__:                      JSON.stringify('checkout.js'),
-                    __FILE_VERSION__:                   JSON.stringify('4'),
-                    __MAJOR_VERSION__:                  JSON.stringify('4'),
-                    __MINOR_VERSION__:                  JSON.stringify('4.0'),
-                    __DEFAULT_LOG_LEVEL__:              JSON.stringify(debug ? 'debug' : logLevel || 'error'),
-                    __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: JSON.stringify(true),
-                    __SEND_POPUP_LOGS_TO_OPENER__:      JSON.stringify(true),
-                    __ALLOW_POSTMESSAGE_POPUP__:        JSON.stringify(true),
-                    __MAJOR__:                          JSON.stringify(true),
-                    __MINIFIED__:                       JSON.stringify(true)
-                }),
-                new webpack.optimize.LimitChunkCountPlugin({
-                    maxChunks: 1
-                }),
-                new webpack.optimize.ModuleConcatenationPlugin()
-
-            ]
-        },
+        webpack: getWebpackConfig({
+            test:  true,
+            major: true
+        }),
 
         reporters: [
             quick ? 'progress' : 'spec'
@@ -257,7 +176,7 @@ export default function karmaConfig(config) {
 
         karmaConfig.webpack.module.rules
             .find(rule => rule.loader === 'babel-loader')
-            .query.plugins.push([
+            .options.plugins.push([
                 'istanbul', {
                     only: `${ __dirname }/src`
                 }

@@ -1,8 +1,7 @@
 /* @flow */
 
-import { assert } from 'chai';
-
-import { onHashChange, uniqueID, generateECToken, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { onHashChange, uniqueID, generateECToken, createElement,
+    createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 

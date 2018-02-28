@@ -1,9 +1,8 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { assert } from 'chai';
 
-import { generateECToken } from '../common';
+import { generateECToken, assert } from '../common';
 
 describe(`paypal checkout component validation`, () => {
 
@@ -14,7 +13,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -27,7 +26,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -40,7 +39,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -59,7 +58,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -78,7 +77,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
@@ -97,7 +96,7 @@ describe(`paypal checkout component validation`, () => {
         }).then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
-            return assert.isOk(err instanceof Error, 'Expected error object to be thrown');
+            return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 });

@@ -1,10 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -85,12 +84,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        assert.isOk(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(fragment) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`fundingSource=${ source }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(fragment) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`fundingSource=${ source }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
                         return done();
                     },
 

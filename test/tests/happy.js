@@ -1,20 +1,20 @@
 /* @flow */
 
-import { assert } from 'chai';
+import { assert } from './common';
 
 describe('paypal happy cases', () => {
 
     it('should export window.paypal.Checkout and window.paypal.Button', () => {
 
-        assert.isOk(window.paypal.Checkout, 'Expected window.paypal.Checkout to be present');
-        assert.isOk(window.paypal.Button, 'Expected window.paypal.Button to be present');
+        assert.ok(window.paypal.Checkout, 'Expected window.paypal.Checkout to be present');
+        assert.ok(window.paypal.Button, 'Expected window.paypal.Button to be present');
 
-        assert.isOk(window.ppxo.Checkout, 'Expected window.ppxo.Checkout to be present');
-        assert.isOk(window.ppxo.Button, 'Expected window.ppxo.Button to be present');
+        assert.ok(window.ppxo.Checkout, 'Expected window.ppxo.Checkout to be present');
+        assert.ok(window.ppxo.Button, 'Expected window.ppxo.Button to be present');
     });
 
     it('should export isEligible method', () => {
 
-        assert.isOk(window.paypal.isEligible());
+        assert.ok(window.paypal.isEligible());
     });
 });

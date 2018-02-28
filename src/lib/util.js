@@ -232,6 +232,18 @@ export function stringifyErrorMessage(err : mixed) : string {
     return defaultMessage;
 }
 
+export function stringify(item : mixed) : string {
+    if (typeof item === 'string') {
+        return item;
+    }
+
+    if (item && typeof item.toString === 'function') {
+        return item.toString();
+    }
+
+    return Object.prototype.toString.call(item);
+}
+
 
 export let isLocalStorageEnabled = memoize(() : boolean => {
     try {

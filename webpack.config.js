@@ -50,13 +50,22 @@ type WebPackConfig = {
     major? : boolean,
     minify? : boolean,
     vars? : { [string] : (string | number | boolean) },
+    test? : boolean,
     chunkname? : string
 };
 
-function getWebpackConfig({ src, filename, modulename, target = 'window', major = true, minify = false, vars = {}, chunkname } : WebPackConfig) : Object {
+export function getWebpackConfig({ src, filename, modulename, target = 'window', major = true, minify = false, vars = {}, test = false, chunkname } : WebPackConfig) : Object {
+
+    if (!src && !test) {
+        throw new Error(`Expected src`);
+    }
+
+    if (!src && !test) {
+        throw new Error(`Expected filename`);
+    }
 
     vars = {
-        __TEST__:                           false,
+        __TEST__:                           test,
         __IE_POPUP_SUPPORT__:               true,
         __POPUP_SUPPORT__:                  true,
         __LEGACY_SUPPORT__:                 true,
@@ -77,9 +86,6 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
     };
 
     const plugins = [
-        new webpack.SourceMapDevToolPlugin({
-            filename: '[file].map'
-        }),
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: (chunkname ? 2 : 1)
         }),
@@ -102,6 +108,12 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
         new webpack.optimize.ModuleConcatenationPlugin()
     ];
 
+    if (!test) {
+        plugins.push(new webpack.SourceMapDevToolPlugin({
+            filename: '[file].map'
+        }));
+    }
+
     if (chunkname) {
         plugins.push(new WebpackPromiseShimPlugin({
             module: 'zalgo-promise/src',
@@ -109,8 +121,7 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
         }));
     }
 
-    let config = {
-        entry:  path.resolve(src),
+    let config : Object = {
         module: {
             rules: [
                 {
@@ -133,23 +144,34 @@ function getWebpackConfig({ src, filename, modulename, target = 'window', major 
                 }
             ]
         },
-        output: {
-            path:                path.resolve('./dist'),
-            filename,
-            libraryTarget:       target,
-            umdNamedDefine:      true,
-            library:             modulename,
-            chunkFilename:       chunkname,
-            pathinfo:            false,
-            jsonpFunction:       '__paypal_checkout_jsonp__',
-            publicPath:          'https://www.paypalobjects.com/api/'
-        },
         bail:    true,
         resolve: {
             extensions: [ '.js', '.jsx' ]
         },
         plugins
     };
+
+    if (src) {
+        config.entry = path.resolve(src);
+    }
+
+    if (filename) {
+        config.output = {
+            path:           path.resolve('./dist'),
+            filename,
+            libraryTarget:  target,
+            umdNamedDefine: true,
+            library:        modulename,
+            chunkFilename:  chunkname,
+            pathinfo:       false,
+            jsonpFunction:  '__paypal_checkout_jsonp__',
+            publicPath:     'https://www.paypalobjects.com/api/'
+        };
+    }
+
+    if (test) {
+        config.devtool = 'inline-source-map';
+    }
 
     return config;
 }

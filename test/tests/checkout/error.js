@@ -1,9 +1,8 @@
 /* @flow */
 
 import { type ZalgoPromise } from 'zalgo-promise/src';
-import { assert } from 'chai';
 
-import { generateECToken, createElement, createTestContainer, destroyTestContainer } from '../common';
+import { generateECToken, createElement, createTestContainer, destroyTestContainer, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -31,7 +30,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -61,7 +60,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -91,7 +90,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -121,7 +120,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -180,7 +179,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -210,7 +209,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -240,7 +239,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -272,7 +271,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 
@@ -335,7 +334,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onError(err) : void {
-                        assert.isOk(err instanceof Error);
+                        assert.ok(err instanceof Error);
                         return done();
                     },
 

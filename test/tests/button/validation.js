@@ -1,9 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
-
-import { createTestContainer, destroyTestContainer, noop } from '../common';
+import { createTestContainer, destroyTestContainer, noop, assert } from '../common';
 
 let buttonConfigs = [
 
@@ -1569,7 +1567,7 @@ for (let group of buttonConfigs) {
                     return window.paypal.Button.render(useCase.conf, `body`).then(() => {
                         throw new Error(`Expected error to be thrown`);
                     }, err => {
-                        assert.isOk(err instanceof Error, `Expected error object to be thrown`);
+                        assert.ok(err instanceof Error, `Expected error object to be thrown`);
                     });
                 });
             }

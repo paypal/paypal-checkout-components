@@ -1,12 +1,11 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { generateECToken, generateBillingToken, generatePaymentID,
     createTestContainer, destroyTestContainer, onHashChange, createElement,
-    getElementRecursive, onWindowOpen, MERCHANT_CLIENT_ID, once } from '../common';
+    getElementRecursive, onWindowOpen, MERCHANT_CLIENT_ID, once, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -441,11 +440,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        assert.isOk(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
                         return done();
                     },
 
@@ -472,11 +471,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        assert.isOk(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
                         return done();
                     },
 
@@ -503,11 +502,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        assert.isOk(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`billingurl`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`token=${ paymentID }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`checkouturl=true`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
                         return done();
                     },
 
@@ -534,11 +533,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     },
 
                     onAuthorize(data) : void {
-                        assert.isOk(data.currentUrl.indexOf(`ba_token=${ billingToken }`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`billingurl=true`) !== -1);
-                        assert.isOk(data.currentUrl.indexOf(`&token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`?token=`) === -1);
-                        assert.isOk(data.currentUrl.indexOf(`checkouturl`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`ba_token=${ billingToken }`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`billingurl=true`) !== -1);
+                        assert.ok(data.currentUrl.indexOf(`&token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`?token=`) === -1);
+                        assert.ok(data.currentUrl.indexOf(`checkouturl`) === -1);
                         return done();
                     },
 

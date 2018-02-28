@@ -1,10 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, getElementRecursive } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, getElementRecursive, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 

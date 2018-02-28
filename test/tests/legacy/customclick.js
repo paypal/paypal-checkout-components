@@ -1,9 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
-
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, createElement, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT,
+    createElement, createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 

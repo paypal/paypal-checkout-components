@@ -2,11 +2,10 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { assert } from 'chai';
 
 import { generateECToken, createTestContainer, destroyTestContainer,
     setupPopupBridge, destroyPopupBridge, onHashChange, generatePaymentID,
-    generateBillingToken, MERCHANT_CLIENT_ID } from '../common';
+    generateBillingToken, MERCHANT_CLIENT_ID, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -35,10 +34,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -85,10 +84,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -126,10 +125,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -164,10 +163,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -207,10 +206,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -248,10 +247,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -293,10 +292,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -338,10 +337,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -380,10 +379,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -422,10 +421,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -473,10 +472,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -527,10 +526,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`billingurl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`billingurl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) !== -1);
+                assert.ok(url.indexOf(`checkouturl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -576,10 +575,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -615,10 +614,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -654,10 +653,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -695,10 +694,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ checkoutToken }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ checkoutToken }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -734,10 +733,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ paymentID }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ paymentID }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -782,10 +781,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=`) !== -1);
-                assert.isOk(url.indexOf(`billingurl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=${ billingToken }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl`) === -1);
+                assert.ok(url.indexOf(`token=`) !== -1);
+                assert.ok(url.indexOf(`billingurl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=${ billingToken }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -832,10 +831,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -904,10 +903,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = (url) => {
-                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };
@@ -924,10 +923,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
             let openPopupBridge = window.popupBridge.open;
 
             window.popupBridge.open = (url) => {
-                assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                assert.isOk(url.indexOf(`ba_token=`) === -1);
-                assert.isOk(url.indexOf(`billingurl`) === -1);
+                assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                assert.ok(url.indexOf(`ba_token=`) === -1);
+                assert.ok(url.indexOf(`billingurl`) === -1);
                 openPopupBridgeCalled = true;
                 return openPopupBridge(url);
             };
@@ -966,10 +965,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = (url) => {
-                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };
@@ -1005,10 +1004,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = (url) => {
-                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };
@@ -1045,10 +1044,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = (url) => {
-                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };
@@ -1088,10 +1087,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 let openPopupBridge = window.popupBridge.open;
 
                 window.popupBridge.open = (url) => {
-                    assert.isOk(url.indexOf(`token=${ token }`) !== -1);
-                    assert.isOk(url.indexOf(`checkouturl=true`) !== -1);
-                    assert.isOk(url.indexOf(`ba_token=`) === -1);
-                    assert.isOk(url.indexOf(`billingurl`) === -1);
+                    assert.ok(url.indexOf(`token=${ token }`) !== -1);
+                    assert.ok(url.indexOf(`checkouturl=true`) !== -1);
+                    assert.ok(url.indexOf(`ba_token=`) === -1);
+                    assert.ok(url.indexOf(`billingurl`) === -1);
                     openPopupBridgeCalled = true;
                     return openPopupBridge(url);
                 };

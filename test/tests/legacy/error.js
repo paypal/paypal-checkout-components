@@ -1,10 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
-
 import { extendUrl } from '../../../src/lib/dom';
-import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow, createElement, uniqueID, getElement } from '../common';
+import { onHashChange, generateECToken, createTestContainer, destroyTestContainer, preventOpenWindow,
+    createElement, uniqueID, getElement, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 

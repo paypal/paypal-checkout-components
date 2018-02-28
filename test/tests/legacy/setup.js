@@ -1,9 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { assert } from 'chai';
-
-import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT, IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement } from '../common';
+import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT,
+    IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -385,8 +384,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                     window.paypal.checkout.initXO();
 
-                    assert.isOk(window.paypal.checkout.win, 'Expected window.paypal.checkout.win to be present');
-                    assert.isOk(!window.paypal.checkout.win.closed, 'Expected window.paypal.checkout.win to not be closed');
+                    assert.ok(window.paypal.checkout.win, 'Expected window.paypal.checkout.win to be present');
+                    assert.ok(!window.paypal.checkout.win.closed, 'Expected window.paypal.checkout.win to not be closed');
 
                     setTimeout(() => {
                         window.paypal.checkout.startFlow(token);

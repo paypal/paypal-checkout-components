@@ -671,3 +671,33 @@ export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
         }, 50);
     });
 }
+
+export function stringify(item : mixed) : string {
+    if (typeof item === 'string') {
+        return item;
+    }
+
+    if (item && typeof item.toString === 'function') {
+        return item.toString();
+    }
+
+    return Object.prototype.toString.call(item);
+}
+
+export let assert = {
+    ok(item : mixed, message? : string) {
+        if (!item) {
+            throw new Error(message || `Expected truthy value, got ${ stringify(item) }`);
+        }
+    },
+    equal(one : mixed, two : mixed, message? : string) {
+        if (one !== two) {
+            throw new Error(message || `Expected "${ stringify(one) }" to equal "${ stringify(two) }"`);
+        }
+    },
+    notEqual(one : mixed, two : mixed, message? : string) {
+        if (one === two) {
+            throw new Error(message || `Expected "${ stringify(one) }" to not equal "${ stringify(two) }"`);
+        }
+    }
+};
