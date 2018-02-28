@@ -55,7 +55,7 @@ var MyCartComponent = window.React.createClass({
             <PayPalButton
                 client={client}
                 payment={payment}
-                commit=true
+                commit={true}
                 onAuthorize={onAuthorize} />
         </div>);
     }
