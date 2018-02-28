@@ -60,7 +60,7 @@ export function getWebpackConfig({ src, filename, modulename, target = 'window',
         throw new Error(`Expected src`);
     }
 
-    if (!src && !test) {
+    if (!filename && !test) {
         throw new Error(`Expected filename`);
     }
 
