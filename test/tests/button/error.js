@@ -305,5 +305,31 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             }, '#testContainer');
         });
+
+        it('should render button with an extra prop unknown to child', (done) => {
+
+            window.paypal.Button.props.foobarbaz = { type: 'string', required: true };
+
+            window.paypal.Button.render({
+
+                test: { flow, action: 'checkout' },
+
+                foobarbaz: 'abcdef',
+
+                payment() : string | ZalgoPromise<string> {
+                    return generateECToken();
+                },
+
+                onAuthorize() : void {
+                    delete window.paypal.Button.props.foobarbaz;
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }, '#testContainer');
+        });
     });
 }
