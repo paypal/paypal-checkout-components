@@ -4,6 +4,14 @@ import { isSameDomain, getFrames } from 'cross-domain-utils/src';
 
 import { createTestContainer, createElement } from '../../tests/common';
 
+if (window.location.href.indexOf('version=') !== -1 && window.location.href.indexOf('version=test_minor') === -1) {
+    throw new Error(`Expected url to have version`);
+}
+
+if (window.name.split('__')[2] !== 'test_minor') {
+    throw new Error(`Expected window name to have version`);
+}
+
 let { action, onRender, onInit } = window.xprops.test;
 
 let actions = {

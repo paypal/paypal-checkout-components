@@ -35,13 +35,6 @@ function getNextMinorVersion() : string {
     return getNextVersion();
 }
 
-function getVersionVars() : { [string] : string } {
-    return {
-        __MAJOR_VERSION__: JSON.stringify(getNextMajorVersion()),
-        __MINOR_VERSION__: JSON.stringify(getNextMinorVersion())
-    };
-}
-
 type WebPackConfig = {
     src : string,
     filename : string,
@@ -51,10 +44,24 @@ type WebPackConfig = {
     minify? : boolean,
     vars? : { [string] : (string | number | boolean) },
     test? : boolean,
+    majorVersion? : string,
+    minorVersion? : string,
     chunkname? : string
 };
 
-export function getWebpackConfig({ src, filename, modulename, target = 'window', major = true, minify = false, vars = {}, test = false, chunkname } : WebPackConfig) : Object {
+export function getWebpackConfig({
+    src,
+    filename,
+    modulename,
+    target = 'window',
+    major = true,
+    minify = false,
+    vars = {},
+    test = false,
+    majorVersion = getNextMajorVersion(),
+    minorVersion = getNextMinorVersion(),
+    chunkname
+} : WebPackConfig) : Object {
 
     if (!src && !test) {
         throw new Error(`Expected src`);
@@ -71,12 +78,13 @@ export function getWebpackConfig({ src, filename, modulename, target = 'window',
         __LEGACY_SUPPORT__:                 true,
         __FILE_NAME__:                      JSON.stringify(filename),
         __DEFAULT_LOG_LEVEL__:              JSON.stringify('warn'),
+        __MAJOR_VERSION__:                  JSON.stringify(majorVersion),
+        __MINOR_VERSION__:                  JSON.stringify(minorVersion),
         __MAJOR__:                          major,
         __MINIFIED__:                       minify,
         __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: true,
         __SEND_POPUP_LOGS_TO_OPENER__:      false,
         __ALLOW_POSTMESSAGE_POPUP__:        true,
-        ...getVersionVars(),
         ...vars
     };
 

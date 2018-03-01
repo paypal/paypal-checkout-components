@@ -109,8 +109,10 @@ export default function karmaConfig(config) {
         },
 
         webpack: getWebpackConfig({
-            test:  true,
-            major: true
+            test:         true,
+            major:        false,
+            majorVersion: 'test',
+            minorVersion: 'test_minor'
         }),
 
         reporters: [
