@@ -24,11 +24,8 @@ const USER_AGENTS = {
 
 jest.setTimeout(50000);
 
-let browser;
-let page;
-
-beforeAll(async () => {
-    ({ browser, page } = await openPage(await webpackCompile(BASE)));
+let setupBrowserPage = (async () => {
+    let { browser, page } = await openPage(await webpackCompile(BASE));
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
@@ -39,9 +36,14 @@ beforeAll(async () => {
     await page.evaluate(() => {
         window.paypal.setup({ env: 'test' });
     });
-});
+
+    return { browser, page };
+})();
+
+beforeAll(() => setupBrowserPage);
 
 afterAll(async () => {
+    let { browser } = await setupBrowserPage;
     await browser.close();
 });
 
@@ -49,6 +51,8 @@ for (let config of buttonConfigs) {
     let filename = dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
+        let { page } = await setupBrowserPage;
+
         let filepath = `${ IMAGE_DIR }/${ filename }.png`;
         let diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
