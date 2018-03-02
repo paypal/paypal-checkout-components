@@ -48,7 +48,7 @@ afterAll(async () => {
 });
 
 for (let config of buttonConfigs) {
-    let filename = dotifyToString(config) || 'base';
+    let filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
         let { page } = await setupBrowserPage;
