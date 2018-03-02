@@ -174,8 +174,11 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             top: 50%;
             left: 50%;
             position: absolute;
-            margin-left: -165px;
-            margin-top: -80px;
+            transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -o-transform: translateX(-50%) translateY(-50%);
+            -ms-transform: translateX(-50%) translateY(-50%);
             cursor: pointer;
             text-align: center;
         }
