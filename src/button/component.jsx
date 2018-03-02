@@ -11,7 +11,7 @@ import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { USERS, SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from '../constants';
+    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
@@ -48,6 +48,10 @@ function isCreditDualEligible(props) : boolean {
     }
 
     if (label === BUTTON_LABEL.CREDIT) {
+        return false;
+    }
+
+    if (locale !== COUNTRY.US) {
         return false;
     }
 
