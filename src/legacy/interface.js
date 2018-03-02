@@ -325,7 +325,7 @@ function listenClick(container, button, clickHandler, condition, tracker) : void
 
     let element : HTMLElement = (container.tagName.toLowerCase() === 'a') ? container : button;
 
-    let isClick  = (clickHandler instanceof Function);
+    let isClick  = (typeof clickHandler === 'function');
 
     if (element.hasAttribute('data-paypal-click-listener')) {
         return warn(`button_already_has_paypal_click_listener`);
@@ -368,7 +368,7 @@ function listenClick(container, button, clickHandler, condition, tracker) : void
 
         info(`button_click`);
 
-        if (condition instanceof Function) {
+        if (typeof condition === 'function') {
             if (condition.call()) {
                 info(`button_click_condition_enabled`);
             } else {
