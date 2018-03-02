@@ -262,18 +262,21 @@ export let isLocalStorageEnabled = memoize(() : boolean => {
     return false;
 });
 
+export function domainMatches(hostname : string, domain : string) : boolean {
+    hostname = hostname.split('://')[1];
+    let index = hostname.indexOf(domain);
+    return (index !== -1 && hostname.slice(index) === domain);
+}
+
 export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
 
     let hostname = window.xchild
         ? window.xchild.getParentDomain()
         : getDomain();
 
-    hostname = hostname.split('://')[1];
-
     if (config.domain_settings) {
         for (let domain of Object.keys(config.domain_settings)) {
-            let index = hostname.indexOf(domain);
-            if (index !== -1 && hostname.slice(index) === domain) {
+            if (domainMatches(hostname, domain)) {
                 return config.domain_settings[domain][name];
             }
         }

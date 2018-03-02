@@ -45,16 +45,21 @@ export let normalizeProps = memoize((props : Object) : Object => {
 
     locale = parseLocale(locale);
 
-    let label = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
+    funding = funding || {};
+    funding.allowed = funding.allowed || [];
+    funding.disallowed = funding.disallowed || [];
+    funding.remembered = funding.remembered || [];
+
+    let label  = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
+    let layout = style[BUTTON_STYLE_OPTIONS.LAYOUT] || getButtonConfig(label, 'defaultLayout');
 
     let {
-        [ BUTTON_STYLE_OPTIONS.SIZE ]:         size         = getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize'),
+        [ BUTTON_STYLE_OPTIONS.SIZE ]:         size         = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize'),
         [ BUTTON_STYLE_OPTIONS.COLOR ]:        color        = getButtonConfig(label, 'defaultColor'),
         [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape        = getButtonConfig(label, 'defaultShape'),
-        [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding     = getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalBranding' : 'defaultBranding'),
+        [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding     = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalBranding' : 'defaultBranding'),
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
-        [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout       = getButtonConfig(label, 'defaultLayout'),
         [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
         [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
     } = style;

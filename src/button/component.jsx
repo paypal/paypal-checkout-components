@@ -7,34 +7,84 @@ import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
 import { get as getShared, KEY as SHARED_KEY } from 'braintree-paypal-client-config';
+import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { USERS, SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
+    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, isFundingRemembered } from '../lib';
+    getRememberedFunding, memoize, uniqueID, isFundingRemembered, getThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
-import { validateFunding } from '../funding';
+import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
 import { labelToFunding } from './config';
 import { setupButtonChild } from './child';
+import { normalizeProps } from './props';
+
+function isCreditDualEligible(props) : boolean {
+
+    let { label, funding, layout, env = config.env, locale = config.locale, maxbuttons, sources } = normalizeProps(props);
+    let { allowed } = funding;
+
+    if (allowed && allowed.indexOf(FUNDING.CREDIT) !== -1) {
+        return false;
+    }
+
+    if (layout !== BUTTON_LAYOUT.HORIZONTAL) {
+        return false;
+    }
+
+    if (maxbuttons === 1) {
+        return false;
+    }
+
+    if (label === BUTTON_LABEL.CREDIT) {
+        return false;
+    }
+
+    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, env, layout })) {
+        return false;
+    }
+
+    if (isFundingAutoEligible(FUNDING.CREDIT, { funding, locale, env, layout })) {
+        return false;
+    }
+
+    if (sources.indexOf(FUNDING.CREDIT) !== -1) {
+        return false;
+    }
+
+    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
+
+    if (config.creditTestDomains.indexOf(domain) === -1) {
+        return false;
+    }
+
+    return true;
+}
+
+let creditThrottle = getThrottle('dual_credit_automatic', 5000);
 
 type ButtonOptions = {
     style : {|
-        maxbuttons? : number
+        maxbuttons? : number,
+        layout? : string
     |},
     client : {
         [string] : (string | ZalgoPromise<string>)
     },
+    funding? : { allowed? : Array<string>, disallowed? : Array<string> },
+    env? : string,
+    locale? : string,
     logLevel : string,
     supplement : {
         getPaymentOptions : Function,
@@ -347,10 +397,17 @@ export let Button : Component<ButtonOptions> = create({
             def() : Object {
                 return {};
             },
-            decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
+            decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
+                }
+
+                if (isCreditDualEligible(props)) {
+                    creditThrottle.logStart();
+                    if (creditThrottle.isEnabled()) {
+                        allowed.push(FUNDING.CREDIT);
+                    }
                 }
 
                 let remembered = getRememberedFunding(sources => sources);
@@ -483,6 +540,8 @@ export let Button : Component<ButtonOptions> = create({
                     onAuthorizeListener.trigger({
                         paymentToken: data.paymentToken
                     });
+
+                    creditThrottle.logComplete();
 
                     return ZalgoPromise.try(() => {
 

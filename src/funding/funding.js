@@ -6,10 +6,55 @@ import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } fro
 
 let fundingEligibilityReasons = [];
 
-function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected : string }) : { eligible : boolean, reason : string } {
+export function isFundingIneligible(source : FundingSource, { locale, funding, layout } :
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string }) : ?string {
 
-    if (source === selected) {
+    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+    let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
+
+    if (!allowSecondary) {
+        return FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED;
+    }
+
+    if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
+        return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
+    }
+
+    if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
+        return FUNDING_ELIGIBILITY_REASON.OPT_OUT;
+    }
+
+    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
+        return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
+    }
+}
+
+export function isFundingAutoEligible(source : FundingSource, { locale, funding, layout } :
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string }) : ?string {
+
+    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+
+    if (isVertical && getFundingConfig(source, 'defaultVerticalCountries', []).indexOf(locale.country) !== -1) {
+        return FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY;
+    }
+
+    if (getFundingConfig(source, 'default')) {
+        return FUNDING_ELIGIBILITY_REASON.DEFAULT;
+    }
+
+    if (funding.allowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptIn')) {
+        return FUNDING_ELIGIBILITY_REASON.OPT_IN;
+    }
+
+    if (funding.remembered.indexOf(source) !== -1 && getFundingConfig(source, 'allowRemember')) {
+        return FUNDING_ELIGIBILITY_REASON.REMEMBERED;
+    }
+}
+
+export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected } :
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string }) : { eligible : boolean, reason : string } {
+
+    if (selected && source === selected) {
         return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.PRIMARY };
     }
 
@@ -19,44 +64,16 @@ function isFundingEligible(source : FundingSource, { locale, funding, env, layou
         }
     }
 
-    let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
+    let ineligibleReason = isFundingIneligible(source, { locale, funding, env, layout });
 
-    let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
-
-    if (!allowSecondary) {
-        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.SECONDARY_DISALLOWED };
+    if (ineligibleReason) {
+        return { eligible: false, reason: ineligibleReason };
     }
 
-    if (funding.disallowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptOut')) {
-        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.OPT_OUT };
-    }
+    let autoEligibleReason = isFundingAutoEligible(source, { locale, funding, env, layout });
 
-    if (funding.disallowed.indexOf(source) !== -1 && source === FUNDING.VENMO) {
-        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.OPT_OUT };
-    }
-
-    if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
-        return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY };
-    }
-
-    if (getFundingConfig(source, 'defaultCountries', []).indexOf(locale.country) !== -1) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY };
-    }
-
-    if (isVertical && getFundingConfig(source, 'defaultVerticalCountries', []).indexOf(locale.country) !== -1) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT_COUNTRY };
-    }
-
-    if (getFundingConfig(source, 'default')) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.DEFAULT };
-    }
-
-    if (funding.allowed.indexOf(source) !== -1 && getFundingConfig(source, 'allowOptIn')) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.OPT_IN };
-    }
-
-    if (funding.remembered.indexOf(source) !== -1 && getFundingConfig(source, 'allowRemember')) {
-        return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.REMEMBERED };
+    if (autoEligibleReason) {
+        return { eligible: true, reason: autoEligibleReason };
     }
 
     return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NEED_OPT_IN };
