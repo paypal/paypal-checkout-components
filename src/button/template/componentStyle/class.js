@@ -21,5 +21,6 @@ export const CLASS = {
     LOGO: 'paypal-button-logo',
     CARD: 'paypal-button-card',
 
-    SEPARATOR: 'paypal-separator'
+    SEPARATOR: 'paypal-separator',
+    WRAPTEXT:  'paypal-button-text-wrap'
 };

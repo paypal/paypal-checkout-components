@@ -14,7 +14,8 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     FUNDINGICONS: 'fundingicons',
     BRANDING:     'branding',
     TAGLINE:      'tagline',
-    HEIGHT:       'height'
+    HEIGHT:       'height',
+    INSTALLMENTNUM:  'installmentnum'
 };
 
 type BUTTON_LABEL_ENUM =
@@ -28,6 +29,7 @@ export const BUTTON_LABEL : BUTTON_LABEL_ENUM = {
     CREDIT:   'credit',
     CARD:     'card',
     BUYNOW:   'buynow',
+    INSTALLMENT: 'installment',
     VENMO:    'venmo',
     IDEAL:    'ideal',
     ELV:      'elv'

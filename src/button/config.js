@@ -97,7 +97,10 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimary: false,
 
         allowPrimaryVertical:   false,
-        allowPrimaryHorizontal: false
+        allowPrimaryHorizontal: false,
+
+        requiresTextWrap: false,
+        allowedDynamicContent: {}
     },
 
     [ BUTTON_LABEL.PAYPAL ]: {
@@ -142,6 +145,19 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: true,
 
         allowUnbranded:  true
+    },
+
+    [ BUTTON_LABEL.INSTALLMENT ]: {
+            label:     `{ content: installment }`,
+            logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+
+            allowPrimary: true,
+            allowPrimaryVertical:   false,
+            allowPrimaryHorizontal: true,
+            allowSecondaryVertical:   false,
+            allowSecondaryHorizontal: false,
+            requiresTextWrap: true,
+            allowedDynamicContent: { 'installmentnum': 'installment_dynamic' }
     },
 
     [ BUTTON_LABEL.CREDIT ]: {
@@ -300,6 +316,13 @@ export const BUTTON_CONFIG : ButtonConfig = {
     }
 };
 
+export const BUTTON_CONTENT_LABEL_DYNAMIC = {
+    [ BUTTON_LABEL.INSTALLMENT ]: {
+        parameter: 'installmentNum',
+
+    }
+};
+
 export const FUNDING_TO_DEFAULT_LABEL = {
     [ FUNDING.PAYPAL ]: BUTTON_LABEL.PAYPAL,
     [ FUNDING.VENMO ]:  BUTTON_LABEL.VENMO,
@@ -314,6 +337,7 @@ export const LABEL_TO_FUNDING = {
     [ BUTTON_LABEL.CHECKOUT ]: FUNDING.PAYPAL,
     [ BUTTON_LABEL.PAY ]:      FUNDING.PAYPAL,
     [ BUTTON_LABEL.BUYNOW ]:   FUNDING.PAYPAL,
+    [ BUTTON_LABEL.INSTALLMENT ]:   FUNDING.PAYPAL,
     [ BUTTON_LABEL.CARD ]:     FUNDING.CARD,
     [ BUTTON_LABEL.CREDIT ]:   FUNDING.CREDIT,
     [ BUTTON_LABEL.VENMO ]:    FUNDING.VENMO,
@@ -346,6 +370,8 @@ export const BUTTON_STYLE = {
         maxWidth:        200,
         minHeight:       25,
         maxHeight:       55,
+        wrapTextWidth:   5,
+        paddingLeft:     6,
         allowFunding:    true,
         allowTagline:    true
     },
@@ -357,6 +383,8 @@ export const BUTTON_STYLE = {
         maxWidth:          300,
         minHeight:         35,
         maxHeight:         55,
+        wrapTextWidth:     6,
+        paddingLeft:       7,
         allowFunding:      true,
         allowTagline:      true
     },
@@ -368,6 +396,8 @@ export const BUTTON_STYLE = {
         maxWidth:          500,
         minHeight:         30,
         maxHeight:         55,
+        wrapTextWidth:     7,
+        paddingLeft:       8,
         allowFunding:      true,
         allowTagline:      true
     },
@@ -379,6 +409,8 @@ export const BUTTON_STYLE = {
         maxWidth:      750,
         minHeight:     40,
         maxHeight:     55,
+        wrapTextWidth:     6,
+        paddingLeft:       10,
         allowFunding:  true,
         allowTagline:  true
     }

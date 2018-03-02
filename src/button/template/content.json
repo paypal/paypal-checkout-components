@@ -615,12 +615,13 @@
             "safer_tag": "A maneira f\u00e1cil e segura de enviar pagamentos.",
             "later_tag": "Compre agora e pague depois.",
             "pay": "Pague com {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Comprar agora"
+            "buynow": "{logo:pp} {logo:paypal} Comprar agora",
+            "installment": "{logo:pp} {logo:paypal}Parcelas <br>sem juros",
+            "installment_dynamic": "{logo:pp} {logo:paypal}Pague em até <br>[installmentnum]x sem juros"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
-
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
             "buynow": "{logo:pp} {logo:paypal} Buy Now"

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
-import { BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS } from '../constants';
+import { BUTTON_LABEL, BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS, COUNTRY } from '../constants';
 
 import { BUTTON_CONFIG, BUTTON_STYLE, getButtonConfig } from './config';
 
@@ -43,7 +43,8 @@ export function validateButtonStyle(style : Object = {}) {
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline,
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout,
         [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   maxbuttons,
-        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
+        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height,
+        [ BUTTON_STYLE_OPTIONS.INSTALLMENTNUM ]:  installmentnum
     } = style;
 
     if (color && getButtonConfig(label, 'colors').indexOf(color) === -1) {
@@ -129,6 +130,17 @@ export function validateButtonStyle(style : Object = {}) {
     }
 }
 
+export function validateRegionSpecificButton(style : Object = {}, locale : string) {
+
+    let country = locale.split('_')[1];
+    if (country !== COUNTRY.BR ) {
+        if (installmentnum || label === BUTTON_LABEL.INSTALLMENT) {
+            throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.INSTALLMENTNUM } and ${ label } where country is ${ country }`);
+        }
+    }
+}
+
+
 export function validateButtonProps(props : Object) {
 
     if (!props) {
@@ -139,4 +151,5 @@ export function validateButtonProps(props : Object) {
 
     validateButtonLocale(locale);
     validateButtonStyle(style);
+    validateRegionSpecificButton(style, locale);
 }

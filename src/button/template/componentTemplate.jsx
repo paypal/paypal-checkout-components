@@ -83,15 +83,18 @@ function renderFundingIcons({ cards, fundingicons } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
 }
 
-function renderContent(text : string, { locale, color, branding, logoColor, funding, env, cards } :
-    { locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string> }) : JsxHTMLNode {
+function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
+    { contentLabel?: string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
     return jsxRender(text, {
 
         text(value : string) : JsxHTMLNode {
-            return <span class={ CLASS.TEXT }>{ value }</span>;
+            let className = `${ CLASS.TEXT }`;
+            let regex = /\<br\>/;
+            value = regex.test(value) ? <span class={ className }>{ value.split('<br>')[0] }<br>{ value.split('<br>')[1] }</br></span> : <span class={ className }>{ value }</span>;
+            return value;
         },
 
         logo(name : string) : ?JsxHTMLNode {
@@ -117,6 +120,11 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
         content(name : string) : JsxHTMLNode {
             let contentString;
 
+            let allowedDynamicContent = getButtonConfig(label, 'allowedDynamicContent');
+            Object.keys(allowedDynamicContent).forEach(prop => {
+                name = dynamicContent[prop] ? allowedDynamicContent[prop] : name;
+            });
+
             for (let key of name.split('|')) {
                 if (content[key]) {
                     contentString = content[key];
@@ -124,12 +132,20 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
                 }
             }
 
+            let regex = /\[([a-z]+)\]/g;
+            contentString = contentString.replace(regex, (match, contentVariable) => {
+                if (match) {
+                    let b = allowedDynamicContent.hasOwnProperty(contentVariable) ? dynamicContent[contentVariable] : contentString;
+                    return b;
+                }
+            });
+
+
             if (!contentString && env === ENV.TEST) {
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { locale, color, branding, logoColor, funding, env, cards });
-        },
+            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });        },
 
         cards() : Array<JsxHTMLNode> {
             if (!funding) {
@@ -145,8 +161,8 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards } :
-    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string> }) : JsxHTMLNode {
+function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, dynamicContent } :
+    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, dynamicContent : Object }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -154,7 +170,8 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
         ? getButtonConfig(label, 'logoLabel')
         : getButtonConfig(label, 'label');
 
-    contentText = renderContent(contentText, { locale, color, branding, logoColor, funding, env, cards });
+    // let contentLabel = label;
+    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
 
     return (
         <div
@@ -238,7 +255,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        fundingicons, env, height, cards } = normalizeProps(props);
+        fundingicons, env, height, cards, dynamicContent } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({
@@ -253,7 +270,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             branding,
             layout,
             shape,
-            cards
+            cards,
+            dynamicContent
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });

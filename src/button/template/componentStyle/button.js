@@ -90,7 +90,7 @@ export let buttonStyle = `
 
     .${ CLASS.TEXT } {
         display: inline-block;
-        white-space: pre;
+        white-space: pre-wrap;
     }
 
     .${ CLASS.BUTTON } .${ CLASS.LOGO },
