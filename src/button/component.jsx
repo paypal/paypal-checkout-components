@@ -660,8 +660,8 @@ export let Button : Component<ButtonOptions> = create({
                 };
             },
 
-            validate(style = {}) {
-                validateButtonStyle(style);
+            validate(style = {}, props) {
+                validateButtonStyle(style, props);
             }
         },
 

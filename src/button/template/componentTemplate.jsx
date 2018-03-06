@@ -84,7 +84,7 @@ function renderFundingIcons({ cards, fundingicons } :
 }
 
 function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
-    { contentLabel?: string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent : Object }) : JsxHTMLNode {
+    { label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
@@ -92,9 +92,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 
         text(value : string) : JsxHTMLNode {
             let className = `${ CLASS.TEXT }`;
-            let regex = /\<br\>/;
-            value = regex.test(value) ? <span class={ className }>{ value.split('<br>')[0] }<br>{ value.split('<br>')[1] }</br></span> : <span class={ className }>{ value }</span>;
-            return value;
+            return <span class={ className }>{ value }</span>;
         },
 
         logo(name : string) : ?JsxHTMLNode {
@@ -120,11 +118,6 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
         content(name : string) : JsxHTMLNode {
             let contentString;
 
-            let allowedDynamicContent = getButtonConfig(label, 'allowedDynamicContent');
-            Object.keys(allowedDynamicContent).forEach(prop => {
-                name = dynamicContent[prop] ? allowedDynamicContent[prop] : name;
-            });
-
             for (let key of name.split('|')) {
                 if (content[key]) {
                     contentString = content[key];
@@ -133,10 +126,9 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
             }
 
             let regex = /\[([a-z]+)\]/g;
-            contentString = contentString.replace(regex, (match, contentVariable) => {
-                if (match) {
-                    let b = allowedDynamicContent.hasOwnProperty(contentVariable) ? dynamicContent[contentVariable] : contentString;
-                    return b;
+            contentString = contentString && contentString.replace(regex, (match, contentVariable) => {
+                if (match && contentVariable) {
+                    return dynamicContent && dynamicContent[contentVariable];
                 }
             });
 
@@ -157,12 +149,17 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 
         separator() : JsxHTMLNode {
             return <span class={ CLASS.SEPARATOR }></span>;
+        },
+
+        break(value : string) : JsxHTMLNode {
+            let className = `${ CLASS.TEXT }`;
+            return <span class={ className }>{ value.split('<br>')[0] }<br>{ value.split('<br>')[1] }</br></span>;
         }
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, dynamicContent } :
-    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, dynamicContent : Object }) : JsxHTMLNode {
+function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : string }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -170,7 +167,13 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
         ? getButtonConfig(label, 'logoLabel')
         : getButtonConfig(label, 'label');
 
-    // let contentLabel = label;
+
+    // Add all the variables in dynamic content required to be plugged in content
+    let dynamicContent = {
+        installmentperiod
+    };
+
+    contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
     contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
 
     return (
@@ -255,7 +258,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        fundingicons, env, height, cards, dynamicContent } = normalizeProps(props);
+        fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({
@@ -271,7 +274,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
             layout,
             shape,
             cards,
-            dynamicContent
+            installmentperiod
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });

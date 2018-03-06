@@ -35,12 +35,6 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : n
                 .${ CLASS.BUTTON }.${ CLASS.BRANDING }-${ BUTTON_BRANDING.UNBRANDED } {
                     font-size: ${ max(perc(buttonHeight, 45), 10) }px;
                 }
-                
-                .${ CLASS.BUTTON } .${ CLASS.TEXT }.${ CLASS.WRAPTEXT } {
-                    width: ${ style.wrapTextWidth }em;
-                    padding-left: ${ style.paddingLeft }px;
-                    overflow-wrap: normal;
-                }
 
                 .${ CLASS.LOGO } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;

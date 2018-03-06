@@ -1,7 +1,7 @@
 /* @flow */
 
 import { getButtonConfig } from '../../src/button/config';
-import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
+import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD, ALLOWED_INSTALLMENT_PERIOD } from '../../src/constants';
 
 /*
 
@@ -10,6 +10,7 @@ const LOCALES = [
 ];
 
 */
+const INSTALLMENT_BTN_LOCALE = [ 'en_BR', 'pt_BR', 'en_MX', 'es_MX' ];
 
 const RESPONSIVE_WIDTHS = [ 92, 144, 212, /* 345, */ 460, 670 ];
 
@@ -21,6 +22,9 @@ buttonConfigs.push({
 
 for (let label of Object.keys(BUTTON_LABEL)) {
     label = BUTTON_LABEL[label];
+    if (label === BUTTON_LABEL.INSTALLMENT) {
+        continue;
+    }
 
     if (getButtonConfig(label, 'allowPrimary')) {
         buttonConfigs.push({
@@ -320,6 +324,219 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             },
             funding: {
                 allowed: [ FUNDING.CREDIT, FUNDING.IDEAL, FUNDING.CARD ]
+            }
+        }
+    });
+}
+
+
+/** INSTALLMENT BUTTON CONFIG **/
+
+for (let locale of INSTALLMENT_BTN_LOCALE) {
+    let label = BUTTON_LABEL.INSTALLMENT;
+
+    buttonConfigs.push({
+        button: {
+            locale,
+            style: {
+                label
+            }
+        }
+    });
+
+    for (let size of getButtonConfig(label, 'sizes')) {
+
+        if (size === BUTTON_SIZE.RESPONSIVE) {
+            for (let width of RESPONSIVE_WIDTHS) {
+                buttonConfigs.push({
+                    container: {
+                        width
+                    },
+                    button: {
+                        locale,
+                        style: {
+                            label,
+                            size
+                        }
+                    }
+                });
+            }
+        } else {
+            buttonConfigs.push({
+                button: {
+                    locale,
+                    style: {
+                        label,
+                        size
+                    }
+                }
+            });
+        }
+    }
+
+    for (let color of getButtonConfig(label, 'colors')) {
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    color
+                }
+            }
+        });
+    }
+
+    for (let shape of getButtonConfig(label, 'shapes')) {
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    shape
+                }
+            }
+        });
+    }
+
+    if (getButtonConfig(label, 'allowFundingIcons')) {
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    fundingicons: true
+                }
+            }
+        });
+
+        buttonConfigs.push({
+            button: {
+                locale,
+                style:  {
+                    label,
+                    fundingicons: true
+                }
+            }
+        });
+
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    fundingicons: true
+                },
+                funding: {
+                    disallowed: [ CARD.AMEX ]
+                }
+            }
+        });
+    }
+
+    if (getButtonConfig(label, 'allowUnbranded')) {
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    branding: true
+                }
+            }
+        });
+    }
+
+    buttonConfigs.push({
+        button: {
+            locale,
+            style: {
+                label,
+                tagline: false
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale,
+            style: {
+                label,
+                maxbuttons: 1
+            }
+        }
+    });
+
+    for (let shape of getButtonConfig(label, 'shapes')) {
+
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    shape,
+                    height: 45,
+                    size:   BUTTON_SIZE.SMALL
+                }
+            }
+        });
+    }
+
+
+    let installmentnum = ALLOWED_INSTALLMENT_PERIOD[locale.split('_')[1]];
+    for (let installmentperiod of installmentnum) {
+
+        buttonConfigs.push({
+            button: {
+                locale,
+                style: {
+                    label,
+                    installmentperiod
+                }
+            }
+        });
+    }
+
+
+    buttonConfigs.push({
+        button: {
+            locale,
+            style: {
+                label,
+                height: 45,
+                size:   BUTTON_SIZE.SMALL
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        container: {
+            width: 340
+        },
+        button: {
+            locale,
+            style: {
+                label,
+                height: 44,
+                size:   BUTTON_SIZE.RESPONSIVE
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        container: {
+            width: 340
+        },
+        button: {
+            locale,
+            style: {
+                label,
+                height: 44,
+                size:   BUTTON_SIZE.RESPONSIVE
+            },
+            funding: {
+                allowed: [ FUNDING.VENMO ]
             }
         }
     });

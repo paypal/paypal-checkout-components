@@ -62,7 +62,7 @@ export let normalizeProps = memoize((props : Object) : Object => {
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
         [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
         [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height,
-        [ BUTTON_STYLE_OPTIONS.INSTALLMENTNUM ]:  installmentnum
+        [ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD ]:  installmentperiod
     } = style;
 
     max = determineMaxButtons({ label, layout, max });
@@ -79,11 +79,7 @@ export let normalizeProps = memoize((props : Object) : Object => {
 
     let cards = determineEligibleCards({ funding, locale });
 
-    // Add all the variables in dynamic content required to be plugged in content
-    let dynamicContent = {
-        'installmentnum': installmentnum
-    };
 
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height, cards, dynamicContent };
+        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };
 });

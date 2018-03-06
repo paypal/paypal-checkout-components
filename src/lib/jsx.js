@@ -117,7 +117,11 @@ export function jsxRender(template : string, renderers : { [string] : (string) =
                 return text;
             }
 
-            return renderers.text(text);
+            if (/<br>/.test(text)) {
+                return renderers.break(text);
+            } else {
+                return renderers.text(text);
+            }
         } else {
             return text;
         }
