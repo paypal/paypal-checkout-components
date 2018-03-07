@@ -6,7 +6,7 @@ import { once, bridge } from 'post-robot/src';
 import { config } from '../config';
 
 import { isIEIntranet  } from './device';
-import { memoize, noop } from './util';
+import { memoize } from './util';
 import { getScriptVersion } from './script';
 import { extendUrl } from './dom';
 
@@ -31,15 +31,15 @@ export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<Fr
         let metaFrameDomain : string = config.paypalDomains[env];
 
         return ZalgoPromise.try(() => {
-            if (bridge) {
-                return bridge.openBridge(extendUrl(metaFrameUrl, { version: getScriptVersion() }), metaFrameDomain).then(noop);
-            } else {
+            if (!bridge) {
                 throw new Error(`Opening meta window without bridge support is not currently supported`);
             }
-        }).then(win => {
-            return once('meta', { domain: metaFrameDomain, window: win });
-        }).then(({ data }) => {
-            return data;
+
+            let metaListener = once('meta', { domain: metaFrameDomain });
+
+            return bridge.openBridge(extendUrl(metaFrameUrl, { version: getScriptVersion() }), metaFrameDomain)
+                .then(() => metaListener)
+                .then(({ data }) => data);
         });
     });
 });
