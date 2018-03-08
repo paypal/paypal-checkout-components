@@ -11,6 +11,7 @@ flow-typed
 src/types.js
 test/types.js
 node_modules/xcomponent/src/types.js
+node_modules/paypal-braintree-web-client/src/types.js
 [options]
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 unsafe.enable_getters_and_setters=true

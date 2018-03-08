@@ -3,9 +3,11 @@
 import { destroyAll as _destroyAll } from 'xcomponent/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import * as _postRobot from 'post-robot/src'; // eslint-disable-line import/no-namespace
+import { attach } from 'paypal-braintree-web-client/src';
 
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
+import { Button as _Button } from './button';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -34,6 +36,20 @@ if (__LEGACY_SUPPORT__) {
     checkout = legacy.checkout;
     apps = legacy.apps;
 }
+
+attach(({ clientOptions }) => {
+    return {
+        Button: {
+            render: (options, element) => {
+                return _Button.render({
+                    ...options,
+                    env:    clientOptions.env,
+                    client: clientOptions.auth
+                }, element);
+            }
+        }
+    };
+});
 
 
 // -------------------------------------------------------------

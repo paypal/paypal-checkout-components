@@ -147,6 +147,7 @@
     "braintree-paypal-client-config": "^1.0.2",
     "cross-domain-utils": "^2.0.1",
     "hi-base32": "^0.3.0",
+    "paypal-braintree-web-client": "^1.0.7",
     "post-robot": "^8.0.0",
     "xcomponent": "^6.0.0",
     "zalgo-promise": "^1.0.10"
