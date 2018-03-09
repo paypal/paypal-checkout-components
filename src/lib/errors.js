@@ -59,4 +59,22 @@ export function checkForCommonErrors() {
     if (window.name && window.name.indexOf('__prerender') === 0) {
         warn(`prerender_running_checkoutjs`);
     }
+
+    let context = {};
+
+    function returnContext() : typeof context {
+        return this;
+    }
+
+    if (returnContext.bind(context) !== context) {
+        warn(`function_bind_broken`);
+    }
+
+    if (returnContext.bind(context)() !== context) {
+        warn(`function_bind_broken`);
+    }
+
+    if (window.Window && window.constructor && window.Window !== window.constructor) {
+        warn(`window_constructor_does_not_match_window`);
+    }
 }
