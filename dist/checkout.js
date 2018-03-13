@@ -9531,7 +9531,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.179",
+            version: "4.0.180",
             cors: !0,
             env: constants.r.PRODUCTION,
             state: "checkoutjs",
@@ -11634,7 +11634,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.179", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.180", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11718,12 +11718,12 @@
             }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.j.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.e.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.j.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         }
         function isCreditDualEligible(props) {
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$env = _normalizeProps.env, env = void 0 === _normalizeProps$env ? src_config.a.env : _normalizeProps$env, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? src_config.a.locale : _normalizeProps$local, maxbuttons = _normalizeProps.maxbuttons, sources = _normalizeProps.sources, allowed = funding.allowed;
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$env = _normalizeProps.env, env = void 0 === _normalizeProps$env ? src_config.a.env : _normalizeProps$env, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? src_config.a.locale : _normalizeProps$local, maxbuttons = _normalizeProps.maxbuttons, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
             if (allowed && -1 !== allowed.indexOf(constants.t.CREDIT)) return !1;
             if (layout !== constants.e.HORIZONTAL) return !1;
             if (1 === maxbuttons) return !1;
             if (label === constants.d.CREDIT) return !1;
-            if (locale !== constants.p.US) return !1;
+            if (country !== constants.p.US) return !1;
             if (isFundingIneligible(constants.t.CREDIT, {
                 funding: funding,
                 locale: locale,
@@ -13036,7 +13036,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.179", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.180", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13975,7 +13975,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.179";
+                payload.version = "4.0.180";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14329,7 +14329,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.179"
+                    ver: "4.0.180"
                 };
             });
             Object(client.a)(function() {
@@ -14437,7 +14437,6 @@
             window.opener && window.parent !== window && Object(client.p)("window_has_opener_and_parent");
             window.name && 0 === window.name.indexOf("__prerender") && Object(client.p)("prerender_running_checkoutjs");
             var context = {};
-            returnContext.bind(context) !== context && Object(client.p)("function_bind_broken");
             returnContext.bind(context)() !== context && Object(client.p)("function_bind_broken");
             window.Window && window.constructor && window.Window !== window.constructor && Object(client.p)("window_constructor_does_not_match_window");
         }
@@ -14598,7 +14597,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.179";
+            return isPayPalObjects() ? "4" : "4.0.180";
         }
         function getRememberedFunding(handler) {
             return Object(session.e)(function(storage) {
@@ -15495,18 +15494,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.179" === window.paypal.version) {
+        if (window.paypal && "4.0.180" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.179"
+                version: "4.0.180"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.179) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.180) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.179" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.180" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.179"
+                version: "4.0.180"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.179");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.180");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
