@@ -34,6 +34,7 @@ function isCreditDualEligible(props) : boolean {
 
     let { label, funding, layout, env = config.env, locale = config.locale, maxbuttons, sources } = normalizeProps(props);
     let { allowed } = funding;
+    let { country } = locale;
 
     if (allowed && allowed.indexOf(FUNDING.CREDIT) !== -1) {
         return false;
@@ -51,7 +52,7 @@ function isCreditDualEligible(props) : boolean {
         return false;
     }
 
-    if (locale !== COUNTRY.US) {
+    if (country !== COUNTRY.US) {
         return false;
     }
 
