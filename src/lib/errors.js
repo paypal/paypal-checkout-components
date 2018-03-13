@@ -66,10 +66,6 @@ export function checkForCommonErrors() {
         return this;
     }
 
-    if (returnContext.bind(context) !== context) {
-        warn(`function_bind_broken`);
-    }
-
     if (returnContext.bind(context)() !== context) {
         warn(`function_bind_broken`);
     }
