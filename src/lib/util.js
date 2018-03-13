@@ -10,6 +10,16 @@ export function isPayPalDomain() : boolean {
     return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
 }
 
+export function getGlobal() : Object {
+    if (typeof window !== 'undefined') {
+        return window;
+    }
+    if (typeof global !== 'undefined') {
+        return global;
+    }
+    throw new Error(`No global found`);
+}
+
 // eslint-disable-next-line flowtype/no-weak-types
 export function memoize<R>(method : (...args : Array<any>) => R, options : { time? : number } = {}) : ((...args : Array<any>) => R) {
 
@@ -32,7 +42,9 @@ export function memoize<R>(method : (...args : Array<any>) => R, options : { tim
             delete cache[key];
         }
 
-        if (window.__CACHE_START_TIME__ && cache[key] && cache[key].time < window.__CACHE_START_TIME__) {
+        let glob = getGlobal();
+
+        if (glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__) {
             delete cache[key];
         }
 
@@ -247,6 +259,10 @@ export function stringify(item : mixed) : string {
 
 export let isLocalStorageEnabled = memoize(() : boolean => {
     try {
+        if (typeof window === 'undefined') {
+            return false;
+        }
+
         if (window.localStorage) {
             let value = Math.random().toString();
             window.localStorage.setItem('__test__localStorage__', value);

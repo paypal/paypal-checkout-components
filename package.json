@@ -13,7 +13,7 @@
     "webpack": "babel-node ./node_modules/.bin/webpack --progress",
     "webpack-base": "babel-node ./node_modules/.bin/webpack --progress --config webpack.base.config.js",
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
-    "test": "npm run lint && npm run flow && npm run buttondiff && npm run karma",
+    "test": "npm run lint && npm run flow && npm run buttondiff && npm run test-ssr && npm run karma",
     "build": "npm run test && npm run webpack",
     "release": "./publish.sh",
     "release:patch": "./publish.sh patch",
@@ -24,7 +24,8 @@
     "debug": "cross-env NODE_ENV=debug",
     "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
-    "buttondiff": "jest test/screenshot/screenshot.test.js "
+    "buttondiff": "jest test/screenshot/screenshot.test.js",
+    "test-ssr": "jest test/ssr/ssr.test.js --env=node"
   },
   "files": [
     "dist/checkout.lib.js",
