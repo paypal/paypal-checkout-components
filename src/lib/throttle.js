@@ -20,7 +20,16 @@ function isCheckpointUnique(name : string) : boolean {
     });
 }
 
-export function getThrottle(name : string, sample : number) : Object {
+type Throttle = {
+    isEnabled : () => boolean,
+    isDisabled : () => boolean,
+    getTreatment : () => string,
+    log : (string, payload? : { [string] : ?string }) => Throttle,
+    logStart : (payload? : { [string] : ?string }) => Throttle,
+    logComplete : (payload? : { [string] : ?string }) => Throttle
+};
+
+export function getThrottle(name : string, sample : number) : Throttle {
 
     let uid = getSessionID();
 
@@ -63,7 +72,7 @@ export function getThrottle(name : string, sample : number) : Object {
             return treatment;
         },
 
-        log(checkpointName : string, payload : { [key : string] : ?string } = {}) : Object {
+        log(checkpointName : string, payload? : { [string] : ?string } = {}) : Throttle {
 
             if (isCheckpointUnique(`${ name }_${ treatment }`)) {
                 track({
@@ -86,12 +95,12 @@ export function getThrottle(name : string, sample : number) : Object {
             return this;
         },
 
-        logStart(payload : { [key : string] : ?string } = {}) : Object {
+        logStart(payload? : { [string] : ?string } = {}) : Throttle {
             started = true;
             return this.log(`start`, payload);
         },
 
-        logComplete(payload : { [key : string] : ?string }  = {}) : Object {
+        logComplete(payload? : { [string] : ?string } = {}) : Throttle {
             if (started) {
                 return this.log(`complete`, payload);
             }
