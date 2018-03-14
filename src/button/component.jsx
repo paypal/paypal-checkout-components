@@ -622,6 +622,8 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
+                    creditThrottle.log('click');
+
                     flushLogs();
 
                     return original.apply(this, arguments);
