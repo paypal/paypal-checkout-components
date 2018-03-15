@@ -2,7 +2,7 @@
 
 import { prefix } from 'beaver-logger/client';
 
-import { onDocumentReady, awaitKey } from '../lib';
+import { onDocumentReady } from '../lib';
 import { ENV } from '../constants';
 
 import { LOG_PREFIX, ATTRIBUTES, CLASSES } from './constants';
@@ -31,12 +31,49 @@ function invokeReady(method) {
     });
 }
 
+function onKey(obj : Object, key : string, callback : Function) {
 
-awaitKey(window, 'paypalCheckoutReady').then(method => {
+    if (!obj) {
+        return;
+    }
+
+    let value = obj[key];
+
+    if (value) {
+        value = callback(value) || value;
+    }
+
+    try {
+
+        delete obj[key];
+
+        Object.defineProperty(obj, key, {
+
+            configurable: true,
+
+            set(item) {
+                value = item;
+
+                if (value) {
+                    value = callback(value) || value;
+                }
+            },
+
+            get() : mixed {
+                return value;
+            }
+        });
+
+    } catch (err) {
+        // pass
+    }
+}
+
+onKey(window, 'paypalCheckoutReady', method => {
 
     if (typeof method === 'function') {
 
-        let oneTimeReady = function() : void {
+        let oneTimeReady = function () : void {
             if (!method.called) {
                 method.called = true;
                 return method.apply(this, arguments);
@@ -45,18 +82,7 @@ awaitKey(window, 'paypalCheckoutReady').then(method => {
 
         invokeReady(oneTimeReady);
 
-        delete window.paypalCheckoutReady;
-
-        // $FlowFixMe
-        Object.defineProperty(window, 'paypalCheckoutReady', {
-            get: () => {
-                return oneTimeReady;
-            },
-            set: (val) => {
-                method = val;
-                oneTimeReady();
-            }
-        });
+        return oneTimeReady;
     }
 });
 
