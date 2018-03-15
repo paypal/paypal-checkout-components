@@ -498,11 +498,6 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
-                    actions.order = {
-                        get:     () => rest.order.get(this.props.env, this.props.client, data.orderID || data.paymentToken),
-                        capture: () => rest.order.capture(this.props.env, this.props.client, data.orderID || data.paymentToken)
-                    };
-
                     let restart = actions.restart;
                     actions.restart = () => {
                         return restart().then(() => {
