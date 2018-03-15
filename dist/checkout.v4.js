@@ -8910,7 +8910,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.180",
+            version: "4.0.181",
             cors: !0,
             env: constants.r.PRODUCTION,
             state: "checkoutjs",
@@ -11013,7 +11013,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.180", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.181", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12106,6 +12106,7 @@
                             _track5[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_CLICK, _track5[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                             _track5[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.s.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
+                            creditThrottle.log("click");
                             Object(beaver_logger_client.g)();
                             return original.apply(this, arguments);
                         };
@@ -12415,7 +12416,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.180", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.181", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13271,7 +13272,25 @@
         interface_checkout.startFlow = startFlow;
         interface_checkout.closeFlow = closeFlow;
         var ready__prefix = Object(client.m)(LOG_PREFIX), ready_error = ready__prefix.error, ready_debug = ready__prefix.debug;
-        Object(lib.b)(window, "paypalCheckoutReady").then(function(method) {
+        !function(obj, key, callback) {
+            if (obj) {
+                var value = obj[key];
+                value && (value = callback(value) || value);
+                try {
+                    delete obj[key];
+                    Object.defineProperty(obj, key, {
+                        configurable: !0,
+                        set: function(item) {
+                            value = item;
+                            value && (value = callback(value) || value);
+                        },
+                        get: function() {
+                            return value;
+                        }
+                    });
+                } catch (err) {}
+            }
+        }(window, "paypalCheckoutReady", function(method) {
             if ("function" == typeof method) {
                 var oneTimeReady = function() {
                     if (!method.called) {
@@ -13280,16 +13299,7 @@
                     }
                 };
                 invokeReady(oneTimeReady);
-                delete window.paypalCheckoutReady;
-                Object.defineProperty(window, "paypalCheckoutReady", {
-                    get: function() {
-                        return oneTimeReady;
-                    },
-                    set: function(val) {
-                        method = val;
-                        oneTimeReady();
-                    }
-                });
+                return oneTimeReady;
             }
         });
         Object(lib.K)(function() {
@@ -13354,7 +13364,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.180";
+                payload.version = "4.0.181";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -13708,7 +13718,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.180"
+                    ver: "4.0.181"
                 };
             });
             Object(client.a)(function() {
@@ -13976,7 +13986,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.180";
+            return isPayPalObjects() ? "4" : "4.0.181";
         }
         function getRememberedFunding(handler) {
             return Object(session.e)(function(storage) {
@@ -14873,18 +14883,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.180" === window.paypal.version) {
+        if (window.paypal && "4.0.181" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.180"
+                version: "4.0.181"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.180) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.181) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.180" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.181" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.180"
+                version: "4.0.181"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.180");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.181");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

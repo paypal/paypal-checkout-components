@@ -9532,7 +9532,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.180",
+                version: "4.0.181",
                 cors: !0,
                 env: constants.r.PRODUCTION,
                 state: "checkoutjs",
@@ -11635,7 +11635,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.180", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.181", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12728,6 +12728,7 @@
                                 _track5[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_CLICK, _track5[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                                 _track5[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.s.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                                 _track5));
+                                creditThrottle.log("click");
                                 Object(beaver_logger_client.g)();
                                 return original.apply(this, arguments);
                             };
@@ -13037,7 +13038,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.180", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.181", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(exportBuilder) {
@@ -13893,7 +13894,25 @@
             interface_checkout.startFlow = startFlow;
             interface_checkout.closeFlow = closeFlow;
             var ready__prefix = Object(client.m)(LOG_PREFIX), ready_error = ready__prefix.error, ready_debug = ready__prefix.debug;
-            Object(lib.b)(window, "paypalCheckoutReady").then(function(method) {
+            !function(obj, key, callback) {
+                if (obj) {
+                    var value = obj[key];
+                    value && (value = callback(value) || value);
+                    try {
+                        delete obj[key];
+                        Object.defineProperty(obj, key, {
+                            configurable: !0,
+                            set: function(item) {
+                                value = item;
+                                value && (value = callback(value) || value);
+                            },
+                            get: function() {
+                                return value;
+                            }
+                        });
+                    } catch (err) {}
+                }
+            }(window, "paypalCheckoutReady", function(method) {
                 if ("function" == typeof method) {
                     var oneTimeReady = function() {
                         if (!method.called) {
@@ -13902,16 +13921,7 @@
                         }
                     };
                     invokeReady(oneTimeReady);
-                    delete window.paypalCheckoutReady;
-                    Object.defineProperty(window, "paypalCheckoutReady", {
-                        get: function() {
-                            return oneTimeReady;
-                        },
-                        set: function(val) {
-                            method = val;
-                            oneTimeReady();
-                        }
-                    });
+                    return oneTimeReady;
                 }
             });
             Object(lib.K)(function() {
@@ -14311,7 +14321,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.180"
+                        ver: "4.0.181"
                     };
                 });
                 Object(client.a)(function() {
@@ -14522,7 +14532,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.180";
+                    payload.version = "4.0.181";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14549,7 +14559,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.180".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.181".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14557,7 +14567,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.180",
+                    v: "checkout.js.4.0.181",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14682,7 +14692,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.180";
+                return "4.0.181";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
@@ -14924,7 +14934,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.180"
+                            version: "4.0.181"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
