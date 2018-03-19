@@ -547,7 +547,9 @@ export let Button : Component<ButtonOptions> = create({
                         paymentToken: data.paymentToken
                     });
 
-                    creditThrottle.logComplete();
+                    creditThrottle.logComplete({
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
 
                     return ZalgoPromise.try(() => {
 
@@ -623,7 +625,9 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
-                    creditThrottle.log('click');
+                    creditThrottle.log('click', {
+                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                    });
 
                     flushLogs();
 

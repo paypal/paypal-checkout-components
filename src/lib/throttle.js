@@ -73,6 +73,9 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         log(checkpointName : string, payload? : { [string] : ?string } = {}) : Throttle {
+            if (!started) {
+                return this;
+            }
 
             if (isCheckpointUnique(`${ name }_${ treatment }`)) {
                 track({
@@ -101,11 +104,7 @@ export function getThrottle(name : string, sample : number) : Throttle {
         },
 
         logComplete(payload? : { [string] : ?string } = {}) : Throttle {
-            if (started) {
-                return this.log(`complete`, payload);
-            }
-
-            return this;
+            return this.log(`complete`, payload);
         }
     };
 }
