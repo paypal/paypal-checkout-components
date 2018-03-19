@@ -9532,7 +9532,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.182",
+                version: "4.0.183",
                 cors: !0,
                 env: constants.r.PRODUCTION,
                 state: "checkoutjs",
@@ -11635,7 +11635,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.182", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.183", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12623,7 +12623,7 @@
                         required: !0,
                         decorate: function(original) {
                             return function(data, actions) {
-                                var _track3, _this3 = this;
+                                var _track3, _creditThrottle$logCo, _this3 = this;
                                 data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken
@@ -12668,7 +12668,8 @@
                                 onAuthorizeListener.trigger({
                                     paymentToken: data.paymentToken
                                 });
-                                creditThrottle.logComplete();
+                                creditThrottle.logComplete((_creditThrottle$logCo = {}, _creditThrottle$logCo[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$logCo));
                                 return zalgo_promise_src.a.try(function() {
                                     if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref5) {
                                         var nonce = _ref5.nonce;
@@ -12716,13 +12717,14 @@
                         noop: !0,
                         decorate: function(original) {
                             return function(data) {
-                                var _track5;
+                                var _track5, _creditThrottle$log;
                                 Object(beaver_logger_client.j)("button_click");
                                 Object(beaver_logger_client.o)((_track5 = {}, _track5[constants.s.KEY.STATE] = constants.s.STATE.BUTTON, 
                                 _track5[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_CLICK, _track5[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                                 _track5[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.s.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                                 _track5));
-                                creditThrottle.log("click");
+                                creditThrottle.log("click", (_creditThrottle$log = {}, _creditThrottle$log[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$log));
                                 Object(beaver_logger_client.g)();
                                 return original.apply(this, arguments);
                             };
@@ -13032,7 +13034,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.182", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.183", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(exportBuilder) {
@@ -14315,7 +14317,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.182"
+                        ver: "4.0.183"
                     };
                 });
                 Object(client.a)(function() {
@@ -14526,7 +14528,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.182";
+                    payload.version = "4.0.183";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14553,7 +14555,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.182".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.183".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14561,7 +14563,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.182",
+                    v: "checkout.js.4.0.183",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14611,6 +14613,7 @@
                     },
                     log: function(checkpointName) {
                         var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                        if (!started) return this;
                         if (throttle_isCheckpointUnique(name + "_" + treatment)) {
                             var _extends2;
                             Object(client.o)(throttle__extends((_extends2 = {}, _extends2[constants.s.KEY.STATE] = constants.s.STATE.PXP, 
@@ -14631,7 +14634,7 @@
                     },
                     logComplete: function() {
                         var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                        return started ? this.log("complete", payload) : this;
+                        return this.log("complete", payload);
                     }
                 };
             }
@@ -14686,7 +14689,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.182";
+                return "4.0.183";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
@@ -14928,7 +14931,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.182"
+                            version: "4.0.183"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
