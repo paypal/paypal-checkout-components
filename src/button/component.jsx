@@ -409,7 +409,6 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 if (isCreditDualEligible(props)) {
-                    creditThrottle.logStart();
                     if (creditThrottle.isEnabled()) {
                         allowed.push(FUNDING.CREDIT);
                     }
@@ -464,6 +463,13 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID,
                         [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
                     });
+
+                    if (isCreditDualEligible(this.props)) {
+                        creditThrottle.logStart({
+                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
+                        });
+                    }
+
                     flushLogs();
 
                     return original.apply(this, arguments);
