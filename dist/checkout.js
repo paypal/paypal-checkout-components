@@ -5761,13 +5761,13 @@
             !resultValue && prop.alias && props[prop.alias] && (resultValue = props[prop.alias]);
             var decorated = !1;
             if (prop.decorate && null !== resultValue && void 0 !== resultValue) {
-                resultValue = prop.decorate(resultValue, props);
+                resultValue = prop.decorate.call(instance, resultValue, props);
                 decorated = !0;
             }
             if ("boolean" === prop.type) resultValue = Boolean(resultValue); else if ("function" === prop.type) {
                 if (!resultValue && prop.noop) {
                     resultValue = lib.I;
-                    !decorated && prop.decorate && (resultValue = prop.decorate(resultValue, props));
+                    !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, resultValue, props));
                 }
                 if (resultValue && "function" == typeof resultValue) {
                     resultValue = resultValue.bind(instance);
@@ -9531,7 +9531,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.181",
+            version: "4.0.182",
             cors: !0,
             env: constants.r.PRODUCTION,
             state: "checkoutjs",
@@ -11634,7 +11634,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.181", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.182", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12560,10 +12560,7 @@
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
                         allowed && -1 !== allowed.indexOf(constants.t.VENMO) && !Object(lib.z)() && allowed.splice(allowed.indexOf(constants.t.VENMO), 1);
-                        if (isCreditDualEligible(props)) {
-                            creditThrottle.logStart();
-                            creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
-                        }
+                        isCreditDualEligible(props) && creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
                         var remembered = Object(lib.r)(function(sources) {
                             return sources;
                         });
@@ -12610,6 +12607,11 @@
                             _track2[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_RENDER, _track2[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                             _track2[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.s.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
+                            if (isCreditDualEligible(this.props)) {
+                                var _creditThrottle$logSt;
+                                creditThrottle.logStart((_creditThrottle$logSt = {}, _creditThrottle$logSt[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$logSt));
+                            }
                             Object(beaver_logger_client.g)();
                             return original.apply(this, arguments);
                         };
@@ -12632,14 +12634,6 @@
                             Object(lib.B)() || Object(beaver_logger_client.j)("button_authorize_ineligible");
                             Object(lib.d)("authorize");
                             Object(beaver_logger_client.g)();
-                            actions.order = {
-                                get: function() {
-                                    return rest.order.get(_this3.props.env, _this3.props.client, data.orderID || data.paymentToken);
-                                },
-                                capture: function() {
-                                    return rest.order.capture(_this3.props.env, _this3.props.client, data.orderID || data.paymentToken);
-                                }
-                            };
                             var restart = actions.restart;
                             actions.restart = function() {
                                 return restart().then(function() {
@@ -13037,7 +13031,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.181", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.182", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13985,7 +13979,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.181";
+                payload.version = "4.0.182";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14339,7 +14333,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.181"
+                    ver: "4.0.182"
                 };
             });
             Object(client.a)(function() {
@@ -14607,7 +14601,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.181";
+            return isPayPalObjects() ? "4" : "4.0.182";
         }
         function getRememberedFunding(handler) {
             return Object(session.e)(function(storage) {
@@ -15504,18 +15498,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.181" === window.paypal.version) {
+        if (window.paypal && "4.0.182" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.181"
+                version: "4.0.182"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.181) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.182) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.181" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.182" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.181"
+                version: "4.0.182"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.181");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.182");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
