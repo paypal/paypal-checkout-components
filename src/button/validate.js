@@ -1,7 +1,7 @@
 /* @flow */
 
 import { config } from '../config';
-import { BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS } from '../constants';
+import { BUTTON_LABEL, BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS, ALLOWED_INSTALLMENT_COUNTRIES, ALLOWED_INSTALLMENT_PERIOD } from '../constants';
 
 import { BUTTON_CONFIG, BUTTON_STYLE, getButtonConfig } from './config';
 
@@ -22,7 +22,37 @@ export function validateButtonLocale(locale : string) {
     }
 }
 
-export function validateButtonStyle(style : Object = {}) {
+export function validateRegionSpecificButton(style : Object = {}, locale : string = 'en_US') {
+
+    let country = locale.split('_')[1];
+
+    let isInstallmentAllowedCountry = ALLOWED_INSTALLMENT_COUNTRIES.indexOf(country) !== -1;
+
+    if (!isInstallmentAllowedCountry && style.label === BUTTON_LABEL.INSTALLMENT) {
+        throw new Error(`Unexpected label: style.${ style.label } for country: ${ country }`);
+    }
+
+    if (!isInstallmentAllowedCountry && style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD]) {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD } is invalid for country: ${ country }`);
+    }
+
+    if (isInstallmentAllowedCountry && style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD] && style.label !== BUTTON_LABEL.INSTALLMENT) {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD } is invalid for label: style.${ style.label }`);
+    }
+
+    if (isInstallmentAllowedCountry && style.label === BUTTON_LABEL.INSTALLMENT && style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD]
+        && typeof style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD] !== 'number') {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD } is expected to be a number`);
+    }
+
+    if (isInstallmentAllowedCountry && style.label === BUTTON_LABEL.INSTALLMENT && style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD]
+        && ALLOWED_INSTALLMENT_PERIOD[country].indexOf(style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD]) === -1) {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD }: ${ style[BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD] } is not a valid installment number for ${ style.label }`);
+    }
+
+}
+
+export function validateButtonStyle(style : Object = {}, props : Object) {
 
     if (!style) {
         throw new Error(`Expected props.style to be set`);
@@ -127,6 +157,8 @@ export function validateButtonStyle(style : Object = {}) {
             throw new Error(`style.${ BUTTON_STYLE_OPTIONS.TAGLINE } is not allowed for ${ BUTTON_LAYOUT.VERTICAL } layout - got ${ tagline }`);
         }
     }
+
+    validateRegionSpecificButton(style, props.locale);
 }
 
 export function validateButtonProps(props : Object) {
@@ -138,5 +170,5 @@ export function validateButtonProps(props : Object) {
     let { locale, style } = props;
 
     validateButtonLocale(locale);
-    validateButtonStyle(style);
+    validateButtonStyle(style, props);
 }

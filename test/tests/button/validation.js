@@ -81,6 +81,11 @@ let buttonConfigs = [
             },
 
             {
+                label:  `installment`,
+                valid:  false
+            },
+
+            {
                 label: `venmo`,
                 valid: true
             },
@@ -120,6 +125,44 @@ let buttonConfigs = [
                 payment:     noop,
                 onAuthorize: noop,
                 style:       { label }
+            }
+        }))
+    },
+
+    {
+        name: 'installment button',
+
+        cases: [
+
+            {
+                installmentperiod: 4,
+                locale:            `pt_BR`,
+                valid:             true
+            },
+
+            {
+                installmentperiod: 6,
+                locale:            `en_BR`,
+                valid:             true
+            },
+
+            {
+                installmentperiod: 6,
+                locale:            `en_MX`,
+                valid:             true
+            }
+
+        ].map(({ installmentperiod, locale, valid }) => ({
+
+            desc: `label: installment, locale: ${ locale } and installmentperiod: ${ installmentperiod }`,
+
+            valid,
+
+            conf: {
+                payment:     noop,
+                onAuthorize: noop,
+                locale,
+                style:       { installmentperiod, label: 'installment' }
             }
         }))
     },

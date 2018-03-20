@@ -144,6 +144,17 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowUnbranded:  true
     },
 
+    [ BUTTON_LABEL.INSTALLMENT ]: {
+        label:     (style) => { return `{ content: ${ style.installmentperiod ? 'installment_period' : 'installment' } }`; },
+        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+
+        allowPrimary:             true,
+        allowPrimaryVertical:     false,
+        allowPrimaryHorizontal:   true,
+        allowSecondaryVertical:   false,
+        allowSecondaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CREDIT ]: {
         label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
         logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
@@ -310,14 +321,15 @@ export const FUNDING_TO_DEFAULT_LABEL = {
 };
 
 export const LABEL_TO_FUNDING = {
-    [ BUTTON_LABEL.PAYPAL ]:   FUNDING.PAYPAL,
-    [ BUTTON_LABEL.CHECKOUT ]: FUNDING.PAYPAL,
-    [ BUTTON_LABEL.PAY ]:      FUNDING.PAYPAL,
-    [ BUTTON_LABEL.BUYNOW ]:   FUNDING.PAYPAL,
-    [ BUTTON_LABEL.CARD ]:     FUNDING.CARD,
-    [ BUTTON_LABEL.CREDIT ]:   FUNDING.CREDIT,
-    [ BUTTON_LABEL.VENMO ]:    FUNDING.VENMO,
-    [ BUTTON_LABEL.IDEAL ]:    FUNDING.IDEAL
+    [ BUTTON_LABEL.PAYPAL ]:        FUNDING.PAYPAL,
+    [ BUTTON_LABEL.CHECKOUT ]:      FUNDING.PAYPAL,
+    [ BUTTON_LABEL.PAY ]:           FUNDING.PAYPAL,
+    [ BUTTON_LABEL.BUYNOW ]:        FUNDING.PAYPAL,
+    [ BUTTON_LABEL.INSTALLMENT ]:   FUNDING.PAYPAL,
+    [ BUTTON_LABEL.CARD ]:          FUNDING.CARD,
+    [ BUTTON_LABEL.CREDIT ]:        FUNDING.CREDIT,
+    [ BUTTON_LABEL.VENMO ]:         FUNDING.VENMO,
+    [ BUTTON_LABEL.IDEAL ]:         FUNDING.IDEAL
 };
 
 export const BUTTON_RELATIVE_STYLE = {

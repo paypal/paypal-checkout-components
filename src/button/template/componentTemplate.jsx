@@ -83,15 +83,16 @@ function renderFundingIcons({ cards, fundingicons } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
 }
 
-function renderContent(text : string, { locale, color, branding, logoColor, funding, env, cards } :
-    { locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string> }) : JsxHTMLNode {
+function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
+    { label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
     return jsxRender(text, {
 
         text(value : string) : JsxHTMLNode {
-            return <span class={ CLASS.TEXT }>{ value }</span>;
+            let className = `${ CLASS.TEXT }`;
+            return <span class={ className }>{ value }</span>;
         },
 
         logo(name : string) : ?JsxHTMLNode {
@@ -124,12 +125,19 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
                 }
             }
 
+            let regex = /\[([a-z]+)\]/g;
+            contentString = contentString && contentString.replace(regex, (match, contentVariable) => {
+                if (match && contentVariable) {
+                    return dynamicContent && dynamicContent[contentVariable];
+                }
+            });
+
+
             if (!contentString && env === ENV.TEST) {
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { locale, color, branding, logoColor, funding, env, cards });
-        },
+            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });        },
 
         cards() : Array<JsxHTMLNode> {
             if (!funding) {
@@ -141,12 +149,17 @@ function renderContent(text : string, { locale, color, branding, logoColor, fund
 
         separator() : JsxHTMLNode {
             return <span class={ CLASS.SEPARATOR }></span>;
+        },
+
+        break(value : string) : JsxHTMLNode {
+            let className = `${ CLASS.TEXT }`;
+            return <span class={ className }>{ value.split('<br>')[0] }<br>{ value.split('<br>')[1] }</br></span>;
         }
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards } :
-    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string> }) : JsxHTMLNode {
+function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+    { label : string, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : string }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -154,7 +167,14 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
         ? getButtonConfig(label, 'logoLabel')
         : getButtonConfig(label, 'label');
 
-    contentText = renderContent(contentText, { locale, color, branding, logoColor, funding, env, cards });
+
+    // Add all the variables in dynamic content required to be plugged in content
+    let dynamicContent = {
+        installmentperiod
+    };
+
+    contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
+    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
 
     return (
         <div
@@ -238,7 +258,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
     let { label, locale, color, shape, branding,
         tagline, funding, layout, sources, multiple,
-        fundingicons, env, height, cards } = normalizeProps(props);
+        fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
 
     let buttonNodes = determineButtons({ label, color, sources, multiple })
         .map((button, i) => renderButton({
@@ -253,7 +273,8 @@ export function componentTemplate({ props } : { props : Object }) : string {
             branding,
             layout,
             shape,
-            cards
+            cards,
+            installmentperiod
         }));
 
     let taglineNode     = renderTagline({ label, tagline, color, locale, multiple, env, cards });
