@@ -112,6 +112,10 @@ export let config = {
 
         'pbteen.com': {
             disable_venmo: true
+        },
+
+        'beallsflorida.com': {
+            disable_venmo: true
         }
     },
 
