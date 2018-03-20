@@ -680,6 +680,30 @@ let buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `bancontact`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `giropay`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `eps`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `mybank`,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `card`,
                 valid:  false
             }
@@ -1545,6 +1569,126 @@ let buttonConfigs = [
 
                     funding: {
                         disallowed: [ window.paypal.FUNDING.ELV ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to bancontact`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.BANCONTACT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of bancontact`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.BANCONTACT ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to giropay`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.GIROPAY ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of giropay`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.GIROPAY ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to eps`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.EPS ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of eps`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.EPS ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-in to mybank`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        allowed: [ window.paypal.FUNDING.MYBANK ]
+                    }
+                }
+            },
+
+            {
+                desc: `opt-out of mybank`,
+
+                valid: true,
+
+                conf: {
+                    payment:     noop,
+                    onAuthorize: noop,
+
+                    funding: {
+                        disallowed: [ window.paypal.FUNDING.MYBANK ]
                     }
                 }
             },
