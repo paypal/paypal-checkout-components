@@ -37,6 +37,12 @@ function getThrottlePercentile(name : string) : number {
     });
 }
 
+const THROTTLE_GROUP = {
+    TEST:     'test',
+    CONTROL:  'control',
+    THROTTLE: 'throttle'
+};
+
 export function getThrottle(name : string, sample : number) : Throttle {
 
     let uid = getStorageID();
@@ -46,11 +52,11 @@ export function getThrottle(name : string, sample : number) : Throttle {
     let group;
 
     if (throttle < sample) {
-        group = 'test';
+        group = THROTTLE_GROUP.TEST;
     } else if ((sample >= 50) || ((sample <= throttle) && (throttle < (sample * 2)))) {
-        group = 'control';
+        group = THROTTLE_GROUP.CONTROL;
     } else {
-        group = 'throttle';
+        group = THROTTLE_GROUP.THROTTLE;
     }
 
     let treatment = `${ name }_${ group }`;
@@ -69,11 +75,11 @@ export function getThrottle(name : string, sample : number) : Throttle {
     return {
 
         isEnabled() : boolean {
-            return (group === 'test') || forced;
+            return (group === THROTTLE_GROUP.TEST) || forced;
         },
 
         isDisabled() : boolean {
-            return (group !== 'test') && !forced;
+            return (group !== THROTTLE_GROUP.TEST) && !forced;
         },
 
         getTreatment() : string {
