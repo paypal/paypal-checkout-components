@@ -77,7 +77,7 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
-let creditThrottle = getThrottle('dual_credit_automatic', 5000);
+let creditThrottle = getThrottle('dual_credit_automatic', 50);
 
 type ButtonOptions = {
     style : {|

@@ -4,8 +4,8 @@ import { info, track, flush as flushLogs } from 'beaver-logger/client';
 
 import { FPTI } from '../constants';
 
-import { hashStr, match } from './util';
-import { getSessionID, getSessionState } from './session';
+import { match } from './util';
+import { getStorageState, getStorageID, getSessionState } from './session';
 
 function isCheckpointUnique(name : string) : boolean {
     return getSessionState(state => {
@@ -29,17 +29,25 @@ type Throttle = {
     logComplete : (payload? : { [string] : ?string }) => Throttle
 };
 
+function getThrottlePercentile(name : string) : number {
+    return getStorageState(storage => {
+        storage.throttlePercentiles = storage.throttlePercentiles || {};
+        storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(Math.random() * 100);
+        return storage.throttlePercentiles[name];
+    });
+}
+
 export function getThrottle(name : string, sample : number) : Throttle {
 
-    let uid = getSessionID();
+    let uid = getStorageID();
 
-    let throttle = hashStr(`${ name }_${ uid }`) % 10000;
+    let throttle = getThrottlePercentile(name);
 
     let group;
 
     if (throttle < sample) {
         group = 'test';
-    } else if ((sample >= 5000) || ((sample <= throttle) && (throttle < (sample * 2)))) {
+    } else if ((sample >= 50) || ((sample <= throttle) && (throttle < (sample * 2)))) {
         group = 'control';
     } else {
         group = 'throttle';

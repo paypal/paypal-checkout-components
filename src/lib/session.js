@@ -13,32 +13,40 @@ let accessedStorage;
 
 export function getStorageState<T>(handler : (storage : Object) => T) : T {
 
-    let enabled = isLocalStorageEnabled();
+    let localStorageEnabled = isLocalStorageEnabled();
     let storage;
 
     if (accessedStorage) {
         storage = accessedStorage;
+    }
 
-    } else {
+    if (!storage && localStorageEnabled) {
+        let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
 
-        if (enabled) {
-            let rawStorage = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-
-            if (rawStorage) {
-                storage = JSON.parse(rawStorage);
-            } else {
-                storage = {};
-            }
-        } else {
-            storage =  window[LOCAL_STORAGE_KEY] = window.__pp_localstorage__ || {};
+        if (rawStorage) {
+            storage = JSON.parse(rawStorage);
         }
+    }
+
+    if (!storage) {
+        storage = window[LOCAL_STORAGE_KEY];
+    }
+
+    if (!storage) {
+        storage = {
+            id: uniqueID()
+        };
+    }
+
+    if (!storage.id) {
+        storage.id = uniqueID();
     }
 
     accessedStorage = storage;
 
     let result = handler(storage);
 
-    if (enabled) {
+    if (localStorageEnabled) {
         window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storage));
     } else {
         window[LOCAL_STORAGE_KEY] = storage;
@@ -47,6 +55,10 @@ export function getStorageState<T>(handler : (storage : Object) => T) : T {
     accessedStorage = null;
 
     return result;
+}
+
+export function getStorageID() : string {
+    return getStorageState(storage => storage.id);
 }
 
 export function getSession<T>(handler : (state : Object) => T) : T {
