@@ -1,6 +1,10 @@
 
 import spark from 'xo-spark';
-import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
+
+const FUNDING = {
+    PAYPAL: 'paypal',
+    VENMO: 'venmo'
+};
 
 module.exports = spark.register({
 
