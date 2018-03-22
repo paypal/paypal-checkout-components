@@ -3,14 +3,6 @@
 import { getButtonConfig } from '../../src/button/config';
 import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
 
-/*
-
-const LOCALES = [
-    'en_US', 'en_GB', 'fr_FR', 'de_DE', 'zh_C2', 'es_MX', 'es_ES', 'pt_BR'
-];
-
-*/
-
 const RESPONSIVE_WIDTHS = [ 92, 144, 212, /* 345, */ 460, 670 ];
 
 export let buttonConfigs = [];
@@ -21,6 +13,9 @@ buttonConfigs.push({
 
 for (let label of Object.keys(BUTTON_LABEL)) {
     label = BUTTON_LABEL[label];
+    if (label === BUTTON_LABEL.INSTALLMENT) {
+        continue;
+    }
 
     if (getButtonConfig(label, 'allowPrimary')) {
         buttonConfigs.push({
@@ -80,21 +75,6 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             });
         }
-
-        /*
-
-        for (let locale of LOCALES) {
-            buttonConfigs.push({
-                button: {
-                    style: {
-                        label,
-                        locale
-                    }
-                }
-            });
-        }
-
-        */
 
         if (getButtonConfig(label, 'allowFundingIcons')) {
             buttonConfigs.push({
@@ -312,6 +292,21 @@ for (let color of getButtonConfig('paypal', 'colors')) {
 
     buttonConfigs.push({
         button: {
+            locale: 'de_DE',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.ELV, FUNDING.GIROPAY ]
+            }
+        }
+    });
+
+
+    buttonConfigs.push({
+        button: {
             locale: 'nl_NL',
             style:  {
                 color,
@@ -323,4 +318,83 @@ for (let color of getButtonConfig('paypal', 'colors')) {
             }
         }
     });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_BE',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.CREDIT, FUNDING.BANCONTACT ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_AT',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.EPS ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_AT',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed:    [ FUNDING.EPS ],
+                disallowed: [ FUNDING.ELV ]
+            }
+        }
+    });
+
+    buttonConfigs.push({
+        button: {
+            locale: 'en_IT',
+            style:  {
+                color,
+                layout:     'vertical',
+                maxbuttons: 4
+            },
+            funding: {
+                allowed: [ FUNDING.MYBANK ]
+            }
+        }
+    });
 }
+
+
+/** INSTALLMENT BUTTON CONFIG **/
+
+buttonConfigs.push({
+    button: {
+        locale: 'pt_BR',
+        style:  {
+            label: 'installment'
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        locale: 'pt_BR',
+        style:  {
+            label:             'installment',
+            installmentperiod: 4
+        }
+    }
+});

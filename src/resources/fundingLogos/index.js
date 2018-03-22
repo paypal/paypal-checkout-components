@@ -14,6 +14,11 @@ import venmo_blue   from './venmo_blue.svg';
 import ideal        from './ideal.svg';
 import elv          from './elv.svg';
 import elv_white    from './elv_white.svg';
+import bancontact   from './bancontact.svg';
+import giropay      from './giropay.svg';
+import eps          from './eps.svg';
+import mybank       from './mybank.svg';
+
 
 export let fundingLogos = {
 
@@ -45,5 +50,21 @@ export let fundingLogos = {
     [ BUTTON_LOGO.ELV ]: {
         [ BUTTON_LOGO_COLOR.ANY ]:   elv,
         [ BUTTON_LOGO_COLOR.WHITE ]: elv_white
+    },
+
+    [ BUTTON_LOGO.BANCONTACT ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:   bancontact
+    },
+
+    [ BUTTON_LOGO.GIROPAY ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:   giropay
+    },
+
+    [ BUTTON_LOGO.EPS ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:   eps
+    },
+
+    [ BUTTON_LOGO.MYBANK ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:   mybank
     }
 };

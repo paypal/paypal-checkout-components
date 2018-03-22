@@ -8,6 +8,10 @@ export const FUNDING_PRIORITY = [
     FUNDING.CREDIT,
     FUNDING.IDEAL,
     FUNDING.ELV,
+    FUNDING.BANCONTACT,
+    FUNDING.GIROPAY,
+    FUNDING.EPS,
+    FUNDING.MYBANK,
     FUNDING.CARD
 ];
 
@@ -85,6 +89,42 @@ export const FUNDING_CONFIG = {
         defaultVerticalCountries: [
             COUNTRY.DE,
             COUNTRY.AT
+        ],
+
+        allowHorizontal: true,
+        allowVertical:   true
+    },
+
+    [ FUNDING.BANCONTACT ]: {
+        allowedCountries: [
+            COUNTRY.BE
+        ],
+
+        allowHorizontal: true,
+        allowVertical:   true
+    },
+
+    [ FUNDING.GIROPAY ]: {
+        allowedCountries: [
+            COUNTRY.DE
+        ],
+
+        allowHorizontal: true,
+        allowVertical:   true
+    },
+
+    [ FUNDING.EPS ]: {
+        allowedCountries: [
+            COUNTRY.AT
+        ],
+
+        allowHorizontal: true,
+        allowVertical:   true
+    },
+
+    [ FUNDING.MYBANK ]: {
+        allowedCountries: [
+            COUNTRY.IT
         ],
 
         allowHorizontal: true,

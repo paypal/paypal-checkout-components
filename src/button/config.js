@@ -144,6 +144,17 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowUnbranded:  true
     },
 
+    [ BUTTON_LABEL.INSTALLMENT ]: {
+        label:     (style) => { return `{ content: ${ style.installmentperiod ? 'installment_period' : 'installment' } }`; },
+        logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
+
+        allowPrimary:             true,
+        allowPrimaryVertical:     false,
+        allowPrimaryHorizontal:   true,
+        allowSecondaryVertical:   false,
+        allowSecondaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CREDIT ]: {
         label:     `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
         logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`,
@@ -270,6 +281,130 @@ export const BUTTON_CONFIG : ButtonConfig = {
         allowPrimaryHorizontal: false
     },
 
+    [ BUTTON_LABEL.BANCONTACT ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.BANCONTACT } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.GIROPAY ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.GIROPAY } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.EPS ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.EPS } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.EPS } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
+    [ BUTTON_LABEL.MYBANK ]: {
+
+        label:     `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
+        logoLabel: `{ logo: ${ BUTTON_LOGO.MYBANK } }`,
+
+        defaultColor: BUTTON_COLOR.SILVER,
+
+        colors: [
+            BUTTON_COLOR.SILVER,
+            BUTTON_COLOR.BLACK
+        ],
+
+        logoColors:  {
+            [ BUTTON_COLOR.SILVER ]: BUTTON_LOGO_COLOR.BLACK,
+            [ BUTTON_COLOR.BLACK ]:  BUTTON_LOGO_COLOR.WHITE
+        },
+
+        secondaryColors: {
+            [ BUTTON_COLOR.GOLD ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLUE ]:       BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.SILVER ]:     BUTTON_COLOR.SILVER,
+            [ BUTTON_COLOR.BLACK ]:      BUTTON_COLOR.BLACK,
+            [ BUTTON_COLOR.DARKBLUE ]:   BUTTON_COLOR.SILVER
+        },
+
+        allowPrimary: false,
+
+        allowPrimaryVertical:   false,
+        allowPrimaryHorizontal: false
+    },
+
     [ BUTTON_LABEL.CARD ]: {
 
         label:     `{ cards }`,
@@ -301,23 +436,32 @@ export const BUTTON_CONFIG : ButtonConfig = {
 };
 
 export const FUNDING_TO_DEFAULT_LABEL = {
-    [ FUNDING.PAYPAL ]: BUTTON_LABEL.PAYPAL,
-    [ FUNDING.VENMO ]:  BUTTON_LABEL.VENMO,
-    [ FUNDING.CARD ]:   BUTTON_LABEL.CARD,
-    [ FUNDING.CREDIT ]: BUTTON_LABEL.CREDIT,
-    [ FUNDING.IDEAL ]:  BUTTON_LABEL.IDEAL,
-    [ FUNDING.ELV ]:    BUTTON_LABEL.ELV
+    [ FUNDING.PAYPAL ]:    BUTTON_LABEL.PAYPAL,
+    [ FUNDING.VENMO ]:     BUTTON_LABEL.VENMO,
+    [ FUNDING.CARD ]:      BUTTON_LABEL.CARD,
+    [ FUNDING.CREDIT ]:    BUTTON_LABEL.CREDIT,
+    [ FUNDING.IDEAL ]:     BUTTON_LABEL.IDEAL,
+    [ FUNDING.ELV ]:       BUTTON_LABEL.ELV,
+    [ FUNDING.BANCONTACT]: BUTTON_LABEL.BANCONTACT,
+    [ FUNDING.GIROPAY]:    BUTTON_LABEL.GIROPAY,
+    [ FUNDING.EPS]:        BUTTON_LABEL.EPS,
+    [ FUNDING.MYBANK]:     BUTTON_LABEL.MYBANK
 };
 
 export const LABEL_TO_FUNDING = {
-    [ BUTTON_LABEL.PAYPAL ]:   FUNDING.PAYPAL,
-    [ BUTTON_LABEL.CHECKOUT ]: FUNDING.PAYPAL,
-    [ BUTTON_LABEL.PAY ]:      FUNDING.PAYPAL,
-    [ BUTTON_LABEL.BUYNOW ]:   FUNDING.PAYPAL,
-    [ BUTTON_LABEL.CARD ]:     FUNDING.CARD,
-    [ BUTTON_LABEL.CREDIT ]:   FUNDING.CREDIT,
-    [ BUTTON_LABEL.VENMO ]:    FUNDING.VENMO,
-    [ BUTTON_LABEL.IDEAL ]:    FUNDING.IDEAL
+    [ BUTTON_LABEL.PAYPAL ]:        FUNDING.PAYPAL,
+    [ BUTTON_LABEL.CHECKOUT ]:      FUNDING.PAYPAL,
+    [ BUTTON_LABEL.PAY ]:           FUNDING.PAYPAL,
+    [ BUTTON_LABEL.BUYNOW ]:        FUNDING.PAYPAL,
+    [ BUTTON_LABEL.INSTALLMENT ]:   FUNDING.PAYPAL,
+    [ BUTTON_LABEL.CARD ]:          FUNDING.CARD,
+    [ BUTTON_LABEL.CREDIT ]:        FUNDING.CREDIT,
+    [ BUTTON_LABEL.VENMO ]:         FUNDING.VENMO,
+    [ BUTTON_LABEL.IDEAL ]:         FUNDING.IDEAL,
+    [ BUTTON_LABEL.BANCONTACT]:     FUNDING.BANCONTACT,
+    [ BUTTON_LABEL.GIROPAY]:        FUNDING.GIROPAY,
+    [ BUTTON_LABEL.GIROPAY]:        FUNDING.EPS,
+    [ BUTTON_LABEL.MYBANK]:         FUNDING.MYBANK
 };
 
 export const BUTTON_RELATIVE_STYLE = {

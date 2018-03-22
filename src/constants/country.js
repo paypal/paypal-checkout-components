@@ -262,3 +262,9 @@ export const LANG_TO_DEFAULT_COUNTRY = {
     [LANG.TR]: COUNTRY.TR,
     [LANG.ZH]: COUNTRY.CN
 };
+
+export const ALLOWED_INSTALLMENT_COUNTRIES = [ COUNTRY.BR, COUNTRY.MX ];
+export const ALLOWED_INSTALLMENT_PERIOD = {
+    BR: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+    MX: [ 3, 6, 9, 12 ]
+};

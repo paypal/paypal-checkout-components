@@ -615,15 +615,18 @@
             "safer_tag": "A maneira f\u00e1cil e segura de enviar pagamentos.",
             "later_tag": "Compre agora e pague depois.",
             "pay": "Pague com {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Comprar agora"
+            "buynow": "{logo:pp} {logo:paypal} Comprar agora",
+            "installment": "{logo:pp} {logo:paypal}  Pagamentos<br>  sem juros",
+            "installment_period": "{logo:pp} {logo:paypal}  Pague em at\u00e9<br>  [installmentperiod]x sem juros"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
             "safer_tag": "The safer, easier way to pay",
-
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Buy Now"
+            "buynow": "{logo:pp} {logo:paypal} Buy Now",
+            "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",
+            "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest"
         }
     },
     "BS": {
@@ -3342,18 +3345,20 @@
         "es": {
             "checkout": "Pagar con {logo:pp} {logo:paypal}",
             "safer_tag": "La forma r\u00e1pida y segura de pagar",
-
             "later_tag": "Compre ahora y pague m\u00e1s adelante.",
             "pay": "Pagar con {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Comprar ahora"
+            "buynow": "{logo:pp} {logo:paypal} Comprar ahora",
+            "installment": "{logo:pp} {logo:paypal}  Pagos sin<br>  inter\u00e9s",
+            "installment_period": "{logo:pp} {logo:paypal}  Pague hasta<br>  [installmentperiod]x sin inter\u00e9s"
         },
         "en": {
             "checkout": "{logo:pp} {logo:paypal} Checkout",
             "safer_tag": "The safer, faster way to pay",
-
             "later_tag": "Buy Now. Pay Over Time.",
             "pay": "Pay with {logo:paypal}",
-            "buynow": "{logo:pp} {logo:paypal} Buy Now"
+            "buynow": "{logo:pp} {logo:paypal} Buy Now",
+            "installment": "{logo:pp} {logo:paypal}  Interest free<br>  payments",
+            "installment_period": "{logo:pp} {logo:paypal}  Pay up to [installmentperiod]x<br>  without interest"
         }
     },
     "MY": {

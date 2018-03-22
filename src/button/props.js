@@ -61,7 +61,8 @@ export let normalizeProps = memoize((props : Object) : Object => {
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
         [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
-        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
+        [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height,
+        [ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD ]:  installmentperiod
     } = style;
 
     max = determineMaxButtons({ label, layout, max });
@@ -78,6 +79,7 @@ export let normalizeProps = memoize((props : Object) : Object => {
 
     let cards = determineEligibleCards({ funding, locale });
 
+
     return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height, cards };
+        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };
 });
