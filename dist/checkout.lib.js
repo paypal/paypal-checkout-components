@@ -9531,7 +9531,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.184",
+                version: "4.0.185",
                 cors: !0,
                 env: constants.r.PRODUCTION,
                 state: "checkoutjs",
@@ -11637,7 +11637,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.184", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.185", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12348,7 +12348,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, creditThrottle = Object(lib.x)("dual_credit_automatic", 50), Button = Object(src.c)({
+            }, creditThrottle = void 0, Button = Object(src.c)({
                 tag: "paypal-button",
                 name: "ppbutton",
                 buildUrl: function(props) {
@@ -12563,7 +12563,10 @@
                         decorate: function() {
                             var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
                             allowed && -1 !== allowed.indexOf(constants.t.VENMO) && !Object(lib.z)() && allowed.splice(allowed.indexOf(constants.t.VENMO), 1);
-                            isCreditDualEligible(props) && creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
+                            if (isCreditDualEligible(props)) {
+                                creditThrottle = Object(lib.x)("dual_credit_automatic", 50);
+                                creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
+                            }
                             var remembered = Object(lib.r)(function(sources) {
                                 return sources;
                             });
@@ -12610,7 +12613,7 @@
                                 _track2[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_RENDER, _track2[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                                 _track2[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.s.KEY.BUTTON_SOURCE] = this.props.source, 
                                 _track2));
-                                if (isCreditDualEligible(this.props)) {
+                                if (creditThrottle) {
                                     var _creditThrottle$logSt;
                                     creditThrottle.logStart((_creditThrottle$logSt = {}, _creditThrottle$logSt[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                     _creditThrottle$logSt));
@@ -12625,7 +12628,7 @@
                         required: !0,
                         decorate: function(original) {
                             return function(data, actions) {
-                                var _track3, _creditThrottle$logCo, _this3 = this;
+                                var _track3, _this3 = this;
                                 data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                     paymentID: data.paymentID,
                                     token: data.paymentToken
@@ -12670,8 +12673,11 @@
                                 onAuthorizeListener.trigger({
                                     paymentToken: data.paymentToken
                                 });
-                                creditThrottle.logComplete((_creditThrottle$logCo = {}, _creditThrottle$logCo[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                                _creditThrottle$logCo));
+                                if (creditThrottle) {
+                                    var _creditThrottle$logCo;
+                                    creditThrottle.logComplete((_creditThrottle$logCo = {}, _creditThrottle$logCo[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                    _creditThrottle$logCo));
+                                }
                                 return zalgo_promise_src.a.try(function() {
                                     if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref5) {
                                         var nonce = _ref5.nonce;
@@ -12719,14 +12725,17 @@
                         noop: !0,
                         decorate: function(original) {
                             return function(data) {
-                                var _track5, _creditThrottle$log;
+                                var _track5;
                                 Object(beaver_logger_client.j)("button_click");
                                 Object(beaver_logger_client.o)((_track5 = {}, _track5[constants.s.KEY.STATE] = constants.s.STATE.BUTTON, 
                                 _track5[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_CLICK, _track5[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                                 _track5[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.s.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                                 _track5));
-                                creditThrottle.log("click", (_creditThrottle$log = {}, _creditThrottle$log[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                                _creditThrottle$log));
+                                if (creditThrottle) {
+                                    var _creditThrottle$log;
+                                    creditThrottle.log("click", (_creditThrottle$log = {}, _creditThrottle$log[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                    _creditThrottle$log));
+                                }
                                 Object(beaver_logger_client.g)();
                                 return original.apply(this, arguments);
                             };
@@ -13036,7 +13045,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.184", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.185", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(exportBuilder) {
@@ -13978,73 +13987,84 @@
                 return setup;
             });
         },
-        "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "./src/lib/device.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
-            function getUserAgent() {
-                return window.navigator.mockUserAgent || window.navigator.userAgent;
-            }
-            function isDevice() {
-                return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
-            }
-            function isWebView() {
-                var userAgent = getUserAgent();
-                return /(iPhone|iPod|iPad|Macintosh).*AppleWebKit(?!.*Safari)/i.test(userAgent) || /\bwv\b/.test(userAgent) || /Android.*Version\/(\d)\.(\d)/i.test(userAgent);
-            }
-            function isFacebookWebView() {
-                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-            }
-            function isFirefoxIOS() {
-                return /FxiOS/i.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-            }
-            function isOperaMini() {
-                return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
-            }
-            function isAndroid() {
-                return /Android/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-            }
-            function isIos() {
-                return /iPhone|iPod|iPad/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-            }
-            function isGoogleSearchApp() {
-                return /\bGSA\b/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-            }
-            function isQQBrowser() {
-                return /QQBrowser/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-            }
-            function isIosWebview() {
-                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-            }
-            function isAndroidWebview() {
-                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
-            }
-            function isIE() {
-                return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
-            }
-            function isIECompHeader() {
-                var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
-                return !(!mHttp || !mContent);
-            }
-            function isIEIntranet() {
-                if (window.document.documentMode) try {
-                    var status = window.status;
-                    window.status = "testIntranetMode";
-                    if ("testIntranetMode" === window.status) {
-                        window.status = status;
-                        return !0;
+            (function(process) {
+                function getUserAgent() {
+                    return window.navigator.mockUserAgent || window.navigator.userAgent;
+                }
+                function isDevice() {
+                    return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+                }
+                function isFacebookWebView() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+                }
+                function isFirefoxIOS() {
+                    return /FxiOS/i.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+                }
+                function isOperaMini() {
+                    return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
+                }
+                function isAndroid() {
+                    return /Android/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+                }
+                function isIos() {
+                    return /iPhone|iPod|iPad/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+                }
+                function isGoogleSearchApp() {
+                    return /\bGSA\b/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+                }
+                function isQQBrowser() {
+                    return /QQBrowser/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+                }
+                function isIosWebview() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+                }
+                function isAndroidWebview() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+                }
+                function isIE() {
+                    return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
+                }
+                function isIECompHeader() {
+                    var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
+                    return !(!mHttp || !mContent);
+                }
+                function isElectron() {
+                    return !(void 0 === process || !process.versions || !process.versions.electron);
+                }
+                function isIEIntranet() {
+                    if (window.document.documentMode) try {
+                        var status = window.status;
+                        window.status = "testIntranetMode";
+                        if ("testIntranetMode" === window.status) {
+                            window.status = status;
+                            return !0;
+                        }
+                        return !1;
+                    } catch (err) {
+                        return !1;
                     }
                     return !1;
-                } catch (err) {
-                    return !1;
                 }
-                return !1;
-            }
-            function supportsPopups() {
-                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua));
-            }
+                function supportsPopups() {
+                    var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
+                }
+                __webpack_exports__.a = getUserAgent;
+                __webpack_exports__.b = isDevice;
+                __webpack_exports__.f = isIos;
+                __webpack_exports__.c = isIE;
+                __webpack_exports__.d = isIECompHeader;
+                __webpack_exports__.e = isIEIntranet;
+                __webpack_exports__.g = supportsPopups;
+            }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
+        },
+        "./src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
+            "use strict";
             function isDocumentReady() {
                 return Boolean(document.body) && "complete" === document.readyState;
             }
@@ -14160,7 +14180,7 @@
             }
             function hasMetaViewPort() {
                 var meta = document.querySelector("meta[name=viewport]");
-                return !(isDevice() && window.screen.width < 660 && !meta);
+                return !(Object(device.b)() && window.screen.width < 660 && !meta);
             }
             function normalizeLocale(locale) {
                 if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
@@ -14330,7 +14350,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.184"
+                        ver: "4.0.185"
                     };
                 });
                 Object(client.a)(function() {
@@ -14375,7 +14395,7 @@
                 window.LOG_LEVEL = logLevel;
             }
             function getBowser() {
-                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$clearCache = _ref.clearCache, clearCache = void 0 !== _ref$clearCache && _ref$clearCache, userAgent = getUserAgent();
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$clearCache = _ref.clearCache, clearCache = void 0 !== _ref$clearCache && _ref$clearCache, userAgent = Object(device.a)();
                 if (bowserCache[userAgent]) return bowserCache[userAgent];
                 clearCache && delete __webpack_require__.c["./node_modules/bowser/bowser.min.js"];
                 var bowser = __webpack_require__("./node_modules/bowser/bowser.min.js");
@@ -14383,7 +14403,7 @@
                 return bowser;
             }
             function isBrowserEligible() {
-                if (isIEIntranet()) return !1;
+                if (Object(device.e)()) return !1;
                 for (var bowser = getBowser({
                     clearCache: !0
                 }), _iterator = Object.keys(config.a.SUPPORTED_BROWSERS), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
@@ -14402,7 +14422,7 @@
                 return !0;
             }
             function isEligible() {
-                if (isIEIntranet()) return !1;
+                if (Object(device.e)()) return !1;
                 var userAgent = window.navigator.userAgent;
                 if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
                 var result = isBrowserEligible();
@@ -14428,8 +14448,8 @@
                     logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
                     Object(client.p)("json_stringify_object_broken");
                 }
-                isIEIntranet() && Object(client.p)("ie_intranet_mode");
-                isIE() && !isIECompHeader() && Object(client.p)("ie_meta_compatibility_header_missing", {
+                Object(device.e)() && Object(client.p)("ie_intranet_mode");
+                Object(device.c)() && !Object(device.d)() && Object(client.p)("ie_meta_compatibility_header_missing", {
                     message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
                 });
                 3 !== foo.bind({
@@ -14541,7 +14561,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.184";
+                    payload.version = "4.0.185";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14568,7 +14588,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.184".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.185".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14576,7 +14596,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.184",
+                    v: "checkout.js.4.0.185",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14709,7 +14729,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.184";
+                return "4.0.185";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
@@ -14774,7 +14794,7 @@
                             _ref2 = _i2.value;
                         }
                         var source = _ref2;
-                        if (source !== constants.t.VENMO || isDevice()) {
+                        if (source !== constants.t.VENMO || Object(device.b)()) {
                             -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
                             flushRememberedFundingPromises();
                         }
@@ -14801,13 +14821,13 @@
                 }) ? zalgo_promise_src.a.resolve() : loadMeta();
             }
             function allowIframe() {
-                if (!supportsPopups()) return !0;
+                if (!Object(device.g)()) return !0;
                 var parentWindow = Object(cross_domain_utils_src.l)(window);
                 if (parentWindow && Object(cross_domain_utils_src.u)(parentWindow)) return !0;
                 var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
                 return !(!parentComponentWindow || !Object(cross_domain_utils_src.u)(parentComponentWindow));
             }
-            var util = __webpack_require__("./src/lib/util.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), documentReady = new zalgo_promise_src.a(function(resolve) {
+            var device = __webpack_require__("./src/lib/device.js"), util = __webpack_require__("./src/lib/util.js"), post_robot_src = __webpack_require__("./node_modules/post-robot/src/index.js"), client = __webpack_require__("./node_modules/beaver-logger/client/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), documentReady = new zalgo_promise_src.a(function(resolve) {
                 if (isDocumentReady()) return resolve();
                 var interval = setInterval(function() {
                     if (isDocumentReady()) {
@@ -14943,7 +14963,7 @@
             }), openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
                 return zalgo_promise_src.a.try(function() {
-                    if (isIEIntranet()) return {
+                    if (Object(device.e)()) return {
                         iframeEligible: !1,
                         iframeEligibleReason: "ie_intranet",
                         rememberedFunding: []
@@ -14955,7 +14975,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.184"
+                            version: "4.0.185"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
@@ -14965,52 +14985,35 @@
                 });
             }), jsx = __webpack_require__("./src/lib/jsx.js");
             __webpack_require__.d(__webpack_exports__, !1, function() {
-                return getUserAgent;
+                return device.a;
             });
             __webpack_require__.d(__webpack_exports__, "z", function() {
-                return isDevice;
+                return device.b;
             });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isWebView;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isFacebookWebView;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isFirefoxIOS;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isOperaMini;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isAndroid;
-            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, "F", function() {
-                return isIos;
+                return device.f;
             });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isGoogleSearchApp;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isQQBrowser;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isIosWebview;
-            });
-            __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isAndroidWebview;
-            });
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, "D", function() {
-                return isIE;
+                return device.c;
             });
             __webpack_require__.d(__webpack_exports__, !1, function() {
-                return isIECompHeader;
+                return device.d;
             });
+            __webpack_require__.d(__webpack_exports__, !1, function() {});
             __webpack_require__.d(__webpack_exports__, "E", function() {
-                return isIEIntranet;
+                return device.e;
             });
             __webpack_require__.d(__webpack_exports__, "W", function() {
-                return supportsPopups;
+                return device.g;
             });
             __webpack_require__.d(__webpack_exports__, "G", function() {
                 return util.g;

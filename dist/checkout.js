@@ -9530,7 +9530,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.184",
+            version: "4.0.185",
             cors: !0,
             env: constants.r.PRODUCTION,
             state: "checkoutjs",
@@ -11636,7 +11636,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.184", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.a.VERSION] = "4.0.185", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12347,7 +12347,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, creditThrottle = Object(lib.x)("dual_credit_automatic", 50), Button = Object(src.c)({
+        }, creditThrottle = void 0, Button = Object(src.c)({
             tag: "paypal-button",
             name: "ppbutton",
             buildUrl: function(props) {
@@ -12562,7 +12562,10 @@
                     decorate: function() {
                         var _ref3 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref3$allowed = _ref3.allowed, allowed = void 0 === _ref3$allowed ? [] : _ref3$allowed, _ref3$disallowed = _ref3.disallowed, disallowed = void 0 === _ref3$disallowed ? [] : _ref3$disallowed, props = arguments[1];
                         allowed && -1 !== allowed.indexOf(constants.t.VENMO) && !Object(lib.z)() && allowed.splice(allowed.indexOf(constants.t.VENMO), 1);
-                        isCreditDualEligible(props) && creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
+                        if (isCreditDualEligible(props)) {
+                            creditThrottle = Object(lib.x)("dual_credit_automatic", 50);
+                            creditThrottle.isEnabled() && allowed.push(constants.t.CREDIT);
+                        }
                         var remembered = Object(lib.r)(function(sources) {
                             return sources;
                         });
@@ -12609,7 +12612,7 @@
                             _track2[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_RENDER, _track2[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                             _track2[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.s.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
-                            if (isCreditDualEligible(this.props)) {
+                            if (creditThrottle) {
                                 var _creditThrottle$logSt;
                                 creditThrottle.logStart((_creditThrottle$logSt = {}, _creditThrottle$logSt[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                                 _creditThrottle$logSt));
@@ -12624,7 +12627,7 @@
                     required: !0,
                     decorate: function(original) {
                         return function(data, actions) {
-                            var _track3, _creditThrottle$logCo, _this3 = this;
+                            var _track3, _this3 = this;
                             data && !data.intent && Object(beaver_logger_client.p)("button_authorize_no_intent", {
                                 paymentID: data.paymentID,
                                 token: data.paymentToken
@@ -12669,8 +12672,11 @@
                             onAuthorizeListener.trigger({
                                 paymentToken: data.paymentToken
                             });
-                            creditThrottle.logComplete((_creditThrottle$logCo = {}, _creditThrottle$logCo[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _creditThrottle$logCo));
+                            if (creditThrottle) {
+                                var _creditThrottle$logCo;
+                                creditThrottle.logComplete((_creditThrottle$logCo = {}, _creditThrottle$logCo[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$logCo));
+                            }
                             return zalgo_promise_src.a.try(function() {
                                 if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref5) {
                                     var nonce = _ref5.nonce;
@@ -12718,14 +12724,17 @@
                     noop: !0,
                     decorate: function(original) {
                         return function(data) {
-                            var _track5, _creditThrottle$log;
+                            var _track5;
                             Object(beaver_logger_client.j)("button_click");
                             Object(beaver_logger_client.o)((_track5 = {}, _track5[constants.s.KEY.STATE] = constants.s.STATE.BUTTON, 
                             _track5[constants.s.KEY.TRANSITION] = constants.s.TRANSITION.BUTTON_CLICK, _track5[constants.s.KEY.BUTTON_TYPE] = constants.s.BUTTON_TYPE.IFRAME, 
                             _track5[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track5[constants.s.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track5));
-                            creditThrottle.log("click", (_creditThrottle$log = {}, _creditThrottle$log[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
-                            _creditThrottle$log));
+                            if (creditThrottle) {
+                                var _creditThrottle$log;
+                                creditThrottle.log("click", (_creditThrottle$log = {}, _creditThrottle$log[constants.s.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
+                                _creditThrottle$log));
+                            }
                             Object(beaver_logger_client.g)();
                             return original.apply(this, arguments);
                         };
@@ -13035,7 +13044,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.184", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.185", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13983,7 +13992,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.184";
+                payload.version = "4.0.185";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14001,74 +14010,79 @@
     },
     "./src/lib/device.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        function getUserAgent() {
-            return window.navigator.mockUserAgent || window.navigator.userAgent;
-        }
-        function isDevice() {
-            return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
-        }
-        function isFacebookWebView() {
-            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-            return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
-        }
-        function isFirefoxIOS() {
-            return /FxiOS/i.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-        }
-        function isOperaMini() {
-            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
-        }
-        function isAndroid() {
-            return /Android/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-        }
-        function isIos() {
-            return /iPhone|iPod|iPad/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-        }
-        function isGoogleSearchApp() {
-            return /\bGSA\b/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-        }
-        function isQQBrowser() {
-            return /QQBrowser/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
-        }
-        function isIosWebview() {
-            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-            return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
-        }
-        function isAndroidWebview() {
-            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-            return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
-        }
-        function isIE() {
-            return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
-        }
-        function isIECompHeader() {
-            var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
-            return !(!mHttp || !mContent);
-        }
-        function isIEIntranet() {
-            if (window.document.documentMode) try {
-                var status = window.status;
-                window.status = "testIntranetMode";
-                if ("testIntranetMode" === window.status) {
-                    window.status = status;
-                    return !0;
+        (function(process) {
+            function getUserAgent() {
+                return window.navigator.mockUserAgent || window.navigator.userAgent;
+            }
+            function isDevice() {
+                return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+            }
+            function isFacebookWebView() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+            }
+            function isFirefoxIOS() {
+                return /FxiOS/i.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isOperaMini() {
+                return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
+            }
+            function isAndroid() {
+                return /Android/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isIos() {
+                return /iPhone|iPod|iPad/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isGoogleSearchApp() {
+                return /\bGSA\b/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isQQBrowser() {
+                return /QQBrowser/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isIosWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+            }
+            function isAndroidWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+            }
+            function isIE() {
+                return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
+            }
+            function isIECompHeader() {
+                var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
+                return !(!mHttp || !mContent);
+            }
+            function isElectron() {
+                return !(void 0 === process || !process.versions || !process.versions.electron);
+            }
+            function isIEIntranet() {
+                if (window.document.documentMode) try {
+                    var status = window.status;
+                    window.status = "testIntranetMode";
+                    if ("testIntranetMode" === window.status) {
+                        window.status = status;
+                        return !0;
+                    }
+                    return !1;
+                } catch (err) {
+                    return !1;
                 }
                 return !1;
-            } catch (err) {
-                return !1;
             }
-            return !1;
-        }
-        function supportsPopups() {
-            var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
-            return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua));
-        }
-        __webpack_exports__.a = getUserAgent;
-        __webpack_exports__.b = isDevice;
-        __webpack_exports__.f = isIos;
-        __webpack_exports__.c = isIE;
-        __webpack_exports__.d = isIECompHeader;
-        __webpack_exports__.e = isIEIntranet;
-        __webpack_exports__.g = supportsPopups;
+            function supportsPopups() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
+            }
+            __webpack_exports__.a = getUserAgent;
+            __webpack_exports__.b = isDevice;
+            __webpack_exports__.f = isIos;
+            __webpack_exports__.c = isIE;
+            __webpack_exports__.d = isIECompHeader;
+            __webpack_exports__.e = isIEIntranet;
+            __webpack_exports__.g = supportsPopups;
+        }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
     },
     "./src/lib/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -14337,7 +14351,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.184"
+                    ver: "4.0.185"
                 };
             });
             Object(client.a)(function() {
@@ -14613,7 +14627,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.184";
+            return isPayPalObjects() ? "4" : "4.0.185";
         }
         function getRememberedFunding(handler) {
             return Object(session.f)(function(storage) {
@@ -14848,6 +14862,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return device.d;
         });
+        __webpack_require__.d(__webpack_exports__, !1, function() {});
         __webpack_require__.d(__webpack_exports__, "E", function() {
             return device.e;
         });
@@ -15522,18 +15537,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.184" === window.paypal.version) {
+        if (window.paypal && "4.0.185" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.184"
+                version: "4.0.185"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.184) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.185) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.184" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.185" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.184"
+                version: "4.0.185"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.184");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.185");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
