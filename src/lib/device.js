@@ -87,6 +87,13 @@ export function isIECompHeader() : boolean {
     return false;
 }
 
+export function isElectron() : boolean {
+    if (typeof process !== 'undefined' && process.versions && process.versions.electron) {
+        return true;
+    }
+    return false;
+}
+
 export function isIEIntranet() : boolean {
 
     // This status check only works for older versions of IE with document.documentMode set
@@ -115,5 +122,6 @@ export function isIEIntranet() : boolean {
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
-    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua));
+    return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) ||
+        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
 }
