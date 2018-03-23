@@ -77,7 +77,7 @@ function isCreditDualEligible(props) : boolean {
     return true;
 }
 
-let creditThrottle = getThrottle('dual_credit_automatic', 50);
+let creditThrottle;
 
 type ButtonOptions = {
     style : {|
@@ -409,6 +409,8 @@ export let Button : Component<ButtonOptions> = create({
                 }
 
                 if (isCreditDualEligible(props)) {
+                    creditThrottle = getThrottle('dual_credit_automatic', 50);
+
                     if (creditThrottle.isEnabled()) {
                         allowed.push(FUNDING.CREDIT);
                     }
@@ -464,7 +466,7 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
                     });
 
-                    if (isCreditDualEligible(this.props)) {
+                    if (creditThrottle) {
                         creditThrottle.logStart({
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
@@ -547,9 +549,11 @@ export let Button : Component<ButtonOptions> = create({
                         paymentToken: data.paymentToken
                     });
 
-                    creditThrottle.logComplete({
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                    });
+                    if (creditThrottle) {
+                        creditThrottle.logComplete({
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
 
                     return ZalgoPromise.try(() => {
 
@@ -625,9 +629,11 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
-                    creditThrottle.log('click', {
-                        [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                    });
+                    if (creditThrottle) {
+                        creditThrottle.log('click', {
+                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
+                        });
+                    }
 
                     flushLogs();
 
