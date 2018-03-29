@@ -32,7 +32,7 @@ import { normalizeProps } from './props';
 
 function isCreditDualEligible(props) : boolean {
 
-    let { label, funding, layout, env = config.env, locale = config.locale, maxbuttons, sources } = normalizeProps(props);
+    let { label, funding, layout, env = config.env, locale = config.locale, max, sources } = normalizeProps(props);
     let { allowed } = funding;
     let { country } = locale;
 
@@ -44,7 +44,7 @@ function isCreditDualEligible(props) : boolean {
         return false;
     }
 
-    if (maxbuttons === 1) {
+    if (max === 1) {
         return false;
     }
 

@@ -8,7 +8,7 @@ import { labelStyle } from './labels';
 import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
 
-export function componentStyle({ height, cardNumber } : { height? : number, cardNumber? : number }) : string {
+export function componentStyle({ height, cardNumber } : { height? : ?number, cardNumber? : number }) : string {
     return `
         ${ pageStyle }
         ${ buttonStyle }

@@ -97,7 +97,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
 
     if (buttonHeight) {
         let possibleSizes = values(BUTTON_SIZE).filter(possibleSize => {
-            return BUTTON_STYLE[possibleSize] &&
+            return BUTTON_STYLE[possibleSize] && buttonHeight &&
                 BUTTON_STYLE[possibleSize].minHeight <= buttonHeight && BUTTON_STYLE[possibleSize].maxHeight >= buttonHeight;
         });
 

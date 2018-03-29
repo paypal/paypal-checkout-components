@@ -1,6 +1,6 @@
 /* @flow */
 
-import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS } from '../constants';
+import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
 import { memoize } from '../lib/util';
 
@@ -34,7 +34,27 @@ function enableTagline({ tagline, branding, fundingicons, layout }) : boolean {
     return Boolean(tagline && branding && !fundingicons && layout === BUTTON_LAYOUT.HORIZONTAL);
 }
 
-export let normalizeProps = memoize((props : Object) : Object => {
+type NormalizedProps = {|
+    size : $Values<typeof BUTTON_SIZE>,
+    label : $Values<typeof BUTTON_LABEL>,
+    color : $Values<typeof BUTTON_COLOR>,
+    shape : $Values<typeof BUTTON_SHAPE>,
+    locale : LocaleType,
+    branding : boolean,
+    fundingicons : boolean,
+    tagline : boolean,
+    funding : FundingSelection,
+    layout : $Values<typeof BUTTON_LAYOUT>,
+    sources : FundingList,
+    max : number,
+    multiple : boolean,
+    env : string,
+    height : ?number,
+    cards : Array<string>,
+    installmentperiod : number
+|};
+
+export let normalizeProps = memoize((props : Object) : NormalizedProps => {
 
     let {
         env,
@@ -78,7 +98,6 @@ export let normalizeProps = memoize((props : Object) : Object => {
     tagline = enableTagline({ tagline, branding, fundingicons, layout });
 
     let cards = determineEligibleCards({ funding, locale });
-
 
     return { size, label, locale, color, shape, branding, fundingicons,
         tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };

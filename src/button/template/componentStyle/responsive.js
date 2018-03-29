@@ -8,7 +8,7 @@ import { CLASS } from './class';
 
 const DUAL_BUTTON_MIN_RATIO = 2.8;
 
-export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : number, cardNumber? : number }) : string {
+export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?number, cardNumber? : number }) : string {
 
     return Object.keys(BUTTON_STYLE).map(size => {
 
