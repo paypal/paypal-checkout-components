@@ -68,7 +68,7 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
 
     let el = (
         <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` }>
-            <a href='#' class="paypal-checkout-close" onClick={ close }></a>
+            <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
             <div class="paypal-checkout-modal">
                 <div class="paypal-checkout-logo">
                     <img
