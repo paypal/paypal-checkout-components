@@ -8,7 +8,7 @@ import { type Component } from 'xcomponent/src/component/component';
 
 import { isDevice, request, getQueryParam, redirect as redir, patchMethod,
     setLogLevel, getSessionID, getBrowserLocale, supportsPopups, memoize,
-    extend, getDomainSetting, documentReady, getThrottle, getScriptVersion,
+    getDomainSetting, documentReady, getThrottle, getScriptVersion,
     getButtonSessionID, isPayPalDomain } from '../lib';
 import { config } from '../config';
 import { ENV, FPTI, PAYMENT_TYPE, CHECKOUT_OVERLAY_COLOR } from '../constants';
