@@ -116,6 +116,10 @@ export let config = {
 
         'beallsflorida.com': {
             disable_venmo: true
+        },
+
+        'therealdeal.com': {
+            disable_venmo: true
         }
     },
 
