@@ -509,15 +509,6 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
         });
     });
 
-    if (!Object.assign) {
-        try {
-            // $FlowFixMe
-            Object.assign = extend;
-        } catch (err) {
-            // pass
-        }
-    }
-
     documentReady.then(() => {
 
         if (!window.injector) {
