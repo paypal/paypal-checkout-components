@@ -224,6 +224,9 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             line-height: 1.35;
             padding: 10px 0;
             font-weight: bold;
+        }
+
+        #${ id } .paypal-checkout-modal .paypal-checkout-continue a {
             border-bottom: 1px solid white;
         }
 
