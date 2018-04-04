@@ -118,7 +118,7 @@ export let config = {
             disable_venmo: true
         },
 
-        'therealdeal.com': {
+        'therealreal.com': {
             disable_venmo: true
         }
     },
