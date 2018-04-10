@@ -31,7 +31,8 @@ export function determineUrl(env : string, fundingSource : ?string, payment : st
         return config.guestUrls[env];
     }
 
-    if (fundingSource === FUNDING.IDEAL) {
+    if (fundingSource === FUNDING.IDEAL || fundingSource === FUNDING.BANCONTACT || fundingSource === FUNDING.GIROPAY ||
+        fundingSource === FUNDING.EPS || fundingSource === FUNDING.MYBANK) {
         return config.altpayUrls[env];
     }
 
