@@ -120,6 +120,14 @@ export let config = {
 
         'therealreal.com': {
             disable_venmo: true
+        },
+
+        'liveaquaria.com': {
+            disable_venmo: true
+        },
+
+        'drsfostersmith.com': {
+            disable_venmo: true
         }
     },
 
