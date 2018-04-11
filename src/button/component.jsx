@@ -95,7 +95,8 @@ type ButtonOptions = {
         getPaymentOptions : Function,
         addPaymentDetails : Function
     },
-    awaitPopupBridge : Function
+    awaitPopupBridge : Function,
+    meta : Object
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -205,6 +206,14 @@ export let Button : Component<ButtonOptions> = create({
                         throw new Error(`Invalid env: ${ env }`);
                     }
                 }
+            }
+        },
+
+        meta: {
+            type:     'object',
+            required: false,
+            def() : Object {
+                return {};
             }
         },
 

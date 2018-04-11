@@ -131,6 +131,15 @@ export let Checkout : Component<CheckoutPropsType> = create({
             }
         },
 
+        meta: {
+            type:     'object',
+            required: false,
+            def() : Object {
+                let meta = window.xprops && window.xprops.meta;
+                return meta || {};
+            }
+        },
+
         stage: {
             type:       'string',
             required:   false,
