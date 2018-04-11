@@ -1,7 +1,7 @@
 /* @flow */
+/* eslint unicorn/filename-case: 0, import/unambiguous: 0, import/no-commonjs: 0 */
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
+module.exports = {
 
     modules: {
         'buttons': './src/index'
