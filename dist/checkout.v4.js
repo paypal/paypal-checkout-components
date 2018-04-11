@@ -526,6 +526,7 @@
             return logLevels;
         });
         var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), windowReady = new src.a(function(resolve) {
+            "undefined" != typeof document && "complete" === document.readyState && resolve();
             window.addEventListener && window.addEventListener("load", resolve);
         }), payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [], config = {
             uri: "",
@@ -3379,296 +3380,6 @@
             return module;
         };
     },
-    "./node_modules/xcomponent/node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
-        (function(global) {
-            !function(root, undefined) {
-                "use strict";
-                var NODE_JS = void 0 !== module;
-                NODE_JS && (root = global);
-                var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
-                    A: 0,
-                    B: 1,
-                    C: 2,
-                    D: 3,
-                    E: 4,
-                    F: 5,
-                    G: 6,
-                    H: 7,
-                    I: 8,
-                    J: 9,
-                    K: 10,
-                    L: 11,
-                    M: 12,
-                    N: 13,
-                    O: 14,
-                    P: 15,
-                    Q: 16,
-                    R: 17,
-                    S: 18,
-                    T: 19,
-                    U: 20,
-                    V: 21,
-                    W: 22,
-                    X: 23,
-                    Y: 24,
-                    Z: 25,
-                    "2": 26,
-                    "3": 27,
-                    "4": 28,
-                    "5": 29,
-                    "6": 30,
-                    "7": 31
-                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], toUtf8String = function(bytes) {
-                    for (var b, c, str = "", length = bytes.length, i = 0, followingChars = 0; i < length; ) {
-                        b = bytes[i++];
-                        if (b <= 127) str += String.fromCharCode(b); else {
-                            if (b > 191 && b <= 223) {
-                                c = 31 & b;
-                                followingChars = 1;
-                            } else if (b <= 239) {
-                                c = 15 & b;
-                                followingChars = 2;
-                            } else {
-                                if (!(b <= 247)) throw "not a UTF-8 string";
-                                c = 7 & b;
-                                followingChars = 3;
-                            }
-                            for (var j = 0; j < followingChars; ++j) {
-                                b = bytes[i++];
-                                if (b < 128 || b > 191) throw "not a UTF-8 string";
-                                c <<= 6;
-                                c += 63 & b;
-                            }
-                            if (c >= 55296 && c <= 57343) throw "not a UTF-8 string";
-                            if (c > 1114111) throw "not a UTF-8 string";
-                            if (c <= 65535) str += String.fromCharCode(c); else {
-                                c -= 65536;
-                                str += String.fromCharCode(55296 + (c >> 10));
-                                str += String.fromCharCode(56320 + (1023 & c));
-                            }
-                        }
-                    }
-                    return str;
-                }, decodeAsBytes = function(base32Str) {
-                    base32Str = base32Str.replace(/=/g, "");
-                    for (var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index = 0, length = base32Str.length, i = 0, count = length >> 3 << 3; i < count; ) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
-                        bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
-                        bytes[index++] = 255 & (v7 << 5 | v8);
-                    }
-                    var remain = length - count;
-                    if (2 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                    } else if (4 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                    } else if (5 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
-                    } else if (7 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                        bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                        bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
-                        bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
-                    }
-                    return bytes;
-                }, encodeAscii = function(str) {
-                    for (var v1, v2, v3, v4, v5, base32Str = "", length = str.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
-                        v1 = str.charCodeAt(i++);
-                        v2 = str.charCodeAt(i++);
-                        v3 = str.charCodeAt(i++);
-                        v4 = str.charCodeAt(i++);
-                        v5 = str.charCodeAt(i++);
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
-                    }
-                    var remain = length - count;
-                    if (1 == remain) {
-                        v1 = str.charCodeAt(i);
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
-                        v1 = str.charCodeAt(i++);
-                        v2 = str.charCodeAt(i);
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
-                        v1 = str.charCodeAt(i++);
-                        v2 = str.charCodeAt(i++);
-                        v3 = str.charCodeAt(i);
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
-                        v1 = str.charCodeAt(i++);
-                        v2 = str.charCodeAt(i++);
-                        v3 = str.charCodeAt(i++);
-                        v4 = str.charCodeAt(i);
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-                    }
-                    return base32Str;
-                }, encodeUtf8 = function(str) {
-                    var v1, v2, v3, v4, v5, code, i, end = !1, base32Str = "", index = 0, start = 0, bytes = 0, length = str.length;
-                    do {
-                        blocks[0] = blocks[5];
-                        blocks[1] = blocks[6];
-                        blocks[2] = blocks[7];
-                        for (i = start; index < length && i < 5; ++index) {
-                            code = str.charCodeAt(index);
-                            if (code < 128) blocks[i++] = code; else if (code < 2048) {
-                                blocks[i++] = 192 | code >> 6;
-                                blocks[i++] = 128 | 63 & code;
-                            } else if (code < 55296 || code >= 57344) {
-                                blocks[i++] = 224 | code >> 12;
-                                blocks[i++] = 128 | code >> 6 & 63;
-                                blocks[i++] = 128 | 63 & code;
-                            } else {
-                                code = 65536 + ((1023 & code) << 10 | 1023 & str.charCodeAt(++index));
-                                blocks[i++] = 240 | code >> 18;
-                                blocks[i++] = 128 | code >> 12 & 63;
-                                blocks[i++] = 128 | code >> 6 & 63;
-                                blocks[i++] = 128 | 63 & code;
-                            }
-                        }
-                        bytes += i - start;
-                        start = i - 5;
-                        index == length && ++index;
-                        index > length && i < 6 && (end = !0);
-                        v1 = blocks[0];
-                        if (i > 4) {
-                            v2 = blocks[1];
-                            v3 = blocks[2];
-                            v4 = blocks[3];
-                            v5 = blocks[4];
-                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
-                        } else if (1 == i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 == i) {
-                            v2 = blocks[1];
-                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                        } else if (3 == i) {
-                            v2 = blocks[1];
-                            v3 = blocks[2];
-                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                        } else if (4 == i) {
-                            v2 = blocks[1];
-                            v3 = blocks[2];
-                            v4 = blocks[3];
-                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-                        }
-                    } while (!end);
-                    return base32Str;
-                }, encodeBytes = function(bytes) {
-                    for (var v1, v2, v3, v4, v5, base32Str = "", length = bytes.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
-                        v1 = bytes[i++];
-                        v2 = bytes[i++];
-                        v3 = bytes[i++];
-                        v4 = bytes[i++];
-                        v5 = bytes[i++];
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
-                    }
-                    var remain = length - count;
-                    if (1 == remain) {
-                        v1 = bytes[i];
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
-                        v1 = bytes[i++];
-                        v2 = bytes[i];
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
-                        v1 = bytes[i++];
-                        v2 = bytes[i++];
-                        v3 = bytes[i];
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
-                        v1 = bytes[i++];
-                        v2 = bytes[i++];
-                        v3 = bytes[i++];
-                        v4 = bytes[i];
-                        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-                    }
-                    return base32Str;
-                }, encode = function(input, asciiOnly) {
-                    var notString = "string" != typeof input;
-                    notString && input.constructor == ArrayBuffer && (input = new Uint8Array(input));
-                    return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
-                }, decode = function(base32Str, asciiOnly) {
-                    if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
-                    var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
-                    -1 == length && (length = base32Str.length);
-                    for (var i = 0, count = length >> 3 << 3; i < count; ) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3)) + String.fromCharCode(255 & (v7 << 5 | v8));
-                    }
-                    var remain = length - count;
-                    if (2 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2));
-                    } else if (4 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4));
-                    } else if (5 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1));
-                    } else if (7 == remain) {
-                        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-                        str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3));
-                    }
-                    return str;
-                };
-                decode.asBytes = decodeAsBytes;
-                var exports = {
-                    encode: encode,
-                    decode: decode
-                };
-                root.HI_BASE32_TEST && (exports.toUtf8String = toUtf8String);
-                !root.HI_BASE32_TEST && NODE_JS ? module.exports = exports : root && (root.base32 = exports);
-            }(this);
-        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
-    },
     "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function _classCallCheck(instance, Constructor) {
@@ -6148,7 +5859,7 @@
             return getParentRenderWindow;
         });
         __webpack_exports__.f = getPosition;
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/xcomponent/node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
         }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
@@ -8547,6 +8258,13 @@
                         if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
+                meta: {
+                    type: "object",
+                    required: !1,
+                    def: function() {
+                        return window.xprops && window.xprops.meta || {};
+                    }
+                },
                 stage: {
                     type: "string",
                     required: !1,
@@ -8907,7 +8625,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.190",
+            version: "4.0.191",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -11072,7 +10790,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.190", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.191", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11945,6 +11663,13 @@
                         if (env && !src_config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                     }
                 },
+                meta: {
+                    type: "object",
+                    required: !1,
+                    def: function() {
+                        return {};
+                    }
+                },
                 client: {
                     type: "object",
                     required: !1,
@@ -12567,7 +12292,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.190", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.191", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13515,7 +13240,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.190";
+                payload.version = "4.0.191";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -13874,7 +13599,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.190"
+                    ver: "4.0.191"
                 };
             });
             Object(client.a)(function() {
@@ -14150,7 +13875,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.190";
+            return isPayPalObjects() ? "4" : "4.0.191";
         }
         function getRememberedFunding(handler) {
             return Object(session.f)(function(storage) {
@@ -15060,18 +14785,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.190" === window.paypal.version) {
+        if (window.paypal && "4.0.191" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.190"
+                version: "4.0.191"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.190) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.191) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.190" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.191" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.190"
+                version: "4.0.191"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.190");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.191");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
