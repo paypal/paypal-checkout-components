@@ -33,7 +33,7 @@
     "dist/checkout.button.render.js",
     "dist/checkout.button.render.js.map",
     "src/",
-    "postinstall.js"
+    "__sdk__.js"
   ],
   "browserslist": [
     "IE >= 9",
