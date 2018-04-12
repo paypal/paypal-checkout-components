@@ -6,8 +6,8 @@ import { getFundingConfig, getCardConfig, FUNDING_PRIORITY, FUNDING_CONFIG } fro
 
 let fundingEligibilityReasons = [];
 
-export function isFundingIneligible(source : FundingSource, { locale, funding, layout } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string }) : ?string {
+export function isFundingIneligible(source : FundingSource, { locale, funding, layout, commit } :
+    { locale : LocaleType, funding : FundingSelection, layout : string, commit? : boolean }) : ?string {
 
     let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
     let allowSecondary = getFundingConfig(source, isVertical ? 'allowVertical' : 'allowHorizontal');
@@ -27,10 +27,14 @@ export function isFundingIneligible(source : FundingSource, { locale, funding, l
     if (getFundingConfig(source, 'allowedCountries', [ locale.country ]).indexOf(locale.country) === -1) {
         return FUNDING_ELIGIBILITY_REASON.DISALLOWED_COUNTRY;
     }
+
+    if (getFundingConfig(source, 'requireCommitAsTrue') && !commit) {
+        return FUNDING_ELIGIBILITY_REASON.COMMIT_NOT_SET;
+    }
 }
 
 export function isFundingAutoEligible(source : FundingSource, { locale, funding, layout } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string }) : ?string {
+    { locale : LocaleType, funding : FundingSelection, layout : string }) : ?string {
 
     let isVertical = layout === BUTTON_LAYOUT.VERTICAL;
 
@@ -51,8 +55,8 @@ export function isFundingAutoEligible(source : FundingSource, { locale, funding,
     }
 }
 
-export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected } :
-    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string }) : { eligible : boolean, reason : string } {
+export function isFundingEligible(source : FundingSource, { locale, funding, env, layout, selected, commit } :
+    { locale : LocaleType, funding : FundingSelection, env : string, layout : string, selected? : string, commit : boolean }) : { eligible : boolean, reason : string } {
 
     if (selected && source === selected) {
         return { eligible: true, reason: FUNDING_ELIGIBILITY_REASON.PRIMARY };
@@ -64,13 +68,13 @@ export function isFundingEligible(source : FundingSource, { locale, funding, env
         }
     }
 
-    let ineligibleReason = isFundingIneligible(source, { locale, funding, env, layout });
+    let ineligibleReason = isFundingIneligible(source, { locale, funding, layout, commit });
 
     if (ineligibleReason) {
         return { eligible: false, reason: ineligibleReason };
     }
 
-    let autoEligibleReason = isFundingAutoEligible(source, { locale, funding, env, layout });
+    let autoEligibleReason = isFundingAutoEligible(source, { locale, funding, layout });
 
     if (autoEligibleReason) {
         return { eligible: true, reason: autoEligibleReason };
@@ -79,13 +83,13 @@ export function isFundingEligible(source : FundingSource, { locale, funding, env
     return { eligible: false, reason: FUNDING_ELIGIBILITY_REASON.NEED_OPT_IN };
 }
 
-export function determineEligibleFunding({ funding, selected, locale, env, layout } :
-    { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string }) : FundingList {
+export function determineEligibleFunding({ funding, selected, locale, env, layout, commit } :
+    { funding : FundingSelection, selected : FundingSource, locale : LocaleType, env : string, layout : string, commit : boolean }) : FundingList {
 
     let reasons = {};
 
     let eligibleFunding = FUNDING_PRIORITY.filter(source => {
-        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout });
+        let { eligible, reason } = isFundingEligible(source, { selected, locale, funding, env, layout, commit });
         reasons[source] = { eligible, reason, factors: { env, locale, layout } };
         return eligible;
     });

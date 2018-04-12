@@ -44,7 +44,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
             {
                 source:   window.paypal.FUNDING.IDEAL,
                 fragment: 'checkouturl=true',
-                locale:   'nl_NL'
+                locale:   'nl_NL',
+                commit:   true
             },
 
             {
@@ -56,7 +57,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
         ];
 
         // $FlowFixMe
-        for (let { source, fragment, locale, userAgent } of cases) {
+        for (let { source, fragment, locale, userAgent, commit } of cases) {
             it(`should render multiple buttons including ${ source }, click on the ${ source } button, and send the correct url params`, (done) => {
 
                 if (userAgent) {
@@ -70,6 +71,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
 
                     locale,
+
+                    commit,
 
                     style: {
                         layout: 'vertical'

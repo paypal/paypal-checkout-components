@@ -40,7 +40,8 @@ export const FUNDING_ELIGIBILITY_REASON = {
     DEFAULT_COUNTRY:      'The funding source is enabled by default for the current locale',
     DEFAULT:              'The funding source is enabled by default for all users',
     REMEMBERED:           'The funding source was remembered for the current user',
-    NEED_OPT_IN:          'The funding source needs to be allowed in funding.allowed'
+    NEED_OPT_IN:          'The funding source needs to be allowed in funding.allowed',
+    COMMIT_NOT_SET:         'The funding source is not enabled when commit is not set as true'
 };
 
 export const CARD_PRIORITY = [
