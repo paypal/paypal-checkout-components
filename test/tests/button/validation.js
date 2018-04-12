@@ -675,30 +675,35 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `ideal`,
+                commit: true,
                 valid:  false
             },
 
             {
                 layout: `vertical`,
                 label:  `bancontact`,
+                commit: true,
                 valid:  false
             },
 
             {
                 layout: `vertical`,
                 label:  `giropay`,
+                commit: true,
                 valid:  false
             },
 
             {
                 layout: `vertical`,
                 label:  `eps`,
+                commit: true,
                 valid:  false
             },
 
             {
                 layout: `vertical`,
                 label:  `mybank`,
+                commit: true,
                 valid:  false
             },
 
@@ -709,7 +714,7 @@ let buttonConfigs = [
             }
 
         // $FlowFixMe
-        ].map(({ layout, label, tagline, fundingicons, branding, size, valid }) => ({
+        ].map(({ layout, label, tagline, fundingicons, branding, size, valid, commit }) => ({
 
             desc: `layout ${ layout } with label ${ label ? label.toString() : 'default' }, tagline ${ tagline ? tagline.toString() : 'default' }, fundingicons ${ fundingicons ? fundingicons.toString() : 'default' }, branding ${ branding || 'default' }, size ${ size || 'default' }`,
 
@@ -718,6 +723,7 @@ let buttonConfigs = [
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
+                commit,
                 style:       { label, layout, tagline, fundingicons, branding, size }
             }
         }))
@@ -821,12 +827,14 @@ let buttonConfigs = [
             {
                 layout:     `vertical`,
                 maxbuttons: 4,
+                commit:     true,
                 valid:      true
             },
 
             {
                 layout:     `vertical`,
                 maxbuttons: 5,
+                commit:     true,
                 valid:      true
             },
 
@@ -841,7 +849,7 @@ let buttonConfigs = [
             }
 
         // $FlowFixMe
-        ].map(({ maxbuttons, layout, valid }) => ({
+        ].map(({ maxbuttons, layout, valid, commit }) => ({
 
             desc: `maxbuttons ${ maxbuttons } and layout ${ layout || 'default' }`,
 
@@ -850,6 +858,7 @@ let buttonConfigs = [
             conf: {
                 payment:     noop,
                 onAuthorize: noop,
+                commit,
                 style:       { maxbuttons, layout }
             }
         }))
@@ -1522,6 +1531,8 @@ let buttonConfigs = [
                     payment:     noop,
                     onAuthorize: noop,
 
+                    commit: true,
+
                     funding: {
                         allowed: [ window.paypal.FUNDING.IDEAL ]
                     }
@@ -1551,6 +1562,8 @@ let buttonConfigs = [
                 conf: {
                     payment:     noop,
                     onAuthorize: noop,
+
+                    commit: true,
 
                     funding: {
                         allowed: [ window.paypal.FUNDING.ELV ]
@@ -1582,6 +1595,8 @@ let buttonConfigs = [
                     payment:     noop,
                     onAuthorize: noop,
 
+                    commit: true,
+
                     funding: {
                         allowed: [ window.paypal.FUNDING.BANCONTACT ]
                     }
@@ -1611,6 +1626,8 @@ let buttonConfigs = [
                 conf: {
                     payment:     noop,
                     onAuthorize: noop,
+
+                    commit: true,
 
                     funding: {
                         allowed: [ window.paypal.FUNDING.GIROPAY ]
@@ -1642,6 +1659,8 @@ let buttonConfigs = [
                     payment:     noop,
                     onAuthorize: noop,
 
+                    commit: true,
+
                     funding: {
                         allowed: [ window.paypal.FUNDING.EPS ]
                     }
@@ -1671,6 +1690,8 @@ let buttonConfigs = [
                 conf: {
                     payment:     noop,
                     onAuthorize: noop,
+
+                    commit: true,
 
                     funding: {
                         allowed: [ window.paypal.FUNDING.MYBANK ]

@@ -60,7 +60,8 @@ export let normalizeProps = memoize((props : Object) : NormalizedProps => {
         env,
         locale  = getButtonConfig('DEFAULT', 'defaultLocale'),
         style   = {},
-        funding
+        funding,
+        commit
     } = props;
 
     locale = parseLocale(locale);
@@ -88,7 +89,7 @@ export let normalizeProps = memoize((props : Object) : NormalizedProps => {
     max = determineMaxButtons({ label, layout, max });
 
     let selected = labelToFunding(label);
-    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout }).slice(0, max);
+    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit }).slice(0, max);
     let multiple = sources.length > 1;
 
     if (multiple) {

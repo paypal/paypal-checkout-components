@@ -32,7 +32,7 @@ import { normalizeProps } from './props';
 
 function isCreditDualEligible(props) : boolean {
 
-    let { label, funding, layout, env = config.env, locale = config.locale, max, sources } = normalizeProps(props);
+    let { label, funding, layout, locale = config.locale, max, sources } = normalizeProps(props);
     let { allowed } = funding;
     let { country } = locale;
 
@@ -56,11 +56,11 @@ function isCreditDualEligible(props) : boolean {
         return false;
     }
 
-    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, env, layout })) {
+    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, layout })) {
         return false;
     }
 
-    if (isFundingAutoEligible(FUNDING.CREDIT, { funding, locale, env, layout })) {
+    if (isFundingAutoEligible(FUNDING.CREDIT, { funding, locale, layout })) {
         return false;
     }
 
@@ -455,8 +455,9 @@ export let Button : Component<ButtonOptions> = create({
         },
 
         commit: {
-            type:     'boolean',
-            required: false
+            type:       'boolean',
+            required:   false,
+            queryParam: true
         },
 
         onRender: {

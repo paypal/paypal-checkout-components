@@ -381,6 +381,8 @@ describe(`paypal button component funding mix`, () => {
                 }
             },
 
+            commit: true,
+
             style: {
                 layout: 'vertical'
             },
@@ -422,6 +424,8 @@ describe(`paypal button component funding mix`, () => {
                 }
             },
 
+            commit: true,
+
             funding: {
                 allowed: [ window.paypal.FUNDING.IDEAL ]
             },
@@ -459,6 +463,8 @@ describe(`paypal button component funding mix`, () => {
                 }
             },
 
+            commit: true,
+
             style: {
                 layout: 'vertical'
             },
@@ -495,6 +501,8 @@ describe(`paypal button component funding mix`, () => {
                     done();
                 }
             },
+
+            commit: true,
 
             style: {
                 layout: 'vertical'
@@ -536,6 +544,8 @@ describe(`paypal button component funding mix`, () => {
                     done();
                 }
             },
+
+            commit: true,
 
             style: {
                 layout: 'vertical'

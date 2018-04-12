@@ -25,7 +25,9 @@ export const FUNDING_CONFIG = {
         allowRemember: true,
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: false
     },
 
     [ FUNDING.PAYPAL ]: {
@@ -78,7 +80,9 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.ELV ]: {
@@ -101,7 +105,9 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.GIROPAY ]: {
@@ -110,7 +116,9 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.EPS ]: {
@@ -119,7 +127,9 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
     },
 
     [ FUNDING.MYBANK ]: {
@@ -128,7 +138,9 @@ export const FUNDING_CONFIG = {
         ],
 
         allowHorizontal: true,
-        allowVertical:   true
+        allowVertical:   true,
+
+        requireCommitAsTrue: true
     }
 };
 

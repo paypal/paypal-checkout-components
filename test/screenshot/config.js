@@ -293,6 +293,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'de_DE',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
@@ -308,6 +309,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'nl_NL',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
@@ -322,6 +324,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'en_BE',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
@@ -336,6 +339,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'en_AT',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
@@ -350,6 +354,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'en_AT',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
@@ -365,6 +370,7 @@ for (let color of getButtonConfig('paypal', 'colors')) {
     buttonConfigs.push({
         button: {
             locale: 'en_IT',
+            commit: true,
             style:  {
                 color,
                 layout:     'vertical',
