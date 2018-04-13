@@ -8,14 +8,11 @@
     "url": "https://github.paypal.com/NodeXOShared/xo-buttonjs"
   },
   "scripts": {
-    "build": " ",
     "jest": "jest test/server --collectCoverage",
     "karma": "NODE_ENV=test babel-node ./node_modules/.bin/karma start",
-    "babel-node": "babel-node",
     "test": "npm run lint && npm run jest && npm run karma",
     "lint": "eslint api button public/js test",
-    "report": "nyc report --reporter=lcov",
-    "postinstall": "mkdir -p logs"
+    "cover": "echo no-cover"
   },
   "dependencies": {
     "module-babel": "^2.0.8",
