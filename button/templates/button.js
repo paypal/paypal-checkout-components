@@ -31,6 +31,7 @@ export let buttonTemplate = (req, ctx) => {
     let pre = ctx.pre;
 
     let locale = query(req, 'locale.x', 'en_US');
+    let commit = query(req, 'commit');
 
     let style = {
         size:         query(req, 'style.size'),
@@ -62,7 +63,8 @@ export let buttonTemplate = (req, ctx) => {
             env:     meta.env,
             locale:  locale,
             style:   style,
-            funding: funding
+            funding: funding,
+            commit: commit
         }
     });
 
