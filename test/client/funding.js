@@ -1,6 +1,5 @@
 
-import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
-
+import { FUNDING } from '../../constants';
 import { setupButton } from '../../public/js/button/button';
 import { createButtonHTML } from './mocks';
 

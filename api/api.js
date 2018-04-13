@@ -1,10 +1,7 @@
 
 import spark from 'xo-spark';
 
-const FUNDING = {
-    PAYPAL: 'paypal',
-    VENMO: 'venmo'
-};
+import { FUNDING } from '../constants';
 
 module.exports = spark.register({
 

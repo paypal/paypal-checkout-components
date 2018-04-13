@@ -12,14 +12,9 @@
     "jest": "jest test/server --collectCoverage",
     "karma": "NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "babel-node": "babel-node",
-    "cover": "npm run coverage",
-    "test": "mkdir -p logs && npm run lint && npm run jest && npm run karma",
+    "test": "npm run lint && npm run jest && npm run karma",
     "lint": "eslint api button public/js test",
-    "coverage": "nyc npm test",
-    "check-coverage": "nyc check-coverage --branches=90 --functions=90 --lines=95 --statements=95",
     "report": "nyc report --reporter=lcov",
-    "suite": "npm run coverage",
-    "postsuite": "npm run check-coverage && npm run report",
     "postinstall": "mkdir -p logs"
   },
   "dependencies": {
@@ -88,8 +83,7 @@
     ]
   },
   "pre-commit": [
-    "lint",
-    "suite"
+    "test"
   ],
   "publishConfig": {
     "registry": "http://npm.paypal.com"

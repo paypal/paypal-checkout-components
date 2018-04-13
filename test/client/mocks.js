@@ -1,7 +1,8 @@
 
-import { FUNDING } from 'paypal-checkout/dist/checkout.button.render';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { ZalgoPromise } from 'zalgo-promise';
+
+import { FUNDING } from '../../constants';
 
 const PAYPAL_BUTTON_CLASS = 'paypal-button';
 
