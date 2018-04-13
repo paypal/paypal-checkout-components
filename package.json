@@ -14,10 +14,17 @@
     "lint": "eslint api button public/js test",
     "cover": "echo no-cover"
   },
+  "peerDependencies": {
+    "express": "^4.16.3",
+    "cal": "^0.5.44",
+    "servicecore": "^3.0.1"
+  },
   "dependencies": {
     "module-babel": "^2.0.8",
     "paypal-checkout": "^4.0.55",
     "request-promise": "^4.2.2",
+    "vault": "^3.0.0",
+    "xo-spark": "^2.1.1",
     "zalgo-promise": "^1.0.20"
   },
   "devDependencies": {
