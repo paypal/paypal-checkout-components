@@ -202,8 +202,8 @@ export let config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://${ config.apiStage }.qa.paypal.com:11888`,
-            [ ENV.STAGE ]:      `https://${ config.apiStage }.qa.paypal.com:11888`,
+            [ ENV.LOCAL ]:      `https://${ config.apiStage }.qa.paypal.com:12326`,
+            [ ENV.STAGE ]:      `https://${ config.apiStage }.qa.paypal.com:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`
