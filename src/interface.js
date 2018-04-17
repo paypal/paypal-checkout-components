@@ -37,7 +37,7 @@ if (__LEGACY_SUPPORT__) {
     apps = legacy.apps;
 }
 
-attach(({ clientOptions }) => {
+attach('buttons', ({ clientOptions }) => {
     return {
         Button: {
             render: (options, element) => {
