@@ -3,18 +3,7 @@
 
 module.exports = {
 
-    modules: {
-        'buttons': './src/index'
-    },
-
-    staticNamespace: 'PAYPAL_CHECKOUT',
-
-    configQuery: `
-
-    `,
-
-    // Configure features specific to this module
-    features: {
-
+    'buttons': {
+        entry: './src/index'
     }
 };
