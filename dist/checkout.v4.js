@@ -2977,7 +2977,7 @@
                 setTimeout(function() {
                     try {
                         var logLevel = window.LOG_LEVEL || CONFIG.LOG_LEVEL;
-                        if (LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(logLevel)) return;
+                        if ("disabled" === logLevel || LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(logLevel)) return;
                         args = Array.prototype.slice.call(args);
                         args.unshift("" + window.location.host + window.location.pathname);
                         args.unshift("::");
@@ -3461,7 +3461,7 @@
                 throw new Error("Expected listeners to be implemented");
             };
             BaseComponent.prototype.error = function(err) {
-                throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_2__lib__.X)(err));
+                throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_2__lib__.Y)(err));
             };
             BaseComponent.prototype.listen = function(win, domain) {
                 var _this = this;
@@ -3599,7 +3599,7 @@
                 _this.onPropHandlers = [];
                 _this.component.xchild = _this;
                 _this.setProps(_this.getInitialProps(), Object(component_window.d)());
-                _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
+                _this.props.logLevel && Object(lib.T)(_this.props.logLevel);
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.listenForResize();
@@ -3755,7 +3755,7 @@
                         });
                     }).then(function() {
                         return Object(lib.h)(function() {
-                            return Object(lib.K)(element, {
+                            return Object(lib.L)(element, {
                                 width: width,
                                 height: height
                             }).then(function(dimensions) {
@@ -3788,20 +3788,20 @@
                 var _this7 = this;
                 return zalgo_promise_src.a.resolve().then(function() {
                     _this7.component.log("resize", {
-                        width: Object(lib.W)(width),
-                        height: Object(lib.W)(height)
+                        width: Object(lib.X)(width),
+                        height: Object(lib.X)(height)
                     });
                     if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
                         width: width,
                         height: height
-                    }).then(lib.I);
+                    }).then(lib.J);
                 });
             };
             ChildComponent.prototype.resizeToElement = function(el, _ref6) {
                 var _this8 = this, width = _ref6.width, height = _ref6.height, history = [];
                 return function resize() {
                     return zalgo_promise_src.a.try(function() {
-                        for (var tracker = Object(lib.Z)(el, {
+                        for (var tracker = Object(lib._0)(el, {
                             width: width,
                             height: height
                         }), _tracker$check = tracker.check(), dimensions = _tracker$check.dimensions, _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
@@ -3828,10 +3828,10 @@
                 }();
             };
             ChildComponent.prototype.hide = function() {
-                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
+                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.J);
             };
             ChildComponent.prototype.show = function() {
-                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
+                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.J);
             };
             ChildComponent.prototype.userClose = function() {
                 return this.close(constants.CLOSE_REASONS.USER_CLOSED);
@@ -3858,13 +3858,13 @@
                 window.focus();
             };
             ChildComponent.prototype.error = function(err) {
-                var stringifiedError = Object(lib.X)(err);
+                var stringifiedError = Object(lib.Y)(err);
                 this.component.logError("error", {
                     error: stringifiedError
                 });
                 return this.sendToParent(constants.POST_MESSAGE.ERROR, {
                     error: stringifiedError
-                }).then(lib.I);
+                }).then(lib.J);
             };
             return ChildComponent;
         }(base.a);
@@ -3939,7 +3939,7 @@
                 uid: {
                     type: "string",
                     def: function() {
-                        return Object(lib._0)();
+                        return Object(lib._1)();
                     },
                     queryParam: !0
                 },
@@ -4046,8 +4046,8 @@
             if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
             validatePropDefinitions(options);
             if (options.dimensions) {
-                if (options.dimensions && !Object(lib.E)(options.dimensions.width) && !Object(lib.D)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                if (options.dimensions && !Object(lib.E)(options.dimensions.height) && !Object(lib.D)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                if (options.dimensions && !Object(lib.F)(options.dimensions.width) && !Object(lib.E)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                if (options.dimensions && !Object(lib.F)(options.dimensions.height) && !Object(lib.E)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
             }
             if (options.contexts) {
                 if (options.contexts.popup, !1) throw new Error("Popups not supported in this build -- please use the full xcomponent.js build");
@@ -4233,7 +4233,17 @@
                 return overrides;
             };
             DelegateComponent.prototype.destroy = function() {
+                this.destroyed = !0;
                 return this.clean.all();
+            };
+            DelegateComponent.prototype.checkDestroy = function() {
+                var _this3 = this;
+                return zalgo_promise_src.a.try(function() {
+                    return !!_this3.isDestroyed();
+                });
+            };
+            DelegateComponent.prototype.isDestroyed = function() {
+                return Boolean(this.destroyed);
             };
             _createClass(DelegateComponent, [ {
                 key: "driver",
@@ -4263,7 +4273,7 @@
                 _this.addProp(options, "tag");
                 _this.addProp(options, "defaultLogLevel", "info");
                 _this.addProp(options, "allowedParentDomains", constants.WILDCARD);
-                Object(lib.S)(_this.defaultLogLevel);
+                Object(lib.T)(_this.defaultLogLevel);
                 if (Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
                 _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
                 _this.builtinProps = getInternalProps();
@@ -4525,10 +4535,10 @@
             };
             Component.prototype.log = function(event) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                Object(lib.C)(this.name, event, payload);
+                Object(lib.D)(this.name, event, payload);
             };
             Component.prototype.logWarning = function(event, payload) {
-                Object(lib._1)(this.name, event, payload);
+                Object(lib._2)(this.name, event, payload);
             };
             Component.prototype.logError = function(event, payload) {
                 Object(lib.r)(this.name, event, payload);
@@ -4557,7 +4567,7 @@
                 desc = null;
             }
             return desc;
-        }(_class.prototype, "getPropNames", [ lib.G ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
+        }(_class.prototype, "getPropNames", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
         _class);
         component_Component.components = {};
     },
@@ -4582,7 +4592,7 @@
             needsBridge: !1,
             open: function(url) {
                 var _this = this, attributes = this.component.attributes.iframe || {};
-                this.iframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)({
+                this.iframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)({
                     url: url,
                     attributes: _extends({
                         name: this.childWindowName,
@@ -4599,7 +4609,7 @@
                         }).finally(function() {
                             return _this.destroy();
                         });
-                    }, iframeWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._2)(_this.iframe, detectClose), elementWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._2)(_this.element, detectClose);
+                    }, iframeWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._3)(_this.iframe, detectClose), elementWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._3)(_this.element, detectClose);
                     _this.clean.register("destroyWindow", function() {
                         iframeWatcher.cancel();
                         elementWatcher.cancel();
@@ -4614,7 +4624,7 @@
             },
             openPrerender: function() {
                 var _this2 = this, attributes = this.component.attributes.iframe || {};
-                this.prerenderIframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)({
+                this.prerenderIframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)({
                     attributes: _extends({
                         name: "__prerender__" + this.childWindowName,
                         scrolling: this.component.scrolling ? "yes" : "no"
@@ -4634,9 +4644,9 @@
             switchPrerender: function() {
                 var _this3 = this;
                 Object(__WEBPACK_IMPORTED_MODULE_3__lib__.a)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
                 Object(__WEBPACK_IMPORTED_MODULE_3__lib__.a)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
                 setTimeout(function() {
                     _this3.prerenderIframe && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.l)(_this3.prerenderIframe);
                 }, 1e3);
@@ -4674,19 +4684,19 @@
             },
             resize: function(width, height) {
                 if (width) {
-                    this.container.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(width);
-                    this.element.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(width);
+                    this.container.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(width);
+                    this.element.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(width);
                 }
                 if (height) {
-                    this.container.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(height);
-                    this.element.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(height);
+                    this.container.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(height);
+                    this.element.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(height);
                 }
             },
             show: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(this.element);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.W)(this.element);
             },
             hide: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.A)(this.element);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)(this.element);
             },
             loadUrl: function(url) {
                 this.iframe.setAttribute("src", url);
@@ -4703,13 +4713,13 @@
                 var _this5 = this, url = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                     var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? __WEBPACK_IMPORTED_MODULE_4__constants__.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? __WEBPACK_IMPORTED_MODULE_4__constants__.DEFAULT_DIMENSIONS.HEIGHT : _ref$height;
-                    width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.J)(width, window.outerWidth);
-                    height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.J)(height, window.outerWidth);
+                    width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(width, window.outerWidth);
+                    height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(height, window.outerWidth);
                     var _getPosition = Object(__WEBPACK_IMPORTED_MODULE_5__window__.f)({
                         width: width,
                         height: height
                     }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                    _this5.window = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(url || "", _extends({
+                    _this5.window = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(url || "", _extends({
                         name: _this5.childWindowName,
                         width: width,
                         height: height,
@@ -4855,20 +4865,20 @@
             }
             if ("boolean" === prop.type) resultValue = Boolean(resultValue); else if ("function" === prop.type) {
                 if (!resultValue && prop.noop) {
-                    resultValue = lib.I;
+                    resultValue = lib.J;
                     !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, resultValue, props));
                 }
                 if (resultValue && "function" == typeof resultValue) {
                     resultValue = resultValue.bind(instance);
                     prop.denodeify && (resultValue = Object(lib.j)(resultValue));
-                    prop.promisify && (resultValue = Object(lib.O)(resultValue));
+                    prop.promisify && (resultValue = Object(lib.P)(resultValue));
                     var original = resultValue;
                     resultValue = function() {
                         component.log("call_prop_" + key);
                         return original.apply(this, arguments);
                     };
-                    prop.once && (resultValue = Object(lib.L)(resultValue));
-                    prop.memoize && (resultValue = Object(lib.G)(resultValue));
+                    prop.once && (resultValue = Object(lib.M)(resultValue));
+                    prop.memoize && (resultValue = Object(lib.H)(resultValue));
                 }
             } else "string" === prop.type || "object" === prop.type || "number" === prop.type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
             return resultValue;
@@ -5026,7 +5036,12 @@
         }();
         lib.y.props = lib.y.props || {};
         lib.y.windows = lib.y.windows || {};
-        var parent_ParentComponent = (_class = function(_BaseComponent) {
+        var destroyGuard = Object(lib.A)(function(name, original) {
+            return this.checkDestroy().then(function(isDestroyed) {
+                if (isDestroyed) throw new Error("Can not call '" + name + "' on this.component.name - component is destroyed");
+                return original();
+            });
+        }), parent_ParentComponent = (_class = function(_BaseComponent) {
             function ParentComponent(component, context, _ref) {
                 var props = _ref.props;
                 _classCallCheck(this, ParentComponent);
@@ -5035,7 +5050,7 @@
                 _this.validateParentDomain();
                 _this.context = context;
                 _this.setProps(props);
-                _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
+                _this.props.logLevel && Object(lib.T)(_this.props.logLevel);
                 _this.childWindowName = _this.buildChildWindowName({
                     renderTo: window
                 });
@@ -5055,7 +5070,7 @@
                     _this2.component.log("render_" + _this2.context, {
                         context: _this2.context,
                         element: element,
-                        loadUrl: Object(lib.W)(loadUrl)
+                        loadUrl: Object(lib.X)(loadUrl)
                     });
                     var tasks = {};
                     tasks.onRender = _this2.props.onRender();
@@ -5135,7 +5150,7 @@
                     if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
                     _this3.checkAllowRenderTo(win);
                     _this3.component.log("render_" + _this3.context + "_to_win", {
-                        element: Object(lib.W)(element),
+                        element: Object(lib.X)(element),
                         context: _this3.context
                     });
                     _this3.childWindowName = _this3.buildChildWindowName({
@@ -5149,7 +5164,7 @@
                 var _this4 = this;
                 return zalgo_promise_src.a.try(function() {
                     _this4.html = _this4.buildUrl().then(function(url) {
-                        return Object(lib.N)(url).then(function(html) {
+                        return Object(lib.O)(url).then(function(html) {
                             return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
                         });
                     });
@@ -5160,7 +5175,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (!_this5.html) throw new Error("Html not prefetched");
                     return _this5.html.then(function(html) {
-                        return Object(lib._4)(_this5.window, html);
+                        return Object(lib._5)(_this5.window, html);
                     });
                 });
             };
@@ -5190,7 +5205,7 @@
                     ref: constants.WINDOW_REFERENCES.PARENT,
                     distance: Object(cross_domain_utils_src.e)(window)
                 };
-                var uid = Object(lib._0)();
+                var uid = Object(lib._1)();
                 lib.y.windows[uid] = window;
                 this.clean.register(function() {
                     delete lib.y.windows[uid];
@@ -5203,7 +5218,7 @@
             ParentComponent.prototype.getRenderParentRef = function() {
                 var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                 if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
-                var uid = Object(lib._0)();
+                var uid = Object(lib._1)();
                 lib.y.windows[uid] = renderToWindow;
                 this.clean.register(function() {
                     delete lib.y.windows[uid];
@@ -5214,7 +5229,7 @@
                 };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.q)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain && !this.component.unsafeRenderTo, props = secureProps ? {
+                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.q)(renderTo), uid = Object(lib._1)(), tag = this.component.tag, sProps = Object(lib.S)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain && !this.component.unsafeRenderTo, props = secureProps ? {
                     type: constants.INITIAL_PROPS.UID,
                     uid: uid
                 } : {
@@ -5350,7 +5365,7 @@
                 });
             };
             ParentComponent.prototype.elementReady = function(element) {
-                return Object(lib.p)(element).then(lib.I);
+                return Object(lib.p)(element).then(lib.J);
             };
             ParentComponent.prototype.delegate = function(win) {
                 var _this14 = this;
@@ -5403,7 +5418,7 @@
                     _this14.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
-                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
+                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.Y)(err));
                 }), overrides = this.driver.delegateOverrides;
                 _loop2: for (var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                     var _ref11, _ret = function() {
@@ -5449,7 +5464,7 @@
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             ParentComponent.prototype.watchForUnload = function() {
-                var _this17 = this, onunload = Object(lib.L)(function() {
+                var _this17 = this, onunload = Object(lib.M)(function() {
                     _this17.component.log("navigate_away");
                     client.g();
                     _this17.destroyComponent();
@@ -5463,7 +5478,7 @@
                     if (window.location.href.split("#")[0] === url.split("#")[0]) {
                         var _query;
                         url = Object(lib.u)(url, {
-                            query: (_query = {}, _query[Object(lib._0)()] = "1", _query)
+                            query: (_query = {}, _query[Object(lib._1)()] = "1", _query)
                         });
                     }
                     return _this18.driver.loadUrl.call(_this18, url);
@@ -5522,13 +5537,13 @@
                 var _this21 = this, _ref13 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref13$waitForTransit = _ref13.waitForTransition, waitForTransition = void 0 === _ref13$waitForTransit || _ref13$waitForTransit;
                 return zalgo_promise_src.a.try(function() {
                     _this21.component.log("resize", {
-                        height: Object(lib.W)(height),
-                        width: Object(lib.W)(width)
+                        height: Object(lib.X)(height),
+                        width: Object(lib.X)(width)
                     });
                     _this21.driver.resize.call(_this21, width, height);
                     if (waitForTransition && (_this21.element || _this21.iframe)) {
                         var overflow = void 0;
-                        _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
+                        _this21.element && (overflow = Object(lib.U)(_this21.element, "hidden"));
                         return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
                             overflow && overflow.reset();
                         });
@@ -5536,11 +5551,11 @@
                 });
             };
             ParentComponent.prototype.hide = function() {
-                this.container && Object(lib.A)(this.container);
+                this.container && Object(lib.B)(this.container);
                 return this.driver.hide.call(this);
             };
             ParentComponent.prototype.show = function() {
-                this.container && Object(lib.V)(this.container);
+                this.container && Object(lib.W)(this.container);
                 return this.driver.show.call(this);
             };
             ParentComponent.prototype.checkClose = function() {
@@ -5596,7 +5611,7 @@
                 }).then(function() {
                     return _this26.destroyComponent();
                 }).then(function() {
-                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.u)(win) && _this26.childExports.close().catch(lib.I);
+                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.u)(win) && _this26.childExports.close().catch(lib.J);
                 });
             };
             ParentComponent.prototype.destroyComponent = function() {
@@ -5610,7 +5625,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (_this27.props.onDisplay) return _this27.props.onDisplay();
                 }).then(function() {
-                    if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                    if (_this27.container) return Object(lib.V)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
                 });
             };
             ParentComponent.prototype.showComponent = function() {
@@ -5618,7 +5633,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (_this28.props.onDisplay) return _this28.props.onDisplay();
                 }).then(function() {
-                    if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                    if (_this28.element) return Object(lib.V)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
                 });
             };
             ParentComponent.prototype.hideContainer = function() {
@@ -5656,8 +5671,8 @@
                             return;
                         }
                         try {
-                            Object(lib._3)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                jsxDom: lib.F.bind(doc),
+                            Object(lib._4)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                jsxDom: lib.G.bind(doc),
                                 document: doc
                             }));
                         } catch (err) {
@@ -5689,7 +5704,7 @@
                     on: function(eventName, handler) {
                         return _this32.on(eventName, handler);
                     },
-                    jsxDom: lib.F,
+                    jsxDom: lib.G,
                     document: document,
                     dimensions: {
                         width: width,
@@ -5708,13 +5723,13 @@
                             container: el
                         });
                         _this33.container = container;
-                        Object(lib.A)(_this33.container);
+                        Object(lib.B)(_this33.container);
                         Object(lib.d)(el, _this33.container);
                         if (_this33.driver.renderedIntoContainerTemplate) {
                             _this33.element = _this33.getOutlet();
-                            Object(lib.A)(_this33.element);
+                            Object(lib.B)(_this33.element);
                             if (!_this33.element) throw new Error("Could not find element to render component into");
-                            Object(lib.A)(_this33.element);
+                            Object(lib.B)(_this33.element);
                         }
                         _this33.clean.register("destroyContainerTemplate", function() {
                             _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
@@ -5726,44 +5741,59 @@
             ParentComponent.prototype.cancelContainerEvents = function() {
                 this.clean.run("destroyContainerEvents");
             };
-            ParentComponent.prototype.destroy = function() {
+            ParentComponent.prototype.checkDestroy = function() {
                 var _this34 = this;
                 return zalgo_promise_src.a.try(function() {
-                    if (_this34.clean.hasTasks()) {
-                        _this34.component.log("destroy");
-                        client.g();
-                        return _this34.clean.all();
+                    return !(!_this34.window || !Object(cross_domain_utils_src.u)(_this34.window)) && _this34.destroy().then(function() {
+                        return !0;
+                    });
+                });
+            };
+            ParentComponent.prototype.destroy = function() {
+                var _this35 = this;
+                return zalgo_promise_src.a.try(function() {
+                    if (!_this35.isDestroyed()) {
+                        _this35.destroyed = !0;
+                        _this35.event.trigger("destroy");
+                        if (_this35.clean.hasTasks()) {
+                            _this35.component.log("destroy");
+                            client.g();
+                            return _this35.clean.all();
+                        }
                     }
                 });
             };
+            ParentComponent.prototype.isDestroyed = function() {
+                return Boolean(this.destroyed || this.window && Object(cross_domain_utils_src.u)(this.window));
+            };
             ParentComponent.prototype.tryInit = function(method) {
-                var _this35 = this;
+                var _this36 = this;
                 return zalgo_promise_src.a.try(method).catch(function(err) {
-                    _this35.onInit.reject(err);
+                    _this36.onInit.reject(err);
                 }).then(function() {
-                    return _this35.onInit;
+                    return _this36.onInit;
                 });
             };
             ParentComponent.prototype.error = function(err) {
-                var _this36 = this;
+                var _this37 = this;
                 return zalgo_promise_src.a.try(function() {
-                    _this36.handledErrors = _this36.handledErrors || [];
-                    if (-1 === _this36.handledErrors.indexOf(err)) {
-                        _this36.handledErrors.push(err);
-                        _this36.onInit.reject(err);
-                        return _this36.destroy();
+                    _this37.handledErrors = _this37.handledErrors || [];
+                    if (-1 === _this37.handledErrors.indexOf(err)) {
+                        _this37.handledErrors.push(err);
+                        _this37.onInit.reject(err);
+                        return _this37.destroy();
                     }
                 }).then(function() {
-                    if (_this36.props.onError) return _this36.props.onError(err);
+                    if (_this37.props.onError) return _this37.props.onError(err);
                 }).catch(function(errErr) {
-                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
+                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.Y)(err) + "\n\n" + Object(lib.Y)(errErr));
                 }).then(function() {
-                    if (!_this36.props.onError) throw err;
+                    if (!_this37.props.onError) throw err;
                 });
             };
             ParentComponent.destroyAll = function() {
                 for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-                return zalgo_promise_src.a.all(results).then(lib.I);
+                return zalgo_promise_src.a.all(results).then(lib.J);
             };
             _createClass(ParentComponent, [ {
                 key: "driver",
@@ -5773,23 +5803,33 @@
                 }
             } ]);
             return ParentComponent;
-        }(base.a), _applyDecoratedDescriptor(_class.prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+        }(base.a), _applyDecoratedDescriptor(_class.prototype, "render", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "getOutlet", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "renderTo", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTo"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "setProps", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "setProps"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "updateProps", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "updateProps"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openBridge", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "openBridge"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "delegate", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "delegate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadUrl", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "loadUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "runTimeout", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "runTimeout"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "resize", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "resize"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "focus", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "focus"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
         _class);
         parent_ParentComponent.activeComponents = [];
     },
@@ -5800,7 +5840,7 @@
         }
         function buildChildWindowName(name, version) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            options.id = Object(__WEBPACK_IMPORTED_MODULE_2__lib__._0)();
+            options.id = Object(__WEBPACK_IMPORTED_MODULE_2__lib__._1)();
             options.domain = Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f)(window);
             var encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = __WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.encode(JSON.stringify(options)).replace(/\=/g, "").toLowerCase();
             if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -5859,9 +5899,9 @@
             return getParentRenderWindow;
         });
         __webpack_exports__.f = getPosition;
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
             return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
-        }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
             var _window$name$split2 = window.name.split("__"), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
             if (xcomp !== __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) throw new Error("Window not rendered by xcomponent - got " + xcomp);
@@ -5874,11 +5914,11 @@
             componentMeta.name = name;
             componentMeta.version = version.replace(/_/g, ".");
             return componentMeta;
-        }), getParentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        }), getParentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
             return getWindowByRef(componentMeta.componentParent);
-        }), getParentRenderWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
+        }), getParentRenderWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
             return getWindowByRef(componentMeta.renderParent);
@@ -6065,7 +6105,7 @@
                                         void 0 !== $scope[key] && (scopeProps[key] = $scope[key]);
                                     }
                                 }
-                                scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, function(value, key, fullKey) {
+                                scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.R)(scopeProps, function(value, key, fullKey) {
                                     if ("function" == typeof value) return function() {
                                         var result = value.apply(this, arguments);
                                         safeApply();
@@ -6075,8 +6115,11 @@
                                 return scopeProps;
                             }, parent = component.init(getProps(), null, $element[0]);
                             parent.render($element[0]);
+                            parent.event.on("destroy", function() {
+                                return $scope.$destroy();
+                            });
                             $scope.$watch(function() {
-                                parent.updateProps(getProps());
+                                parent.isDestroyed() || parent.updateProps(getProps());
                             });
                         } ]
                     };
@@ -6101,7 +6144,7 @@
                 var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
                 xcomponent.log("initializing angular2 component");
                 var getProps = function(component) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), function(value, key, fullKey) {
+                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.R)(_extends({}, component.internalProps, component.props), function(value, key, fullKey) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
                             return component.zone.run(function() {
@@ -7320,6 +7363,18 @@
             };
             descriptor.value.displayName = name + ":promisified";
         }
+        function guardDecorator(handler) {
+            return function(target, name, descriptor) {
+                var method = descriptor.value;
+                descriptor.value = function() {
+                    var _this = this, _arguments = arguments;
+                    return handler.call(this, name, function() {
+                        return method.apply(_this, _arguments);
+                    });
+                };
+                descriptor.value.displayName = name + ":guarded";
+            };
+        }
         function setLogLevel(logLevel) {
             if (-1 === client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
             client.d.logLevel = logLevel;
@@ -7424,13 +7479,13 @@
         __webpack_require__.d(__webpack_exports__, "p", function() {
             return elementReady;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return popup;
         });
-        __webpack_require__.d(__webpack_exports__, "_4", function() {
+        __webpack_require__.d(__webpack_exports__, "_5", function() {
             return writeToWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "_3", function() {
+        __webpack_require__.d(__webpack_exports__, "_4", function() {
             return writeElementToWindow;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -7445,7 +7500,7 @@
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return awaitFrameWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return iframe;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -7478,13 +7533,13 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return changeStyle;
         });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return setOverflow;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "_0", function() {
             return trackDimensions;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return onDimensionsChange;
         });
         __webpack_require__.d(__webpack_exports__, "m", function() {
@@ -7505,16 +7560,16 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return makeElementInvisible;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return showElement;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return hideElement;
         });
         __webpack_require__.d(__webpack_exports__, "l", function() {
             return destroyElement;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return showAndAnimate;
         });
         __webpack_require__.d(__webpack_exports__, "c", function() {
@@ -7523,7 +7578,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return addClass;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return removeClass;
         });
         __webpack_require__.d(__webpack_exports__, "w", function() {
@@ -7535,7 +7590,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isElementClosed;
         });
-        __webpack_require__.d(__webpack_exports__, "_2", function() {
+        __webpack_require__.d(__webpack_exports__, "_3", function() {
             return watchElementForClose;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -7550,28 +7605,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return getScript;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return prefetchPage;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return fixScripts;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return jsxDom;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return noop;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return once;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return memoize;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return debounce;
         });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return serializeFunctions;
         });
         __webpack_require__.d(__webpack_exports__, "k", function() {
@@ -7580,7 +7635,7 @@
         __webpack_require__.d(__webpack_exports__, "j", function() {
             return denodeify;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return promisify;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -7604,7 +7659,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return values;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "_1", function() {
             return uniqueID;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -7628,7 +7683,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return each;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return replaceObject;
         });
         __webpack_require__.d(__webpack_exports__, "g", function() {
@@ -7649,19 +7704,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return count;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return stringify;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
             return stringifyError;
         });
         __webpack_require__.d(__webpack_exports__, "s", function() {
             return eventEmitter;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return isPerc;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return isPx;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -7670,28 +7725,31 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return toPx;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "Z", function() {
             return toCSS;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return percOf;
         });
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return normalizeDimension;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return memoized;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return decorators_promise;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
+            return guardDecorator;
+        });
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return setLogLevel;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return info;
         });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
+        __webpack_require__.d(__webpack_exports__, "_2", function() {
             return warn;
         });
         __webpack_require__.d(__webpack_exports__, "r", function() {
@@ -8625,7 +8683,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.191",
+            version: "4.0.192",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -8767,8 +8825,8 @@
             },
             get corsApiUrls() {
                 var _ref4;
-                return _ref4 = {}, _ref4[constants.t.LOCAL] = "https://" + config.apiStage + ".qa.paypal.com:11888", 
-                _ref4[constants.t.STAGE] = "https://" + config.apiStage + ".qa.paypal.com:11888", 
+                return _ref4 = {}, _ref4[constants.t.LOCAL] = "https://" + config.apiStage + ".qa.paypal.com:12326", 
+                _ref4[constants.t.STAGE] = "https://" + config.apiStage + ".qa.paypal.com:12326", 
                 _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", 
                 _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
@@ -9283,7 +9341,8 @@
             DEFAULT_COUNTRY: "The funding source is enabled by default for the current locale",
             DEFAULT: "The funding source is enabled by default for all users",
             REMEMBERED: "The funding source was remembered for the current user",
-            NEED_OPT_IN: "The funding source needs to be allowed in funding.allowed"
+            NEED_OPT_IN: "The funding source needs to be allowed in funding.allowed",
+            COMMIT_NOT_SET: "The funding source is not enabled when commit is not set as true"
         }, CARD_PRIORITY = [ CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE ], ENV = {
             LOCAL: "local",
             STAGE: "stage",
@@ -10123,8 +10182,8 @@
             return {
                 env: props.env = props.env || src_config.a.env,
                 payment: props.payment,
-                onAuthorize: Object(src_lib.L)(props.onAuthorize),
-                onCancel: Object(src_lib.L)(props.onCancel || src_lib.I)
+                onAuthorize: Object(src_lib.M)(props.onAuthorize),
+                onCancel: Object(src_lib.M)(props.onCancel || src_lib.J)
             };
         }
         function getUrl(props) {
@@ -10152,8 +10211,8 @@
         }
         function buildActions(query) {
             var actions = {
-                close: src_lib.I,
-                closeComponent: src_lib.I
+                close: src_lib.J,
+                closeComponent: src_lib.J
             }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
             opType === OPTYPE.PAYMENT ? actions.redirect = function() {
                 var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : return_uri;
@@ -10237,15 +10296,15 @@
             return getConfig(CARD_CONFIG, source, key, def);
         }
         function isFundingIneligible(source, _ref) {
-            var locale = _ref.locale, funding = _ref.funding;
-            return getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO ? constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.w.DISALLOWED_COUNTRY : void 0 : constants.w.SECONDARY_DISALLOWED;
+            var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
+            return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.w.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.v.VENMO ? constants.w.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.w.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.w.COMMIT_NOT_SET : void 0 : constants.w.SECONDARY_DISALLOWED;
         }
         function isFundingAutoEligible(source, _ref2) {
             var locale = _ref2.locale, funding = _ref2.funding;
             return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.w.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.w.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.w.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.w.REMEMBERED : void 0;
         }
         function isFundingEligible(source, _ref3) {
-            var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected;
+            var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
             if (selected && source === selected) return {
                 eligible: !0,
                 reason: constants.w.PRIMARY
@@ -10257,8 +10316,8 @@
             var ineligibleReason = isFundingIneligible(source, {
                 locale: locale,
                 funding: funding,
-                env: env,
-                layout: layout
+                layout: layout,
+                commit: commit
             });
             if (ineligibleReason) return {
                 eligible: !1,
@@ -10267,7 +10326,6 @@
             var autoEligibleReason = isFundingAutoEligible(source, {
                 locale: locale,
                 funding: funding,
-                env: env,
                 layout: layout
             });
             return autoEligibleReason ? {
@@ -10279,13 +10337,14 @@
             };
         }
         function determineEligibleFunding(_ref4) {
-            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
+            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
                 var _isFundingEligible = isFundingEligible(source, {
                     selected: selected,
                     locale: locale,
                     funding: funding,
                     env: env,
-                    layout: layout
+                    layout: layout,
+                    commit: commit
                 }), eligible = _isFundingEligible.eligible, reason = _isFundingEligible.reason;
                 reasons[source] = {
                     eligible: eligible,
@@ -10790,7 +10849,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.191", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.192", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -10874,7 +10933,7 @@
             }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         }
         function isCreditDualEligible(props) {
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$env = _normalizeProps.env, env = void 0 === _normalizeProps$env ? src_config.a.env : _normalizeProps$env, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? src_config.a.locale : _normalizeProps$local, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
+            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? src_config.a.locale : _normalizeProps$local, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
             if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
             if (layout !== constants.g.HORIZONTAL) return !1;
             if (1 === max) return !1;
@@ -10883,13 +10942,11 @@
             if (isFundingIneligible(constants.v.CREDIT, {
                 funding: funding,
                 locale: locale,
-                env: env,
                 layout: layout
             })) return !1;
             if (isFundingAutoEligible(constants.v.CREDIT, {
                 funding: funding,
                 locale: locale,
-                env: env,
                 layout: layout
             })) return !1;
             if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
@@ -11183,7 +11240,8 @@
             allowOptOut: !0,
             allowRemember: !0,
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !1
         }, _FUNDING_CONFIG[constants.v.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
@@ -11208,7 +11266,8 @@
         }, _FUNDING_CONFIG[constants.v.IDEAL] = {
             allowedCountries: [ constants.r.NL ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.v.ELV] = {
             allowedCountries: [ constants.r.DE, constants.r.AT ],
             defaultVerticalCountries: [ constants.r.DE, constants.r.AT ],
@@ -11217,19 +11276,23 @@
         }, _FUNDING_CONFIG[constants.v.BANCONTACT] = {
             allowedCountries: [ constants.r.BE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.v.GIROPAY] = {
             allowedCountries: [ constants.r.DE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.v.EPS] = {
             allowedCountries: [ constants.r.AT ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.v.MYBANK] = {
             allowedCountries: [ constants.r.IT ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[constants.s] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
         }, _CARD_CONFIG[constants.r.US] = {
@@ -11510,7 +11573,7 @@
             allowFunding: !0,
             allowTagline: !0
         }, _BUTTON_STYLE), util = __webpack_require__("./src/lib/util.js"), normalizeProps = Object(util.j)(function(props) {
-            var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? getButtonConfig("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding;
+            var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? getButtonConfig("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = parseLocale(locale);
             funding = funding || {};
             funding.allowed = funding.allowed || [];
@@ -11527,7 +11590,8 @@
                 selected: selected,
                 locale: locale,
                 env: env,
-                layout: layout
+                layout: layout,
+                commit: commit
             }).slice(0, max), multiple = sources.length > 1;
             multiple && (branding = !0);
             tagline = enableTagline({
@@ -11846,7 +11910,8 @@
                 },
                 commit: {
                     type: "boolean",
-                    required: !1
+                    required: !1,
+                    queryParam: !0
                 },
                 onRender: {
                     type: "function",
@@ -12292,7 +12357,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.191", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.192", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(exportBuilder) {
@@ -13240,7 +13305,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.191";
+                payload.version = "4.0.192";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -13599,7 +13664,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.191"
+                    ver: "4.0.192"
                 };
             });
             Object(client.a)(function() {
@@ -13875,7 +13940,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return isPayPalObjects() ? "4" : "4.0.191";
+            return isPayPalObjects() ? "4" : "4.0.192";
         }
         function getRememberedFunding(handler) {
             return Object(session.f)(function(storage) {
@@ -14785,18 +14850,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.191" === window.paypal.version) {
+        if (window.paypal && "4.0.192" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.191"
+                version: "4.0.192"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.191) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.192) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.191" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.192" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.191"
+                version: "4.0.192"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.191");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.192");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");

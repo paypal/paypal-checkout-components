@@ -910,15 +910,15 @@
             return config_getConfig(CARD_CONFIG, source, key, def);
         }
         function isFundingIneligible(source, _ref) {
-            var locale = _ref.locale, funding = _ref.funding;
-            return getFundingConfig(source, _ref.layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.u.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.t.VENMO ? constants.u.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.u.DISALLOWED_COUNTRY : void 0 : constants.u.SECONDARY_DISALLOWED;
+            var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
+            return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.u.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.t.VENMO ? constants.u.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.u.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.u.COMMIT_NOT_SET : void 0 : constants.u.SECONDARY_DISALLOWED;
         }
         function isFundingAutoEligible(source, _ref2) {
             var locale = _ref2.locale, funding = _ref2.funding;
             return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.u.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.u.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.u.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.u.REMEMBERED : void 0;
         }
         function isFundingEligible(source, _ref3) {
-            var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected;
+            var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
             if (selected && source === selected) return {
                 eligible: !0,
                 reason: constants.u.PRIMARY
@@ -930,8 +930,8 @@
             var ineligibleReason = isFundingIneligible(source, {
                 locale: locale,
                 funding: funding,
-                env: env,
-                layout: layout
+                layout: layout,
+                commit: commit
             });
             if (ineligibleReason) return {
                 eligible: !1,
@@ -940,7 +940,6 @@
             var autoEligibleReason = isFundingAutoEligible(source, {
                 locale: locale,
                 funding: funding,
-                env: env,
                 layout: layout
             });
             return autoEligibleReason ? {
@@ -952,13 +951,14 @@
             };
         }
         function determineEligibleFunding(_ref4) {
-            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
+            var funding = _ref4.funding, selected = _ref4.selected, locale = _ref4.locale, env = _ref4.env, layout = _ref4.layout, commit = _ref4.commit, reasons = {}, eligibleFunding = FUNDING_PRIORITY.filter(function(source) {
                 var _isFundingEligible = isFundingEligible(source, {
                     selected: selected,
                     locale: locale,
                     funding: funding,
                     env: env,
-                    layout: layout
+                    layout: layout,
+                    commit: commit
                 }), eligible = _isFundingEligible.eligible, reason = _isFundingEligible.reason;
                 reasons[source] = {
                     eligible: eligible,
@@ -1426,7 +1426,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.191", 
+            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.192", 
             _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -1718,7 +1718,8 @@
             allowOptOut: !0,
             allowRemember: !0,
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !1
         }, _FUNDING_CONFIG[constants.t.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
@@ -1743,7 +1744,8 @@
         }, _FUNDING_CONFIG[constants.t.IDEAL] = {
             allowedCountries: [ constants.q.NL ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.t.ELV] = {
             allowedCountries: [ constants.q.DE, constants.q.AT ],
             defaultVerticalCountries: [ constants.q.DE, constants.q.AT ],
@@ -1752,19 +1754,23 @@
         }, _FUNDING_CONFIG[constants.t.BANCONTACT] = {
             allowedCountries: [ constants.q.BE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.t.GIROPAY] = {
             allowedCountries: [ constants.q.DE ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.t.EPS] = {
             allowedCountries: [ constants.q.AT ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG[constants.t.MYBANK] = {
             allowedCountries: [ constants.q.IT ],
             allowHorizontal: !0,
-            allowVertical: !0
+            allowVertical: !0,
+            requireCommitAsTrue: !0
         }, _FUNDING_CONFIG), CARD_CONFIG = (_CARD_CONFIG = {}, _CARD_CONFIG[constants.r] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX ]
         }, _CARD_CONFIG[constants.q.US] = {
@@ -1774,7 +1780,7 @@
         }, _CARD_CONFIG[constants.q.JP] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
         }, _CARD_CONFIG), fundingEligibilityReasons = [], util = __webpack_require__("./src/lib/util.js"), normalizeProps = Object(util.b)(function(props) {
-            var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? getButtonConfig("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding;
+            var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? getButtonConfig("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
             locale = parseLocale(locale);
             funding = funding || {};
             funding.allowed = funding.allowed || [];
@@ -1791,7 +1797,8 @@
                 selected: selected,
                 locale: locale,
                 env: env,
-                layout: layout
+                layout: layout,
+                commit: commit
             }).slice(0, max), multiple = sources.length > 1;
             multiple && (branding = !0);
             tagline = enableTagline({
@@ -1930,7 +1937,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.191",
+            version: "4.0.192",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2072,8 +2079,8 @@
             },
             get corsApiUrls() {
                 var _ref4;
-                return _ref4 = {}, _ref4[constants.s.LOCAL] = "https://" + config.apiStage + ".qa.paypal.com:11888", 
-                _ref4[constants.s.STAGE] = "https://" + config.apiStage + ".qa.paypal.com:11888", 
+                return _ref4 = {}, _ref4[constants.s.LOCAL] = "https://" + config.apiStage + ".qa.paypal.com:12326", 
+                _ref4[constants.s.STAGE] = "https://" + config.apiStage + ".qa.paypal.com:12326", 
                 _ref4[constants.s.SANDBOX] = "https://cors.api.sandbox.paypal.com", _ref4[constants.s.PRODUCTION] = "https://cors.api.paypal.com", 
                 _ref4[constants.s.TEST] = window.location.protocol + "//" + window.location.host, 
                 _ref4;
@@ -2588,7 +2595,8 @@
             DEFAULT_COUNTRY: "The funding source is enabled by default for the current locale",
             DEFAULT: "The funding source is enabled by default for all users",
             REMEMBERED: "The funding source was remembered for the current user",
-            NEED_OPT_IN: "The funding source needs to be allowed in funding.allowed"
+            NEED_OPT_IN: "The funding source needs to be allowed in funding.allowed",
+            COMMIT_NOT_SET: "The funding source is not enabled when commit is not set as true"
         }, CARD_PRIORITY = [ CARD.VISA, CARD.MASTERCARD, CARD.AMEX, CARD.DISCOVER, CARD.SWITCH, CARD.MAESTRO, CARD.HIPER, CARD.ELO, CARD.JCB, CARD.CUP, CARD.COFINOGA, CARD.COFIDIS, CARD.CETELEM, CARD.CBNATIONALE ], ENV = {
             LOCAL: "local",
             STAGE: "stage",
