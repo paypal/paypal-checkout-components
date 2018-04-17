@@ -1,6 +1,6 @@
 /* @flow */
 
-export const FUNDING = {
+module.exports.FUNDING = {
     PAYPAL:      'paypal',
     VENMO:       'venmo',
     CREDIT:      'credit',
