@@ -128,6 +128,10 @@ export let config = {
 
         'drsfostersmith.com': {
             disable_venmo: true
+        },
+
+        'boxed.com': {
+            disable_venmo: true
         }
     },
 
