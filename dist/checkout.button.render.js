@@ -63,12 +63,422 @@
             });
         }();
     },
+    "./node_modules/bowser/bowser.min.js": function(module, exports, __webpack_require__) {
+        /*!
+ * Bowser - a browser detector
+ * https://github.com/ded/bowser
+ * MIT License | (c) Dustin Diaz 2015
+ */
+        !function(e, t, n) {
+            void 0 !== module && module.exports ? module.exports = n() : __webpack_require__("./node_modules/webpack/buildin/amd-define.js")(t, n);
+        }(0, "bowser", function() {
+            function t(t) {
+                function n(e) {
+                    var n = t.match(e);
+                    return n && n.length > 1 && n[1] || "";
+                }
+                function r(e) {
+                    var n = t.match(e);
+                    return n && n.length > 1 && n[2] || "";
+                }
+                var T, i = n(/(ipod|iphone|ipad)/i).toLowerCase(), s = /like android/i.test(t), o = !s && /android/i.test(t), u = /nexus\s*[0-6]\s*/i.test(t), a = !u && /nexus\s*[0-9]+/i.test(t), f = /CrOS/.test(t), l = /silk/i.test(t), c = /sailfish/i.test(t), h = /tizen/i.test(t), p = /(web|hpw)os/i.test(t), d = /windows phone/i.test(t), m = (/SamsungBrowser/i.test(t), 
+                !d && /windows/i.test(t)), g = !i && !l && /macintosh/i.test(t), y = !o && !c && !h && !p && /linux/i.test(t), b = r(/edg([ea]|ios)\/(\d+(\.\d+)?)/i), w = n(/version\/(\d+(\.\d+)?)/i), E = /tablet/i.test(t) && !/tablet pc/i.test(t), S = !E && /[^-]mobi/i.test(t), x = /xbox/i.test(t);
+                /opera/i.test(t) ? T = {
+                    name: "Opera",
+                    opera: e,
+                    version: w || n(/(?:opera|opr|opios)[\s\/](\d+(\.\d+)?)/i)
+                } : /opr\/|opios/i.test(t) ? T = {
+                    name: "Opera",
+                    opera: e,
+                    version: n(/(?:opr|opios)[\s\/](\d+(\.\d+)?)/i) || w
+                } : /SamsungBrowser/i.test(t) ? T = {
+                    name: "Samsung Internet for Android",
+                    samsungBrowser: e,
+                    version: w || n(/(?:SamsungBrowser)[\s\/](\d+(\.\d+)?)/i)
+                } : /coast/i.test(t) ? T = {
+                    name: "Opera Coast",
+                    coast: e,
+                    version: w || n(/(?:coast)[\s\/](\d+(\.\d+)?)/i)
+                } : /yabrowser/i.test(t) ? T = {
+                    name: "Yandex Browser",
+                    yandexbrowser: e,
+                    version: w || n(/(?:yabrowser)[\s\/](\d+(\.\d+)?)/i)
+                } : /ucbrowser/i.test(t) ? T = {
+                    name: "UC Browser",
+                    ucbrowser: e,
+                    version: n(/(?:ucbrowser)[\s\/](\d+(?:\.\d+)+)/i)
+                } : /mxios/i.test(t) ? T = {
+                    name: "Maxthon",
+                    maxthon: e,
+                    version: n(/(?:mxios)[\s\/](\d+(?:\.\d+)+)/i)
+                } : /epiphany/i.test(t) ? T = {
+                    name: "Epiphany",
+                    epiphany: e,
+                    version: n(/(?:epiphany)[\s\/](\d+(?:\.\d+)+)/i)
+                } : /puffin/i.test(t) ? T = {
+                    name: "Puffin",
+                    puffin: e,
+                    version: n(/(?:puffin)[\s\/](\d+(?:\.\d+)?)/i)
+                } : /sleipnir/i.test(t) ? T = {
+                    name: "Sleipnir",
+                    sleipnir: e,
+                    version: n(/(?:sleipnir)[\s\/](\d+(?:\.\d+)+)/i)
+                } : /k-meleon/i.test(t) ? T = {
+                    name: "K-Meleon",
+                    kMeleon: e,
+                    version: n(/(?:k-meleon)[\s\/](\d+(?:\.\d+)+)/i)
+                } : d ? (T = {
+                    name: "Windows Phone",
+                    osname: "Windows Phone",
+                    windowsphone: e
+                }, b ? (T.msedge = e, T.version = b) : (T.msie = e, T.version = n(/iemobile\/(\d+(\.\d+)?)/i))) : /msie|trident/i.test(t) ? T = {
+                    name: "Internet Explorer",
+                    msie: e,
+                    version: n(/(?:msie |rv:)(\d+(\.\d+)?)/i)
+                } : f ? T = {
+                    name: "Chrome",
+                    osname: "Chrome OS",
+                    chromeos: e,
+                    chromeBook: e,
+                    chrome: e,
+                    version: n(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
+                } : /edg([ea]|ios)/i.test(t) ? T = {
+                    name: "Microsoft Edge",
+                    msedge: e,
+                    version: b
+                } : /vivaldi/i.test(t) ? T = {
+                    name: "Vivaldi",
+                    vivaldi: e,
+                    version: n(/vivaldi\/(\d+(\.\d+)?)/i) || w
+                } : c ? T = {
+                    name: "Sailfish",
+                    osname: "Sailfish OS",
+                    sailfish: e,
+                    version: n(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
+                } : /seamonkey\//i.test(t) ? T = {
+                    name: "SeaMonkey",
+                    seamonkey: e,
+                    version: n(/seamonkey\/(\d+(\.\d+)?)/i)
+                } : /firefox|iceweasel|fxios/i.test(t) ? (T = {
+                    name: "Firefox",
+                    firefox: e,
+                    version: n(/(?:firefox|iceweasel|fxios)[ \/](\d+(\.\d+)?)/i)
+                }, /\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(t) && (T.firefoxos = e, T.osname = "Firefox OS")) : l ? T = {
+                    name: "Amazon Silk",
+                    silk: e,
+                    version: n(/silk\/(\d+(\.\d+)?)/i)
+                } : /phantom/i.test(t) ? T = {
+                    name: "PhantomJS",
+                    phantom: e,
+                    version: n(/phantomjs\/(\d+(\.\d+)?)/i)
+                } : /slimerjs/i.test(t) ? T = {
+                    name: "SlimerJS",
+                    slimer: e,
+                    version: n(/slimerjs\/(\d+(\.\d+)?)/i)
+                } : /blackberry|\bbb\d+/i.test(t) || /rim\stablet/i.test(t) ? T = {
+                    name: "BlackBerry",
+                    osname: "BlackBerry OS",
+                    blackberry: e,
+                    version: w || n(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
+                } : p ? (T = {
+                    name: "WebOS",
+                    osname: "WebOS",
+                    webos: e,
+                    version: w || n(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
+                }, /touchpad\//i.test(t) && (T.touchpad = e)) : /bada/i.test(t) ? T = {
+                    name: "Bada",
+                    osname: "Bada",
+                    bada: e,
+                    version: n(/dolfin\/(\d+(\.\d+)?)/i)
+                } : h ? T = {
+                    name: "Tizen",
+                    osname: "Tizen",
+                    tizen: e,
+                    version: n(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || w
+                } : /qupzilla/i.test(t) ? T = {
+                    name: "QupZilla",
+                    qupzilla: e,
+                    version: n(/(?:qupzilla)[\s\/](\d+(?:\.\d+)+)/i) || w
+                } : /chromium/i.test(t) ? T = {
+                    name: "Chromium",
+                    chromium: e,
+                    version: n(/(?:chromium)[\s\/](\d+(?:\.\d+)?)/i) || w
+                } : /chrome|crios|crmo/i.test(t) ? T = {
+                    name: "Chrome",
+                    chrome: e,
+                    version: n(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
+                } : o ? T = {
+                    name: "Android",
+                    version: w
+                } : /safari|applewebkit/i.test(t) ? (T = {
+                    name: "Safari",
+                    safari: e
+                }, w && (T.version = w)) : i ? (T = {
+                    name: "iphone" == i ? "iPhone" : "ipad" == i ? "iPad" : "iPod"
+                }, w && (T.version = w)) : T = /googlebot/i.test(t) ? {
+                    name: "Googlebot",
+                    googlebot: e,
+                    version: n(/googlebot\/(\d+(\.\d+))/i) || w
+                } : {
+                    name: n(/^(.*)\/(.*) /),
+                    version: r(/^(.*)\/(.*) /)
+                }, !T.msedge && /(apple)?webkit/i.test(t) ? (/(apple)?webkit\/537\.36/i.test(t) ? (T.name = T.name || "Blink", 
+                T.blink = e) : (T.name = T.name || "Webkit", T.webkit = e), !T.version && w && (T.version = w)) : !T.opera && /gecko\//i.test(t) && (T.name = T.name || "Gecko", 
+                T.gecko = e, T.version = T.version || n(/gecko\/(\d+(\.\d+)?)/i)), T.windowsphone || !o && !T.silk ? !T.windowsphone && i ? (T[i] = e, 
+                T.ios = e, T.osname = "iOS") : g ? (T.mac = e, T.osname = "macOS") : x ? (T.xbox = e, 
+                T.osname = "Xbox") : m ? (T.windows = e, T.osname = "Windows") : y && (T.linux = e, 
+                T.osname = "Linux") : (T.android = e, T.osname = "Android");
+                var C = "";
+                T.windows ? C = function(e) {
+                    switch (e) {
+                      case "NT":
+                        return "NT";
+
+                      case "XP":
+                        return "XP";
+
+                      case "NT 5.0":
+                        return "2000";
+
+                      case "NT 5.1":
+                        return "XP";
+
+                      case "NT 5.2":
+                        return "2003";
+
+                      case "NT 6.0":
+                        return "Vista";
+
+                      case "NT 6.1":
+                        return "7";
+
+                      case "NT 6.2":
+                        return "8";
+
+                      case "NT 6.3":
+                        return "8.1";
+
+                      case "NT 10.0":
+                        return "10";
+
+                      default:
+                        return;
+                    }
+                }(n(/Windows ((NT|XP)( \d\d?.\d)?)/i)) : T.windowsphone ? C = n(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i) : T.mac ? (C = n(/Mac OS X (\d+([_\.\s]\d+)*)/i), 
+                C = C.replace(/[_\s]/g, ".")) : i ? (C = n(/os (\d+([_\s]\d+)*) like mac os x/i), 
+                C = C.replace(/[_\s]/g, ".")) : o ? C = n(/android[ \/-](\d+(\.\d+)*)/i) : T.webos ? C = n(/(?:web|hpw)os\/(\d+(\.\d+)*)/i) : T.blackberry ? C = n(/rim\stablet\sos\s(\d+(\.\d+)*)/i) : T.bada ? C = n(/bada\/(\d+(\.\d+)*)/i) : T.tizen && (C = n(/tizen[\/\s](\d+(\.\d+)*)/i)), 
+                C && (T.osversion = C);
+                var k = !T.windows && C.split(".")[0];
+                E || a || "ipad" == i || o && (3 == k || k >= 4 && !S) || T.silk ? T.tablet = e : (S || "iphone" == i || "ipod" == i || o || u || T.blackberry || T.webos || T.bada) && (T.mobile = e);
+                return T.msedge || T.msie && T.version >= 10 || T.yandexbrowser && T.version >= 15 || T.vivaldi && T.version >= 1 || T.chrome && T.version >= 20 || T.samsungBrowser && T.version >= 4 || T.firefox && T.version >= 20 || T.safari && T.version >= 6 || T.opera && T.version >= 10 || T.ios && T.osversion && T.osversion.split(".")[0] >= 6 || T.blackberry && T.version >= 10.1 || T.chromium && T.version >= 20 ? T.a = e : T.msie && T.version < 10 || T.chrome && T.version < 20 || T.firefox && T.version < 20 || T.safari && T.version < 6 || T.opera && T.version < 10 || T.ios && T.osversion && T.osversion.split(".")[0] < 6 || T.chromium && T.version < 20 ? T.c = e : T.x = e, 
+                T;
+            }
+            function r(e) {
+                return e.split(".").length;
+            }
+            function i(e, t) {
+                var r, n = [];
+                if (Array.prototype.map) return Array.prototype.map.call(e, t);
+                for (r = 0; r < e.length; r++) n.push(t(e[r]));
+                return n;
+            }
+            function s(e) {
+                for (var t = Math.max(r(e[0]), r(e[1])), n = i(e, function(e) {
+                    var n = t - r(e);
+                    return e += new Array(n + 1).join(".0"), i(e.split("."), function(e) {
+                        return new Array(20 - e.length).join("0") + e;
+                    }).reverse();
+                }); --t >= 0; ) {
+                    if (n[0][t] > n[1][t]) return 1;
+                    if (n[0][t] !== n[1][t]) return -1;
+                    if (0 === t) return 0;
+                }
+            }
+            function o(e, r, i) {
+                var o = n;
+                "string" == typeof r && (i = r, r = void 0), void 0 === r && (r = !1), i && (o = t(i));
+                var u = "" + o.version;
+                for (var a in e) if (e.hasOwnProperty(a) && o[a]) {
+                    if ("string" != typeof e[a]) throw new Error("Browser version in the minVersion map should be a string: " + a + ": " + String(e));
+                    return s([ u, e[a] ]) < 0;
+                }
+                return r;
+            }
+            function u(e, t, n) {
+                return !o(e, t, n);
+            }
+            var e = !0, n = t("undefined" != typeof navigator ? navigator.userAgent || "" : "");
+            return n.test = function(e) {
+                for (var t = 0; t < e.length; ++t) {
+                    var r = e[t];
+                    if ("string" == typeof r && r in n) return !0;
+                }
+                return !1;
+            }, n.isUnsupportedBrowser = o, n.compareVersions = s, n.check = u, n._detect = t, 
+            n.detect = t, n;
+        });
+    },
+    "./node_modules/cross-domain-safe-weakmap/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function hasNativeWeakMap() {
+            if (!window.WeakMap) return !1;
+            if (!window.Object.freeze) return !1;
+            try {
+                var testWeakMap = new window.WeakMap(), testKey = {};
+                window.Object.freeze(testKey);
+                testWeakMap.set(testKey, "__testvalue__");
+                return "__testvalue__" === testWeakMap.get(testKey);
+            } catch (err) {
+                return !1;
+            }
+        }
+        function safeIndexOf(collection, item) {
+            for (var i = 0; i < collection.length; i++) try {
+                if (collection[i] === item) return i;
+            } catch (err) {}
+            return -1;
+        }
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+        }
+        var interface_namespaceObject = {};
+        __webpack_require__.d(interface_namespaceObject, "WeakMap", function() {
+            return weakmap_CrossDomainSafeWeakMap;
+        });
+        var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), defineProperty = Object.defineProperty, counter = Date.now() % 1e9, weakmap_CrossDomainSafeWeakMap = function() {
+            function CrossDomainSafeWeakMap() {
+                _classCallCheck(this, CrossDomainSafeWeakMap);
+                counter += 1;
+                this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__" + counter;
+                if (hasNativeWeakMap()) try {
+                    this.weakmap = new window.WeakMap();
+                } catch (err) {}
+                this.keys = [];
+                this.values = [];
+            }
+            CrossDomainSafeWeakMap.prototype._cleanupClosedWindows = function() {
+                for (var weakmap = this.weakmap, keys = this.keys, i = 0; i < keys.length; i++) {
+                    var value = keys[i];
+                    if (Object(src.q)(value) && Object(src.r)(value)) {
+                        if (weakmap) try {
+                            weakmap.delete(value);
+                        } catch (err) {}
+                        keys.splice(i, 1);
+                        this.values.splice(i, 1);
+                        i -= 1;
+                    }
+                }
+            };
+            CrossDomainSafeWeakMap.prototype.isSafeToReadWrite = function(key) {
+                if (Object(src.q)(key)) return !1;
+                try {
+                    key && key.self;
+                    key && key[this.name];
+                } catch (err) {
+                    return !1;
+                }
+                return !0;
+            };
+            CrossDomainSafeWeakMap.prototype.set = function(key, value) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.set(key, value);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) {
+                    var name = this.name, entry = key[name];
+                    entry && entry[0] === key ? entry[1] = value : defineProperty(key, name, {
+                        value: [ key, value ],
+                        writable: !0
+                    });
+                } else {
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, values = this.values, index = safeIndexOf(keys, key);
+                    if (-1 === index) {
+                        keys.push(key);
+                        values.push(value);
+                    } else values[index] = value;
+                }
+            };
+            CrossDomainSafeWeakMap.prototype.get = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    if (weakmap.has(key)) return weakmap.get(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (!this.isSafeToReadWrite(key)) {
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, index = safeIndexOf(keys, key);
+                    if (-1 === index) return;
+                    return this.values[index];
+                }
+                var entry = key[this.name];
+                if (entry && entry[0] === key) return entry[1];
+            };
+            CrossDomainSafeWeakMap.prototype.delete = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.delete(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) {
+                    var entry = key[this.name];
+                    entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+                } else {
+                    this._cleanupClosedWindows();
+                    var keys = this.keys, index = safeIndexOf(keys, key);
+                    if (-1 !== index) {
+                        keys.splice(index, 1);
+                        this.values.splice(index, 1);
+                    }
+                }
+            };
+            CrossDomainSafeWeakMap.prototype.has = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    return weakmap.has(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) {
+                    var entry = key[this.name];
+                    return !(!entry || entry[0] !== key);
+                }
+                this._cleanupClosedWindows();
+                return -1 !== safeIndexOf(this.keys, key);
+            };
+            return CrossDomainSafeWeakMap;
+        }();
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return weakmap_CrossDomainSafeWeakMap;
+        });
+    },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        function isRegex(item) {
+            return "[object RegExp]" === Object.prototype.toString.call(item);
+        }
         function noop() {}
+        function isAboutProtocol() {
+            return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window).location.protocol === CONSTANTS.ABOUT_PROTOCOL;
+        }
         function getParent(win) {
             if (win) try {
                 if (win.parent && win.parent !== win) return win.parent;
+            } catch (err) {
+                return;
+            }
+        }
+        function getOpener(win) {
+            if (win && !getParent(win)) try {
+                return win.opener;
             } catch (err) {
                 return;
             }
@@ -99,13 +509,376 @@
             var domain = getActualDomain(win);
             return domain && win.mockDomain && 0 === win.mockDomain.indexOf(CONSTANTS.MOCK_PROTOCOL) ? win.mockDomain : domain;
         }
-        __webpack_exports__.a = getDomain;
+        function isActuallySameDomain(win) {
+            try {
+                if (win === window) return !0;
+            } catch (err) {}
+            try {
+                var desc = Object.getOwnPropertyDescriptor(win, "location");
+                if (desc && !1 === desc.enumerable) return !1;
+            } catch (err) {}
+            try {
+                if (isAboutProtocol(win) && canReadFromWindow(win)) return !0;
+            } catch (err) {}
+            try {
+                if (getActualDomain(win) === getActualDomain(window)) return !0;
+            } catch (err) {}
+            return !1;
+        }
+        function isSameDomain(win) {
+            if (!isActuallySameDomain(win)) return !1;
+            try {
+                if (win === window) return !0;
+                if (isAboutProtocol(win) && canReadFromWindow(win)) return !0;
+                if (getDomain(window) === getDomain(win)) return !0;
+            } catch (err) {}
+            return !1;
+        }
+        function getParents(win) {
+            var result = [];
+            try {
+                for (;win.parent !== win; ) {
+                    result.push(win.parent);
+                    win = win.parent;
+                }
+            } catch (err) {}
+            return result;
+        }
+        function isAncestorParent(parent, child) {
+            if (!parent || !child) return !1;
+            var childParent = getParent(child);
+            return childParent ? childParent === parent : -1 !== getParents(child).indexOf(parent);
+        }
+        function getFrames(win) {
+            var result = [], frames = void 0;
+            try {
+                frames = win.frames;
+            } catch (err) {
+                frames = win;
+            }
+            var len = void 0;
+            try {
+                len = frames.length;
+            } catch (err) {}
+            if (0 === len) return result;
+            if (len) {
+                for (var i = 0; i < len; i++) {
+                    var frame = void 0;
+                    try {
+                        frame = frames[i];
+                    } catch (err) {
+                        continue;
+                    }
+                    result.push(frame);
+                }
+                return result;
+            }
+            for (var _i = 0; _i < 100; _i++) {
+                var _frame = void 0;
+                try {
+                    _frame = frames[_i];
+                } catch (err) {
+                    return result;
+                }
+                if (!_frame) return result;
+                result.push(_frame);
+            }
+            return result;
+        }
+        function getAllChildFrames(win) {
+            for (var result = [], _iterator = getFrames(win), _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i2 >= _iterator.length) break;
+                    _ref = _iterator[_i2++];
+                } else {
+                    _i2 = _iterator.next();
+                    if (_i2.done) break;
+                    _ref = _i2.value;
+                }
+                var frame = _ref;
+                result.push(frame);
+                for (var _iterator2 = getAllChildFrames(frame), _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i3 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i3++];
+                    } else {
+                        _i3 = _iterator2.next();
+                        if (_i3.done) break;
+                        _ref2 = _i3.value;
+                    }
+                    var childFrame = _ref2;
+                    result.push(childFrame);
+                }
+            }
+            return result;
+        }
+        function getTop(win) {
+            if (win) {
+                try {
+                    if (win.top) return win.top;
+                } catch (err) {}
+                if (getParent(win) === win) return win;
+                try {
+                    if (isAncestorParent(window, win) && window.top) return window.top;
+                } catch (err) {}
+                try {
+                    if (isAncestorParent(win, window) && window.top) return window.top;
+                } catch (err) {}
+                for (var _iterator3 = getAllChildFrames(win), _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray3) {
+                        if (_i4 >= _iterator3.length) break;
+                        _ref3 = _iterator3[_i4++];
+                    } else {
+                        _i4 = _iterator3.next();
+                        if (_i4.done) break;
+                        _ref3 = _i4.value;
+                    }
+                    var frame = _ref3;
+                    try {
+                        if (frame.top) return frame.top;
+                    } catch (err) {}
+                    if (getParent(frame) === frame) return frame;
+                }
+            }
+        }
+        function getAllFramesInWindow(win) {
+            var top = getTop(win);
+            return getAllChildFrames(top).concat(top);
+        }
+        function isFrameWindowClosed(frame) {
+            if (!frame.contentWindow) return !0;
+            if (!frame.parentNode) return !0;
+            var doc = frame.ownerDocument;
+            return !(!doc || !doc.body || doc.body.contains(frame));
+        }
+        function safeIndexOf(collection, item) {
+            for (var i = 0; i < collection.length; i++) try {
+                if (collection[i] === item) return i;
+            } catch (err) {}
+            return -1;
+        }
+        function isWindowClosed(win) {
+            var allowMock = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+            try {
+                if (win === window) return !1;
+            } catch (err) {
+                return !0;
+            }
+            try {
+                if (!win) return !0;
+            } catch (err) {
+                return !0;
+            }
+            try {
+                if (win.closed) return !0;
+            } catch (err) {
+                return !err || err.message !== IE_WIN_ACCESS_ERROR;
+            }
+            if (allowMock && isSameDomain(win)) try {
+                if (win.mockclosed) return !0;
+            } catch (err) {}
+            try {
+                if (!win.parent || !win.top) return !0;
+            } catch (err) {}
+            try {
+                noop(win === win);
+            } catch (err) {
+                return !0;
+            }
+            var iframeIndex = safeIndexOf(iframeWindows, win);
+            if (-1 !== iframeIndex) {
+                var frame = iframeFrames[iframeIndex];
+                if (frame && isFrameWindowClosed(frame)) return !0;
+            }
+            return !1;
+        }
+        function getUserAgent(win) {
+            win = win || window;
+            return win.navigator.mockUserAgent || win.navigator.userAgent;
+        }
+        function getFrameByName(win, name) {
+            for (var winFrames = getFrames(win), _iterator4 = winFrames, _isArray4 = Array.isArray(_iterator4), _i6 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray4) {
+                    if (_i6 >= _iterator4.length) break;
+                    _ref4 = _iterator4[_i6++];
+                } else {
+                    _i6 = _iterator4.next();
+                    if (_i6.done) break;
+                    _ref4 = _i6.value;
+                }
+                var childFrame = _ref4;
+                try {
+                    if (isSameDomain(childFrame) && childFrame.name === name && -1 !== winFrames.indexOf(childFrame)) return childFrame;
+                } catch (err) {}
+            }
+            try {
+                if (-1 !== winFrames.indexOf(win.frames[name])) return win.frames[name];
+            } catch (err) {}
+            try {
+                if (-1 !== winFrames.indexOf(win[name])) return win[name];
+            } catch (err) {}
+        }
+        function isOpener(parent, child) {
+            return parent === getOpener(child);
+        }
+        function getAncestor(win) {
+            win = win || window;
+            var opener = getOpener(win);
+            if (opener) return opener;
+            var parent = getParent(win);
+            return parent || void 0;
+        }
+        function isAncestor(parent, child) {
+            var actualParent = getAncestor(child);
+            if (actualParent) return actualParent === parent;
+            if (child === parent) return !1;
+            if (getTop(child) === child) return !1;
+            for (var _iterator7 = getFrames(parent), _isArray7 = Array.isArray(_iterator7), _i9 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator](); ;) {
+                var _ref7;
+                if (_isArray7) {
+                    if (_i9 >= _iterator7.length) break;
+                    _ref7 = _iterator7[_i9++];
+                } else {
+                    _i9 = _iterator7.next();
+                    if (_i9.done) break;
+                    _ref7 = _i9.value;
+                }
+                if (_ref7 === child) return !0;
+            }
+            return !1;
+        }
+        function isPopup() {
+            return Boolean(getOpener(window));
+        }
+        function isIframe() {
+            return Boolean(getParent(window));
+        }
+        function anyMatch(collection1, collection2) {
+            for (var _iterator8 = collection1, _isArray8 = Array.isArray(_iterator8), _i10 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
+                var _ref8;
+                if (_isArray8) {
+                    if (_i10 >= _iterator8.length) break;
+                    _ref8 = _iterator8[_i10++];
+                } else {
+                    _i10 = _iterator8.next();
+                    if (_i10.done) break;
+                    _ref8 = _i10.value;
+                }
+                for (var item1 = _ref8, _iterator9 = collection2, _isArray9 = Array.isArray(_iterator9), _i11 = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ;) {
+                    var _ref9;
+                    if (_isArray9) {
+                        if (_i11 >= _iterator9.length) break;
+                        _ref9 = _iterator9[_i11++];
+                    } else {
+                        _i11 = _iterator9.next();
+                        if (_i11.done) break;
+                        _ref9 = _i11.value;
+                    }
+                    if (item1 === _ref9) return !0;
+                }
+            }
+            return !1;
+        }
+        function isSameTopWindow(win1, win2) {
+            var top1 = getTop(win1) || win1, top2 = getTop(win2) || win2;
+            try {
+                if (top1 && top2) return top1 === top2;
+            } catch (err) {}
+            var allFrames1 = getAllFramesInWindow(win1), allFrames2 = getAllFramesInWindow(win2);
+            if (anyMatch(allFrames1, allFrames2)) return !0;
+            var opener1 = getOpener(top1), opener2 = getOpener(top2);
+            return (!opener1 || !anyMatch(getAllFramesInWindow(opener1), allFrames2)) && (opener2 && anyMatch(getAllFramesInWindow(opener2), allFrames1), 
+            !1);
+        }
+        function matchDomain(pattern, origin) {
+            if ("string" == typeof pattern) {
+                if ("string" == typeof origin) return pattern === CONSTANTS.WILDCARD || origin === pattern;
+                if (isRegex(origin)) return !1;
+                if (Array.isArray(origin)) return !1;
+            }
+            return isRegex(pattern) ? isRegex(origin) ? pattern.toString() === origin.toString() : !Array.isArray(origin) && Boolean(origin.match(pattern)) : !!Array.isArray(pattern) && (Array.isArray(origin) ? JSON.stringify(pattern) === JSON.stringify(origin) : !isRegex(origin) && pattern.some(function(subpattern) {
+                return matchDomain(subpattern, origin);
+            }));
+        }
+        function getDomainFromUrl(url) {
+            var domain = void 0;
+            if (!url.match(/^(https?|mock|file):\/\//)) return getDomain();
+            domain = url;
+            domain = domain.split("/").slice(0, 3).join("/");
+            return domain;
+        }
+        function isWindow(obj) {
+            try {
+                if (obj === window) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                if ("[object Window]" === Object.prototype.toString.call(obj)) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                if (window.Window && obj instanceof window.Window) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                if (obj && obj.self === obj) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                if (obj && obj.parent === obj) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                if (obj && obj.top === obj) return !0;
+            } catch (err) {
+                if (err && err.message === IE_WIN_ACCESS_ERROR) return !0;
+            }
+            try {
+                noop(obj === obj);
+            } catch (err) {
+                return !0;
+            }
+            try {
+                noop(obj && obj.__cross_domain_utils_window_check__);
+            } catch (err) {
+                return !0;
+            }
+            return !1;
+        }
+        __webpack_exports__.h = getParent;
+        __webpack_exports__.g = getOpener;
+        __webpack_exports__.a = getActualDomain;
+        __webpack_exports__.c = getDomain;
+        __webpack_exports__.j = isActuallySameDomain;
+        __webpack_exports__.o = isSameDomain;
+        __webpack_exports__.f = getFrames;
+        __webpack_exports__.r = isWindowClosed;
+        __webpack_exports__.i = getUserAgent;
+        __webpack_exports__.e = getFrameByName;
+        __webpack_exports__.m = isOpener;
+        __webpack_exports__.b = getAncestor;
+        __webpack_exports__.k = isAncestor;
+        __webpack_exports__.n = isPopup;
+        __webpack_exports__.l = isIframe;
+        __webpack_exports__.p = isSameTopWindow;
+        __webpack_exports__.s = matchDomain;
+        __webpack_exports__.d = getDomainFromUrl;
+        __webpack_exports__.q = isWindow;
         var CONSTANTS = {
             MOCK_PROTOCOL: "mock:",
             FILE_PROTOCOL: "file:",
             ABOUT_PROTOCOL: "about:",
             WILDCARD: "*"
-        };
+        }, IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n", iframeWindows = [], iframeFrames = [];
     },
     "./node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
         (function(process, global, module) {
@@ -413,6 +1186,974 @@
             }();
         }).call(exports, __webpack_require__("./node_modules/process/browser.js"), __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
     },
+    "./node_modules/post-robot/src/bridge/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function deleteTunnelWindow(id) {
+            try {
+                global.a.tunnelWindows[id] && delete global.a.tunnelWindows[id].source;
+            } catch (err) {}
+            delete global.a.tunnelWindows[id];
+        }
+        function cleanTunnelWindows() {
+            for (var tunnelWindows = global.a.tunnelWindows, _iterator = Object.keys(tunnelWindows), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var key = _ref, tunnelWindow = tunnelWindows[key];
+                try {
+                    Object(lib.j)(tunnelWindow.source);
+                } catch (err) {
+                    deleteTunnelWindow(key);
+                    continue;
+                }
+                Object(cross_domain_utils_src.r)(tunnelWindow.source) && deleteTunnelWindow(key);
+            }
+        }
+        function addTunnelWindow(_ref2) {
+            var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage;
+            cleanTunnelWindows();
+            global.a.tunnelWindowId += 1;
+            global.a.tunnelWindows[global.a.tunnelWindowId] = {
+                name: name,
+                source: source,
+                canary: canary,
+                sendMessage: sendMessage
+            };
+            return global.a.tunnelWindowId;
+        }
+        function getTunnelWindow(id) {
+            return global.a.tunnelWindows[id];
+        }
+        function needsBridgeForBrowser() {
+            return !!Object(cross_domain_utils_src.i)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
+        }
+        function needsBridgeForWin(win) {
+            return !Object(cross_domain_utils_src.p)(window, win);
+        }
+        function needsBridgeForDomain(domain, win) {
+            if (domain) {
+                if (Object(cross_domain_utils_src.c)() !== Object(cross_domain_utils_src.d)(domain)) return !0;
+            } else if (win && !Object(cross_domain_utils_src.o)(win)) return !0;
+            return !1;
+        }
+        function needsBridge(_ref) {
+            var win = _ref.win, domain = _ref.domain;
+            return !!needsBridgeForBrowser() && (!(domain && !needsBridgeForDomain(domain, win)) && !(win && !needsBridgeForWin(win)));
+        }
+        function getBridgeName(domain) {
+            domain = domain || Object(cross_domain_utils_src.d)(domain);
+            var sanitizedDomain = domain.replace(/[^a-zA-Z0-9]+/g, "_");
+            return conf.b.BRIDGE_NAME_PREFIX + "_" + sanitizedDomain;
+        }
+        function isBridge() {
+            return Boolean(window.name && window.name === getBridgeName(Object(cross_domain_utils_src.c)()));
+        }
+        function registerRemoteWindow(win) {
+            arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : conf.a.BRIDGE_TIMEOUT;
+            global.a.remoteWindows.set(win, {
+                sendMessagePromise: new src.a()
+            });
+        }
+        function findRemoteWindow(win) {
+            return global.a.remoteWindows.get(win);
+        }
+        function registerRemoteSendMessage(win, domain, sendMessage) {
+            var remoteWindow = findRemoteWindow(win);
+            if (!remoteWindow) throw new Error("Window not found to register sendMessage to");
+            var sendMessageWrapper = function(remoteWin, message, remoteDomain) {
+                if (remoteWin !== win) throw new Error("Remote window does not match window");
+                if (!Object(cross_domain_utils_src.s)(remoteDomain, domain)) throw new Error("Remote domain " + remoteDomain + " does not match domain " + domain);
+                sendMessage(message);
+            };
+            remoteWindow.sendMessagePromise.resolve(sendMessageWrapper);
+            remoteWindow.sendMessagePromise = src.a.resolve(sendMessageWrapper);
+        }
+        function rejectRemoteSendMessage(win, err) {
+            var remoteWindow = findRemoteWindow(win);
+            if (!remoteWindow) throw new Error("Window not found on which to reject sendMessage");
+            remoteWindow.sendMessagePromise.asyncReject(err);
+        }
+        function sendBridgeMessage(win, message, domain) {
+            var messagingChild = Object(cross_domain_utils_src.m)(window, win), messagingParent = Object(cross_domain_utils_src.m)(win, window);
+            if (!messagingChild && !messagingParent) throw new Error("Can only send messages to and from parent and popup windows");
+            var remoteWindow = findRemoteWindow(win);
+            if (!remoteWindow) throw new Error("Window not found to send message to");
+            return remoteWindow.sendMessagePromise.then(function(sendMessage) {
+                return sendMessage(win, message, domain);
+            });
+        }
+        function openTunnelToOpener() {
+            return src.a.try(function() {
+                var opener = Object(cross_domain_utils_src.g)(window);
+                if (opener && needsBridge({
+                    win: opener
+                })) {
+                    registerRemoteWindow(opener);
+                    return awaitRemoteBridgeForWindow(opener).then(function(bridge) {
+                        return bridge ? window.name ? bridge[conf.b.WINDOW_PROPS.POSTROBOT].openTunnelToParent({
+                            name: window.name,
+                            source: window,
+                            canary: function() {},
+                            sendMessage: function(message) {
+                                try {
+                                    Object(lib.j)(window);
+                                } catch (err) {
+                                    return;
+                                }
+                                if (window && !window.closed) try {
+                                    global.a.receiveMessage({
+                                        data: message,
+                                        origin: this.origin,
+                                        source: this.source
+                                    });
+                                } catch (err) {
+                                    src.a.reject(err);
+                                }
+                            }
+                        }).then(function(_ref2) {
+                            var source = _ref2.source, origin = _ref2.origin, data = _ref2.data;
+                            if (source !== opener) throw new Error("Source does not match opener");
+                            registerRemoteSendMessage(source, origin, data.sendMessage);
+                        }).catch(function(err) {
+                            rejectRemoteSendMessage(opener, err);
+                            throw err;
+                        }) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: window does not have a name")) : rejectRemoteSendMessage(opener, new Error("Can not register with opener: no bridge found in opener"));
+                    });
+                }
+            });
+        }
+        function listenForRegister(source, domain) {
+            global.a.on(conf.b.POST_MESSAGE_NAMES.OPEN_TUNNEL, {
+                window: source,
+                domain: domain
+            }, function(_ref) {
+                var origin = _ref.origin, data = _ref.data;
+                if (origin !== domain) throw new Error("Domain " + domain + " does not match origin " + origin);
+                if (!data.name) throw new Error("Register window expected to be passed window name");
+                if (!data.sendMessage) throw new Error("Register window expected to be passed sendMessage method");
+                if (!global.a.popupWindowsByName[data.name]) throw new Error("Window with name " + data.name + " does not exist, or was not opened by this window");
+                if (!global.a.popupWindowsByName[data.name].domain) throw new Error("We do not have a registered domain for window " + data.name);
+                if (global.a.popupWindowsByName[data.name].domain !== origin) throw new Error("Message origin " + origin + " does not matched registered window origin " + global.a.popupWindowsByName[data.name].domain);
+                registerRemoteSendMessage(global.a.popupWindowsByName[data.name].win, domain, data.sendMessage);
+                return {
+                    sendMessage: function(message) {
+                        if (window && !window.closed) {
+                            var winDetails = global.a.popupWindowsByName[data.name];
+                            if (winDetails) try {
+                                global.a.receiveMessage({
+                                    data: message,
+                                    origin: winDetails.domain,
+                                    source: winDetails.win
+                                });
+                            } catch (err) {
+                                src.a.reject(err);
+                            }
+                        }
+                    }
+                };
+            });
+        }
+        function openBridgeFrame(name, url) {
+            lib.i.debug("Opening bridge:", name, url);
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("name", name);
+            iframe.setAttribute("id", name);
+            iframe.setAttribute("style", "display: none; margin: 0; padding: 0; border: 0px none; overflow: hidden;");
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute("border", "0");
+            iframe.setAttribute("scrolling", "no");
+            iframe.setAttribute("allowTransparency", "true");
+            iframe.setAttribute("tabindex", "-1");
+            iframe.setAttribute("hidden", "true");
+            iframe.setAttribute("title", "");
+            iframe.setAttribute("role", "presentation");
+            iframe.src = url;
+            return iframe;
+        }
+        function hasBridge(url, domain) {
+            domain = domain || Object(cross_domain_utils_src.d)(url);
+            return Boolean(global.a.bridges[domain]);
+        }
+        function openBridge(url, domain) {
+            domain = domain || Object(cross_domain_utils_src.d)(url);
+            if (global.a.bridges[domain]) return global.a.bridges[domain];
+            global.a.bridges[domain] = src.a.try(function() {
+                if (Object(cross_domain_utils_src.c)() === domain) throw new Error("Can not open bridge on the same domain as current domain: " + domain);
+                var name = getBridgeName(domain);
+                if (Object(cross_domain_utils_src.e)(window, name)) throw new Error("Frame with name " + name + " already exists on page");
+                var iframe = openBridgeFrame(name, url);
+                global.a.bridgeFrames[domain] = iframe;
+                return documentBodyReady.then(function(body) {
+                    body.appendChild(iframe);
+                    var bridge = iframe.contentWindow;
+                    listenForRegister(bridge, domain);
+                    return new src.a(function(resolve, reject) {
+                        iframe.onload = resolve;
+                        iframe.onerror = reject;
+                    }).then(function() {
+                        return Object(lib.k)(bridge, conf.a.BRIDGE_TIMEOUT, "Bridge " + url);
+                    }).then(function() {
+                        return bridge;
+                    });
+                });
+            });
+            return global.a.bridges[domain];
+        }
+        function linkUrl(win, url) {
+            var winOptions = global.a.popupWindowsByWin.get(win);
+            if (winOptions) {
+                winOptions.domain = Object(cross_domain_utils_src.d)(url);
+                registerRemoteWindow(win);
+            }
+        }
+        function destroyBridges() {
+            for (var _iterator2 = Object.keys(global.a.bridgeFrames), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref3 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref3 = _i2.value;
+                }
+                var domain = _ref3, frame = global.a.bridgeFrames[domain];
+                frame.parentNode && frame.parentNode.removeChild(frame);
+            }
+            global.a.bridgeFrames = {};
+            global.a.bridges = {};
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), lib = __webpack_require__("./node_modules/post-robot/src/lib/index.js"), global = __webpack_require__("./node_modules/post-robot/src/global.js");
+        global.a.tunnelWindows = global.a.tunnelWindows || {};
+        global.a.tunnelWindowId = 0;
+        global.a.openTunnelToParent = function(_ref3) {
+            var name = _ref3.name, source = _ref3.source, canary = _ref3.canary, sendMessage = _ref3.sendMessage, parentWindow = Object(cross_domain_utils_src.h)(window);
+            if (!parentWindow) throw new Error("No parent window found to open tunnel to");
+            var id = addTunnelWindow({
+                name: name,
+                source: source,
+                canary: canary,
+                sendMessage: sendMessage
+            });
+            return global.a.send(parentWindow, conf.b.POST_MESSAGE_NAMES.OPEN_TUNNEL, {
+                name: name,
+                sendMessage: function() {
+                    var tunnelWindow = getTunnelWindow(id);
+                    try {
+                        Object(lib.j)(tunnelWindow && tunnelWindow.source);
+                    } catch (err) {
+                        deleteTunnelWindow(id);
+                        return;
+                    }
+                    if (tunnelWindow && tunnelWindow.source && !Object(cross_domain_utils_src.r)(tunnelWindow.source)) {
+                        try {
+                            tunnelWindow.canary();
+                        } catch (err) {
+                            return;
+                        }
+                        tunnelWindow.sendMessage.apply(this, arguments);
+                    }
+                }
+            }, {
+                domain: conf.b.WILDCARD
+            });
+        };
+        var cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), documentBodyReady = new src.a(function(resolve) {
+            if (window.document && window.document.body) return resolve(window.document.body);
+            var interval = setInterval(function() {
+                if (window.document && window.document.body) {
+                    clearInterval(interval);
+                    return resolve(window.document.body);
+                }
+            }, 10);
+        });
+        global.a.remoteWindows = global.a.remoteWindows || new cross_domain_safe_weakmap_src.a();
+        var awaitRemoteBridgeForWindow = Object(lib.q)(function(win) {
+            return src.a.try(function() {
+                for (var _iterator = Object(cross_domain_utils_src.f)(win), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                    var _ref;
+                    if (_isArray) {
+                        if (_i >= _iterator.length) break;
+                        _ref = _iterator[_i++];
+                    } else {
+                        _i = _iterator.next();
+                        if (_i.done) break;
+                        _ref = _i.value;
+                    }
+                    var _frame = _ref;
+                    try {
+                        if (_frame && _frame !== window && Object(cross_domain_utils_src.o)(_frame) && _frame[conf.b.WINDOW_PROPS.POSTROBOT]) return _frame;
+                    } catch (err) {
+                        continue;
+                    }
+                }
+                try {
+                    var frame = Object(cross_domain_utils_src.e)(win, getBridgeName(Object(cross_domain_utils_src.c)()));
+                    if (!frame) return;
+                    return Object(cross_domain_utils_src.o)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT] ? frame : new src.a(function(resolve) {
+                        var interval = void 0, timeout = void 0;
+                        interval = setInterval(function() {
+                            if (frame && Object(cross_domain_utils_src.o)(frame) && frame[conf.b.WINDOW_PROPS.POSTROBOT]) {
+                                clearInterval(interval);
+                                clearTimeout(timeout);
+                                return resolve(frame);
+                            }
+                        }, 100);
+                        timeout = setTimeout(function() {
+                            clearInterval(interval);
+                            return resolve();
+                        }, 2e3);
+                    });
+                } catch (err) {
+                    return;
+                }
+            });
+        });
+        global.a.bridges = global.a.bridges || {};
+        global.a.bridgeFrames = global.a.bridgeFrames || {};
+        global.a.popupWindowsByWin = global.a.popupWindowsByWin || new cross_domain_safe_weakmap_src.a();
+        global.a.popupWindowsByName = global.a.popupWindowsByName || {};
+        var windowOpen = window.open;
+        window.open = function(url, name, options, last) {
+            var domain = url;
+            if (url && 0 === url.indexOf(conf.b.MOCK_PROTOCOL)) {
+                var _url$split = url.split("|");
+                domain = _url$split[0];
+                url = _url$split[1];
+            }
+            domain && (domain = Object(cross_domain_utils_src.d)(domain));
+            var win = windowOpen.call(this, url, name, options, last);
+            if (!win) return win;
+            url && registerRemoteWindow(win);
+            for (var _iterator = Object.keys(global.a.popupWindowsByName), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref2 = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref2 = _i.value;
+                }
+                var winName = _ref2;
+                Object(cross_domain_utils_src.r)(global.a.popupWindowsByName[winName].win) && delete global.a.popupWindowsByName[winName];
+            }
+            if (name && win) {
+                var winOptions = global.a.popupWindowsByWin.get(win) || global.a.popupWindowsByName[name] || {};
+                winOptions.name = winOptions.name || name;
+                winOptions.win = winOptions.win || win;
+                winOptions.domain = winOptions.domain || domain;
+                global.a.popupWindowsByWin.set(win, winOptions);
+                global.a.popupWindowsByName[name] = winOptions;
+            }
+            return win;
+        };
+        __webpack_require__.d(__webpack_exports__, "openTunnelToOpener", function() {
+            return openTunnelToOpener;
+        });
+        __webpack_require__.d(__webpack_exports__, "needsBridgeForBrowser", function() {
+            return needsBridgeForBrowser;
+        });
+        __webpack_require__.d(__webpack_exports__, "needsBridgeForWin", function() {
+            return needsBridgeForWin;
+        });
+        __webpack_require__.d(__webpack_exports__, "needsBridgeForDomain", function() {
+            return needsBridgeForDomain;
+        });
+        __webpack_require__.d(__webpack_exports__, "needsBridge", function() {
+            return needsBridge;
+        });
+        __webpack_require__.d(__webpack_exports__, "getBridgeName", function() {
+            return getBridgeName;
+        });
+        __webpack_require__.d(__webpack_exports__, "isBridge", function() {
+            return isBridge;
+        });
+        __webpack_require__.d(__webpack_exports__, "documentBodyReady", function() {
+            return documentBodyReady;
+        });
+        __webpack_require__.d(__webpack_exports__, "registerRemoteWindow", function() {
+            return registerRemoteWindow;
+        });
+        __webpack_require__.d(__webpack_exports__, "findRemoteWindow", function() {
+            return findRemoteWindow;
+        });
+        __webpack_require__.d(__webpack_exports__, "registerRemoteSendMessage", function() {
+            return registerRemoteSendMessage;
+        });
+        __webpack_require__.d(__webpack_exports__, "rejectRemoteSendMessage", function() {
+            return rejectRemoteSendMessage;
+        });
+        __webpack_require__.d(__webpack_exports__, "sendBridgeMessage", function() {
+            return sendBridgeMessage;
+        });
+        __webpack_require__.d(__webpack_exports__, "hasBridge", function() {
+            return hasBridge;
+        });
+        __webpack_require__.d(__webpack_exports__, "openBridge", function() {
+            return openBridge;
+        });
+        __webpack_require__.d(__webpack_exports__, "linkUrl", function() {
+            return linkUrl;
+        });
+        __webpack_require__.d(__webpack_exports__, "destroyBridges", function() {
+            return destroyBridges;
+        });
+    },
+    "./node_modules/post-robot/src/compat/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function emulateIERestrictions(sourceWindow, targetWindow) {
+            if (!conf.a.ALLOW_POSTMESSAGE_POPUP && !1 === Object(src.p)(sourceWindow, targetWindow)) throw new Error("Can not send and receive post messages between two different windows (disabled to emulate IE)");
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js");
+        __webpack_require__.d(__webpack_exports__, "emulateIERestrictions", function() {
+            return emulateIERestrictions;
+        });
+    },
+    "./node_modules/post-robot/src/conf/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var _ALLOWED_POST_MESSAGE, CONSTANTS = {
+            POST_MESSAGE_TYPE: {
+                REQUEST: "postrobot_message_request",
+                RESPONSE: "postrobot_message_response",
+                ACK: "postrobot_message_ack"
+            },
+            POST_MESSAGE_ACK: {
+                SUCCESS: "success",
+                ERROR: "error"
+            },
+            POST_MESSAGE_NAMES: {
+                METHOD: "postrobot_method",
+                READY: "postrobot_ready",
+                OPEN_TUNNEL: "postrobot_open_tunnel"
+            },
+            WINDOW_TYPES: {
+                FULLPAGE: "fullpage",
+                POPUP: "popup",
+                IFRAME: "iframe"
+            },
+            WINDOW_PROPS: {
+                POSTROBOT: "__postRobot__"
+            },
+            SERIALIZATION_TYPES: {
+                METHOD: "postrobot_method",
+                ERROR: "postrobot_error",
+                PROMISE: "postrobot_promise",
+                ZALGO_PROMISE: "postrobot_zalgo_promise",
+                REGEX: "regex"
+            },
+            SEND_STRATEGIES: {
+                POST_MESSAGE: "postrobot_post_message",
+                BRIDGE: "postrobot_bridge",
+                GLOBAL: "postrobot_global"
+            },
+            MOCK_PROTOCOL: "mock:",
+            FILE_PROTOCOL: "file:",
+            BRIDGE_NAME_PREFIX: "__postrobot_bridge__",
+            POSTROBOT_PROXY: "__postrobot_proxy__",
+            WILDCARD: "*"
+        }, POST_MESSAGE_NAMES_LIST = Object.keys(CONSTANTS.POST_MESSAGE_NAMES).map(function(key) {
+            return CONSTANTS.POST_MESSAGE_NAMES[key];
+        }), CONFIG = {
+            ALLOW_POSTMESSAGE_POPUP: !("__ALLOW_POSTMESSAGE_POPUP__" in window) || window.__ALLOW_POSTMESSAGE_POPUP__,
+            LOG_LEVEL: "info",
+            BRIDGE_TIMEOUT: 5e3,
+            CHILD_WINDOW_TIMEOUT: 5e3,
+            ACK_TIMEOUT: -1 !== window.navigator.userAgent.match(/MSIE/i) ? 2e3 : 1e3,
+            RES_TIMEOUT: 1 / 0,
+            LOG_TO_PAGE: !1,
+            ALLOWED_POST_MESSAGE_METHODS: (_ALLOWED_POST_MESSAGE = {}, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.POST_MESSAGE] = !0, 
+            _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.BRIDGE] = !0, _ALLOWED_POST_MESSAGE[CONSTANTS.SEND_STRATEGIES.GLOBAL] = !0, 
+            _ALLOWED_POST_MESSAGE),
+            ALLOW_SAME_ORIGIN: !1
+        };
+        0 === window.location.href.indexOf(CONSTANTS.FILE_PROTOCOL) && (CONFIG.ALLOW_POSTMESSAGE_POPUP = !0);
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return CONFIG;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return CONSTANTS;
+        });
+        __webpack_require__.d(__webpack_exports__, "c", function() {
+            return POST_MESSAGE_NAMES_LIST;
+        });
+    },
+    "./node_modules/post-robot/src/global.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return global;
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__conf__ = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), global = window[__WEBPACK_IMPORTED_MODULE_0__conf__.b.WINDOW_PROPS.POSTROBOT] = window[__WEBPACK_IMPORTED_MODULE_0__conf__.b.WINDOW_PROPS.POSTROBOT] || {};
+        global.registerSelf = function() {};
+    },
+    "./node_modules/post-robot/src/lib/index.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function stringifyError(err) {
+            var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack, message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+            }
+        }
+        function noop() {}
+        function addEventListener(obj, event, handler) {
+            obj.addEventListener ? obj.addEventListener(event, handler) : obj.attachEvent("on" + event, handler);
+            return {
+                cancel: function() {
+                    obj.removeEventListener ? obj.removeEventListener(event, handler) : obj.detachEvent("on" + event, handler);
+                }
+            };
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }
+        function eachArray(item, callback) {
+            for (var i = 0; i < item.length; i++) callback(item[i], i);
+        }
+        function eachObject(item, callback) {
+            for (var _key in item) item.hasOwnProperty(_key) && callback(item[_key], _key);
+        }
+        function each(item, callback) {
+            Array.isArray(item) ? eachArray(item, callback) : "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item && eachObject(item, callback);
+        }
+        function replaceObject(item, callback) {
+            var depth = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 1;
+            if (depth >= 100) throw new Error("Self-referential object passed, or object contained too many layers");
+            var newobj = void 0;
+            if ("object" !== (void 0 === item ? "undefined" : _typeof(item)) || null === item || Array.isArray(item)) {
+                if (!Array.isArray(item)) throw new Error("Invalid type: " + (void 0 === item ? "undefined" : _typeof(item)));
+                newobj = [];
+            } else newobj = {};
+            each(item, function(childItem, key) {
+                var result = callback(childItem, key);
+                void 0 !== result ? newobj[key] = result : "object" === (void 0 === childItem ? "undefined" : _typeof(childItem)) && null !== childItem ? newobj[key] = replaceObject(childItem, callback, depth + 1) : newobj[key] = childItem;
+            });
+            return newobj;
+        }
+        function safeInterval(method, time) {
+            function runInterval() {
+                timeout = setTimeout(runInterval, time);
+                method.call();
+            }
+            var timeout = void 0;
+            timeout = setTimeout(runInterval, time);
+            return {
+                cancel: function() {
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        function isRegex(item) {
+            return "[object RegExp]" === Object.prototype.toString.call(item);
+        }
+        function getWindowType() {
+            return Object(cross_domain_utils_src.n)() ? conf.b.WINDOW_TYPES.POPUP : Object(cross_domain_utils_src.l)() ? conf.b.WINDOW_TYPES.IFRAME : conf.b.WINDOW_TYPES.FULLPAGE;
+        }
+        function jsonStringify(obj, replacer, indent) {
+            var objectToJSON = void 0, arrayToJSON = void 0;
+            try {
+                if ("{}" !== JSON.stringify({})) {
+                    objectToJSON = Object.prototype.toJSON;
+                    delete Object.prototype.toJSON;
+                }
+                if ("{}" !== JSON.stringify({})) throw new Error("Can not correctly serialize JSON objects");
+                if ("[]" !== JSON.stringify([])) {
+                    arrayToJSON = Array.prototype.toJSON;
+                    delete Array.prototype.toJSON;
+                }
+                if ("[]" !== JSON.stringify([])) throw new Error("Can not correctly serialize JSON objects");
+            } catch (err) {
+                throw new Error("Can not repair JSON.stringify: " + err.message);
+            }
+            var result = JSON.stringify.call(this, obj, replacer, indent);
+            try {
+                objectToJSON && (Object.prototype.toJSON = objectToJSON);
+                arrayToJSON && (Array.prototype.toJSON = arrayToJSON);
+            } catch (err) {
+                throw new Error("Can not repair JSON.stringify: " + err.message);
+            }
+            return result;
+        }
+        function jsonParse(item) {
+            return JSON.parse(item);
+        }
+        function isSerialized(item, type) {
+            return "object" === (void 0 === item ? "undefined" : serialize__typeof(item)) && null !== item && item.__type__ === type;
+        }
+        function serializeMethod(destination, domain, method, name) {
+            var id = uniqueID(), methods = global.a.methods.get(destination);
+            if (!methods) {
+                methods = {};
+                global.a.methods.set(destination, methods);
+            }
+            methods[id] = {
+                domain: domain,
+                method: method
+            };
+            return {
+                __type__: conf.b.SERIALIZATION_TYPES.METHOD,
+                __id__: id,
+                __name__: name
+            };
+        }
+        function serializeError(err) {
+            return {
+                __type__: conf.b.SERIALIZATION_TYPES.ERROR,
+                __message__: stringifyError(err),
+                __code__: err.code
+            };
+        }
+        function serializePromise(destination, domain, promise, name) {
+            return {
+                __type__: conf.b.SERIALIZATION_TYPES.PROMISE,
+                __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                    return promise.then(resolve, reject);
+                }, name + ".then")
+            };
+        }
+        function serializeZalgoPromise(destination, domain, promise, name) {
+            return {
+                __type__: conf.b.SERIALIZATION_TYPES.ZALGO_PROMISE,
+                __then__: serializeMethod(destination, domain, function(resolve, reject) {
+                    return promise.then(resolve, reject);
+                }, name + ".then")
+            };
+        }
+        function serializeRegex(regex) {
+            return {
+                __type__: conf.b.SERIALIZATION_TYPES.REGEX,
+                __source__: regex.source
+            };
+        }
+        function serializeMethods(destination, domain, obj) {
+            return replaceObject({
+                obj: obj
+            }, function(item, key) {
+                return "function" == typeof item ? serializeMethod(destination, domain, item, key.toString()) : item instanceof Error ? serializeError(item) : window.Promise && item instanceof window.Promise ? serializePromise(destination, domain, item, key.toString()) : zalgo_promise_src.a.isPromise(item) ? serializeZalgoPromise(destination, domain, item, key.toString()) : isRegex(item) ? serializeRegex(item) : void 0;
+            }).obj;
+        }
+        function deserializeMethod(source, origin, obj) {
+            function wrapper() {
+                var args = Array.prototype.slice.call(arguments);
+                log.debug("Call foreign method", obj.__name__, args);
+                return global.a.send(source, conf.b.POST_MESSAGE_NAMES.METHOD, {
+                    id: obj.__id__,
+                    name: obj.__name__,
+                    args: args
+                }, {
+                    domain: origin,
+                    timeout: 1 / 0
+                }).then(function(_ref2) {
+                    var data = _ref2.data;
+                    log.debug("Got foreign method result", obj.__name__, data.result);
+                    return data.result;
+                }, function(err) {
+                    log.debug("Got foreign method error", stringifyError(err));
+                    throw err;
+                });
+            }
+            wrapper.__name__ = obj.__name__;
+            wrapper.__xdomain__ = !0;
+            wrapper.source = source;
+            wrapper.origin = origin;
+            return wrapper;
+        }
+        function deserializeError(source, origin, obj) {
+            var err = new Error(obj.__message__);
+            obj.__code__ && (err.code = obj.__code__);
+            return err;
+        }
+        function deserializeZalgoPromise(source, origin, prom) {
+            return new zalgo_promise_src.a(function(resolve, reject) {
+                return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
+            });
+        }
+        function deserializePromise(source, origin, prom) {
+            return window.Promise ? new window.Promise(function(resolve, reject) {
+                return deserializeMethod(source, origin, prom.__then__)(resolve, reject);
+            }) : deserializeZalgoPromise(source, origin, prom);
+        }
+        function deserializeRegex(source, origin, item) {
+            return new RegExp(item.__source__);
+        }
+        function deserializeMethods(source, origin, obj) {
+            return replaceObject({
+                obj: obj
+            }, function(item, key) {
+                if ("object" === (void 0 === item ? "undefined" : serialize__typeof(item)) && null !== item) return isSerialized(item, conf.b.SERIALIZATION_TYPES.METHOD) ? deserializeMethod(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ERROR) ? deserializeError(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.PROMISE) ? deserializePromise(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.ZALGO_PROMISE) ? deserializeZalgoPromise(source, origin, item) : isSerialized(item, conf.b.SERIALIZATION_TYPES.REGEX) ? deserializeRegex(source, origin, item) : void 0;
+            }).obj;
+        }
+        function initOnReady() {
+            global.a.on(conf.b.POST_MESSAGE_NAMES.READY, {
+                domain: conf.b.WILDCARD
+            }, function(event) {
+                var win = event.source, promise = global.a.readyPromises.get(win);
+                if (promise) promise.resolve(event); else {
+                    promise = new zalgo_promise_src.a().resolve(event);
+                    global.a.readyPromises.set(win, promise);
+                }
+            });
+            var parent = Object(cross_domain_utils_src.b)();
+            parent && global.a.send(parent, conf.b.POST_MESSAGE_NAMES.READY, {}, {
+                domain: conf.b.WILDCARD,
+                timeout: 1 / 0
+            }).catch(function(err) {
+                log.debug(stringifyError(err));
+            });
+        }
+        function onWindowReady(win) {
+            var timeout = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 5e3, name = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "Window", promise = global.a.readyPromises.get(win);
+            if (promise) return promise;
+            promise = new zalgo_promise_src.a();
+            global.a.readyPromises.set(win, promise);
+            -1 !== timeout && setTimeout(function() {
+                return promise.reject(new Error(name + " did not load after " + timeout + "ms"));
+            }, timeout);
+            return promise;
+        }
+        var src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        }, once = function(method) {
+            if (!method) return method;
+            var called = !1;
+            return function() {
+                if (!called) {
+                    called = !0;
+                    return method.apply(this, arguments);
+                }
+            };
+        }, util_weakMapMemoize = function(method) {
+            var weakmap = new src.a();
+            return function(arg) {
+                var result = weakmap.get(arg);
+                if (void 0 !== result) return result;
+                result = method.call(this, arg);
+                void 0 !== result && weakmap.set(arg, result);
+                return result;
+            };
+        }, log__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        }, LOG_LEVELS = [ "debug", "info", "warn", "error" ];
+        Function.prototype.bind && window.console && "object" === log__typeof(console.log) && [ "log", "info", "warn", "error" ].forEach(function(method) {
+            console[method] = this.bind(console[method], console);
+        }, Function.prototype.call);
+        var log = {
+            clearLogs: function() {
+                window.console && window.console.clear && window.console.clear();
+                if (conf.a.LOG_TO_PAGE) {
+                    var container = document.getElementById("postRobotLogs");
+                    container && container.parentNode && container.parentNode.removeChild(container);
+                }
+            },
+            writeToPage: function(level, args) {
+                setTimeout(function() {
+                    var container = document.getElementById("postRobotLogs");
+                    if (!container) {
+                        container = document.createElement("div");
+                        container.id = "postRobotLogs";
+                        container.style.cssText = "width: 800px; font-family: monospace; white-space: pre-wrap;";
+                        document.body && document.body.appendChild(container);
+                    }
+                    var el = document.createElement("div"), date = new Date().toString().split(" ")[4], payload = Array.prototype.slice.call(args).map(function(item) {
+                        if ("string" == typeof item) return item;
+                        if (!item) return Object.prototype.toString.call(item);
+                        var json = void 0;
+                        try {
+                            json = jsonStringify(item, null, 2);
+                        } catch (e) {
+                            json = "[object]";
+                        }
+                        return "\n\n" + json + "\n\n";
+                    }).join(" "), msg = date + " " + level + " " + payload;
+                    el.innerHTML = msg;
+                    var color = {
+                        log: "#ddd",
+                        warn: "orange",
+                        error: "red",
+                        info: "blue",
+                        debug: "#aaa"
+                    }[level];
+                    el.style.cssText = "margin-top: 10px; color: " + color + ";";
+                    container.childNodes.length ? container.insertBefore(el, container.childNodes[0]) : container.appendChild(el);
+                });
+            },
+            logLevel: function(level, args) {
+                setTimeout(function() {
+                    try {
+                        var logLevel = window.LOG_LEVEL || conf.a.LOG_LEVEL;
+                        if ("disabled" === logLevel || LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(logLevel)) return;
+                        args = Array.prototype.slice.call(args);
+                        args.unshift("" + window.location.host + window.location.pathname);
+                        args.unshift("::");
+                        args.unshift("" + getWindowType().toLowerCase());
+                        args.unshift("[post-robot]");
+                        conf.a.LOG_TO_PAGE && log.writeToPage(level, args);
+                        if (!window.console) return;
+                        window.console[level] || (level = "log");
+                        if (!window.console[level]) return;
+                        window.console[level].apply(window.console, args);
+                    } catch (err) {}
+                }, 1);
+            },
+            debug: function() {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                log.logLevel("debug", args);
+            },
+            info: function() {
+                for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
+                log.logLevel("info", args);
+            },
+            warn: function() {
+                for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) args[_key3] = arguments[_key3];
+                log.logLevel("warn", args);
+            },
+            error: function() {
+                for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) args[_key4] = arguments[_key4];
+                log.logLevel("error", args);
+            }
+        }, zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), global = __webpack_require__("./node_modules/post-robot/src/global.js"), serialize__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        global.a.methods = global.a.methods || new src.a();
+        var listenForMethods = once(function() {
+            global.a.on(conf.b.POST_MESSAGE_NAMES.METHOD, {
+                origin: conf.b.WILDCARD
+            }, function(_ref) {
+                var source = _ref.source, origin = _ref.origin, data = _ref.data, methods = global.a.methods.get(source);
+                if (!methods) throw new Error("Could not find any methods this window has privileges to call");
+                var meth = methods[data.id];
+                if (!meth) throw new Error("Could not find method with id: " + data.id);
+                if (!Object(cross_domain_utils_src.s)(meth.domain, origin)) throw new Error("Method domain " + meth.domain + " does not match origin " + origin);
+                log.debug("Call local method", data.name, data.args);
+                return zalgo_promise_src.a.try(function() {
+                    return meth.method.apply({
+                        source: source,
+                        origin: origin,
+                        data: data
+                    }, data.args);
+                }).then(function(result) {
+                    return {
+                        result: result,
+                        id: data.id,
+                        name: data.name
+                    };
+                });
+            });
+        });
+        global.a.readyPromises = global.a.readyPromises || new src.a();
+        __webpack_require__.d(__webpack_exports__, "o", function() {
+            return stringifyError;
+        });
+        __webpack_require__.d(__webpack_exports__, "l", function() {
+            return once;
+        });
+        __webpack_require__.d(__webpack_exports__, "j", function() {
+            return noop;
+        });
+        __webpack_require__.d(__webpack_exports__, "a", function() {
+            return addEventListener;
+        });
+        __webpack_require__.d(__webpack_exports__, "p", function() {
+            return uniqueID;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return eachArray;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return eachObject;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return each;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return replaceObject;
+        });
+        __webpack_require__.d(__webpack_exports__, "m", function() {
+            return safeInterval;
+        });
+        __webpack_require__.d(__webpack_exports__, "e", function() {
+            return isRegex;
+        });
+        __webpack_require__.d(__webpack_exports__, "q", function() {
+            return util_weakMapMemoize;
+        });
+        __webpack_require__.d(__webpack_exports__, "c", function() {
+            return getWindowType;
+        });
+        __webpack_require__.d(__webpack_exports__, "g", function() {
+            return jsonStringify;
+        });
+        __webpack_require__.d(__webpack_exports__, "f", function() {
+            return jsonParse;
+        });
+        __webpack_require__.d(__webpack_exports__, "i", function() {
+            return log;
+        });
+        __webpack_require__.d(__webpack_exports__, "h", function() {
+            return listenForMethods;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return serializeMethod;
+        });
+        __webpack_require__.d(__webpack_exports__, "n", function() {
+            return serializeMethods;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializeMethod;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializeError;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializeZalgoPromise;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializePromise;
+        });
+        __webpack_require__.d(__webpack_exports__, !1, function() {
+            return deserializeRegex;
+        });
+        __webpack_require__.d(__webpack_exports__, "b", function() {
+            return deserializeMethods;
+        });
+        __webpack_require__.d(__webpack_exports__, "d", function() {
+            return initOnReady;
+        });
+        __webpack_require__.d(__webpack_exports__, "k", function() {
+            return onWindowReady;
+        });
+    },
     "./node_modules/process/browser.js": function(module, exports) {
         function defaultSetTimout() {
             throw new Error("setTimeout has not been defined");
@@ -532,6 +2273,11 @@
         };
         process.umask = function() {
             return 0;
+        };
+    },
+    "./node_modules/webpack/buildin/amd-define.js": function(module, exports) {
+        module.exports = function() {
+            throw new Error("define cannot be used indirect");
         };
     },
     "./node_modules/webpack/buildin/amd-options.js": function(module, exports) {
@@ -881,7 +2627,7 @@
     "./src/button/template/componentTemplate.jsx": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         function labelToFunding(label) {
-            return label ? LABEL_TO_FUNDING[label] : constants.t.PAYPAL;
+            return label ? LABEL_TO_FUNDING[label] : constants.u.PAYPAL;
         }
         function fundingToDefaultLabel(funding) {
             return FUNDING_TO_DEFAULT_LABEL[funding];
@@ -911,21 +2657,21 @@
         }
         function isFundingIneligible(source, _ref) {
             var locale = _ref.locale, funding = _ref.funding, layout = _ref.layout, commit = _ref.commit;
-            return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.u.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.t.VENMO ? constants.u.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.u.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.u.COMMIT_NOT_SET : void 0 : constants.u.SECONDARY_DISALLOWED;
+            return getFundingConfig(source, layout === constants.g.VERTICAL ? "allowVertical" : "allowHorizontal") ? -1 !== funding.disallowed.indexOf(source) && getFundingConfig(source, "allowOptOut") ? constants.v.OPT_OUT : -1 !== funding.disallowed.indexOf(source) && source === constants.u.VENMO ? constants.v.OPT_OUT : -1 === getFundingConfig(source, "allowedCountries", [ locale.country ]).indexOf(locale.country) ? constants.v.DISALLOWED_COUNTRY : getFundingConfig(source, "requireCommitAsTrue") && !commit ? constants.v.COMMIT_NOT_SET : void 0 : constants.v.SECONDARY_DISALLOWED;
         }
         function isFundingAutoEligible(source, _ref2) {
             var locale = _ref2.locale, funding = _ref2.funding;
-            return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.u.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.u.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.u.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.u.REMEMBERED : void 0;
+            return _ref2.layout === constants.g.VERTICAL && -1 !== getFundingConfig(source, "defaultVerticalCountries", []).indexOf(locale.country) ? constants.v.DEFAULT_COUNTRY : getFundingConfig(source, "default") ? constants.v.DEFAULT : -1 !== funding.allowed.indexOf(source) && getFundingConfig(source, "allowOptIn") ? constants.v.OPT_IN : -1 !== funding.remembered.indexOf(source) && getFundingConfig(source, "allowRemember") ? constants.v.REMEMBERED : void 0;
         }
         function isFundingEligible(source, _ref3) {
             var locale = _ref3.locale, funding = _ref3.funding, env = _ref3.env, layout = _ref3.layout, selected = _ref3.selected, commit = _ref3.commit;
             if (selected && source === selected) return {
                 eligible: !0,
-                reason: constants.u.PRIMARY
+                reason: constants.v.PRIMARY
             };
             if (!(getFundingConfig(source, "enabled") || env === constants.s.TEST && getFundingConfig(source, "test"))) return {
                 eligible: !1,
-                reason: constants.u.NOT_ENABLED
+                reason: constants.v.NOT_ENABLED
             };
             var ineligibleReason = isFundingIneligible(source, {
                 locale: locale,
@@ -947,7 +2693,7 @@
                 reason: autoEligibleReason
             } : {
                 eligible: !1,
-                reason: constants.u.NEED_OPT_IN
+                reason: constants.v.NEED_OPT_IN
             };
         }
         function determineEligibleFunding(_ref4) {
@@ -982,22 +2728,1067 @@
                 return -1 === funding.disallowed.indexOf(card);
             });
         }
-        function parseLocale(locale) {
-            var _locale$split = locale.split("_"), lang = _locale$split[0];
+        function buildMessage(win, message) {
+            var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, id = Object(lib.p)(), type = Object(lib.c)(), sourceDomain = Object(cross_domain_utils_src.c)(window);
+            return _extends({}, message, options, {
+                sourceDomain: sourceDomain,
+                id: message.id || id,
+                windowType: type
+            });
+        }
+        function sendMessage(win, message, domain) {
+            return zalgo_promise_src.a.try(function() {
+                var _jsonStringify;
+                message = buildMessage(win, message, {
+                    data: Object(lib.n)(win, domain, message.data),
+                    domain: domain
+                });
+                var level = void 0;
+                level = -1 !== src_conf.c.indexOf(message.name) || message.type === src_conf.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
+                lib.i.logLevel(level, [ "\n\n\t", "#send", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", domain || src_conf.b.WILDCARD, "\n\n", message ]);
+                if (win === window && !src_conf.a.ALLOW_SAME_ORIGIN) throw new Error("Attemping to send message to self");
+                if (Object(cross_domain_utils_src.r)(win)) throw new Error("Window is closed");
+                lib.i.debug("Running send message strategies", message);
+                var messages = [], serializedMessage = Object(lib.g)((_jsonStringify = {}, _jsonStringify[src_conf.b.WINDOW_PROPS.POSTROBOT] = message, 
+                _jsonStringify), null, 2);
+                return zalgo_promise_src.a.map(Object.keys(SEND_MESSAGE_STRATEGIES), function(strategyName) {
+                    return zalgo_promise_src.a.try(function() {
+                        if (!src_conf.a.ALLOWED_POST_MESSAGE_METHODS[strategyName]) throw new Error("Strategy disallowed: " + strategyName);
+                        return SEND_MESSAGE_STRATEGIES[strategyName](win, serializedMessage, domain);
+                    }).then(function() {
+                        messages.push(strategyName + ": success");
+                        return !0;
+                    }, function(err) {
+                        messages.push(strategyName + ": " + Object(lib.o)(err) + "\n");
+                        return !1;
+                    });
+                }).then(function(results) {
+                    var success = results.some(Boolean), status = message.type + " " + message.name + " " + (success ? "success" : "error") + ":\n  - " + messages.join("\n  - ") + "\n";
+                    lib.i.debug(status);
+                    if (!success) throw new Error(status);
+                });
+            });
+        }
+        function addResponseListener(hash, listener) {
+            global.a.responseListeners[hash] = listener;
+        }
+        function getResponseListener(hash) {
+            return global.a.responseListeners[hash];
+        }
+        function deleteResponseListener(hash) {
+            delete global.a.responseListeners[hash];
+        }
+        function markResponseListenerErrored(hash) {
+            global.a.erroredResponseListeners[hash] = !0;
+        }
+        function isResponseListenerErrored(hash) {
+            return Boolean(global.a.erroredResponseListeners[hash]);
+        }
+        function getRequestListener(_ref) {
+            var name = _ref.name, win = _ref.win, domain = _ref.domain;
+            win === src_conf.b.WILDCARD && (win = null);
+            domain === src_conf.b.WILDCARD && (domain = null);
+            if (!name) throw new Error("Name required to get request listener");
+            var nameListeners = global.a.requestListeners[name];
+            if (nameListeners) for (var _arr = [ win, global.a.WINDOW_WILDCARD ], _i = 0; _i < _arr.length; _i++) {
+                var winQualifier = _arr[_i], winListeners = winQualifier && nameListeners.get(winQualifier);
+                if (winListeners) {
+                    if (domain && "string" == typeof domain) {
+                        if (winListeners[domain]) return winListeners[domain];
+                        if (winListeners[__DOMAIN_REGEX__]) for (var _iterator = winListeners[__DOMAIN_REGEX__], _isArray = Array.isArray(_iterator), _i2 = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref3;
+                            if (_isArray) {
+                                if (_i2 >= _iterator.length) break;
+                                _ref3 = _iterator[_i2++];
+                            } else {
+                                _i2 = _iterator.next();
+                                if (_i2.done) break;
+                                _ref3 = _i2.value;
+                            }
+                            var _ref4 = _ref3, regex = _ref4.regex, listener = _ref4.listener;
+                            if (Object(cross_domain_utils_src.s)(regex, domain)) return listener;
+                        }
+                    }
+                    if (winListeners[src_conf.b.WILDCARD]) return winListeners[src_conf.b.WILDCARD];
+                }
+            }
+        }
+        function addRequestListener(_ref5, listener) {
+            var name = _ref5.name, win = _ref5.win, domain = _ref5.domain;
+            if (!name || "string" != typeof name) throw new Error("Name required to add request listener");
+            if (Array.isArray(win)) {
+                for (var listenersCollection = [], _iterator2 = win, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref6;
+                    if (_isArray2) {
+                        if (_i3 >= _iterator2.length) break;
+                        _ref6 = _iterator2[_i3++];
+                    } else {
+                        _i3 = _iterator2.next();
+                        if (_i3.done) break;
+                        _ref6 = _i3.value;
+                    }
+                    var item = _ref6;
+                    listenersCollection.push(addRequestListener({
+                        name: name,
+                        domain: domain,
+                        win: item
+                    }, listener));
+                }
+                return {
+                    cancel: function() {
+                        for (var _iterator3 = listenersCollection, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                            var _ref7;
+                            if (_isArray3) {
+                                if (_i4 >= _iterator3.length) break;
+                                _ref7 = _iterator3[_i4++];
+                            } else {
+                                _i4 = _iterator3.next();
+                                if (_i4.done) break;
+                                _ref7 = _i4.value;
+                            }
+                            _ref7.cancel();
+                        }
+                    }
+                };
+            }
+            if (Array.isArray(domain)) {
+                for (var _listenersCollection = [], _iterator4 = domain, _isArray4 = Array.isArray(_iterator4), _i5 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                    var _ref8;
+                    if (_isArray4) {
+                        if (_i5 >= _iterator4.length) break;
+                        _ref8 = _iterator4[_i5++];
+                    } else {
+                        _i5 = _iterator4.next();
+                        if (_i5.done) break;
+                        _ref8 = _i5.value;
+                    }
+                    var _item = _ref8;
+                    _listenersCollection.push(addRequestListener({
+                        name: name,
+                        win: win,
+                        domain: _item
+                    }, listener));
+                }
+                return {
+                    cancel: function() {
+                        for (var _iterator5 = _listenersCollection, _isArray5 = Array.isArray(_iterator5), _i6 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ;) {
+                            var _ref9;
+                            if (_isArray5) {
+                                if (_i6 >= _iterator5.length) break;
+                                _ref9 = _iterator5[_i6++];
+                            } else {
+                                _i6 = _iterator5.next();
+                                if (_i6.done) break;
+                                _ref9 = _i6.value;
+                            }
+                            _ref9.cancel();
+                        }
+                    }
+                };
+            }
+            var existingListener = getRequestListener({
+                name: name,
+                win: win,
+                domain: domain
+            });
+            win && win !== src_conf.b.WILDCARD || (win = global.a.WINDOW_WILDCARD);
+            domain = domain || src_conf.b.WILDCARD;
+            if (existingListener) throw win && domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString() + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : win ? new Error("Request listener already exists for " + name + " for " + (win === global.a.WINDOW_WILDCARD ? "wildcard" : "specified") + " window") : domain ? new Error("Request listener already exists for " + name + " on domain " + domain.toString()) : new Error("Request listener already exists for " + name);
+            var requestListeners = global.a.requestListeners, nameListeners = requestListeners[name];
+            if (!nameListeners) {
+                nameListeners = new cross_domain_safe_weakmap_src.a();
+                requestListeners[name] = nameListeners;
+            }
+            var winListeners = nameListeners.get(win);
+            if (!winListeners) {
+                winListeners = {};
+                nameListeners.set(win, winListeners);
+            }
+            var strDomain = domain.toString(), regexListeners = winListeners[__DOMAIN_REGEX__], regexListener = void 0;
+            if (Object(lib.e)(domain)) {
+                if (!regexListeners) {
+                    regexListeners = [];
+                    winListeners[__DOMAIN_REGEX__] = regexListeners;
+                }
+                regexListener = {
+                    regex: domain,
+                    listener: listener
+                };
+                regexListeners.push(regexListener);
+            } else winListeners[strDomain] = listener;
             return {
-                country: _locale$split[1],
+                cancel: function() {
+                    if (winListeners) {
+                        delete winListeners[strDomain];
+                        win && 0 === Object.keys(winListeners).length && nameListeners.delete(win);
+                        regexListener && regexListeners.splice(regexListeners.indexOf(regexListener, 1));
+                    }
+                }
+            };
+        }
+        function parseMessage(message) {
+            var parsedMessage = void 0;
+            try {
+                parsedMessage = Object(lib.f)(message);
+            } catch (err) {
+                return;
+            }
+            if (parsedMessage && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage) {
+                parsedMessage = parsedMessage[src_conf.b.WINDOW_PROPS.POSTROBOT];
+                if (parsedMessage && "object" === (void 0 === parsedMessage ? "undefined" : _typeof(parsedMessage)) && null !== parsedMessage && parsedMessage.type && "string" == typeof parsedMessage.type && RECEIVE_MESSAGE_TYPES[parsedMessage.type]) return parsedMessage;
+            }
+        }
+        function receiveMessage(event) {
+            if (!window || window.closed) throw new Error("Message recieved in closed window");
+            try {
+                if (!event.source) return;
+            } catch (err) {
+                return;
+            }
+            var source = event.source, origin = event.origin, data = event.data, message = parseMessage(data);
+            if (message) {
+                if (!message.sourceDomain || "string" != typeof message.sourceDomain) throw new Error("Expected message to have sourceDomain");
+                0 !== message.sourceDomain.indexOf(src_conf.b.MOCK_PROTOCOL) && 0 !== message.sourceDomain.indexOf(src_conf.b.FILE_PROTOCOL) || (origin = message.sourceDomain);
+                if (-1 === global.a.receivedMessages.indexOf(message.id)) {
+                    global.a.receivedMessages.push(message.id);
+                    var level = void 0;
+                    level = -1 !== src_conf.c.indexOf(message.name) || message.type === src_conf.b.POST_MESSAGE_TYPE.ACK ? "debug" : "error" === message.ack ? "error" : "info";
+                    lib.i.logLevel(level, [ "\n\n\t", "#receive", message.type.replace(/^postrobot_message_/, ""), "::", message.name, "::", origin, "\n\n", message ]);
+                    if (Object(cross_domain_utils_src.r)(source)) lib.i.debug("Source window is closed - can not send " + message.type + " " + message.name); else {
+                        message.data && (message.data = Object(lib.b)(source, origin, message.data));
+                        RECEIVE_MESSAGE_TYPES[message.type](source, origin, message);
+                    }
+                }
+            }
+        }
+        function messageListener(event) {
+            try {
+                event.source;
+            } catch (err) {
+                return;
+            }
+            var messageEvent = {
+                source: event.source || event.sourceElement,
+                origin: event.origin || event.originalEvent && event.originalEvent.origin,
+                data: event.data
+            };
+            try {
+                __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(messageEvent.source, window);
+            } catch (err) {
+                return;
+            }
+            receiveMessage(messageEvent);
+        }
+        function listenForMessages() {
+            Object(lib.a)(window, "message", messageListener);
+        }
+        function request(options) {
+            return zalgo_promise_src.a.try(function() {
+                if (!options.name) throw new Error("Expected options.name");
+                var name = options.name, targetWindow = void 0, domain = void 0;
+                if ("string" == typeof options.window) {
+                    var el = document.getElementById(options.window);
+                    if (!el) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be a valid element id");
+                    if ("iframe" !== el.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
+                    if (!el.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
+                    targetWindow = el.contentWindow;
+                } else if (options.window instanceof HTMLIFrameElement) {
+                    if ("iframe" !== options.window.tagName.toLowerCase()) throw new Error("Expected options.window " + Object.prototype.toString.call(options.window) + " to be an iframe");
+                    if (options.window && !options.window.contentWindow) throw new Error("Iframe must have contentWindow.  Make sure it has a src attribute and is in the DOM.");
+                    options.window && options.window.contentWindow && (targetWindow = options.window.contentWindow);
+                } else targetWindow = options.window;
+                if (!targetWindow) throw new Error("Expected options.window to be a window object, iframe, or iframe element id.");
+                var win = targetWindow;
+                domain = options.domain || src_conf.b.WILDCARD;
+                var hash = options.name + "_" + Object(lib.p)();
+                if (Object(cross_domain_utils_src.r)(win)) throw new Error("Target window is closed");
+                var hasResult = !1, requestPromises = global.a.requestPromises.get(win);
+                if (!requestPromises) {
+                    requestPromises = [];
+                    global.a.requestPromises.set(win, requestPromises);
+                }
+                var requestPromise = zalgo_promise_src.a.try(function() {
+                    if (Object(cross_domain_utils_src.k)(window, win)) return zalgo_promise_src.a.resolve(Object(lib.k)(win, options.timeout || src_conf.a.CHILD_WINDOW_TIMEOUT));
+                }).then(function() {
+                    return new zalgo_promise_src.a(function(resolve, reject) {
+                        var responseListener = void 0;
+                        if (!options.fireAndForget) {
+                            responseListener = {
+                                name: name,
+                                window: win,
+                                domain: domain,
+                                respond: function(err, result) {
+                                    if (!err) {
+                                        hasResult = !0;
+                                        requestPromises.splice(requestPromises.indexOf(requestPromise, 1));
+                                    }
+                                    err ? reject(err) : resolve(result);
+                                }
+                            };
+                            addResponseListener(hash, responseListener);
+                        }
+                        sendMessage(win, {
+                            type: src_conf.b.POST_MESSAGE_TYPE.REQUEST,
+                            hash: hash,
+                            name: name,
+                            data: options.data,
+                            fireAndForget: options.fireAndForget
+                        }, domain).catch(reject);
+                        if (options.fireAndForget) return resolve();
+                        var ackTimeout = src_conf.a.ACK_TIMEOUT, resTimeout = options.timeout || src_conf.a.RES_TIMEOUT, cycleTime = 100, cycle = function cycle() {
+                            if (!hasResult) {
+                                if (Object(cross_domain_utils_src.r)(win)) return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
+                                ackTimeout -= cycleTime;
+                                resTimeout -= cycleTime;
+                                if (responseListener.ack) {
+                                    if (resTimeout === 1 / 0) return;
+                                    cycleTime = Math.min(resTimeout, 2e3);
+                                } else {
+                                    if (ackTimeout <= 0) return reject(new Error("No ack for postMessage " + name + " in " + Object(cross_domain_utils_src.c)() + " in " + src_conf.a.ACK_TIMEOUT + "ms"));
+                                    if (resTimeout <= 0) return reject(new Error("No response for postMessage " + name + " in " + Object(cross_domain_utils_src.c)() + " in " + (options.timeout || src_conf.a.RES_TIMEOUT) + "ms"));
+                                }
+                                setTimeout(cycle, cycleTime);
+                            }
+                        };
+                        setTimeout(cycle, cycleTime);
+                    });
+                });
+                requestPromise.catch(function() {
+                    markResponseListenerErrored(hash);
+                    deleteResponseListener(hash);
+                });
+                requestPromises.push(requestPromise);
+                return requestPromise;
+            });
+        }
+        function _send(window, name, data, options) {
+            options = options || {};
+            options.window = window;
+            options.name = name;
+            options.data = data;
+            return request(options);
+        }
+        function sendToParent(name, data, options) {
+            var win = Object(cross_domain_utils_src.b)();
+            return win ? _send(win, name, data, options) : new zalgo_promise_src.a(function(resolve, reject) {
+                return reject(new Error("Window does not have a parent"));
+            });
+        }
+        function client() {
+            var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+            if (!options.window) throw new Error("Expected options.window");
+            var win = options.window;
+            return {
+                send: function(name, data) {
+                    return _send(win, name, data, options);
+                }
+            };
+        }
+        function listen(options) {
+            if (!options.name) throw new Error("Expected options.name");
+            if (!options.handler) throw new Error("Expected options.handler");
+            var name = options.name, win = options.window, domain = options.domain, listenerOptions = {
+                handler: options.handler,
+                handleError: options.errorHandler || function(err) {
+                    throw err;
+                },
+                window: win,
+                domain: domain || src_conf.b.WILDCARD,
+                name: name
+            }, requestListener = addRequestListener({
+                name: name,
+                win: win,
+                domain: domain
+            }, listenerOptions);
+            if (options.once) {
+                var _handler = listenerOptions.handler;
+                listenerOptions.handler = Object(lib.l)(function() {
+                    requestListener.cancel();
+                    return _handler.apply(this, arguments);
+                });
+            }
+            if (listenerOptions.window && options.errorOnClose) var interval = Object(lib.m)(function() {
+                if (win && "object" === (void 0 === win ? "undefined" : server__typeof(win)) && Object(cross_domain_utils_src.r)(win)) {
+                    interval.cancel();
+                    listenerOptions.handleError(new Error("Post message target window is closed"));
+                }
+            }, 50);
+            return {
+                cancel: function() {
+                    requestListener.cancel();
+                }
+            };
+        }
+        function _on(name, options, handler) {
+            if ("function" == typeof options) {
+                handler = options;
+                options = {};
+            }
+            options = options || {};
+            options.name = name;
+            options.handler = handler || options.handler;
+            return listen(options);
+        }
+        function once(name) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, handler = arguments[2];
+            if ("function" == typeof options) {
+                handler = options;
+                options = {};
+            }
+            options = options || {};
+            handler = handler || options.handler;
+            var errorHandler = options.errorHandler, promise = new zalgo_promise_src.a(function(resolve, reject) {
+                options = options || {};
+                options.name = name;
+                options.once = !0;
+                options.handler = function(event) {
+                    resolve(event);
+                    if (handler) return handler(event);
+                };
+                options.errorHandler = function(err) {
+                    reject(err);
+                    if (errorHandler) return errorHandler(err);
+                };
+            }), onceListener = listen(options);
+            promise.cancel = onceListener.cancel;
+            return promise;
+        }
+        function server_listener() {
+            var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+            return {
+                on: function(name, handler) {
+                    return _on(name, options, handler);
+                }
+            };
+        }
+        function disable() {
+            delete window[src_conf.b.WINDOW_PROPS.POSTROBOT];
+            window.removeEventListener("message", messageListener);
+        }
+        function cleanUpWindow(win) {
+            var requestPromises = global.a.requestPromises.get(win);
+            if (requestPromises) for (var _iterator = requestPromises, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var promise = _ref;
+                promise.reject(new Error("No response from window - cleaned up"));
+            }
+            global.a.popupWindowsByWin && global.a.popupWindowsByWin.delete(win);
+            global.a.remoteWindows && global.a.remoteWindows.delete(win);
+            global.a.requestPromises.delete(win);
+            global.a.methods.delete(win);
+            global.a.readyPromises.delete(win);
+        }
+        function init() {
+            if (!global.a.initialized) {
+                listenForMessages();
+                __webpack_require__("./node_modules/post-robot/src/bridge/index.js").openTunnelToOpener();
+                Object(lib.d)();
+                Object(lib.h)({
+                    on: _on,
+                    send: _send
+                });
+            }
+            global.a.initialized = !0;
+        }
+        function extend(dest, src) {
+            var over = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+            dest = dest || {};
+            src = src || {};
+            for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
+            return dest;
+        }
+        function isSameProtocol(url) {
+            return window.location.protocol === url.split("/")[0];
+        }
+        function isSameDomain(url) {
+            var match = url.match(/https?:\/\/[^\/]+/);
+            return !match || match[0] === window.location.protocol + "//" + window.location.host;
+        }
+        function ajax(method, url) {
+            var headers = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, data = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {}, _ref = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {}, _ref$fireAndForget = _ref.fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+            return new zalgo_promise_src.a(function(resolve) {
+                var XRequest = window.XMLHttpRequest || window.ActiveXObject;
+                if (window.XDomainRequest && !isSameDomain(url)) {
+                    if (!isSameProtocol(url)) return resolve();
+                    XRequest = window.XDomainRequest;
+                }
+                var req = new XRequest("MSXML2.XMLHTTP.3.0");
+                req.open(method.toUpperCase(), url, !0);
+                if ("function" == typeof req.setRequestHeader) {
+                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    req.setRequestHeader("Content-type", "application/json");
+                    for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
+                }
+                fireAndForget ? resolve() : req.onreadystatechange = function() {
+                    req.readyState > 3 && resolve();
+                };
+                req.send(JSON.stringify(data).replace(/&/g, "%26"));
+            });
+        }
+        function safeInterval(method, time) {
+            function loop() {
+                timeout = setTimeout(function() {
+                    method();
+                    loop();
+                }, time);
+            }
+            var timeout = void 0;
+            loop();
+            return {
+                cancel: function() {
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        function uniqueID() {
+            var chars = "0123456789abcdef";
+            return "xxxxxxxxxx".replace(/./g, function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            });
+        }
+        function isIE() {
+            return Boolean(window.document.documentMode);
+        }
+        function addPayloadBuilder(builder) {
+            payloadBuilders.push(builder);
+        }
+        function addMetaBuilder(builder) {
+            metaBuilders.push(builder);
+        }
+        function addTrackingBuilder(builder) {
+            trackingBuilders.push(builder);
+        }
+        function addHeaderBuilder(builder) {
+            headerBuilders.push(builder);
+        }
+        function getTransport() {
+            return logger_transport;
+        }
+        function setTransport(newTransport) {
+            logger_transport = newTransport;
+        }
+        function print(level, event, payload) {
+            if (!loaded) return setTimeout(function() {
+                return print(level, event, payload);
+            }, 1);
+            if (window.console && window.console.log) {
+                var logLevel = window.LOG_LEVEL || config.logLevel;
+                if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
+                    payload = payload || {};
+                    var args = [ event ];
+                    isIE() && (payload = JSON.stringify(payload));
+                    args.push(payload);
+                    (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                    try {
+                        window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                    } catch (err) {}
+                }
+            }
+        }
+        function immediateFlush() {
+            var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$fireAndForget = _ref.fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+            if (config.uri) {
+                var hasBuffer = buffer.length, hasTracking = tracking.length;
+                if (hasBuffer || hasTracking) {
+                    for (var meta = {}, _iterator = metaBuilders, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref2;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref2 = _iterator[_i++];
+                        } else {
+                            _i = _iterator.next();
+                            if (_i.done) break;
+                            _ref2 = _i.value;
+                        }
+                        var builder = _ref2;
+                        try {
+                            extend(meta, builder(meta), !1);
+                        } catch (err) {
+                            console.error("Error in custom meta builder:", err.stack || err.toString());
+                        }
+                    }
+                    for (var headers = {}, _iterator2 = headerBuilders, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                        var _ref3;
+                        if (_isArray2) {
+                            if (_i2 >= _iterator2.length) break;
+                            _ref3 = _iterator2[_i2++];
+                        } else {
+                            _i2 = _iterator2.next();
+                            if (_i2.done) break;
+                            _ref3 = _i2.value;
+                        }
+                        var _builder = _ref3;
+                        try {
+                            extend(headers, _builder(headers), !1);
+                        } catch (err) {
+                            console.error("Error in custom header builder:", err.stack || err.toString());
+                        }
+                    }
+                    var events = buffer, req = logger_transport(headers, {
+                        events: events,
+                        meta: meta,
+                        tracking: tracking
+                    }, {
+                        fireAndForget: fireAndForget
+                    });
+                    buffer = [];
+                    tracking = [];
+                    return req;
+                }
+            }
+        }
+        function enqueue(level, event, payload) {
+            buffer.push({
+                level: level,
+                event: event,
+                payload: payload
+            });
+            config.autoLog.indexOf(level) > -1 && _flush();
+        }
+        function logger_log(level, event, payload) {
+            config.prefix && (event = config.prefix + "_" + event);
+            payload = payload || {};
+            "string" == typeof payload ? payload = {
+                message: payload
+            } : payload instanceof Error && (payload = {
+                error: payload.stack || payload.toString()
+            });
+            try {
+                JSON.stringify(payload);
+            } catch (err) {
+                return;
+            }
+            payload.timestamp = Date.now();
+            for (var _iterator3 = payloadBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref4 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref4 = _i3.value;
+                }
+                var builder = _ref4;
+                try {
+                    extend(payload, builder(payload), !1);
+                } catch (err) {
+                    console.error("Error in custom payload builder:", err.stack || err.toString());
+                }
+            }
+            config.silent || print(level, event, payload);
+            buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
+        }
+        function logger_prefix(name) {
+            return {
+                debug: function(event, payload) {
+                    return logger_log("debug", name + "_" + event, payload);
+                },
+                info: function(event, payload) {
+                    return logger_log("info", name + "_" + event, payload);
+                },
+                warn: function(event, payload) {
+                    return logger_log("warn", name + "_" + event, payload);
+                },
+                error: function(event, payload) {
+                    return logger_log("error", name + "_" + event, payload);
+                },
+                track: function(payload) {
+                    return _track(payload);
+                },
+                flush: function() {
+                    return _flush();
+                }
+            };
+        }
+        function debug(event, payload) {
+            return logger_log("debug", event, payload);
+        }
+        function info(event, payload) {
+            return logger_log("info", event, payload);
+        }
+        function warn(event, payload) {
+            return logger_log("warn", event, payload);
+        }
+        function logger_error(event, payload) {
+            return logger_log("error", event, payload);
+        }
+        function _track(payload) {
+            if (payload) {
+                try {
+                    JSON.stringify(payload);
+                } catch (err) {
+                    return;
+                }
+                for (var _iterator4 = trackingBuilders, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                    var _ref5;
+                    if (_isArray4) {
+                        if (_i4 >= _iterator4.length) break;
+                        _ref5 = _iterator4[_i4++];
+                    } else {
+                        _i4 = _iterator4.next();
+                        if (_i4.done) break;
+                        _ref5 = _i4.value;
+                    }
+                    var builder = _ref5;
+                    try {
+                        extend(payload, builder(payload), !1);
+                    } catch (err) {
+                        console.error("Error in custom tracking builder:", err.stack || err.toString());
+                    }
+                }
+                print("debug", "tracking", payload);
+                tracking.push(payload);
+            }
+        }
+        function performance_now() {
+            return enablePerformance ? performance.now() : Date.now();
+        }
+        function timer(startTime) {
+            startTime = void 0 !== startTime ? startTime : performance_now();
+            return {
+                startTime: startTime,
+                elapsed: function() {
+                    return parseInt(performance_now() - startTime, 10);
+                },
+                reset: function() {
+                    startTime = performance_now();
+                }
+            };
+        }
+        function reqStartElapsed() {
+            if (enablePerformance) {
+                var timing = window.performance.timing;
+                return parseInt(timing.connectEnd - timing.navigationStart, 10);
+            }
+        }
+        function initHeartBeat() {
+            var heartBeatTimer = timer(), heartbeatCount = 0;
+            safeInterval(function() {
+                if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
+                    heartbeatCount += 1;
+                    var elapsed = heartBeatTimer.elapsed(), lag = elapsed - config.heartbeatInterval, heartbeatPayload = {
+                        count: heartbeatCount,
+                        elapsed: elapsed
+                    };
+                    if (config.heartbeatTooBusy) {
+                        heartbeatPayload.lag = lag;
+                        lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload, {
+                            noConsole: !config.heartbeatConsoleLog
+                        });
+                    }
+                    info("heartbeat", heartbeatPayload, {
+                        noConsole: !config.heartbeatConsoleLog
+                    });
+                }
+            }, config.heartbeatInterval);
+        }
+        function initPerformance() {
+            if (!enablePerformance) return info("no_performance_data");
+            addPayloadBuilder(function() {
+                var payload = {};
+                payload.client_elapsed = clientTimer.elapsed();
+                enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
+                return payload;
+            });
+            windowReady.then(function() {
+                var keys = [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ], timing = {};
+                keys.forEach(function(key) {
+                    timing[key] = parseInt(window.performance.timing[key], 10) || 0;
+                });
+                var offset = timing.connectEnd - timing.navigationStart;
+                timing.connectEnd && Object.keys(timing).forEach(function(name) {
+                    var time = timing[name];
+                    time && info("timing_" + name, {
+                        client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
+                        req_elapsed: parseInt(time - timing.connectEnd, 10)
+                    });
+                });
+                info("timing", timing);
+                info("memory", window.performance.memory);
+                info("navigation", window.performance.navigation);
+                window.performance.getEntries && window.performance.getEntries().forEach(function(resource) {
+                    [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
+                });
+            });
+        }
+        function init_init(conf) {
+            extend(config, conf || {});
+            if (!initiated) {
+                initiated = !0;
+                config.logPerformance && initPerformance();
+                config.heartbeat && initHeartBeat();
+                if (config.logUnload) {
+                    window.addEventListener("beforeunload", function() {
+                        info("window_beforeunload");
+                        immediateFlush({
+                            fireAndForget: !0
+                        });
+                    });
+                    window.addEventListener("unload", function() {
+                        info("window_unload");
+                        immediateFlush({
+                            fireAndForget: !0
+                        });
+                    });
+                }
+                config.flushInterval && setInterval(_flush, config.flushInterval);
+                if (window.beaverLogQueue) {
+                    window.beaverLogQueue.forEach(function(payload) {
+                        logger_log(payload.level, payload.event, payload);
+                    });
+                    delete window.beaverLogQueue;
+                }
+            }
+        }
+        function startTransition() {
+            startTime = performance_now();
+        }
+        function endTransition(toState) {
+            startTime = startTime || reqStartElapsed();
+            var currentTime = performance_now(), elapsedTime = void 0;
+            void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
+            var transitionName = "transition_" + currentState + "_to_" + toState;
+            info(transitionName, {
+                duration: elapsedTime
+            });
+            _track({
+                transition: transitionName,
+                transition_time: elapsedTime
+            });
+            immediateFlush();
+            startTime = currentTime;
+            currentState = toState;
+            pageID = uniqueID();
+        }
+        function transition(toState) {
+            startTransition();
+            endTransition(toState);
+        }
+        function isDocumentReady() {
+            return Boolean(document.body) && "complete" === document.readyState;
+        }
+        function getElement(item) {
+            if (item) {
+                if (item instanceof HTMLElement) return item;
+                if ("string" == typeof item) {
+                    if (document.querySelector) {
+                        var result = document.querySelector(item);
+                        if (result) return result;
+                    }
+                    return document.getElementById(item);
+                }
+            }
+        }
+        function extendUrl(url) {
+            var params = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, hasHash = url.indexOf("#") > 0, _url$split = url.split("#"), serverUrl = _url$split[0], hash = _url$split[1];
+            if (hash && !serverUrl) {
+                var _ref3 = [ "#" + hash, "" ];
+                serverUrl = _ref3[0];
+                hash = _ref3[1];
+            }
+            var _serverUrl$split = serverUrl.split("?"), originalUrl = _serverUrl$split[0], originalQueryString = _serverUrl$split[1];
+            if (originalQueryString) {
+                var originalQuery = parseQuery(originalQueryString);
+                for (var _key in originalQuery) params.hasOwnProperty(_key) || (params[_key] = originalQuery[_key]);
+            }
+            var newQueryString = Object.keys(params).filter(function(key) {
+                return key && params[key];
+            }).sort().map(function(key) {
+                return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+            }).join("&"), newUrl = originalUrl;
+            newQueryString && (newUrl = newUrl + "?" + newQueryString);
+            hasHash && (newUrl = newUrl + "#" + (hash || ""));
+            return newUrl;
+        }
+        function normalizeLocale(locale) {
+            if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
+                var _locale$split = locale.split(/[-_]/), lang = _locale$split[0], country = _locale$split[1];
+                if (src_config.a.locales[country] && -1 !== src_config.a.locales[country].indexOf(lang)) return {
+                    country: country,
+                    lang: lang
+                };
+            }
+        }
+        function normalizeLang(lang) {
+            if (lang && lang.match(/^[a-z]{2}$/) && constants.x[lang]) return {
+                country: constants.x[lang],
                 lang: lang
             };
         }
-        function determineMaxButtons(_ref) {
-            var label = _ref.label, layout = _ref.layout, max = _ref.max;
-            if (!(layout === constants.g.HORIZONTAL ? getButtonConfig(label, "allowPrimaryHorizontal") : getButtonConfig(label, "allowPrimaryVertical"))) return 1;
-            var configMax = layout === constants.g.HORIZONTAL ? getButtonConfig(label, "maxHorizontalButtons") : getButtonConfig(label, "maxVerticalButtons");
-            return max ? Math.min(configMax, max) : configMax;
+        function getBrowserLocale() {
+            var nav = window.navigator, locales = nav.languages ? Array.prototype.slice.apply(nav.languages) : [];
+            nav.language && locales.push(nav.language);
+            nav.userLanguage && locales.push(nav.userLanguage);
+            for (var _iterator3 = locales, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                var _ref4;
+                if (_isArray3) {
+                    if (_i3 >= _iterator3.length) break;
+                    _ref4 = _iterator3[_i3++];
+                } else {
+                    _i3 = _iterator3.next();
+                    if (_i3.done) break;
+                    _ref4 = _i3.value;
+                }
+                var locale = _ref4, loc = normalizeLocale(locale);
+                if (loc) return loc;
+            }
+            for (var _iterator4 = locales, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                var _ref5;
+                if (_isArray4) {
+                    if (_i4 >= _iterator4.length) break;
+                    _ref5 = _iterator4[_i4++];
+                } else {
+                    _i4 = _iterator4.next();
+                    if (_i4.done) break;
+                    _ref5 = _i4.value;
+                }
+                var _locale = _ref5, _loc = normalizeLang(_locale);
+                if (_loc) return _loc;
+            }
+            return src_config.a.defaultLocale;
         }
-        function enableTagline(_ref2) {
-            var tagline = _ref2.tagline, branding = _ref2.branding, fundingicons = _ref2.fundingicons, layout = _ref2.layout;
-            return Boolean(tagline && branding && !fundingicons && layout === constants.g.HORIZONTAL);
+        function proxyMethod(name, win, originalMethod) {
+            if (win && Object(cross_domain_utils_src.c)() === src_config.a.paypalDomain && !Object(cross_domain_utils_src.o)(win)) {
+                win && _send(win, "proxy_" + name, {
+                    originalMethod: originalMethod
+                }).catch(util.g);
+                return originalMethod;
+            }
+            var methods = [];
+            _on("proxy_" + name, {
+                domain: src_config.a.paypal_domain_regex
+            }, function(_ref) {
+                var data = _ref.data;
+                methods.push(data.originalMethod);
+            });
+            return function() {
+                var _this = this, _arguments = arguments;
+                methods = methods.filter(function(method) {
+                    return !Object(cross_domain_utils_src.r)(method.source);
+                });
+                return methods.length ? methods[methods.length - 1].apply(this, arguments).catch(function() {
+                    return originalMethod.apply(_this, _arguments);
+                }) : originalMethod.apply(this, arguments);
+            };
+        }
+        function getBowser() {
+            var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$clearCache = _ref.clearCache, clearCache = void 0 !== _ref$clearCache && _ref$clearCache, userAgent = Object(device.a)();
+            if (bowserCache[userAgent]) return bowserCache[userAgent];
+            clearCache && delete __webpack_require__.c["./node_modules/bowser/bowser.min.js"];
+            var bowser = __webpack_require__("./node_modules/bowser/bowser.min.js");
+            bowserCache[userAgent] = bowser;
+            return bowser;
+        }
+        function parseHeaders() {
+            for (var rawHeaders = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "", result = {}, _iterator = rawHeaders.trim().split("\n"), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var line = _ref, _line$split = line.split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                result[_key.toLowerCase()] = values.join(":").trim();
+            }
+            return result;
+        }
+        function http_request(_ref2) {
+            var url = _ref2.url, _ref2$method = _ref2.method, method = void 0 === _ref2$method ? "get" : _ref2$method, _ref2$headers = _ref2.headers, headers = void 0 === _ref2$headers ? {} : _ref2$headers, json = _ref2.json, data = _ref2.data, body = _ref2.body, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, _ref2$timeout = _ref2.timeout, timeout = void 0 === _ref2$timeout ? 0 : _ref2$timeout;
+            return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a(function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                for (var normalizedHeaders = {}, _iterator2 = Object.keys(headers), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref3;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref3 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref3 = _i2.value;
+                    }
+                    var _key3 = _ref3;
+                    normalizedHeaders[_key3.toLowerCase()] = headers[_key3];
+                }
+                json ? normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/json" : (data || body) && (normalizedHeaders[HEADERS.CONTENT_TYPE] = normalizedHeaders[HEADERS.CONTENT_TYPE] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders[HEADERS.ACCEPT] = normalizedHeaders[HEADERS.ACCEPT] || "application/json";
+                for (var _iterator3 = http_headerBuilders, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
+                    var _ref4;
+                    if (_isArray3) {
+                        if (_i3 >= _iterator3.length) break;
+                        _ref4 = _iterator3[_i3++];
+                    } else {
+                        _i3 = _iterator3.next();
+                        if (_i3.done) break;
+                        _ref4 = _i3.value;
+                    }
+                    for (var headerBuilder = _ref4, builtHeaders = headerBuilder(), _iterator4 = Object.keys(builtHeaders), _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ;) {
+                        var _ref5;
+                        if (_isArray4) {
+                            if (_i4 >= _iterator4.length) break;
+                            _ref5 = _iterator4[_i4++];
+                        } else {
+                            _i4 = _iterator4.next();
+                            if (_i4.done) break;
+                            _ref5 = _i4.value;
+                        }
+                        var _key4 = _ref5;
+                        normalizedHeaders[_key4.toLowerCase()] = builtHeaders[_key4];
+                    }
+                }
+                var xhr = new win.XMLHttpRequest();
+                xhr.addEventListener("load", function() {
+                    var responseHeaders = parseHeaders(this.getAllResponseHeaders()), corrID = responseHeaders["paypal-debug-id"] || "unknown";
+                    responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
+                    var contentType = responseHeaders["content-type"], isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json")), res = this.responseText;
+                    try {
+                        res = JSON.parse(this.responseText);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + ". Correlation id: " + corrID));
+                    }
+                    if (this.status >= 400) {
+                        var message = "Request to " + method.toLowerCase() + " " + url + " failed with " + this.status + " error. Correlation id: " + corrID;
+                        if (res) {
+                            "object" === (void 0 === res ? "undefined" : http__typeof(res)) && null !== res && (res = JSON.stringify(res, null, 4));
+                            message = message + "\n\n" + res + "\n";
+                        }
+                        return reject(new Error(message));
+                    }
+                    return resolve(res);
+                }, !1);
+                xhr.addEventListener("error", function(evt) {
+                    var corrID = this.getResponseHeader("paypal-debug-id");
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
+                }, !1);
+                xhr.open(method, url, !0);
+                for (var _key2 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key2) && xhr.setRequestHeader(_key2, normalizedHeaders[_key2]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map(function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                }).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            });
+        }
+        function isPayPalObjects() {
+            return Boolean(getCurrentScript());
+        }
+        function getScriptVersion() {
+            return isPayPalObjects() ? "4" : "4.0.194";
         }
         function _possibleConstructorReturn(self, call) {
             if (!self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -1018,7 +3809,7 @@
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
         }
-        function htmlEncode() {
+        function jsx_htmlEncode() {
             return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
         }
         function jsxToHTML(name, props) {
@@ -1026,7 +3817,7 @@
             return new JsxHTMLNode(name, props, children);
         }
         function jsxRender(template, renderers) {
-            var nodes = Object(util.d)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
+            var nodes = Object(util.j)(template, /\{\s*([a-z]+)(?::\s*([^} ]+))?\s*\}|([^${}]+)/g, function(match, type, value, text) {
                 if (type) {
                     if (!renderers[type]) throw new Error("Can not render type: " + type);
                     return renderers[type](value);
@@ -1035,11 +3826,28 @@
             });
             return new JsxHTMLNodeContainer(nodes);
         }
+        function parseLocale(locale) {
+            var _locale$split = locale.split("_"), lang = _locale$split[0];
+            return {
+                country: _locale$split[1],
+                lang: lang
+            };
+        }
+        function determineMaxButtons(_ref) {
+            var label = _ref.label, layout = _ref.layout, max = _ref.max;
+            if (!(layout === constants.g.HORIZONTAL ? getButtonConfig(label, "allowPrimaryHorizontal") : getButtonConfig(label, "allowPrimaryVertical"))) return 1;
+            var configMax = layout === constants.g.HORIZONTAL ? getButtonConfig(label, "maxHorizontalButtons") : getButtonConfig(label, "maxVerticalButtons");
+            return max ? Math.min(configMax, max) : configMax;
+        }
+        function enableTagline(_ref2) {
+            var tagline = _ref2.tagline, branding = _ref2.branding, fundingicons = _ref2.fundingicons, layout = _ref2.layout;
+            return Boolean(tagline && branding && !fundingicons && layout === constants.g.HORIZONTAL);
+        }
         function validateButtonLocale(locale) {
             if (!locale) throw new Error("Expected props.locale to be set");
             if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
             var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
-            if (!config.a.locales[country] || -1 === config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
+            if (!src_config.a.locales[country] || -1 === src_config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
         }
         function validateRegionSpecificButton() {
             var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, locale = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "en_US", country = locale.split("_")[1], isInstallmentAllowedCountry = -1 !== constants.a.indexOf(country);
@@ -1094,7 +3902,7 @@
             var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
             return Object.keys(BUTTON_STYLE).map(function(size) {
                 var style = BUTTON_STYLE[size], buttonHeight = height || style.defaultHeight, minDualWidth = Math.round(buttonHeight * DUAL_BUTTON_MIN_RATIO * 2);
-                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.a)(Object(util.c)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.a)(Object(util.c)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + CLASS.LOGO + " {\n                    height: " + (Object(util.c)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.c)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.c)(buttonHeight, 40) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.c)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.c)(buttonHeight, 5) + "px;\n                }\n\n                ." + CLASS.TAGLINE + " {\n                    height: " + Object(util.c)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.c)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " {\n                    height: " + Object(util.c)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.c)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " {\n                    height: " + Object(util.c)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.c)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.c)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.c)(buttonHeight, 7) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.a)(style.minWidth, minDualWidth) + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
+                return "\n\n            @media only screen and (min-width: " + style.minWidth + "px) {\n\n                ." + CLASS.CONTAINER + " {\n                    min-width: " + style.minWidth + "px;\n                    max-width: " + style.maxWidth + "px;\n                    font-size: " + Object(util.e)(Object(util.i)(buttonHeight, 32), 10) + "px;\n                }\n\n                ." + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n                    height: " + buttonHeight + "px;\n                    min-height: " + (height || style.minHeight) + "px;\n                    max-height: " + (height || style.maxHeight) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " {\n                    font-size: " + Object(util.e)(Object(util.i)(buttonHeight, 45), 10) + "px;\n                }\n\n                ." + CLASS.LOGO + " {\n                    height: " + (Object(util.i)(buttonHeight, 35) + 5) + "px;\n                    max-height: " + Object(util.i)(buttonHeight, 60) + "px;\n                    min-height: " + Object(util.i)(buttonHeight, 40) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + constants.k.PILL + " {\n                    border-radius: " + Math.ceil(buttonHeight / 2) + "px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.SHAPE + "-" + constants.k.RECT + " {\n                    border-radius: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " {\n                    margin-bottom: " + Object(util.i)(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN) + "px;\n                }\n\n                ." + CLASS.SEPARATOR + " {\n                    margin: 0 " + Object(util.i)(buttonHeight, 5) + "px;\n                }\n\n                ." + CLASS.TAGLINE + " {\n                    height: " + Object(util.i)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                    line-height: " + Object(util.i)(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " {\n                    height: " + Object(util.i)(buttonHeight, BUTTON_RELATIVE_STYLE.FUNDINGICONS) + "px;\n                }\n\n                ." + CLASS.CARD + " {\n                    display: inline-block;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n                    width: " + (90 / cardNumber).toFixed(2) + "%;\n                    max-width: " + Object(util.i)(buttonHeight, 160) + "px;\n                    margin-top: 0;\n                    margin-left: " + (5 / cardNumber).toFixed(2) + "%;\n                    margin-right: " + (5 / cardNumber).toFixed(2) + "%;\n                }\n\n                ." + CLASS.BUTTON + " ." + CLASS.CARD + " img {\n                    width: 100%;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " {\n                    height: " + Object(util.i)(buttonHeight, 70) + "px;\n                    margin-top: " + Object(util.i)(buttonHeight, 15) + "px;\n                    margin-left: " + Object(util.i)(buttonHeight, 7) + "px;\n                    margin-right: " + Object(util.i)(buttonHeight, 7) + "px;\n                }\n\n                ." + CLASS.FUNDINGICONS + " ." + CLASS.CARD + " img {\n                    height: 100%;\n                }\n            }\n\n            @media only screen and (min-width: " + style.minWidth + "px) and (max-width: " + minDualWidth + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    width: 100%;\n                    margin-right: 0;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: none;\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: none;\n                }\n            }\n\n            @media only screen and (min-width: " + Object(util.e)(style.minWidth, minDualWidth) + "px) {\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-0 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                    margin-right: 4px;\n                }\n\n                ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.NUMBER + "-1 {\n                    display: inline-block;\n                    width: calc(50% - 2px);\n                }\n\n                ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + " ." + CLASS.TAGLINE + " {\n                    display: block;\n                }\n            }\n        ";
             }).join("\n");
         }
         function componentStyle(_ref) {
@@ -1224,8 +4032,8 @@
             var cards = _ref4.cards, button = _ref4.button;
             return cards.map(function(name) {
                 var _ref5, logo = cardLogos[name];
-                return jsxToHTML("img", _extends({}, (_ref5 = {}, _ref5[constants.c.BUTTON] = button || !1, 
-                _ref5[constants.c.FUNDING_SOURCE] = "" + constants.t.CARD, _ref5[constants.c.CARD] = "" + name, 
+                return jsxToHTML("img", componentTemplate__extends({}, (_ref5 = {}, _ref5[constants.c.BUTTON] = button || !1, 
+                _ref5[constants.c.FUNDING_SOURCE] = "" + constants.u.CARD, _ref5[constants.c.CARD] = "" + name, 
                 _ref5), {
                     class: CLASS.CARD + " " + CLASS.CARD + "-" + name + " " + (button ? CLASS.BUTTON : ""),
                     src: "data:image/svg+xml;base64," + Object(base64.btoa)(logo),
@@ -1329,7 +4137,7 @@
                 cards: cards,
                 dynamicContent: dynamicContent
             });
-            return jsxToHTML("div", _extends({}, (_ref10 = {}, _ref10[constants.c.FUNDING_SOURCE] = source, 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref10 = {}, _ref10[constants.c.FUNDING_SOURCE] = source, 
             _ref10[constants.c.BUTTON] = !0, _ref10), {
                 class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                     layout: layout,
@@ -1426,7 +4234,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.193", 
+            return jsxToHTML("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.194", 
             _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -1440,7 +4248,172 @@
         Object.defineProperty(__webpack_exports__, "__esModule", {
             value: !0
         });
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, _FUNDING_CONFIG, _CARD_CONFIG, _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, base64 = __webpack_require__("./node_modules/Base64/base64.js"), constants = __webpack_require__("./src/constants/index.js"), BUTTON_CONFIG = (_BUTTON_CONFIG = {}, 
+        var interface_namespaceObject = {};
+        __webpack_require__.d(interface_namespaceObject, "openBridge", function() {
+            return bridge.openBridge;
+        });
+        __webpack_require__.d(interface_namespaceObject, "linkUrl", function() {
+            return bridge.linkUrl;
+        });
+        __webpack_require__.d(interface_namespaceObject, "isBridge", function() {
+            return bridge.isBridge;
+        });
+        __webpack_require__.d(interface_namespaceObject, "needsBridge", function() {
+            return bridge.needsBridge;
+        });
+        __webpack_require__.d(interface_namespaceObject, "needsBridgeForBrowser", function() {
+            return bridge.needsBridgeForBrowser;
+        });
+        __webpack_require__.d(interface_namespaceObject, "hasBridge", function() {
+            return bridge.hasBridge;
+        });
+        __webpack_require__.d(interface_namespaceObject, "needsBridgeForWin", function() {
+            return bridge.needsBridgeForWin;
+        });
+        __webpack_require__.d(interface_namespaceObject, "needsBridgeForDomain", function() {
+            return bridge.needsBridgeForDomain;
+        });
+        __webpack_require__.d(interface_namespaceObject, "openTunnelToOpener", function() {
+            return bridge.openTunnelToOpener;
+        });
+        __webpack_require__.d(interface_namespaceObject, "destroyBridges", function() {
+            return bridge.destroyBridges;
+        });
+        var src_interface_namespaceObject = {};
+        __webpack_require__.d(src_interface_namespaceObject, "cleanUpWindow", function() {
+            return cleanUpWindow;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "Promise", function() {
+            return zalgo_promise_src.a;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "bridge", function() {
+            return interface_bridge;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "init", function() {
+            return init;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "parent", function() {
+            return public_parent;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "send", function() {
+            return _send;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "request", function() {
+            return request;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "sendToParent", function() {
+            return sendToParent;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "client", function() {
+            return client;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "on", function() {
+            return _on;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "listen", function() {
+            return listen;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "once", function() {
+            return once;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "listener", function() {
+            return server_listener;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "CONFIG", function() {
+            return src_conf.a;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "CONSTANTS", function() {
+            return src_conf.b;
+        });
+        __webpack_require__.d(src_interface_namespaceObject, "disable", function() {
+            return disable;
+        });
+        var client_interface_namespaceObject = {};
+        __webpack_require__.d(client_interface_namespaceObject, "track", function() {
+            return _track;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "buffer", function() {
+            return buffer;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "tracking", function() {
+            return tracking;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "getTransport", function() {
+            return getTransport;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "setTransport", function() {
+            return setTransport;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "print", function() {
+            return print;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "immediateFlush", function() {
+            return immediateFlush;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "flush", function() {
+            return _flush;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "log", function() {
+            return logger_log;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "prefix", function() {
+            return logger_prefix;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "debug", function() {
+            return debug;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "info", function() {
+            return info;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "warn", function() {
+            return warn;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "error", function() {
+            return logger_error;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "init", function() {
+            return init_init;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "startTransition", function() {
+            return startTransition;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "endTransition", function() {
+            return endTransition;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "transition", function() {
+            return transition;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "payloadBuilders", function() {
+            return payloadBuilders;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "metaBuilders", function() {
+            return metaBuilders;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "trackingBuilders", function() {
+            return trackingBuilders;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "headerBuilders", function() {
+            return headerBuilders;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "addPayloadBuilder", function() {
+            return addPayloadBuilder;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "addMetaBuilder", function() {
+            return addMetaBuilder;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "addTrackingBuilder", function() {
+            return addTrackingBuilder;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "addHeaderBuilder", function() {
+            return addHeaderBuilder;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "config", function() {
+            return config;
+        });
+        __webpack_require__.d(client_interface_namespaceObject, "logLevels", function() {
+            return logLevels;
+        });
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE, _FUNDING_CONFIG, _CARD_CONFIG, base64 = __webpack_require__("./node_modules/Base64/base64.js"), constants = __webpack_require__("./src/constants/index.js"), BUTTON_CONFIG = (_BUTTON_CONFIG = {}, 
         _BUTTON_CONFIG[constants.r] = {
             colors: [ constants.e.GOLD, constants.e.BLUE, constants.e.SILVER, constants.e.BLACK ],
             sizes: [ constants.l.SMALL, constants.l.MEDIUM, constants.l.LARGE, constants.l.RESPONSIVE ],
@@ -1460,7 +4433,6 @@
             _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
-            defaultLocale: "en_US",
             defaultLabel: constants.f.CHECKOUT,
             defaultVerticalLabel: constants.f.PAYPAL,
             defaultColor: constants.e.GOLD,
@@ -1650,19 +4622,19 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[constants.t.PAYPAL] = constants.f.PAYPAL, 
-        _FUNDING_TO_DEFAULT_L[constants.t.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.t.CARD] = constants.f.CARD, 
-        _FUNDING_TO_DEFAULT_L[constants.t.CREDIT] = constants.f.CREDIT, _FUNDING_TO_DEFAULT_L[constants.t.IDEAL] = constants.f.IDEAL, 
-        _FUNDING_TO_DEFAULT_L[constants.t.ELV] = constants.f.ELV, _FUNDING_TO_DEFAULT_L[constants.t.BANCONTACT] = constants.f.BANCONTACT, 
-        _FUNDING_TO_DEFAULT_L[constants.t.GIROPAY] = constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.t.EPS] = constants.f.EPS, 
-        _FUNDING_TO_DEFAULT_L[constants.t.MYBANK] = constants.f.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, 
-        _LABEL_TO_FUNDING[constants.f.PAYPAL] = constants.t.PAYPAL, _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.t.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.f.PAY] = constants.t.PAYPAL, _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.t.PAYPAL, 
-        _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.t.PAYPAL, _LABEL_TO_FUNDING[constants.f.CARD] = constants.t.CARD, 
-        _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.t.CREDIT, _LABEL_TO_FUNDING[constants.f.VENMO] = constants.t.VENMO, 
-        _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.t.IDEAL, _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.t.BANCONTACT, 
-        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.t.GIROPAY, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.t.EPS, 
-        _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.t.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
+        }, _BUTTON_CONFIG), FUNDING_TO_DEFAULT_LABEL = (_FUNDING_TO_DEFAULT_L = {}, _FUNDING_TO_DEFAULT_L[constants.u.PAYPAL] = constants.f.PAYPAL, 
+        _FUNDING_TO_DEFAULT_L[constants.u.VENMO] = constants.f.VENMO, _FUNDING_TO_DEFAULT_L[constants.u.CARD] = constants.f.CARD, 
+        _FUNDING_TO_DEFAULT_L[constants.u.CREDIT] = constants.f.CREDIT, _FUNDING_TO_DEFAULT_L[constants.u.IDEAL] = constants.f.IDEAL, 
+        _FUNDING_TO_DEFAULT_L[constants.u.ELV] = constants.f.ELV, _FUNDING_TO_DEFAULT_L[constants.u.BANCONTACT] = constants.f.BANCONTACT, 
+        _FUNDING_TO_DEFAULT_L[constants.u.GIROPAY] = constants.f.GIROPAY, _FUNDING_TO_DEFAULT_L[constants.u.EPS] = constants.f.EPS, 
+        _FUNDING_TO_DEFAULT_L[constants.u.MYBANK] = constants.f.MYBANK, _FUNDING_TO_DEFAULT_L), LABEL_TO_FUNDING = (_LABEL_TO_FUNDING = {}, 
+        _LABEL_TO_FUNDING[constants.f.PAYPAL] = constants.u.PAYPAL, _LABEL_TO_FUNDING[constants.f.CHECKOUT] = constants.u.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.PAY] = constants.u.PAYPAL, _LABEL_TO_FUNDING[constants.f.BUYNOW] = constants.u.PAYPAL, 
+        _LABEL_TO_FUNDING[constants.f.INSTALLMENT] = constants.u.PAYPAL, _LABEL_TO_FUNDING[constants.f.CARD] = constants.u.CARD, 
+        _LABEL_TO_FUNDING[constants.f.CREDIT] = constants.u.CREDIT, _LABEL_TO_FUNDING[constants.f.VENMO] = constants.u.VENMO, 
+        _LABEL_TO_FUNDING[constants.f.IDEAL] = constants.u.IDEAL, _LABEL_TO_FUNDING[constants.f.BANCONTACT] = constants.u.BANCONTACT, 
+        _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.u.GIROPAY, _LABEL_TO_FUNDING[constants.f.GIROPAY] = constants.u.EPS, 
+        _LABEL_TO_FUNDING[constants.f.MYBANK] = constants.u.MYBANK, _LABEL_TO_FUNDING), BUTTON_RELATIVE_STYLE = {
             FUNDINGICONS: 100,
             TAGLINE: 50,
             VERTICAL_MARGIN: 30
@@ -1711,7 +4683,7 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }, _BUTTON_STYLE), FUNDING_PRIORITY = [ constants.t.PAYPAL, constants.t.VENMO, constants.t.CREDIT, constants.t.IDEAL, constants.t.ELV, constants.t.BANCONTACT, constants.t.GIROPAY, constants.t.EPS, constants.t.MYBANK, constants.t.CARD ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
+        }, _BUTTON_STYLE), FUNDING_PRIORITY = [ constants.u.PAYPAL, constants.u.VENMO, constants.u.CREDIT, constants.u.IDEAL, constants.u.ELV, constants.u.BANCONTACT, constants.u.GIROPAY, constants.u.EPS, constants.u.MYBANK, constants.u.CARD ], FUNDING_CONFIG = (_FUNDING_CONFIG = {}, 
         _FUNDING_CONFIG[constants.r] = {
             enabled: !0,
             allowOptIn: !0,
@@ -1720,53 +4692,53 @@
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !1
-        }, _FUNDING_CONFIG[constants.t.PAYPAL] = {
+        }, _FUNDING_CONFIG[constants.u.PAYPAL] = {
             default: !0,
             allowOptIn: !1,
             allowOptOut: !1,
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.t.CARD] = {
+        }, _FUNDING_CONFIG[constants.u.CARD] = {
             default: !0,
             allowHorizontal: !1,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.t.VENMO] = {
+        }, _FUNDING_CONFIG[constants.u.VENMO] = {
             allowOptOut: !1,
             allowedCountries: [ constants.q.US ],
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.t.CREDIT] = {
+        }, _FUNDING_CONFIG[constants.u.CREDIT] = {
             allowedCountries: [ constants.q.US, constants.q.GB, constants.q.DE ],
             defaultVerticalCountries: [ constants.q.US ],
-            platforms: [ constants.w.MOBILE ],
+            platforms: [ constants.A.MOBILE ],
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.t.IDEAL] = {
+        }, _FUNDING_CONFIG[constants.u.IDEAL] = {
             allowedCountries: [ constants.q.NL ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.t.ELV] = {
+        }, _FUNDING_CONFIG[constants.u.ELV] = {
             allowedCountries: [ constants.q.DE, constants.q.AT ],
             defaultVerticalCountries: [ constants.q.DE, constants.q.AT ],
             allowHorizontal: !0,
             allowVertical: !0
-        }, _FUNDING_CONFIG[constants.t.BANCONTACT] = {
+        }, _FUNDING_CONFIG[constants.u.BANCONTACT] = {
             allowedCountries: [ constants.q.BE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.t.GIROPAY] = {
+        }, _FUNDING_CONFIG[constants.u.GIROPAY] = {
             allowedCountries: [ constants.q.DE ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.t.EPS] = {
+        }, _FUNDING_CONFIG[constants.u.EPS] = {
             allowedCountries: [ constants.q.AT ],
             allowHorizontal: !0,
             allowVertical: !0,
             requireCommitAsTrue: !0
-        }, _FUNDING_CONFIG[constants.t.MYBANK] = {
+        }, _FUNDING_CONFIG[constants.u.MYBANK] = {
             allowedCountries: [ constants.q.IT ],
             allowHorizontal: !0,
             allowVertical: !0,
@@ -1779,9 +4751,409 @@
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.HIPER, constants.o.ELO ]
         }, _CARD_CONFIG[constants.q.JP] = {
             priority: [ constants.o.VISA, constants.o.MASTERCARD, constants.o.AMEX, constants.o.JCB ]
-        }, _CARD_CONFIG), fundingEligibilityReasons = [], util = __webpack_require__("./src/lib/util.js"), normalizeProps = Object(util.b)(function(props) {
-            var env = props.env, _props$locale = props.locale, locale = void 0 === _props$locale ? getButtonConfig("DEFAULT", "defaultLocale") : _props$locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
-            locale = parseLocale(locale);
+        }, _CARD_CONFIG), fundingEligibilityReasons = [], device = __webpack_require__("./src/lib/device.js"), util = __webpack_require__("./src/lib/util.js"), lib = __webpack_require__("./node_modules/post-robot/src/lib/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), src_conf = __webpack_require__("./node_modules/post-robot/src/conf/index.js"), global = __webpack_require__("./node_modules/post-robot/src/global.js"), zalgo_promise_src = __webpack_require__("./node_modules/zalgo-promise/src/index.js"), SEND_MESSAGE_STRATEGIES = {};
+        SEND_MESSAGE_STRATEGIES[src_conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
+            try {
+                __webpack_require__("./node_modules/post-robot/src/compat/index.js").emulateIERestrictions(window, win);
+            } catch (err) {
+                return;
+            }
+            var domains = void 0;
+            domains = Array.isArray(domain) ? domain : domain ? [ domain ] : [ src_conf.b.WILDCARD ];
+            domains = domains.map(function(dom) {
+                if (0 === dom.indexOf(src_conf.b.MOCK_PROTOCOL)) {
+                    if (window.location.protocol === src_conf.b.FILE_PROTOCOL) return src_conf.b.WILDCARD;
+                    if (!Object(cross_domain_utils_src.j)(win)) throw new Error("Attempting to send messsage to mock domain " + dom + ", but window is actually cross-domain");
+                    return Object(cross_domain_utils_src.a)(win);
+                }
+                return 0 === dom.indexOf(src_conf.b.FILE_PROTOCOL) ? src_conf.b.WILDCARD : dom;
+            });
+            domains.forEach(function(dom) {
+                return win.postMessage(serializedMessage, dom);
+            });
+        };
+        var _require = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), sendBridgeMessage = _require.sendBridgeMessage, needsBridgeForBrowser = _require.needsBridgeForBrowser, isBridge = _require.isBridge;
+        SEND_MESSAGE_STRATEGIES[src_conf.b.SEND_STRATEGIES.BRIDGE] = function(win, serializedMessage, domain) {
+            if (needsBridgeForBrowser() || isBridge()) {
+                if (Object(cross_domain_utils_src.o)(win)) throw new Error("Post message through bridge disabled between same domain windows");
+                if (!1 !== Object(cross_domain_utils_src.p)(window, win)) throw new Error("Can only use bridge to communicate between two different windows, not between frames");
+                return sendBridgeMessage(win, serializedMessage, domain);
+            }
+        };
+        SEND_MESSAGE_STRATEGIES[src_conf.b.SEND_STRATEGIES.GLOBAL] = function(win, serializedMessage, domain) {
+            if (needsBridgeForBrowser()) {
+                if (!Object(cross_domain_utils_src.o)(win)) throw new Error("Post message through global disabled between different domain windows");
+                if (!1 !== Object(cross_domain_utils_src.p)(window, win)) throw new Error("Can only use global to communicate between two different windows, not between frames");
+                var foreignGlobal = win[src_conf.b.WINDOW_PROPS.POSTROBOT];
+                if (!foreignGlobal) throw new Error("Can not find postRobot global on foreign window");
+                return foreignGlobal.receiveMessage({
+                    source: window,
+                    origin: Object(cross_domain_utils_src.c)(),
+                    data: serializedMessage
+                });
+            }
+        };
+        var _extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, cross_domain_safe_weakmap_src = __webpack_require__("./node_modules/cross-domain-safe-weakmap/src/index.js");
+        global.a.responseListeners = global.a.responseListeners || {};
+        global.a.requestListeners = global.a.requestListeners || {};
+        global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {}();
+        global.a.erroredResponseListeners = global.a.erroredResponseListeners || {};
+        var _RECEIVE_MESSAGE_TYPE, __DOMAIN_REGEX__ = "__domain_regex__", types__extends = Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }, RECEIVE_MESSAGE_TYPES = (_RECEIVE_MESSAGE_TYPE = {}, _RECEIVE_MESSAGE_TYPE[src_conf.b.POST_MESSAGE_TYPE.ACK] = function(source, origin, message) {
+            if (!isResponseListenerErrored(message.hash)) {
+                var options = getResponseListener(message.hash);
+                if (!options) throw new Error("No handler found for post message ack for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                if (!Object(cross_domain_utils_src.s)(options.domain, origin)) throw new Error("Ack origin " + origin + " does not match domain " + options.domain.toString());
+                options.ack = !0;
+            }
+        }, _RECEIVE_MESSAGE_TYPE[src_conf.b.POST_MESSAGE_TYPE.REQUEST] = function(source, origin, message) {
+            function respond(data) {
+                return message.fireAndForget || Object(cross_domain_utils_src.r)(source) ? zalgo_promise_src.a.resolve() : sendMessage(source, types__extends({
+                    target: message.originalSource,
+                    hash: message.hash,
+                    name: message.name
+                }, data), origin);
+            }
+            var options = getRequestListener({
+                name: message.name,
+                win: source,
+                domain: origin
+            });
+            return zalgo_promise_src.a.all([ respond({
+                type: src_conf.b.POST_MESSAGE_TYPE.ACK
+            }), zalgo_promise_src.a.try(function() {
+                if (!options) throw new Error("No handler found for post message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                if (!Object(cross_domain_utils_src.s)(options.domain, origin)) throw new Error("Request origin " + origin + " does not match domain " + options.domain.toString());
+                var data = message.data;
+                return options.handler({
+                    source: source,
+                    origin: origin,
+                    data: data
+                });
+            }).then(function(data) {
+                return respond({
+                    type: src_conf.b.POST_MESSAGE_TYPE.RESPONSE,
+                    ack: src_conf.b.POST_MESSAGE_ACK.SUCCESS,
+                    data: data
+                });
+            }, function(err) {
+                var error = Object(lib.o)(err).replace(/^Error: /, ""), code = err.code;
+                return respond({
+                    type: src_conf.b.POST_MESSAGE_TYPE.RESPONSE,
+                    ack: src_conf.b.POST_MESSAGE_ACK.ERROR,
+                    error: error,
+                    code: code
+                });
+            }) ]).then(lib.j).catch(function(err) {
+                if (options && options.handleError) return options.handleError(err);
+                lib.i.error(Object(lib.o)(err));
+            });
+        }, _RECEIVE_MESSAGE_TYPE[src_conf.b.POST_MESSAGE_TYPE.RESPONSE] = function(source, origin, message) {
+            if (!isResponseListenerErrored(message.hash)) {
+                var options = getResponseListener(message.hash);
+                if (!options) throw new Error("No handler found for post message response for message: " + message.name + " from " + origin + " in " + window.location.protocol + "//" + window.location.host + window.location.pathname);
+                if (!Object(cross_domain_utils_src.s)(options.domain, origin)) throw new Error("Response origin " + origin + " does not match domain " + options.domain);
+                deleteResponseListener(message.hash);
+                if (message.ack === src_conf.b.POST_MESSAGE_ACK.ERROR) {
+                    var err = new Error(message.error);
+                    message.code && (err.code = message.code);
+                    return options.respond(err, null);
+                }
+                if (message.ack === src_conf.b.POST_MESSAGE_ACK.SUCCESS) {
+                    var data = message.data || message.response;
+                    return options.respond(null, {
+                        source: source,
+                        origin: origin,
+                        data: data
+                    });
+                }
+            }
+        }, _RECEIVE_MESSAGE_TYPE), _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        global.a.receivedMessages = global.a.receivedMessages || [];
+        global.a.receiveMessage = receiveMessage;
+        global.a.requestPromises = global.a.requestPromises || new cross_domain_safe_weakmap_src.a();
+        global.a.send = _send;
+        var server__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+        global.a.on = _on;
+        var public_parent = Object(cross_domain_utils_src.b)(), bridge = __webpack_require__("./node_modules/post-robot/src/bridge/index.js"), interface_bridge = interface_namespaceObject;
+        init();
+        var windowReady = new zalgo_promise_src.a(function(resolve) {
+            "undefined" != typeof document && "complete" === document.readyState && resolve();
+            window.addEventListener && window.addEventListener("load", resolve);
+        }), payloadBuilders = [], metaBuilders = [], trackingBuilders = [], headerBuilders = [], config = {
+            uri: "",
+            prefix: "",
+            initial_state_name: "init",
+            flushInterval: 6e5,
+            debounceInterval: 10,
+            sizeLimit: 300,
+            silent: !1,
+            heartbeat: !0,
+            heartbeatConsoleLog: !0,
+            heartbeatInterval: 5e3,
+            heartbeatTooBusy: !1,
+            heartbeatTooBusyThreshold: 1e4,
+            logLevel: "warn",
+            autoLog: [ "warn", "error" ],
+            logUnload: !0,
+            logPerformance: !0
+        }, logLevels = [ "error", "warn", "info", "debug" ], logger__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        }, buffer = [], tracking = [];
+        Function.prototype.bind && window.console && "object" === logger__typeof(console.log) && [ "log", "info", "warn", "error" ].forEach(function(method) {
+            console[method] = this.bind(console[method], console);
+        }, Function.prototype.call);
+        var logger_transport = function(headers, data, options) {
+            return ajax("post", config.uri, headers, data, options);
+        }, loaded = !1;
+        setTimeout(function() {
+            loaded = !0;
+        }, 1);
+        var _flush = function(method, interval) {
+            var debounce = {};
+            return function() {
+                var args = arguments;
+                if (debounce.timeout) {
+                    clearTimeout(debounce.timeout);
+                    delete debounce.timeout;
+                }
+                debounce.timeout = setTimeout(function() {
+                    var resolver = debounce.resolver, rejector = debounce.rejector;
+                    delete debounce.promise;
+                    delete debounce.resolver;
+                    delete debounce.rejector;
+                    delete debounce.timeout;
+                    return zalgo_promise_src.a.resolve().then(function() {
+                        return method.apply(null, args);
+                    }).then(resolver, rejector);
+                }, interval);
+                debounce.promise = debounce.promise || new zalgo_promise_src.a(function(resolver, rejector) {
+                    debounce.resolver = resolver;
+                    debounce.rejector = rejector;
+                });
+                return debounce.promise;
+            };
+        }(immediateFlush, config.debounceInterval), enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0, clientTimer = timer(), reqTimer = timer(reqStartElapsed()), initiated = !1, windowID = uniqueID(), pageID = uniqueID(), currentState = config.initial_state_name, startTime = void 0;
+        addPayloadBuilder(function() {
+            return {
+                windowID: windowID,
+                pageID: pageID
+            };
+        });
+        addMetaBuilder(function() {
+            return {
+                state: "ui_" + currentState
+            };
+        });
+        var src_config = __webpack_require__("./src/config/index.js"), documentReady = new zalgo_promise_src.a(function(resolve) {
+            if (isDocumentReady()) return resolve();
+            var interval = setInterval(function() {
+                if (isDocumentReady()) {
+                    clearInterval(interval);
+                    return resolve();
+                }
+            }, 10);
+        }), parseQuery = (documentReady.then(function() {
+            if (document.body) return document.body;
+            throw new Error("Document ready but document.body not present");
+        }), Object(util.f)(function(queryString) {
+            var params = {};
+            if (!queryString) return params;
+            if (-1 === queryString.indexOf("=")) return params;
+            for (var _iterator2 = queryString.split("&"), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref2;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref2 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref2 = _i2.value;
+                }
+                var pair = _ref2;
+                pair = pair.split("=");
+                pair[0] && pair[1] && (params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]));
+            }
+            return params;
+        })), bowserCache = (Object(util.f)(function() {
+            return Boolean(window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0);
+        }), Object(util.h)(function() {
+            setTransport(proxyMethod("log", Object(cross_domain_utils_src.h)(window), getTransport()));
+        }), {}), http__extends = (Object(util.h)(function(state) {
+            for (var bowser = getBowser(), _iterator2 = Object.keys(src_config.a.SUPPORTED_BROWSERS), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                var _ref3;
+                if (_isArray2) {
+                    if (_i2 >= _iterator2.length) break;
+                    _ref3 = _iterator2[_i2++];
+                } else {
+                    _i2 = _iterator2.next();
+                    if (_i2.done) break;
+                    _ref3 = _i2.value;
+                }
+                if (bowser[_ref3]) return;
+            }
+            info("unrecognized_browser_" + state, {
+                name: bowser.name,
+                version: bowser.version,
+                mobile: bowser.mobile,
+                android: bowser.android,
+                ios: bowser.ios
+            });
+            _flush();
+        }), Object.assign || function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
+            }
+            return target;
+        }), http__typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+            return typeof obj;
+        } : function(obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        }, HEADERS = {
+            CONTENT_TYPE: "content-type",
+            ACCEPT: "accept"
+        }, http_headerBuilders = [], corrids = [];
+        addPayloadBuilder(function() {
+            return {
+                prev_corr_ids: corrids.join(",")
+            };
+        });
+        http_request.get = function(url) {
+            var options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            return http_request(http__extends({
+                method: "get",
+                url: url
+            }, options));
+        };
+        http_request.post = function(url, data) {
+            var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+            return http_request(http__extends({
+                method: "post",
+                url: url,
+                data: data
+            }, options));
+        };
+        http_request.addHeaderBuilder = function(method) {
+            http_headerBuilders.push(method);
+        };
+        var _BUTTON_LOGO$PP, _BUTTON_LOGO$PAYPAL, _BUTTON_LOGO$CREDIT, _BUTTON_LOGO$VENMO, _BUTTON_LOGO$IDEAL, _BUTTON_LOGO$ELV, _BUTTON_LOGO$BANCONTA, _BUTTON_LOGO$GIROPAY, _BUTTON_LOGO$EPS, _BUTTON_LOGO$MYBANK, _fundingLogos, _cardLogos, getCurrentScript = (Object.assign, 
+        Object.assign, Object.assign, Object(util.f)(function() {
+            for (var scripts = Array.prototype.slice.call(document.getElementsByTagName("script")), _iterator = scripts, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                var _ref;
+                if (_isArray) {
+                    if (_i >= _iterator.length) break;
+                    _ref = _iterator[_i++];
+                } else {
+                    _i = _iterator.next();
+                    if (_i.done) break;
+                    _ref = _i.value;
+                }
+                var script = _ref;
+                if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === src_config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+                if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
+            }
+            document.currentScript && debug("current_script_not_recognized", {
+                src: document.currentScript.src
+            });
+        })), JsxHTMLNode = (Object(util.f)(function() {
+            var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : src_config.a.env;
+            return zalgo_promise_src.a.try(function() {
+                if (Object(device.e)()) return {
+                    iframeEligible: !1,
+                    iframeEligibleReason: "ie_intranet",
+                    rememberedFunding: []
+                };
+                var metaFrameUrl = src_config.a.metaFrameUrls[env], metaFrameDomain = src_config.a.paypalDomains[env];
+                return zalgo_promise_src.a.try(function() {
+                    if (!interface_bridge) throw new Error("Opening meta window without bridge support is not currently supported");
+                    var metaListener = once("meta", {
+                        domain: metaFrameDomain
+                    });
+                    return interface_bridge.openBridge(extendUrl(metaFrameUrl, {
+                        version: getScriptVersion()
+                    }), metaFrameDomain).then(function() {
+                        return metaListener;
+                    }).then(function(_ref) {
+                        return _ref.data;
+                    });
+                });
+            });
+        }), function() {
+            function JsxHTMLNode(name, props, children) {
+                _classCallCheck(this, JsxHTMLNode);
+                this.name = name;
+                this.props = props;
+                this.children = children;
+            }
+            JsxHTMLNode.prototype.toString = function() {
+                return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
+            };
+            JsxHTMLNode.prototype.propsToString = function() {
+                var props = this.props;
+                return props ? Object.keys(props).filter(function(key) {
+                    return "innerHTML" !== key && props && !1 !== props[key];
+                }).map(function(key) {
+                    return props && !0 === props[key] ? "" + jsx_htmlEncode(key) : props ? jsx_htmlEncode(key) + '="' + jsx_htmlEncode(props[key]) + '"' : "";
+                }).join(" ") : "";
+            };
+            JsxHTMLNode.prototype.childrenToString = function() {
+                function iterate(children) {
+                    for (var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                        var _ref;
+                        if (_isArray) {
+                            if (_i >= _iterator.length) break;
+                            _ref = _iterator[_i++];
+                        } else {
+                            _i = _iterator.next();
+                            if (_i.done) break;
+                            _ref = _i.value;
+                        }
+                        var child = _ref;
+                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : jsx_htmlEncode(child));
+                    }
+                }
+                if (this.props && this.props.innerHTML) return this.props.innerHTML;
+                if (!this.children) return "";
+                var result = "";
+                iterate(this.children);
+                return result;
+            };
+            return JsxHTMLNode;
+        }()), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
+            function JsxHTMLNodeContainer(children) {
+                _classCallCheck(this, JsxHTMLNodeContainer);
+                return _possibleConstructorReturn(this, _JsxHTMLNode.call(this, "", {}, children));
+            }
+            _inherits(JsxHTMLNodeContainer, _JsxHTMLNode);
+            JsxHTMLNodeContainer.prototype.toString = function() {
+                return this.childrenToString();
+            };
+            return JsxHTMLNodeContainer;
+        }(JsxHTMLNode), normalizeProps = Object(util.f)(function(props) {
+            var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
+            locale = locale ? parseLocale(locale) : getBrowserLocale();
             funding = funding || {};
             funding.allowed = funding.allowed || [];
             funding.disallowed = funding.disallowed || [];
@@ -1829,58 +5201,7 @@
                 }),
                 installmentperiod: installmentperiod
             };
-        }), JsxHTMLNode = function() {
-            function JsxHTMLNode(name, props, children) {
-                _classCallCheck(this, JsxHTMLNode);
-                this.name = name;
-                this.props = props;
-                this.children = children;
-            }
-            JsxHTMLNode.prototype.toString = function() {
-                return "<" + this.name + (this.props ? " " : "") + (this.props ? this.propsToString() : "") + ">" + this.childrenToString() + "</" + this.name + ">";
-            };
-            JsxHTMLNode.prototype.propsToString = function() {
-                var props = this.props;
-                return props ? Object.keys(props).filter(function(key) {
-                    return "innerHTML" !== key && props && !1 !== props[key];
-                }).map(function(key) {
-                    return props && !0 === props[key] ? "" + htmlEncode(key) : props ? htmlEncode(key) + '="' + htmlEncode(props[key]) + '"' : "";
-                }).join(" ") : "";
-            };
-            JsxHTMLNode.prototype.childrenToString = function() {
-                function iterate(children) {
-                    for (var _iterator = children, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                        var _ref;
-                        if (_isArray) {
-                            if (_i >= _iterator.length) break;
-                            _ref = _iterator[_i++];
-                        } else {
-                            _i = _iterator.next();
-                            if (_i.done) break;
-                            _ref = _i.value;
-                        }
-                        var child = _ref;
-                        null !== child && void 0 !== child && (Array.isArray(child) ? iterate(child) : result += child instanceof JsxHTMLNode ? child.toString() : htmlEncode(child));
-                    }
-                }
-                if (this.props && this.props.innerHTML) return this.props.innerHTML;
-                if (!this.children) return "";
-                var result = "";
-                iterate(this.children);
-                return result;
-            };
-            return JsxHTMLNode;
-        }(), JsxHTMLNodeContainer = function(_JsxHTMLNode) {
-            function JsxHTMLNodeContainer(children) {
-                _classCallCheck(this, JsxHTMLNodeContainer);
-                return _possibleConstructorReturn(this, _JsxHTMLNode.call(this, "", {}, children));
-            }
-            _inherits(JsxHTMLNodeContainer, _JsxHTMLNode);
-            JsxHTMLNodeContainer.prototype.toString = function() {
-                return this.childrenToString();
-            };
-            return JsxHTMLNodeContainer;
-        }(JsxHTMLNode), pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), fundingLogos = (_fundingLogos = {}, 
+        }), pp_white = __webpack_require__("./src/resources/fundingLogos/pp_white.svg"), pp_white_default = __webpack_require__.n(pp_white), pp_blue = __webpack_require__("./src/resources/fundingLogos/pp_blue.svg"), pp_blue_default = __webpack_require__.n(pp_blue), pp_black = __webpack_require__("./src/resources/fundingLogos/pp_black.svg"), pp_black_default = __webpack_require__.n(pp_black), paypal_white = __webpack_require__("./src/resources/fundingLogos/paypal_white.svg"), paypal_white_default = __webpack_require__.n(paypal_white), paypal_blue = __webpack_require__("./src/resources/fundingLogos/paypal_blue.svg"), paypal_blue_default = __webpack_require__.n(paypal_blue), paypal_black = __webpack_require__("./src/resources/fundingLogos/paypal_black.svg"), paypal_black_default = __webpack_require__.n(paypal_black), credit_white = __webpack_require__("./src/resources/fundingLogos/credit_white.svg"), credit_white_default = __webpack_require__.n(credit_white), venmo_white = __webpack_require__("./src/resources/fundingLogos/venmo_white.svg"), venmo_white_default = __webpack_require__.n(venmo_white), venmo_blue = __webpack_require__("./src/resources/fundingLogos/venmo_blue.svg"), venmo_blue_default = __webpack_require__.n(venmo_blue), ideal = __webpack_require__("./src/resources/fundingLogos/ideal.svg"), ideal_default = __webpack_require__.n(ideal), elv = __webpack_require__("./src/resources/fundingLogos/elv.svg"), elv_default = __webpack_require__.n(elv), elv_white = __webpack_require__("./src/resources/fundingLogos/elv_white.svg"), elv_white_default = __webpack_require__.n(elv_white), bancontact = __webpack_require__("./src/resources/fundingLogos/bancontact.svg"), bancontact_default = __webpack_require__.n(bancontact), giropay = __webpack_require__("./src/resources/fundingLogos/giropay.svg"), giropay_default = __webpack_require__.n(giropay), eps = __webpack_require__("./src/resources/fundingLogos/eps.svg"), eps_default = __webpack_require__.n(eps), mybank = __webpack_require__("./src/resources/fundingLogos/mybank.svg"), mybank_default = __webpack_require__.n(mybank), fundingLogos = (_fundingLogos = {}, 
         _fundingLogos[constants.h.PP] = (_BUTTON_LOGO$PP = {}, _BUTTON_LOGO$PP[constants.i.WHITE] = pp_white_default.a, 
         _BUTTON_LOGO$PP[constants.i.BLUE] = pp_blue_default.a, _BUTTON_LOGO$PP[constants.i.BLACK] = pp_black_default.a, 
         _BUTTON_LOGO$PP), _fundingLogos[constants.h.PAYPAL] = (_BUTTON_LOGO$PAYPAL = {}, 
@@ -1901,7 +5222,7 @@
         _cardLogos[constants.o.VISA] = visa_default.a, _cardLogos[constants.o.AMEX] = amex_default.a, 
         _cardLogos[constants.o.MASTERCARD] = mastercard_default.a, _cardLogos[constants.o.DISCOVER] = discover_default.a, 
         _cardLogos[constants.o.HIPER] = hiper_default.a, _cardLogos[constants.o.ELO] = elo_default.a, 
-        _cardLogos[constants.o.JCB] = jcb_default.a, _cardLogos), config = __webpack_require__("./src/config/index.js"), pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", CLASS = {
+        _cardLogos[constants.o.JCB] = jcb_default.a, _cardLogos), pageStyle = "\n    html, body {\n        padding: 0;\n        margin: 0;\n        width: 100%;\n        overflow: hidden;\n        text-align: center;\n    }\n\n    * {\n        -webkit-touch-callout: none;\n        -webkit-user-select: none;\n        -khtml-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        cursor: default;\n    }\n", CLASS = {
             CONTAINER: "paypal-button-container",
             BUTTON: "paypal-button",
             LABEL: "paypal-button-label",
@@ -1921,7 +5242,7 @@
             SEPARATOR: "paypal-separator"
         }, buttonStyle = "\n\n    ." + CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + CLASS.BUTTON + ":not(." + CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CONTAINER + "." + CLASS.ENV + "-" + constants.s.TEST + " ." + CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + CLASS.CARD + ", ." + CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.LOGO + ",\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " ." + CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + CLASS.CONTAINER + "." + CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + CLASS.BUTTON + "." + CLASS.LABEL + "-" + constants.f.CREDIT + " ." + CLASS.LOGO + "." + CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8, buttonColorStyle = "\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + CLASS.BUTTON + "." + CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n", template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a;
         __webpack_exports__.componentTemplate = componentTemplate;
-        var _extends = Object.assign || function(target) {
+        var componentTemplate__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -1937,13 +5258,13 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.193",
+            version: "4.0.194",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
             locale: {
                 country: constants.q.US,
-                lang: constants.v.EN
+                lang: constants.w.EN
             },
             stage: "msmaster",
             merchantID: "",
@@ -2321,162 +5642,162 @@
             },
             defaultLocale: {
                 country: constants.q.US,
-                lang: constants.v.EN
+                lang: constants.w.EN
             },
-            locales: (_locales = {}, _locales[constants.q.AD] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ], 
-            _locales[constants.q.AG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AL] = [ constants.v.EN ], _locales[constants.q.AM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AR] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.AT] = [ constants.v.DE, constants.v.EN ], 
-            _locales[constants.q.AU] = [ constants.v.EN ], _locales[constants.q.AW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.AZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BA] = [ constants.v.EN ], _locales[constants.q.BB] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BE] = [ constants.v.EN, constants.v.NL, constants.v.FR ], _locales[constants.q.BF] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BG] = [ constants.v.EN ], _locales[constants.q.BH] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BI] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BJ] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BN] = [ constants.v.EN ], _locales[constants.q.BO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.BR] = [ constants.v.PT, constants.v.EN ], _locales[constants.q.BS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BT] = [ constants.v.EN ], _locales[constants.q.BW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.BY] = [ constants.v.EN ], _locales[constants.q.BZ] = [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.C2] = [ constants.v.ZH, constants.v.EN ], _locales[constants.q.CA] = [ constants.v.EN, constants.v.FR ], 
-            _locales[constants.q.CD] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.CG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.CH] = [ constants.v.DE, constants.v.FR, constants.v.EN ], _locales[constants.q.CI] = [ constants.v.FR, constants.v.EN ], 
-            _locales[constants.q.CK] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.CL] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.CM] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.CN] = [ constants.v.ZH ], 
-            _locales[constants.q.CO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.CR] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.CV] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.CY] = [ constants.v.EN ], _locales[constants.q.CZ] = [ constants.v.CS, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.DE] = [ constants.v.DE, constants.v.EN ], _locales[constants.q.DJ] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.DK] = [ constants.v.DA, constants.v.EN ], _locales[constants.q.DM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.DO] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.DZ] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.EC] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.EE] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.EG] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ER] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ES] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.ET] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.FI] = [ constants.v.FI, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.FJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.FK] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.FM] = [ constants.v.EN ], _locales[constants.q.FO] = [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.FR] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.GA] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GB] = [ constants.v.EN ], _locales[constants.q.GD] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GL] = [ constants.v.DA, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GN] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GP] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GR] = [ constants.v.EL, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GT] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.GW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.GY] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.HK] = [ constants.v.EN, constants.v.ZH ], _locales[constants.q.HN] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.HR] = [ constants.v.EN ], _locales[constants.q.HU] = [ constants.v.HU, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ID] = [ constants.v.ID, constants.v.EN ], _locales[constants.q.IE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.IL] = [ constants.v.HE, constants.v.EN ], _locales[constants.q.IN] = [ constants.v.EN ], 
-            _locales[constants.q.IS] = [ constants.v.EN ], _locales[constants.q.IT] = [ constants.v.IT, constants.v.EN ], 
-            _locales[constants.q.JM] = [ constants.v.EN, constants.v.ES, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.JO] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.JP] = [ constants.v.JA, constants.v.EN ], _locales[constants.q.KE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KH] = [ constants.v.EN ], _locales[constants.q.KI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KM] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KR] = [ constants.v.KO, constants.v.EN ], _locales[constants.q.KW] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KY] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.KZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LA] = [ constants.v.EN ], _locales[constants.q.LC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LK] = [ constants.v.EN ], _locales[constants.q.LS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LT] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LU] = [ constants.v.EN, constants.v.DE, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.LV] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MA] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MC] = [ constants.v.FR, constants.v.EN ], _locales[constants.q.MD] = [ constants.v.EN ], 
-            _locales[constants.q.ME] = [ constants.v.EN ], _locales[constants.q.MG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MH] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MK] = [ constants.v.EN ], _locales[constants.q.ML] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MN] = [ constants.v.EN ], _locales[constants.q.MQ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MT] = [ constants.v.EN ], _locales[constants.q.MU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MV] = [ constants.v.EN ], _locales[constants.q.MW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.MX] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.MY] = [ constants.v.EN ], 
-            _locales[constants.q.MZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NE] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NG] = [ constants.v.EN ], _locales[constants.q.NI] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.NL] = [ constants.v.NL, constants.v.EN ], _locales[constants.q.NO] = [ constants.v.NO, constants.v.EN ], 
-            _locales[constants.q.NP] = [ constants.v.EN ], _locales[constants.q.NR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.NZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.OM] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PA] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.PE] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.PF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PH] = [ constants.v.EN ], _locales[constants.q.PL] = [ constants.v.PL, constants.v.EN ], 
-            _locales[constants.q.PM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PN] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PT] = [ constants.v.PT, constants.v.EN ], _locales[constants.q.PW] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.PY] = [ constants.v.ES, constants.v.EN ], _locales[constants.q.QA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH, constants.v.AR ], 
-            _locales[constants.q.RE] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.RO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.RS] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.RU] = [ constants.v.RU, constants.v.EN ], _locales[constants.q.RW] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SA] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SB] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SC] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SE] = [ constants.v.SV, constants.v.EN ], _locales[constants.q.SG] = [ constants.v.EN ], 
-            _locales[constants.q.SH] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SI] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SK] = [ constants.v.SK, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SL] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SN] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SO] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SR] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ST] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.SV] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.SZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TD] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TG] = [ constants.v.FR, constants.v.EN, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TH] = [ constants.v.TH, constants.v.EN ], _locales[constants.q.TJ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TN] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TO] = [ constants.v.EN ], _locales[constants.q.TR] = [ constants.v.TR, constants.v.EN ], 
-            _locales[constants.q.TT] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TV] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.TW] = [ constants.v.ZH, constants.v.EN ], _locales[constants.q.TZ] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.UA] = [ constants.v.EN, constants.v.RU, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.UG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.US] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.UY] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.VA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.VC] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.VE] = [ constants.v.ES, constants.v.EN, constants.v.FR, constants.v.ZH ], 
-            _locales[constants.q.VG] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.VN] = [ constants.v.EN ], _locales[constants.q.VU] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.WF] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.WS] = [ constants.v.EN ], _locales[constants.q.YE] = [ constants.v.AR, constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.YT] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ZA] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ZM] = [ constants.v.EN, constants.v.FR, constants.v.ES, constants.v.ZH ], 
-            _locales[constants.q.ZW] = [ constants.v.EN ], _locales)
+            locales: (_locales = {}, _locales[constants.q.AD] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AE] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH, constants.w.AR ], 
+            _locales[constants.q.AG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AI] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AL] = [ constants.w.EN ], _locales[constants.q.AM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AN] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AO] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AR] = [ constants.w.ES, constants.w.EN ], _locales[constants.q.AT] = [ constants.w.DE, constants.w.EN ], 
+            _locales[constants.q.AU] = [ constants.w.EN ], _locales[constants.q.AW] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.AZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BA] = [ constants.w.EN ], _locales[constants.q.BB] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BE] = [ constants.w.EN, constants.w.NL, constants.w.FR ], _locales[constants.q.BF] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BG] = [ constants.w.EN ], _locales[constants.q.BH] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BI] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BJ] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BN] = [ constants.w.EN ], _locales[constants.q.BO] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.BR] = [ constants.w.PT, constants.w.EN ], _locales[constants.q.BS] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BT] = [ constants.w.EN ], _locales[constants.q.BW] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.BY] = [ constants.w.EN ], _locales[constants.q.BZ] = [ constants.w.EN, constants.w.ES, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.C2] = [ constants.w.ZH, constants.w.EN ], _locales[constants.q.CA] = [ constants.w.EN, constants.w.FR ], 
+            _locales[constants.q.CD] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.CG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.CH] = [ constants.w.DE, constants.w.FR, constants.w.EN ], _locales[constants.q.CI] = [ constants.w.FR, constants.w.EN ], 
+            _locales[constants.q.CK] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.CL] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.CM] = [ constants.w.FR, constants.w.EN ], _locales[constants.q.CN] = [ constants.w.ZH ], 
+            _locales[constants.q.CO] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.CR] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.CV] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.CY] = [ constants.w.EN ], _locales[constants.q.CZ] = [ constants.w.CS, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.DE] = [ constants.w.DE, constants.w.EN ], _locales[constants.q.DJ] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.DK] = [ constants.w.DA, constants.w.EN ], _locales[constants.q.DM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.DO] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.DZ] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.EC] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.EE] = [ constants.w.EN, constants.w.RU, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.EG] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ER] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ES] = [ constants.w.ES, constants.w.EN ], _locales[constants.q.ET] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.FI] = [ constants.w.FI, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.FJ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.FK] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.FM] = [ constants.w.EN ], _locales[constants.q.FO] = [ constants.w.DA, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.FR] = [ constants.w.FR, constants.w.EN ], _locales[constants.q.GA] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GB] = [ constants.w.EN ], _locales[constants.q.GD] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GE] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GF] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GI] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GL] = [ constants.w.DA, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GN] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GP] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GR] = [ constants.w.EL, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GT] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.GW] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.GY] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.HK] = [ constants.w.EN, constants.w.ZH ], _locales[constants.q.HN] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.HR] = [ constants.w.EN ], _locales[constants.q.HU] = [ constants.w.HU, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ID] = [ constants.w.ID, constants.w.EN ], _locales[constants.q.IE] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.IL] = [ constants.w.HE, constants.w.EN ], _locales[constants.q.IN] = [ constants.w.EN ], 
+            _locales[constants.q.IS] = [ constants.w.EN ], _locales[constants.q.IT] = [ constants.w.IT, constants.w.EN ], 
+            _locales[constants.q.JM] = [ constants.w.EN, constants.w.ES, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.JO] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.JP] = [ constants.w.JA, constants.w.EN ], _locales[constants.q.KE] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KH] = [ constants.w.EN ], _locales[constants.q.KI] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KM] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KN] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KR] = [ constants.w.KO, constants.w.EN ], _locales[constants.q.KW] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KY] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.KZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LA] = [ constants.w.EN ], _locales[constants.q.LC] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LI] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LK] = [ constants.w.EN ], _locales[constants.q.LS] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LT] = [ constants.w.EN, constants.w.RU, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LU] = [ constants.w.EN, constants.w.DE, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.LV] = [ constants.w.EN, constants.w.RU, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MA] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MC] = [ constants.w.FR, constants.w.EN ], _locales[constants.q.MD] = [ constants.w.EN ], 
+            _locales[constants.q.ME] = [ constants.w.EN ], _locales[constants.q.MG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MH] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MK] = [ constants.w.EN ], _locales[constants.q.ML] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MN] = [ constants.w.EN ], _locales[constants.q.MQ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MR] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MS] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MT] = [ constants.w.EN ], _locales[constants.q.MU] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MV] = [ constants.w.EN ], _locales[constants.q.MW] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.MX] = [ constants.w.ES, constants.w.EN ], _locales[constants.q.MY] = [ constants.w.EN ], 
+            _locales[constants.q.MZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NA] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NC] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NE] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NF] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NG] = [ constants.w.EN ], _locales[constants.q.NI] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.NL] = [ constants.w.NL, constants.w.EN ], _locales[constants.q.NO] = [ constants.w.NO, constants.w.EN ], 
+            _locales[constants.q.NP] = [ constants.w.EN ], _locales[constants.q.NR] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NU] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.NZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.OM] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PA] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.PE] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.PF] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PH] = [ constants.w.EN ], _locales[constants.q.PL] = [ constants.w.PL, constants.w.EN ], 
+            _locales[constants.q.PM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PN] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PT] = [ constants.w.PT, constants.w.EN ], _locales[constants.q.PW] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.PY] = [ constants.w.ES, constants.w.EN ], _locales[constants.q.QA] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH, constants.w.AR ], 
+            _locales[constants.q.RE] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.RO] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.RS] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.RU] = [ constants.w.RU, constants.w.EN ], _locales[constants.q.RW] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SA] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SB] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SC] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SE] = [ constants.w.SV, constants.w.EN ], _locales[constants.q.SG] = [ constants.w.EN ], 
+            _locales[constants.q.SH] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SI] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SJ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SK] = [ constants.w.SK, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SL] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SN] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SO] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SR] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ST] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.SV] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.SZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TC] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TD] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TG] = [ constants.w.FR, constants.w.EN, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TH] = [ constants.w.TH, constants.w.EN ], _locales[constants.q.TJ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TN] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TO] = [ constants.w.EN ], _locales[constants.q.TR] = [ constants.w.TR, constants.w.EN ], 
+            _locales[constants.q.TT] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TV] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.TW] = [ constants.w.ZH, constants.w.EN ], _locales[constants.q.TZ] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.UA] = [ constants.w.EN, constants.w.RU, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.UG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.US] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.UY] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.VA] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.VC] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.VE] = [ constants.w.ES, constants.w.EN, constants.w.FR, constants.w.ZH ], 
+            _locales[constants.q.VG] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.VN] = [ constants.w.EN ], _locales[constants.q.VU] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.WF] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.WS] = [ constants.w.EN ], _locales[constants.q.YE] = [ constants.w.AR, constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.YT] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ZA] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ZM] = [ constants.w.EN, constants.w.FR, constants.w.ES, constants.w.ZH ], 
+            _locales[constants.q.ZW] = [ constants.w.EN ], _locales)
         };
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return config;
@@ -2978,28 +6299,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return CHECKOUT_OVERLAY_COLOR;
         });
-        __webpack_require__.d(__webpack_exports__, "t", function() {
+        __webpack_require__.d(__webpack_exports__, "u", function() {
             return FUNDING;
         });
         __webpack_require__.d(__webpack_exports__, "o", function() {
             return CARD;
         });
-        __webpack_require__.d(__webpack_exports__, "u", function() {
+        __webpack_require__.d(__webpack_exports__, "v", function() {
             return FUNDING_ELIGIBILITY_REASON;
         });
         __webpack_require__.d(__webpack_exports__, "p", function() {
             return CARD_PRIORITY;
         });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
+        __webpack_require__.d(__webpack_exports__, "t", function() {
             return FPTI;
         });
         __webpack_require__.d(__webpack_exports__, "q", function() {
             return COUNTRY;
         });
-        __webpack_require__.d(__webpack_exports__, "v", function() {
+        __webpack_require__.d(__webpack_exports__, "w", function() {
             return LANG;
         });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
+        __webpack_require__.d(__webpack_exports__, "x", function() {
             return LANG_TO_DEFAULT_COUNTRY;
         });
         __webpack_require__.d(__webpack_exports__, "a", function() {
@@ -3017,10 +6338,10 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return SOURCE;
         });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
+        __webpack_require__.d(__webpack_exports__, "y", function() {
             return LOG_LEVEL;
         });
-        __webpack_require__.d(__webpack_exports__, !1, function() {
+        __webpack_require__.d(__webpack_exports__, "z", function() {
             return PAYMENT_TYPE;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -3029,16 +6350,94 @@
         __webpack_require__.d(__webpack_exports__, "c", function() {
             return ATTRIBUTE;
         });
-        __webpack_require__.d(__webpack_exports__, "w", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return PLATFORM;
         });
         __webpack_require__.d(__webpack_exports__, "r", function() {
             return "default";
         });
     },
+    "./src/lib/device.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        (function(process) {
+            function getUserAgent() {
+                return window.navigator.mockUserAgent || window.navigator.userAgent;
+            }
+            function isDevice() {
+                return !!getUserAgent().match(/Android|webOS|iPhone|iPad|iPod|bada|Symbian|Palm|CriOS|BlackBerry|IEMobile|WindowsMobile|Opera Mini/i);
+            }
+            function isFacebookWebView() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return -1 !== ua.indexOf("FBAN") || -1 !== ua.indexOf("FBAV");
+            }
+            function isFirefoxIOS() {
+                return /FxiOS/i.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isOperaMini() {
+                return (arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent()).indexOf("Opera Mini") > -1;
+            }
+            function isAndroid() {
+                return /Android/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isIos() {
+                return /iPhone|iPod|iPad/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isGoogleSearchApp() {
+                return /\bGSA\b/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isQQBrowser() {
+                return /QQBrowser/.test(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent());
+            }
+            function isIosWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!isIos(ua) && (!!isGoogleSearchApp(ua) || /.+AppleWebKit(?!.*Safari)/.test(ua));
+            }
+            function isAndroidWebview() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !!isAndroid(ua) && (/Version\/[\d.]+/.test(ua) && !isOperaMini(ua));
+            }
+            function isIE() {
+                return !!window.document.documentMode || Boolean(window.navigator && window.navigator.userAgent && /Edge|MSIE/i.test(window.navigator.userAgent));
+            }
+            function isIECompHeader() {
+                var mHttp = window.document.querySelector('meta[http-equiv="X-UA-Compatible"]'), mContent = window.document.querySelector('meta[content="IE=edge"]');
+                return !(!mHttp || !mContent);
+            }
+            function isElectron() {
+                return !(void 0 === process || !process.versions || !process.versions.electron);
+            }
+            function isIEIntranet() {
+                if (window.document.documentMode) try {
+                    var status = window.status;
+                    window.status = "testIntranetMode";
+                    if ("testIntranetMode" === window.status) {
+                        window.status = status;
+                        return !0;
+                    }
+                    return !1;
+                } catch (err) {
+                    return !1;
+                }
+                return !1;
+            }
+            function supportsPopups() {
+                var ua = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : getUserAgent();
+                return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) || isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
+            }
+            __webpack_exports__.a = getUserAgent;
+            __webpack_exports__.b = isDevice;
+            __webpack_exports__.c = isIE;
+            __webpack_exports__.d = isIECompHeader;
+            __webpack_exports__.e = isIEIntranet;
+            __webpack_exports__.f = supportsPopups;
+        }).call(__webpack_exports__, __webpack_require__("./node_modules/process/browser.js"));
+    },
     "./src/lib/util.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         (function(global) {
+            function isPayPalDomain() {
+                return Boolean((window.location.protocol + "//" + window.location.host).match(__WEBPACK_IMPORTED_MODULE_3__config__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+            }
             function getGlobal() {
                 if ("undefined" != typeof window) return window;
                 if (void 0 !== global) return global;
@@ -3066,6 +6465,48 @@
                     return cache[key].value;
                 };
             }
+            function noop() {}
+            function once(method) {
+                var called = !1;
+                return function() {
+                    if (!called) {
+                        called = !0;
+                        return method.apply(this, arguments);
+                    }
+                };
+            }
+            function uniqueID() {
+                var chars = "0123456789abcdef";
+                return "xxxxxxxxxx".replace(/./g, function() {
+                    return chars.charAt(Math.floor(Math.random() * chars.length));
+                }) + "_" + __WEBPACK_IMPORTED_MODULE_0_hi_base32___default.a.encode(new Date().toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            }
+            function match(str, pattern) {
+                var regmatch = str.match(pattern);
+                if (regmatch) return regmatch[1];
+            }
+            function domainMatches(hostname, domain) {
+                hostname = hostname.split("://")[1];
+                var index = hostname.indexOf(domain);
+                return -1 !== index && hostname.slice(index) === domain;
+            }
+            function getDomainSetting(name, def) {
+                var hostname = window.xchild ? window.xchild.getParentDomain() : Object(__WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__.c)();
+                if (__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings) for (var _iterator2 = Object.keys(__WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ;) {
+                    var _ref2;
+                    if (_isArray2) {
+                        if (_i2 >= _iterator2.length) break;
+                        _ref2 = _iterator2[_i2++];
+                    } else {
+                        _i2 = _iterator2.next();
+                        if (_i2.done) break;
+                        _ref2 = _i2.value;
+                    }
+                    var domain = _ref2;
+                    if (domainMatches(hostname, domain)) return __WEBPACK_IMPORTED_MODULE_3__config__.a.domain_settings[domain][name];
+                }
+                return def;
+            }
             function perc(pixels, percentage) {
                 return Math.round(pixels * percentage / 100);
             }
@@ -3079,14 +6520,22 @@
                 });
                 return results;
             }
-            __webpack_exports__.b = memoize;
-            __webpack_exports__.c = perc;
-            __webpack_exports__.a = max;
-            __webpack_exports__.d = regexMap;
-            var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js");
-            __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __webpack_require__("./node_modules/zalgo-promise/src/index.js"), 
-            __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __webpack_require__("./src/config/index.js"), 
-            "function" == typeof Symbol && Symbol.iterator, memoize(function() {
+            __webpack_exports__.c = isPayPalDomain;
+            __webpack_exports__.f = memoize;
+            __webpack_exports__.g = noop;
+            __webpack_exports__.h = once;
+            __webpack_exports__.k = uniqueID;
+            __webpack_exports__.d = match;
+            __webpack_require__.d(__webpack_exports__, "b", function() {
+                return isLocalStorageEnabled;
+            });
+            __webpack_exports__.a = getDomainSetting;
+            __webpack_exports__.i = perc;
+            __webpack_exports__.e = max;
+            __webpack_exports__.j = regexMap;
+            var __WEBPACK_IMPORTED_MODULE_0_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_0_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hi_base32__), __WEBPACK_IMPORTED_MODULE_2_cross_domain_utils_src__ = (__webpack_require__("./node_modules/zalgo-promise/src/index.js"), 
+            __webpack_require__("./node_modules/cross-domain-utils/src/index.js")), __WEBPACK_IMPORTED_MODULE_3__config__ = __webpack_require__("./src/config/index.js"), isLocalStorageEnabled = ("function" == typeof Symbol && Symbol.iterator, 
+            memoize(function() {
                 try {
                     if ("undefined" == typeof window) return !1;
                     if (window.localStorage) {
@@ -3098,7 +6547,7 @@
                     }
                 } catch (err) {}
                 return !1;
-            });
+            }));
         }).call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js"));
     },
     "./src/resources/cardLogos/amex.svg": function(module, exports) {
