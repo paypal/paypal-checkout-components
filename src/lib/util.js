@@ -208,21 +208,47 @@ export function awaitKey<T: mixed>(obj : Object, key : string) : ZalgoPromise<T>
     });
 }
 
-export function stringifyError(err : mixed) : string {
+export function stringifyError(err : mixed, level : number = 1) : string {
 
-    if (!err) {
-        return `<unknown error: ${ Object.prototype.toString.call(err) }>`;
+    if (level >= 3) {
+        return 'stringifyError stack overflow';
     }
 
-    if (err instanceof Error) {
-        return err.stack;
-    }
+    try {
+        if (!err) {
+            return `<unknown error: ${ Object.prototype.toString.call(err) }>`;
+        }
 
-    if (typeof err.toString === 'function') {
-        return err.toString();
-    }
+        if (typeof err === 'string') {
+            return err;
+        }
 
-    return Object.prototype.toString.call(err);
+        if (err instanceof Error) {
+            let stack = err && err.stack;
+            let message = err && err.message;
+
+            if (stack && message) {
+                if (stack.indexOf(message) !== -1) {
+                    return stack;
+                } else {
+                    return `${ message }\n${ stack }`;
+                }
+            } else if (stack) {
+                return stack;
+            } else if (message) {
+                return message;
+            }
+        }
+
+        if (typeof err.toString === 'function') {
+            return err.toString();
+        }
+
+        return Object.prototype.toString.call(err);
+
+    } catch (newErr) { // eslint-disable-line unicorn/catch-error-name
+        return `Error while stringifying error: ${ stringifyError(newErr, level + 1) }`;
+    }
 }
 
 export function stringifyErrorMessage(err : mixed) : string {

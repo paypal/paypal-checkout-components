@@ -45,9 +45,9 @@ ZalgoPromise.onPossiblyUnhandledException(err => {
         if (window.console) {
             try {
                 if (window.console.error) {
-                    window.console.error('Error flushing:', err2.stack || err2.toString());
+                    window.console.error('Error flushing:', stringifyError(err2));
                 } else if (window.console.log) {
-                    window.console.log('Error flushing:', err2.stack || err2.toString());
+                    window.console.log('Error flushing:', stringifyError(err2));
                 }
             } catch (err3) {
                 setTimeout(() => {

@@ -7,7 +7,7 @@ import { prefix, flush as flushLogs } from 'beaver-logger/client';
 import { Checkout } from '../checkout';
 import { config } from '../config';
 import { ENV, FPTI } from '../constants';
-import { supportsPopups, once, safeJSON, extendUrl } from '../lib';
+import { supportsPopups, once, safeJSON, extendUrl, stringifyError } from '../lib';
 
 import { setupPostBridge } from './postBridge';
 import { isLegacyEligible } from './eligibility';
@@ -239,7 +239,7 @@ function renderPayPalCheckout(props : Object = {}, hijackTarget? : ?Element) : Z
 
     let errorHandler = once(err => {
 
-        error(`component_error`, { error: err.stack || err.toString() });
+        error(`component_error`, { error: stringifyError(err) });
 
         if (hijackTarget) {
             warn(`render_error_hijack_revert_target`);
@@ -296,7 +296,7 @@ function handleClick(clickHandler, event) {
     try {
         clickHandler(event);
     } catch (err) {
-        error(`click_handler_error`, { error: err.stack || err.toString() });
+        error(`click_handler_error`, { error: stringifyError(err) });
     }
 }
 

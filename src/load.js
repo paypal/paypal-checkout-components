@@ -2,6 +2,7 @@
 
 import { beacon } from './lib/beacon';
 import { extendNamespace } from './lib/namespace';
+import { stringifyError } from './lib/util';
 
 if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
 
@@ -29,8 +30,7 @@ if (window.paypal && window.paypal.version === __MINOR_VERSION__) {
     } catch (err) {
 
         beacon('bootstrap_error', {
-            message: err ? err.toString() : 'undefined',
-            stack:   err.stack || err.toString(),
+            error:   stringifyError(err),
             errtype: ({}).toString.call(err)
         });
 

@@ -3,7 +3,7 @@
 import { config } from './config';
 import { responder } from './responder';
 import { isLatest, getVersion, isCheckoutXComponent } from './component';
-import { loadScript, warn, parseQuery } from './util';
+import { loadScript, warn, parseQuery, stringifyError } from './util';
 
 let integrationResponder = responder();
 
@@ -59,7 +59,7 @@ function loadCheckoutIntegration(callback : (err : ?Error, result : ?mixed) => v
 loadCheckoutIntegration((err : ?Error, result : ?mixed) : void => {
 
     if (err) {
-        warn('Failed to load checkout.js', err.stack || err.toString());
+        warn('Failed to load checkout.js', stringifyError(err));
     }
 
     if (err || result) {
