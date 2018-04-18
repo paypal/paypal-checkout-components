@@ -73,16 +73,25 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
 
     let { size, label, fundingicons, tagline, layout, sources, height: buttonHeight } = normalizeProps(props);
 
-    let getContainerDimensions = () => getDimensions({
-        viewport: { width: container.offsetWidth, height: container.offsetHeight },
-        number:   sources.length,
-        height:   buttonHeight,
-        label,
-        size,
-        fundingicons,
-        tagline,
-        layout
-    });
+    let getContainerDimensions = () => {
+        let cont = container;
+
+        while (cont.offsetWidth === 0 && cont.parentElement && cont.parentElement !== cont) {
+            cont = cont.parentElement;
+        }
+
+        return getDimensions({
+            // $FlowFixMe
+            viewport: { width: cont.offsetWidth, height: cont.offsetHeight },
+            number:   sources.length,
+            height:   buttonHeight,
+            label,
+            size,
+            fundingicons,
+            tagline,
+            layout
+        });
+    };
 
     let { width, height } = getContainerDimensions();
 
