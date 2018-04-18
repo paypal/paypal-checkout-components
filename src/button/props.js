@@ -54,17 +54,17 @@ type NormalizedProps = {|
     installmentperiod : number
 |};
 
-export let normalizeProps = memoize((props : Object) : NormalizedProps => {
+export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleType } = {}) : NormalizedProps => {
 
     let {
         env,
-        locale  = getButtonConfig('DEFAULT', 'defaultLocale'),
+        locale,
         style   = {},
         funding,
         commit
     } = props;
 
-    locale = parseLocale(locale);
+    locale = locale ? parseLocale(locale) : (defs.locale || getButtonConfig('DEFAULT', 'defaultLocale'));
 
     funding = funding || {};
     funding.allowed = funding.allowed || [];
