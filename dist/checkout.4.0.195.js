@@ -3782,12 +3782,25 @@
         };
     },
     "./node_modules/xcomponent/node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
-        (function(global) {
-            !function(root, undefined) {
+        (function(process, global, module) {
+            var __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+                return typeof obj;
+            } : function(obj) {
+                return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+            };
+            /*
+ * [hi-base32]{@link https://github.com/emn178/hi-base32}
+ *
+ * @version 0.5.0
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2018
+ * @license MIT
+ */
+            !function() {
                 "use strict";
-                var NODE_JS = void 0 !== module;
-                NODE_JS && (root = global);
-                var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
+                var root = "object" === ("undefined" == typeof window ? "undefined" : _typeof(window)) ? window : {};
+                !root.HI_BASE32_NO_NODE_JS && "object" === (void 0 === process ? "undefined" : _typeof(process)) && process.versions && process.versions.node && (root = global);
+                var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" === _typeof(module) && module.exports, AMD = __webpack_require__("./node_modules/webpack/buildin/amd-options.js"), BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
                     A: 0,
                     B: 1,
                     C: 2,
@@ -3820,7 +3833,12 @@
                     "5": 29,
                     "6": 30,
                     "7": 31
-                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], toUtf8String = function(bytes) {
+                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], throwInvalidUtf8 = function(position, partial) {
+                    partial.length > 10 && (partial = "..." + partial.substr(-10));
+                    var err = new Error("Decoded data is not valid UTF-8. Maybe try base32.decode.asBytes()? Partial data after reading " + position + " bytes: " + partial + " <-");
+                    err.position = position;
+                    throw err;
+                }, toUtf8String = function(bytes) {
                     for (var b, c, str = "", length = bytes.length, i = 0, followingChars = 0; i < length; ) {
                         b = bytes[i++];
                         if (b <= 127) str += String.fromCharCode(b); else {
@@ -3830,19 +3848,18 @@
                             } else if (b <= 239) {
                                 c = 15 & b;
                                 followingChars = 2;
-                            } else {
-                                if (!(b <= 247)) throw "not a UTF-8 string";
+                            } else if (b <= 247) {
                                 c = 7 & b;
                                 followingChars = 3;
-                            }
+                            } else throwInvalidUtf8(i, str);
                             for (var j = 0; j < followingChars; ++j) {
                                 b = bytes[i++];
-                                if (b < 128 || b > 191) throw "not a UTF-8 string";
+                                (b < 128 || b > 191) && throwInvalidUtf8(i, str);
                                 c <<= 6;
                                 c += 63 & b;
                             }
-                            if (c >= 55296 && c <= 57343) throw "not a UTF-8 string";
-                            if (c > 1114111) throw "not a UTF-8 string";
+                            c >= 55296 && c <= 57343 && throwInvalidUtf8(i, str);
+                            c > 1114111 && throwInvalidUtf8(i, str);
                             if (c <= 65535) str += String.fromCharCode(c); else {
                                 c -= 65536;
                                 str += String.fromCharCode(55296 + (c >> 10));
@@ -3852,6 +3869,7 @@
                     }
                     return str;
                 }, decodeAsBytes = function(base32Str) {
+                    if (!/^[A-Z2-7=]+$/.test(base32Str)) throw new Error("Invalid base32 characters");
                     base32Str = base32Str.replace(/=/g, "");
                     for (var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index = 0, length = base32Str.length, i = 0, count = length >> 3 << 3; i < count; ) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -3869,18 +3887,18 @@
                         bytes[index++] = 255 & (v7 << 5 | v8);
                     }
                     var remain = length - count;
-                    if (2 == remain) {
+                    if (2 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
                         bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
-                    } else if (5 == remain) {
+                    } else if (5 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -3889,7 +3907,7 @@
                         bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
                         bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
                         bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
-                    } else if (7 == remain) {
+                    } else if (7 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -3913,19 +3931,19 @@
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
                     }
                     var remain = length - count;
-                    if (1 == remain) {
+                    if (1 === remain) {
                         v1 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
+                    } else if (2 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
+                    } else if (3 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i++);
                         v3 = str.charCodeAt(i);
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = str.charCodeAt(i++);
                         v2 = str.charCodeAt(i++);
                         v3 = str.charCodeAt(i++);
@@ -3958,7 +3976,7 @@
                         }
                         bytes += i - start;
                         start = i - 5;
-                        index == length && ++index;
+                        index === length && ++index;
                         index > length && i < 6 && (end = !0);
                         v1 = blocks[0];
                         if (i > 4) {
@@ -3967,14 +3985,14 @@
                             v4 = blocks[3];
                             v5 = blocks[4];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
-                        } else if (1 == i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 == i) {
+                        } else if (1 === i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 === i) {
                             v2 = blocks[1];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                        } else if (3 == i) {
+                        } else if (3 === i) {
                             v2 = blocks[1];
                             v3 = blocks[2];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                        } else if (4 == i) {
+                        } else {
                             v2 = blocks[1];
                             v3 = blocks[2];
                             v4 = blocks[3];
@@ -3992,19 +4010,19 @@
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
                     }
                     var remain = length - count;
-                    if (1 == remain) {
+                    if (1 === remain) {
                         v1 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-                    } else if (2 == remain) {
+                    } else if (2 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-                    } else if (3 == remain) {
+                    } else if (3 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i++];
                         v3 = bytes[i];
                         base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = bytes[i++];
                         v2 = bytes[i++];
                         v3 = bytes[i++];
@@ -4014,12 +4032,13 @@
                     return base32Str;
                 }, encode = function(input, asciiOnly) {
                     var notString = "string" != typeof input;
-                    notString && input.constructor == ArrayBuffer && (input = new Uint8Array(input));
+                    notString && input.constructor === ArrayBuffer && (input = new Uint8Array(input));
                     return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
                 }, decode = function(base32Str, asciiOnly) {
                     if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
+                    if (!/^[A-Z2-7=]+$/.test(base32Str)) throw new Error("Invalid base32 characters");
                     var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
-                    -1 == length && (length = base32Str.length);
+                    -1 === length && (length = base32Str.length);
                     for (var i = 0, count = length >> 3 << 3; i < count; ) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -4032,24 +4051,24 @@
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3)) + String.fromCharCode(255 & (v7 << 5 | v8));
                     }
                     var remain = length - count;
-                    if (2 == remain) {
+                    if (2 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2));
-                    } else if (4 == remain) {
+                    } else if (4 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4));
-                    } else if (5 == remain) {
+                    } else if (5 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1));
-                    } else if (7 == remain) {
+                    } else if (7 === remain) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
                         v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -4060,16 +4079,19 @@
                         str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3));
                     }
                     return str;
-                };
-                decode.asBytes = decodeAsBytes;
-                var exports = {
+                }, exports = {
                     encode: encode,
                     decode: decode
                 };
-                root.HI_BASE32_TEST && (exports.toUtf8String = toUtf8String);
-                !root.HI_BASE32_TEST && NODE_JS ? module.exports = exports : root && (root.base32 = exports);
-            }(this);
-        }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+                decode.asBytes = decodeAsBytes;
+                if (COMMON_JS) module.exports = exports; else {
+                    root.base32 = exports;
+                    AMD && void 0 !== (__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+                        return exports;
+                    }.call(exports, __webpack_require__, exports, module)) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__);
+                }
+            }();
+        }).call(exports, __webpack_require__("./node_modules/process/browser.js"), __webpack_require__("./node_modules/webpack/buildin/global.js"), __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
     },
     "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -4152,7 +4174,7 @@
                 throw new Error("Expected listeners to be implemented");
             };
             BaseComponent.prototype.error = function(err) {
-                throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_2__lib__.Y)(err));
+                throw new Error("Expected error to be implemented - got " + Object(__WEBPACK_IMPORTED_MODULE_2__lib__.X)(err));
             };
             BaseComponent.prototype.listen = function(win, domain) {
                 var _this = this;
@@ -4290,7 +4312,7 @@
                 _this.onPropHandlers = [];
                 _this.component.xchild = _this;
                 _this.setProps(_this.getInitialProps(), Object(component_window.d)());
-                _this.props.logLevel && Object(lib.T)(_this.props.logLevel);
+                _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
                 _this.component.log("init_child");
                 _this.setWindows();
                 _this.listenForResize();
@@ -4446,7 +4468,7 @@
                         });
                     }).then(function() {
                         return Object(lib.h)(function() {
-                            return Object(lib.L)(element, {
+                            return Object(lib.K)(element, {
                                 width: width,
                                 height: height
                             }).then(function(dimensions) {
@@ -4479,20 +4501,20 @@
                 var _this7 = this;
                 return zalgo_promise_src.a.resolve().then(function() {
                     _this7.component.log("resize", {
-                        width: Object(lib.X)(width),
-                        height: Object(lib.X)(height)
+                        width: Object(lib.W)(width),
+                        height: Object(lib.W)(height)
                     });
                     if (_this7.context !== constants.CONTEXT_TYPES.POPUP) return _this7.sendToParent(constants.POST_MESSAGE.RESIZE, {
                         width: width,
                         height: height
-                    }).then(lib.J);
+                    }).then(lib.I);
                 });
             };
             ChildComponent.prototype.resizeToElement = function(el, _ref6) {
                 var _this8 = this, width = _ref6.width, height = _ref6.height, history = [];
                 return function resize() {
                     return zalgo_promise_src.a.try(function() {
-                        for (var tracker = Object(lib._0)(el, {
+                        for (var tracker = Object(lib.Z)(el, {
                             width: width,
                             height: height
                         }), _tracker$check = tracker.check(), dimensions = _tracker$check.dimensions, _iterator3 = history, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
@@ -4519,10 +4541,10 @@
                 }();
             };
             ChildComponent.prototype.hide = function() {
-                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.J);
+                return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.I);
             };
             ChildComponent.prototype.show = function() {
-                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.J);
+                return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.I);
             };
             ChildComponent.prototype.userClose = function() {
                 return this.close(constants.CLOSE_REASONS.USER_CLOSED);
@@ -4549,13 +4571,13 @@
                 window.focus();
             };
             ChildComponent.prototype.error = function(err) {
-                var stringifiedError = Object(lib.Y)(err);
+                var stringifiedError = Object(lib.X)(err);
                 this.component.logError("error", {
                     error: stringifiedError
                 });
                 return this.sendToParent(constants.POST_MESSAGE.ERROR, {
                     error: stringifiedError
-                }).then(lib.J);
+                }).then(lib.I);
             };
             return ChildComponent;
         }(base.a);
@@ -4630,7 +4652,7 @@
                 uid: {
                     type: "string",
                     def: function() {
-                        return Object(lib._1)();
+                        return Object(lib._0)();
                     },
                     queryParam: !0
                 },
@@ -4737,8 +4759,8 @@
             if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
             validatePropDefinitions(options);
             if (options.dimensions) {
-                if (options.dimensions && !Object(lib.F)(options.dimensions.width) && !Object(lib.E)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                if (options.dimensions && !Object(lib.F)(options.dimensions.height) && !Object(lib.E)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                if (options.dimensions && !Object(lib.E)(options.dimensions.width) && !Object(lib.D)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                if (options.dimensions && !Object(lib.E)(options.dimensions.height) && !Object(lib.D)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
             }
             if (options.contexts) {
                 if (options.contexts.popup, !1) throw new Error("Popups not supported in this build -- please use the full xcomponent.js build");
@@ -4924,17 +4946,7 @@
                 return overrides;
             };
             DelegateComponent.prototype.destroy = function() {
-                this.destroyed = !0;
                 return this.clean.all();
-            };
-            DelegateComponent.prototype.checkDestroy = function() {
-                var _this3 = this;
-                return zalgo_promise_src.a.try(function() {
-                    return !!_this3.isDestroyed();
-                });
-            };
-            DelegateComponent.prototype.isDestroyed = function() {
-                return Boolean(this.destroyed);
             };
             _createClass(DelegateComponent, [ {
                 key: "driver",
@@ -4964,7 +4976,7 @@
                 _this.addProp(options, "tag");
                 _this.addProp(options, "defaultLogLevel", "info");
                 _this.addProp(options, "allowedParentDomains", constants.WILDCARD);
-                Object(lib.T)(_this.defaultLogLevel);
+                Object(lib.S)(_this.defaultLogLevel);
                 if (Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
                 _this.addProp(options, "name", _this.tag.replace(/-/g, "_"));
                 _this.builtinProps = getInternalProps();
@@ -5226,10 +5238,10 @@
             };
             Component.prototype.log = function(event) {
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                Object(lib.D)(this.name, event, payload);
+                Object(lib.C)(this.name, event, payload);
             };
             Component.prototype.logWarning = function(event, payload) {
-                Object(lib._2)(this.name, event, payload);
+                Object(lib._1)(this.name, event, payload);
             };
             Component.prototype.logError = function(event, payload) {
                 Object(lib.r)(this.name, event, payload);
@@ -5258,7 +5270,7 @@
                 desc = null;
             }
             return desc;
-        }(_class.prototype, "getPropNames", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
+        }(_class.prototype, "getPropNames", [ lib.G ], Object.getOwnPropertyDescriptor(_class.prototype, "getPropNames"), _class.prototype), 
         _class);
         component_Component.components = {};
     },
@@ -5283,7 +5295,7 @@
             needsBridge: !1,
             open: function(url) {
                 var _this = this, attributes = this.component.attributes.iframe || {};
-                this.iframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)({
+                this.iframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)({
                     url: url,
                     attributes: _extends({
                         name: this.childWindowName,
@@ -5300,7 +5312,7 @@
                         }).finally(function() {
                             return _this.destroy();
                         });
-                    }, iframeWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._3)(_this.iframe, detectClose), elementWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._3)(_this.element, detectClose);
+                    }, iframeWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._2)(_this.iframe, detectClose), elementWatcher = Object(__WEBPACK_IMPORTED_MODULE_3__lib__._2)(_this.element, detectClose);
                     _this.clean.register("destroyWindow", function() {
                         iframeWatcher.cancel();
                         elementWatcher.cancel();
@@ -5315,7 +5327,7 @@
             },
             openPrerender: function() {
                 var _this2 = this, attributes = this.component.attributes.iframe || {};
-                this.prerenderIframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.C)({
+                this.prerenderIframe = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)({
                     attributes: _extends({
                         name: "__prerender__" + this.childWindowName,
                         scrolling: this.component.scrolling ? "yes" : "no"
@@ -5335,9 +5347,9 @@
             switchPrerender: function() {
                 var _this3 = this;
                 Object(__WEBPACK_IMPORTED_MODULE_3__lib__.a)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(this.prerenderIframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
                 Object(__WEBPACK_IMPORTED_MODULE_3__lib__.a)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.VISIBLE);
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Q)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.P)(this.iframe, __WEBPACK_IMPORTED_MODULE_4__constants__.CLASS_NAMES.INVISIBLE);
                 setTimeout(function() {
                     _this3.prerenderIframe && Object(__WEBPACK_IMPORTED_MODULE_3__lib__.l)(_this3.prerenderIframe);
                 }, 1e3);
@@ -5375,19 +5387,19 @@
             },
             resize: function(width, height) {
                 if (width) {
-                    this.container.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(width);
-                    this.element.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(width);
+                    this.container.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(width);
+                    this.element.style.width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(width);
                 }
                 if (height) {
-                    this.container.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(height);
-                    this.element.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Z)(height);
+                    this.container.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(height);
+                    this.element.style.height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.Y)(height);
                 }
             },
             show: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.W)(this.element);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.V)(this.element);
             },
             hide: function() {
-                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.B)(this.element);
+                Object(__WEBPACK_IMPORTED_MODULE_3__lib__.A)(this.element);
             },
             loadUrl: function(url) {
                 this.iframe.setAttribute("src", url);
@@ -5404,13 +5416,13 @@
                 var _this5 = this, url = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "";
                 return __WEBPACK_IMPORTED_MODULE_0_zalgo_promise_src__.a.try(function() {
                     var _ref = _this5.component.dimensions || {}, _ref$width = _ref.width, width = void 0 === _ref$width ? __WEBPACK_IMPORTED_MODULE_4__constants__.DEFAULT_DIMENSIONS.WIDTH : _ref$width, _ref$height = _ref.height, height = void 0 === _ref$height ? __WEBPACK_IMPORTED_MODULE_4__constants__.DEFAULT_DIMENSIONS.HEIGHT : _ref$height;
-                    width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(width, window.outerWidth);
-                    height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.K)(height, window.outerWidth);
+                    width = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.J)(width, window.outerWidth);
+                    height = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.J)(height, window.outerWidth);
                     var _getPosition = Object(__WEBPACK_IMPORTED_MODULE_5__window__.f)({
                         width: width,
                         height: height
                     }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                    _this5.window = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.N)(url || "", _extends({
+                    _this5.window = Object(__WEBPACK_IMPORTED_MODULE_3__lib__.M)(url || "", _extends({
                         name: _this5.childWindowName,
                         width: width,
                         height: height,
@@ -5556,20 +5568,20 @@
             }
             if ("boolean" === prop.type) resultValue = Boolean(resultValue); else if ("function" === prop.type) {
                 if (!resultValue && prop.noop) {
-                    resultValue = lib.J;
+                    resultValue = lib.I;
                     !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, resultValue, props));
                 }
                 if (resultValue && "function" == typeof resultValue) {
                     resultValue = resultValue.bind(instance);
                     prop.denodeify && (resultValue = Object(lib.j)(resultValue));
-                    prop.promisify && (resultValue = Object(lib.P)(resultValue));
+                    prop.promisify && (resultValue = Object(lib.O)(resultValue));
                     var original = resultValue;
                     resultValue = function() {
                         component.log("call_prop_" + key);
                         return original.apply(this, arguments);
                     };
-                    prop.once && (resultValue = Object(lib.M)(resultValue));
-                    prop.memoize && (resultValue = Object(lib.H)(resultValue));
+                    prop.once && (resultValue = Object(lib.L)(resultValue));
+                    prop.memoize && (resultValue = Object(lib.G)(resultValue));
                 }
             } else "string" === prop.type || "object" === prop.type || "number" === prop.type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
             return resultValue;
@@ -5727,12 +5739,7 @@
         }();
         lib.y.props = lib.y.props || {};
         lib.y.windows = lib.y.windows || {};
-        var destroyGuard = Object(lib.A)(function(name, original) {
-            return this.checkDestroy().then(function(isDestroyed) {
-                if (isDestroyed) throw new Error("Can not call '" + name + "' on this.component.name - component is destroyed");
-                return original();
-            });
-        }), parent_ParentComponent = (_class = function(_BaseComponent) {
+        var parent_ParentComponent = (_class = function(_BaseComponent) {
             function ParentComponent(component, context, _ref) {
                 var props = _ref.props;
                 _classCallCheck(this, ParentComponent);
@@ -5741,7 +5748,7 @@
                 _this.validateParentDomain();
                 _this.context = context;
                 _this.setProps(props);
-                _this.props.logLevel && Object(lib.T)(_this.props.logLevel);
+                _this.props.logLevel && Object(lib.S)(_this.props.logLevel);
                 _this.childWindowName = _this.buildChildWindowName({
                     renderTo: window
                 });
@@ -5761,7 +5768,7 @@
                     _this2.component.log("render_" + _this2.context, {
                         context: _this2.context,
                         element: element,
-                        loadUrl: Object(lib.X)(loadUrl)
+                        loadUrl: Object(lib.W)(loadUrl)
                     });
                     var tasks = {};
                     tasks.onRender = _this2.props.onRender();
@@ -5841,7 +5848,7 @@
                     if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + (void 0 === element ? "undefined" : parent__typeof(element)) + " " + element);
                     _this3.checkAllowRenderTo(win);
                     _this3.component.log("render_" + _this3.context + "_to_win", {
-                        element: Object(lib.X)(element),
+                        element: Object(lib.W)(element),
                         context: _this3.context
                     });
                     _this3.childWindowName = _this3.buildChildWindowName({
@@ -5855,7 +5862,7 @@
                 var _this4 = this;
                 return zalgo_promise_src.a.try(function() {
                     _this4.html = _this4.buildUrl().then(function(url) {
-                        return Object(lib.O)(url).then(function(html) {
+                        return Object(lib.N)(url).then(function(html) {
                             return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
                         });
                     });
@@ -5866,7 +5873,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (!_this5.html) throw new Error("Html not prefetched");
                     return _this5.html.then(function(html) {
-                        return Object(lib._5)(_this5.window, html);
+                        return Object(lib._4)(_this5.window, html);
                     });
                 });
             };
@@ -5896,7 +5903,7 @@
                     ref: constants.WINDOW_REFERENCES.PARENT,
                     distance: Object(cross_domain_utils_src.e)(window)
                 };
-                var uid = Object(lib._1)();
+                var uid = Object(lib._0)();
                 lib.y.windows[uid] = window;
                 this.clean.register(function() {
                     delete lib.y.windows[uid];
@@ -5909,7 +5916,7 @@
             ParentComponent.prototype.getRenderParentRef = function() {
                 var renderToWindow = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window;
                 if (renderToWindow === window) return this.getComponentParentRef(renderToWindow);
-                var uid = Object(lib._1)();
+                var uid = Object(lib._0)();
                 lib.y.windows[uid] = renderToWindow;
                 this.clean.register(function() {
                     delete lib.y.windows[uid];
@@ -5920,7 +5927,7 @@
                 };
             };
             ParentComponent.prototype.buildChildWindowName = function() {
-                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib._1)(), tag = this.component.tag, sProps = Object(lib.S)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain && !this.component.unsafeRenderTo, props = secureProps ? {
+                var _ref6 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref6$renderTo = _ref6.renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib._0)(), tag = this.component.tag, sProps = Object(lib.R)(this.getPropsForChild()), componentParent = this.getComponentParentRef(renderTo), renderParent = this.getRenderParentRef(renderTo), secureProps = !sameDomain && !this.component.unsafeRenderTo, props = secureProps ? {
                     type: constants.INITIAL_PROPS.UID,
                     uid: uid
                 } : {
@@ -6056,7 +6063,7 @@
                 });
             };
             ParentComponent.prototype.elementReady = function(element) {
-                return Object(lib.p)(element).then(lib.J);
+                return Object(lib.p)(element).then(lib.I);
             };
             ParentComponent.prototype.delegate = function(win) {
                 var _this14 = this;
@@ -6109,7 +6116,7 @@
                     _this14.clean.register(data.destroy);
                     return data;
                 }).catch(function(err) {
-                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.Y)(err));
+                    throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.X)(err));
                 }), overrides = this.driver.delegateOverrides;
                 _loop2: for (var _iterator3 = Object.keys(overrides), _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator](); ;) {
                     var _ref11, _ret = function() {
@@ -6155,7 +6162,7 @@
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             ParentComponent.prototype.watchForUnload = function() {
-                var _this17 = this, onunload = Object(lib.M)(function() {
+                var _this17 = this, onunload = Object(lib.L)(function() {
                     _this17.component.log("navigate_away");
                     client.g();
                     _this17.destroyComponent();
@@ -6169,7 +6176,7 @@
                     if (window.location.href.split("#")[0] === url.split("#")[0]) {
                         var _query;
                         url = Object(lib.u)(url, {
-                            query: (_query = {}, _query[Object(lib._1)()] = "1", _query)
+                            query: (_query = {}, _query[Object(lib._0)()] = "1", _query)
                         });
                     }
                     return _this18.driver.loadUrl.call(_this18, url);
@@ -6228,13 +6235,13 @@
                 var _this21 = this, _ref13 = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {}, _ref13$waitForTransit = _ref13.waitForTransition, waitForTransition = void 0 === _ref13$waitForTransit || _ref13$waitForTransit;
                 return zalgo_promise_src.a.try(function() {
                     _this21.component.log("resize", {
-                        height: Object(lib.X)(height),
-                        width: Object(lib.X)(width)
+                        height: Object(lib.W)(height),
+                        width: Object(lib.W)(width)
                     });
                     _this21.driver.resize.call(_this21, width, height);
                     if (waitForTransition && (_this21.element || _this21.iframe)) {
                         var overflow = void 0;
-                        _this21.element && (overflow = Object(lib.U)(_this21.element, "hidden"));
+                        _this21.element && (overflow = Object(lib.T)(_this21.element, "hidden"));
                         return Object(lib.q)(_this21.element || _this21.iframe).then(function() {
                             overflow && overflow.reset();
                         });
@@ -6242,11 +6249,11 @@
                 });
             };
             ParentComponent.prototype.hide = function() {
-                this.container && Object(lib.B)(this.container);
+                this.container && Object(lib.A)(this.container);
                 return this.driver.hide.call(this);
             };
             ParentComponent.prototype.show = function() {
-                this.container && Object(lib.W)(this.container);
+                this.container && Object(lib.V)(this.container);
                 return this.driver.show.call(this);
             };
             ParentComponent.prototype.checkClose = function() {
@@ -6302,7 +6309,7 @@
                 }).then(function() {
                     return _this26.destroyComponent();
                 }).then(function() {
-                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.J);
+                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.I);
                 });
             };
             ParentComponent.prototype.destroyComponent = function() {
@@ -6316,7 +6323,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (_this27.props.onDisplay) return _this27.props.onDisplay();
                 }).then(function() {
-                    if (_this27.container) return Object(lib.V)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                    if (_this27.container) return Object(lib.U)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
                 });
             };
             ParentComponent.prototype.showComponent = function() {
@@ -6324,7 +6331,7 @@
                 return zalgo_promise_src.a.try(function() {
                     if (_this28.props.onDisplay) return _this28.props.onDisplay();
                 }).then(function() {
-                    if (_this28.element) return Object(lib.V)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                    if (_this28.element) return Object(lib.U)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
                 });
             };
             ParentComponent.prototype.hideContainer = function() {
@@ -6362,8 +6369,8 @@
                             return;
                         }
                         try {
-                            Object(lib._4)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                                jsxDom: lib.G.bind(doc),
+                            Object(lib._3)(win, _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                                jsxDom: lib.F.bind(doc),
                                 document: doc
                             }));
                         } catch (err) {
@@ -6395,7 +6402,7 @@
                     on: function(eventName, handler) {
                         return _this32.on(eventName, handler);
                     },
-                    jsxDom: lib.G,
+                    jsxDom: lib.F,
                     document: document,
                     dimensions: {
                         width: width,
@@ -6414,13 +6421,13 @@
                             container: el
                         });
                         _this33.container = container;
-                        Object(lib.B)(_this33.container);
+                        Object(lib.A)(_this33.container);
                         Object(lib.d)(el, _this33.container);
                         if (_this33.driver.renderedIntoContainerTemplate) {
                             _this33.element = _this33.getOutlet();
-                            Object(lib.B)(_this33.element);
+                            Object(lib.A)(_this33.element);
                             if (!_this33.element) throw new Error("Could not find element to render component into");
-                            Object(lib.B)(_this33.element);
+                            Object(lib.A)(_this33.element);
                         }
                         _this33.clean.register("destroyContainerTemplate", function() {
                             _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
@@ -6432,59 +6439,44 @@
             ParentComponent.prototype.cancelContainerEvents = function() {
                 this.clean.run("destroyContainerEvents");
             };
-            ParentComponent.prototype.checkDestroy = function() {
+            ParentComponent.prototype.destroy = function() {
                 var _this34 = this;
                 return zalgo_promise_src.a.try(function() {
-                    return !(!_this34.window || !Object(cross_domain_utils_src.y)(_this34.window)) && _this34.destroy().then(function() {
-                        return !0;
-                    });
-                });
-            };
-            ParentComponent.prototype.destroy = function() {
-                var _this35 = this;
-                return zalgo_promise_src.a.try(function() {
-                    if (!_this35.isDestroyed()) {
-                        _this35.destroyed = !0;
-                        _this35.event.trigger("destroy");
-                        if (_this35.clean.hasTasks()) {
-                            _this35.component.log("destroy");
-                            client.g();
-                            return _this35.clean.all();
-                        }
+                    if (_this34.clean.hasTasks()) {
+                        _this34.component.log("destroy");
+                        client.g();
+                        return _this34.clean.all();
                     }
                 });
             };
-            ParentComponent.prototype.isDestroyed = function() {
-                return Boolean(this.destroyed || this.window && Object(cross_domain_utils_src.y)(this.window));
-            };
             ParentComponent.prototype.tryInit = function(method) {
-                var _this36 = this;
+                var _this35 = this;
                 return zalgo_promise_src.a.try(method).catch(function(err) {
-                    _this36.onInit.reject(err);
+                    _this35.onInit.reject(err);
                 }).then(function() {
-                    return _this36.onInit;
+                    return _this35.onInit;
                 });
             };
             ParentComponent.prototype.error = function(err) {
-                var _this37 = this;
+                var _this36 = this;
                 return zalgo_promise_src.a.try(function() {
-                    _this37.handledErrors = _this37.handledErrors || [];
-                    if (-1 === _this37.handledErrors.indexOf(err)) {
-                        _this37.handledErrors.push(err);
-                        _this37.onInit.reject(err);
-                        return _this37.destroy();
+                    _this36.handledErrors = _this36.handledErrors || [];
+                    if (-1 === _this36.handledErrors.indexOf(err)) {
+                        _this36.handledErrors.push(err);
+                        _this36.onInit.reject(err);
+                        return _this36.destroy();
                     }
                 }).then(function() {
-                    if (_this37.props.onError) return _this37.props.onError(err);
+                    if (_this36.props.onError) return _this36.props.onError(err);
                 }).catch(function(errErr) {
-                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.Y)(err) + "\n\n" + Object(lib.Y)(errErr));
+                    throw new Error("An error was encountered while handling error:\n\n " + Object(lib.X)(err) + "\n\n" + Object(lib.X)(errErr));
                 }).then(function() {
-                    if (!_this37.props.onError) throw err;
+                    if (!_this36.props.onError) throw err;
                 });
             };
             ParentComponent.destroyAll = function() {
                 for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-                return zalgo_promise_src.a.all(results).then(lib.J);
+                return zalgo_promise_src.a.all(results).then(lib.I);
             };
             _createClass(ParentComponent, [ {
                 key: "driver",
@@ -6494,33 +6486,23 @@
                 }
             } ]);
             return ParentComponent;
-        }(base.a), _applyDecoratedDescriptor(_class.prototype, "render", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "render"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "getOutlet", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "renderTo", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "renderTo"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "setProps", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "setProps"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "updateProps", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "updateProps"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openBridge", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "openBridge"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "delegate", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "delegate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "loadUrl", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "loadUrl"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "runTimeout", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "runTimeout"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "resize", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "resize"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.I, destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "focus", [ destroyGuard ], Object.getOwnPropertyDescriptor(_class.prototype, "focus"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.I ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+        }(base.a), _applyDecoratedDescriptor(_class.prototype, "getOutlet", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "open", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "close", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+        _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.H ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
         _class);
         parent_ParentComponent.activeComponents = [];
     },
@@ -6531,7 +6513,7 @@
         }
         function buildChildWindowName(name, version) {
             var options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            options.id = Object(__WEBPACK_IMPORTED_MODULE_2__lib__._1)();
+            options.id = Object(__WEBPACK_IMPORTED_MODULE_2__lib__._0)();
             options.domain = Object(__WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__.f)(window);
             var encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = __WEBPACK_IMPORTED_MODULE_1_hi_base32___default.a.encode(JSON.stringify(options)).replace(/\=/g, "").toLowerCase();
             if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -6590,9 +6572,9 @@
             return getParentRenderWindow;
         });
         __webpack_exports__.f = getPosition;
-        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/xcomponent/node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
+        var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/xcomponent/node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
-        }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
+        }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             if (!window.name) throw new Error("Can not get component meta without window name");
             var _window$name$split2 = window.name.split("__"), xcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
             if (xcomp !== __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT) throw new Error("Window not rendered by xcomponent - got " + xcomp);
@@ -6605,11 +6587,11 @@
             componentMeta.name = name;
             componentMeta.version = version.replace(/_/g, ".");
             return componentMeta;
-        }), getParentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
+        }), getParentComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
             return getWindowByRef(componentMeta.componentParent);
-        }), getParentRenderWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
+        }), getParentRenderWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.G)(function() {
             var componentMeta = getComponentMeta();
             if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by xcomponent");
             return getWindowByRef(componentMeta.renderParent);
@@ -6796,7 +6778,7 @@
                                         void 0 !== $scope[key] && (scopeProps[key] = $scope[key]);
                                     }
                                 }
-                                scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.R)(scopeProps, function(value, key, fullKey) {
+                                scopeProps = Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(scopeProps, function(value, key, fullKey) {
                                     if ("function" == typeof value) return function() {
                                         var result = value.apply(this, arguments);
                                         safeApply();
@@ -6806,11 +6788,8 @@
                                 return scopeProps;
                             }, parent = component.init(getProps(), null, $element[0]);
                             parent.render($element[0]);
-                            parent.event.on("destroy", function() {
-                                return $scope.$destroy();
-                            });
                             $scope.$watch(function() {
-                                parent.isDestroyed() || parent.updateProps(getProps());
+                                parent.updateProps(getProps());
                             });
                         } ]
                     };
@@ -6835,7 +6814,7 @@
                 var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
                 xcomponent.log("initializing angular2 component");
                 var getProps = function(component) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.R)(_extends({}, component.internalProps, component.props), function(value, key, fullKey) {
+                    return Object(__WEBPACK_IMPORTED_MODULE_0__lib__.Q)(_extends({}, component.internalProps, component.props), function(value, key, fullKey) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
                             return component.zone.run(function() {
@@ -8054,18 +8033,6 @@
             };
             descriptor.value.displayName = name + ":promisified";
         }
-        function guardDecorator(handler) {
-            return function(target, name, descriptor) {
-                var method = descriptor.value;
-                descriptor.value = function() {
-                    var _this = this, _arguments = arguments;
-                    return handler.call(this, name, function() {
-                        return method.apply(_this, _arguments);
-                    });
-                };
-                descriptor.value.displayName = name + ":guarded";
-            };
-        }
         function setLogLevel(logLevel) {
             if (-1 === client.l.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
             client.d.logLevel = logLevel;
@@ -8170,13 +8137,13 @@
         __webpack_require__.d(__webpack_exports__, "p", function() {
             return elementReady;
         });
-        __webpack_require__.d(__webpack_exports__, "N", function() {
+        __webpack_require__.d(__webpack_exports__, "M", function() {
             return popup;
         });
-        __webpack_require__.d(__webpack_exports__, "_5", function() {
+        __webpack_require__.d(__webpack_exports__, "_4", function() {
             return writeToWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "_4", function() {
+        __webpack_require__.d(__webpack_exports__, "_3", function() {
             return writeElementToWindow;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -8191,7 +8158,7 @@
         __webpack_require__.d(__webpack_exports__, "f", function() {
             return awaitFrameWindow;
         });
-        __webpack_require__.d(__webpack_exports__, "C", function() {
+        __webpack_require__.d(__webpack_exports__, "B", function() {
             return iframe;
         });
         __webpack_require__.d(__webpack_exports__, "b", function() {
@@ -8224,13 +8191,13 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return changeStyle;
         });
-        __webpack_require__.d(__webpack_exports__, "U", function() {
+        __webpack_require__.d(__webpack_exports__, "T", function() {
             return setOverflow;
         });
-        __webpack_require__.d(__webpack_exports__, "_0", function() {
+        __webpack_require__.d(__webpack_exports__, "Z", function() {
             return trackDimensions;
         });
-        __webpack_require__.d(__webpack_exports__, "L", function() {
+        __webpack_require__.d(__webpack_exports__, "K", function() {
             return onDimensionsChange;
         });
         __webpack_require__.d(__webpack_exports__, "m", function() {
@@ -8251,16 +8218,16 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return makeElementInvisible;
         });
-        __webpack_require__.d(__webpack_exports__, "W", function() {
+        __webpack_require__.d(__webpack_exports__, "V", function() {
             return showElement;
         });
-        __webpack_require__.d(__webpack_exports__, "B", function() {
+        __webpack_require__.d(__webpack_exports__, "A", function() {
             return hideElement;
         });
         __webpack_require__.d(__webpack_exports__, "l", function() {
             return destroyElement;
         });
-        __webpack_require__.d(__webpack_exports__, "V", function() {
+        __webpack_require__.d(__webpack_exports__, "U", function() {
             return showAndAnimate;
         });
         __webpack_require__.d(__webpack_exports__, "c", function() {
@@ -8269,7 +8236,7 @@
         __webpack_require__.d(__webpack_exports__, "a", function() {
             return addClass;
         });
-        __webpack_require__.d(__webpack_exports__, "Q", function() {
+        __webpack_require__.d(__webpack_exports__, "P", function() {
             return removeClass;
         });
         __webpack_require__.d(__webpack_exports__, "w", function() {
@@ -8281,7 +8248,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return isElementClosed;
         });
-        __webpack_require__.d(__webpack_exports__, "_3", function() {
+        __webpack_require__.d(__webpack_exports__, "_2", function() {
             return watchElementForClose;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -8296,28 +8263,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return getScript;
         });
-        __webpack_require__.d(__webpack_exports__, "O", function() {
+        __webpack_require__.d(__webpack_exports__, "N", function() {
             return prefetchPage;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return fixScripts;
         });
-        __webpack_require__.d(__webpack_exports__, "G", function() {
+        __webpack_require__.d(__webpack_exports__, "F", function() {
             return jsxDom;
         });
-        __webpack_require__.d(__webpack_exports__, "J", function() {
+        __webpack_require__.d(__webpack_exports__, "I", function() {
             return noop;
         });
-        __webpack_require__.d(__webpack_exports__, "M", function() {
+        __webpack_require__.d(__webpack_exports__, "L", function() {
             return once;
         });
-        __webpack_require__.d(__webpack_exports__, "H", function() {
+        __webpack_require__.d(__webpack_exports__, "G", function() {
             return memoize;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return debounce;
         });
-        __webpack_require__.d(__webpack_exports__, "S", function() {
+        __webpack_require__.d(__webpack_exports__, "R", function() {
             return serializeFunctions;
         });
         __webpack_require__.d(__webpack_exports__, "k", function() {
@@ -8326,7 +8293,7 @@
         __webpack_require__.d(__webpack_exports__, "j", function() {
             return denodeify;
         });
-        __webpack_require__.d(__webpack_exports__, "P", function() {
+        __webpack_require__.d(__webpack_exports__, "O", function() {
             return promisify;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -8350,7 +8317,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return values;
         });
-        __webpack_require__.d(__webpack_exports__, "_1", function() {
+        __webpack_require__.d(__webpack_exports__, "_0", function() {
             return uniqueID;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -8374,7 +8341,7 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return each;
         });
-        __webpack_require__.d(__webpack_exports__, "R", function() {
+        __webpack_require__.d(__webpack_exports__, "Q", function() {
             return replaceObject;
         });
         __webpack_require__.d(__webpack_exports__, "g", function() {
@@ -8395,19 +8362,19 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return count;
         });
-        __webpack_require__.d(__webpack_exports__, "X", function() {
+        __webpack_require__.d(__webpack_exports__, "W", function() {
             return stringify;
         });
-        __webpack_require__.d(__webpack_exports__, "Y", function() {
+        __webpack_require__.d(__webpack_exports__, "X", function() {
             return stringifyError;
         });
         __webpack_require__.d(__webpack_exports__, "s", function() {
             return eventEmitter;
         });
-        __webpack_require__.d(__webpack_exports__, "E", function() {
+        __webpack_require__.d(__webpack_exports__, "D", function() {
             return isPerc;
         });
-        __webpack_require__.d(__webpack_exports__, "F", function() {
+        __webpack_require__.d(__webpack_exports__, "E", function() {
             return isPx;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
@@ -8416,31 +8383,28 @@
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return toPx;
         });
-        __webpack_require__.d(__webpack_exports__, "Z", function() {
+        __webpack_require__.d(__webpack_exports__, "Y", function() {
             return toCSS;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return percOf;
         });
-        __webpack_require__.d(__webpack_exports__, "K", function() {
+        __webpack_require__.d(__webpack_exports__, "J", function() {
             return normalizeDimension;
         });
-        __webpack_require__.d(__webpack_exports__, "I", function() {
+        __webpack_require__.d(__webpack_exports__, "H", function() {
             return memoized;
         });
         __webpack_require__.d(__webpack_exports__, !1, function() {
             return decorators_promise;
         });
-        __webpack_require__.d(__webpack_exports__, "A", function() {
-            return guardDecorator;
-        });
-        __webpack_require__.d(__webpack_exports__, "T", function() {
+        __webpack_require__.d(__webpack_exports__, "S", function() {
             return setLogLevel;
         });
-        __webpack_require__.d(__webpack_exports__, "D", function() {
+        __webpack_require__.d(__webpack_exports__, "C", function() {
             return info;
         });
-        __webpack_require__.d(__webpack_exports__, "_2", function() {
+        __webpack_require__.d(__webpack_exports__, "_1", function() {
             return warn;
         });
         __webpack_require__.d(__webpack_exports__, "r", function() {
@@ -9372,9 +9336,9 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.194.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.195.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.194",
+            version: "4.0.195",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -10854,8 +10818,8 @@
             return {
                 env: props.env = props.env || config.a.env,
                 payment: props.payment,
-                onAuthorize: Object(src_lib.M)(props.onAuthorize),
-                onCancel: Object(src_lib.M)(props.onCancel || src_lib.J)
+                onAuthorize: Object(src_lib.L)(props.onAuthorize),
+                onCancel: Object(src_lib.L)(props.onCancel || src_lib.I)
             };
         }
         function getUrl(props) {
@@ -10883,8 +10847,8 @@
         }
         function buildActions(query) {
             var actions = {
-                close: src_lib.J,
-                closeComponent: src_lib.J
+                close: src_lib.I,
+                closeComponent: src_lib.I
             }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
             opType === OPTYPE.PAYMENT ? actions.redirect = function() {
                 var win = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : window, redirectUrl = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : return_uri;
@@ -11521,7 +11485,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.194", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.195", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -11605,7 +11569,9 @@
             }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         }
         function isCreditDualEligible(props) {
-            var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
+            var _normalizeProps = normalizeProps(props, {
+                locale: Object(lib.j)()
+            }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
             if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
             if (layout !== constants.g.HORIZONTAL) return !1;
             if (1 === max) return !1;
@@ -11995,6 +11961,7 @@
             _secondaryColors),
             tag: "{ content: safer_tag }",
             dualTag: "{ content: dual_tag|safer_tag }",
+            defaultLocale: "en_US",
             defaultLabel: constants.f.CHECKOUT,
             defaultVerticalLabel: constants.f.PAYPAL,
             defaultColor: constants.e.GOLD,
@@ -12245,9 +12212,9 @@
             maxHeight: 55,
             allowFunding: !0,
             allowTagline: !0
-        }, _BUTTON_STYLE), normalizeProps = Object(lib.I)(function(props) {
-            var env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
-            locale = locale ? parseLocale(locale) : Object(lib.j)();
+        }, _BUTTON_STYLE), util = __webpack_require__("./src/lib/util.js"), normalizeProps = Object(util.j)(function(props) {
+            var defs = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {}, env = props.env, locale = props.locale, _props$style = props.style, style = void 0 === _props$style ? {} : _props$style, funding = props.funding, commit = props.commit;
+            locale = locale ? parseLocale(locale) : defs.locale || getButtonConfig("DEFAULT", "defaultLocale");
             funding = funding || {};
             funding.allowed = funding.allowed || [];
             funding.disallowed = funding.disallowed || [];
@@ -12313,7 +12280,7 @@
             LOGO: "paypal-button-logo",
             CARD: "paypal-button-card",
             SEPARATOR: "paypal-separator"
-        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", util = __webpack_require__("./src/lib/util.js"), DUAL_BUTTON_MIN_RATIO = 2.8, buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n", template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a, componentTemplate__extends = Object.assign || function(target) {
+        }, buttonStyle = "\n\n    ." + class_CLASS.CONTAINER + ' {\n        display: block;\n        white-space: nowrap;\n        margin: 0;\n        background: 0;\n        border: 0;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n        font-weight: 500;R\n        -webkit-font-smoothing: antialiased;\n        font-smoothing: antialiased;\n        z-index: 0;\n        font-size: 0;\n        width: 100%;\n        box-sizing: border-box;\n    }\n\n    .' + class_CLASS.BUTTON + ":not(." + class_CLASS.CARD + ") {\n        border: 1px solid transparent;\n        border-radius: 0 3px 3px 0;\n        position: relative;\n        width: 100%;\n        box-sizing: border-box;\n        border: none;\n        vertical-align: top;\n        cursor: pointer;\n        outline: none;\n        overflow: hidden;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        cursor: auto;\n    }\n\n    ." + class_CLASS.BUTTON + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.ENV + "-" + constants.t.TEST + " ." + class_CLASS.TEXT + " {\n        font-family: Arial !important;\n        background: rgba(0, 0, 0, 0.5) !important;\n        color: transparent  !important;\n        text-shadow: none  !important;\n    }\n\n    ." + class_CLASS.BUTTON + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + ":hover,\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + ":hover {\n        box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.05);\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":hover {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.CARD + ", ." + class_CLASS.CARD + " * {\n        cursor: pointer;\n    }\n\n    ." + class_CLASS.CARD + ":hover {\n        filter: brightness(1.2);\n    }\n\n    ." + class_CLASS.BUTTON + ":focus {\n        box-shadow: -1px -1px 18px 1px rgba(0, 0, 0, 0.25) inset;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + ":focus {\n        box-shadow: none;\n    }\n\n    ." + class_CLASS.LOGO + " {\n        padding: 0;\n        display: inline-block;\n        background: none;\n        border: none;\n        width: auto;\n    }\n\n    ." + class_CLASS.TEXT + " {\n        display: inline-block;\n        white-space: pre-wrap;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.LOGO + ",\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        vertical-align: top;\n        position: relative;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        text-align: left;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.CARD + " {\n        border-radius: 4px;\n    }\n\n    ." + class_CLASS.BUTTON + " ." + class_CLASS.TEXT + " {\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.TAGLINE + " {\n        max-width: 100%;\n        font-weight: normal;\n        display: block;\n        text-align: center;\n        width: auto;\n        visibility: hidden;\n    }\n\n    ." + class_CLASS.SEPARATOR + " {\n        height: 80%;\n        border-left: 1px solid rgba(0, 0, 0, 0.15);\n        margin: 0 8px;\n        display: inline-block;\n        position: relative;\n        top: 10%;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " ." + class_CLASS.SEPARATOR + " {\n        border-color: rgba(255, 255, 255, 0.45);\n    }\n", layoutStyle = "\n\n    ." + class_CLASS.CONTAINER + "." + class_CLASS.LAYOUT + "-" + constants.g.VERTICAL + " ." + class_CLASS.TAGLINE + " {\n        display: none;\n    }\n", brandingStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + "  {\n        min-width: 60%;\n        width: auto;\n        font-weight: 900;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.BRANDING + "-" + constants.d.UNBRANDED + " ." + class_CLASS.LOGO + " {\n        display: none;\n    }\n", labelStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CARD + " {\n        border-radius: 0 !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.TEXT + " {\n        display: none !important;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.LAYOUT + "-" + constants.g.HORIZONTAL + "." + class_CLASS.NUMBER + "-" + constants.j.MULTIPLE + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n        display: none;\n    }\n\n    @media only screen and (max-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: none;\n        }\n    }\n\n    @media only screen and (min-width : " + BUTTON_STYLE[constants.l.SMALL].minWidth + "px) {\n\n        ." + class_CLASS.BUTTON + "." + class_CLASS.LABEL + "-" + constants.f.CREDIT + " ." + class_CLASS.LOGO + "." + class_CLASS.LOGO + "-" + constants.h.PAYPAL + " {\n            display: inline-block;\n        }\n    }\n", DUAL_BUTTON_MIN_RATIO = 2.8, buttonColorStyle = "\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.GOLD + " {\n        background: #ffc439;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLUE + " {\n        background: #009cde;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.SILVER + " {\n        background: #eee;\n        color: #111;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.BLACK + " {\n        background: #2C2E2F;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.DARKBLUE + " {\n        background: #003087;\n        color: #fff;\n    }\n\n    ." + class_CLASS.BUTTON + "." + class_CLASS.COLOR + "-" + constants.e.TRANSPARENT + " {\n        background: transparent;\n        color: #111;\n    }\n", template_content = __webpack_require__("./src/button/template/content.json"), content_default = __webpack_require__.n(template_content), componentContent = "string" == typeof content_default.a ? JSON.parse(content_default.a) : content_default.a, componentTemplate__extends = Object.assign || function(target) {
             for (var i = 1; i < arguments.length; i++) {
                 var source = arguments[i];
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -13017,7 +12984,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.194", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.195", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(moduleName, exportBuilder) {
@@ -13966,7 +13933,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.194";
+                payload.version = "4.0.195";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14325,7 +14292,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.194"
+                    ver: "4.0.195"
                 };
             });
             Object(client.a)(function() {
@@ -14601,7 +14568,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.194";
+            return "4.0.195";
         }
         function getRememberedFunding(handler) {
             return Object(session.f)(function(storage) {
@@ -14803,7 +14770,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.194"
+                        version: "4.0.195"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -15511,18 +15478,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js");
-        if (window.paypal && "4.0.194" === window.paypal.version) {
+        if (window.paypal && "4.0.195" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.194"
+                version: "4.0.195"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.194) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.195) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.194" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.195" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.194"
+                version: "4.0.195"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.194");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.195");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15637,4 +15604,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.194.js.map
+//# sourceMappingURL=checkout.4.0.195.js.map
