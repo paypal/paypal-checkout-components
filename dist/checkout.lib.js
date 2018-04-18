@@ -936,226 +936,6 @@
                 n.detect = t, n;
             });
         },
-        "./node_modules/braintree-paypal-client-config/dist/braintree-paypal-client-config.js": function(module, exports, __webpack_require__) {
-            (function(module) {
-                var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__, _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-                    return typeof obj;
-                } : function(obj) {
-                    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-                };
-                !function(root, factory) {
-                    "object" == _typeof(exports) && "object" == _typeof(module) ? module.exports = factory() : (__WEBPACK_AMD_DEFINE_ARRAY__ = [], 
-                    __WEBPACK_AMD_DEFINE_FACTORY__ = factory, void 0 !== (__WEBPACK_AMD_DEFINE_RESULT__ = "function" == typeof __WEBPACK_AMD_DEFINE_FACTORY__ ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__) && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-                }("undefined" != typeof self && self, function() {
-                    return function(modules) {
-                        function __webpack_require__(moduleId) {
-                            if (installedModules[moduleId]) return installedModules[moduleId].exports;
-                            var module = installedModules[moduleId] = {
-                                i: moduleId,
-                                l: !1,
-                                exports: {}
-                            };
-                            modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-                            module.l = !0;
-                            return module.exports;
-                        }
-                        var installedModules = {};
-                        __webpack_require__.m = modules;
-                        __webpack_require__.c = installedModules;
-                        __webpack_require__.d = function(exports, name, getter) {
-                            __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
-                                configurable: !1,
-                                enumerable: !0,
-                                get: getter
-                            });
-                        };
-                        __webpack_require__.n = function(module) {
-                            var getter = module && module.__esModule ? function() {
-                                return module.default;
-                            } : function() {
-                                return module;
-                            };
-                            __webpack_require__.d(getter, "a", getter);
-                            return getter;
-                        };
-                        __webpack_require__.o = function(object, property) {
-                            return Object.prototype.hasOwnProperty.call(object, property);
-                        };
-                        __webpack_require__.p = "";
-                        return __webpack_require__(__webpack_require__.s = "./src/index.js");
-                    }({
-                        "./src/config.js": function(module, __webpack_exports__, __webpack_require__) {
-                            "use strict";
-                            function get(key, def) {
-                                return __WEBPACK_IMPORTED_MODULE_0__store__.a.has(key) ? __WEBPACK_IMPORTED_MODULE_0__store__.a.get(key) : def;
-                            }
-                            function set(key, value) {
-                                __WEBPACK_IMPORTED_MODULE_0__store__.a.set(key, value);
-                                if (listeners[key]) for (var _iterator = listeners[key], _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                                    var _ref;
-                                    if (_isArray) {
-                                        if (_i >= _iterator.length) break;
-                                        _ref = _iterator[_i++];
-                                    } else {
-                                        _i = _iterator.next();
-                                        if (_i.done) break;
-                                        _ref = _i.value;
-                                    }
-                                    var listener = _ref;
-                                    listener(value);
-                                }
-                                return value;
-                            }
-                            function get_or_set(key, value) {
-                                return __WEBPACK_IMPORTED_MODULE_0__store__.a.has(key) ? get(key) : set(key, value);
-                            }
-                            function on(key, handler) {
-                                listeners[key] = listeners[key] || [];
-                                listeners[key].push(handler);
-                                return {
-                                    cancel: function() {
-                                        listeners[key].splice(listeners[key].indexOf(handler), 1);
-                                    }
-                                };
-                            }
-                            __webpack_exports__.a = get;
-                            __webpack_exports__.d = set;
-                            __webpack_exports__.b = get_or_set;
-                            __webpack_exports__.c = on;
-                            var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__("./src/store.js"), listeners = {};
-                        },
-                        "./src/constants.js": function(module, __webpack_exports__, __webpack_require__) {
-                            "use strict";
-                            __webpack_require__.d(__webpack_exports__, "a", function() {
-                                return CONFIG_KEY;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "d", function() {
-                                return STORE;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "b", function() {
-                                return KEY;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "c", function() {
-                                return PAYPAL_FUNDING;
-                            });
-                            var CONFIG_KEY = "__braintree_paypal_config__", STORE = {
-                                SESSIONSTORAGE: "sessionstorage",
-                                GLOBAL: "global"
-                            }, KEY = {
-                                LOGGER_SESSION_ID: "logger_session_id",
-                                PAYPAL_FUNDING_DISALLOW: "paypal_funding_disallow"
-                            }, PAYPAL_FUNDING = {
-                                PAYPAL: "paypal",
-                                VENMO: "venmo",
-                                CREDIT: "credit",
-                                CARD: "card",
-                                IDEAL: "ideal",
-                                ELV: "elv"
-                            };
-                        },
-                        "./src/index.js": function(module, __webpack_exports__, __webpack_require__) {
-                            "use strict";
-                            Object.defineProperty(__webpack_exports__, "__esModule", {
-                                value: !0
-                            });
-                            var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__("./src/config.js");
-                            __webpack_require__.d(__webpack_exports__, "get", function() {
-                                return __WEBPACK_IMPORTED_MODULE_0__config__.a;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "set", function() {
-                                return __WEBPACK_IMPORTED_MODULE_0__config__.d;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "get_or_set", function() {
-                                return __WEBPACK_IMPORTED_MODULE_0__config__.b;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "on", function() {
-                                return __WEBPACK_IMPORTED_MODULE_0__config__.c;
-                            });
-                            var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__("./src/constants.js");
-                            __webpack_require__.d(__webpack_exports__, "CONFIG_KEY", function() {
-                                return __WEBPACK_IMPORTED_MODULE_1__constants__.a;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "STORE", function() {
-                                return __WEBPACK_IMPORTED_MODULE_1__constants__.d;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "KEY", function() {
-                                return __WEBPACK_IMPORTED_MODULE_1__constants__.b;
-                            });
-                            __webpack_require__.d(__webpack_exports__, "PAYPAL_FUNDING", function() {
-                                return __WEBPACK_IMPORTED_MODULE_1__constants__.c;
-                            });
-                        },
-                        "./src/store.js": function(module, __webpack_exports__, __webpack_require__) {
-                            "use strict";
-                            function _defineProperty(obj, key, value) {
-                                key in obj ? Object.defineProperty(obj, key, {
-                                    value: value,
-                                    enumerable: !0,
-                                    configurable: !0,
-                                    writable: !0
-                                }) : obj[key] = value;
-                                return obj;
-                            }
-                            __webpack_require__.d(__webpack_exports__, "a", function() {
-                                return store;
-                            });
-                            var _stores, __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__("./src/constants.js"), __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./src/util.js"), stores = (_stores = {}, 
-                            _defineProperty(_stores, __WEBPACK_IMPORTED_MODULE_0__constants__.d.GLOBAL, {
-                                get: function(key) {
-                                    return (window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {})[key];
-                                },
-                                set: function(key, value) {
-                                    var storage = window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {};
-                                    storage[key] = value;
-                                    window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] = storage;
-                                    return value;
-                                },
-                                has: function(key) {
-                                    return (window[__WEBPACK_IMPORTED_MODULE_0__constants__.a] || {}).hasOwnProperty(key);
-                                }
-                            }), _defineProperty(_stores, __WEBPACK_IMPORTED_MODULE_0__constants__.d.SESSIONSTORAGE, {
-                                get: function(key) {
-                                    var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
-                                    storage = storage ? JSON.parse(storage) : {};
-                                    return storage[key];
-                                },
-                                set: function(key, value) {
-                                    var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
-                                    storage = storage ? JSON.parse(storage) : {};
-                                    storage[key] = value;
-                                    window.sessionStorage.setItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a, JSON.stringify(storage));
-                                    return value;
-                                },
-                                has: function(key) {
-                                    var storage = window.sessionStorage.getItem(__WEBPACK_IMPORTED_MODULE_0__constants__.a);
-                                    storage = storage ? JSON.parse(storage) : {};
-                                    return storage.hasOwnProperty(key);
-                                }
-                            }), _stores), store = Object(__WEBPACK_IMPORTED_MODULE_1__util__.a)() ? stores[__WEBPACK_IMPORTED_MODULE_0__constants__.d.SESSIONSTORAGE] : stores[__WEBPACK_IMPORTED_MODULE_0__constants__.d.GLOBAL];
-                        },
-                        "./src/util.js": function(module, __webpack_exports__, __webpack_require__) {
-                            "use strict";
-                            function isSessionStorageEnabled() {
-                                try {
-                                    if (window.sessionStorage) {
-                                        var value = Math.random().toString();
-                                        window.sessionStorage.setItem("__test__sessionStorage__", value);
-                                        var result = window.sessionStorage.getItem("__test__sessionStorage__");
-                                        window.sessionStorage.removeItem("__test__sessionStorage__");
-                                        if (value === result) return !0;
-                                    }
-                                } catch (err) {}
-                                return !1;
-                            }
-                            __webpack_exports__.a = isSessionStorageEnabled;
-                        }
-                    });
-                });
-            }).call(exports, __webpack_require__("./node_modules/webpack/buildin/module.js")(module));
-        },
-        "./node_modules/braintree-paypal-client-config/index.js": function(module, exports, __webpack_require__) {
-            module.exports = __webpack_require__("./node_modules/braintree-paypal-client-config/dist/braintree-paypal-client-config.js");
-        },
         "./node_modules/cross-domain-safe-weakmap/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function hasNativeWeakMap() {
@@ -4002,6 +3782,296 @@
                 return module;
             };
         },
+        "./node_modules/xcomponent/node_modules/hi-base32/src/base32.js": function(module, exports, __webpack_require__) {
+            (function(global) {
+                !function(root, undefined) {
+                    "use strict";
+                    var NODE_JS = void 0 !== module;
+                    NODE_JS && (root = global);
+                    var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split(""), BASE32_DECODE_CHAR = {
+                        A: 0,
+                        B: 1,
+                        C: 2,
+                        D: 3,
+                        E: 4,
+                        F: 5,
+                        G: 6,
+                        H: 7,
+                        I: 8,
+                        J: 9,
+                        K: 10,
+                        L: 11,
+                        M: 12,
+                        N: 13,
+                        O: 14,
+                        P: 15,
+                        Q: 16,
+                        R: 17,
+                        S: 18,
+                        T: 19,
+                        U: 20,
+                        V: 21,
+                        W: 22,
+                        X: 23,
+                        Y: 24,
+                        Z: 25,
+                        "2": 26,
+                        "3": 27,
+                        "4": 28,
+                        "5": 29,
+                        "6": 30,
+                        "7": 31
+                    }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], toUtf8String = function(bytes) {
+                        for (var b, c, str = "", length = bytes.length, i = 0, followingChars = 0; i < length; ) {
+                            b = bytes[i++];
+                            if (b <= 127) str += String.fromCharCode(b); else {
+                                if (b > 191 && b <= 223) {
+                                    c = 31 & b;
+                                    followingChars = 1;
+                                } else if (b <= 239) {
+                                    c = 15 & b;
+                                    followingChars = 2;
+                                } else {
+                                    if (!(b <= 247)) throw "not a UTF-8 string";
+                                    c = 7 & b;
+                                    followingChars = 3;
+                                }
+                                for (var j = 0; j < followingChars; ++j) {
+                                    b = bytes[i++];
+                                    if (b < 128 || b > 191) throw "not a UTF-8 string";
+                                    c <<= 6;
+                                    c += 63 & b;
+                                }
+                                if (c >= 55296 && c <= 57343) throw "not a UTF-8 string";
+                                if (c > 1114111) throw "not a UTF-8 string";
+                                if (c <= 65535) str += String.fromCharCode(c); else {
+                                    c -= 65536;
+                                    str += String.fromCharCode(55296 + (c >> 10));
+                                    str += String.fromCharCode(56320 + (1023 & c));
+                                }
+                            }
+                        }
+                        return str;
+                    }, decodeAsBytes = function(base32Str) {
+                        base32Str = base32Str.replace(/=/g, "");
+                        for (var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index = 0, length = base32Str.length, i = 0, count = length >> 3 << 3; i < count; ) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                            bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                            bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                            bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
+                            bytes[index++] = 255 & (v7 << 5 | v8);
+                        }
+                        var remain = length - count;
+                        if (2 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                        } else if (4 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                            bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                        } else if (5 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                            bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                            bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                        } else if (7 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            bytes[index++] = 255 & (v1 << 3 | v2 >>> 2);
+                            bytes[index++] = 255 & (v2 << 6 | v3 << 1 | v4 >>> 4);
+                            bytes[index++] = 255 & (v4 << 4 | v5 >>> 1);
+                            bytes[index++] = 255 & (v5 << 7 | v6 << 2 | v7 >>> 3);
+                        }
+                        return bytes;
+                    }, encodeAscii = function(str) {
+                        for (var v1, v2, v3, v4, v5, base32Str = "", length = str.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
+                            v1 = str.charCodeAt(i++);
+                            v2 = str.charCodeAt(i++);
+                            v3 = str.charCodeAt(i++);
+                            v4 = str.charCodeAt(i++);
+                            v5 = str.charCodeAt(i++);
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                        }
+                        var remain = length - count;
+                        if (1 == remain) {
+                            v1 = str.charCodeAt(i);
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+                        } else if (2 == remain) {
+                            v1 = str.charCodeAt(i++);
+                            v2 = str.charCodeAt(i);
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                        } else if (3 == remain) {
+                            v1 = str.charCodeAt(i++);
+                            v2 = str.charCodeAt(i++);
+                            v3 = str.charCodeAt(i);
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                        } else if (4 == remain) {
+                            v1 = str.charCodeAt(i++);
+                            v2 = str.charCodeAt(i++);
+                            v3 = str.charCodeAt(i++);
+                            v4 = str.charCodeAt(i);
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                        }
+                        return base32Str;
+                    }, encodeUtf8 = function(str) {
+                        var v1, v2, v3, v4, v5, code, i, end = !1, base32Str = "", index = 0, start = 0, bytes = 0, length = str.length;
+                        do {
+                            blocks[0] = blocks[5];
+                            blocks[1] = blocks[6];
+                            blocks[2] = blocks[7];
+                            for (i = start; index < length && i < 5; ++index) {
+                                code = str.charCodeAt(index);
+                                if (code < 128) blocks[i++] = code; else if (code < 2048) {
+                                    blocks[i++] = 192 | code >> 6;
+                                    blocks[i++] = 128 | 63 & code;
+                                } else if (code < 55296 || code >= 57344) {
+                                    blocks[i++] = 224 | code >> 12;
+                                    blocks[i++] = 128 | code >> 6 & 63;
+                                    blocks[i++] = 128 | 63 & code;
+                                } else {
+                                    code = 65536 + ((1023 & code) << 10 | 1023 & str.charCodeAt(++index));
+                                    blocks[i++] = 240 | code >> 18;
+                                    blocks[i++] = 128 | code >> 12 & 63;
+                                    blocks[i++] = 128 | code >> 6 & 63;
+                                    blocks[i++] = 128 | 63 & code;
+                                }
+                            }
+                            bytes += i - start;
+                            start = i - 5;
+                            index == length && ++index;
+                            index > length && i < 6 && (end = !0);
+                            v1 = blocks[0];
+                            if (i > 4) {
+                                v2 = blocks[1];
+                                v3 = blocks[2];
+                                v4 = blocks[3];
+                                v5 = blocks[4];
+                                base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                            } else if (1 == i) base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======"; else if (2 == i) {
+                                v2 = blocks[1];
+                                base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                            } else if (3 == i) {
+                                v2 = blocks[1];
+                                v3 = blocks[2];
+                                base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                            } else if (4 == i) {
+                                v2 = blocks[1];
+                                v3 = blocks[2];
+                                v4 = blocks[3];
+                                base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                            }
+                        } while (!end);
+                        return base32Str;
+                    }, encodeBytes = function(bytes) {
+                        for (var v1, v2, v3, v4, v5, base32Str = "", length = bytes.length, i = 0, count = 5 * parseInt(length / 5); i < count; ) {
+                            v1 = bytes[i++];
+                            v2 = bytes[i++];
+                            v3 = bytes[i++];
+                            v4 = bytes[i++];
+                            v5 = bytes[i++];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[31 & (v4 << 3 | v5 >>> 5)] + BASE32_ENCODE_CHAR[31 & v5];
+                        }
+                        var remain = length - count;
+                        if (1 == remain) {
+                            v1 = bytes[i];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+                        } else if (2 == remain) {
+                            v1 = bytes[i++];
+                            v2 = bytes[i];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+                        } else if (3 == remain) {
+                            v1 = bytes[i++];
+                            v2 = bytes[i++];
+                            v3 = bytes[i];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+                        } else if (4 == remain) {
+                            v1 = bytes[i++];
+                            v2 = bytes[i++];
+                            v3 = bytes[i++];
+                            v4 = bytes[i];
+                            base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[31 & (v3 << 1 | v4 >>> 7)] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+                        }
+                        return base32Str;
+                    }, encode = function(input, asciiOnly) {
+                        var notString = "string" != typeof input;
+                        notString && input.constructor == ArrayBuffer && (input = new Uint8Array(input));
+                        return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
+                    }, decode = function(base32Str, asciiOnly) {
+                        if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
+                        var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
+                        -1 == length && (length = base32Str.length);
+                        for (var i = 0, count = length >> 3 << 3; i < count; ) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3)) + String.fromCharCode(255 & (v7 << 5 | v8));
+                        }
+                        var remain = length - count;
+                        if (2 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2));
+                        } else if (4 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4));
+                        } else if (5 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1));
+                        } else if (7 == remain) {
+                            v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+                            str += String.fromCharCode(255 & (v1 << 3 | v2 >>> 2)) + String.fromCharCode(255 & (v2 << 6 | v3 << 1 | v4 >>> 4)) + String.fromCharCode(255 & (v4 << 4 | v5 >>> 1)) + String.fromCharCode(255 & (v5 << 7 | v6 << 2 | v7 >>> 3));
+                        }
+                        return str;
+                    };
+                    decode.asBytes = decodeAsBytes;
+                    var exports = {
+                        encode: encode,
+                        decode: decode
+                    };
+                    root.HI_BASE32_TEST && (exports.toUtf8String = toUtf8String);
+                    !root.HI_BASE32_TEST && NODE_JS ? module.exports = exports : root && (root.base32 = exports);
+                }(this);
+            }).call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js"));
+        },
         "./node_modules/xcomponent/src/component/base.js": function(module, __webpack_exports__, __webpack_require__) {
             "use strict";
             function _classCallCheck(instance, Constructor) {
@@ -6521,7 +6591,7 @@
                 return getParentRenderWindow;
             });
             __webpack_exports__.f = getPosition;
-            var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
+            var __WEBPACK_IMPORTED_MODULE_0_cross_domain_utils_src__ = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32__ = __webpack_require__("./node_modules/xcomponent/node_modules/hi-base32/src/base32.js"), __WEBPACK_IMPORTED_MODULE_1_hi_base32___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_hi_base32__), __WEBPACK_IMPORTED_MODULE_2__lib__ = __webpack_require__("./node_modules/xcomponent/src/lib/index.js"), __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__("./node_modules/xcomponent/src/constants.js"), isXComponentWindow = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
                 return !!window.name && window.name.split("__")[0] === __WEBPACK_IMPORTED_MODULE_3__constants__.XCOMPONENT;
             }), getComponentMeta = Object(__WEBPACK_IMPORTED_MODULE_2__lib__.H)(function() {
                 if (!window.name) throw new Error("Can not get component meta without window name");
@@ -9305,7 +9375,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.192",
+                version: "4.0.193",
                 cors: !0,
                 env: constants.t.PRODUCTION,
                 state: "checkoutjs",
@@ -10421,42 +10491,23 @@
             function isObject(item) {
                 return "object" === (void 0 === item ? "undefined" : _typeof(item)) && null !== item;
             }
-            function getGlobal(key, def) {
-                window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
-                if (window[GLOBAL_KEY].hasOwnProperty(key)) return window[GLOBAL_KEY][key];
-                def = def || {};
-                window[GLOBAL_KEY][key] = def;
-                return def;
-            }
             function validateClientOptions(_ref) {
                 var env = _ref.env, auth = _ref.auth;
                 if (env && -1 === values(ENV).indexOf(env)) throw new Error("Invalid env: " + env);
                 if (auth && !isObject(auth)) throw new Error("Expected auth to be passed");
                 if (auth && env && !auth[env]) throw new Error("Expected auth to be passed for env: " + env);
             }
-            function clientConfig_get(key, def) {
-                var config = getGlobal("config");
-                return config.hasOwnProperty(key) ? config[key] : def;
-            }
-            function set(key, value) {
-                getGlobal("config")[key] = value;
-                return value;
-            }
-            function getOrSet(key, value) {
-                var config = getGlobal("config");
-                if (config.hasOwnProperty(key)) return config[key];
-                config[key] = value;
-                return value;
-            }
             function interface_client() {
                 var clientOptions = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 validateClientOptions(clientOptions);
-                for (var xports = {}, i = 0; i < exportBuilders.length; i++) extend(xports, exportBuilders[i]({
-                    clientOptions: clientOptions,
-                    clientConfig: clientConfig,
-                    serverConfig: serverConfig,
-                    queryOptions: queryOptions
-                }));
+                var xports = {};
+                Object.keys(exportBuilders).forEach(function(moduleName) {
+                    extend(xports, exportBuilders[moduleName]({
+                        clientOptions: clientOptions,
+                        queryOptions: queryOptions,
+                        serverConfig: serverConfig && serverConfig[moduleName]
+                    }));
+                });
                 return xports;
             }
             function validateExtraPaymentOptions(options) {
@@ -10521,7 +10572,7 @@
                 return Object(cross_domain_utils_src.q)() ? "https://www.paypal.com" : window.location.protocol + "//" + window.location.host;
             }
             function createTracking(env, client, merchantID, trackingData) {
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var trackingID = Object(lib.X)();
                 return createAccessToken(env, client).then(function(accessToken) {
@@ -10530,7 +10581,7 @@
                     };
                     return Object(lib.R)({
                         method: "put",
-                        url: src_config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
+                        url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                         headers: headers,
                         json: {
                             tracking_id: trackingID,
@@ -10543,7 +10594,7 @@
             }
             function createPayment(env, client, paymentDetails) {
                 Object(beaver_logger_client.j)("rest_api_create_checkout_token");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var payment = paymentDetails.payment, experience = paymentDetails.experience, meta = paymentDetails.meta, tracking = paymentDetails.tracking;
                 if (!payment) throw new Error("Expected payment details to be passed");
@@ -10579,7 +10630,7 @@
                             meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
                             return Object(lib.R)({
                                 method: "post",
-                                url: src_config.a.paymentApiUrls[env],
+                                url: config.a.paymentApiUrls[env],
                                 headers: headers,
                                 json: removeExtraPaymentOptions(payment)
                             });
@@ -10596,7 +10647,7 @@
             }
             function getPayment(env, client, paymentID) {
                 Object(beaver_logger_client.j)("rest_api_get_order");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (!paymentID) throw new Error("Expected payment id");
                 return proxyRest.getPayment && !proxyRest.getPayment.source.closed ? proxyRest.getPayment(env, client, paymentID) : createAccessToken(env, client).then(function(accessToken) {
@@ -10605,7 +10656,7 @@
                     };
                     return Object(lib.R)({
                         method: "get",
-                        url: src_config.a.paymentApiUrls[env] + "/" + paymentID,
+                        url: config.a.paymentApiUrls[env] + "/" + paymentID,
                         headers: headers
                     });
                 }).then(function(payment) {
@@ -10614,7 +10665,7 @@
             }
             function executePayment(env, client, paymentID, payerID) {
                 Object(beaver_logger_client.j)("rest_api_get_order");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (!paymentID) throw new Error("Expected payment id");
                 return proxyRest.executePayment && !proxyRest.executePayment.source.closed ? proxyRest.executePayment(env, client, paymentID) : createAccessToken(env, client).then(function(accessToken) {
@@ -10623,7 +10674,7 @@
                     };
                     return Object(lib.R)({
                         method: "post",
-                        url: src_config.a.paymentApiUrls[env] + "/" + paymentID + "/execute",
+                        url: config.a.paymentApiUrls[env] + "/" + paymentID + "/execute",
                         headers: headers,
                         json: {
                             payer_id: payerID
@@ -10635,7 +10686,7 @@
             }
             function createOrder(env, client, paymentDetails) {
                 Object(beaver_logger_client.j)("rest_api_create_order_token");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 var order = paymentDetails.order, meta = paymentDetails.meta;
                 if (!order) throw new Error("Expected order details to be passed");
@@ -10660,7 +10711,7 @@
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
                     return Object(lib.R)({
                         method: "post",
-                        url: src_config.a.orderApiUrls[env],
+                        url: config.a.orderApiUrls[env],
                         headers: headers,
                         json: order
                     });
@@ -10672,7 +10723,7 @@
             }
             function getOrder(env, client, orderID) {
                 Object(beaver_logger_client.j)("rest_api_get_order");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (!orderID) throw new Error("Expected order id");
                 return proxyRest.getOrder && !proxyRest.getOrder.source.closed ? proxyRest.getOrder(env, client, orderID) : createAccessToken(env, client).then(function(accessToken) {
@@ -10681,14 +10732,14 @@
                     };
                     return Object(lib.R)({
                         method: "get",
-                        url: src_config.a.orderApiUrls[env] + "/" + orderID,
+                        url: config.a.orderApiUrls[env] + "/" + orderID,
                         headers: headers
                     });
                 });
             }
             function captureOrder(env, client, orderID) {
                 Object(beaver_logger_client.j)("rest_api_get_order");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (!orderID) throw new Error("Expected order id");
                 return proxyRest.captureOrder && !proxyRest.captureOrder.source.closed ? proxyRest.captureOrder(env, client, orderID) : createAccessToken(env, client).then(function(accessToken) {
@@ -10697,7 +10748,7 @@
                     };
                     return Object(lib.R)({
                         method: "post",
-                        url: src_config.a.orderApiUrls[env] + "/" + orderID + "/capture",
+                        url: config.a.orderApiUrls[env] + "/" + orderID + "/capture",
                         headers: headers,
                         json: {
                             is_final_capture: !0
@@ -10707,7 +10758,7 @@
             }
             function createBillingAgreement(env, client, billingDetails, experienceDetails) {
                 Object(beaver_logger_client.j)("rest_api_create_billing_token");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createBillingAgreement && !proxyRest.createBillingAgreement.source.closed) return proxyRest.createBillingAgreement(env, client, billingDetails, experienceDetails);
                 billingDetails = _extends({}, billingDetails);
@@ -10724,7 +10775,7 @@
                         experienceID && (billingDetails.experience_profile_id = experienceID);
                         return Object(lib.R)({
                             method: "post",
-                            url: src_config.a.billingApiUrls[env],
+                            url: config.a.billingApiUrls[env],
                             headers: {
                                 Authorization: "Bearer " + accessToken
                             },
@@ -10798,11 +10849,11 @@
             function validateCheckoutProps(props) {
                 if (!props.payment) throw new Error("Expected props.payment to be passed");
                 if (!props.onAuthorize) throw new Error("Expected props.onAuthorize to be passed");
-                if (props.env && !src_config.a.checkoutUrls[props.env]) throw new Error("Invalid props.env: " + props.env);
+                if (props.env && !config.a.checkoutUrls[props.env]) throw new Error("Invalid props.env: " + props.env);
             }
             function normalizeCheckoutProps(props) {
                 return {
-                    env: props.env = props.env || src_config.a.env,
+                    env: props.env = props.env || config.a.env,
                     payment: props.payment,
                     onAuthorize: Object(src_lib.M)(props.onAuthorize),
                     onCancel: Object(src_lib.M)(props.onCancel || src_lib.J)
@@ -11081,7 +11132,7 @@
                 if (!locale) throw new Error("Expected props.locale to be set");
                 if (!locale.match(/^[a-z]{2}[_][A-Z][A-Z0-9]$/)) throw new Error("Expected props.locale to be valid, got " + locale);
                 var _locale$split = locale.split("_"), lang = _locale$split[0], country = _locale$split[1];
-                if (!src_config.a.locales[country] || -1 === src_config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
+                if (!config.a.locales[country] || -1 === config.a.locales[country].indexOf(lang)) throw new Error("Expected props.locale to be valid");
             }
             function validateRegionSpecificButton() {
                 var style = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, locale = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "en_US", country = locale.split("_")[1], isInstallmentAllowedCountry = -1 !== constants.a.indexOf(country);
@@ -11471,7 +11522,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.192", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.193", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -11555,7 +11606,7 @@
                 }, jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + width + "px;\n                        height: " + height + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             }
             function isCreditDualEligible(props) {
-                var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? src_config.a.locale : _normalizeProps$local, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
+                var _normalizeProps = normalizeProps(props), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, _normalizeProps$local = _normalizeProps.locale, locale = void 0 === _normalizeProps$local ? config.a.locale : _normalizeProps$local, max = _normalizeProps.max, sources = _normalizeProps.sources, allowed = funding.allowed, country = locale.country;
                 if (allowed && -1 !== allowed.indexOf(constants.v.CREDIT)) return !1;
                 if (layout !== constants.g.HORIZONTAL) return !1;
                 if (1 === max) return !1;
@@ -11573,17 +11624,17 @@
                 })) return !1;
                 if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                 var domain = Object(cross_domain_utils_src.f)().replace(/^https?:\/\//, "").replace(/^www\./, "");
-                return -1 !== src_config.a.creditTestDomains.indexOf(domain);
+                return -1 !== config.a.creditTestDomains.indexOf(domain);
             }
             function createPptmScript() {
                 var _track;
                 if (window.location.hostname) if (Boolean(Object(lib.n)(constants.C))) Object(beaver_logger_client.j)("pptm_tried_loading_twice"); else {
                     Object(beaver_logger_client.o)((_track = {}, _track[constants.u.KEY.STATE] = constants.u.STATE.PPTM, 
                     _track[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOAD, _track));
-                    var fullUrl = Object(lib.i)(src_config.a.pptmUrl, {
+                    var fullUrl = Object(lib.i)(config.a.pptmUrl, {
                         t: "xo",
                         id: window.location.hostname,
-                        mrid: src_config.a.merchantID
+                        mrid: config.a.merchantID
                     });
                     Object(lib.H)(fullUrl, 0, {
                         async: !0,
@@ -11600,7 +11651,7 @@
                 }
             }
             function domainToEnv(domain) {
-                for (var _iterator = Object.keys(src_config.a.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                for (var _iterator = Object.keys(config.a.paypalUrls), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
                     var _ref;
                     if (_isArray) {
                         if (_i >= _iterator.length) break;
@@ -11611,30 +11662,30 @@
                         _ref = _i.value;
                     }
                     var _env = _ref;
-                    if (src_config.a.paypalUrls[_env] === domain) return _env;
+                    if (config.a.paypalUrls[_env] === domain) return _env;
                 }
             }
             function configure() {
                 var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
                 if (env) {
-                    if (!src_config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
-                    delete src_config.a.env;
-                    src_config.a.env = env;
+                    if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                    delete config.a.env;
+                    config.a.env = env;
                 }
                 if (stage) {
-                    delete src_config.a.stage;
-                    src_config.a.stage = stage;
+                    delete config.a.stage;
+                    config.a.stage = stage;
                 }
                 if (apiStage) {
-                    delete src_config.a.apiStage;
-                    src_config.a.apiStage = apiStage;
+                    delete config.a.apiStage;
+                    config.a.apiStage = apiStage;
                 }
                 if (state) {
-                    delete src_config.a.state;
-                    src_config.a.state = state;
+                    delete config.a.state;
+                    config.a.state = state;
                 }
-                merchantID && (src_config.a.merchantID = merchantID);
-                logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(src_config.a.logLevel);
+                merchantID && (config.a.merchantID = merchantID);
+                logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
             }
             function setup() {
                 var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -11667,7 +11718,7 @@
                 return setup;
             });
             __webpack_require__.d(src_interface_namespaceObject, "config", function() {
-                return src_config.a;
+                return config.a;
             });
             __webpack_require__.d(src_interface_namespaceObject, "ENV", function() {
                 return constants.t;
@@ -11741,15 +11792,17 @@
                 SANDBOX: "sandbox",
                 STAGE: "stage",
                 LOCAL: "local"
-            }, clientConfig = {
-                get: clientConfig_get,
-                set: set,
-                getOrSet: getOrSet
-            }, serverConfig = null, queryOptions = null, exportBuilders = getGlobal("exportBuilders", []);
+            }, serverConfig = null, queryOptions = null, exportBuilders = function(key, def) {
+                window[GLOBAL_KEY] = window[GLOBAL_KEY] || {};
+                if (window[GLOBAL_KEY].hasOwnProperty(key)) return window[GLOBAL_KEY][key];
+                def = def || {};
+                window[GLOBAL_KEY][key] = def;
+                return def;
+            }("exportBuilders", {});
             window.paypal = window.paypal || {};
             window.paypal.client = window.paypal.client || interface_client;
             var lib = __webpack_require__("./src/lib/index.js"), src_checkout = __webpack_require__("./src/checkout/index.js"), beaver_logger_client = (__webpack_require__("./node_modules/xcomponent/src/component/component/index.js"), 
-            __webpack_require__("./node_modules/beaver-logger/client/index.js")), braintree_paypal_client_config = __webpack_require__("./node_modules/braintree-paypal-client-config/index.js"), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), src_config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), base64 = __webpack_require__("./node_modules/Base64/base64.js"), SHIPPING_OPTIONS_TYPES = [ "SHIP_TO_HOME", "SHIP_TO_STORE" ], payments = {}, _extends = Object.assign || function(target) {
+            __webpack_require__("./node_modules/beaver-logger/client/index.js")), cross_domain_utils_src = __webpack_require__("./node_modules/cross-domain-utils/src/index.js"), config = __webpack_require__("./src/config/index.js"), constants = __webpack_require__("./src/constants/index.js"), base64 = __webpack_require__("./node_modules/Base64/base64.js"), SHIPPING_OPTIONS_TYPES = [ "SHIP_TO_HOME", "SHIP_TO_STORE" ], payments = {}, _extends = Object.assign || function(target) {
                 for (var i = 1; i < arguments.length; i++) {
                     var source = arguments[i];
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
@@ -11757,14 +11810,14 @@
                 return target;
             }, proxyRest = {}, createAccessToken = Object(lib.I)(function(env, client) {
                 Object(beaver_logger_client.j)("rest_api_create_access_token");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 var clientID = client[env];
                 if (!clientID) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
                 var basicAuth = Object(base64.btoa)(clientID + ":");
                 return Object(lib.R)({
                     method: "post",
-                    url: src_config.a.authApiUrls[env],
+                    url: config.a.authApiUrls[env],
                     headers: {
                         Authorization: "Basic " + basicAuth
                     },
@@ -11781,7 +11834,7 @@
             }), createExperienceProfile = Object(lib.I)(function(env, client) {
                 var experienceDetails = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 Object(beaver_logger_client.j)("rest_api_create_experience_profile");
-                env = env || src_config.a.env;
+                env = env || config.a.env;
                 if (!client[env]) throw new Error("Client ID not found for env: " + env);
                 if (proxyRest.createExperienceProfile && !proxyRest.createExperienceProfile.source.closed) return proxyRest.createExperienceProfile(env, client, experienceDetails);
                 experienceDetails.temporary = !0;
@@ -11789,7 +11842,7 @@
                 return createAccessToken(env, client).then(function(accessToken) {
                     return Object(lib.R)({
                         method: "post",
-                        url: src_config.a.experienceApiUrls[env],
+                        url: config.a.experienceApiUrls[env],
                         headers: {
                             Authorization: "Bearer " + accessToken
                         },
@@ -11821,7 +11874,7 @@
                 }
             }, parentWin = Object(cross_domain_utils_src.d)();
             Object(post_robot_src.on)("proxy_rest", {
-                domain: src_config.a.paypal_domain_regex
+                domain: config.a.paypal_domain_regex
             }, function(_ref) {
                 var data = _ref.data;
                 proxyRest = data;
@@ -12278,8 +12331,8 @@
                 tag: "paypal-button",
                 name: "ppbutton",
                 buildUrl: function(props) {
-                    var env = props.env || src_config.a.env;
-                    return src_config.a.buttonUrls[env];
+                    var env = props.env || config.a.env;
+                    return config.a.buttonUrls[env];
                 },
                 contexts: {
                     iframe: !0,
@@ -12298,7 +12351,7 @@
                         if (Object(lib.m)("allow_full_page_fallback")) {
                             Object(beaver_logger_client.j)("pre_template_force_full_page");
                             _this.props.payment().then(function(token) {
-                                window.top.location = Object(lib.i)(src_config.a.checkoutUrl, {
+                                window.top.location = Object(lib.i)(config.a.checkoutUrl, {
                                     token: token
                                 });
                             });
@@ -12310,7 +12363,7 @@
                     return Object(lib.u)();
                 },
                 get domain() {
-                    return src_config.a.paypalDomains;
+                    return config.a.paypalDomains;
                 },
                 attributes: {
                     iframe: {
@@ -12343,10 +12396,10 @@
                         required: !1,
                         queryParam: !0,
                         def: function() {
-                            return src_config.a.env;
+                            return config.a.env;
                         },
                         validate: function(env) {
-                            if (env && !src_config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
+                            if (env && !config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                         }
                     },
                     meta: {
@@ -12364,7 +12417,7 @@
                         },
                         sendToChild: !1,
                         validate: function(client, props) {
-                            var env = props.env || src_config.a.env;
+                            var env = props.env || config.a.env;
                             if (!client[env]) throw new Error("Client ID not found for env: " + env);
                             if ("string" == typeof client[env]) {
                                 if (client[env].match(/^(.)\1+$/)) throw new Error("Invalid client ID: " + client[env]);
@@ -12405,8 +12458,8 @@
                         required: !1,
                         queryParam: !0,
                         def: function(props) {
-                            var env = props.env || src_config.a.env;
-                            if (env === constants.t.STAGE || env === constants.t.LOCAL) return src_config.a.stage;
+                            var env = props.env || config.a.env;
+                            if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stage;
                         }
                     },
                     braintree: {
@@ -12417,7 +12470,7 @@
                             if (!props.client) throw new Error("Expected client prop to be passed with Braintree authorization keys");
                         },
                         decorate: function(braintree, props) {
-                            var env = props.env || src_config.a.env;
+                            var env = props.env || config.a.env;
                             return zalgo_promise_src.a.hash(props.client).then(function(client) {
                                 return Object(integrations.a)(braintree, client[env]);
                             });
@@ -12506,19 +12559,6 @@
                             if (!Object(lib.z)() || Object(lib.m)("disable_venmo")) {
                                 remembered && -1 !== remembered.indexOf(constants.v.VENMO) && remembered.splice(remembered.indexOf(constants.v.VENMO), 1);
                                 disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && disallowed.push(constants.v.VENMO);
-                            }
-                            for (var _iterator = Object(braintree_paypal_client_config.get)(braintree_paypal_client_config.KEY.PAYPAL_FUNDING_DISALLOW, []), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-                                var _ref4;
-                                if (_isArray) {
-                                    if (_i >= _iterator.length) break;
-                                    _ref4 = _iterator[_i++];
-                                } else {
-                                    _i = _iterator.next();
-                                    if (_i.done) break;
-                                    _ref4 = _i.value;
-                                }
-                                var source = _ref4;
-                                -1 === disallowed.indexOf(source) && disallowed.push(source);
                             }
                             return {
                                 allowed: allowed,
@@ -12613,8 +12653,8 @@
                                     _creditThrottle$logCo));
                                 }
                                 return zalgo_promise_src.a.try(function() {
-                                    if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref5) {
-                                        var nonce = _ref5.nonce;
+                                    if (_this3.props.braintree) return actions.payment.tokenize().then(function(_ref4) {
+                                        var nonce = _ref4.nonce;
                                         Object.defineProperty(data, "nonce", {
                                             get: function() {
                                                 Object(beaver_logger_client.j)("nonce_getter");
@@ -12718,7 +12758,7 @@
                         type: "string",
                         required: !1,
                         get value() {
-                            return src_config.a.logLevel;
+                            return config.a.logLevel;
                         }
                     },
                     awaitPopupBridge: {
@@ -12775,7 +12815,7 @@
                     checkout.showContainer();
                 });
                 Button.xprops.payment().then(function(token) {
-                    window.top.location = Object(lib.i)(src_config.a.checkoutUrl, {
+                    window.top.location = Object(lib.i)(config.a.checkoutUrl, {
                         token: token
                     });
                 }).catch(function(err) {
@@ -12802,7 +12842,7 @@
                         console.error(err && err.stack);
                     } catch (err2) {}
                     return Button.xprops.payment().then(function(token) {
-                        window.top.location = Object(lib.i)(src_config.a.checkoutUrl, {
+                        window.top.location = Object(lib.i)(config.a.checkoutUrl, {
                             token: token
                         });
                     });
@@ -12908,7 +12948,7 @@
             Button.isChild() && (window.Promise || (window.Promise = zalgo_promise_src.a));
             !function(domain) {
                 var currentDomainEnv = domainToEnv(domain);
-                currentDomainEnv && "test" !== currentDomainEnv && (src_config.a.env = currentDomainEnv);
+                currentDomainEnv && "test" !== currentDomainEnv && (config.a.env = currentDomainEnv);
             }(window.location.protocol + "//" + window.location.host);
             zalgo_promise_src.a.onPossiblyUnhandledException(function(err) {
                 var _track;
@@ -12935,8 +12975,8 @@
                 Object(lib.y)();
                 Object(lib.G)() || createPptmScript();
                 precacheRemembered && Object(lib.O)();
-                Object(lib.m)("force_bridge") && !Object(lib.G)() && Object(lib.M)(src_config.a.env);
-                Object(beaver_logger_client.j)("setup_" + src_config.a.env);
+                Object(lib.m)("force_bridge") && !Object(lib.G)() && Object(lib.M)(config.a.env);
+                Object(beaver_logger_client.j)("setup_" + config.a.env);
                 Object(beaver_logger_client.e)("current_protocol_" + currentProtocol);
             });
             currentScript ? setup({
@@ -12952,7 +12992,7 @@
                 var setup__track2, scriptProtocol = currentScript.src.split(":")[0], loadTime = Object(lib.s)(currentScript.src);
                 Object(beaver_logger_client.e)("current_script_protocol_" + scriptProtocol);
                 Object(beaver_logger_client.e)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
-                Object(beaver_logger_client.e)("current_script_version_" + src_config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+                Object(beaver_logger_client.e)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
                 if (loadTime) {
                     Object(beaver_logger_client.e)("current_script_time", {
                         loadTime: loadTime
@@ -12965,7 +13005,7 @@
             } else {
                 var setup__track3;
                 Object(beaver_logger_client.e)("no_current_script");
-                Object(beaver_logger_client.e)("no_current_script_version_" + src_config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
+                Object(beaver_logger_client.e)("no_current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
                 document.currentScript && Object(beaver_logger_client.e)("current_script_not_recognized", {
                     src: document.currentScript.src
                 });
@@ -12979,12 +13019,13 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.192", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, version = "4.0.193", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
-            !function(exportBuilder) {
-                exportBuilders.push(exportBuilder);
-            }(function(_ref) {
+            !function(moduleName, exportBuilder) {
+                if (exportBuilders[moduleName]) throw new Error("Already attached " + moduleName);
+                exportBuilders[moduleName] = exportBuilder;
+            }("buttons", function(_ref) {
                 var clientOptions = _ref.clientOptions;
                 return {
                     Button: {
@@ -13023,7 +13064,7 @@
                 return setup;
             });
             __webpack_require__.d(__webpack_exports__, "config", function() {
-                return src_config.a;
+                return config.a;
             });
             __webpack_require__.d(__webpack_exports__, "ENV", function() {
                 return constants.t;
@@ -14284,7 +14325,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.192"
+                        ver: "4.0.193"
                     };
                 });
                 Object(client.a)(function() {
@@ -14495,7 +14536,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.192";
+                    payload.version = "4.0.193";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14522,7 +14563,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.192".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.193".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14530,7 +14571,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.192",
+                    v: "checkout.js.4.0.193",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14663,7 +14704,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.192";
+                return "4.0.193";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
@@ -14909,7 +14950,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.192"
+                            version: "4.0.193"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
