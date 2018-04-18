@@ -2,7 +2,7 @@
 
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
-import { memoize, getBrowserLocale } from '../lib';
+import { memoize } from '../lib/util';
 
 import { getButtonConfig, labelToFunding } from './config';
 
@@ -58,13 +58,13 @@ export let normalizeProps = memoize((props : Object) : NormalizedProps => {
 
     let {
         env,
-        locale,
+        locale  = getButtonConfig('DEFAULT', 'defaultLocale'),
         style   = {},
         funding,
         commit
     } = props;
 
-    locale = locale ? parseLocale(locale) : getBrowserLocale();
+    locale = parseLocale(locale);
 
     funding = funding || {};
     funding.allowed = funding.allowed || [];

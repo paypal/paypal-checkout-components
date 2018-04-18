@@ -31,7 +31,7 @@ import { normalizeProps } from './props';
 
 function isCreditDualEligible(props) : boolean {
 
-    let { label, funding, layout, locale, max, sources } = normalizeProps(props);
+    let { label, funding, layout, locale = config.locale, max, sources } = normalizeProps(props);
     let { allowed } = funding;
     let { country } = locale;
 
