@@ -10,7 +10,7 @@ import { config } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
 import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
-import { addPaymentOptions, mergePaymentDetails, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
+import { addPaymentOptions, validateExtraPaymentOptions, removeExtraPaymentOptions } from './hacks';
 
 let proxyRest : { [key : string] : <T>(...args : Array<mixed>) => ZalgoPromise<T> } = {};
 
@@ -272,83 +272,6 @@ function createPayment(env : string, client : { [key : string] : string }, payme
     });
 }
 
-function getPayment(env : string, client : { [key : string] : string }, paymentID : string) : ZalgoPromise<Object> {
-
-    info(`rest_api_get_order`);
-
-    env = env || config.env;
-
-    let clientID = client[env];
-
-    if (!clientID) {
-        throw new Error(`Client ID not found for env: ${ env }`);
-    }
-
-    if (!paymentID) {
-        throw new Error(`Expected payment id`);
-    }
-
-    if (proxyRest.getPayment && !proxyRest.getPayment.source.closed) {
-        return proxyRest.getPayment(env, client, paymentID);
-    }
-
-    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
-
-        let headers: Object = {
-            Authorization: `Bearer ${ accessToken }`
-        };
-
-        return request({
-            method: `get`,
-            url:    `${ config.paymentApiUrls[env] }/${ paymentID }`,
-            headers
-        });
-
-    }).then(payment => {
-        return mergePaymentDetails(paymentID, payment);
-    });
-}
-
-function executePayment(env : string, client : { [key : string] : string }, paymentID : string, payerID : string) : ZalgoPromise<Object> {
-
-    info(`rest_api_get_order`);
-
-    env = env || config.env;
-
-    let clientID = client[env];
-
-    if (!clientID) {
-        throw new Error(`Client ID not found for env: ${ env }`);
-    }
-
-    if (!paymentID) {
-        throw new Error(`Expected payment id`);
-    }
-
-    if (proxyRest.executePayment && !proxyRest.executePayment.source.closed) {
-        return proxyRest.executePayment(env, client, paymentID);
-    }
-
-    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
-
-        let headers: Object = {
-            Authorization: `Bearer ${ accessToken }`
-        };
-
-        return request({
-            method: `post`,
-            url:    `${ config.paymentApiUrls[env] }/${ paymentID }/execute`,
-            headers,
-            json:   {
-                payer_id: payerID
-            }
-        });
-
-    }).then(payment => {
-        return mergePaymentDetails(paymentID, payment);
-    });
-}
-
 function createOrder(env : string, client : { [key : string] : string }, paymentDetails : Object) : ZalgoPromise<string> {
 
     info(`rest_api_create_order_token`);
@@ -408,77 +331,6 @@ function createOrder(env : string, client : { [key : string] : string }, payment
         }
 
         throw new Error(`Payment Api response error:\n\n${ JSON.stringify(res, null, 4) }`);
-    });
-}
-
-function getOrder(env : string, client : { [key : string] : string }, orderID : string) : ZalgoPromise<Object> {
- 
-    info(`rest_api_get_order`);
-
-    env = env || config.env;
-
-    let clientID = client[env];
-
-    if (!clientID) {
-        throw new Error(`Client ID not found for env: ${ env }`);
-    }
-
-    if (!orderID) {
-        throw new Error(`Expected order id`);
-    }
-
-    if (proxyRest.getOrder && !proxyRest.getOrder.source.closed) {
-        return proxyRest.getOrder(env, client, orderID);
-    }
-
-    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
-
-        let headers: Object = {
-            Authorization: `Bearer ${ accessToken }`
-        };
-
-        return request({
-            method: `get`,
-            url:    `${ config.orderApiUrls[env] }/${ orderID }`,
-            headers
-        });
-    });
-}
-
-function captureOrder(env : string, client : { [key : string] : string }, orderID : string) : ZalgoPromise<Object> {
-
-    info(`rest_api_get_order`);
-
-    env = env || config.env;
-
-    let clientID = client[env];
-
-    if (!clientID) {
-        throw new Error(`Client ID not found for env: ${ env }`);
-    }
-
-    if (!orderID) {
-        throw new Error(`Expected order id`);
-    }
-
-    if (proxyRest.captureOrder && !proxyRest.captureOrder.source.closed) {
-        return proxyRest.captureOrder(env, client, orderID);
-    }
-
-    return createAccessToken(env, client).then((accessToken) : ZalgoPromise<Object> => {
-
-        let headers: Object = {
-            Authorization: `Bearer ${ accessToken }`
-        };
-
-        return request({
-            method: `post`,
-            url:    `${ config.orderApiUrls[env] }/${ orderID }/capture`,
-            headers,
-            json:   {
-                is_final_capture: true
-            }
-        });
     });
 }
 
@@ -543,14 +395,10 @@ export function createBillingAgreement(env : string, client : { [key : string] :
 
 export let rest = {
     payment: {
-        create:  createPayment,
-        get:     getPayment,
-        execute: executePayment
+        create:  createPayment
     },
     order: {
-        create:  createOrder,
-        get:     getOrder,
-        capture: captureOrder
+        create:  createOrder
     },
     billingAgreement: {
         create: createBillingAgreement
@@ -568,7 +416,7 @@ on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
 });
 
 if (parentWin && isPayPalDomain() && !isSameDomain(parentWin)) {
-    send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createPayment, getPayment, executePayment, createBillingAgreement, createOrder, getOrder, captureOrder })
+    send(parentWin, PROXY_REST, { createAccessToken, createExperienceProfile, createPayment, createBillingAgreement, createOrder })
         .catch(() => {
             // pass
         });
