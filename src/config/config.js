@@ -132,6 +132,10 @@ export let config = {
 
         'boxed.com': {
             disable_venmo: true
+        },
+
+        'bevisible.com': {
+            disable_venmo: true
         }
     },
 
