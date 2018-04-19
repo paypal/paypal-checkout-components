@@ -10,7 +10,7 @@ describe('funding source cases', () => {
         let selectedFundingSource;
     
         window.paypal.Checkout = {
-            renderTo(win, { fundingSource }) {
+            async renderTo(win, { fundingSource }) {
                 selectedFundingSource = fundingSource;
             }
         };
@@ -31,7 +31,7 @@ describe('funding source cases', () => {
         let selectedFundingSource;
     
         window.paypal.Checkout = {
-            renderTo(win, { fundingSource }) {
+            async renderTo(win, { fundingSource }) {
                 selectedFundingSource = fundingSource;
             }
         };

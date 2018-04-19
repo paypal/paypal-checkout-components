@@ -9,7 +9,7 @@ describe('error cases', () => {
         let onAuthorize;
         let onAuthorizeCalled = false;
     
-        window.paypal.Checkout.renderTo = (win, props) => {
+        window.paypal.Checkout.renderTo = async (win, props) => {
             onAuthorize = props.onAuthorize;
         };
 
@@ -48,7 +48,7 @@ describe('error cases', () => {
         let onAuthorize;
         let onAuthorizeCalled = false;
     
-        window.paypal.Checkout.renderTo = (win, props) => {
+        window.paypal.Checkout.renderTo = async (win, props) => {
             onAuthorize = props.onAuthorize;
         };
 

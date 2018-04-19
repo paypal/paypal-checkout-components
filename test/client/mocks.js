@@ -33,7 +33,7 @@ export function setupMocks() {
                 popup: true,
                 lightbox: false
             },
-            renderTo() {
+            async renderTo() {
                 
             },
             onClick() {

@@ -159,5 +159,5 @@ export function renderCheckout(props = {}) {
         },
 
         ...props
-    });
+    }).catch(noop);
 }

@@ -82,7 +82,7 @@ describe('happy cases', () => {
     
         let renderToCalled = false;
 
-        window.paypal.Checkout.renderTo = () => {
+        window.paypal.Checkout.renderTo = async () => {
             renderToCalled = true;
         };
 
@@ -101,7 +101,7 @@ describe('happy cases', () => {
     
         let renderToCalled = false;
     
-        window.paypal.Checkout.renderTo = () => {
+        window.paypal.Checkout.renderTo = async () => {
             renderToCalled = true;
         };
     
