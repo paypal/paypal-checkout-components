@@ -15,10 +15,13 @@ import ideal        from './ideal.svg';
 import elv          from './elv.svg';
 import elv_white    from './elv_white.svg';
 import bancontact   from './bancontact.svg';
+import bancontact_white   from './bancontact_white.svg';
 import giropay      from './giropay.svg';
+import giropay_white      from './giropay_white.svg';
 import eps          from './eps.svg';
+import eps_white         from './eps_white.svg';
 import mybank       from './mybank.svg';
-
+import mybank_white       from './mybank_white.svg';
 
 export let fundingLogos = {
 
@@ -53,18 +56,22 @@ export let fundingLogos = {
     },
 
     [ BUTTON_LOGO.BANCONTACT ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   bancontact
+        [ BUTTON_LOGO_COLOR.ANY ]:     bancontact,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   bancontact_white
     },
 
     [ BUTTON_LOGO.GIROPAY ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   giropay
+        [ BUTTON_LOGO_COLOR.ANY ]:     giropay,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   giropay_white
     },
 
     [ BUTTON_LOGO.EPS ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   eps
+        [ BUTTON_LOGO_COLOR.ANY ]:     eps,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   eps_white
     },
 
     [ BUTTON_LOGO.MYBANK ]: {
-        [ BUTTON_LOGO_COLOR.ANY ]:   mybank
+        [ BUTTON_LOGO_COLOR.ANY ]:     mybank,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   mybank_white
     }
 };

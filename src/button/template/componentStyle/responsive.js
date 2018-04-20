@@ -1,6 +1,6 @@
 /* @flow */
 
-import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER } from '../../../constants';
+import { BUTTON_BRANDING, BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, BUTTON_LABEL } from '../../../constants';
 import { BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../../config';
 import { max, perc } from '../../../lib/util';
 
@@ -39,6 +39,13 @@ export function buttonResponsiveStyle({ height, cardNumber = 4 } : { height? : ?
                 .${ CLASS.LOGO } {
                     height: ${ perc(buttonHeight, 35) + 5 }px;
                     max-height: ${ perc(buttonHeight, 60) }px;
+                    min-height: ${ perc(buttonHeight, 40) }px;
+                }
+                
+                .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LABEL.EPS },
+                .${ CLASS.LOGO }.${ CLASS.LOGO }-${ BUTTON_LABEL.MYBANK } {
+                    height: ${ perc(buttonHeight, 50) + 5 }px;
+                    max-height: ${ perc(buttonHeight, 70) }px;
                     min-height: ${ perc(buttonHeight, 40) }px;
                 }
 
