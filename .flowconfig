@@ -7,13 +7,12 @@
 [include]
 [libs]
 flow-typed
-src/types.js
-test/types.js
-node_modules/xcomponent/src/types.js
+src/declarations.js
+test/declarations.js
+node_modules/xcomponent/src/declarations.js
 node_modules/paypal-braintree-web-client/src/declarations.js
 [options]
 module.name_mapper='^src\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
-unsafe.enable_getters_and_setters=true
 experimental.const_params=false
 esproposal.export_star_as=enable
 esproposal.decorators=ignore

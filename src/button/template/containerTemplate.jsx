@@ -5,6 +5,7 @@ import { BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import { getButtonConfig, BUTTON_STYLE, BUTTON_RELATIVE_STYLE } from '../config';
 import { normalizeProps } from '../props';
 import { values, min, max, perc } from '../../lib/util';
+import type { DimensionsType } from '../../types';
 
 type ContainerTemplateOptions = {
     id : string,
@@ -32,9 +33,7 @@ function determineResponsiveSize({ label, layout, width = 0 }) : string {
     }
 
     for (let size of Object.keys(BUTTON_STYLE)) {
-
-        let { minWidth, maxWidth, minResponsiveWidth } = BUTTON_STYLE[size];
-        minWidth = minResponsiveWidth || minWidth;
+        let { minWidth, maxWidth } = BUTTON_STYLE[size];
 
         if (width >= minWidth && width < maxWidth) {
             return size;

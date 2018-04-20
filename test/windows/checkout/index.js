@@ -108,11 +108,13 @@ if (action === 'checkout') {
 
                 win.location = '/base/test/windows/fallback/index.htm';
 
+                // $FlowFixMe
                 if (isSameDomain(parent) && parent.watchForLegacyFallback) {
                     return parent.watchForLegacyFallback(win);
                 }
 
                 for (let frame of getFrames(parent)) {
+                    // $FlowFixMe
                     if (isSameDomain(frame) && frame.watchForLegacyFallback) {
                         return frame.watchForLegacyFallback(win);
                     }

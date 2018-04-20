@@ -6,7 +6,7 @@ import { FUNDING, DEFAULT, BUTTON_LABEL, BUTTON_COLOR, BUTTON_LOGO_COLOR, BUTTON
 
 type ButtonConfig = {
     [ string ] : {
-        colors : Array<$Values<typeof BUTTON_COLOR>>
+        colors? : Array<$Values<typeof BUTTON_COLOR>>
     }
 };
 

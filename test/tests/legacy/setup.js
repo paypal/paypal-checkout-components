@@ -95,6 +95,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${ token }`);
+                    // $FlowFixMe
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
                 });
             });
@@ -129,6 +130,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 return onHashChange().then(urlHash => {
                     assert.equal(urlHash, `#testCheckoutUrl?token=${ token }`);
+                    // $FlowFixMe
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', checkoutUrl);
                 });
             });

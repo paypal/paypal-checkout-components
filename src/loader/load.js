@@ -22,7 +22,7 @@ function getIntegrationURLs() : { latest : boolean, major : string, minor : stri
 
 function getIntegrationProps() : Object {
 
-    let props = { ...config.script_props };
+    let props : Object = { ...config.script_props };
 
     let query = parseQuery();
 

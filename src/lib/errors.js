@@ -19,6 +19,7 @@ function logWarn(err) : void {
 export function checkForCommonErrors() {
 
     if (JSON.stringify([]) !== '[]') {
+        // $FlowFixMe
         if (Array.prototype.toJSON) {
             logWarn(`Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js`);
         } else {

@@ -369,6 +369,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
 
             testForm.addEventListener('submit', event => {
+                // $FlowFixMe
                 if (!testForm.target) {
                     event.preventDefault();
                     setTimeout(() => {

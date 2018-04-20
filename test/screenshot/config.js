@@ -5,7 +5,26 @@ import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
 
 const RESPONSIVE_WIDTHS = [ 92, 144, 212, /* 345, */ 460, 670 ];
 
-export let buttonConfigs = [];
+type ButtonConfig = {
+    filename? : string,
+    userAgent? : string,
+    button : {
+        locale? : string,
+        style? : {
+            color? : string,
+            size? : string,
+            shape? : string,
+            label? : string,
+            installmentperiod? : number
+        },
+        funding? : {
+            allowed? : Array<string>,
+            disallowed? : Array<string>
+        }
+    }
+};
+
+export let buttonConfigs : Array<ButtonConfig> = [];
 
 buttonConfigs.push({
     button: {}

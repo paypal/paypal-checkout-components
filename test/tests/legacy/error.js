@@ -186,6 +186,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 getElement('#testContainer button').click();
 
                 return onHashChange().then(urlHash => {
+                    // $FlowFixMe
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', paypalCheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });
@@ -242,6 +243,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
             });
 
             testForm.addEventListener('submit', event => {
+                // $FlowFixMe
                 if (!testForm.target) {
                     event.preventDefault();
                     window.location = testForm.getAttribute('action');
@@ -305,6 +307,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 window.paypal.config.checkoutUrl = '#errorRedirectUrl';
 
                 return onHashChange().then(urlHash => {
+                    // $FlowFixMe
                     Object.defineProperty(window.paypal.config, 'checkoutUrl', CheckoutUrlDescriptor);
                     assert.equal(urlHash, `#errorRedirectUrl?token=${ token }`);
                 });

@@ -9,6 +9,7 @@ import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
 import { validateButtonProps } from '../validate';
+import type { LocaleType, FundingSource, FundingSelection, FundingList } from '../../types';
 
 import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';

@@ -3,13 +3,11 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import { FUNDING } from '../constants';
+import type { FundingSource, FundingList } from '../types';
 
 import { getStorageState, getGlobalState, getSessionState } from './session';
 import { isDevice } from './device';
 import { openMetaFrame } from './meta';
-
-export type FundingSource = string;
-export type FundingList = Array<FundingSource>;
 
 export function getRememberedFunding<T>(handler : (rememberedFunding : FundingList) => T) : T {
     return getStorageState(storage => {

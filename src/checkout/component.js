@@ -36,6 +36,7 @@ type CheckoutPropsType = {
     fallback? : (string) => ?ZalgoPromise<void>,
     fundingSource? : string,
     logLevel? : string,
+    env? : string,
     supplement? : {
         getPaymentOptions : Function,
         addPaymentDetails : Function
@@ -255,7 +256,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             required: true,
             once:     true,
 
-            decorate(original) : ?Function {
+            decorate(original) : Function | void {
                 if (original) {
                     return function decorateOnAuthorize(data, actions = {}) : ZalgoPromise<void> {
 
@@ -333,7 +334,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             once:     true,
             noop:     true,
 
-            decorate(original) : ?Function {
+            decorate(original) : Function {
                 return function decorateOnCancel(data, actions = {}) : ZalgoPromise<void> {
 
                     let close = () => {
@@ -460,8 +461,10 @@ export let Checkout : Component<CheckoutPropsType> = create({
         supplement: {
             type:     'object',
             required: false,
-            get value() : ?Object {
-                return window.xprops && window.xprops.supplement;
+            get value() : Object {
+                // $FlowFixMe
+                let value : Object = window.xprops && window.xprops.supplement;
+                return value;
             }
         },
 

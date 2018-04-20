@@ -9,13 +9,13 @@ import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/clie
 import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
-import { USERS, SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
+import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
     BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
 import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, isFundingRemembered, getThrottle } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -25,7 +25,6 @@ import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
-import { labelToFunding } from './config';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
 
@@ -95,7 +94,8 @@ type ButtonOptions = {
         addPaymentDetails : Function
     },
     awaitPopupBridge : Function,
-    meta : Object
+    meta : Object,
+    validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -266,22 +266,6 @@ export let Button : Component<ButtonOptions> = create({
             required: false
         },
 
-        onRememberUser: {
-            type:     'function',
-            required: false,
-            decorate(original : ?Function, props : Object) : ?Function {
-                if (original) {
-                    let source = labelToFunding(props.style && props.style.label);
-                    isFundingRemembered(source).then(result => {
-                        if (result && original) {
-                            original();
-                        }
-                    });
-                    return original;
-                }
-            }
-        },
-
         stage: {
             type:       'string',
             required:   false,
@@ -309,7 +293,8 @@ export let Button : Component<ButtonOptions> = create({
                     throw new Error(`Expected client prop to be passed with Braintree authorization keys`);
                 }
             },
-            decorate(braintree, props) : ?ZalgoPromise<BraintreePayPalClient> {
+            // $FlowFixMe
+            decorate(braintree, props) : ZalgoPromise<BraintreePayPalClient> {
                 let env = props.env || config.env;
                 // $FlowFixMe
                 return ZalgoPromise.hash(props.client).then(client => {
@@ -620,7 +605,7 @@ export let Button : Component<ButtonOptions> = create({
             required: false,
             noop:     true,
             decorate(original) : Function {
-                return function decorateOnClick(data : ?{ fundingSource : string }) : void {
+                return function decorateOnClick(data : ?{ fundingSource : string, card? : string }) : void {
 
                     info('button_click');
 
@@ -676,14 +661,6 @@ export let Button : Component<ButtonOptions> = create({
 
             validate(style = {}, props) {
                 validateButtonStyle(style, props);
-            }
-        },
-
-        displayTo: {
-            type:     'string',
-            required: false,
-            def() : string {
-                return USERS.ALL;
             }
         },
 

@@ -74,7 +74,7 @@ function normalizeCheckoutProps(props : Object) : { env : string, payment : Func
     return { env, payment, onAuthorize, onCancel };
 }
 
-function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onCancel? : Function }) : ZalgoPromise<string> {
+function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onCancel? : Function, commit? : boolean }) : ZalgoPromise<string> {
 
     let { env, payment } = normalizeCheckoutProps(props);
 

@@ -1,5 +1,7 @@
 /* @flow */
 
+import type { Enum } from '../types';
+
 type BUTTON_STYLE_OPTIONS_ENUM =
     Enum<'label' | 'size' | 'shape' | 'color' | 'layout' |
     'fundingicons' | 'maxbuttons' | 'branding' | 'tagline' | 'height' | 'installmentperiod'>;

@@ -4,6 +4,7 @@ import { prefix } from 'beaver-logger/client';
 
 import { config } from '../config';
 import { COUNTRY, LANG } from '../constants';
+import type { LocaleType } from '../types';
 
 import { LOG_PREFIX } from './constants';
 

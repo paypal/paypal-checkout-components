@@ -6,6 +6,7 @@ import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { LANG_TO_DEFAULT_COUNTRY } from '../constants';
+import type { LocaleType } from '../types';
 
 import { memoize } from './util';
 import { isDevice } from './device';

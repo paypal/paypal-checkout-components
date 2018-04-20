@@ -3,6 +3,7 @@
 import { BUTTON_LAYOUT, BUTTON_STYLE_OPTIONS, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SIZE, BUTTON_SHAPE } from '../constants';
 import { determineEligibleFunding, determineEligibleCards } from '../funding';
 import { memoize } from '../lib/util';
+import type { LocaleType, FundingSelection, FundingList } from '../types';
 
 import { getButtonConfig, labelToFunding } from './config';
 
