@@ -1,6 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, IE8_USER_AGENT,
     IE11_USER_AGENT, createTestContainer, destroyTestContainer, getElement, assert } from '../common';
 

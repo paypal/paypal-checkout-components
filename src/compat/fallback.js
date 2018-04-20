@@ -2,6 +2,7 @@
 
 import { on, send, bridge } from 'post-robot/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import type { CrossDomainWindowType, SameDomainWindowType } from 'cross-domain-utils/src';
 
 import { isPayPalDomain, noop, getScriptVersion, extendUrl } from '../lib';
 import { config } from '../config';

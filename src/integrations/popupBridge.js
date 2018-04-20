@@ -3,6 +3,7 @@
 import { once, noop } from 'xcomponent/src/lib';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { error } from 'beaver-logger/client';
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { extendUrl, redirect, awaitKey, stringifyError } from '../lib';
 import { config } from '../config';

@@ -1,10 +1,9 @@
 [ignore]
 .*/node_modules/babel-plugin-flow-runtime
 .*/node_modules/flow-runtime
-.*/node_modules/cross-domain-safe-weakmap/dist
-.*/node_modules/cross-domain-safe-weakmap/test
-.*/node_modules/cross-domain-utils/dist
-.*/node_modules/cross-domain-utils/test
+.*/node_modules/**/test
+.*/dist/module
+.*/dist/module
 [include]
 [libs]
 flow-typed

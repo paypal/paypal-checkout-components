@@ -4,7 +4,7 @@
 import { atob } from 'Base64';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
-import { isWindowClosed } from 'cross-domain-utils/src';
+import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 
 window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
     type:     'number',

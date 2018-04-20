@@ -1,7 +1,7 @@
 /* @flow */
 
 import { on, send } from 'post-robot/src';
-import { isWindowClosed, getDomain, isSameDomain } from 'cross-domain-utils/src';
+import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 

@@ -2,6 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { addPayloadBuilder } from 'beaver-logger/client';
+import { type SameDomainWindowType } from 'cross-domain-utils/src';
 
 type RequestOptionsType = {
     url : string,

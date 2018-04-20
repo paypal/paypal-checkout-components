@@ -2,6 +2,7 @@
 
 import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
 import { config } from '../config';
 import { LANG_TO_DEFAULT_COUNTRY } from '../constants';

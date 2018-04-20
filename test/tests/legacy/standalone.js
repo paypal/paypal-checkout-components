@@ -1,5 +1,7 @@
 /* @flow */
 
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+
 import { onHashChange, uniqueID, generateECToken, CHILD_REDIRECT_URI, createElement,
     createTestContainer, destroyTestContainer, assert } from '../common';
 
