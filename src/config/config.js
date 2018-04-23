@@ -136,6 +136,10 @@ export let config = {
 
         'bevisible.com': {
             disable_venmo: true
+        },
+
+        'moeller.org': {
+            disable_venmo: true
         }
     },
 
