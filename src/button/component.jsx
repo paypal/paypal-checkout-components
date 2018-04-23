@@ -27,6 +27,7 @@ import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
+import { mergePaymentDetails } from '../api/hacks';
 
 function isCreditDualEligible(props) : boolean {
 
@@ -527,7 +528,20 @@ export let Button : Component<ButtonOptions> = create({
                                 return new ZalgoPromise();
                             }
 
-                            return result;
+                            return mergePaymentDetails(result.id, result);
+                        });
+                    };
+
+                    let get = actions.payment.get;
+
+                    actions.payment.get = () => {
+                        return get().then(result => {
+                            if (!result || !result.id || !result.intent || !result.state ) {
+                                warn(`get_result_missing_data`);
+                                return new ZalgoPromise();
+                            }
+
+                            return mergePaymentDetails(result.id, result);
                         });
                     };
 

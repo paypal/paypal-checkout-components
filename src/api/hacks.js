@@ -20,10 +20,17 @@ export function validateExtraPaymentOptions(options : Object) {
             throw new TypeError(`Expected shipping_options to be an array`);
         }
 
+        let uniqueIdCheck = {};
         for (let option of options.payer.shipping_options) {
             if (!option.id) {
                 throw new Error(`Expected option.id for shipping_options`);
             }
+
+            if (uniqueIdCheck.hasOwnProperty(option.id)) {
+                throw new Error(`Expected unique option.id for shipping_options`);
+            }
+
+            uniqueIdCheck[option.id] = 'seen';
 
             if (!option.label) {
                 throw new Error(`Expected option.label for shipping_options`);
