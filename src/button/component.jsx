@@ -22,12 +22,12 @@ import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
+import { mergePaymentDetails } from '../api/hacks';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
 import { normalizeProps } from './props';
-import { mergePaymentDetails } from '../api/hacks';
 
 function isCreditDualEligible(props) : boolean {
 
@@ -536,7 +536,7 @@ export let Button : Component<ButtonOptions> = create({
 
                     actions.payment.get = () => {
                         return get().then(result => {
-                            if (!result || !result.id || !result.intent || !result.state ) {
+                            if (!result || !result.id || !result.intent || !result.state) {
                                 warn(`get_result_missing_data`);
                                 return new ZalgoPromise();
                             }
