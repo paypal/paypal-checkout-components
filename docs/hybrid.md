@@ -59,7 +59,7 @@ paypal.Button.render({
 
     onAuthorize: function(data) {
 
-        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
+        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID })
             .done(function(data) { console.log('The payment was executed!'); })
             .fail(function(err)  { console.log('There was an error!');  });
     }
@@ -95,7 +95,7 @@ paypal.Button.render({
 
     onAuthorize: function(data) {
 
-        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID });
+        jQuery.post('/my-api/execute-payment', { paymentID: data.paymentID, payerID: data.payerID })
             .done(function(data) { console.log('The payment was executed!'); })
             .fail(function(err)  { console.log('There was an error!');  });
     }
