@@ -45,7 +45,9 @@ export let buttonTemplate = (req, ctx) => {
 
         fundingicons: bool(req, 'style.fundingicons'),
         branding:     bool(req, 'style.branding'),
-        tagline:      bool(req, 'style.tagline')
+        tagline:      bool(req, 'style.tagline'),
+
+        installmentperiod: number(req, 'style.installmentperiod')
     };
 
     let funding = {
