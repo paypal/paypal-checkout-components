@@ -125,6 +125,7 @@ if (Button.xprops && Button.xprops.validate) {
         if (enabled) {
             return callOriginal();
         }
+        return new ZalgoPromise();
     });
 }
 
