@@ -660,6 +660,14 @@ export let Button : Component<ButtonOptions> = create({
             },
 
             validate(style = {}, props) {
+                info(`button_render_color_${ style.color || 'default' }`);
+                info(`button_render_shape_${ style.shape || 'default' }`);
+                info(`button_render_size_${ style.size || 'default' }`);
+                info(`button_render_label_${ style.label || 'default' }`);
+                info(`button_render_branding_${ style.branding || 'default' }`);
+                info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
+                info(`button_render_tagline_${ style.tagline || 'default' }`);
+
                 validateButtonStyle(style, props);
             }
         },
