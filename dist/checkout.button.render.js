@@ -65,13 +65,21 @@
     },
     "./node_modules/cross-domain-utils/src/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
+        var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("./node_modules/cross-domain-utils/src/utils.js");
+        __webpack_require__.d(__webpack_exports__, "getDomain", function() {
+            return __WEBPACK_IMPORTED_MODULE_0__utils__.a;
+        });
+        var __WEBPACK_IMPORTED_MODULE_1__types__ = __webpack_require__("./node_modules/cross-domain-utils/src/types.js");
+        __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__types__);
+    },
+    "./node_modules/cross-domain-utils/src/types.js": function(module, exports) {},
+    "./node_modules/cross-domain-utils/src/utils.js": function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
         function noop() {}
         function getParent(win) {
             if (win) try {
                 if (win.parent && win.parent !== win) return win.parent;
-            } catch (err) {
-                return;
-            }
+            } catch (err) {}
         }
         function canReadFromWindow(win) {
             try {
@@ -117,9 +125,9 @@
             /*
  * [hi-base32]{@link https://github.com/emn178/hi-base32}
  *
- * @version 0.3.0
+ * @version 0.5.0
  * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2017
+ * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
             !function() {
@@ -159,7 +167,12 @@
                     "5": 29,
                     "6": 30,
                     "7": 31
-                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], toUtf8String = function(bytes) {
+                }, blocks = [ 0, 0, 0, 0, 0, 0, 0, 0 ], throwInvalidUtf8 = function(position, partial) {
+                    partial.length > 10 && (partial = "..." + partial.substr(-10));
+                    var err = new Error("Decoded data is not valid UTF-8. Maybe try base32.decode.asBytes()? Partial data after reading " + position + " bytes: " + partial + " <-");
+                    err.position = position;
+                    throw err;
+                }, toUtf8String = function(bytes) {
                     for (var b, c, str = "", length = bytes.length, i = 0, followingChars = 0; i < length; ) {
                         b = bytes[i++];
                         if (b <= 127) str += String.fromCharCode(b); else {
@@ -169,19 +182,18 @@
                             } else if (b <= 239) {
                                 c = 15 & b;
                                 followingChars = 2;
-                            } else {
-                                if (!(b <= 247)) throw "not a UTF-8 string";
+                            } else if (b <= 247) {
                                 c = 7 & b;
                                 followingChars = 3;
-                            }
+                            } else throwInvalidUtf8(i, str);
                             for (var j = 0; j < followingChars; ++j) {
                                 b = bytes[i++];
-                                if (b < 128 || b > 191) throw "not a UTF-8 string";
+                                (b < 128 || b > 191) && throwInvalidUtf8(i, str);
                                 c <<= 6;
                                 c += 63 & b;
                             }
-                            if (c >= 55296 && c <= 57343) throw "not a UTF-8 string";
-                            if (c > 1114111) throw "not a UTF-8 string";
+                            c >= 55296 && c <= 57343 && throwInvalidUtf8(i, str);
+                            c > 1114111 && throwInvalidUtf8(i, str);
                             if (c <= 65535) str += String.fromCharCode(c); else {
                                 c -= 65536;
                                 str += String.fromCharCode(55296 + (c >> 10));
@@ -191,6 +203,7 @@
                     }
                     return str;
                 }, decodeAsBytes = function(base32Str) {
+                    if (!/^[A-Z2-7=]+$/.test(base32Str)) throw new Error("Invalid base32 characters");
                     base32Str = base32Str.replace(/=/g, "");
                     for (var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index = 0, length = base32Str.length, i = 0, count = length >> 3 << 3; i < count; ) {
                         v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
@@ -313,7 +326,7 @@
                             v2 = blocks[1];
                             v3 = blocks[2];
                             base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[31 & (v1 << 2 | v2 >>> 6)] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[31 & (v2 << 4 | v3 >>> 4)] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-                        } else if (4 === i) {
+                        } else {
                             v2 = blocks[1];
                             v3 = blocks[2];
                             v4 = blocks[3];
@@ -357,6 +370,7 @@
                     return notString ? encodeBytes(input) : asciiOnly ? encodeAscii(input) : encodeUtf8(input);
                 }, decode = function(base32Str, asciiOnly) {
                     if (!asciiOnly) return toUtf8String(decodeAsBytes(base32Str));
+                    if (!/^[A-Z2-7=]+$/.test(base32Str)) throw new Error("Invalid base32 characters");
                     var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
                     -1 === length && (length = base32Str.length);
                     for (var i = 0, count = length >> 3 << 3; i < count; ) {
@@ -584,7 +598,7 @@
             function getGlobal() {
                 var glob = void 0;
                 if ("undefined" != typeof window) glob = window; else {
-                    if (void 0 === global) throw new Error("Can not find global");
+                    if (void 0 === global) throw new TypeError("Can not find global");
                     glob = global;
                 }
                 var zalgoGlobal = glob.__zalgopromise__ = glob.__zalgopromise__ || {};
@@ -774,7 +788,7 @@
                 });
             };
             ZalgoPromise.prototype.toPromise = function() {
-                if ("undefined" == typeof Promise) throw new Error("Could not find Promise");
+                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
                 return Promise.resolve(this);
             };
             ZalgoPromise.resolve = function(value) {
@@ -1426,7 +1440,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.195", 
+            return jsxToHTML("div", _extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.196", 
             _ref14), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -1937,7 +1951,7 @@
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.195",
+            version: "4.0.196",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2022,6 +2036,15 @@
                     disable_venmo: !0
                 },
                 "drsfostersmith.com": {
+                    disable_venmo: !0
+                },
+                "boxed.com": {
+                    disable_venmo: !0
+                },
+                "bevisible.com": {
+                    disable_venmo: !0
+                },
+                "moeller.org": {
                     disable_venmo: !0
                 }
             },

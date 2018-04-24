@@ -163,6 +163,23 @@
             }
             return params;
         }
+        function stringifyError(err) {
+            var level = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 1;
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + Object.prototype.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack, message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return "function" == typeof err.toString ? err.toString() : Object.prototype.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+            }
+        }
         function onLoadCheckoutIntegration(callback) {
             return integrationResponder.listen(callback);
         }
@@ -228,7 +245,7 @@
                 return err && !urls.latest ? loadScript(urls.major + "?t=" + Date.now(), config.xchild_global, props, callback) : callback(err, result);
             });
         }(function(err, result) {
-            err && warn("Failed to load checkout.js", err.stack || err.toString());
+            err && warn("Failed to load checkout.js", stringifyError(err));
             if (err || result) return integrationResponder.respond(err, result);
         });
         __webpack_require__.d(__webpack_exports__, "onLoadCheckoutIntegration", function() {
