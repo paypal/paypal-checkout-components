@@ -15,7 +15,7 @@ import { redirect as redir, checkRecognizedBrowser,
     getBrowserLocale, getSessionID, request, getScriptVersion,
     isIEIntranet, isEligible,
     getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle } from '../lib';
+    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
 import { rest, getPaymentOptions, addPaymentDetails } from '../api';
 import { onAuthorizeListener } from '../experiments';
 import { getPaymentType, awaitBraintreeClient,
@@ -445,6 +445,9 @@ export let Button : Component<ButtonOptions> = create({
             noop:      true,
             decorate(original) : Function {
                 return function decorateOnRender() : mixed {
+
+                    let { browser = 'unrecognized', version = 'unrecognized' } = getBrowser();
+                    info(`button_render_browser_${ browser }_${ version }`);
 
                     track({
                         [ FPTI.KEY.STATE ]:              FPTI.STATE.LOAD,

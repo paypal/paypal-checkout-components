@@ -9,7 +9,7 @@ import { once } from './util';
 
 let bowserCache = {};
 
-function getBowser({ clearCache = false } = {}) : Object {
+function getBowser() : Object {
 
     let userAgent = getUserAgent();
 
@@ -17,15 +17,25 @@ function getBowser({ clearCache = false } = {}) : Object {
         return bowserCache[userAgent];
     }
 
-    if (clearCache) {
-        delete require.cache[require.resolve('bowser/bowser.min')];
-    }
-
+    delete require.cache[require.resolve('bowser/bowser.min')];
     let bowser = require('bowser/bowser.min');
 
     bowserCache[userAgent] = bowser;
 
     return bowser;
+}
+
+export function getBrowser() : { browser? : string, version? : string } {
+
+    let bowser = getBowser();
+
+    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
+        if (bowser[browser]) {
+            return { browser, version: bowser.version };
+        }
+    }
+
+    return {};
 }
 
 function isBrowserEligible() : boolean {
@@ -34,14 +44,11 @@ function isBrowserEligible() : boolean {
         return false;
     }
 
-    let bowser = getBowser({ clearCache: true });
+    let bowser = getBowser();
+    let { browser, version } = getBrowser();
 
-    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
-        if (bowser[browser] && bowser.version) {
-            if (bowser[browser] && bowser.compareVersions([ bowser.version, config.SUPPORTED_BROWSERS[browser] ]) === -1) {
-                return false;
-            }
-        }
+    if (browser && version && bowser.compareVersions([ version, config.SUPPORTED_BROWSERS[browser] ]) === -1) {
+        return false;
     }
 
     return true;
@@ -70,15 +77,11 @@ export function isEligible() : boolean {
 
 export let checkRecognizedBrowser = once((state : string) => {
 
-    let bowser = getBowser();
+    let { browser } = getBrowser();
 
-    for (let browser of Object.keys(config.SUPPORTED_BROWSERS)) {
-        if (bowser[browser]) {
-            return;
-        }
+    if (!browser) {
+        let { name, version, mobile, android, ios } = getBowser();
+        info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
+        flushLogs();
     }
-
-    let { name, version, mobile, android, ios } = bowser;
-    info(`unrecognized_browser_${ state }`, { name, version, mobile, android, ios });
-    flushLogs();
 });
