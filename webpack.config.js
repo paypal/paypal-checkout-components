@@ -85,8 +85,8 @@ export function getWebpackConfig({
         __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: true,
         __SEND_POPUP_LOGS_TO_OPENER__:      false,
         __ALLOW_POSTMESSAGE_POPUP__:        true,
-        __PAYPAL_BRAINTREE_SERVER_CONFIG__: null,
-        __PAYPAL_BRAINTREE_QUERY_OPTIONS__: null,
+        __sdk__:                            undefined,
+        __paypal_checkout__:                undefined,
         ...vars
     };
 
