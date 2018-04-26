@@ -31,14 +31,6 @@ export function noop() {
     // pass
 }
 
-export function match(str, pattern) {
-    let regmatch = str.match(pattern);
-
-    if (regmatch) {
-        return regmatch[1];
-    }
-}
-
 export function urlWillRedirectPage(url) {
 
     if (url.indexOf('#') === -1) {

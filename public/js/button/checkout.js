@@ -1,6 +1,6 @@
 
 import { enableLightbox, detectLightboxEligibility } from './lightbox';
-import { memoize, noop, match, redirect as redir } from './util';
+import { memoize, noop, redirect as redir } from './util';
 import { getPayment, executePayment, getOrder, captureOrder, mapToToken, getCheckoutAppData, getCheckoutCart } from './api';
 import { persistAccessToken } from './user';
 
@@ -108,7 +108,7 @@ function getCancelData(payment, data) {
             let cancelUrl = appData.urls.cancel_url;
             let intent = cart.payment_action;
             let billingID = paymentToken;
-            let billingToken = match(cancelUrl, /ba_token=((BA-)?[A-Z0-9]+)/);
+            let billingToken = cart.billing && cart.billing.ba_token;
 
             return { paymentToken, paymentID, intent, billingID, billingToken, cancelUrl };
         });
