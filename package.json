@@ -147,7 +147,7 @@
     "bowser": "^1.7.1",
     "cross-domain-utils": "^2.0.1",
     "hi-base32": "^0.5.0",
-    "paypal-braintree-web-client": "^3",
+    "paypal-braintree-web-client": "^2",
     "post-robot": "^8.0.0",
     "xcomponent": "^6.0.0",
     "zalgo-promise": "^1.0.10"
