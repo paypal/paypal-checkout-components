@@ -2440,7 +2440,7 @@
             },
             POST_MESSAGE_NAMES: {
                 METHOD: "postrobot_method",
-                HELLO: "postrobot_hello",
+                HELLO: "postrobot_ready",
                 OPEN_TUNNEL: "postrobot_open_tunnel"
             },
             WINDOW_TYPES: {
@@ -9169,9 +9169,9 @@
     "./src/config/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
         var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
-            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.198.js",
+            scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.199.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.198",
+            version: "4.0.199",
             cors: !0,
             env: constants.t.PRODUCTION,
             state: "checkoutjs",
@@ -10307,6 +10307,7 @@
                 env: DEFAULT_ENV
             };
             clientOptions = JSON.parse(JSON.stringify(clientOptions));
+            "undefined" != typeof __sdk__ && (clientOptions.env = __sdk__.queryOptions.env);
             validateClientOptions(clientOptions);
             var xports = {};
             Object.keys(exportBuilders).forEach(function(moduleName) {
@@ -11247,7 +11248,7 @@
                 height: height,
                 cardNumber: cards.length
             }), scriptNode = renderScript();
-            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.198", 
+            return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.199", 
             _ref14), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -12728,7 +12729,7 @@
                 for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
             }
             return target;
-        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.198", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+        }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.199", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
         interface_checkout = legacy.checkout;
         apps = legacy.apps;
         !function(moduleName, exportBuilder) {
@@ -13677,7 +13678,7 @@
             var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             try {
                 payload.event = "ppxo_" + event;
-                payload.version = "4.0.198";
+                payload.version = "4.0.199";
                 payload.host = window.location.host;
                 payload.uid = Object(__WEBPACK_IMPORTED_MODULE_2__session__.c)();
                 var query = [];
@@ -14036,7 +14037,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(session.c)(),
-                    ver: "4.0.198"
+                    ver: "4.0.199"
                 };
             });
             Object(client.a)(function() {
@@ -14317,7 +14318,7 @@
             return Boolean(getCurrentScript());
         }
         function getScriptVersion() {
-            return "4.0.198";
+            return "4.0.199";
         }
         function getRememberedFunding(handler) {
             return Object(session.f)(function(storage) {
@@ -14509,7 +14510,7 @@
                         domain: metaFrameDomain
                     });
                     return src.bridge.openBridge(Object(dom.b)(metaFrameUrl, {
-                        version: "4.0.198"
+                        version: "4.0.199"
                     }), metaFrameDomain).then(function() {
                         return metaListener;
                     }).then(function(_ref) {
@@ -15234,18 +15235,18 @@
             value: !0
         });
         var __WEBPACK_IMPORTED_MODULE_0__lib_beacon__ = __webpack_require__("./src/lib/beacon.js"), __WEBPACK_IMPORTED_MODULE_1__lib_namespace__ = __webpack_require__("./src/lib/namespace.js"), __WEBPACK_IMPORTED_MODULE_2__lib_util__ = __webpack_require__("./src/lib/util.js");
-        if (window.paypal && "4.0.198" === window.paypal.version) {
+        if (window.paypal && "4.0.199" === window.paypal.version) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_same_version", {
-                version: "4.0.198"
+                version: "4.0.199"
             });
-            throw new Error("PayPal Checkout Integration Script with same version (4.0.198) already loaded on page");
+            throw new Error("PayPal Checkout Integration Script with same version (4.0.199) already loaded on page");
         }
-        if (window.paypal && window.paypal.version && "4.0.198" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+        if (window.paypal && window.paypal.version && "4.0.199" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
             Object(__WEBPACK_IMPORTED_MODULE_0__lib_beacon__.a)("bootstrap_already_loaded_different_version", {
                 existingVersion: window.paypal.version,
-                version: "4.0.198"
+                version: "4.0.199"
             });
-            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.198");
+            throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.199");
         }
         try {
             var _interface = __webpack_require__("./src/index.js");
@@ -15359,4 +15360,4 @@
         });
     }
 }));
-//# sourceMappingURL=checkout.4.0.198.js.map
+//# sourceMappingURL=checkout.4.0.199.js.map

@@ -2441,7 +2441,7 @@
                 },
                 POST_MESSAGE_NAMES: {
                     METHOD: "postrobot_method",
-                    HELLO: "postrobot_hello",
+                    HELLO: "postrobot_ready",
                     OPEN_TUNNEL: "postrobot_open_tunnel"
                 },
                 WINDOW_TYPES: {
@@ -9172,7 +9172,7 @@
             var _checkoutUris, _altpayUris, _guestUris, _billingUris, _buttonUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls, _locales, constants = __webpack_require__("./src/constants/index.js"), config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.198",
+                version: "4.0.199",
                 cors: !0,
                 env: constants.t.PRODUCTION,
                 state: "checkoutjs",
@@ -10308,6 +10308,7 @@
                     env: DEFAULT_ENV
                 };
                 clientOptions = JSON.parse(JSON.stringify(clientOptions));
+                "undefined" != typeof __sdk__ && (clientOptions.env = __sdk__.queryOptions.env);
                 validateClientOptions(clientOptions);
                 var xports = {};
                 Object.keys(exportBuilders).forEach(function(moduleName) {
@@ -11248,7 +11249,7 @@
                     height: height,
                     cardNumber: cards.length
                 }), scriptNode = renderScript();
-                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.198", 
+                return Object(jsx.b)("div", componentTemplate__extends({}, (_ref14 = {}, _ref14[constants.c.VERSION] = "4.0.199", 
                 _ref14), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
@@ -12729,7 +12730,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.198", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.199", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(moduleName, exportBuilder) {
@@ -14035,7 +14036,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.198"
+                        ver: "4.0.199"
                     };
                 });
                 Object(client.a)(function() {
@@ -14251,7 +14252,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.198";
+                    payload.version = "4.0.199";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -14278,7 +14279,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.198".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.199".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!isCheckpointUnique(checkpointName)) return;
                     return beacon(checkpointName, payload);
@@ -14286,7 +14287,7 @@
             }
             function buildPayload() {
                 return {
-                    v: "checkout.js.4.0.198",
+                    v: "checkout.js.4.0.199",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -14419,7 +14420,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.198";
+                return "4.0.199";
             }
             function getRememberedFunding(handler) {
                 return getStorageState(function(storage) {
@@ -14655,7 +14656,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.198"
+                            version: "4.0.199"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
