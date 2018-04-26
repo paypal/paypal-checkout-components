@@ -22,6 +22,7 @@ import { getPaymentType, awaitBraintreeClient,
     mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
 import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
+import { mergePaymentDetails } from '../api/hacks';
 
 import { containerTemplate, componentTemplate } from './template';
 import { validateButtonLocale, validateButtonStyle } from './validate';
@@ -530,7 +531,20 @@ export let Button : Component<ButtonOptions> = create({
                                 return new ZalgoPromise();
                             }
 
-                            return result;
+                            return mergePaymentDetails(result.id, result);
+                        });
+                    };
+
+                    let get = actions.payment.get;
+
+                    actions.payment.get = () => {
+                        return get().then(result => {
+                            if (!result || !result.id || !result.intent || !result.state) {
+                                warn(`get_result_missing_data`);
+                                return new ZalgoPromise();
+                            }
+
+                            return mergePaymentDetails(result.id, result);
                         });
                     };
 
