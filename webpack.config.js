@@ -3,15 +3,44 @@
 /* eslint import/no-nodejs-modules: 0 */
 
 import fs from 'fs';
-import qs from 'querystring';
 import path from 'path';
 
 import webpack from 'webpack';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import { WebpackPromiseShimPlugin } from 'webpack-promise-shim-plugin';
 
-let babelConfig = JSON.parse(fs.readFileSync('./.babelrc').toString()); // eslint-disable-line no-sync
+import globals from './globals';
+
+type JSONPrimitive = string | boolean | number;
+type JSONObject = { [string] : JSONPrimitive | JSONObject } | Array<JSONPrimitive | JSONObject>;
+type JSONObjectType = { [string] : JSONPrimitive | JSONObject };
+type JSONType = JSONObject | JSONPrimitive;
+
+function jsonifyPrimitives(item : JSONType) : JSONType {
+    if (Array.isArray(item)) {
+        return item.map(jsonifyPrimitives);
+    } else if (typeof item === 'object' && item !== null) {
+        let result = {};
+        for (let key of Object.keys(item)) {
+            result[key] = jsonifyPrimitives(item[key]);
+        }
+        return result;
+    } else if (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean' || item === null || item === undefined) {
+        if (typeof item === 'string') {
+            try {
+                JSON.parse(item);
+                return item;
+            } catch (err) {
+                // pass
+            }
+        }
+        return JSON.stringify(item);
+    } else {
+        throw new TypeError(`Unrecognized type: ${ typeof item }`);
+    }
+}
+
+let babelConfig = JSON.parse(fs.readFileSync('./node_modules/grumbler-scripts/config/.babelrc-browser').toString()); // eslint-disable-line no-sync
 
 babelConfig.babelrc = false;
 babelConfig.cacheDirectory = true;
@@ -19,33 +48,14 @@ babelConfig.presets[0][1].modules = false;
 
 const FILE_NAME = 'checkout';
 
-function getNextVersion() : string {
-    let version = require('./package.json').version;
-    version = version.split('.');
-    version[2] = (parseInt(version[2], 10) + 1).toString();
-    version = version.join('.');
-    return version;
-}
-
-function getNextMajorVersion() : string {
-    return getNextVersion().split('.')[0];
-}
-
-function getNextMinorVersion() : string {
-    return getNextVersion();
-}
-
 type WebPackConfig = {
-    src : string,
-    filename : string,
+    src? : string,
+    filename? : string,
     modulename? : string,
     target? : string,
-    major? : boolean,
     minify? : boolean,
-    vars? : { [string] : (string | number | boolean | null) },
+    vars? : JSONObjectType,
     test? : boolean,
-    majorVersion? : string,
-    minorVersion? : string,
     chunkname? : string
 };
 
@@ -54,12 +64,9 @@ export function getWebpackConfig({
     filename,
     modulename,
     target = 'window',
-    major = true,
     minify = false,
     vars = {},
     test = false,
-    majorVersion = getNextMajorVersion(),
-    minorVersion = getNextMinorVersion(),
     chunkname
 } : WebPackConfig) : Object {
 
@@ -72,45 +79,51 @@ export function getWebpackConfig({
     }
 
     vars = {
-        __TEST__:                           test,
-        __IE_POPUP_SUPPORT__:               true,
-        __POPUP_SUPPORT__:                  true,
-        __LEGACY_SUPPORT__:                 true,
-        __FILE_NAME__:                      JSON.stringify(filename),
-        __DEFAULT_LOG_LEVEL__:              JSON.stringify('warn'),
-        __MAJOR_VERSION__:                  JSON.stringify(majorVersion),
-        __MINOR_VERSION__:                  JSON.stringify(minorVersion),
-        __MAJOR__:                          major,
-        __MINIFIED__:                       minify,
-        __CHILD_WINDOW_ENFORCE_LOG_LEVEL__: true,
-        __SEND_POPUP_LOGS_TO_OPENER__:      false,
-        __ALLOW_POSTMESSAGE_POPUP__:        true,
-        __sdk__:                            undefined,
-        __paypal_checkout__:                undefined,
-        ...vars
-    };
+        ...globals,
+        ...vars,
 
-    const PREPROCESSOR_OPTS = {
-        'ifdef-triple-slash': 'false',
-        ...vars
+        // $FlowFixMe
+        __PAYPAL_CHECKOUT__: {
+            ...globals.__PAYPAL_CHECKOUT__,
+            ...vars.__PAYPAL_CHECKOUT__
+        },
+        
+        __FILE_NAME__: filename
     };
+    
+    if (minify) {
+        vars.__MIN__ = true;
+    } else {
+        vars.__MIN__ = false;
+    }
+
+    if (test) {
+        vars.__TEST__ = true;
+    } else {
+        vars.__TEST__ = false;
+    }
 
     const plugins = [
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: (chunkname ? 2 : 1)
         }),
-        new webpack.DefinePlugin(vars),
+        new webpack.DefinePlugin(jsonifyPrimitives(vars)),
         new webpack.NamedModulesPlugin(),
         new UglifyJSPlugin({
-            test:     /\.js$/,
-            beautify: !minify,
-            minimize: minify,
-            compress: {
-                warnings:  false,
-                sequences: minify
+            test:          /\.js$/,
+            uglifyOptions: {
+                warnings: false,
+                compress: {
+                    sequences: minify
+                },
+                output: {
+                    beautify: !minify
+                },
+                mangle: minify
             },
-            mangle:    minify,
-            sourceMap: true
+            parallel:  true,
+            sourceMap: true,
+            cache:     true
         }),
         new CircularDependencyPlugin({
             failOnError: true
@@ -124,6 +137,8 @@ export function getWebpackConfig({
         }));
     }
 
+    /*
+
     if (chunkname) {
         plugins.push(new WebpackPromiseShimPlugin({
             module: 'zalgo-promise/src',
@@ -131,13 +146,11 @@ export function getWebpackConfig({
         }));
     }
 
+    */
+
     let config : Object = {
         module: {
             rules: [
-                {
-                    test:   /\.js$/,
-                    loader: `ifdef-loader?${ qs.stringify(PREPROCESSOR_OPTS) }`
-                },
                 {
                     test:   /sinon\.js$/,
                     loader: 'imports?define=>false,require=>false'
@@ -186,43 +199,50 @@ export function getWebpackConfig({
     return config;
 }
 
-let nextMajorVersion = getNextMajorVersion();
-let nextMinorVersion = getNextMinorVersion();
-
 export let BASE = getWebpackConfig({
     src:       './src/load.js',
-    filename:  `${ FILE_NAME }.js`,
-    major:     true
+    filename:  `${ FILE_NAME }.js`
 });
 
 export let MAJOR = getWebpackConfig({
     src:      './src/load.js',
-    filename: `${ FILE_NAME }.v${ nextMajorVersion }.js`,
-    major:    true,
+    filename: `${ FILE_NAME }.v${ globals.__PAYPAL_CHECKOUT__.__MAJOR_VERSION__ }.js`,
     vars:     {
-        __IE_POPUP_SUPPORT__: false,
-        __LEGACY_SUPPORT__:   true
+        __POST_ROBOT__: {
+            ...globals.__POST_ROBOT__,
+            __IE_POPUP_SUPPORT__: true
+        },
+        __PAYPAL_CHECKOUT__: {
+            __LEGACY_SUPPORT__: false
+        }
     }
 });
 
 export let MINOR = getWebpackConfig({
     src:      './src/load.js',
-    filename: `${ FILE_NAME }.${ nextMinorVersion }.js`,
-    major:    false
+    filename: `${ FILE_NAME }.${ globals.__PAYPAL_CHECKOUT__.__MINOR_VERSION__ }.js`,
+    vars:     {
+        __PAYPAL_CHECKOUT__: {
+            __MAJOR__: false
+        }
+    }
 });
 
 export let MAJOR_MIN = getWebpackConfig({
     src:      './src/load.js',
     filename: `${ FILE_NAME }.min.js`,
-    minify:   true,
-    major:    true
+    minify:   true
 });
 
 export let MINOR_MIN = getWebpackConfig({
     src:      './src/load.js',
-    filename: `${ FILE_NAME }.${ nextMinorVersion }.min.js`,
+    filename: `${ FILE_NAME }.${ globals.__PAYPAL_CHECKOUT__.__MINOR_VERSION__ }.min.js`,
     minify:   true,
-    major:    false
+    vars:     {
+        __PAYPAL_CHECKOUT__: {
+            __MAJOR__: false
+        }
+    }
 });
 
 export let LIB = getWebpackConfig({
@@ -230,7 +250,11 @@ export let LIB = getWebpackConfig({
     filename:   `${ FILE_NAME }.lib.js`,
     target:     `umd`,
     modulename: `paypal`,
-    major:      false
+    vars:       {
+        __PAYPAL_CHECKOUT__: {
+            __MAJOR__: false
+        }
+    }
 });
 
 export let BUTTON_RENDER = getWebpackConfig({
@@ -252,16 +276,27 @@ export let CHILD_LOADER_MIN = getWebpackConfig({
 
 export let BUTTON = getWebpackConfig({
     src:       './src/load.js',
-    filename:  `${ FILE_NAME }.button.v${ nextMajorVersion }.js`,
-    chunkname: `${ FILE_NAME }.button.v${ nextMajorVersion }.chunk.js`,
-    
-    major:    true,
+    filename:  `${ FILE_NAME }.button.v${ globals.__PAYPAL_CHECKOUT__.__MAJOR_VERSION__ }.js`,
+    chunkname: `${ FILE_NAME }.button.v${ globals.__PAYPAL_CHECKOUT__.__MAJOR_VERSION__ }.chunk.js`,
+
     vars:     {
-        __LEGACY_SUPPORT__:   false
+        __PAYPAL_CHECKOUT__: {
+            __LEGACY_SUPPORT__: false
+        }
     }
 });
 
-// eslint-disable-next-line import/no-anonymous-default-export
+export let TEST = getWebpackConfig({
+    test: true,
+    vars: {
+        __PAYPAL_CHECKOUT__: {
+            __MAJOR__:         false,
+            __MAJOR_VERSION__: 'test',
+            __MINOR_VERSION__: 'test_minor'
+        }
+    }
+});
+
 export default [
     BASE,
     MAJOR, MINOR,

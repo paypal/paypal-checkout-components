@@ -26,12 +26,12 @@ export { logFundingEligibility } from './funding';
 
 export let onPossiblyUnhandledException = ZalgoPromise.onPossiblyUnhandledException;
 
-export let version = __MINOR_VERSION__;
+export let version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
 
 export let checkout;
 export let apps;
 
-if (__LEGACY_SUPPORT__) {
+if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
     let legacy = require('./legacy');
     checkout = legacy.checkout;
     apps = legacy.apps;

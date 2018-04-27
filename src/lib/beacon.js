@@ -11,7 +11,7 @@ export function beacon(event : string, payload : Object = {}) {
     try {
 
         payload.event = `ppxo_${ event }`;
-        payload.version = __MINOR_VERSION__;
+        payload.version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__;
         payload.host = window.location.host;
         payload.uid = getSessionID();
 
@@ -61,7 +61,7 @@ export function checkpoint(name : string, payload : Object = {}, options : Objec
         let checkpointName = name;
 
         if (options.version) {
-            let version = __MINOR_VERSION__.replace(/[^0-9]+/g, '_');
+            let version = __PAYPAL_CHECKOUT__.__MINOR_VERSION__.replace(/[^0-9]+/g, '_');
             checkpointName = `${ version }_${ checkpointName }`;
         }
 
@@ -82,7 +82,7 @@ const FPTI_URL = 'https://t.paypal.com/ts';
 
 function buildPayload() : Object {
     return {
-        v:     `checkout.js.${ __MINOR_VERSION__ }`,
+        v:     `checkout.js.${ __PAYPAL_CHECKOUT__.__MINOR_VERSION__ }`,
         t:     Date.now(),
         g:     new Date().getTimezoneOffset(),
         flnm: 'ec:hermes:',

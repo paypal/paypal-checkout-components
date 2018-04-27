@@ -12,7 +12,7 @@ export let config = {
     // eslint-disable-next-line security/detect-unsafe-regex
     paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
-    version: __MINOR_VERSION__,
+    version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
 
     cors: true,
 
@@ -31,7 +31,7 @@ export let config = {
 
     merchantID: '',
 
-    logLevel: __DEFAULT_LOG_LEVEL__,
+    logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
 
     throttles: {
         v4_mobile_device: 0

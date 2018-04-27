@@ -1,29 +1,3 @@
 {
-    "presets": [
-        [
-            "env", {
-                "targets": {
-                    "ie": 9,
-                    "chrome": 27,
-                    "firefox": 30,
-                    "safari": 5,
-                    "opera": 23
-                },
-                "loose": true
-            }
-        ],
-        "react"
-    ],
-    "plugins": [
-        [ "syntax-dynamic-import", { "loose": true } ],
-        [ "transform-flow-strip-types", { "loose": true } ],
-        [ "transform-object-rest-spread", { "loose": true } ],
-        [ "syntax-object-rest-spread", { "loose": true } ],
-        [ "transform-class-properties", { "loose": true } ],
-        [ "transform-es3-property-literals", { "loose": true } ],
-        [ "transform-es3-member-expression-literals", { "loose": true } ],
-        [ "transform-decorators-legacy", { "loose": true } ],
-        [ "transform-es2015-for-of", { "loose": true } ],
-        [ "babel-plugin-transform-react-jsx", { "pragma": "jsxDom" } ]
-    ]
+  "extends": "grumbler-scripts/config/.babelrc-browser"
 }

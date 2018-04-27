@@ -48,7 +48,7 @@ export function initLogger() {
             country: config.locale.country,
             lang:    config.locale.lang,
             uid:     getSessionID(),
-            ver:     __MINOR_VERSION__
+            ver:     __PAYPAL_CHECKOUT__.__MINOR_VERSION__
         };
     });
 
@@ -103,7 +103,7 @@ export function initLogger() {
         heartbeat:      false,
         logPerformance: false,
         prefix,
-        logLevel:       __DEFAULT_LOG_LEVEL__
+        logLevel:       __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__
     });
 }
 

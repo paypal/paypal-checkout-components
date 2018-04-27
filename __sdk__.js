@@ -4,7 +4,7 @@
 module.exports = {
     
     'buttons': {
-        entry: './src/index',
+        entry:           './src/index',
         staticNamespace: '__paypal_checkout__'
-    }    
+    }
 };

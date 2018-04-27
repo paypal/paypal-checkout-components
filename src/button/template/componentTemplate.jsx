@@ -285,7 +285,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let scriptNode = renderScript();
 
     return (
-        <div { ...{ [ ATTRIBUTE.VERSION ]: __MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
+        <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
             { styleNode }
 
             { buttonNodes }
