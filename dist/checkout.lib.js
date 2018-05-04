@@ -9768,7 +9768,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.200",
+                version: "4.0.201",
                 cors: !0,
                 env: constants.t.PRODUCTION,
                 state: "checkoutjs",
@@ -12542,7 +12542,7 @@
                         innerHTML: "(" + script + ")();"
                     });
                 }();
-                return Object(jsx.b)("div", componentTemplate__extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.200"), {
+                return Object(jsx.b)("div", componentTemplate__extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.201"), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -13547,7 +13547,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.200", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.201", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(moduleName, exportBuilder) {
@@ -14952,7 +14952,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.200"
+                        ver: "4.0.201"
                     };
                 });
                 Object(client.a)(function() {
@@ -15238,7 +15238,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.200";
+                    payload.version = "4.0.201";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -15255,7 +15255,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.200".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.201".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -15274,7 +15274,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.200",
+                    v: "checkout.js.4.0.201",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -15459,7 +15459,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.200";
+                return "4.0.201";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -15476,7 +15476,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.200"
+                            version: "4.0.201"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
