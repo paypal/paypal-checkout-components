@@ -48,81 +48,7 @@ export const Card : Component<CardOptions> = create({
     onAuthorize: {
         type:     'function',
         required: true,
-        once:     true,
-
-        decorate(original) : ?Function {
-            if (original) {
-                return function decorateOnAuthorize(
-                    data,
-                    actions = {}
-                ) : ZalgoPromise<void> {
-                    if (data && !data.intent) {
-                        warn(`checkout_authorize_no_intent`, {
-                            paymentID:  data.paymentID,
-                            token:      data.paymentToken
-                        });
-                    }
-
-                    let restart = actions.restart;
-                    actions.restart = () => {
-                        return restart().then(() => {
-                            return new ZalgoPromise();
-                        });
-                    };
-
-                    actions.redirect = (win, url) => {
-                        return ZalgoPromise.all([
-                            redir(win || window.top, url || data.returnUrl),
-                            actions.close()
-                        ]);
-                    };
-
-                    actions.payment.tokenize = memoize(() => {
-                        if (!this.props.braintree) {
-                            throw new Error(`Must pass in Braintree client to tokenize payment`);
-                        }
-
-                        return this.props.braintree
-                            .then(client => client.tokenizePayment(data))
-                            .then(res => ({ nonce: res.nonce }));
-                    });
-
-                    let execute = actions.payment.execute;
-                    actions.payment.execute = () => {
-                        return execute().then(result => {
-
-                            if (!result || !result.id || !result.intent || !result.state) {
-                                warn(`execute_result_missing_data`);
-                                return new ZalgoPromise();
-                            }
-
-                            return mergePaymentDetails(result.id, result);
-                        });
-                    };
-
-                    let get = actions.payment.get;
-
-                    actions.payment.get = () => {
-                        return get().then(result => {
-                            if (!result || !result.id || !result.intent || !result.state) {
-                                warn(`get_result_missing_data`);
-                                return new ZalgoPromise();
-                            }
-
-                            return mergePaymentDetails(result.id, result);
-                        });
-                    };
-
-                    actions.request = request;
-
-                    onAuthorizeListener.trigger({
-                        paymentToken: data.paymentToken
-                    });
-
-                    return original.call(this, data, actions);
-                };
-            }
-        }
+        once:     true
     },
 
     onAuth: {
@@ -137,73 +63,10 @@ export const Card : Component<CardOptions> = create({
         sameDomain: true
     },
 
-    accessToken: {
-        type:     'function',
-        required: false
-    },
-
     onCancel: {
         type:     'function',
         required: false,
         once:     true,
-        noop:     true,
-
-        decorate(original) : ?Function {
-            return function decorateOnCancel(
-                data,
-                actions = {}
-            ) : ZalgoPromise<void> {
-                let close = () => {
-                    return ZalgoPromise.try(() => {
-                        if (actions.close) {
-                            return actions.close();
-                        }
-                    }).then(() => {
-                        return this.closeComponent || this.closeComponent();
-                    });
-                };
-
-                let redirect = (win, url) => {
-                    return ZalgoPromise.all([
-                        redir(win || window.top, url || data.cancelUrl),
-                        close()
-                    ]);
-                };
-
-                return ZalgoPromise.try(() => {
-                    return original.call(this, data, {
-                        ...actions,
-                        close,
-                        redirect
-                    });
-                }).finally(() => {
-                    this.close();
-                });
-            };
-        }
+        noop:     true
     }
-});
-
-patchMethod(Card, 'init', ({ args: [ props, _context ], original, context }) => {
-    if (Card.xprops && Card.xprops.logLevel) {
-        setLogLevel(Card.xprops.logLevel);
-    }
-    return original.call(context, props, _context, 'body');
-});
-
-patchMethod(Card, 'render', ({ args: [ props ], original, context }) => {
-    return original.call(context, props, 'body');
-});
-
-patchMethod(Card, 'renderTo', ({ args: [ win, props ], original, context }) => {
-
-    let payment = props.payment();
-    props.payment = () => payment;
-
-    return original.call(context, win, props, 'body').catch(err => {
-        if (err instanceof PopupOpenError && isPayPalDomain()) {
-            return original.call(context, win, props, 'body');
-        }
-        throw err;
-    });
 });
