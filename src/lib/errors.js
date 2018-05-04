@@ -74,4 +74,9 @@ export function checkForCommonErrors() {
     if (window.Window && window.constructor && window.Window !== window.constructor) {
         warn(`window_constructor_does_not_match_window`);
     }
+
+    // $FlowFixMe
+    if (Object.assign && JSON.stringify({ a: 1, b: 2, c: 3 }) !== JSON.stringify(Object.assign({ a: 1 }, { b: 2 }, { c: 3 }))) {
+        warn(`object_assign_broken`);
+    }
 }
