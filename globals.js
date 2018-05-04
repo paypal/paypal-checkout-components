@@ -1,10 +1,9 @@
-/* @flow */
-/* eslint import/no-commonjs: off */
+/* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
 let postRobotGlobals = require('post-robot/globals');
 let xcomponentGlobals = require('xcomponent/globals');
 
-function getNextVersion() : string {
+function getNextVersion() {
     let version = require('./package.json').version;
     version = version.split('.');
     version[2] = (parseInt(version[2], 10) + 1).toString();
@@ -12,11 +11,11 @@ function getNextVersion() : string {
     return version;
 }
 
-function getNextMajorVersion() : string {
+function getNextMajorVersion() {
     return getNextVersion().split('.')[0];
 }
 
-function getNextMinorVersion() : string {
+function getNextMinorVersion() {
     return getNextVersion();
 }
 
