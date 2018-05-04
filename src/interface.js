@@ -8,6 +8,7 @@ import { attach } from 'paypal-braintree-web-client/src';
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
 import { Button as _Button } from './button';
+import { Card as _Card } from './card';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -37,14 +38,28 @@ if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
     apps = legacy.apps;
 }
 
-attach('buttons', ({ clientOptions }) => {
+attach('buttons', ({ clientoptions }) => {
     return {
-        Button: {
+        button: {
             render: (options, element) => {
                 return _Button.render({
                     ...options,
-                    env:    clientOptions.env,
-                    client: clientOptions.auth
+                    env:    clientoptions.env,
+                    client: clientoptions.auth
+                }, element);
+            }
+        }
+    };
+});
+
+attach('card', ({ clientoptions }) => {
+    return {
+        card: {
+            render: (options, element) => {
+                return _Card.render({
+                    ...options,
+                    env:    clientoptions.env,
+                    client: clientoptions.auth
                 }, element);
             }
         }
@@ -58,13 +73,13 @@ export let Checkout;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
+export let Card;
 
 function _enableCheckoutIframe() {
     _Checkout.contexts.iframe = true;
 }
 
 if (isPayPalDomain() || __TEST__) {
-
     Checkout = _Checkout;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
