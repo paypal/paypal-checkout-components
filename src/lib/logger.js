@@ -10,7 +10,7 @@ import { FPTI, PAYMENT_TYPE } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
-import { getDomainSetting, once } from './util';
+import { once } from './util';
 import { getQueryParam } from './dom';
 
 function getRefererDomain() : string {
@@ -93,10 +93,6 @@ export function initLogger() {
     });
 
     let prefix = 'ppxo';
-
-    if (getDomainSetting('log_domain_prefix')) {
-        prefix = `${ prefix }_${ window.location.host.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^www_/, '').replace(/_com$/, '') }`;
-    }
 
     init({
         uri:            config.loggerUrl,

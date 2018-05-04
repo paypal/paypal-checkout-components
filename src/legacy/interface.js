@@ -41,10 +41,6 @@ Object.defineProperty(checkout, 'urlPrefix', {
     }
 });
 
-if (window.xchild && !window.paypalCheckout) {
-    window.paypalCheckout = window.xchild;
-}
-
 function matchUrlAndPaymentToken(item) : { url : string, paymentToken : ?string } {
 
     if (!item || !item.trim()) {

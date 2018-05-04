@@ -61,8 +61,8 @@ if (top && parent) {
     }
 }
 
-if (getDomainSetting('allow_full_page_fallback')) {
-    patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
+patchMethod(Checkout, 'renderTo', ({ callOriginal, args: [ , props ] }) => {
+    if (getDomainSetting('allow_full_page_fallback')) {
         let handleError = once((err) => {
             try {
                 // eslint-disable-next-line no-console
@@ -79,8 +79,9 @@ if (getDomainSetting('allow_full_page_fallback')) {
 
         props.onError = handleError;
         return callOriginal().catch(handleError);
-    });
-}
+    }
+    return callOriginal();
+});
 
 let debounce = false;
 

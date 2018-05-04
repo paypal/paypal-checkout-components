@@ -39,7 +39,6 @@ export let config = {
 
     domain_settings: {
         'walmart.com': {
-            log_domain_prefix:               true,
             ie_full_page:                    false,
             allow_full_page_fallback:        true,
             memoize_payment:                 true,
@@ -69,7 +68,6 @@ export let config = {
         },
 
         'etsy.com': {
-            log_domain_prefix:               true,
             ie_full_page:                    false,
             allow_full_page_fallback:        true,
             memoize_payment:                 true,

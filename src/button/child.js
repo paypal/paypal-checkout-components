@@ -12,7 +12,7 @@ import typeof { Button } from './component';
 
 export function setupButtonChild(ButtonComponent : Button) {
 
-    setupPopupBridgeProxy(Checkout);
+    setupPopupBridgeProxy(Checkout, ButtonComponent);
 
     getPageRenderTime().then(pageRenderTime => {
 

@@ -115,7 +115,8 @@ export let Button : Component<ButtonOptions> = create({
         popup:  false
     },
 
-    scrolling: false,
+    scrolling:       false,
+    listenForResize: true,
 
     containerTemplate,
 
@@ -705,7 +706,7 @@ export let Button : Component<ButtonOptions> = create({
         awaitPopupBridge: {
             type:     'object',
             required: false,
-            value:    awaitPopupBridge
+            value:    () => awaitPopupBridge(Button)
         },
 
         supplement: {

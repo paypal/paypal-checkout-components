@@ -333,7 +333,7 @@ export function patchMethod(obj : Object, name : string, handler : Function) {
     obj[name] = function patchedMethod() : mixed {
         return handler({
             context:      this,
-            args:         arguments,
+            args:         Array.prototype.slice.call(arguments),
             original,
             callOriginal: () => original.apply(this, arguments)
         });

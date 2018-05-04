@@ -179,9 +179,9 @@ function renderThroughPopupBridge(props : Object, popupBridge : PopupBridge) : Z
     });
 }
 
-export function awaitPopupBridge() : ZalgoPromise<PopupBridge> {
-    if (window.xprops && window.xprops.awaitPopupBridge) {
-        return window.xprops.awaitPopupBridge();
+export function awaitPopupBridge(Button : Object) : ZalgoPromise<PopupBridge> {
+    if (Button.xprops && Button.xprops.awaitPopupBridge) {
+        return Button.xprops.awaitPopupBridge();
     }
 
     return awaitKey(window, 'popupBridge').then(popupBridge => {
@@ -189,11 +189,11 @@ export function awaitPopupBridge() : ZalgoPromise<PopupBridge> {
     });
 }
 
-export function setupPopupBridgeProxy(Checkout : Object) {
+export function setupPopupBridgeProxy(Checkout : Object, Button : Object) {
 
     let popupBridge;
 
-    awaitPopupBridge().then(bridge => {
+    awaitPopupBridge(Button).then(bridge => {
         popupBridge = bridge;
     });
 
