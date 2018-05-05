@@ -3,16 +3,11 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, PopupOpenError  } from 'xcomponent/src';
+import { create  } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
-import { warn } from 'beaver-logger/client';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { onAuthorizeListener } from '../experiments';
-import { mergePaymentDetails } from '../api/hacks';
-import { request, redirect as redir, patchMethod,
-    setLogLevel, memoize, isPayPalDomain
-} from '../lib';
+import { config } from '../config';
 
 type CardOptions = {
     client : {
