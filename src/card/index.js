@@ -31,8 +31,12 @@ export const Card : Component<CardOptions> = create({
         width:  '250px'
     },
 
-    buildUrl() : string {
-        return 'http://localhost.paypal.com:8000/webapps/hermes/zombo';
+    buildUrl(props) : string {
+        let env = props.env || config.env;
+
+        return window.xprops.payment().then(paymentToken => {
+            return `${ config.inlinedCardFieldUrls[env] }?token=${ paymentToken }`;
+        });
     },
 
     contexts: {

@@ -280,6 +280,15 @@ export let config = {
         [ ENV.DEMO ]:       `/demo/dev/button.htm`
     },
 
+    inlinedCardFieldUris: {
+        [ ENV.LOCAL ]:      `/webapps/hermes/zombo`,
+        [ ENV.STAGE ]:      `/webapps/hermes/zombo`,
+        [ ENV.SANDBOX ]:    `/webapps/hermes/zombo`,
+        [ ENV.PRODUCTION ]: `/webapps/hermes/zombo`,
+        [ ENV.TEST ]:       `/base/test/windows/zombo/index.htm`,
+        [ ENV.DEMO ]:       `/demo/dev/card.htm`
+    },
+
     postBridgeUris: {
         [ ENV.LOCAL ]:      `/webapps/hermes/component-meta`,
         [ ENV.STAGE ]:      `/webapps/hermes/component-meta`,
@@ -396,6 +405,20 @@ export let config = {
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.buttonUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.buttonUris.test }`,
             [ ENV.DEMO ]:       `${ paypalUrls.demo }${ config.buttonUris.demo }`
+        };
+    },
+
+    get inlinedCardFieldUrls() : Object {
+
+        let paypalUrls = config.paypalUrls;
+
+        return {
+            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.inlinedCardFieldUris.local }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.inlinedCardFieldUris.stage }`,
+            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.inlinedCardFieldUris.sandbox }`,
+            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.inlinedCardFieldUris.production }`,
+            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.inlinedCardFieldUris.test }`,
+            [ ENV.DEMO ]:       `${ paypalUrls.demo }${ config.inlinedCardFieldUris.demo }`
         };
     },
 
