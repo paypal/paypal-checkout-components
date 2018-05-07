@@ -1938,7 +1938,7 @@
                 })) + ")();"
             }));
             var script;
-            return jsxToHTML("div", _extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.201"), {
+            return jsxToHTML("div", _extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.202"), {
                 class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -2078,7 +2078,7 @@
         var config = {
             scriptUrl: "//www.paypalobjects.com/api/checkout.button.render.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.201",
+            version: "4.0.202",
             cors: !0,
             env: constants.s.PRODUCTION,
             state: "checkoutjs",
@@ -2087,6 +2087,13 @@
                 lang: constants.v.EN
             },
             stage: "msmaster",
+            stageDomain: "qa.paypal.com",
+            get stageUrl() {
+                return config.stage + "." + config.stageDomain;
+            },
+            get apiStageUrl() {
+                return config.apiStage + "." + config.stageDomain;
+            },
             merchantID: "",
             logLevel: "warn",
             throttles: {
@@ -2205,32 +2212,30 @@
             get paypalUrls() {
                 var _ref;
                 return _defineProperty(_ref = {}, constants.s.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref, constants.s.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                _defineProperty(_ref, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref, constants.s.PRODUCTION, "https://www.paypal.com"), 
-                _defineProperty(_ref, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
+                _defineProperty(_ref, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
                 _defineProperty(_ref, constants.s.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
                 _ref;
             },
             get paypalDomains() {
                 var _ref2;
                 return _defineProperty(_ref2 = {}, constants.s.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                _defineProperty(_ref2, constants.s.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                _defineProperty(_ref2, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref2, constants.s.PRODUCTION, "https://www.paypal.com"), 
-                _defineProperty(_ref2, constants.s.TEST, "mock://www.paypal.com"), _defineProperty(_ref2, constants.s.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                _defineProperty(_ref2, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref2, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref2, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref2, constants.s.TEST, "mock://www.paypal.com"), 
+                _defineProperty(_ref2, constants.s.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
                 _ref2;
             },
             get wwwApiUrls() {
                 var _ref3;
-                return _defineProperty(_ref3 = {}, constants.s.LOCAL, "https://www." + config.stage + ".qa.paypal.com"), 
-                _defineProperty(_ref3, constants.s.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                _defineProperty(_ref3, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref3, constants.s.PRODUCTION, "https://www.paypal.com"), 
-                _defineProperty(_ref3, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
+                return _defineProperty(_ref3 = {}, constants.s.LOCAL, "https://www." + config.stageUrl), 
+                _defineProperty(_ref3, constants.s.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref3, constants.s.SANDBOX, "https://www.sandbox.paypal.com"), 
+                _defineProperty(_ref3, constants.s.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref3, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
                 _ref3;
             },
             get corsApiUrls() {
                 var _ref4;
-                return _defineProperty(_ref4 = {}, constants.s.LOCAL, "https://" + config.apiStage + ".qa.paypal.com:12326"), 
-                _defineProperty(_ref4, constants.s.STAGE, "https://" + config.apiStage + ".qa.paypal.com:12326"), 
+                return _defineProperty(_ref4 = {}, constants.s.LOCAL, "https://" + config.apiStageUrl + ":12326"), 
+                _defineProperty(_ref4, constants.s.STAGE, "https://" + config.apiStageUrl + ":12326"), 
                 _defineProperty(_ref4, constants.s.SANDBOX, "https://cors.api.sandbox.paypal.com"), 
                 _defineProperty(_ref4, constants.s.PRODUCTION, "https://cors.api.paypal.com"), _defineProperty(_ref4, constants.s.TEST, window.location.protocol + "//" + window.location.host), 
                 _ref4;

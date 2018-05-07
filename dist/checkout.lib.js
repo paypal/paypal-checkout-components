@@ -9407,6 +9407,15 @@
                             if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stage;
                         }
                     },
+                    stageUrl: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function(props) {
+                            var env = props.env || config.a.env;
+                            if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
+                        }
+                    },
                     locale: {
                         type: "string",
                         required: !1,
@@ -9768,7 +9777,7 @@
             var config = {
                 scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
                 paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-                version: "4.0.201",
+                version: "4.0.202",
                 cors: !0,
                 env: constants.t.PRODUCTION,
                 state: "checkoutjs",
@@ -9777,6 +9786,13 @@
                     lang: constants.x.EN
                 },
                 stage: "msmaster",
+                stageDomain: "qa.paypal.com",
+                get stageUrl() {
+                    return config.stage + "." + config.stageDomain;
+                },
+                get apiStageUrl() {
+                    return config.apiStage + "." + config.stageDomain;
+                },
                 merchantID: "",
                 logLevel: "warn",
                 throttles: {
@@ -9895,32 +9911,30 @@
                 get paypalUrls() {
                     var _ref;
                     return _defineProperty(_ref = {}, constants.t.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                    _defineProperty(_ref, constants.t.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                    _defineProperty(_ref, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref, constants.t.PRODUCTION, "https://www.paypal.com"), 
-                    _defineProperty(_ref, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
+                    _defineProperty(_ref, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
+                    _defineProperty(_ref, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
                     _defineProperty(_ref, constants.t.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
                     _ref;
                 },
                 get paypalDomains() {
                     var _ref2;
                     return _defineProperty(_ref2 = {}, constants.t.LOCAL, "http://localhost.paypal.com:" + config.ports.default), 
-                    _defineProperty(_ref2, constants.t.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                    _defineProperty(_ref2, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref2, constants.t.PRODUCTION, "https://www.paypal.com"), 
-                    _defineProperty(_ref2, constants.t.TEST, "mock://www.paypal.com"), _defineProperty(_ref2, constants.t.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
+                    _defineProperty(_ref2, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref2, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
+                    _defineProperty(_ref2, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref2, constants.t.TEST, "mock://www.paypal.com"), 
+                    _defineProperty(_ref2, constants.t.DEMO, window.location.protocol + "//localhost.paypal.com:" + window.location.port), 
                     _ref2;
                 },
                 get wwwApiUrls() {
                     var _ref3;
-                    return _defineProperty(_ref3 = {}, constants.t.LOCAL, "https://www." + config.stage + ".qa.paypal.com"), 
-                    _defineProperty(_ref3, constants.t.STAGE, "https://www." + config.stage + ".qa.paypal.com"), 
-                    _defineProperty(_ref3, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), _defineProperty(_ref3, constants.t.PRODUCTION, "https://www.paypal.com"), 
-                    _defineProperty(_ref3, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
+                    return _defineProperty(_ref3 = {}, constants.t.LOCAL, "https://www." + config.stageUrl), 
+                    _defineProperty(_ref3, constants.t.STAGE, "https://www." + config.stageUrl), _defineProperty(_ref3, constants.t.SANDBOX, "https://www.sandbox.paypal.com"), 
+                    _defineProperty(_ref3, constants.t.PRODUCTION, "https://www.paypal.com"), _defineProperty(_ref3, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
                     _ref3;
                 },
                 get corsApiUrls() {
                     var _ref4;
-                    return _defineProperty(_ref4 = {}, constants.t.LOCAL, "https://" + config.apiStage + ".qa.paypal.com:12326"), 
-                    _defineProperty(_ref4, constants.t.STAGE, "https://" + config.apiStage + ".qa.paypal.com:12326"), 
+                    return _defineProperty(_ref4 = {}, constants.t.LOCAL, "https://" + config.apiStageUrl + ":12326"), 
+                    _defineProperty(_ref4, constants.t.STAGE, "https://" + config.apiStageUrl + ":12326"), 
                     _defineProperty(_ref4, constants.t.SANDBOX, "https://cors.api.sandbox.paypal.com"), 
                     _defineProperty(_ref4, constants.t.PRODUCTION, "https://cors.api.paypal.com"), _defineProperty(_ref4, constants.t.TEST, window.location.protocol + "//" + window.location.host), 
                     _ref4;
@@ -12542,7 +12556,7 @@
                         innerHTML: "(" + script + ")();"
                     });
                 }();
-                return Object(jsx.b)("div", componentTemplate__extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.201"), {
+                return Object(jsx.b)("div", componentTemplate__extends({}, componentTemplate__defineProperty({}, constants.c.VERSION, "4.0.202"), {
                     class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -12766,6 +12780,15 @@
                         def: function(props) {
                             var env = props.env || config.a.env;
                             if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stage;
+                        }
+                    },
+                    stageUrl: {
+                        type: "string",
+                        required: !1,
+                        queryParam: !0,
+                        def: function(props) {
+                            var env = props.env || config.a.env;
+                            if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                         }
                     },
                     braintree: {
@@ -13483,7 +13506,7 @@
             function setup() {
                 var options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 !function() {
-                    var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
+                    var _ref2 = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, env = _ref2.env, stage = _ref2.stage, stageUrl = _ref2.stageUrl, apiStage = _ref2.apiStage, state = _ref2.state, logLevel = _ref2.logLevel, merchantID = _ref2.merchantID;
                     if (env) {
                         if (!config.a.paypalUrls[env]) throw new Error("Invalid env: " + env);
                         delete config.a.env;
@@ -13492,6 +13515,22 @@
                     if (stage) {
                         delete config.a.stage;
                         config.a.stage = stage;
+                    } else if (component_Button.xprops && component_Button.xprops.stage) {
+                        delete config.a.stage;
+                        config.a.stage = component_Button.xprops.stage;
+                    } else if (src_checkout.a.xprops && src_checkout.a.xprops.stage) {
+                        delete config.a.stage;
+                        config.a.stage = src_checkout.a.xprops.stage;
+                    }
+                    if (stageUrl) {
+                        delete config.a.stageUrl;
+                        config.a.stageUrl = stageUrl;
+                    } else if (component_Button.xprops && component_Button.xprops.stageUrl) {
+                        delete config.a.stageUrl;
+                        config.a.stageUrl = component_Button.xprops.stageUrl;
+                    } else if (src_checkout.a.xprops && src_checkout.a.xprops.stageUrl) {
+                        delete config.a.stage;
+                        config.a.stageUrl = src_checkout.a.xprops.stageUrl;
                     }
                     if (apiStage) {
                         delete config.a.apiStage;
@@ -13510,6 +13549,7 @@
                 env: currentScript.getAttribute("data-env"),
                 stage: currentScript.getAttribute("data-stage"),
                 apiStage: currentScript.getAttribute("data-api-stage"),
+                stageUrl: currentScript.getAttribute("data-stage-url"),
                 state: currentScript.getAttribute("data-state"),
                 logLevel: currentScript.getAttribute("data-log-level"),
                 merchantID: currentScript.getAttribute("data-merchant-id"),
@@ -13547,7 +13587,7 @@
                     for (var key in source) Object.prototype.hasOwnProperty.call(source, key) && (target[key] = source[key]);
                 }
                 return target;
-            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.201", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
+            }, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.202", interface_checkout = void 0, apps = void 0, legacy = __webpack_require__("./src/legacy/index.js");
             interface_checkout = legacy.checkout;
             apps = legacy.apps;
             !function(moduleName, exportBuilder) {
@@ -14952,7 +14992,7 @@
                         country: config.a.locale.country,
                         lang: config.a.locale.lang,
                         uid: getSessionID(),
-                        ver: "4.0.201"
+                        ver: "4.0.202"
                     };
                 });
                 Object(client.a)(function() {
@@ -15238,7 +15278,7 @@
                 var payload = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 try {
                     payload.event = "ppxo_" + event;
-                    payload.version = "4.0.201";
+                    payload.version = "4.0.202";
                     payload.host = window.location.host;
                     payload.uid = getSessionID();
                     var query = [];
@@ -15255,7 +15295,7 @@
                 try {
                     var checkpointName = name;
                     if (options.version) {
-                        checkpointName = "4.0.201".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
+                        checkpointName = "4.0.202".replace(/[^0-9]+/g, "_") + "_" + checkpointName;
                     }
                     if (!function(name) {
                         return getSessionState(function(state) {
@@ -15274,7 +15314,7 @@
             function fpti() {
                 var payload = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, query = [];
                 payload = beacon__extends({}, {
-                    v: "checkout.js.4.0.201",
+                    v: "checkout.js.4.0.202",
                     t: Date.now(),
                     g: new Date().getTimezoneOffset(),
                     flnm: "ec:hermes:",
@@ -15459,7 +15499,7 @@
                 return Boolean(getCurrentScript());
             }
             function getScriptVersion() {
-                return "4.0.201";
+                return "4.0.202";
             }
             var openMetaFrame = Object(util.j)(function() {
                 var env = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : config.a.env;
@@ -15476,7 +15516,7 @@
                             domain: metaFrameDomain
                         });
                         return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                            version: "4.0.201"
+                            version: "4.0.202"
                         }), metaFrameDomain).then(function() {
                             return metaListener;
                         }).then(function(_ref) {
