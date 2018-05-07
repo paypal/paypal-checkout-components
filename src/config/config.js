@@ -27,7 +27,16 @@ export let config = {
         lang:    LANG.EN
     },
 
-    stage: 'msmaster',
+    stage:       'msmaster',
+    stageDomain: 'qa.paypal.com',
+
+    get stageUrl() : string {
+        return `${ config.stage }.${ config.stageDomain }`;
+    },
+
+    get apiStageUrl() : string {
+        return `${ config.apiStage }.${ config.stageDomain }`;
+    },
 
     merchantID: '',
 
@@ -181,7 +190,7 @@ export let config = {
     get paypalUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`,
@@ -192,7 +201,7 @@ export let config = {
     get paypalDomains() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `mock://www.paypal.com`,
@@ -202,8 +211,8 @@ export let config = {
 
     get wwwApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://www.${ config.stage }.qa.paypal.com`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.LOCAL ]:      `https://www.${ config.stageUrl }`,
+            [ ENV.STAGE ]:      `https://www.${ config.stageUrl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`
@@ -212,8 +221,8 @@ export let config = {
 
     get corsApiUrls() : Object {
         return {
-            [ ENV.LOCAL ]:      `https://${ config.apiStage }.qa.paypal.com:12326`,
-            [ ENV.STAGE ]:      `https://${ config.apiStage }.qa.paypal.com:12326`,
+            [ ENV.LOCAL ]:      `https://${ config.apiStageUrl }:12326`,
+            [ ENV.STAGE ]:      `https://${ config.apiStageUrl }:12326`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`

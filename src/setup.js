@@ -66,12 +66,13 @@ type ConfigOptions = {
     env? : ?string,
     stage? : ?string,
     apiStage? : ?string,
+    stageUrl? : ?string,
     state? : ?string,
     logLevel? : ?string,
     merchantID? : ?string
 };
 
-function configure({ env, stage, apiStage, state, logLevel, merchantID } : ConfigOptions = {}) {
+function configure({ env, stage, stageUrl, apiStage, state, logLevel, merchantID } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -85,6 +86,12 @@ function configure({ env, stage, apiStage, state, logLevel, merchantID } : Confi
     if (stage) {
         delete config.stage;
         config.stage = stage;
+    }
+
+    if (stageUrl) {
+        delete config.stageUrl;
+        // $FlowFixMe
+        config.stageUrl = stageUrl;
     }
 
     if (apiStage) {
@@ -145,6 +152,7 @@ if (currentScript) {
         env:                currentScript.getAttribute('data-env'),
         stage:              currentScript.getAttribute('data-stage'),
         apiStage:           currentScript.getAttribute('data-api-stage'),
+        stageUrl:           currentScript.getAttribute('data-stage-url'),
         state:              currentScript.getAttribute('data-state'),
         logLevel:           currentScript.getAttribute('data-log-level'),
         merchantID:         currentScript.getAttribute('data-merchant-id'),
