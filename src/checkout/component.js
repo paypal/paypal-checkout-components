@@ -37,6 +37,8 @@ type CheckoutPropsType = {
     fundingSource? : string,
     logLevel? : string,
     env? : string,
+    stage? : string,
+    stageUrl? : string,
     supplement? : {
         getPaymentOptions : Function,
         addPaymentDetails : Function
@@ -152,6 +154,20 @@ export let Checkout : Component<CheckoutPropsType> = create({
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stage;
+                }
+            }
+        },
+
+        stageUrl: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def(props) : ?string {
+                let env = props.env || config.env;
+
+                if (env === ENV.STAGE || env === ENV.LOCAL) {
+                    return config.stageUrl;
                 }
             }
         },

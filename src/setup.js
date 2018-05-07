@@ -10,6 +10,8 @@ import { initLogger, checkForCommonErrors, setLogLevel, stringifyError,
     getDomainSetting, once, openMetaFrame, precacheRememberedFunding,
     getCurrentScript } from './lib';
 import { createPptmScript } from './external';
+import { Button } from './button';
+import { Checkout } from './checkout';
 
 function domainToEnv(domain : string) : ?string {
     for (let env of Object.keys(config.paypalUrls)) {
@@ -86,12 +88,28 @@ function configure({ env, stage, stageUrl, apiStage, state, logLevel, merchantID
     if (stage) {
         delete config.stage;
         config.stage = stage;
+    } else if (Button.xprops && Button.xprops.stage) {
+        delete config.stage;
+        // $FlowFixMe
+        config.stage = Button.xprops.stage;
+    } else if (Checkout.xprops && Checkout.xprops.stage) {
+        delete config.stage;
+        // $FlowFixMe
+        config.stage = Checkout.xprops.stage;
     }
 
     if (stageUrl) {
         delete config.stageUrl;
         // $FlowFixMe
         config.stageUrl = stageUrl;
+    } else if (Button.xprops && Button.xprops.stageUrl) {
+        delete config.stageUrl;
+        // $FlowFixMe
+        config.stageUrl = Button.xprops.stageUrl;
+    } else if (Checkout.xprops && Checkout.xprops.stageUrl) {
+        delete config.stage;
+        // $FlowFixMe
+        config.stageUrl = Checkout.xprops.stageUrl;
     }
 
     if (apiStage) {

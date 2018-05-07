@@ -96,7 +96,9 @@ type ButtonOptions = {
     },
     awaitPopupBridge : Function,
     meta : Object,
-    validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void
+    validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
+    stage? : string,
+    stageUrl? : string
 };
 
 export let Button : Component<ButtonOptions> = create({
@@ -278,6 +280,20 @@ export let Button : Component<ButtonOptions> = create({
 
                 if (env === ENV.STAGE || env === ENV.LOCAL) {
                     return config.stage;
+                }
+            }
+        },
+
+        stageUrl: {
+            type:       'string',
+            required:   false,
+            queryParam: true,
+
+            def(props) : ?string {
+                let env = props.env || config.env;
+
+                if (env === ENV.STAGE || env === ENV.LOCAL) {
+                    return config.stageUrl;
                 }
             }
         },
