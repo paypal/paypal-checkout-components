@@ -282,7 +282,7 @@ export let Button : Component<ButtonOptions> = create({
             def(props) : ?string {
                 let env = props.env || config.env;
 
-                if (env === ENV.STAGE || env === ENV.LOCAL) {
+                if (env === ENV.STAGE || env === ENV.LOCAL || env === ENV.STAGEURL) {
                     return config.stage;
                 }
             }
@@ -366,7 +366,7 @@ export let Button : Component<ButtonOptions> = create({
                     if (this.props.env === ENV.PRODUCTION && !getDomainSetting('disable_payment_timeout')) {
                         this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                     }
-                        
+
                     this.memoizedToken = this.memoizedToken.then(token => {
 
                         if (!token) {

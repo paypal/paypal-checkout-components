@@ -139,7 +139,7 @@ export let Checkout : Component<CheckoutPropsType> = create({
             def(props) : ?string {
                 let env = props.env || config.env;
 
-                if (env === ENV.STAGE || env === ENV.LOCAL) {
+                if (env === ENV.STAGE || env === ENV.LOCAL || env === ENV.STAGEURL) {
                     return config.stage;
                 }
             }
@@ -542,7 +542,7 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
                 let throttle = getThrottle('top_pay_button', 50);
 
                 let hash = window.location.hash;
-                
+
                 let logComplete = () => {
                     if (experimentActive && !loggedComplete && hash && hash.indexOf('checkout/review') !== -1) {
                         throttle.logComplete({ [ FPTI.KEY.FEED ]: 'hermesnodeweb' });
@@ -606,4 +606,3 @@ patchMethod(Checkout, 'renderTo', ({ args: [ win, props ], original, context }) 
         throw err;
     });
 });
-

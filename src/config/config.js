@@ -27,7 +27,9 @@ export let config = {
         lang:    LANG.EN
     },
 
-    stage: 'msmaster',
+    stage: 'msmaster.qa.paypal.com',
+
+    stageurl: 'msmaster.qa.paypal.com',
 
     merchantID: '',
 
@@ -47,7 +49,7 @@ export let config = {
             log_authorize:                   true,
             disable_payment_timeout:         true
         },
-        
+
         'ulta.com': {
             disable_venmo: true
         },
@@ -85,7 +87,7 @@ export let config = {
         'livenation.com': {
             disable_venmo: true
         },
-        
+
         'frontgatetickets.com': {
             disable_venmo: true
         },
@@ -159,7 +161,8 @@ export let config = {
     get paypalUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${ config.stage }`,
+            [ ENV.STAGEURL ]:   `https://www.${ config.stageurl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`,
@@ -170,7 +173,8 @@ export let config = {
     get paypalDomains() : Object {
         return {
             [ ENV.LOCAL ]:      `http://localhost.paypal.com:${ config.ports.default }`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${ config.stage }`,
+            [ ENV.STAGEURL ]:   `https://www.${ config.stageurl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `mock://www.paypal.com`,
@@ -181,7 +185,8 @@ export let config = {
     get wwwApiUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `https://www.${ config.stage }.qa.paypal.com`,
-            [ ENV.STAGE ]:      `https://www.${ config.stage }.qa.paypal.com`,
+            [ ENV.STAGE ]:      `https://www.${ config.stage }`,
+            [ ENV.STAGEURL ]:   `https://www.${ config.stageurl }`,
             [ ENV.SANDBOX ]:    `https://www.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://www.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`
@@ -191,7 +196,8 @@ export let config = {
     get corsApiUrls() : Object {
         return {
             [ ENV.LOCAL ]:      `https://${ config.apiStage }.qa.paypal.com:11888`,
-            [ ENV.STAGE ]:      `https://${ config.apiStage }.qa.paypal.com:11888`,
+            [ ENV.STAGE ]:      `https://${ config.apiStage }:11888`,
+            [ ENV.STAGEURL ]:   `https://${ config.apiStage }:11888`,
             [ ENV.SANDBOX ]:    `https://cors.api.sandbox.paypal.com`,
             [ ENV.PRODUCTION ]: `https://cors.api.paypal.com`,
             [ ENV.TEST ]:       `${ window.location.protocol }//${ window.location.host }`
@@ -207,6 +213,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      domain === wwwApiUrls.local      ? wwwApiUrls.local      : corsApiUrls.local,
             [ ENV.STAGE ]:      domain === wwwApiUrls.stage      ? wwwApiUrls.stage      : corsApiUrls.stage,
+            [ ENV.STAGEURL]:    domain === wwwApiUrls.stageurl   ? wwwApiUrls.stageurl   : corsApiUrls.stageurl,
             [ ENV.SANDBOX ]:    domain === wwwApiUrls.sandbox    ? wwwApiUrls.sandbox    : corsApiUrls.sandbox,
             [ ENV.PRODUCTION ]: domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production,
             [ ENV.TEST ]:       domain === wwwApiUrls.test       ? wwwApiUrls.test       : corsApiUrls.test
@@ -314,6 +321,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.checkoutUris.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.checkoutUris.stage }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.checkoutUris.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.checkoutUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.checkoutUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.checkoutUris.test }`,
@@ -328,6 +336,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.guest }`) }${ config.guestUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.guestUris.stage }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.guestUris.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.guestUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.guestUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.guestUris.test }`,
@@ -342,6 +351,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.altpay }`) }${ config.altpayUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.altpayUris.stage }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.altpayUris.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.altpayUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.altpayUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.altpayUris.test }`,
@@ -356,6 +366,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }${ config.billingUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.billingUris.stage }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.billingUris.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.billingUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.billingUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.billingUris.test }`,
@@ -370,6 +381,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.button }`) }${ config.buttonUris.local }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.buttonUris.stage }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.buttonUris.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.buttonUris.sandbox }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.buttonUris.production }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.buttonUris.test }`,
@@ -384,6 +396,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.loginUri }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.loginUri }`,
+            [ ENV.STAGEURL ]:   `${ paypalUrls.stageurl }${ config.loginUri }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.loginUri }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.loginUri }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.loginUri }`
@@ -397,6 +410,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.paymentStandardUri }`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.paymentStandardUri }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stageurl }${ config.paymentStandardUri }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.paymentStandardUri }`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.paymentStandardUri }`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.paymentStandardUri }`
@@ -410,6 +424,7 @@ export let config = {
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.postBridgeUri }&env=local`,
             [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.postBridgeUri }&env=stage&stage=${ config.stage }`,
+            [ ENV.STAGEURL ]:    `${ paypalUrls.stageurl }${ config.postBridgeUri }&env=stageurl&stage=${ config.stageurl }`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.postBridgeUri }&env=sandbox`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.postBridgeUri }&env=production`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.postBridgeUri }&env=test`,
