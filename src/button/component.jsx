@@ -219,7 +219,7 @@ export let Button : Component<ButtonOptions> = create({
             validate(client, props) {
                 let env = props.env || config.env;
 
-                if (!client[env]) {
+                if (!client[env] && env !== 'stageurl') {
                     throw new Error(`Client ID not found for env: ${ env }`);
                 }
 

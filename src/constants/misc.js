@@ -3,6 +3,7 @@
 export const ENV = {
     LOCAL:      'local',
     STAGE:      'stage',
+    STAGEURL:   'stageurl',
     SANDBOX:    'sandbox',
     PRODUCTION: 'production',
     TEST:       'test',
@@ -47,5 +48,3 @@ export const PLATFORM = {
 };
 
 export const DEFAULT = 'default';
-
-
