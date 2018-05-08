@@ -25,6 +25,7 @@
     "demo": "serve ./demo --port 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "buttondiff": "jest test/screenshot/screenshot.test.js --env=node",
+    "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack-dev-server.config.js --port 9000",
     "test-ssr": "jest test/ssr/ssr.test.js --env=node"
   },
   "files": [
@@ -69,7 +70,9 @@
     "pixelmatch": "^4.0.2",
     "pngjs": "^3.3.0",
     "puppeteer": "^0.11.0",
-    "sync-browser-mocks": "^1.0.43"
+    "sync-browser-mocks": "^1.0.43",
+    "webpack-cli": "^1.5.3",
+    "webpack-dev-server": "^2.11.2"
   },
   "dependencies": {
     "Base64": "^1.0.0",
