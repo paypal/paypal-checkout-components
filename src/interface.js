@@ -8,6 +8,7 @@ import { attach } from 'paypal-braintree-web-client/src';
 import { isPayPalDomain } from './lib';
 import { Checkout as _Checkout } from './checkout';
 import { Button as _Button } from './button';
+import { Card as _Card } from './card';
 
 import './hacks'; // eslint-disable-line import/no-unassigned-import
 
@@ -51,10 +52,10 @@ attach('buttons', ({ clientOptions }) => {
     };
 });
 
-
 // -------------------------------------------------------------
 
 export let Checkout;
+export let Card;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
@@ -64,8 +65,8 @@ function _enableCheckoutIframe() {
 }
 
 if (isPayPalDomain() || __TEST__) {
-
     Checkout = _Checkout;
+    Card = _Card;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;
