@@ -18,7 +18,6 @@ export { PopupOpenError } from 'xcomponent/src';
 
 export { rest } from './api';
 export { Button } from './button';
-export { Card } from './card';
 export { setup } from './setup';
 export { config } from './config';
 export { ENV, USERS, SOURCE, FUNDING, CARD } from './constants';
@@ -39,9 +38,9 @@ if (__PAYPAL_CHECKOUT__.__LEGACY_SUPPORT__) {
     apps = legacy.apps;
 }
 
-attach('Buttons', ({ clientOptions }) => {
+attach('buttons', ({ clientOptions }) => {
     return {
-        button: {
+        Button: {
             render: (options, element) => {
                 return _Button.render({
                     ...options,
@@ -53,24 +52,10 @@ attach('Buttons', ({ clientOptions }) => {
     };
 });
 
-attach('Card', ({ clientOptions }) => {
-    return {
-        card: {
-            render: (options, element) => {
-                return _Card.render({
-                    ...options,
-                    env:    clientOptions.env,
-                    client: clientOptions.auth
-                }, element);
-            }
-        }
-    };
-});
-
-
 // -------------------------------------------------------------
 
 export let Checkout;
+export let Card;
 export let PayPalCheckout;
 export let destroyAll;
 export let enableCheckoutIframe;
@@ -81,6 +66,7 @@ function _enableCheckoutIframe() {
 
 if (isPayPalDomain() || __TEST__) {
     Checkout = _Checkout;
+    Card = _Card;
     PayPalCheckout = _Checkout;
     enableCheckoutIframe = _enableCheckoutIframe;
     destroyAll = _destroyAll;
