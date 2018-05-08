@@ -23,7 +23,7 @@ type CardOptions = {
 };
 
 export const Card : Component<CardOptions> = create({
-    tag:  'zombo',
+    tag:  'card-fields',
     name: 'ppcard',
 
     dimensions: {
