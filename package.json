@@ -1,6 +1,6 @@
 {
   "name": "xo-buttonjs",
-  "version": "1.0.63",
+  "version": "1.0.64",
   "description": "Serverside rendered ButtonJS",
   "main": "index.js",
   "repository": {
@@ -15,8 +15,8 @@
     "cover": "echo no-cover"
   },
   "peerDependencies": {
-    "express": "^4.16.3",
     "cal": "^0.5.44",
+    "express": "^4.16.3",
     "servicecore": "^2 || ^3",
     "xo-spark": "^2.1.1"
   },

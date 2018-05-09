@@ -10,10 +10,9 @@ import {
 import { renderCardExperience } from './card';
 import { renderCheckout } from './checkout';
 import { KEY_CODES } from './constants';
-import { getButtonFunding } from './api';
+import { getButtonFunding, mapToToken } from './api';
 import { querySelectorAll } from './util';
 import { payment, guestEligibilityCheck } from './paymentRequest';
-import { mapToToken } from '../../../api/api';
 
 function clickButton(event, { fundingSource = 'paypal', card }) {
     event.preventDefault();
