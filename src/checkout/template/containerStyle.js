@@ -1,7 +1,5 @@
 /* @flow */
 
-import { CHECKOUT_OVERLAY_COLOR } from '../../constants';
-
 export function getSandboxStyle({ id, ANIMATION } : { id : string, ANIMATION : Object }) : string {
     return `
         #${ id }.paypal-checkout-sandbox {
@@ -105,9 +103,7 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             -ms-transform: translate3d(0, 0, 0);
             -o-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0);
-        }
 
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } {
             background-color: black;
             background-color: rgba(0, 0, 0, 0.8);
 
@@ -119,38 +115,13 @@ export function getContainerStyle({ id, tag, CONTEXT, CLASS, ANIMATION } : { id 
             color: #fff;
         }
 
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } {
-            background-color: white;
-            background-color: rgba(255, 255, 255, 0.4);
-
-            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
-            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
-            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
-            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,0.65) 1%, rgba(255, 255, 255,0.4) 100%);
-
-            color: #333;
-        }
-
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } a {
+        #${ id } a {
             color: #fff;
         }
 
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } a {
-            color: #333;
-        }
-
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:before,
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.BLACK } .paypal-checkout-close:after {
+        #${ id } .paypal-checkout-close:before,
+        #${ id } .paypal-checkout-close:after {
             background-color: #fff;
-        }
-
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } .paypal-checkout-close:before,
-        #${ id }.${ tag }-background-color-${ CHECKOUT_OVERLAY_COLOR.WHITE } .paypal-checkout-close:after {
-            background-color: #111;
-        }
-
-        #${ id }.${ tag }-context-${ CONTEXT.POPUP } {
-            cursor: pointer;
         }
 
         #${ id }.${ tag }-context-${ CONTEXT.POPUP } {

@@ -1,5 +1,7 @@
 /* @flow */
 
+import { send } from 'post-robot/src';
+
 import { generateECToken } from '../../tests/common';
 
 window.paypal.Button.render({
@@ -9,7 +11,7 @@ window.paypal.Button.render({
     },
 
     onAuthorize() {
-        window.paypal.postRobot.send(window.top.frames[0], 'onAuthorize');
+        send(window.top.frames[0], 'onAuthorize');
     }
 
 }, document.body).then(button => {

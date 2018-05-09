@@ -8,13 +8,5 @@ describe('paypal happy cases', () => {
 
         assert.ok(window.paypal.Checkout, 'Expected window.paypal.Checkout to be present');
         assert.ok(window.paypal.Button, 'Expected window.paypal.Button to be present');
-
-        assert.ok(window.ppxo.Checkout, 'Expected window.ppxo.Checkout to be present');
-        assert.ok(window.ppxo.Button, 'Expected window.ppxo.Button to be present');
-    });
-
-    it('should export isEligible method', () => {
-
-        assert.ok(window.paypal.isEligible());
     });
 });

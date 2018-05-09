@@ -2,7 +2,7 @@
 
 import { info, track, immediateFlush } from 'beaver-logger/client';
 
-import { FPTI, PAYMENT_TYPE } from './constants';
+import { FPTI } from './constants';
 import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
 
 export let onAuthorizeListener = eventEmitter();
@@ -35,7 +35,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
                 [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
                 [ FPTI.KEY.TOKEN ]:           token,
                 [ FPTI.KEY.CONTEXT_ID ]:      token,
-                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
+                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
             });
 
             immediateFlush();
@@ -83,9 +83,9 @@ function logReturn(token : string) {
 
 if (getDomainSetting('log_authorize')) {
 
-    onAuthorizeListener.once(({ paymentToken }) => {
+    onAuthorizeListener.once(({ orderID }) => {
         setTimeout(() => {
-            logReturn(paymentToken);
+            logReturn(orderID);
         }, 1);
     });
 

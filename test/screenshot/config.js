@@ -1,7 +1,7 @@
 /* @flow */
 
 import { getButtonConfig } from '../../src/button/config';
-import { BUTTON_LABEL, BUTTON_SIZE, FUNDING, CARD } from '../../src/constants';
+import { BUTTON_LABEL, FUNDING } from '../../src/constants';
 
 const RESPONSIVE_WIDTHS = [ 92, 144, 212, /* 345, */ 460, 670 ];
 
@@ -45,34 +45,18 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             }
         });
 
-        for (let size of getButtonConfig(label, 'sizes')) {
-
-            if (size === BUTTON_SIZE.RESPONSIVE) {
-                for (let width of RESPONSIVE_WIDTHS) {
-                    buttonConfigs.push({
-                        container: {
-                            width
-                        },
-                        button: {
-                            style: {
-                                label,
-                                size
-                            }
-                        }
-                    });
-                }
-            } else {
-                buttonConfigs.push({
-                    button: {
-                        style: {
-                            label,
-                            size
-                        }
+        for (let width of RESPONSIVE_WIDTHS) {
+            buttonConfigs.push({
+                container: {
+                    width
+                },
+                button: {
+                    style: {
+                        label
                     }
-                });
-            }
+                }
+            });
         }
-
         for (let color of getButtonConfig(label, 'colors')) {
             buttonConfigs.push({
                 button: {
@@ -94,6 +78,8 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             });
         }
+
+        /*
 
         if (getButtonConfig(label, 'allowFundingIcons')) {
             buttonConfigs.push({
@@ -127,6 +113,8 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                 }
             });
         }
+
+        */
 
         if (getButtonConfig(label, 'allowUnbranded')) {
             buttonConfigs.push({
@@ -164,8 +152,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
                     style: {
                         label,
                         shape,
-                        height: 45,
-                        size:   BUTTON_SIZE.SMALL
+                        height: 45
                     }
                 }
             });
@@ -175,8 +162,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             button: {
                 style: {
                     label,
-                    height: 45,
-                    size:   BUTTON_SIZE.SMALL
+                    height: 45
                 },
                 funding: {
                     allowed: [ FUNDING.CREDIT ]
@@ -191,8 +177,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             button: {
                 style: {
                     label,
-                    height: 44,
-                    size:   BUTTON_SIZE.RESPONSIVE
+                    height: 44
                 }
             }
         });
@@ -204,8 +189,7 @@ for (let label of Object.keys(BUTTON_LABEL)) {
             button: {
                 style: {
                     label,
-                    height: 44,
-                    size:   BUTTON_SIZE.RESPONSIVE
+                    height: 44
                 },
                 funding: {
                     allowed: [ FUNDING.VENMO ]

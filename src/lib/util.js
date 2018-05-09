@@ -2,13 +2,6 @@
 
 import base32 from 'hi-base32';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { getDomain } from 'cross-domain-utils/src';
-
-import { config } from '../config';
-
-export function isPayPalDomain() : boolean {
-    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
-}
 
 export function getGlobal() : Object {
     if (typeof window !== 'undefined') {
@@ -308,23 +301,6 @@ export function domainMatches(hostname : string, domain : string) : boolean {
     hostname = hostname.split('://')[1];
     let index = hostname.indexOf(domain);
     return (index !== -1 && hostname.slice(index) === domain);
-}
-
-export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
-
-    let hostname = window.xchild
-        ? window.xchild.getParentDomain()
-        : getDomain();
-
-    if (config.domain_settings) {
-        for (let domain of Object.keys(config.domain_settings)) {
-            if (domainMatches(hostname, domain)) {
-                return config.domain_settings[domain][name];
-            }
-        }
-    }
-
-    return def;
 }
 
 export function patchMethod(obj : Object, name : string, handler : Function) {

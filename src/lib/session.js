@@ -2,8 +2,9 @@
 
 import { config } from '../config';
 
-import { uniqueID, isLocalStorageEnabled, isPayPalDomain } from './util';
+import { uniqueID, isLocalStorageEnabled } from './util';
 import { getQueryParam } from './dom';
+import { isPayPalDomain } from './paypal';
 
 const LOCAL_STORAGE_KEY = '__paypal_storage__';
 const SESSION_KEY       = '__paypal_session__';

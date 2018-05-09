@@ -1,6 +1,6 @@
 /* @flow */
 
-import { config } from '../config';
+import { COUNTRY_LANGS } from '../config/locales';
 import { BUTTON_LABEL, BUTTON_LAYOUT, BUTTON_SIZE, BUTTON_STYLE_OPTIONS, ALLOWED_INSTALLMENT_COUNTRIES, ALLOWED_INSTALLMENT_PERIOD } from '../constants';
 
 import { BUTTON_CONFIG, BUTTON_STYLE, getButtonConfig } from './config';
@@ -17,7 +17,7 @@ export function validateButtonLocale(locale : string) {
 
     let [ lang, country ] = locale.split('_');
 
-    if (!config.locales[country] || config.locales[country].indexOf(lang) === -1) {
+    if (!COUNTRY_LANGS[country] || COUNTRY_LANGS[country].indexOf(lang) === -1) {
         throw new Error(`Expected props.locale to be valid`);
     }
 }
@@ -68,11 +68,9 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
         [ BUTTON_STYLE_OPTIONS.COLOR ]:        color,
         [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape,
         [ BUTTON_STYLE_OPTIONS.SIZE ]:         size,
-        [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding,
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons,
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline,
         [ BUTTON_STYLE_OPTIONS.LAYOUT ]:       layout,
-        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   maxbuttons,
         [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height
     } = style;
 
@@ -84,51 +82,24 @@ export function validateButtonStyle(style : Object = {}, props : Object) {
         throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.SHAPE } for ${ label } button: ${ shape }, expected ${ getButtonConfig(label, 'shapes').join(', ') }`);
     }
 
-    if (size && getButtonConfig(label, 'sizes').indexOf(size) === -1) {
-        throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.SIZE } for ${ label } button: ${ size }, expected ${ getButtonConfig(label, 'sizes').join(', ') }`);
+    if (size) {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.SIZE } is not allowed`);
     }
 
-    if (branding === false) {
-        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.BRANDING }:false is not allowed`);
-    }
-
-    if (fundingicons && !getButtonConfig(label, 'allowFundingIcons')) {
-        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS }:true is not allowed for ${ label } button`);
+    if (fundingicons !== undefined) {
+        throw new Error(`style.${ BUTTON_STYLE_OPTIONS.FUNDINGICONS } is not allowed`);
     }
 
     if (layout && getButtonConfig(label, 'layouts').indexOf(layout) === -1) {
         throw new Error(`Unexpected style.${ BUTTON_STYLE_OPTIONS.LAYOUT } for ${ label } button: ${ layout }, expected ${ getButtonConfig(label, 'layouts').join(', ') }`);
     }
 
-    if (maxbuttons !== undefined) {
-        if (typeof maxbuttons !== 'number') {
-            throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a number, got: ${ maxbuttons }`);
-        }
-
-        if (maxbuttons < 1) {
-            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be a at least 1, got: ${ maxbuttons }`);
-        }
-
-        let minButtons = (layout === BUTTON_LAYOUT.VERTICAL)
-            ? getButtonConfig(label, 'minVerticalButtons')
-            : getButtonConfig(label, 'minHorizontalButtons');
-
-        if (maxbuttons < minButtons) {
-            throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.MAXBUTTONS } to be no fewer than ${ minButtons }, got ${ maxbuttons }`);
-        }
-    }
-
     if (height !== undefined) {
         if (typeof height !== 'number') {
-            throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be a number, got: ${ maxbuttons }`);
+            throw new TypeError(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be a number, got: ${ height }`);
         }
-
-        let buttonSize = size || getButtonConfig(label, (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize');
-
-        let { minHeight, maxHeight } = (size === BUTTON_SIZE.RESPONSIVE) ? {
-            minHeight: BUTTON_STYLE[BUTTON_SIZE.SMALL].minHeight,
-            maxHeight: BUTTON_STYLE[BUTTON_SIZE.HUGE].maxHeight
-        } : BUTTON_STYLE[buttonSize];
+        
+        let [ minHeight, maxHeight ] = [ BUTTON_STYLE[BUTTON_SIZE.SMALL].minHeight, BUTTON_STYLE[BUTTON_SIZE.HUGE].maxHeight ];
 
         if (height < minHeight || height > maxHeight) {
             throw new Error(`Expected style.${ BUTTON_STYLE_OPTIONS.HEIGHT } to be between ${ minHeight }px and ${ maxHeight }px - got ${ height }px`);

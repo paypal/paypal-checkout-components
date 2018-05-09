@@ -22,14 +22,6 @@ if (bridge) {
     delay = 100;
 }
 
-if (window.location.href.indexOf('version=test_minor') === -1) {
-    throw new Error(`Expected url to have version`);
-}
-
-if (window.name.split('__')[2] !== 'test_minor') {
-    throw new Error(`Expected window name to have version`);
-}
-
 function renderCheckout(props = {}) {
     window.paypal.Checkout.renderTo(window.xchild.getParentRenderWindow(), {
 
@@ -82,7 +74,7 @@ function renderCheckout(props = {}) {
         },
 
         ...props
-    });
+    }, 'body');
 }
 
 getElements('.paypal-button', document).forEach(el => {
@@ -108,7 +100,7 @@ if (action === 'auth') {
 
     window.xprops.funding.remember([ remembered ]);
 
-} else if (action === 'checkout' || action === 'cancel' || action === 'fallback' || action === 'error' || action === 'popout') {
+} else if (action === 'checkout' || action === 'cancel' || action === 'error' || action === 'popout') {
 
     if (delay) {
         setTimeout(() => {

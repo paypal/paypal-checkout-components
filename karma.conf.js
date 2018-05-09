@@ -1,14 +1,36 @@
 /* @flow */
 
 import { getKarmaConfig } from 'grumbler-scripts/config/karma.conf';
+import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { TEST } from './webpack.config';
+import globals from './globals';
 
 export default function configKarma(karma : Object) {
 
     let karmaConfig = getKarmaConfig(karma, {
         basePath: __dirname,
-        webpack:  TEST
+        webpack:  getWebpackConfig({
+            test: true,
+            vars: {
+                ...globals,
+                __paypal_checkout__: {
+                    queryOptions: {
+                        clientID:   'abcxyz123',
+                        merchantID: 'XYZ',
+                        env:        'test',
+                        locale:     {
+                            country: 'US',
+                            lang:    'en'
+                        }
+                    }
+                },
+                __PAYPAL_CHECKOUT__: {
+                    __MAJOR__:         false,
+                    __MAJOR_VERSION__: 'test',
+                    __MINOR_VERSION__: 'test_minor'
+                }
+            }
+        })
     });
 
     karmaConfig.files = [
@@ -31,7 +53,7 @@ export default function configKarma(karma : Object) {
         },
 
         {
-            pattern:  'src/load.js',
+            pattern:  'src/index.js',
             included: true,
             served:   true
         },
@@ -39,7 +61,7 @@ export default function configKarma(karma : Object) {
         ...karmaConfig.files
     ];
 
-    karmaConfig.preprocessors['src/load.js'] = [ 'webpack', 'sourcemap' ];
+    karmaConfig.preprocessors['src/index.js'] = [ 'webpack', 'sourcemap' ];
     karmaConfig.preprocessors['src/**/*.js'] = [ 'sourcemap' ];
 
     karmaConfig.proxies = {
@@ -54,6 +76,8 @@ export default function configKarma(karma : Object) {
         }
     };
 
+    /*
+
     karmaConfig.webpack.module.rules
         .find(rule => rule.loader === 'babel-loader')
         .options.plugins.push([
@@ -61,6 +85,8 @@ export default function configKarma(karma : Object) {
                 only: `${ __dirname }/src`
             }
         ]);
+
+    */
 
     karma.set(karmaConfig);
 }

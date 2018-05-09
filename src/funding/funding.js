@@ -100,6 +100,10 @@ export function determineEligibleFunding({ funding, selected, locale, env, layou
     eligibleFunding.splice(eligibleFunding.indexOf(selected), 1);
     eligibleFunding.unshift(selected);
 
+    if (layout === BUTTON_LAYOUT.HORIZONTAL) {
+        eligibleFunding = eligibleFunding.slice(0, 2);
+    }
+
     return eligibleFunding;
 }
 

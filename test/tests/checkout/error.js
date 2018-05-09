@@ -42,7 +42,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -72,7 +72,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -102,7 +102,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -132,39 +132,12 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
         });
-
-        it('should render checkout, then fall back and complete the payment', (done) => {
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                return window.paypal.Checkout.render({
-
-                    test: { action: 'fallback' },
-
-                    payment() : string | ZalgoPromise<string> {
-                        return generateECToken();
-                    },
-
-                    onAuthorize() : void {
-                        return done();
-                    },
-
-                    onCancel() : void {
-                        return done(new Error('Expected onCancel to not be called'));
-                    }
-
-                });
-            });
-
-            testButton.click();
-        });
-
+        
         it('should render checkout, then error out', (done) => {
 
             let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
@@ -191,7 +164,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -221,7 +194,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -253,7 +226,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -285,7 +258,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
 
             testButton.click();
@@ -316,7 +289,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         onCancel() : void {
                             return done(new Error('Expected onCancel to not be called'));
                         }
-                    });
+                    }, 'body');
 
                     window.open('', name);
                 });
@@ -346,7 +319,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         return done(new Error('Expected onCancel to not be called'));
                     }
 
-                });
+                }, 'body');
             });
         }
     });

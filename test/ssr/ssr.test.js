@@ -1,14 +1,20 @@
 /* @flow */
 
+import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
+
 import { webpackCompileToString } from '../screenshot/lib/compile';
-import { BUTTON_RENDER } from '../../webpack.config';
+import globals from '../../globals';
 
 jest.setTimeout(120000);
 
 let buttonExports = {};
 
 beforeAll(async () => {
-    let script = await webpackCompileToString(BUTTON_RENDER);
+    let script = await webpackCompileToString(getWebpackConfig({
+        entry:         './src/button/template/componentTemplate.jsx',
+        libraryTarget: 'commonjs',
+        vars:          globals
+    }));
 
     let exports = buttonExports; // eslint-disable-line no-unused-vars
     eval(script); // eslint-disable-line no-eval,security/detect-eval-with-expression
@@ -40,7 +46,6 @@ test(`Button should render with ssr, with all options`, () => {
     let locale = 'fr_FR';
 
     let style = {
-        size:   'medium',
         color:  'blue',
         shape:  'pill',
         label:  'pay',
@@ -48,9 +53,7 @@ test(`Button should render with ssr, with all options`, () => {
 
         maxbuttons: 2,
         height:     45,
-
-        fundingicons: false,
-        branding:     true,
+        
         tagline:      false
     };
 

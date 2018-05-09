@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert } from '../common';
+import { generateECToken, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp } from '../common';
 
 for (let flow of [ 'popup', 'iframe' ]) {
 
@@ -24,21 +24,18 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
             {
                 source:   window.paypal.FUNDING.CARD,
-                fragment: 'guesturl=true',
-                locale:   'en_US'
+                fragment: 'guesturl=true'
             },
 
             {
                 source:    window.paypal.FUNDING.VENMO,
                 fragment:  'checkouturl=true',
-                locale:    'en_US',
                 userAgent: IPHONE6_USER_AGENT
             },
 
             {
                 source:   window.paypal.FUNDING.CREDIT,
-                fragment: 'checkouturl=true',
-                locale:   'en_US'
+                fragment: 'checkouturl=true'
             },
 
             {
@@ -66,11 +63,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
                 let checkoutToken = generateECToken();
 
+                let mockLocaleProp = mockProp(window.paypal.Button.props, 'locale', {
+                    required: false,
+                    value:    locale || 'en_US'
+                });
+
                 window.paypal.Button.render({
 
                     test: { flow, action: 'checkout', selector: `[data-funding-source="${ source }"]` },
-
-                    locale,
 
                     commit,
 
@@ -90,9 +90,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
                         assert.ok(data.currentUrl.indexOf(`token=${ checkoutToken }`) !== -1);
                         assert.ok(data.currentUrl.indexOf(fragment) !== -1);
                         assert.ok(data.currentUrl.indexOf(`fundingSource=${ source }`) !== -1);
-                        assert.ok(data.currentUrl.indexOf(`&ba_token=`) === -1);
-                        assert.ok(data.currentUrl.indexOf(`?ba_token=`) === -1);
-                        assert.ok(data.currentUrl.indexOf(`billingurl`) === -1);
                         return done();
                     },
 
@@ -101,6 +98,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     }
 
                 }, '#testContainer');
+
+                mockLocaleProp.cancel();
             });
         }
     });

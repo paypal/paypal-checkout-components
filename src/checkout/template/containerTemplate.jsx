@@ -5,18 +5,13 @@
 import { btoa } from 'Base64';
 
 import { fundingLogos } from '../../resources';
-import { BUTTON_LOGO_COLOR, CHECKOUT_OVERLAY_COLOR } from '../../constants';
+import { BUTTON_LOGO_COLOR } from '../../constants';
 import { isIos } from '../../lib';
 
 import componentContentJSON from './containerContent.json';
 import { getContainerStyle, getSandboxStyle } from './containerStyle';
 
 let componentContent = JSON.parse(componentContentJSON);
-
-const LOGO_COLOR = {
-    [ CHECKOUT_OVERLAY_COLOR.BLACK ]: BUTTON_LOGO_COLOR.WHITE,
-    [ CHECKOUT_OVERLAY_COLOR.WHITE ]: BUTTON_LOGO_COLOR.BLACK
-};
 
 export type ContainerTemplateOptions = {
     id : string,
@@ -63,20 +58,18 @@ export function containerTemplate({ id, props, CLASS, ANIMATION, CONTEXT, EVENT,
     }
 
     let style = props.style || {};
-    let overlayColor = style.overlayColor || CHECKOUT_OVERLAY_COLOR.BLACK;
-    let logoColor = LOGO_COLOR[overlayColor];
 
     let el = (
-        <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay ${ tag }-background-color-${ overlayColor } ${ tag }-logo-color-${ logoColor }` }>
+        <div id={ id } onClick={ focus } class={ `${ tag }-context-${ context } paypal-checkout-overlay` }>
             <a href='#' class="paypal-checkout-close" onClick={ close } aria-label="close" role="button"></a>
             <div class="paypal-checkout-modal">
                 <div class="paypal-checkout-logo">
                     <img
                         class="paypal-checkout-logo-pp" alt="pp"
-                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.pp[logoColor]) }` } />
+                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.pp[BUTTON_LOGO_COLOR.WHITE]) }` } />
                     <img
                         class="paypal-checkout-logo-paypal" alt="paypal"
-                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.paypal[logoColor]) }` } />
+                        src={ `data:image/svg+xml;base64,${ btoa(fundingLogos.paypal[BUTTON_LOGO_COLOR.WHITE]) }` } />
                 </div>
                 <div class="paypal-checkout-message">
                     {content.windowMessage}

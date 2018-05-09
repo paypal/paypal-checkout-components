@@ -27,12 +27,8 @@ export const LOG_LEVEL = {
 };
 
 export const PAYMENT_TYPE = {
-    EC_TOKEN: 'ec_token',
-    BA_TOKEN: 'ba_token',
-    PAY_ID:   'pay_id'
+    EC_TOKEN: 'ec_token'
 };
-
-export const PPTM_ID = 'xo-pptm';
 
 export const ATTRIBUTE = {
     BUTTON:         'data-button',

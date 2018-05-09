@@ -4,10 +4,6 @@ import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../config';
-import { LANG_TO_DEFAULT_COUNTRY } from '../constants';
-import type { LocaleType } from '../types';
-
 import { memoize } from './util';
 import { isDevice } from './device';
 
@@ -257,58 +253,6 @@ export function hasMetaViewPort() : boolean {
     }
 
     return true;
-}
-
-export function normalizeLocale(locale : string) : ?LocaleType {
-
-    if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-        let [ lang, country ] = locale.split(/[-_]/);
-        if (config.locales[country] && config.locales[country].indexOf(lang) !== -1) {
-            return { country, lang };
-        }
-    }
-}
-
-export function normalizeLang(lang : string) : ?LocaleType {
-
-    if (lang && lang.match(/^[a-z]{2}$/)) {
-        if (LANG_TO_DEFAULT_COUNTRY[lang]) {
-            return { country: LANG_TO_DEFAULT_COUNTRY[lang], lang };
-        }
-    }
-}
-
-export function getBrowserLocale() : LocaleType {
-
-    let nav = window.navigator;
-
-    let locales = nav.languages
-        ? Array.prototype.slice.apply(nav.languages)
-        : [];
-
-    if (nav.language) {
-        locales.push(nav.language);
-    }
-
-    if (nav.userLanguage) {
-        locales.push(nav.userLanguage);
-    }
-
-    for (let locale of locales) {
-        let loc = normalizeLocale(locale);
-        if (loc) {
-            return loc;
-        }
-    }
-
-    for (let locale of locales) {
-        let loc = normalizeLang(locale);
-        if (loc) {
-            return loc;
-        }
-    }
-
-    return config.defaultLocale;
 }
 
 export function isElementVisible(el : HTMLElement) : boolean {

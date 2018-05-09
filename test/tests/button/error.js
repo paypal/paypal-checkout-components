@@ -175,28 +175,6 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, then fall back and complete the payment', (done) => {
-
-            window.paypal.Button.render({
-
-                test: { flow, action: 'fallback' },
-
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
-                },
-
-                onAuthorize() : void {
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-
-            }, '#testContainer');
-        });
-
         it('should render button, render checkout, then error out', (done) => {
 
             window.paypal.Button.render({

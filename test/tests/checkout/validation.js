@@ -10,7 +10,7 @@ describe(`paypal checkout component validation`, () => {
 
         return window.paypal.Checkout.render({
             env: 'moo'
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');
@@ -23,20 +23,20 @@ describe(`paypal checkout component validation`, () => {
             payment() : string | ZalgoPromise<string> {
                 return generateECToken();
             }
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');
         });
     });
 
-    it('should attempt to render checkout with no payment or billing agreement, and error out', () => {
+    it('should attempt to render checkout with no payment and error out', () => {
 
         return window.paypal.Checkout.render({
             onAuthorize() {
                 // pass
             }
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');
@@ -55,7 +55,7 @@ describe(`paypal checkout component validation`, () => {
             style: {
                 size: 'moo'
             }
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');
@@ -74,7 +74,7 @@ describe(`paypal checkout component validation`, () => {
             client: {
 
             }
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');
@@ -93,7 +93,7 @@ describe(`paypal checkout component validation`, () => {
             client: {
                 test: 'xxxxxxxxxx'
             }
-        }).then(() => {
+        }, 'body').then(() => {
             throw new Error('Expected error to be thrown');
         }, err => {
             return assert.ok(err instanceof Error, 'Expected error object to be thrown');

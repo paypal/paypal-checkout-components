@@ -4,10 +4,6 @@ import './tests';
 
 window.mockDomain = 'mock://www.merchant-site.com';
 
-window.paypal.setup({
-    env: 'test'
-});
-
 const MAX_OVERALL_MEMORY = 800;
 const MAX_TEST_MEMORY = 80;
 
@@ -34,8 +30,6 @@ beforeEach(() => {
     window.__CACHE_START_TIME__ = Date.now();
 
     originalUserAgent = window.navigator.userAgent;
-
-    window.paypal.postRobot.CONFIG.ALLOW_POSTMESSAGE_POPUP = true;
 
     delete window.__test__;
 });
@@ -69,8 +63,6 @@ afterEach(() => {
             throw new Error(`Test memory exceeded ${ MAX_TEST_MEMORY }mb - ${ diff.toFixed(2) }`);
         }
     }
-    
-    window.paypal.postRobot.bridge.destroyBridges();
 
     return window.paypal.destroyAll();
 });

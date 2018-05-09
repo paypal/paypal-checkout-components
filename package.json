@@ -37,7 +37,7 @@
     "globals.js"
   ],
   "browserslist": [
-    "IE >= 9",
+    "IE >= 11",
     "chrome >= 27",
     "firefox >= 30",
     "safari >= 5",
