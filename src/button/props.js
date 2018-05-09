@@ -12,27 +12,8 @@ function parseLocale(locale : string) : LocaleType {
     return { country, lang };
 }
 
-export function determineMaxButtons({ label, layout, max } : { layout : string, label : string, max : number }) : number {
-
-    let allowed = (layout === BUTTON_LAYOUT.HORIZONTAL)
-        ? getButtonConfig(label, 'allowPrimaryHorizontal')
-        : getButtonConfig(label, 'allowPrimaryVertical');
-
-    if (!allowed) {
-        return 1;
-    }
-
-    let configMax = (layout === BUTTON_LAYOUT.HORIZONTAL)
-        ? getButtonConfig(label, 'maxHorizontalButtons')
-        : getButtonConfig(label, 'maxVerticalButtons');
-
-    return max
-        ? Math.min(configMax, max)
-        : configMax;
-}
-
-function enableTagline({ tagline, branding, fundingicons, layout }) : boolean {
-    return Boolean(tagline && branding && !fundingicons && layout === BUTTON_LAYOUT.HORIZONTAL);
+function enableTagline({ tagline, fundingicons, layout }) : boolean {
+    return Boolean(tagline && !fundingicons && layout === BUTTON_LAYOUT.HORIZONTAL);
 }
 
 type NormalizedProps = {|
@@ -41,13 +22,11 @@ type NormalizedProps = {|
     color : $Values<typeof BUTTON_COLOR>,
     shape : $Values<typeof BUTTON_SHAPE>,
     locale : LocaleType,
-    branding : boolean,
     fundingicons : boolean,
     tagline : boolean,
     funding : FundingSelection,
     layout : $Values<typeof BUTTON_LAYOUT>,
     sources : FundingList,
-    max : number,
     multiple : boolean,
     env : string,
     height : ?number,
@@ -74,33 +53,25 @@ export let normalizeProps = memoize((props : Object, defs? : { locale? : LocaleT
 
     let label  = style[BUTTON_STYLE_OPTIONS.LABEL] || getButtonConfig('DEFAULT', (style.layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalLabel' : 'defaultLabel');
     let layout = style[BUTTON_STYLE_OPTIONS.LAYOUT] || getButtonConfig(label, 'defaultLayout');
+    let size   = BUTTON_SIZE.RESPONSIVE;
 
     let {
-        [ BUTTON_STYLE_OPTIONS.SIZE ]:         size         = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalSize' : 'defaultSize'),
         [ BUTTON_STYLE_OPTIONS.COLOR ]:        color        = getButtonConfig(label, 'defaultColor'),
         [ BUTTON_STYLE_OPTIONS.SHAPE ]:        shape        = getButtonConfig(label, 'defaultShape'),
-        [ BUTTON_STYLE_OPTIONS.BRANDING ]:     branding     = getButtonConfig(label, (layout === BUTTON_LAYOUT.VERTICAL) ? 'defaultVerticalBranding' : 'defaultBranding'),
         [ BUTTON_STYLE_OPTIONS.FUNDINGICONS ]: fundingicons = getButtonConfig(label, 'defaultFundingIcons'),
         [ BUTTON_STYLE_OPTIONS.TAGLINE ]:      tagline      = getButtonConfig(label, 'defaultTagline'),
-        [ BUTTON_STYLE_OPTIONS.MAXBUTTONS ]:   max,
         [ BUTTON_STYLE_OPTIONS.HEIGHT ]:       height,
         [ BUTTON_STYLE_OPTIONS.INSTALLMENTPERIOD ]:  installmentperiod
     } = style;
 
-    max = determineMaxButtons({ label, layout, max });
-
     let selected = labelToFunding(label);
-    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit }).slice(0, max);
+    let sources  = determineEligibleFunding({ funding, selected, locale, env, layout, commit });
     let multiple = sources.length > 1;
 
-    if (multiple) {
-        branding = true;
-    }
-
-    tagline = enableTagline({ tagline, branding, fundingicons, layout });
+    tagline = enableTagline({ tagline, fundingicons, layout });
 
     let cards = determineEligibleCards({ funding, locale });
 
-    return { size, label, locale, color, shape, branding, fundingicons,
-        tagline, funding, layout, sources, max, multiple, env, height, cards, installmentperiod };
+    return { size, label, locale, color, shape, fundingicons,
+        tagline, funding, layout, sources, multiple, env, height, cards, installmentperiod };
 });

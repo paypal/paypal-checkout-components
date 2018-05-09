@@ -10,11 +10,7 @@ export let pageStyle = `
     }
 
     * {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
+        touch-callout: none;
         user-select: none;
         cursor: default;
     }

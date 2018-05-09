@@ -2,13 +2,6 @@
 
 import base32 from 'hi-base32';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { getDomain } from 'cross-domain-utils/src';
-
-import { config } from '../config';
-
-export function isPayPalDomain() : boolean {
-    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
-}
 
 export function getGlobal() : Object {
     if (typeof window !== 'undefined') {
@@ -121,23 +114,6 @@ export function match(str : string, pattern : RegExp) : ?string {
     if (regmatch) {
         return regmatch[1];
     }
-}
-
-export function safeJSON(item : mixed) : string {
-    return JSON.stringify(item, (key, val) => {
-
-        if (typeof val === 'function') {
-            return `<${ typeof val }>`;
-        }
-
-        try {
-            JSON.stringify(val);
-        } catch (err) {
-            return `<${ typeof val }>`;
-        }
-
-        return val;
-    });
 }
 
 type Listener = {
@@ -310,23 +286,6 @@ export function domainMatches(hostname : string, domain : string) : boolean {
     return (index !== -1 && hostname.slice(index) === domain);
 }
 
-export function getDomainSetting<T : mixed>(name : string, def : ?T) : ?T {
-
-    let hostname = window.xchild
-        ? window.xchild.getParentDomain()
-        : getDomain();
-
-    if (config.domain_settings) {
-        for (let domain of Object.keys(config.domain_settings)) {
-            if (domainMatches(hostname, domain)) {
-                return config.domain_settings[domain][name];
-            }
-        }
-    }
-
-    return def;
-}
-
 export function patchMethod(obj : Object, name : string, handler : Function) {
     let original = obj[name];
 
@@ -338,10 +297,6 @@ export function patchMethod(obj : Object, name : string, handler : Function) {
             callOriginal: () => original.apply(this, arguments)
         });
     };
-}
-
-export function isObject(obj : mixed) : boolean {
-    return (typeof obj === 'object' && obj !== null);
 }
 
 export function extend<T : Object | Function>(obj : T, source : Object) : T {
@@ -360,61 +315,6 @@ export function extend<T : Object | Function>(obj : T, source : Object) : T {
     }
 
     return obj;
-}
-
-export function deepExtend<T : Object | Function > (obj : T, source : Object) : T {
-    if (!source) {
-        return obj;
-    }
-
-    for (let key in source) {
-        if (source.hasOwnProperty(key)) {
-            if (isObject(obj[key]) && isObject(source[key])) {
-                deepExtend(obj[key], source[key]);
-            } else {
-                obj[key] = source[key];
-            }
-        }
-    }
-
-    return obj;
-}
-
-export function hasValue<T : mixed>(obj : { [string] : T }, value : T) : boolean {
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key) && obj[key] === value) {
-            return true;
-        }
-    }
-    return false;
-}
-
-export function contains<T>(arr : Array<T>, value : T) : boolean {
-    return arr.indexOf(value) !== -1;
-}
-
-export function sortBy<T>(arr : Array<T>, order : Array<T>) : Array<T> {
-    return arr.sort((a : T, b : T) => {
-        return order.indexOf(a) - order.indexOf(b);
-    });
-}
-
-export function reverseMap(obj : { [string] : string }) : { [string] : string } {
-    let result = {};
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            result[obj[key]] = key;
-        }
-    }
-    return result;
-}
-
-export function arrayRemove<T>(arr : Array<T>, item : T) {
-    arr.splice(arr.indexOf(item), 1);
-}
-
-export function identity<T : mixed>(item : T) : T {
-    return item;
 }
 
 export function values<T>(obj : { [string] : T }) : Array<T> {

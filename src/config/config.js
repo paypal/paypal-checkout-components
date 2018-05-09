@@ -16,16 +16,12 @@ export let config = {
 
     cors: true,
 
-    env: __TEST__
-        ? ENV.TEST
-        : ENV.PRODUCTION,
+    env:        __paypal_checkout__.queryOptions.env,
+    clientID:   __paypal_checkout__.queryOptions.clientID,
+    merchantID: __paypal_checkout__.queryOptions.merchantID,
+    locale:     __paypal_checkout__.queryOptions.locale,
 
     state: 'checkoutjs',
-
-    locale: {
-        country: COUNTRY.US,
-        lang:    LANG.EN
-    },
 
     stage:       'msmaster',
     stageDomain: 'qa.paypal.com',
@@ -38,150 +34,7 @@ export let config = {
         return `${ config.apiStage }.${ config.stageDomain }`;
     },
 
-    merchantID: '',
-
     logLevel: __PAYPAL_CHECKOUT__.__DEFAULT_LOG_LEVEL__,
-
-    throttles: {
-        v4_mobile_device: 0
-    },
-
-    domain_settings: {
-        'walmart.com': {
-            ie_full_page:                    false,
-            allow_full_page_fallback:        true,
-            memoize_payment:                 true,
-            force_bridge:                    true,
-            log_authorize:                   true,
-            disable_payment_timeout:         true
-        },
-
-        'ulta.com': {
-            disable_venmo: true
-        },
-
-        'barnesandnoble.com': {
-            disable_venmo: true
-        },
-
-        'bn.com': {
-            disable_venmo: true
-        },
-
-        'agoratix.com': {
-            disable_venmo: true
-        },
-
-        'tractorsupply.com': {
-            disable_venmo: true
-        },
-
-        'etsy.com': {
-            ie_full_page:                    false,
-            allow_full_page_fallback:        true,
-            memoize_payment:                 true,
-            force_bridge:                    true,
-            log_authorize:                   true,
-            disable_payment_timeout:         true
-        },
-
-        'ticketmaster.com': {
-            disable_venmo: true
-        },
-
-        'livenation.com': {
-            disable_venmo: true
-        },
-
-        'frontgatetickets.com': {
-            disable_venmo: true
-        },
-
-        'williams-sonoma.com': {
-            disable_venmo: true
-        },
-
-        'westelm.com': {
-            disable_venmo: true
-        },
-
-        'markandgraham.com': {
-            disable_venmo: true
-        },
-
-        'potterybarn.com': {
-            disable_venmo: true
-        },
-
-        'potterybarnkids.com': {
-            disable_venmo: true
-        },
-
-        'pbteen.com': {
-            disable_venmo: true
-        },
-
-        'beallsflorida.com': {
-            disable_venmo: true
-        },
-
-        'therealreal.com': {
-            disable_venmo: true
-        },
-
-        'liveaquaria.com': {
-            disable_venmo: true
-        },
-
-        'drsfostersmith.com': {
-            disable_venmo: true
-        },
-
-        'boxed.com': {
-            disable_venmo: true
-        },
-
-        'bevisible.com': {
-            disable_venmo: true
-        },
-
-        'moeller.org': {
-            disable_venmo: true
-        },
-
-        'searsoutlet.com': {
-            disable_venmo: true
-        },
-
-        'searshometownstores.com': {
-            disable_venmo: true
-        },
-
-        'searshardwarestores.com': {
-            disable_venmo: true
-        },
-
-        'searshomeapplianceshowroom.com': {
-            disable_venmo: true
-        },
-
-        'barkshop.com': {
-            disable_venmo: true
-        },
-
-        'vividseats.com': {
-            disable_venmo: true
-        },
-
-        'getcargo.today': {
-            disable_venmo: true
-        }
-
-    },
-
-    creditTestDomains: [ 'bluesuncorp.co.uk', 'nationsphotolab.com', 'plexusworldwide.com', 'nshss.org', 'bissell.com', 'mobstub.com', 'vuoriclothing.com', 'tape4backup.com', 'avivamiento.com', 'rhododendron.org', 'whiterabbitjapan.com', 'atsracing.net', 'thehilltopgallery.com', 'weedtraqr.com', 'worldpantry.com', 'ciraconnect.com', 'mymalls.com', 'prowinch.com', 'zodiacpoolsystems.com', 'everlywell.com', 'candlewarmers.com', 'chop.edu', 'incruises.com', 'flikn.com', 'didforsale.com', 'mcc.org', 'sygu.net', 'merchbar.com', 'eduinconline.com', 'us.livebetterwith.com', 'bakemeawish.com', 'judolaunch.com', 'eventcartel.com', 'tapatalk.com', 'telescope.com', 'covenant.edu', 'aquatruwater.com', 'spingo.com', 'usu.edu', 'getcelerity.com', 'brandless.com', 'saberigniter.com', 'euromodeltrains.com', 'gofasttrader.com', 'megamodzplanet.com', 'draftanalyzer.com', 'lovewithoutboundaries.com', 'filterpop.com', 'seekverify.com', 'photoandgo.com', 'sightseeingpass.com', 'bigoanddukes.com', 'thethirstyduck.com', 'thebrushguys.com', '907delivery.com', 'mauisails.com', 'drive.net', 'channelmax.net', 'modernrebelco.com', 'enchanteddiamonds.com', 'ibabbleon.com', 'fullgenomes.com', 'conn-comp.com', 'wingware.com', 'paradigmgoods.com', 'theneptunegroup.com', 'kidzartworks.com', 'unirealm.com', 'ncfarmsinc.com', 'oneofakindantiques.com', 'servers4less.com', 'stumpthespread.com', 'marketwagon.com', 'monsterhouseplans.com', 'canterburychoral.org', 'teacupnordic.org', 'thethirstyduck.com', 'medialoot.com', 'theartistunion.com', 'yourglamourzone.com', 'breckstables.com', 'mackephotography.com', 'dsaj.org', 'massluminosity.com', 'tespa.org', 'versatilearts.net', 'yecup.org', 'divinebusinessmanagement.com', 'captivatebeautyservices.com', 'class4me.com', 'wcsonlineuniversity.com', 'pvplive.com', 'kyneteks.com', 'rare-paper.com', 'bpg.bpgsim.biz', 'geodegallery.com', 'way.com', 'kringle.com', 'talentedmrsalas.ph', 'litcharts.com', 'purpletreephotography.com', 'apache.org', 'neopackage.com', 'globaldance.tv', 'integral.studio', 'airdoctorpro.com', 'ivoryandiron.com', 'yuengling.com', 'averysbranchfarms.com', 'amberreinink.com', 'skinnymechocolate.com', 'bmbl.net', 'ncwatercolor.net', 'astrograph.com', 'localadventures.mx', 'ripcurl.com', 'worldfootbrakechallenge.com', 'shespeakssales.com', 'obrienguitars.com', 'jadenikkolephoto.com', 'americavoice.com', 'cassiexie.com', 'aamastateconvention.org', 'rellesflorist.com', 'passionnobby.com', 'bodybyheidi.com', 'roqos.com', 'prijector.com', 'maryswanson.net', 'tsghobbies.com', 'erinlaytonphotography.com', 'darter.org', 'fountainpenhospital.com', 'myzestfullife.com', 'pcog.org', 'alisabethdesigns.com', 'katiemathisphoto.com', 'strictlybellaphotography.com', 'maptools.com', 'sites.google.com', 'gallerr.com', 'southfloridatrikke.com', 'caviar.tv', 'mintingmasters.com', 'prospectorsguild.com', 'inktale.com', 'prettygirlgoods.com', 'laceycahill.com', 'daniellenowak.com', 't212.org', 'scmsinc.com', 'babypaloozanc.com', 'tetrisonline.com', 'grdd.net', 'cdspg.info', 'airshipapparel.com', 'waft.com', 'extendpets.com', 'supplyhub.com', 'hlbsusa.com', 'jaderollerbeauty.com', 'theparentingjunkie.com', 'schagringas.com', 'yourscribemate.com', 'sportscollectibles.com', 'thedivinenoise.com', 'hometeamsonline.com', 'trademarkpress.com', 'destinationenglish.us', 'jacquesflowers.com', 'aliszhatchphotography.com', 'rusticfoundry.com', 'ahhhmassage.net', 'frezzor.com', 'mandelininc.com', 'kayleejackson.com', 'monkinstitute.org', 'eddiebsbbq.com', 'morningstarmediaservices.com', 'kinevative.com', 'orivet.com', 'digitalprinthouse.net', 'dynamicgenius.com', 'allpartsusa.com', 'flowersbydavid.net', 'nwvoices.org', 'leaptrade.com', 'tulsaschoolpics.com', 'alioth.io', 'windowflair.com', 'vitcom.net', 'simplybeautifulfashions.com', 'christinabenton.com', 'fromthedaughter.com', 'hometowngraphics.net', 'fibanalysis.com', 'creativejobscentral.com', 'sandbox.gg', 'jt-digitalmedia.com', 'kodable.com', 'birthingstone.com', 'taranicholephoto.com', 'hillyfieldsflorist.com', 'charitynoelphoto.com', 'auxdelicesfoods.com', 'terilynnphotography.com', 'folieadeuxevents.com', 'karensfloral.com', 'montgomerydiveclub.com', 'rainbowplastics.com', 'confettionthedancefloor.com', 'vomozmedia.com', 'neatmod.com', 'getnaturafled.com', 'callingpost.com', 'iamfamily.org', 'pedigreeonline.com', 'typeboost.io', 'in-n-outpetdoor.com', 'nerdstockgc.com', 'keiadmin.com', 'createdbykaui.com', 'aikophoto.com', 'lonestar.ink', 'stlfurs.com', 'treasurelistings.com', 'thecubicle.us', 'redclaypaper.com', 'blushhousemedia.com', 'documentsanddesigns.com', 'whitneyleighphotography.shootproof.com', 'amaryllisday.com', 'hermanproav.com', 'felicemedia.com', 'withloveplacenta.com', 'store.brgadgets.co', 'klowephoto.com', 'spenceraustinconsulting.com', 'sno-eagles.org', 'dsatallahassee.org', 'bakupages.com', 'neswc.com', 'josiebrooksphotography.com', 'brisksale.com', 'legalwhoosh.com', 'jasmineeaster.com', 'swatstudios.com', 'facebook.com', 'shakershell.com', 'alexiswinslow.com', 'mixeddimensions.com', 'sweetpproductions.com', 'lbeaphotography.com', 'otlseatfillers.com', 'jdtickets.com', 'catholicar.com', 'masque.com', 'smalltownstudio.net', 'goherbalife.com', 'itzyourz.com', 'magazinespeedloader.com', 'dreammachines.io', 'dallasdieteticalliance.org', 'http:', 'medair.org', 'unbridledambition.com', 'sarasprints.com', 'wiperecord.com', 'showmyrabbit.com', 'cctrendsshop.com', 'rachelalessandra.com', 'otherworld-apothecary.com', 'melissaannphoto.com', 'girlceo.co', 'seasidemexico.com', 'telosid.com', 'instin.com', 'marinecorpsmustang.org', 'lancityconnect.com', 'hps1.org', 'karenware.com', 'livecurriculum.com', 'spellingstars.com', 'vektorfootball.com', 'zaltv.com', 'nebraskamayflower.org', 'ethiopianspices.com', 'immitranslate.com', 'rafaelmagic.com.com', 'bahc1.org', 'newenamel.com', 'bhchp.org', 'buybulkamerica.com', 'sourcepoint.com', 'squarestripsports.com', 'wix.com', 'wilderootsphotography.com', 'goodsalt.com', 'systemongrid.com', 'designmil.org', 'freshtrendhq.com', 'valisimofashions.com', 'buyneatly.com', 'getbeauty.us', 'intellimidia.com' ],
-
-    customCountry: false,
 
     SUPPORTED_BROWSERS: {
         msie:           '11',
@@ -300,15 +153,6 @@ export let config = {
         [ ENV.DEMO ]:       `/demo/dev/guest.htm`
     },
 
-    billingUris: {
-        [ ENV.LOCAL ]:      `/webapps/hermes/agreements?ul=0`,
-        [ ENV.STAGE ]:      `/webapps/hermes/agreements`,
-        [ ENV.SANDBOX ]:    `/agreements/approve`,
-        [ ENV.PRODUCTION ]: `/agreements/approve`,
-        [ ENV.TEST ]:       `/base/test/windows/checkout/index.htm?billingurl=true`,
-        [ ENV.DEMO ]:       `/demo/dev/checkout.htm`
-    },
-
     buttonUris: {
         [ ENV.LOCAL ]:      `/webapps/hermes/button`,
         [ ENV.STAGE ]:      `/webapps/hermes/button`,
@@ -336,49 +180,19 @@ export let config = {
         [ ENV.DEMO ]:       `/demo/dev/bridge.htm`
     },
 
-    legacyCheckoutUris: {
-        [ ENV.LOCAL ]:      `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
-        [ ENV.STAGE ]:      `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
-        [ ENV.SANDBOX ]:    `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
-        [ ENV.PRODUCTION ]: `/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true`,
-        [ ENV.TEST ]:       `#fallback`
-    },
-
-    buttonJSUrls: {
-        [ ENV.LOCAL ]:      `https://www.paypalobjects.com/api/button.js`,
-        [ ENV.STAGE ]:      `https://www.paypalobjects.com/api/button.js`,
-        [ ENV.SANDBOX ]:    `https://www.paypalobjects.com/api/button.js`,
-        [ ENV.PRODUCTION ]: `https://www.paypalobjects.com/api/button.js`,
-        [ ENV.TEST ]:       `/base/test/lib/button.js`,
-        [ ENV.DEMO ]:       `https://www.paypalobjects.com/api/button.js`
-    },
-
-    get buttonJSUrl() : string {
-        return config.buttonJSUrls[config.env];
-    },
-
-    loginUri: `/signin/`,
-
     hermesLoggerUri: `/webapps/hermes/api/logger`,
 
     loggerUri: `/xoplatform/logger`,
 
     loggerThrottlePercentage: 0.05, // 5%
 
-    pptmUri: `/tagmanager/pptm.js`,
-
     get postBridgeUri() : string {
         return `${ config.postBridgeUris[config.env] }?xcomponent=1`;
     },
 
-    paymentStandardUri: `/webapps/xorouter?cmd=_s-xclick`,
-
     authApiUri:       `/v1/oauth2/token`,
     paymentApiUri:    `/v1/payments/payment`,
     orderApiUri:      `/v1/checkout/orders`,
-    billingApiUri:    `/v1/billing-agreements/agreement-tokens`,
-    experienceApiUri: `/v1/payment-experience/web-profiles`,
-    trackingApiUri:   `/v1/risk/transaction-contexts`,
 
     get checkoutUrls() : Object {
 
@@ -422,20 +236,6 @@ export let config = {
         };
     },
 
-    get billingUrls() : Object {
-
-        let paypalUrls = config.paypalUrls;
-
-        return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local.replace(`:${ config.ports.default }`, `:${ config.ports.checkout }`) }${ config.billingUris.local }`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.billingUris.stage }`,
-            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.billingUris.sandbox }`,
-            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.billingUris.production }`,
-            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.billingUris.test }`,
-            [ ENV.DEMO ]:       `${ paypalUrls.test }${ config.billingUris.demo }`
-        };
-    },
-
     get buttonUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
@@ -463,33 +263,7 @@ export let config = {
             [ ENV.DEMO ]:       `${ paypalUrls.demo }${ config.inlinedCardFieldUris.demo }`
         };
     },
-
-    get loginUrls() : Object {
-
-        let paypalUrls = config.paypalUrls;
-
-        return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.loginUri }`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.loginUri }`,
-            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.loginUri }`,
-            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.loginUri }`,
-            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.loginUri }`
-        };
-    },
-
-    get paymentsStandardUrls() : Object {
-
-        let paypalUrls = config.paypalUrls;
-
-        return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.paymentStandardUri }`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.paymentStandardUri }`,
-            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.paymentStandardUri }`,
-            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.paymentStandardUri }`,
-            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.paymentStandardUri }`
-        };
-    },
-
+    
     get metaFrameUrls() : Object {
 
         let paypalUrls = config.paypalUrls;
@@ -501,19 +275,6 @@ export let config = {
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.postBridgeUri }&env=production`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.postBridgeUri }&env=test`,
             [ ENV.DEMO ]:       `${ paypalUrls.demo }${ config.postBridgeUri }&env=demo`
-        };
-    },
-
-    get legacyCheckoutUrls() : Object {
-
-        let paypalUrls = config.paypalUrls;
-
-        return {
-            [ ENV.LOCAL ]:      `${ paypalUrls.stage }${ config.legacyCheckoutUris.local }`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.legacyCheckoutUris.stage }`,
-            [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.legacyCheckoutUris.sandbox }`,
-            [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.legacyCheckoutUris.production }`,
-            [ ENV.TEST ]:       `${ paypalUrls.test }${ config.legacyCheckoutUris.test }`
         };
     },
 
@@ -531,20 +292,6 @@ export let config = {
         };
     },
 
-    get paymentApiUrls() : Object {
-
-        let apiUrls       = config.apiUrls;
-        let paymentApiUri = config.paymentApiUri;
-
-        return {
-            [ ENV.LOCAL ]:      `${ apiUrls.local }${ paymentApiUri }`,
-            [ ENV.STAGE ]:      `${ apiUrls.stage }${ paymentApiUri }`,
-            [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ paymentApiUri }`,
-            [ ENV.PRODUCTION ]: `${ apiUrls.production }${ paymentApiUri }`,
-            [ ENV.TEST ]:       `${ apiUrls.test }${ paymentApiUri }`
-        };
-    },
-
     get orderApiUrls() : Object {
 
         let apiUrls = config.apiUrls;
@@ -556,48 +303,6 @@ export let config = {
             [ENV.SANDBOX]:    `${ apiUrls.sandbox }${ orderApiUri }`,
             [ENV.PRODUCTION]: `${ apiUrls.production }${ orderApiUri }`,
             [ENV.TEST]:       `${ apiUrls.test }${ orderApiUri }`
-        };
-    },
-
-    get billingApiUrls() : Object {
-
-        let apiUrls       = config.apiUrls;
-        let billingApiUri = config.billingApiUri;
-
-        return {
-            [ ENV.LOCAL ]:      `${ apiUrls.local }${ billingApiUri }`,
-            [ ENV.STAGE ]:      `${ apiUrls.stage }${ billingApiUri }`,
-            [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ billingApiUri }`,
-            [ ENV.PRODUCTION ]: `${ apiUrls.production }${ billingApiUri }`,
-            [ ENV.TEST ]:       `${ apiUrls.test }${ billingApiUri }`
-        };
-    },
-
-    get experienceApiUrls() : Object {
-
-        let apiUrls          = config.apiUrls;
-        let experienceApiUri = config.experienceApiUri;
-
-        return {
-            [ ENV.LOCAL ]:      `${ apiUrls.local }${ experienceApiUri }`,
-            [ ENV.STAGE ]:      `${ apiUrls.stage }${ experienceApiUri }`,
-            [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ experienceApiUri }`,
-            [ ENV.PRODUCTION ]: `${ apiUrls.production }${ experienceApiUri }`,
-            [ ENV.TEST ]:       `${ apiUrls.test }${ experienceApiUri }`
-        };
-    },
-
-    get trackingApiUrls() : Object {
-
-        let apiUrls       = config.apiUrls;
-        let trackingApiUri = config.trackingApiUri;
-
-        return {
-            [ ENV.LOCAL ]:      `${ apiUrls.local }${ trackingApiUri }`,
-            [ ENV.STAGE ]:      `${ apiUrls.stage }${ trackingApiUri }`,
-            [ ENV.SANDBOX ]:    `${ apiUrls.sandbox }${ trackingApiUri }`,
-            [ ENV.PRODUCTION ]: `${ apiUrls.production }${ trackingApiUri }`,
-            [ ENV.TEST ]:       `${ apiUrls.test }${ trackingApiUri }`
         };
     },
 
@@ -636,16 +341,8 @@ export let config = {
         return `${ config.paypalUrl }${ config.checkoutUris[config.env] }`;
     },
 
-    get billingUrl() : string {
-        return `${ config.paypalUrl }${ config.billingUris[config.env] }`;
-    },
-
     get buttonUrl() : string {
         return `${ config.paypalUrl }${ config.buttonUris[config.env] }`;
-    },
-
-    get legacyCheckoutUrl() : string {
-        return config.legacyCheckoutUrls[config.env];
     },
 
     get postBridgeUrl() : string {
@@ -663,244 +360,16 @@ export let config = {
         return `${ config.paypalUrl }${ loggerUrl }`;
     },
 
-    get pptmUrl() : string {
-
-        let paypalUrl = config.env === ENV.LOCAL
-            ? config.paypalUrls[ENV.STAGE]
-            : config.paypalUrl;
-
-        return `${ paypalUrl }${ config.pptmUri }`;
-    },
-
     get authApiUrl() : string {
         return `${ config.apiUrl }${ config.authApiUri }`;
-    },
-
-    get paymentApiUrl() : string {
-        return `${ config.apiUrl }${ config.paymentApiUri }`;
     },
 
     get orderApiUrl() : string {
         return `${ config.apiUrl }${ config.orderApiUri }`;
     },
 
-    get billingApiUrl() : string {
-        return `${ config.apiUrl }${ config.billingApiUri }`;
-    },
-
-    get experienceApiUrl() : string {
-        return `${ config.apiUrl }${ config.experienceApiUri }`;
-    },
-
     defaultLocale: {
         country: COUNTRY.US,
         lang:    LANG.EN
-    },
-
-    locales: {
-        [COUNTRY.AD]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR ],
-        [COUNTRY.AG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AL]: [ LANG.EN ],
-        [COUNTRY.AM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AR]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.AT]: [ LANG.DE, LANG.EN ],
-        [COUNTRY.AU]: [ LANG.EN ],
-        [COUNTRY.AW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.AZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BA]: [ LANG.EN ],
-        [COUNTRY.BB]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BE]: [ LANG.EN, LANG.NL, LANG.FR ],
-        [COUNTRY.BF]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BG]: [ LANG.EN ],
-        [COUNTRY.BH]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BI]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BJ]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.BM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BN]: [ LANG.EN ],
-        [COUNTRY.BO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.BR]: [ LANG.PT, LANG.EN ],
-        [COUNTRY.BS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BT]: [ LANG.EN ],
-        [COUNTRY.BW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.BY]: [ LANG.EN ],
-        [COUNTRY.BZ]: [ LANG.EN, LANG.ES, LANG.FR, LANG.ZH ],
-        [COUNTRY.C2]: [ LANG.ZH, LANG.EN ],
-        [COUNTRY.CA]: [ LANG.EN, LANG.FR ],
-        [COUNTRY.CD]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.CG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CH]: [ LANG.DE, LANG.FR, LANG.EN ],
-        [COUNTRY.CI]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.CK]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CL]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CM]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.CN]: [ LANG.ZH ],
-        [COUNTRY.CO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CR]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.CV]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.CY]: [ LANG.EN ],
-        [COUNTRY.CZ]: [ LANG.CS, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.DE]: [ LANG.DE, LANG.EN ],
-        [COUNTRY.DJ]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.DK]: [ LANG.DA, LANG.EN ],
-        [COUNTRY.DM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.DO]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.DZ]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.EC]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.EE]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.EG]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ER]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ES]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.ET]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FI]: [ LANG.FI, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FK]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FM]: [ LANG.EN ],
-        [COUNTRY.FO]: [ LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.FR]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.GA]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.GB]: [ LANG.EN ],
-        [COUNTRY.GD]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GL]: [ LANG.DA, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GN]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.GP]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GR]: [ LANG.EL, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GT]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.GW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.GY]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.HK]: [ LANG.EN, LANG.ZH ],
-        [COUNTRY.HN]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.HR]: [ LANG.EN ],
-        [COUNTRY.HU]: [ LANG.HU, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ID]: [ LANG.ID, LANG.EN ],
-        [COUNTRY.IE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.IL]: [ LANG.HE, LANG.EN ],
-        [COUNTRY.IN]: [ LANG.EN ],
-        [COUNTRY.IS]: [ LANG.EN ],
-        [COUNTRY.IT]: [ LANG.IT, LANG.EN ],
-        [COUNTRY.JM]: [ LANG.EN, LANG.ES, LANG.FR, LANG.ZH ],
-        [COUNTRY.JO]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.JP]: [ LANG.JA, LANG.EN ],
-        [COUNTRY.KE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KH]: [ LANG.EN ],
-        [COUNTRY.KI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KM]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.KN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KR]: [ LANG.KO, LANG.EN ],
-        [COUNTRY.KW]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KY]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.KZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LA]: [ LANG.EN ],
-        [COUNTRY.LC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LK]: [ LANG.EN ],
-        [COUNTRY.LS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LT]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LU]: [ LANG.EN, LANG.DE, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.LV]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MA]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MC]: [ LANG.FR, LANG.EN ],
-        [COUNTRY.MD]: [ LANG.EN ],
-        [COUNTRY.ME]: [ LANG.EN ],
-        [COUNTRY.MG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MH]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MK]: [ LANG.EN ],
-        [COUNTRY.ML]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.MN]: [ LANG.EN ],
-        [COUNTRY.MQ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MT]: [ LANG.EN ],
-        [COUNTRY.MU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MV]: [ LANG.EN ],
-        [COUNTRY.MW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.MX]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.MY]: [ LANG.EN ],
-        [COUNTRY.MZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NE]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.NF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NG]: [ LANG.EN ],
-        [COUNTRY.NI]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.NL]: [ LANG.NL, LANG.EN ],
-        [COUNTRY.NO]: [ LANG.NO, LANG.EN ],
-        [COUNTRY.NP]: [ LANG.EN ],
-        [COUNTRY.NR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.NZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.OM]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PA]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.PE]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.PF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PH]: [ LANG.EN ],
-        [COUNTRY.PL]: [ LANG.PL, LANG.EN ],
-        [COUNTRY.PM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PN]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PT]: [ LANG.PT, LANG.EN ],
-        [COUNTRY.PW]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.PY]: [ LANG.ES, LANG.EN ],
-        [COUNTRY.QA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH, LANG.AR ],
-        [COUNTRY.RE]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RS]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.RU]: [ LANG.RU, LANG.EN ],
-        [COUNTRY.RW]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SA]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SB]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SC]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SE]: [ LANG.SV, LANG.EN ],
-        [COUNTRY.SG]: [ LANG.EN ],
-        [COUNTRY.SH]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SI]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SK]: [ LANG.SK, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SL]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SN]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.SO]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SR]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ST]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.SV]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.SZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TD]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.TG]: [ LANG.FR, LANG.EN, LANG.ES, LANG.ZH ],
-        [COUNTRY.TH]: [ LANG.TH, LANG.EN ],
-        [COUNTRY.TJ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TN]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TO]: [ LANG.EN ],
-        [COUNTRY.TR]: [ LANG.TR, LANG.EN ],
-        [COUNTRY.TT]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TV]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.TW]: [ LANG.ZH, LANG.EN ],
-        [COUNTRY.TZ]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UA]: [ LANG.EN, LANG.RU, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.US]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.UY]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.VA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VC]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VE]: [ LANG.ES, LANG.EN, LANG.FR, LANG.ZH ],
-        [COUNTRY.VG]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.VN]: [ LANG.EN ],
-        [COUNTRY.VU]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.WF]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.WS]: [ LANG.EN ],
-        [COUNTRY.YE]: [ LANG.AR, LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.YT]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZA]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZM]: [ LANG.EN, LANG.FR, LANG.ES, LANG.ZH ],
-        [COUNTRY.ZW]: [ LANG.EN ]
     }
 };

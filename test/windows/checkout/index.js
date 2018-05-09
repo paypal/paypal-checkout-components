@@ -1,16 +1,6 @@
 /* @flow */
 
-import { isSameDomain, getFrames } from 'cross-domain-utils/src';
-
 import { createTestContainer, createElement } from '../../tests/common';
-
-if (window.location.href.indexOf('version=') !== -1 && window.location.href.indexOf('version=test_minor') === -1) {
-    throw new Error(`Expected url to have version`);
-}
-
-if (window.name.split('__')[2] !== 'test_minor') {
-    throw new Error(`Expected window name to have version`);
-}
 
 let { action, onRender, onInit } = window.xprops.test;
 
@@ -22,16 +12,18 @@ let actions = {
 
 let hash = window.location.hash ? `&hash=${ window.location.hash.slice(1) }` : '';
 
+let client = window.paypal.client();
+
 if (action === 'checkout') {
 
-    window.xprops.payment().then(paymentToken => {
+    window.xprops.payment().then(orderID => {
 
-        return window.paypal.Promise.try(() => {
+        return client.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
-                    paymentToken,
-                    cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
+                    orderID,
+                    cancelUrl: `#cancel?token=${ orderID }${ hash }`
                 });
             }
 
@@ -44,12 +36,11 @@ if (action === 'checkout') {
         }).then(() => {
 
             window.xprops.onAuthorize({
-                paymentToken,
-                paymentID:  paymentToken,
+                orderID,
                 intent:     'sale',
                 payerID:    'YYYYYYYYYYYYY',
-                cancelUrl:  `#cancel?token=${ paymentToken }${ hash }`,
-                returnUrl:  `#return?token=${ paymentToken }&PayerID=YYYYYYYYYYYYY${ hash }`,
+                cancelUrl:  `#cancel?token=${ orderID }${ hash }`,
+                returnUrl:  `#return?token=${ orderID }&PayerID=YYYYYYYYYYYYY${ hash }`,
                 currentUrl: window.location.href
             });
         });
@@ -57,11 +48,11 @@ if (action === 'checkout') {
 
 } else if (action === 'cancel') {
 
-    window.xprops.payment().then(paymentToken => {
+    window.xprops.payment().then(orderID => {
 
         window.xprops.onCancel({
-            paymentToken,
-            cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
+            orderID,
+            cancelUrl: `#cancel?token=${ orderID }${ hash }`
         });
     });
 
@@ -74,69 +65,28 @@ if (action === 'checkout') {
     testButton.addEventListener('click', () => {
         window.xchild.hide();
 
-        window.paypal.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
+        client.Checkout.renderPopupTo(window.xchild.getParentRenderWindow(), {
 
             url:              window.location.href,
             payment:          window.xprops.payment,
             onAuthorize:      window.xprops.onAuthorize,
             onCancel:         window.xprops.onCancel,
             onError:          window.xprops.onError
-        });
+        }, 'body');
     });
 
     testButton.click();
 
-} else if (action === 'fallback') {
-
-    let parent = window.xchild.getParentComponentWindow();
-
-    window.xprops.payment().then(paymentToken => {
-        return window.xprops.fallback(`#fallbackUrl?token=${ paymentToken }`).then(() => {
-
-            createTestContainer();
-
-            let testButton = createElement({ tag: 'button', id: 'testButton', container: 'testContainer' });
-
-            testButton.addEventListener('click', () => {
-                let win;
-
-                if (window.opener) {
-                    win = window;
-                } else {
-                    win = window.open('', `fallbackWindow${ Math.random() }`, 'width=500,height=500');
-                }
-
-                win.location = '/base/test/windows/fallback/index.htm';
-
-                // $FlowFixMe
-                if (isSameDomain(parent) && parent.watchForLegacyFallback) {
-                    return parent.watchForLegacyFallback(win);
-                }
-
-                for (let frame of getFrames(parent)) {
-                    // $FlowFixMe
-                    if (isSameDomain(frame) && frame.watchForLegacyFallback) {
-                        return frame.watchForLegacyFallback(win);
-                    }
-                }
-
-                throw new Error('Can not find frame to watch for fallback');
-            });
-
-            testButton.click();
-        });
-    });
-
 } else if (action === 'error') {
 
-    window.xprops.payment().then(paymentToken => {
+    window.xprops.payment().then(orderID => {
 
-        return window.paypal.Promise.try(() => {
+        return client.Promise.try(() => {
 
             if (window.xprops.init) {
                 return window.xprops.init({
-                    paymentToken,
-                    cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
+                    orderID,
+                    cancelUrl: `#cancel?token=${ orderID }${ hash }`
                 });
             }
 
@@ -147,11 +97,11 @@ if (action === 'checkout') {
     });
 } else if (action === 'init') {
     
-    window.xprops.payment().then(paymentToken => {
+    window.xprops.payment().then(orderID => {
         if (window.xprops.init) {
             return window.xprops.init({
-                paymentToken,
-                cancelUrl: `#cancel?token=${ paymentToken }${ hash }`
+                orderID,
+                cancelUrl: `#cancel?token=${ orderID }${ hash }`
             }).then(() => {
 
                 if (onInit) {

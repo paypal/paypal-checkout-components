@@ -12,7 +12,7 @@ before_install:
 before_script:
   - npm run flow-typed
 script:
-  - npm run build
+  - npm run test
 sudo: required
 dist: trusty
 addons:

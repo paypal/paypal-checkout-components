@@ -6,94 +6,27 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
 import { info, warn, track, error, flush as flushLogs } from 'beaver-logger/client';
-import { getDomain } from 'cross-domain-utils/src';
 
 import { config } from '../config';
-import { SOURCE, ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR,
-    BUTTON_SIZE, BUTTON_SHAPE, BUTTON_LAYOUT, COUNTRY } from '../constants';
-import { redirect as redir, checkRecognizedBrowser,
-    getBrowserLocale, getSessionID, request, getScriptVersion,
-    isIEIntranet, isEligible,
-    getDomainSetting, extendUrl, isDevice, rememberFunding,
-    getRememberedFunding, memoize, uniqueID, getThrottle, getBrowser } from '../lib';
-import { rest, getPaymentOptions, addPaymentDetails } from '../api';
+import { ENV, FPTI, FUNDING, BUTTON_LABEL, BUTTON_COLOR, BUTTON_SHAPE } from '../constants';
+import { checkRecognizedBrowser, getSessionID, request, isIEIntranet, isEligible, isDevice, rememberFunding,
+    getRememberedFunding, uniqueID, getBrowser, redirect } from '../lib';
+import { createOrder } from '../api';
 import { onAuthorizeListener } from '../experiments';
-import { getPaymentType, awaitBraintreeClient,
-    mapPaymentToBraintree, type BraintreePayPalClient } from '../integrations';
 import { awaitPopupBridge } from '../integrations/popupBridge';
-import { validateFunding, isFundingIneligible, isFundingAutoEligible } from '../funding';
-import { mergePaymentDetails } from '../api/hacks';
+import { validateFunding } from '../funding';
 
 import { containerTemplate, componentTemplate } from './template';
-import { validateButtonLocale, validateButtonStyle } from './validate';
+import { validateButtonStyle } from './validate';
 import { setupButtonChild } from './child';
-import { normalizeProps } from './props';
-
-function isCreditDualEligible(props) : boolean {
-
-    let { label, funding, layout, locale, max, sources } = normalizeProps(props, { locale: getBrowserLocale() });
-    let { allowed } = funding;
-    let { country } = locale;
-
-    if (allowed && allowed.indexOf(FUNDING.CREDIT) !== -1) {
-        return false;
-    }
-
-    if (layout !== BUTTON_LAYOUT.HORIZONTAL) {
-        return false;
-    }
-
-    if (max === 1) {
-        return false;
-    }
-
-    if (label === BUTTON_LABEL.CREDIT) {
-        return false;
-    }
-
-    if (country !== COUNTRY.US) {
-        return false;
-    }
-
-    if (isFundingIneligible(FUNDING.CREDIT, { funding, locale, layout })) {
-        return false;
-    }
-
-    if (isFundingAutoEligible(FUNDING.CREDIT, { funding, locale, layout })) {
-        return false;
-    }
-
-    if (sources.indexOf(FUNDING.CREDIT) !== -1) {
-        return false;
-    }
-
-    let domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '');
-
-    if (config.creditTestDomains.indexOf(domain) === -1) {
-        return false;
-    }
-
-    return true;
-}
-
-let creditThrottle;
 
 type ButtonOptions = {
     style : {|
-        maxbuttons? : number,
         layout? : string
     |},
-    client : {
-        [string] : (string | ZalgoPromise<string>)
-    },
     funding? : { allowed? : Array<string>, disallowed? : Array<string> },
     env? : string,
-    locale? : string,
     logLevel : string,
-    supplement : {
-        getPaymentOptions : Function,
-        addPaymentDetails : Function
-    },
     awaitPopupBridge : Function,
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
@@ -106,10 +39,8 @@ export let Button : Component<ButtonOptions> = create({
     tag:  'paypal-button',
     name: 'ppbutton',
 
-    buildUrl(props) : string {
-        let env = props.env || config.env;
-
-        return config.buttonUrls[env];
+    buildUrl() : string {
+        return config.buttonUrls[config.env];
     },
 
     contexts: {
@@ -131,14 +62,6 @@ export let Button : Component<ButtonOptions> = create({
 
         template.addEventListener('click', () => {
             warn('button_pre_template_click');
-
-            if (getDomainSetting('allow_full_page_fallback')) {
-                info('pre_template_force_full_page');
-
-                this.props.payment().then(token => {
-                    window.top.location = extendUrl(config.checkoutUrl, { token });
-                });
-            }
         });
 
         return (
@@ -148,10 +71,6 @@ export let Button : Component<ButtonOptions> = create({
                 </body>
             </html>
         );
-    },
-
-    get version() : string {
-        return getScriptVersion();
     },
 
     get domain() : Object {
@@ -198,17 +117,8 @@ export let Button : Component<ButtonOptions> = create({
             type:       'string',
             required:   false,
             queryParam: true,
-
-            def() : string {
+            get value() : string {
                 return config.env;
-            },
-
-            validate(env) {
-                if (env) {
-                    if (!config.paypalUrls[env]) {
-                        throw new Error(`Invalid env: ${ env }`);
-                    }
-                }
             }
         },
 
@@ -219,66 +129,14 @@ export let Button : Component<ButtonOptions> = create({
                 return {};
             }
         },
-
-        client: {
-            type:     'object',
-            required: false,
-            def() : Object {
-                return {};
-            },
-            sendToChild: false,
-
-            validate(client, props) {
-                let env = props.env || config.env;
-
-                if (!client[env]) {
-                    throw new Error(`Client ID not found for env: ${ env }`);
-                }
-
-                if (typeof client[env] === 'string') {
-                    if (client[env].match(/^(.)\1+$/)) {
-                        throw new Error(`Invalid client ID: ${ client[env] }`);
-                    }
-                } else if (!ZalgoPromise.isPromise(client[env])) {
-                    throw new Error(`Expected client token to be either a string or a promise`);
-                }
-            },
-
-            decorate(client : Object) : Object {
-                if (client && client.sandbox === 'demo_sandbox_client_id') {
-                    client.sandbox = 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R';
-                }
-
-                if (client && client.production === 'demo_production_client_id') {
-                    client.production = 'Aco85QiB9jk8Q3GdsidqKVCXuPAAVbnqm0agscHCL2-K2Lu2L6MxDU2AwTZa-ALMn_N0z-s2MXKJBxqJ';
-                }
-
-                return client;
-            }
-        },
-
-        source: {
-            type:     'string',
-            required: false,
-            def() : string {
-                return SOURCE.MANUAL;
-            }
-        },
-
-        prefetchLogin: {
-            type:     'boolean',
-            required: false
-        },
-
+        
         stage: {
             type:       'string',
             required:   false,
             queryParam: true,
 
-            def(props) : ?string {
-                let env = props.env || config.env;
-
-                if (env === ENV.STAGE || env === ENV.LOCAL) {
+            def() : ?string {
+                if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
                     return config.stage;
                 }
             }
@@ -289,35 +147,10 @@ export let Button : Component<ButtonOptions> = create({
             required:   false,
             queryParam: true,
 
-            def(props) : ?string {
-                let env = props.env || config.env;
-
-                if (env === ENV.STAGE || env === ENV.LOCAL) {
+            def() : ?string {
+                if (config.env === ENV.STAGE || config.env === ENV.LOCAL) {
                     return config.stageUrl;
                 }
-            }
-        },
-
-        braintree: {
-            type:     'object',
-            required: false,
-            validate(braintree, props) {
-
-                if (!braintree.paypalCheckout) {
-                    throw new Error(`Expected Braintree paypal-checkout component to be loaded`);
-                }
-
-                if (!props.client) {
-                    throw new Error(`Expected client prop to be passed with Braintree authorization keys`);
-                }
-            },
-            // $FlowFixMe
-            decorate(braintree, props) : ZalgoPromise<BraintreePayPalClient> {
-                let env = props.env || config.env;
-                // $FlowFixMe
-                return ZalgoPromise.hash(props.client).then(client => {
-                    return awaitBraintreeClient(braintree, client[env]);
-                });
             }
         },
 
@@ -335,46 +168,15 @@ export let Button : Component<ButtonOptions> = create({
 
                     let actions = {
                         request,
-                        payment: {
-                            create: (options) => {
-                                return this.props.braintree
-                                    ? this.props.braintree.then(client => {
-                                        return client.createPayment(mapPaymentToBraintree(options.payment || options));
-                                    })
-                                    : ZalgoPromise.hash(this.props.client).then(client => {
-                                        return rest.payment.create(this.props.env, client, options);
-                                    });
-                            }
-                        },
                         order: {
-                            create: (options) => {
-                                return ZalgoPromise.hash(this.props.client).then(client => {
-                                    return rest.order.create(this.props.env, client, options);
-                                });
-                            }
-                        },
-                        braintree: {
-                            create: (options) => {
-                                if (!this.props.braintree) {
-                                    throw new Error(`Can not create using Braintree - no braintree client provided`);
-                                }
-
-                                return this.props.braintree.then(client => {
-                                    return client.createPayment(options);
-                                });
-                            }
+                            create: (options) => createOrder(config.clientID, options)
                         }
                     };
-
-                    let timeout = __TEST__ ? 500 : 10 * 1000;
-
-                    if (getDomainSetting('memoize_payment') && this.memoizedToken) {
-                        return this.memoizedToken;
-                    }
-
+                    
                     this.memoizedToken = ZalgoPromise.try(original, this, [ data, actions ]);
 
-                    if (this.props.env === ENV.PRODUCTION && !getDomainSetting('disable_payment_timeout')) {
+                    if (config.env === ENV.PRODUCTION) {
+                        let timeout = __TEST__ ? 500 : 10 * 1000;
                         this.memoizedToken = this.memoizedToken.timeout(timeout, new Error(`Timed out waiting ${ timeout }ms for payment`));
                     }
                         
@@ -388,7 +190,7 @@ export let Button : Component<ButtonOptions> = create({
                         track({
                             [ FPTI.KEY.STATE ]:              FPTI.STATE.CHECKOUT,
                             [ FPTI.KEY.TRANSITION ]:         FPTI.TRANSITION.RECIEVE_PAYMENT,
-                            [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE[getPaymentType(token)],
+                            [ FPTI.KEY.CONTEXT_TYPE ]:       FPTI.CONTEXT_TYPE.EC_TOKEN,
                             [ FPTI.KEY.CONTEXT_ID ]:         token,
                             [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
                         });
@@ -413,31 +215,13 @@ export let Button : Component<ButtonOptions> = create({
             def() : Object {
                 return {};
             },
-            decorate({ allowed = [], disallowed = [] } : Object = {}, props : ButtonOptions) : {} {
+            decorate({ allowed = [], disallowed = [] } : Object = {}) : {} {
 
                 if (allowed && allowed.indexOf(FUNDING.VENMO) !== -1 && !isDevice()) {
                     allowed.splice(allowed.indexOf(FUNDING.VENMO), 1);
                 }
 
-                if (isCreditDualEligible(props)) {
-                    creditThrottle = getThrottle('dual_credit_automatic', 50);
-
-                    if (creditThrottle.isEnabled()) {
-                        allowed.push(FUNDING.CREDIT);
-                    }
-                }
-
                 let remembered = getRememberedFunding(sources => sources);
-
-                if (!isDevice() || getDomainSetting('disable_venmo')) {
-                    if (remembered && remembered.indexOf(FUNDING.VENMO) !== -1) {
-                        remembered.splice(remembered.indexOf(FUNDING.VENMO), 1);
-                    }
-
-                    if (disallowed && disallowed.indexOf(FUNDING.VENMO) === -1) {
-                        disallowed.push(FUNDING.VENMO);
-                    }
-                }
 
                 return {
                     allowed,
@@ -453,7 +237,10 @@ export let Button : Component<ButtonOptions> = create({
         commit: {
             type:       'boolean',
             required:   false,
-            queryParam: true
+            queryParam: true,
+            def() : boolean {
+                return true;
+            }
         },
 
         onRender: {
@@ -475,12 +262,6 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.BUTTON_SOURCE ]:      this.props.source
                     });
 
-                    if (creditThrottle) {
-                        creditThrottle.logStart({
-                            [ FPTI.KEY.BUTTON_SESSION_UID ]: this.props.buttonSessionID
-                        });
-                    }
-
                     flushLogs();
 
                     return original.apply(this, arguments);
@@ -494,10 +275,6 @@ export let Button : Component<ButtonOptions> = create({
 
             decorate(original) : Function {
                 return function decorateOnAuthorize(data, actions) : void | ZalgoPromise<void> {
-
-                    if (data && !data.intent) {
-                        warn(`button_authorize_no_intent`, { paymentID: data.paymentID, token: data.paymentToken });
-                    }
 
                     info('button_authorize');
 
@@ -522,77 +299,20 @@ export let Button : Component<ButtonOptions> = create({
                         });
                     };
 
-                    actions.redirect = (win, url) => {
+                    actions.redirect = (url, win) => {
                         return ZalgoPromise.all([
-                            redir(win || window.top, url || data.returnUrl),
+                            redirect(win || window.top, url),
                             actions.close()
                         ]);
-                    };
-
-                    actions.payment.tokenize = memoize(() => {
-                        if (!this.props.braintree) {
-                            throw new Error(`Must pass in Braintree client to tokenize payment`);
-                        }
-
-                        return this.props.braintree
-                            .then(client => client.tokenizePayment(data))
-                            .then(res => ({ nonce: res.nonce }));
-                    });
-
-                    let execute = actions.payment.execute;
-                    actions.payment.execute = () => {
-                        return execute().then(result => {
-
-                            if (!result || !result.id || !result.intent || !result.state) {
-                                warn(`execute_result_missing_data`);
-                                return new ZalgoPromise();
-                            }
-
-                            return mergePaymentDetails(result.id, result);
-                        });
-                    };
-
-                    let get = actions.payment.get;
-
-                    actions.payment.get = () => {
-                        return get().then(result => {
-                            if (!result || !result.id || !result.intent || !result.state) {
-                                warn(`get_result_missing_data`);
-                                return new ZalgoPromise();
-                            }
-
-                            return mergePaymentDetails(result.id, result);
-                        });
                     };
 
                     actions.request = request;
 
                     onAuthorizeListener.trigger({
-                        paymentToken: data.paymentToken
+                        orderID: data.orderID
                     });
 
-                    if (creditThrottle) {
-                        creditThrottle.logComplete({
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
-                        });
-                    }
-
                     return ZalgoPromise.try(() => {
-
-                        if (this.props.braintree) {
-                            return actions.payment.tokenize().then(({ nonce }) => {
-                                // $FlowFixMe
-                                Object.defineProperty(data, 'nonce', {
-                                    get: () => {
-                                        info('nonce_getter');
-                                        flushLogs();
-                                        return nonce;
-                                    }
-                                });
-                            });
-                        }
-
-                    }).then(() => {
                         return original.call(this, data, actions);
                     }).catch(err => {
                         if (this.props.onError) {
@@ -622,14 +342,14 @@ export let Button : Component<ButtonOptions> = create({
 
                     flushLogs();
 
-                    let redirect = (win, url) => {
+                    actions.redirect = (url, win) => {
                         return ZalgoPromise.all([
-                            redir(win || window.top, url || data.cancelUrl),
+                            redirect(win || window.top, url),
                             actions.close()
                         ]);
                     };
 
-                    return original.call(this, data, { ...actions, redirect });
+                    return original.call(this, data, actions);
                 };
             }
         },
@@ -651,12 +371,6 @@ export let Button : Component<ButtonOptions> = create({
                         [ FPTI.KEY.CHOSEN_FUNDING ]:     data && (data.card || data.fundingSource)
                     });
 
-                    if (creditThrottle) {
-                        creditThrottle.log('click', {
-                            [FPTI.KEY.BUTTON_SESSION_UID]: this.props.buttonSessionID
-                        });
-                    }
-
                     flushLogs();
 
                     return original.apply(this, arguments);
@@ -669,12 +383,10 @@ export let Button : Component<ButtonOptions> = create({
             required:   false,
             queryParam: 'locale.x',
 
-            def() : string {
-                let { lang, country } = getBrowserLocale();
+            get value() : string {
+                let { lang, country } = config.locale;
                 return `${ lang }_${ country }`;
-            },
-
-            validate: validateButtonLocale
+            }
         },
 
         style: {
@@ -687,9 +399,7 @@ export let Button : Component<ButtonOptions> = create({
                 return {
                     color:        BUTTON_COLOR.GOLD,
                     shape:        BUTTON_SHAPE.PILL,
-                    size:         BUTTON_SIZE.SMALL,
-                    label:        BUTTON_LABEL.CHECKOUT,
-                    fundingicons: false
+                    label:        BUTTON_LABEL.CHECKOUT
                 };
             },
 
@@ -698,8 +408,6 @@ export let Button : Component<ButtonOptions> = create({
                 info(`button_render_shape_${ style.shape || 'default' }`);
                 info(`button_render_size_${ style.size || 'default' }`);
                 info(`button_render_label_${ style.label || 'default' }`);
-                info(`button_render_branding_${ style.branding || 'default' }`);
-                info(`button_render_fundingicons_${ style.fundingicons || 'default' }`);
                 info(`button_render_tagline_${ style.tagline || 'default' }`);
 
                 validateButtonStyle(style, props);
@@ -723,12 +431,6 @@ export let Button : Component<ButtonOptions> = create({
             type:     'object',
             required: false,
             value:    () => awaitPopupBridge(Button)
-        },
-
-        supplement: {
-            type:     'object',
-            required: false,
-            value:    { getPaymentOptions, addPaymentDetails }
         },
 
         test: {

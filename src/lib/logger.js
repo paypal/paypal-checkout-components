@@ -6,7 +6,7 @@ import { setTransport, getTransport, addPayloadBuilder, addHeaderBuilder, addMet
 import { getParent } from 'cross-domain-utils/src';
 
 import { config } from '../config';
-import { FPTI, PAYMENT_TYPE } from '../constants';
+import { FPTI } from '../constants';
 
 import { getSessionID, getButtonSessionID } from './session';
 import { proxyMethod } from './proxy';
@@ -23,7 +23,7 @@ let setupProxyLogTransport = once(() => {
     setTransport(proxyMethod('log', getParent(window), getTransport()));
 });
 
-function getToken() : ?string {
+function getOrderID() : ?string {
     if (window.root && window.root.token) {
         return window.root.token;
     }
@@ -45,8 +45,6 @@ export function initLogger() {
             host:    window.location.host,
             path:    window.location.pathname,
             env:     config.env,
-            country: config.locale.country,
-            lang:    config.locale.lang,
             uid:     getSessionID(),
             ver:     __PAYPAL_CHECKOUT__.__MINOR_VERSION__
         };
@@ -67,15 +65,15 @@ export function initLogger() {
     addTrackingBuilder((payload = {}) => {
 
         let sessionID       = getSessionID();
-        let paymentToken    = getToken();
+        let orderID         = getOrderID();
         let buttonSessionID = payload[FPTI.KEY.BUTTON_SESSION_UID] || getButtonSessionID();
 
         let contextType;
         let contextID;
 
-        if (paymentToken) {
-            contextType = FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN];
-            contextID   = paymentToken;
+        if (orderID) {
+            contextType = FPTI.CONTEXT_TYPE.EC_TOKEN;
+            contextID   = orderID;
         } else if (buttonSessionID) {
             contextType = FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID;
             contextID   = buttonSessionID;
@@ -93,7 +91,7 @@ export function initLogger() {
             [ FPTI.KEY.SESSION_UID ]:        sessionID,
             [ FPTI.KEY.BUTTON_SESSION_UID ]: buttonSessionID,
             [ FPTI.KEY.VERSION ]:            config.version,
-            [ FPTI.KEY.TOKEN ]:              paymentToken,
+            [ FPTI.KEY.TOKEN ]:              orderID,
             [ FPTI.KEY.REFERER ]:            getRefererDomain()
         };
     });

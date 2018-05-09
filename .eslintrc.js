@@ -8,7 +8,8 @@ module.exports = {
         '__TEST__': true,
         '__MIN__': true,
         '__FILE_NAME__': true,
-        '__PAYPAL_CHECKOUT__': true
+        '__PAYPAL_CHECKOUT__': true,
+        '__paypal_checkout__': true
     },
 
     'rules': {

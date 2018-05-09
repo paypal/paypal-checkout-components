@@ -1,5 +1,4 @@
 /* @flow */
-/* global __paypal_checkout__*/
 
 import { FUNDING, COUNTRY, CARD, PLATFORM, DEFAULT } from '../constants';
 
@@ -44,7 +43,7 @@ export const FUNDING_CONFIG = {
 
     [ FUNDING.CARD ]: {
         // $FlowFixMe
-        default: (typeof __paypal_checkout__ === 'undefined' ? true : __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded),
+        default: (typeof __paypal_checkout__ !== 'undefined') && __paypal_checkout__.serverConfig.paypalMerchantConfiguration.creditCard.isPayPalBranded,
 
         allowHorizontal: false,
         allowVertical:   true

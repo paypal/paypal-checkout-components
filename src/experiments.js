@@ -2,8 +2,8 @@
 
 import { info, track, immediateFlush } from 'beaver-logger/client';
 
-import { FPTI, PAYMENT_TYPE } from './constants';
-import { getReturnToken, getSessionState, getDomainSetting, eventEmitter } from './lib';
+import { FPTI } from './constants';
+import { getSessionState, eventEmitter } from './lib';
 
 export let onAuthorizeListener = eventEmitter();
 
@@ -35,7 +35,7 @@ function log(experiment : string, treatment : string, token : ?string, state : s
                 [ FPTI.KEY.TREATMENT_NAME ]:  treatment,
                 [ FPTI.KEY.TOKEN ]:           token,
                 [ FPTI.KEY.CONTEXT_ID ]:      token,
-                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE[PAYMENT_TYPE.EC_TOKEN] : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
+                [ FPTI.KEY.CONTEXT_TYPE ]:    token ? FPTI.CONTEXT_TYPE.EC_TOKEN : FPTI.CONTEXT_TYPE.BUTTON_SESSION_ID
             });
 
             immediateFlush();
@@ -59,43 +59,4 @@ export function logExperimentTreatment({ experiment, treatment, state, token } :
     });
 
     log(experiment, treatment, token, state);
-}
-
-function logReturn(token : string) {
-
-    let {
-        externalExperiment,
-        externalExperimentTreatment,
-        externalExperimentToken
-    } = getSessionState(session => session);
-
-    if (externalExperiment && externalExperimentTreatment && externalExperimentToken === token) {
-        log(externalExperiment, externalExperimentTreatment, token, `complete`);
-    } else {
-        info(`experiment_mismatch`, {
-            token,
-            externalExperiment,
-            externalExperimentTreatment,
-            externalExperimentToken
-        });
-    }
-}
-
-if (getDomainSetting('log_authorize')) {
-
-    onAuthorizeListener.once(({ paymentToken }) => {
-        setTimeout(() => {
-            logReturn(paymentToken);
-        }, 1);
-    });
-
-    let returnToken = getReturnToken();
-
-    if (returnToken) {
-        setTimeout(() => {
-            if (returnToken) {
-                logReturn(returnToken);
-            }
-        }, 1);
-    }
 }

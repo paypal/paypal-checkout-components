@@ -10,18 +10,22 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.iframe = false;
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = false;
         });
 
         it('should render button, render checkout, and return a blank string in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -47,12 +51,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, and return a blank string promise in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
                 payment() : string | ZalgoPromise<string> {
-                    return window.paypal.Promise.resolve('');
+                    return client.Promise.resolve('');
                 },
 
                 onError(err) : void {
@@ -73,7 +79,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, and throw an error in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -99,12 +107,14 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, and return a rejected promise in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
                 payment() : string | ZalgoPromise<string> {
-                    return window.paypal.Promise.reject(new Error('error'));
+                    return client.Promise.reject(new Error('error'));
                 },
 
                 onError(err) : void {
@@ -125,7 +135,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, and call reject in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -151,7 +163,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, and call reject with undefined in payment', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -175,31 +189,11 @@ for (let flow of [ 'popup', 'iframe' ]) {
             }, '#testContainer');
         });
 
-        it('should render button, then fall back and complete the payment', (done) => {
-
-            window.paypal.Button.render({
-
-                test: { flow, action: 'fallback' },
-
-                payment() : string | ZalgoPromise<string> {
-                    return generateECToken();
-                },
-
-                onAuthorize() : void {
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-
-            }, '#testContainer');
-        });
-
         it('should render button, render checkout, then error out', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'error' },
 
@@ -225,7 +219,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, then throw an error in onAuthorize', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -251,7 +247,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, then return a rejected promise in onAuthorize', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -265,7 +263,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    return new window.paypal.Promise((resolve, reject) => {
+                    return new client.Promise((resolve, reject) => {
                         return reject(new Error('error'));
                     });
                 },
@@ -279,7 +277,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button, render checkout, then return a rejected promise for undefined in onAuthorize', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -293,7 +293,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    return new window.paypal.Promise((resolve, reject) => {
+                    return new client.Promise((resolve, reject) => {
                         return reject();
                     });
                 },
@@ -307,9 +307,10 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render button with an extra prop unknown to child', (done) => {
 
-            window.paypal.Button.props.foobarbaz = { type: 'string', required: true };
+            let client = window.paypal.client();
+            client.Button.props.foobarbaz = { type: 'string', required: true };
 
-            window.paypal.Button.render({
+            client.Button.render({
 
                 test: { flow, action: 'checkout' },
 
@@ -320,7 +321,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                 },
 
                 onAuthorize() : void {
-                    delete window.paypal.Button.props.foobarbaz;
+                    delete client.Button.props.foobarbaz;
                     return done();
                 },
 

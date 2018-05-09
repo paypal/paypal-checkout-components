@@ -19,14 +19,16 @@ function getNextMinorVersion() {
     return getNextVersion();
 }
 
-module.exports = Object.assign({}, postRobotGlobals, xcomponentGlobals, {
+module.exports = Object.assign({}, xcomponentGlobals, {
+
+    __POST_ROBOT__: Object.assign({}, postRobotGlobals, {
+        __IE_POPUP_SUPPORT__: false
+    }),
+
     __PAYPAL_CHECKOUT__: {
-        __LEGACY_SUPPORT__:    true,
         __DEFAULT_LOG_LEVEL__: 'warn',
         __MAJOR__:             true,
         __MAJOR_VERSION__:     getNextMajorVersion(),
-        __MINOR_VERSION__:     getNextMinorVersion(),
-        __sdk__:               undefined,
-        __paypal_checkout__:   undefined
+        __MINOR_VERSION__:     getNextMinorVersion()
     }
 });

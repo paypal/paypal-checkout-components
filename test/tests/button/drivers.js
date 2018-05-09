@@ -13,16 +13,20 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.iframe = false;
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = false;
         });
 
         it('should render a button into a container with React and click on the button, then complete the payment', (done) => {
+
+            let client = window.paypal.client();
 
             let Main = window.React.createClass({
 
@@ -33,7 +37,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return window.React.createElement(
                         'div',
                         null,
-                        window.React.createElement(window.paypal.Button.react, {
+                        window.React.createElement(client.Button.react, {
 
                             payment() : string | ZalgoPromise<string> {
                                 return generateECToken();
@@ -64,6 +68,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a promise in payment and click on the button, then complete the payment', (done) => {
 
+            let client = window.paypal.client();
+
             let Main = window.React.createClass({
 
                 render() : Object {
@@ -73,7 +79,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return window.React.createElement(
                         'div',
                         null,
-                        window.React.createElement(window.paypal.Button.react, {
+                        window.React.createElement(client.Button.react, {
 
                             payment() : string | ZalgoPromise<string> {
                                 return ZalgoPromise.try(() => {
@@ -106,6 +112,8 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button into a container with React with a non-zalgo promise in payment and click on the button, then complete the payment', (done) => {
 
+            let client = window.paypal.client();
+
             let Main = window.React.createClass({
 
                 render() : Object {
@@ -115,7 +123,7 @@ for (let flow of [ 'popup', 'iframe' ]) {
                     return window.React.createElement(
                         'div',
                         null,
-                        window.React.createElement(window.paypal.Button.react, {
+                        window.React.createElement(client.Button.react, {
 
                             payment() : string | ZalgoPromise<string> {
                                 // $FlowFixMe

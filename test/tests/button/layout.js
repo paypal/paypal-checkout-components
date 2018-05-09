@@ -18,7 +18,9 @@ describe(`paypal button layouts`, () => {
 
     it('should render a maximum of 2 buttons horizontally', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
@@ -31,7 +33,7 @@ describe(`paypal button layouts`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO, window.paypal.FUNDING.CREDIT ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO, client.FUNDING.CREDIT ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -53,7 +55,9 @@ describe(`paypal button layouts`, () => {
 
     it('should render a maximum of 4 buttons vertically', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
@@ -66,7 +70,7 @@ describe(`paypal button layouts`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO, window.paypal.FUNDING.CREDIT, window.paypal.FUNDING.IDEAL, window.paypal.FUNDING.ELV ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO, client.FUNDING.CREDIT, client.FUNDING.IDEAL, client.FUNDING.ELV ]
             },
 
             style: {

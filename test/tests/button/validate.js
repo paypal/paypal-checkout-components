@@ -24,7 +24,9 @@ describe(`paypal button component validate`, () => {
 
         let clicks = 0;
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender(actions) {

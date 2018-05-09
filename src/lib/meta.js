@@ -7,8 +7,6 @@ import { config } from '../config';
 
 import { isIEIntranet  } from './device';
 import { memoize } from './util';
-import { getScriptVersion } from './script';
-import { extendUrl } from './dom';
 
 type FrameMetaData = {
     iframeEligible : boolean,
@@ -37,7 +35,7 @@ export let openMetaFrame = memoize((env : string = config.env) : ZalgoPromise<Fr
 
             let metaListener = once('meta', { domain: metaFrameDomain });
 
-            return bridge.openBridge(extendUrl(metaFrameUrl, { version: getScriptVersion() }), metaFrameDomain)
+            return bridge.openBridge(metaFrameUrl, metaFrameDomain)
                 .then(() => metaListener)
                 .then(({ data }) => data);
         });

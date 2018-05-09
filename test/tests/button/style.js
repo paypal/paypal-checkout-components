@@ -11,18 +11,22 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         beforeEach(() => {
             createTestContainer();
-            window.paypal.Checkout.contexts.iframe = (flow === 'iframe');
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = (flow === 'iframe');
         });
 
         afterEach(() => {
             destroyTestContainer();
             window.location.hash = '';
-            window.paypal.Checkout.contexts.iframe = false;
+            let client = window.paypal.client();
+            client.Checkout.contexts.iframe = false;
         });
 
         it('should render a button and click and get a black overlay', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: {
                     flow,
@@ -50,7 +54,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button with overlayColor=black and click and get a black overlay', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: {
                     flow,
@@ -82,7 +88,9 @@ for (let flow of [ 'popup', 'iframe' ]) {
 
         it('should render a button with overlayColor=white and click and get a black overlay', (done) => {
 
-            window.paypal.Button.render({
+            let client = window.paypal.client();
+
+            client.Button.render({
 
                 test: {
                     flow,

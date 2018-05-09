@@ -9,7 +9,7 @@ import { extendUrl, redirect, awaitKey, stringifyError } from '../lib';
 import { config } from '../config';
 import { FUNDING } from '../constants';
 
-import { determineParameterFromToken, determineUrl } from './checkout';
+import { determineUrl } from './checkout';
 
 const OPTYPE = {
     PAYMENT: 'payment',
@@ -58,20 +58,14 @@ function validateCheckoutProps(props) {
     if (!props.onAuthorize) {
         throw new Error(`Expected props.onAuthorize to be passed`);
     }
-
-    if (props.env && !config.checkoutUrls[props.env]) {
-        throw new Error(`Invalid props.env: ${ props.env }`);
-    }
 }
 
 function normalizeCheckoutProps(props : Object) : { env : string, payment : Function, onAuthorize : Function, onCancel : Function } {
-    let env = props.env = props.env || config.env;
-
     let payment = props.payment;
     let onAuthorize = once(props.onAuthorize);
     let onCancel = once(props.onCancel || noop);
 
-    return { env, payment, onAuthorize, onCancel };
+    return { env: config.env, payment, onAuthorize, onCancel };
 }
 
 function getUrl(props : { env : string, payment : Function, onAuthorize : Function, onCancel? : Function, commit? : boolean }) : ZalgoPromise<string> {
@@ -83,9 +77,8 @@ function getUrl(props : { env : string, payment : Function, onAuthorize : Functi
             throw new Error(`Expected props.payment to return a payment id or token`);
         }
 
-        return extendUrl(determineUrl(env, FUNDING.PAYPAL, token), {
-            [determineParameterFromToken(token)]: token,
-
+        return extendUrl(determineUrl(env, FUNDING.PAYPAL), {
+            token,
             useraction: props.commit ? 'commit' : '',
             native_xo:  '1'
         });
@@ -95,9 +88,7 @@ function getUrl(props : { env : string, payment : Function, onAuthorize : Functi
 function extractDataFromQuery(query : Object) : Object {
 
     let data : Object = {
-        paymentToken: query.token,
-        billingToken: query.ba_token,
-        paymentID:    query.paymentId,
+        orderID:      query.token,
         payerID:      query.PayerID,
         intent:       query.intent
     };

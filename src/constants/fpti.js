@@ -1,7 +1,5 @@
 /* @flow */
 
-import { PAYMENT_TYPE } from './misc';
-
 export const FPTI = {
 
     KEY: {
@@ -43,10 +41,8 @@ export const FPTI = {
     },
 
     CONTEXT_TYPE: {
-        BUTTON_SESSION_ID:         'button_session_id',
-        [ PAYMENT_TYPE.PAY_ID ]:   'Pay-ID',
-        [ PAYMENT_TYPE.EC_TOKEN ]: 'EC-Token',
-        [ PAYMENT_TYPE.BA_TOKEN ]: 'EC-Token'
+        BUTTON_SESSION_ID: 'button_session_id',
+        EC_TOKEN:          'EC-Token'
     },
 
     FEED: {

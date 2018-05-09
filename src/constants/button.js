@@ -4,7 +4,7 @@ import type { Enum } from '../types';
 
 type BUTTON_STYLE_OPTIONS_ENUM =
     Enum<'label' | 'size' | 'shape' | 'color' | 'layout' |
-    'fundingicons' | 'maxbuttons' | 'branding' | 'tagline' | 'height' | 'installmentperiod'>;
+    'fundingicons' | 'tagline' | 'height' | 'installmentperiod'>;
 
 export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     LABEL:              'label',
@@ -12,9 +12,7 @@ export const BUTTON_STYLE_OPTIONS : BUTTON_STYLE_OPTIONS_ENUM = {
     SHAPE:              'shape',
     COLOR:              'color',
     LAYOUT:             'layout',
-    MAXBUTTONS:         'maxbuttons',
     FUNDINGICONS:       'fundingicons',
-    BRANDING:           'branding',
     TAGLINE:            'tagline',
     HEIGHT:             'height',
     INSTALLMENTPERIOD:  'installmentperiod'
@@ -90,14 +88,6 @@ type BUTTON_SHAPE_ENUM =
 export const BUTTON_SHAPE : BUTTON_SHAPE_ENUM = {
     PILL: 'pill',
     RECT: 'rect'
-};
-
-type BUTTON_BRANDING_ENUM =
-    Enum<'branded' | 'unbranded'>;
-
-export const BUTTON_BRANDING : BUTTON_BRANDING_ENUM = {
-    BRANDED:   'branded',
-    UNBRANDED: 'unbranded'
 };
 
 type BUTTON_LAYOUT_ENUM =

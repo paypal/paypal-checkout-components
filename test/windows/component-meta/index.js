@@ -1,14 +1,12 @@
 /* @flow */
 
-import '../../tests/common';
+import { sendToParent } from 'post-robot/src';
 
-if (window.location.href.indexOf('version=test_minor') === -1) {
-    throw new Error(`Expected url to have version`);
-}
+import '../../tests/common';
 
 let rememberedFunding = localStorage.getItem('rememberedFunding');
 
-window.paypal.postRobot.sendToParent('meta', {
+sendToParent('meta', {
     locale:               'en_US',
     iframeEligible:       false,
     iframeEligibleReason: 'test',

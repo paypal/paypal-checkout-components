@@ -5,8 +5,9 @@
 /* eslint unicorn/no-process-exit: 0 */
 
 import fs from 'fs-extra';
+import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { BASE } from '../../webpack.config';
+import globals from '../../globals';
 
 import { webpackCompile } from './lib/compile';
 import { openPage, takeScreenshot } from './lib/browser';
@@ -25,17 +26,37 @@ const USER_AGENTS = {
 jest.setTimeout(120000);
 
 let setupBrowserPage = (async () => {
-    let { browser, page } = await openPage(await webpackCompile(BASE));
+    let { browser, page } = await openPage(await webpackCompile(getWebpackConfig({
+        libraryTarget: 'window',
+        test:          true,
+        vars:          {
+            ...globals,
+            __paypal_checkout__: {
+                queryOptions: {
+                    clientID:   'abcxyz123',
+                    merchantID: 'XYZ',
+                    env:        'test',
+                    locale:     {
+                        country: 'US',
+                        lang:    'en'
+                    }
+                },
+                serverConfig: {
+                    paypalMerchantConfiguration: {
+                        creditCard: {
+                            isPayPalBranded: true
+                        }
+                    }
+                }
+            }
+        }
+    })));
 
     for (let filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
             await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
         }
     }
-
-    await page.evaluate(() => {
-        window.paypal.setup({ env: 'test' });
-    });
 
     return { browser, page };
 })();
@@ -72,7 +93,9 @@ for (let config of buttonConfigs) {
                 window.navigator.mockUserAgent = userAgents[options.userAgent];
             }
 
-            window.paypal.Button.render(Object.assign({
+            let client = window.paypal.client();
+
+            client.Button.render(Object.assign({
                 payment() { /* pass */ },
                 onAuthorize() { /* pass */ }
             }, options.button), container);

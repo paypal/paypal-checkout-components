@@ -8,7 +8,6 @@ export const CLASS = {
     COLOR:      'paypal-button-color',
     LOGO_COLOR: 'paypal-button-logo-color',
     SHAPE:      'paypal-button-shape',
-    BRANDING:   'paypal-button-branding',
     LAYOUT:     'paypal-button-layout',
     NUMBER:     'paypal-button-number',
     ENV:        'paypal-button-env',

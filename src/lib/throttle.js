@@ -4,7 +4,6 @@ import { info, track, flush as flushLogs } from 'beaver-logger/client';
 
 import { FPTI } from '../constants';
 
-import { match } from './util';
 import { getStorageState, getStorageID, getSessionState } from './session';
 
 function isCheckpointUnique(name : string) : boolean {
@@ -121,14 +120,4 @@ export function getThrottle(name : string, sample : number) : Throttle {
             return this.log(`complete`, payload);
         }
     };
-}
-
-export function getReturnToken() : ?string {
-
-    let token = match(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
-    let payer = match(window.location.href, /PayerID=([A-Z0-9]+)/);
-
-    if (token && payer) {
-        return token;
-    }
 }

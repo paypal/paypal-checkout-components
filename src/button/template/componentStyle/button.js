@@ -15,7 +15,6 @@ export let buttonStyle = `
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: none;
         font-weight: 500;R
-        -webkit-font-smoothing: antialiased;
         font-smoothing: antialiased;
         z-index: 0;
         font-size: 0;
@@ -99,10 +98,6 @@ export let buttonStyle = `
         position: relative;
         top: 50%;
         transform: translateY(-50%);
-        -webkit-transform: translateY(-50%);
-        -moz-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        -o-transform: translateY(-50%);
         text-align: left;
     }
 

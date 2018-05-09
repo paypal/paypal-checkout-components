@@ -4,10 +4,6 @@ import { info } from 'beaver-logger/client';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../config';
-import { LANG_TO_DEFAULT_COUNTRY } from '../constants';
-import type { LocaleType } from '../types';
-
 import { memoize } from './util';
 import { isDevice } from './device';
 
@@ -36,116 +32,6 @@ export let documentBody : ZalgoPromise<HTMLElement> = documentReady.then(() => {
 
     throw new Error('Document ready but document.body not present');
 });
-
-
-export function loadScript(src : string, timeout : number = 0, attrs : Object = {}) : ZalgoPromise<void> {
-    return new ZalgoPromise((resolve, reject) => {
-        let script = document.createElement('script');
-
-        script.onload = function scriptOnLoad() {
-            resolve();
-        };
-
-        // For Internet explorer 8 support
-        script.onreadystatechange = function scriptOnReadyStateChange() {
-            if (this.readyState === 'complete' || this.readyState === 'loaded') {
-                resolve();
-            }
-        };
-
-        let scriptLoadError = new Error('script_loading_error');
-
-        script.onerror = () => {
-            return reject(scriptLoadError);
-        };
-
-        if (timeout) {
-            setTimeout(() => {
-                return reject(new Error('script_loading_timed_out'));
-            }, timeout);
-        }
-
-        for (let attr of Object.keys(attrs)) {
-            script.setAttribute(attr, attrs[attr]);
-        }
-
-        script.setAttribute('src', src);
-
-        let head = document.getElementsByTagName('head')[0];
-
-        head.appendChild(script);
-    });
-}
-
-
-export function isNodeList(nodes : mixed) : boolean {
-
-    let result = Object.prototype.toString.call(nodes);
-
-    if (result === '[object HTMLCollection]' || result === '[object NodeList]') {
-        return true;
-    }
-
-    return false;
-}
-
-export function isElement(item : mixed) : boolean {
-    return item instanceof HTMLElement;
-}
-
-export function getElement(item : mixed) : ?HTMLElement {
-
-    if (!item) {
-        return;
-    }
-
-    if (item instanceof HTMLElement) {
-        return item;
-    }
-
-    if (typeof item === 'string') {
-
-        if (document.querySelector) {
-            let result = document.querySelector(item);
-
-            if (result) {
-                return result;
-            }
-        }
-
-        return document.getElementById(item);
-    }
-}
-
-export function getElements(collection : Array<mixed> | NodeList<HTMLElement> | HTMLCollection<HTMLElement> | HTMLElement | string) : Array<HTMLElement> {
-
-    if (!collection) {
-        return [];
-    }
-
-    if (collection instanceof HTMLElement || typeof collection === 'string') {
-        let element = getElement(collection);
-        if (element) {
-            return [ element ];
-        }
-        return [];
-    }
-
-    if (Array.isArray(collection) || collection instanceof NodeList || collection instanceof HTMLCollection) {
-        let result = [];
-
-        for (let i = 0; i < collection.length; i++) {
-            let el = getElement(collection[i]);
-            if (el) {
-                result.push(el);
-            }
-        }
-
-        return result;
-    }
-
-    return [];
-}
 
 export function onDocumentReady(method : () => void) : ZalgoPromise<void> {
     return documentReady.then(method);
@@ -259,63 +145,12 @@ export function hasMetaViewPort() : boolean {
     return true;
 }
 
-export function normalizeLocale(locale : string) : ?LocaleType {
-
-    if (locale && locale.match(/^[a-z]{2}[-_][A-Z]{2}$/)) {
-        let [ lang, country ] = locale.split(/[-_]/);
-        if (config.locales[country] && config.locales[country].indexOf(lang) !== -1) {
-            return { country, lang };
-        }
-    }
-}
-
-export function normalizeLang(lang : string) : ?LocaleType {
-
-    if (lang && lang.match(/^[a-z]{2}$/)) {
-        if (LANG_TO_DEFAULT_COUNTRY[lang]) {
-            return { country: LANG_TO_DEFAULT_COUNTRY[lang], lang };
-        }
-    }
-}
-
-export function getBrowserLocale() : LocaleType {
-
-    let nav = window.navigator;
-
-    let locales = nav.languages
-        ? Array.prototype.slice.apply(nav.languages)
-        : [];
-
-    if (nav.language) {
-        locales.push(nav.language);
-    }
-
-    if (nav.userLanguage) {
-        locales.push(nav.userLanguage);
-    }
-
-    for (let locale of locales) {
-        let loc = normalizeLocale(locale);
-        if (loc) {
-            return loc;
-        }
-    }
-
-    for (let locale of locales) {
-        let loc = normalizeLang(locale);
-        if (loc) {
-            return loc;
-        }
-    }
-
-    return config.defaultLocale;
-}
-
 export function isElementVisible(el : HTMLElement) : boolean {
     return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 }
 
 export let enablePerformance = memoize(() : boolean => {
+    /* eslint-disable compat/compat */
     return Boolean(
         window.performance &&
         performance.now &&
@@ -325,6 +160,7 @@ export let enablePerformance = memoize(() : boolean => {
         (Math.abs(performance.now() - Date.now()) > 1000) &&
         (performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart)) > 0
     );
+    /* eslint-enable compat/compat */
 });
 
 export function getPageRenderTime() : ZalgoPromise<?number> {
@@ -340,27 +176,6 @@ export function getPageRenderTime() : ZalgoPromise<?number> {
             return timing.domInteractive - timing.connectEnd;
         }
     });
-}
-
-export function getResourceLoadTime(url : string) : ?number {
-
-    if (!enablePerformance()) {
-        return;
-    }
-
-    if (!window.performance || typeof window.performance.getEntries !== 'function') {
-        return;
-    }
-
-    let entries = window.performance.getEntries();
-
-    for (let i = 0; i < entries.length; i++) {
-        let entry = entries[i];
-
-        if (entry && entry.name === url && entry.duration && entry.duration >= 0 && entry.duration <= 60000) {
-            return Math.floor(entry.duration);
-        }
-    }
 }
 
 export function htmlEncode(html : string = '') : string {

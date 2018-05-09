@@ -6,13 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 
-window.paypal.Checkout.props.timeout = window.paypal.Button.props.timeout = {
-    type:     'number',
-    required: false,
-    def() : number {
-        return 60 * 1000;
-    }
-};
+import { config } from '../../src/config/config';
 
 for (let level of [ 'log', 'debug', 'info', 'warn', 'error' ]) {
     let original = window.console[level];
@@ -59,19 +53,9 @@ export function generateECToken() : string {
     return `EC-${ uniqueID(17).toUpperCase() }`;
 }
 
-export function generatePaymentID() : string {
-    return `PAY-${ uniqueID(20).toUpperCase() }`;
+export function generateOrderID() : string {
+    return `${ uniqueID(20).toUpperCase() }`;
 }
-
-export function generateBillingToken() : string {
-    return `BA-${ uniqueID(17).toUpperCase() }`;
-}
-
-export function generateExperienceToken() : string {
-    return uniqueID(17).toUpperCase();
-}
-
-export const CHILD_REDIRECT_URI = `${ window.paypal.config.paypalUrl }/base/test/windows/redirect/index.htm`;
 
 export const IE8_USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
 export const IE11_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
@@ -249,7 +233,7 @@ patchXmlHttpRequest();
 export function getLoggerApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    window.paypal.config.loggerUrl,
+        uri:    config.loggerUrl,
         data:   {},
         ...options
     });
@@ -258,7 +242,7 @@ export function getLoggerApiMock(options : Object = {}) : Object {
 export function getAuthApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    window.paypal.config.authApiUrl,
+        uri:    config.authApiUrl,
         handler({ headers, data }) : { access_token : string } {
 
             if (!headers.authorization) {
@@ -287,10 +271,10 @@ export function getAuthApiMock(options : Object = {}) : Object {
     });
 }
 
-export function getPaymentApiMock(options : Object = {}) : Object {
+export function getOrderApiMock(options : Object = {}) : Object {
     return $mockEndpoint.register({
         method: 'POST',
-        uri:    window.paypal.config.paymentApiUrl,
+        uri:    config.orderApiUrl,
         handler({ data, headers }) : { id : string } {
 
             if (!headers.authorization) {
@@ -317,60 +301,61 @@ export function getPaymentApiMock(options : Object = {}) : Object {
                 throw new Error(`Expected data.redirect_urls.cancel_url to be passed`);
             }
 
-            if (!data.payer) {
-                throw new Error(`Expected data.payer to be passed`);
+            if (!data.intent) {
+                throw new Error(`Expected data.intent to be passed`);
             }
 
-            if (!data.payer.payment_method) {
-                throw new Error(`Expected data.payer.payment_method to be passed`);
+            if (!data.purchase_units) {
+                throw new Error(`Expected data.purchase_units to be passed`);
             }
+
+            data.purchase_units.forEach(unit => {
+                if (!unit.amount) {
+                    throw new Error(`Expected unit.amount to be passed`);
+                }
+
+                if (!unit.amount.currency) {
+                    throw new Error(`Expected unit.amount.currency to be passed`);
+                }
+
+                if (!unit.amount.total) {
+                    throw new Error(`Expected unit.amount.total to be passed`);
+                }
+
+                if (!unit.amount.details) {
+                    throw new Error(`Expected unit.amount.details to be passed`);
+                }
+
+                if (!unit.amount.details.subtotal) {
+                    throw new Error(`Expected unit.amount.details.subtotal to be passed`);
+                }
+
+                if (!unit.reference_id) {
+                    throw new Error(`Expected unit.reference_id to be passed`);
+                }
+
+                unit.items.forEach(item => {
+
+                    if (!item.currency) {
+                        throw new Error(`Expected item.currency to be passed`);
+                    }
+
+                    if (!item.name) {
+                        throw new Error(`Expected item.name to be passed`);
+                    }
+
+                    if (!item.price) {
+                        throw new Error(`Expected item.price to be passed`);
+                    }
+
+                    if (!item.quantity) {
+                        throw new Error(`Expected item.quantity to be passed`);
+                    }
+                });
+            });
 
             return {
-                id: generatePaymentID()
-            };
-        },
-        ...options
-    });
-}
-
-export function getBillingApiMock(options : Object = {}) : Object {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    window.paypal.config.billingApiUrl,
-        handler({ headers }) : { token_id : string } {
-
-            if (!headers.authorization) {
-                throw new Error(`Expected authorization header for auth api request`);
-            }
-
-            if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
-            }
-
-            return {
-                token_id: generateBillingToken()
-            };
-        },
-        ...options
-    });
-}
-
-export function getExperienceApiMock(options : Object = {}) : Object {
-    return $mockEndpoint.register({
-        method: 'POST',
-        uri:    window.paypal.config.experienceApiUrl,
-        handler({ headers }) : { id : string } {
-
-            if (!headers.authorization) {
-                throw new Error(`Expected authorization header for auth api request`);
-            }
-
-            if (!headers.authorization.match(/^Bearer .+$/)) {
-                throw new Error(`Expected authorization header to be Bearer XXXX, got "${ headers.authorization }"`);
-            }
-
-            return {
-                id: generateExperienceToken()
+                id: generateOrderID()
             };
         },
         ...options
@@ -379,9 +364,7 @@ export function getExperienceApiMock(options : Object = {}) : Object {
 
 getLoggerApiMock().listen();
 getAuthApiMock().listen();
-getPaymentApiMock().listen();
-getBillingApiMock().listen();
-getExperienceApiMock().listen();
+getOrderApiMock().listen();
 
 window.karma = window.karma || (window.top && window.top.karma) || (window.parent && window.parent.karma) || (window.opener && window.opener.karma);
 
@@ -551,7 +534,7 @@ export function errorOnWindowOpen(win : CrossDomainWindowType = window) {
     let open = win.open;
 
     win.open = () => {
-        throw new Error(`Should not open window when bridge present`);
+        throw new Error(`Can not open window`);
     };
 
     win.open.reset = () => {
@@ -599,21 +582,8 @@ export function setupPopupBridge({ win = window, isAuthorize = true } : { win? :
 
                 let { query, hash } = parseUrl(url);
 
-                let queryItems: Object = {};
-
-                if (query.token && query.token.match(/^EC-[A-Z0-9]+$/)) {
-                    queryItems.token = query.token;
-                } else {
-                    queryItems.token = 'EC-XXXXXXXXXXXXXXXXX';
-                }
-
-                if (query.token && query.token.match(/^PAY(ID)?-[A-Z0-9]+$/)) {
-                    queryItems.paymentId = query.token;
-                }
-
-                if (query.ba_token) {
-                    queryItems.ba_token = query.ba_token;
-                }
+                let queryItems : Object = {};
+                queryItems.token = query.token;
 
                 if (isAuthorize) {
                     queryItems.opType = 'payment';
@@ -670,6 +640,19 @@ export function onElementResize(el : HTMLElement) : ZalgoPromise<void> {
             }
         }, 50);
     });
+}
+
+export function mockProp<T>(namespace : Object, name : string, value : T) : { cancel : () => void } {
+    let descriptor = Object.getOwnPropertyDescriptor(namespace, name);
+    delete namespace[name];
+    namespace[name] = value;
+    return {
+        cancel: () => {
+            delete namespace[name];
+            // $FlowFixMe
+            Object.defineProperty(namespace, name, descriptor);
+        }
+    };
 }
 
 export function stringify(item : mixed) : string {

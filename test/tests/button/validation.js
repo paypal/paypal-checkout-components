@@ -3,6 +3,8 @@
 
 import { createTestContainer, destroyTestContainer, noop, assert } from '../common';
 
+let client = window.paypal.client();
+
 let buttonConfigs = [
 
     {
@@ -208,27 +210,27 @@ let buttonConfigs = [
 
             {
                 size:  `tiny`,
-                valid: true
+                valid: false
             },
 
             {
                 size:  `small`,
-                valid: true
+                valid: false
             },
 
             {
                 size:  `medium`,
-                valid: true
+                valid: false
             },
 
             {
                 size:  `large`,
-                valid: true
+                valid: false
             },
 
             {
                 size:  `responsive`,
-                valid: true
+                valid: false
             },
 
             {
@@ -490,7 +492,7 @@ let buttonConfigs = [
             {
                 label: `credit`,
                 color: `creditblue`,
-                valid: true
+                valid: false
             },
 
             {
@@ -550,7 +552,7 @@ let buttonConfigs = [
         // $FlowFixMe
         ].map(({ label, color, valid }) => ({
 
-            desc: `color ${ color } with label ${ label || 'default' }`,
+            desc: `color ${ color } with label ${ (label !== undefined) ? label : 'default' }`,
 
             valid,
 
@@ -592,42 +594,6 @@ let buttonConfigs = [
                 layout:       `vertical`,
                 fundingicons: true,
                 valid:        false
-            },
-
-            {
-                layout:   `vertical`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                layout:  `vertical`,
-                size:    'small',
-                valid:   false
-            },
-
-            {
-                layout:  `vertical`,
-                size:    'medium',
-                valid:   true
-            },
-
-            {
-                layout:  `vertical`,
-                size:    'large',
-                valid:   true
-            },
-
-            {
-                layout:  `vertical`,
-                size:    'responsive',
-                valid:   true
-            },
-
-            {
-                layout:  `vertical`,
-                size:    'wgeewg',
-                valid:   false
             },
 
             {
@@ -721,144 +687,9 @@ let buttonConfigs = [
             }
 
         // $FlowFixMe
-        ].map(({ layout, label, tagline, fundingicons, branding, size, valid, commit }) => ({
+        ].map(({ layout, label, tagline, fundingicons, size, valid, commit }) => ({
 
-            desc: `layout ${ layout } with label ${ label ? label.toString() : 'default' }, tagline ${ tagline ? tagline.toString() : 'default' }, fundingicons ${ fundingicons ? fundingicons.toString() : 'default' }, branding ${ branding || 'default' }, size ${ size || 'default' }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                commit,
-                style:       { label, layout, tagline, fundingicons, branding, size }
-            }
-        }))
-    },
-
-    {
-        name: 'maxbuttons',
-
-        cases: [
-
-            {
-                maxbuttons: 0,
-                valid:      false
-            },
-
-            {
-                maxbuttons: 1,
-                valid:      true
-            },
-
-            {
-                maxbuttons: 2,
-                valid:      true
-            },
-
-            {
-                maxbuttons: 3,
-                valid:      true
-            },
-
-            {
-                maxbuttons: 4,
-                valid:      true
-            },
-
-            {
-                maxbuttons: 5,
-                valid:      true
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 0,
-                valid:      false
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 1,
-                valid:      true
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 2,
-                valid:      true
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 3,
-                valid:      true
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 4,
-                valid:      true
-            },
-
-            {
-                layout:     `horizontal`,
-                maxbuttons: 5,
-                valid:      true
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 0,
-                valid:      false
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 1,
-                valid:      true
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 2,
-                valid:      true
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 3,
-                valid:      true
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 4,
-                commit:     true,
-                valid:      true
-            },
-
-            {
-                layout:     `vertical`,
-                maxbuttons: 5,
-                commit:     true,
-                valid:      true
-            },
-
-            {
-                maxbuttons: '1',
-                valid:      false
-            },
-
-            {
-                maxbuttons: 'sdbsdbdsb',
-                valid:      false
-            }
-
-        // $FlowFixMe
-        ].map(({ maxbuttons, layout, valid, commit }) => ({
-
-            desc: `maxbuttons ${ maxbuttons } and layout ${ layout || 'default' }`,
+            desc: `layout ${ layout } with label ${ (label !== undefined) ? label.toString() : 'default' }, tagline ${ (tagline !== undefined) ? tagline.toString() : 'default' }, fundingicons ${ (fundingicons !== undefined) ? fundingicons.toString() : 'default' }, size ${ (size !== undefined) ? size : 'default' }`,
 
             valid,
 
@@ -866,211 +697,7 @@ let buttonConfigs = [
                 payment:     noop,
                 onAuthorize: noop,
                 commit,
-                style:       { maxbuttons, layout }
-            }
-        }))
-    },
-
-    {
-        name: 'fundingicons',
-
-        cases: [
-
-            {
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `checkout`,
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                label:        `checkout`,
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `pay`,
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                label:        `pay`,
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `buynow`,
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                label:        `buynow`,
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `paypal`,
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                label:        `paypal`,
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `credit`,
-                fundingicons: true,
-                valid:        false
-            },
-
-            {
-                label:        `credit`,
-                fundingicons: false,
-                valid:        true
-            },
-
-            {
-                label:        `venmo`,
-                fundingicons: true,
-                valid:        true
-            },
-
-            {
-                label:        `venmo`,
-                fundingicons: false,
-                valid:        true
-            }
-
-        // $FlowFixMe
-        ].map(({ label, fundingicons, valid }) => ({
-
-            desc: `fundingicons ${ fundingicons.toString() } with label ${ label || 'default' }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                style:       { label, fundingicons }
-            }
-        }))
-    },
-
-    {
-        name: 'branding',
-
-        cases: [
-
-            {
-                branding: true,
-                valid:    true
-            },
-
-            {
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `checkout`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `checkout`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `pay`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `pay`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `buynow`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `buynow`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `paypal`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `paypal`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `credit`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `credit`,
-                branding: false,
-                valid:    false
-            },
-
-            {
-                label:    `venmo`,
-                branding: true,
-                valid:    true
-            },
-
-            {
-                label:    `venmo`,
-                branding: false,
-                valid:    false
-            }
-
-        // $FlowFixMe
-        ].map(({ label, branding, valid }) => ({
-
-            desc: `branding ${ branding.toString() } with label ${ label || 'default' }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                style:       { label, branding }
+                style:       { label, layout, tagline, fundingicons, size }
             }
         }))
     },
@@ -1092,7 +719,7 @@ let buttonConfigs = [
 
         ].map(({ tagline, valid }) => ({
 
-            desc: `branding ${ tagline.toString() }`,
+            desc: `tagline ${ tagline.toString() }`,
 
             valid,
 
@@ -1100,104 +727,6 @@ let buttonConfigs = [
                 payment:     noop,
                 onAuthorize: noop,
                 style:       { tagline }
-            }
-        }))
-    },
-
-    {
-        name: 'locale',
-
-        cases: [
-
-            {
-                locale: 'en_US',
-                valid:  true
-            },
-
-            {
-                locale: 'en_GB',
-                valid:  true
-            },
-
-            {
-                locale: 'fr_FR',
-                valid:  true
-            },
-
-            {
-                locale: 'es_ES',
-                valid:  true
-            },
-
-            {
-                locale: 'de_DE',
-                valid:  true
-            },
-
-            {
-                locale: 'zh_C2',
-                valid:  true
-            },
-
-            {
-                locale: 'zh_C2',
-                valid:  true
-            },
-
-            {
-                locale: 'de_GB',
-                valid:  false
-            },
-
-            {
-                locale: 'xx_XX',
-                valid:  false
-            },
-
-            {
-                locale: 'foobarbaz',
-                valid:  false
-            }
-
-        ].map(({ locale, valid }) => ({
-
-            desc: `locale ${ locale }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                locale
-            }
-        }))
-    },
-
-    {
-        name: 'env',
-
-        cases: [
-
-            {
-                env:   'test',
-                valid: true
-            },
-
-            {
-                env:   'moo',
-                valid: false
-            }
-
-        ].map(({ env, valid }) => ({
-
-            desc: `env ${ env }`,
-
-            valid,
-
-            conf: {
-                payment:     noop,
-                onAuthorize: noop,
-                env
             }
         }))
     },
@@ -1225,120 +754,12 @@ let buttonConfigs = [
             {
                 height: 20,
                 valid:  false
-            },
-
-            {
-                size:   'small',
-                height: 45,
-                valid:  true
-            },
-
-            {
-                size:   'small',
-                height: 60,
-                valid:  false
-            },
-
-            {
-                size:   'small',
-                height: 25,
-                valid:  true
-            },
-
-            {
-                size:   'small',
-                height: 20,
-                valid:  false
-            },
-
-            {
-                size:   'medium',
-                height: 45,
-                valid:  true
-            },
-
-            {
-                size:   'medium',
-                height: 60,
-                valid:  false
-            },
-
-            {
-                size:   'medium',
-                height: 25,
-                valid:  false
-            },
-
-            {
-                size:   'medium',
-                height: 20,
-                valid:  false
-            },
-
-            {
-                size:   'large',
-                height: 45,
-                valid:  true
-            },
-
-            {
-                size:   'large',
-                height: 60,
-                valid:  false
-            },
-
-            {
-                size:   'large',
-                height: 40,
-                valid:  true
-            },
-
-            {
-                size:   'large',
-                height: 35,
-                valid:  true
-            },
-
-            {
-                size:   'large',
-                height: 25,
-                valid:  false
-            },
-
-            {
-                size:   'large',
-                height: 20,
-                valid:  false
-            },
-
-            {
-                size:   'responsive',
-                height: 45,
-                valid:  true
-            },
-
-            {
-                size:   'responsive',
-                height: 60,
-                valid:  false
-            },
-
-            {
-                size:   'responsive',
-                height: 25,
-                valid:  true
-            },
-
-            {
-                size:   'responsive',
-                height: 20,
-                valid:  false
             }
 
         // $FlowFixMe
         ].map(({ height, size, valid }) => ({
 
-            desc: `height ${ height } with size ${ size || 'default' }`,
+            desc: `height ${ height } with size ${ (size !== undefined) ? size : 'default' }`,
 
             valid,
 
@@ -1348,90 +769,6 @@ let buttonConfigs = [
                 onAuthorize: noop
             }
         }))
-    },
-
-    {
-        name: 'client',
-
-        cases: [
-
-            {
-                desc: `client id for env`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    env:    'test',
-                    client: {
-                        test: 'abc123'
-                    }
-                }
-            },
-
-            {
-                desc: `client id for multiple envs`,
-
-                valid: true,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    env:    'test',
-                    client: {
-                        test:    'abc123',
-                        sandbox: 'xyz456',
-                        stage:   'efwegwerg'
-                    }
-                }
-            },
-
-            {
-                desc: `client id for wrong env`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    env:    'test',
-                    client: {
-                        production: 'abc123'
-                    }
-                }
-            },
-
-            {
-                desc: `no client ids`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    env:    'test',
-                    client: {}
-                }
-            },
-
-            {
-                desc: `no client ids and no env`,
-
-                valid: false,
-
-                conf: {
-                    payment:     noop,
-                    onAuthorize: noop,
-
-                    client: {}
-                }
-            }
-        ]
     },
 
     {
@@ -1449,7 +786,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.VENMO ]
+                        allowed: [ client.FUNDING.VENMO ]
                     }
                 }
             },
@@ -1464,7 +801,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.VENMO ]
+                        disallowed: [ client.FUNDING.VENMO ]
                     }
                 }
             },
@@ -1479,7 +816,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.CREDIT ]
+                        allowed: [ client.FUNDING.CREDIT ]
                     }
                 }
             },
@@ -1494,7 +831,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.CREDIT ]
+                        disallowed: [ client.FUNDING.CREDIT ]
                     }
                 }
             },
@@ -1509,7 +846,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.PAYPAL ]
+                        allowed: [ client.FUNDING.PAYPAL ]
                     }
                 }
             },
@@ -1524,7 +861,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.PAYPAL ]
+                        disallowed: [ client.FUNDING.PAYPAL ]
                     }
                 }
             },
@@ -1541,7 +878,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.IDEAL ]
+                        allowed: [ client.FUNDING.IDEAL ]
                     }
                 }
             },
@@ -1556,7 +893,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.IDEAL ]
+                        disallowed: [ client.FUNDING.IDEAL ]
                     }
                 }
             },
@@ -1573,7 +910,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.ELV ]
+                        allowed: [ client.FUNDING.ELV ]
                     }
                 }
             },
@@ -1588,7 +925,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.ELV ]
+                        disallowed: [ client.FUNDING.ELV ]
                     }
                 }
             },
@@ -1605,7 +942,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.BANCONTACT ]
+                        allowed: [ client.FUNDING.BANCONTACT ]
                     }
                 }
             },
@@ -1620,7 +957,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.BANCONTACT ]
+                        disallowed: [ client.FUNDING.BANCONTACT ]
                     }
                 }
             },
@@ -1637,7 +974,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.GIROPAY ]
+                        allowed: [ client.FUNDING.GIROPAY ]
                     }
                 }
             },
@@ -1652,7 +989,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.GIROPAY ]
+                        disallowed: [ client.FUNDING.GIROPAY ]
                     }
                 }
             },
@@ -1669,7 +1006,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.SOFORT ]
+                        allowed: [ client.FUNDING.SOFORT ]
                     }
                 }
             },
@@ -1684,7 +1021,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.SOFORT ]
+                        disallowed: [ client.FUNDING.SOFORT ]
                     }
                 }
             },
@@ -1701,7 +1038,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.EPS ]
+                        allowed: [ client.FUNDING.EPS ]
                     }
                 }
             },
@@ -1716,7 +1053,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.EPS ]
+                        disallowed: [ client.FUNDING.EPS ]
                     }
                 }
             },
@@ -1733,7 +1070,7 @@ let buttonConfigs = [
                     commit: true,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.MYBANK ]
+                        allowed: [ client.FUNDING.MYBANK ]
                     }
                 }
             },
@@ -1748,7 +1085,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.MYBANK ]
+                        disallowed: [ client.FUNDING.MYBANK ]
                     }
                 }
             },
@@ -1763,7 +1100,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        allowed: [ window.paypal.FUNDING.CARD ]
+                        allowed: [ client.FUNDING.CARD ]
                     }
                 }
             },
@@ -1778,7 +1115,7 @@ let buttonConfigs = [
                     onAuthorize: noop,
 
                     funding: {
-                        disallowed: [ window.paypal.FUNDING.CARD ]
+                        disallowed: [ client.FUNDING.CARD ]
                     }
                 }
             }
@@ -1800,7 +1137,7 @@ for (let group of buttonConfigs) {
         for (let useCase of group.cases) {
             if (useCase.valid) {
                 it(`should attempt to render a button with ${ useCase.desc } and succeed`, () => {
-                    return window.paypal.Button.render({
+                    return client.Button.render({
                         test: {
                             action: `none`
                         },
@@ -1810,8 +1147,7 @@ for (let group of buttonConfigs) {
                 });
             } else {
                 it(`should attempt to render a button with ${ useCase.desc } and error out`, () => {
-
-                    return window.paypal.Button.render(useCase.conf, `body`).then(() => {
+                    return client.Button.render(useCase.conf, `body`).then(() => {
                         throw new Error(`Expected error to be thrown`);
                     }, err => {
                         assert.ok(err instanceof Error, `Expected error object to be thrown`);

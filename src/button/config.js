@@ -21,13 +21,6 @@ export const BUTTON_CONFIG : ButtonConfig = {
             BUTTON_COLOR.BLACK
         ],
 
-        sizes:  [
-            BUTTON_SIZE.SMALL,
-            BUTTON_SIZE.MEDIUM,
-            BUTTON_SIZE.LARGE,
-            BUTTON_SIZE.RESPONSIVE
-        ],
-
         shapes: [
             BUTTON_SHAPE.PILL,
             BUTTON_SHAPE.RECT
@@ -65,16 +58,11 @@ export const BUTTON_CONFIG : ButtonConfig = {
         tag:     `{ content: safer_tag }`,
         dualTag: `{ content: dual_tag|safer_tag }`,
 
-        defaultLocale:           `en_US`,
         defaultLabel:            BUTTON_LABEL.CHECKOUT,
         defaultVerticalLabel:    BUTTON_LABEL.PAYPAL,
         defaultColor:            BUTTON_COLOR.GOLD,
-        defaultSize:             BUTTON_SIZE.SMALL,
-        defaultVerticalSize:     BUTTON_SIZE.MEDIUM,
         defaultShape:            BUTTON_SHAPE.PILL,
         defaultLayout:           BUTTON_LAYOUT.HORIZONTAL,
-        defaultBranding:         true,
-        defaultVerticalBranding: true,
         defaultFundingIcons:     false,
         defaultTagline:          true,
         defaultDual:             ``,
@@ -85,13 +73,6 @@ export const BUTTON_CONFIG : ButtonConfig = {
         maximumSize:         BUTTON_SIZE.HUGE,
         maximumVerticalSize: BUTTON_SIZE.HUGE,
 
-        minHorizontalButtons: 1,
-        minVerticalButtons:   1,
-
-        maxHorizontalButtons: 2,
-        maxVerticalButtons:   4,
-
-        allowUnbranded:       false,
         allowFundingIcons:    true,
 
         allowPrimary: false,
@@ -134,14 +115,10 @@ export const BUTTON_CONFIG : ButtonConfig = {
         label:     `{ content: buynow }`,
         logoLabel: `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } }`,
 
-        defaultBranding: undefined,
-
         allowPrimary: true,
 
         allowPrimaryVertical:   true,
-        allowPrimaryHorizontal: true,
-
-        allowUnbranded:  true
+        allowPrimaryHorizontal: true
     },
 
     [ BUTTON_LABEL.INSTALLMENT ]: {

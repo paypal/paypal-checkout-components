@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
@@ -15,11 +15,10 @@ import { componentStyle, CLASS } from './componentStyle';
 import { getComponentScript } from './componentScript';
 import { componentContent } from './content';
 
-function getCommonButtonClasses({ layout, shape, branding, multiple, env }) : string {
+function getCommonButtonClasses({ layout, shape, multiple, env }) : string {
     return [
         `${ CLASS.LAYOUT }-${ layout }`,
         `${ CLASS.SHAPE }-${ shape }`,
-        `${ CLASS.BRANDING }-${ branding ? BUTTON_BRANDING.BRANDED : BUTTON_BRANDING.UNBRANDED }`,
         `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
         `${ CLASS.ENV }-${ env }`
     ].join(' ');
@@ -100,8 +99,8 @@ function renderFundingIcons({ cards, fundingicons } :
     return <div class={ `${ CLASS.FUNDINGICONS }` }>{ renderCards({ cards, button: true }) }</div>;
 }
 
-function renderContent(text : string, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent } :
-    { label? : string, locale : LocaleType, color : string, branding? : boolean, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
+function renderContent(text : string, { label, locale, color, logoColor, funding, env, cards, dynamicContent } :
+    { label? : string, locale : LocaleType, color : string, logoColor? : string, funding? : FundingSelection, env : string, cards : Array<string>, dynamicContent? : Object }) : JsxHTMLNode {
 
     let content = getLocaleContent(locale);
 
@@ -114,16 +113,12 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 
         logo(name : string) : ?JsxHTMLNode {
 
-            if (!branding) {
-                return;
-            }
-
             if (!logoColor) {
                 throw new Error(`Can not determine logo without logo color`);
             }
             
             let logo = (typeof fundingLogos[name] === 'function')
-                ? fundingLogos[name]({ label, locale, color, branding, logoColor, funding, env, cards })
+                ? fundingLogos[name]({ label, locale, color, logoColor, funding, env, cards })
                 : fundingLogos[name][logoColor] || fundingLogos[name][BUTTON_LOGO_COLOR.ANY];
                 
             return (
@@ -156,7 +151,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Could not find content ${ name } for ${ locale.lang }_${ locale.country }`);
             }
 
-            return renderContent(contentString || '', { label, locale, color, branding, logoColor, funding, env, cards });        },
+            return renderContent(contentString || '', { label, locale, color, logoColor, funding, env, cards });        },
 
         cards() : Array<JsxHTMLNode> {
             if (!funding) {
@@ -177,8 +172,8 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
     });
 }
 
-function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
+function renderButton({ label, color, locale, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
+    { label : $Values<typeof BUTTON_LABEL>, color : string, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
@@ -197,12 +192,12 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
     };
 
     contentText = typeof contentText === 'function' ? contentText(dynamicContent) : contentText;
-    contentText = renderContent(contentText, { label, locale, color, branding, logoColor, funding, env, cards, dynamicContent });
+    contentText = renderContent(contentText, { label, locale, color, logoColor, funding, env, cards, dynamicContent });
 
     return (
         <div
             { ...{ [ ATTRIBUTE.FUNDING_SOURCE ]: source, [ ATTRIBUTE.BUTTON ]: true } }
-            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
+            class={ `${ CLASS.BUTTON } ${ CLASS.NUMBER }-${ i } ${ getCommonButtonClasses({ layout, shape, multiple, env }) } ${ getButtonClasses({ label, color, logoColor }) }` }
             role='button'
             aria-label={ source }
             tabindex='0'>
@@ -258,28 +253,9 @@ function renderStyle({ height, cardNumber } : { height? : ?number, cardNumber? :
 
 export function componentTemplate({ props } : { props : Object }) : string {
 
-    if (props && props.style) {
-        let style = props.style;
-
-        if (style.label === 'generic') {
-            style.label = 'paypal';
-        }
-
-        if (style.color === 'creditblue') {
-            delete style.color;
-        }
-
-        if (style.maxbuttons === 1 && style.tagline === false &&
-            style.size === 'responsive' && style.layout === 'horizontal' &&
-            !style.height) {
-
-            style.height = 44;
-        }
-    }
-
     validateButtonProps(props);
 
-    let { label, locale, color, shape, branding,
+    let { label, locale, color, shape,
         tagline, funding, layout, sources, multiple,
         fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
 
@@ -293,7 +269,6 @@ export function componentTemplate({ props } : { props : Object }) : string {
             funding,
             multiple,
             locale,
-            branding,
             layout,
             shape,
             cards,
@@ -307,7 +282,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
     let scriptNode = renderScript();
 
     return (
-        <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, branding, multiple, env }) }` }>
+        <div { ...{ [ ATTRIBUTE.VERSION ]: __PAYPAL_CHECKOUT__.__MINOR_VERSION__ } } class={ `${ CLASS.CONTAINER } ${ getCommonButtonClasses({ layout, shape, multiple, env }) }` }>
             { styleNode }
 
             { buttonNodes }

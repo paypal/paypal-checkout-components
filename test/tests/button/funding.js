@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { createTestContainer, destroyTestContainer } from '../common';
+import { createTestContainer, destroyTestContainer, mockProp, IPHONE6_USER_AGENT } from '../common';
 
 describe(`paypal button component funding mix`, () => {
 
@@ -18,11 +18,15 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside default button', (done) => {
 
-        window.paypal.Button.render({
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -30,10 +34,8 @@ describe(`paypal button component funding mix`, () => {
                 }
             },
 
-            locale: 'en_US',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -55,11 +57,15 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside checkout button', (done) => {
 
-        window.paypal.Button.render({
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -71,10 +77,8 @@ describe(`paypal button component funding mix`, () => {
                 label: 'checkout'
             },
 
-            locale: 'en_US',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -96,11 +100,15 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside pay button', (done) => {
 
-        window.paypal.Button.render({
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -112,10 +120,8 @@ describe(`paypal button component funding mix`, () => {
                 label: 'pay'
             },
 
-            locale: 'en_US',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -137,11 +143,15 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside paypal button', (done) => {
 
-        window.paypal.Button.render({
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -153,10 +163,8 @@ describe(`paypal button component funding mix`, () => {
                 label: 'paypal'
             },
 
-            locale: 'en_US',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -178,11 +186,15 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render venmo alongside buynow button', (done) => {
 
-        window.paypal.Button.render({
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) === -1) {
                         throw new Error(`Expected venmo to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -194,10 +206,8 @@ describe(`paypal button component funding mix`, () => {
                 label: 'buynow'
             },
 
-            locale: 'en_US',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -219,11 +229,20 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render venmo for ineligible country', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+        
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'pt_BR'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.VENMO) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.VENMO) !== -1) {
                         throw new Error(`Expected venmo to not be offered`);
                     }
 
@@ -231,10 +250,8 @@ describe(`paypal button component funding mix`, () => {
                 }
             },
 
-            locale: 'pt_BR',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -252,15 +269,19 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render multiple horizontal buttons alongside credit button', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.length !== 1 && fundingSources[0] !== window.paypal.FUNDING.CREDIT) {
+                    if (fundingSources.length !== 1 && fundingSources[0] !== client.FUNDING.CREDIT) {
                         throw new Error(`Expected credit to be the sole button, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -273,7 +294,7 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD, window.paypal.FUNDING.VENMO ]
+                allowed: [ client.FUNDING.CARD, client.FUNDING.VENMO ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -295,11 +316,13 @@ describe(`paypal button component funding mix`, () => {
 
     it('should render card in vertical layout', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.CARD) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.CARD) === -1) {
                         throw new Error(`Expected card to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -312,7 +335,7 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD ]
+                allowed: [ client.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -334,11 +357,13 @@ describe(`paypal button component funding mix`, () => {
 
     it('should not render card in horizontal layout', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.CARD) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.CARD) !== -1) {
                         throw new Error(`Expected card to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -347,7 +372,7 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.CARD ]
+                allowed: [ client.FUNDING.CARD ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -368,12 +393,18 @@ describe(`paypal button component funding mix`, () => {
     });
 
     it('should render ideal in vertical layout', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'nl_NL'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.IDEAL) === -1) {
                         throw new Error(`Expected ideal to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -387,10 +418,8 @@ describe(`paypal button component funding mix`, () => {
                 layout: 'vertical'
             },
 
-            locale: 'nl_NL',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.IDEAL ]
+                allowed: [ client.FUNDING.IDEAL ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -408,15 +437,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render ideal in horizontal layout', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'nl_NL'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.IDEAL) !== -1) {
                         throw new Error(`Expected ideal to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -427,10 +464,8 @@ describe(`paypal button component funding mix`, () => {
             commit: true,
 
             funding: {
-                allowed: [ window.paypal.FUNDING.IDEAL ]
+                allowed: [ client.FUNDING.IDEAL ]
             },
-
-            locale: 'nl_NL',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -447,15 +482,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it.skip('should render ideal by default for eligible country', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'nl_NL'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.IDEAL) === -1) {
                         throw new Error(`Expected ideal to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -469,8 +512,6 @@ describe(`paypal button component funding mix`, () => {
                 layout: 'vertical'
             },
 
-            locale: 'nl_NL',
-
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
             },
@@ -486,15 +527,24 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render ideal by default for eligible country when opted out', (done) => {
 
-        window.paypal.Button.render({
+        let client = window.paypal.client();
+
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'nl_NL'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.IDEAL) !== -1) {
                         throw new Error(`Expected ideal to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -509,10 +559,8 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                disallowed: [ window.paypal.FUNDING.IDEAL ]
+                disallowed: [ client.FUNDING.IDEAL ]
             },
-
-            locale: 'nl_NL',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -529,15 +577,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render ideal for a non-eligible locale', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'pt_BR'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.IDEAL) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.IDEAL) !== -1) {
                         throw new Error(`Expected ideal to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -552,10 +608,8 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.IDEAL ]
+                allowed: [ client.FUNDING.IDEAL ]
             },
-
-            locale: 'pt_BR',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -572,15 +626,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should render elv in vertical layout', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'de_DE'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.ELV) === -1) {
                         throw new Error(`Expected elv to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -592,10 +654,8 @@ describe(`paypal button component funding mix`, () => {
                 layout: 'vertical'
             },
 
-            locale: 'de_DE',
-
             funding: {
-                allowed: [ window.paypal.FUNDING.ELV ]
+                allowed: [ client.FUNDING.ELV ]
             },
 
             payment() : string | ZalgoPromise<string> {
@@ -613,15 +673,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should render elv by default for eligible country', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'de_DE'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.ELV) === -1) {
                         throw new Error(`Expected elv to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -632,8 +700,6 @@ describe(`paypal button component funding mix`, () => {
             style: {
                 layout: 'vertical'
             },
-
-            locale: 'de_DE',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -650,15 +716,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render elv by default for eligible country when opted out', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'de_DE'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.ELV) !== -1) {
                         throw new Error(`Expected elv to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -671,10 +745,8 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                disallowed: [ window.paypal.FUNDING.ELV ]
+                disallowed: [ client.FUNDING.ELV ]
             },
-
-            locale: 'de_DE',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -691,15 +763,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should render elv in horizontal layout', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'de_DE'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) === -1) {
+                    if (fundingSources.indexOf(client.FUNDING.ELV) === -1) {
                         throw new Error(`Expected elv to be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -708,10 +788,8 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.ELV ]
+                allowed: [ client.FUNDING.ELV ]
             },
-
-            locale: 'de_DE',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -728,15 +806,23 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 
     it('should not render elv for a non-eligible locale', (done) => {
+        let client = window.paypal.client();
 
-        window.paypal.Button.render({
+        let mockLocaleProp = mockProp(client.Button.props, 'locale', {
+            required: false,
+            value:    'pt_BR'
+        });
+
+        client.Button.render({
 
             test: {
                 onRender({ fundingSources }) {
-                    if (fundingSources.indexOf(window.paypal.FUNDING.ELV) !== -1) {
+                    if (fundingSources.indexOf(client.FUNDING.ELV) !== -1) {
                         throw new Error(`Expected elv to not be offered, got ${ JSON.stringify(fundingSources) }`);
                     }
 
@@ -749,10 +835,8 @@ describe(`paypal button component funding mix`, () => {
             },
 
             funding: {
-                allowed: [ window.paypal.FUNDING.ELV ]
+                allowed: [ client.FUNDING.ELV ]
             },
-
-            locale: 'pt_BR',
 
             payment() : string | ZalgoPromise<string> {
                 throw new Error('Expected payment to not be called');
@@ -769,5 +853,7 @@ describe(`paypal button component funding mix`, () => {
             onError: done
 
         }, '#testContainer');
+
+        mockLocaleProp.cancel();
     });
 });
