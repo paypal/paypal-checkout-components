@@ -60,7 +60,6 @@ function determineButtons({ label, color, sources, multiple } : { label : $Value
 }
 
 function renderCards({ cards, button } : { cards : Array<string>, button : ?boolean }) : Array<JsxHTMLNode> {
-
     return cards.map(name => {
         let logo = cardLogos[name];
 
@@ -145,7 +144,7 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
                 throw new Error(`Can not determine card types without funding`);
             }
 
-            return renderCards({ cards, button: false });
+            return renderCards({ cards, button: true });
         },
 
         separator() : JsxHTMLNode {
