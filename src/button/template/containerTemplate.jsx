@@ -136,6 +136,7 @@ export function containerTemplate({ id, props, CLASS, on, container, tag, contex
                         min-width: ${ BUTTON_STYLE[minimumSize].minWidth }px;
                         max-width: ${ BUTTON_STYLE[maximumSize].maxWidth }px;
                         position: relative;
+                        transition: height 0.7s ease-in-out;
                     }
 
                     #${ id }.${ tag }-layout-${ BUTTON_LAYOUT.VERTICAL } > .${ CLASS.OUTLET } {
