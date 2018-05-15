@@ -15,6 +15,97 @@ If you have an existing full-page PayPal Checkout integration, you may want to u
   upgrades to the button automatically.
 
 
+## Form Post Integration
+
+[YouTube - How to upgrade form post integration](https://youtu.be/UH-tiYoBFZQ)
+
+You may have a PayPal button in an html form, which posts to your server and does a 302 redirect to PayPal:
+
+```html
+<form id="paypalForm" method="post" action="/classic/setexpresscheckout">
+	<input type="hidden" name="amount" value="50" />
+	<input type="hidden" name="currency" value="USD" />
+	<input type="hidden" name="action" value="Sale" />
+	<input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" />
+</form>
+```
+Upgrade
+```js
+function formEncode(form) {
+	var ret = {};
+	Object.keys(form.elements).forEach(function (key) {
+		ret[form.elements[key].name] = form.elements[key].value;
+	});
+	return ret;
+}
+paypal.Button.render({
+	env: 'sandbox',
+	funding: {
+		allowed: [paypal.FUNDING.VENMO]
+	},
+	payment: function(data, actions) {
+		return paypal.request.post('/classic/setexpresscheckout', formEncode(document.getElementById('paypalForm')), {
+			headers: {
+				'Accept': 'application/paypal-json-token',
+			}
+		})
+		.then(function (response) {
+			return response.token;
+		});
+	},
+	onAuthorize: function(data, actions) {
+		return actions.redirect();
+	},
+	onCancel: function (data, actions) {
+		return actions.redirect();
+	},
+	onError: function (err) {
+		console.log(err);
+		alert("There was an error check the console");
+	}
+}, '#paypal-button-container');
+```
+
+## Get Request Integration
+
+[YouTube - How to upgrade get request integration](https://youtu.be/3mD_ACwYoV8)
+
+You may have a simple anchor or form with method "get" like this: 
+```html
+<a id="paypalLink" href="/classic/setexpresscheckout">
+	<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png"/>
+</a>
+```
+Upgrade
+```js
+paypal.Button.render({
+	env: 'sandbox',
+	funding: {
+		allowed: [paypal.FUNDING.VENMO]
+	},
+	payment: function(data, actions) {
+		return paypal.request.get('/classic/setexpresscheckout', {
+			headers: {
+				'Accept': 'application/paypal-json-token',
+			}
+		})
+		.then(function (response) {
+			return response.token;
+		});
+	},
+	onAuthorize: function(data, actions) {
+		return actions.redirect();
+	},
+	onCancel: function (data, actions) {
+		return actions.redirect();
+	},
+	onError: function (err) {
+		console.log(err);
+		alert("There was an error check the console");
+	}
+}, '#paypal-button-container');
+```
+
 ## Ajax Integration
 
 You may be making an ajax call to PayPal, then redirecting to the PayPal Checkout flow:
@@ -37,7 +128,6 @@ If so, you can easily upgrade to use the Button component like so:
 
 ```html
 <div id="paymentMethods"></div>
-
 <script>
     paypal.Button.render({
 
@@ -47,38 +137,10 @@ If so, you can easily upgrade to use the Button component like so:
                     resolve(data.token);
                 });
             });
-        }
-
-        onAuthorize: function(data) {
-            window.location = data.returnUrl;
-        }
-
+        },
+		onAuthorize: function(data, actions) {
+			return actions.redirect();
+		},
     }, '#paymentMethods');
 </script>
-```
-
-## Form Integration
-
-You may have a PayPal button in an html form, which does a 302 redirect to PayPal:
-
-```html
-<form method="post" action="/redirect-to-paypal">
-    <button id="paypalButton">Pay with PayPal</button>
-</div>
-```
-
-If so, you can easily upgrade and drop in the PayPal Button like so:
-
-```html
-<form method="post" action="/redirect-to-paypal">
-    <script data-component="paypal-button" type="application/x-component">
-        {
-            submitForm: true,
-
-            onAuthorize: function(data) {
-                window.location = data.returnUrl;
-            }
-        }
-    </script>
-</div>
 ```

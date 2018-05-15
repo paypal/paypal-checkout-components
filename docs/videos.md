@@ -9,8 +9,8 @@ The following videos demonstrate integrating PayPal if you do not currently have
 
 ### Upgrading a current PayPal Integration
 The following videos demonstrate how to upgrade an existing PayPal integration.
-* [HowTo-ECS-Upgrade a classic paypal integration to Checkout Javascript](https://youtu.be/S_DUmOGg9oo)
-* [HowTo-Mark-Upgrade a classic paypal integration to Checkout Javascript](https://youtu.be/YXXo8X0XsT4)
+* [How to upgrade get request integration](https://youtu.be/3mD_ACwYoV8)
+* [How to upgrade form post integration](https://youtu.be/UH-tiYoBFZQ)
 
 ### Other Videos
 * [Create a PayPal REST Application](https://youtu.be/mhUg73r3-Vk)
