@@ -66,7 +66,7 @@ function renderCards({ cards, button } : { cards : Array<string>, button : ?bool
         return (
             <img
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
-                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ button ? CLASS.BUTTON : '' }` }
+                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ CLASS.BUTTON }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
         );
