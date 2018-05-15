@@ -108,6 +108,7 @@ export let buttonStyle = `
 
     .${ CLASS.BUTTON } .${ CLASS.CARD } {
         border-radius: 4px;
+        transition: opacity 0.25s ease-in-out;
     }
 
     .${ CLASS.BUTTON } .${ CLASS.TEXT } {
