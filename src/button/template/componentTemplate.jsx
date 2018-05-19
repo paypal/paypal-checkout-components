@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
@@ -66,7 +66,7 @@ function renderCards({ cards, button } : { cards : Array<string>, button : ?bool
         return (
             <img
                 { ...{ [ATTRIBUTE.BUTTON]: (button || false), [ATTRIBUTE.FUNDING_SOURCE]: `${ FUNDING.CARD }`, [ATTRIBUTE.CARD]: `${ name }` } }
-                class={ `${ CLASS.CARD } ${ CLASS.CARD }-${ name } ${ CLASS.BUTTON }` }
+                class={ `${ CLASS.BUTTON } ${ CLASS.CARD } ${ CLASS.CARD }-${ name }` }
                 src={ `data:image/svg+xml;base64,${ btoa(logo) }` }
                 alt={ name } />
         );
@@ -289,6 +289,32 @@ export function componentTemplate({ props } : { props : Object }) : string {
 
             { buttonNodes }
             { taglineNode || fundingiconNode }
+
+            <div style={`
+                text-align: center;
+                margin: 10px auto;
+            `}>
+                <span style={`
+                    display: inline-block;
+                    height: 14px;
+                    font-family: HelveticaNeue;
+                    font-size: 11px;
+                    font-weight: normal;
+                    font-style: italic;
+                    font-stretch: normal;
+                    color: #7b8388;
+                    position: relative;
+                    margin-right: 3px;
+                    bottom: 3px;
+                `}
+                >Powered by</span>
+                <img
+                    class="other-options-paypal-logo"
+                    style={`
+                      height: 16px
+                    `}
+                    src={ `data:image/svg+xml;base64,${ btoa(fundingLogos[BUTTON_LOGO.PAYPAL][BUTTON_LOGO_COLOR.BLUE]) }` } />
+            </div>
 
             { scriptNode }
         </div>

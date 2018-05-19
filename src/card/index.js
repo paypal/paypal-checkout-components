@@ -62,6 +62,12 @@ export const Card : Component<CardOptions> = create({
         sameDomain: true
     },
 
+    dispatch: {
+        type:       'object',
+        required:   false,
+        sameDomain: true
+    },
+
     onCancel: {
         type:     'function',
         required: false,
