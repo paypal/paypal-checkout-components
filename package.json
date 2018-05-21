@@ -1,6 +1,9 @@
 {
   "name": "xo-buttonjs",
-  "version": "1.0.64",
+  "version": "2.0.0",
+  "publishConfig": {
+    "registry": "https://npm.paypal.com"
+  },
   "description": "Serverside rendered ButtonJS",
   "main": "index.js",
   "repository": {
@@ -17,8 +20,8 @@
   "peerDependencies": {
     "cal": "^0.5.44",
     "express": "^4.16.3",
-    "servicecore": "^2 || ^3",
-    "xo-spark": "^2.1.1"
+    "servicecore": "^3",
+    "xo-spark": "^5"
   },
   "dependencies": {
     "module-babel": "^2.0.8",
@@ -89,9 +92,6 @@
   "pre-commit": [
     "test"
   ],
-  "publishConfig": {
-    "registry": "http://npm.paypal.com"
-  },
   "license": "PayPal",
   "author": "DL-PP-Hermes-Integration@paypal.com"
 }
