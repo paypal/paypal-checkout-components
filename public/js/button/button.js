@@ -88,6 +88,17 @@ function clickButton(event, { fundingSource = 'paypal', card }) {
 }
 
 export function setupButton() {
+
+    const attachClickEventToElement = (element, fn) => {
+        element.addEventListener('click', fn);
+        element.addEventListener('keypress', event => {
+            if (event.keyCode === KEY_CODES.ENTER) {
+                return fn(event);
+            }
+        });
+        element.addEventListener('touchstart', fn);
+    };
+
     if (window.name && window.name.indexOf('__prerender') === 0) {
         if (window.console && window.console.warn) {
             window.console.warn('Button setup inside prerender');
@@ -109,14 +120,8 @@ export function setupButton() {
         let fundingSource = button.getAttribute('data-funding-source');
         let card = button.getAttribute('data-card');
 
-        button.addEventListener('click', event => {
+        attachClickEventToElement(button, event => {
             return clickButton(event, { fundingSource, card });
-        });
-
-        button.addEventListener('keypress', event => {
-            if (event.keyCode === KEY_CODES.ENTER) {
-                return clickButton(event, { fundingSource, card });
-            }
         });
     });
 
