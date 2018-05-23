@@ -38,7 +38,7 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
-function determineCanRenderLabel({ label, source, multiple } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean }) : boolean {    
+function determineCanRenderLabel({ label, source, multiple } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean }) : boolean {
     if (!multiple || labelToFunding(label) === source) {
         return true;
     }
