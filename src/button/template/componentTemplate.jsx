@@ -4,7 +4,7 @@
 import { btoa } from 'Base64';
 
 import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
-import { getButtonConfig, fundingToDefaultLabel } from '../config';
+import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
 import { fundingLogos, cardLogos } from '../../resources';
@@ -38,14 +38,22 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
+function determineCanRenderLabel({ label, source, multiple } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean }) : boolean {    
+    if (!multiple || labelToFunding(label) === source) {
+        return true;
+    }
+
+    return false;
+}
+
 function determineButtons({ label, color, sources, multiple } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean }) :
     Array<{ label : $Values<typeof BUTTON_LABEL>, color : string, source : FundingSource }> {
 
     return sources.map((source, i) => {
 
-        let buttonLabel = multiple
-            ? fundingToDefaultLabel(source)
-            : label;
+        let buttonLabel = determineCanRenderLabel({ label, source, multiple })
+            ? label
+            : fundingToDefaultLabel(source);
 
         let buttonColor = (multiple && i > 0)
             ? getButtonConfig(buttonLabel, 'secondaryColors')[color]
@@ -164,9 +172,9 @@ function renderButton({ label, color, locale, branding, multiple, layout, shape,
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
-    let contentText = multiple
-        ? getButtonConfig(label, 'logoLabel')
-        : getButtonConfig(label, 'label');
+    let contentText = determineCanRenderLabel({ label, source, multiple })
+        ? getButtonConfig(label, 'label')
+        : getButtonConfig(label, 'logoLabel');
 
 
     // Add all the variables in dynamic content required to be plugged in content
