@@ -633,25 +633,25 @@ let buttonConfigs = [
             {
                 layout: `vertical`,
                 label:  `paypal`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `checkout`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `pay`,
-                valid:  false
+                valid:  true
             },
 
             {
                 layout: `vertical`,
                 label:  `buynow`,
-                valid:  false
+                valid:  true
             },
 
             {
