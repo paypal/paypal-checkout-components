@@ -4,6 +4,7 @@
 .*/node_modules/npm
 .*/node_modules/**/test
 .*/dist/module
+.*/dist
 [include]
 [libs]
 flow-typed
