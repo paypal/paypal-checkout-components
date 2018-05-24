@@ -9,6 +9,7 @@ import paypal_white from './paypal_white.svg';
 import paypal_blue  from './paypal_blue.svg';
 import paypal_black from './paypal_black.svg';
 import credit_white from './credit_white.svg';
+import de_credit_white from './de_credit_white.svg';
 import venmo_white  from './venmo_white.svg';
 import venmo_blue   from './venmo_blue.svg';
 import ideal        from './ideal.svg';
@@ -39,6 +40,10 @@ export let fundingLogos = {
 
     [ BUTTON_LOGO.CREDIT ]: {
         [ BUTTON_LOGO_COLOR.WHITE ]: credit_white
+    },
+
+    [ BUTTON_LOGO.DE_CREDIT ]: {
+        [ BUTTON_LOGO_COLOR.WHITE ]: de_credit_white
     },
 
     [ BUTTON_LOGO.VENMO ]: {

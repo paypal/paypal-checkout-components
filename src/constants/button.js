@@ -116,13 +116,14 @@ export const BUTTON_NUMBER : BUTTON_NUMBER_ENUM = {
 };
 
 type BUTTON_LOGO_ENUM =
-    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'eps' | 'mybank'>;
+    Enum<'pp' | 'paypal' | 'venmo' | 'credit' | 'de_credit' | 'ideal' | 'elv' | 'bancontact' | 'giropay' | 'eps' | 'mybank'>;
 
 export const BUTTON_LOGO : BUTTON_LOGO_ENUM = {
     PP:         'pp',
     PAYPAL:     'paypal',
     VENMO:      'venmo',
     CREDIT:     'credit',
+    DE_CREDIT:  'de_credit',
     IDEAL:      'ideal',
     ELV:        'elv',
     BANCONTACT: 'bancontact',
