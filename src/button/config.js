@@ -160,7 +160,7 @@ export const BUTTON_CONFIG : ButtonConfig = {
         logoLabel: ({ locale }) => {
             return locale.country === COUNTRY.DE
                 ? `{ logo: ${ BUTTON_LOGO.DE_CREDIT } }`
-                : `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`
+                : `{ logo: ${ BUTTON_LOGO.PP } } { logo: ${ BUTTON_LOGO.PAYPAL } } { logo: ${ BUTTON_LOGO.CREDIT } }`;
         },
         tag:       `{ content: later_tag }`,
 
