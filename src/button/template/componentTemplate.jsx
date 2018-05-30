@@ -3,7 +3,7 @@
 
 import { btoa } from 'Base64';
 
-import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, ENV, ATTRIBUTE, FUNDING } from '../../constants';
+import { BUTTON_BRANDING, BUTTON_NUMBER, BUTTON_LOGO_COLOR, BUTTON_LABEL, BUTTON_LAYOUT, ENV, ATTRIBUTE, FUNDING } from '../../constants';
 import { getButtonConfig, labelToFunding, fundingToDefaultLabel } from '../config';
 import { normalizeProps } from '../props';
 import { jsxToHTML, type JsxHTMLNode, jsxRender } from '../../lib/jsx'; // eslint-disable-line no-unused-vars
@@ -38,20 +38,20 @@ function getLocaleContent(locale : LocaleType) : Object {
     return componentContent[country][lang];
 }
 
-function determineCanRenderLabel({ label, source, multiple } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean }) : boolean {
-    if (!multiple || labelToFunding(label) === source) {
-        return true;
+function determineCanRenderLabel({ label, source, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, source : FundingSource, multiple : boolean,  layout : $Values<typeof BUTTON_LAYOUT> }) : boolean {
+    if (!multiple || layout === BUTTON_LAYOUT.VERTICAL) {
+        return labelToFunding(label) === source;
     }
 
     return false;
 }
 
-function determineButtons({ label, color, sources, multiple } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean }) :
+function determineButtons({ label, color, sources, multiple, layout } : { label : $Values<typeof BUTTON_LABEL>, color : string, sources : FundingList, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT> }) :
     Array<{ label : $Values<typeof BUTTON_LABEL>, color : string, source : FundingSource }> {
 
     return sources.map((source, i) => {
 
-        let buttonLabel = determineCanRenderLabel({ label, source, multiple })
+        let buttonLabel = determineCanRenderLabel({ label, source, multiple, layout })
             ? label
             : fundingToDefaultLabel(source);
 
@@ -168,11 +168,11 @@ function renderContent(text : string, { label, locale, color, branding, logoColo
 }
 
 function renderButton({ label, color, locale, branding, multiple, layout, shape, source, funding, i, env, cards, installmentperiod } :
-    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : string, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
+    { label : $Values<typeof BUTTON_LABEL>, color : string, branding : boolean, locale : Object, multiple : boolean, layout : $Values<typeof BUTTON_LAYOUT>, shape : string, funding : FundingSelection, source : FundingSource, i : number, env : string, cards : Array<string>, installmentperiod : number }) : JsxHTMLNode {
 
     let logoColor = getButtonConfig(label, 'logoColors')[color];
 
-    let contentText = determineCanRenderLabel({ label, source, multiple })
+    let contentText = determineCanRenderLabel({ label, source, multiple, layout })
         ? getButtonConfig(label, 'label')
         : getButtonConfig(label, 'logoLabel');
 
@@ -269,7 +269,7 @@ export function componentTemplate({ props } : { props : Object }) : string {
         tagline, funding, layout, sources, multiple,
         fundingicons, env, height, cards, installmentperiod } = normalizeProps(props);
 
-    let buttonNodes = determineButtons({ label, color, sources, multiple })
+    let buttonNodes = determineButtons({ label, color, sources, multiple, layout })
         .map((button, i) => renderButton({
             label:   button.label,
             color:   button.color,
