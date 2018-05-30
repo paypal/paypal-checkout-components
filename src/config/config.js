@@ -163,6 +163,10 @@ export let config = {
 
         'searshomeapplianceshowroom.com': {
             disable_venmo: true
+        },
+
+        'barkshop.com': {
+            disable_venmo: true
         }
 
     },
