@@ -9,6 +9,7 @@ module.exports.FUNDING = {
     ELV:         'elv',
     BANCONTACT:  'bancontact',
     GIROPAY:     'giropay',
+    SOFORT:      'sofort',
     EPS:         'eps',
     MYBANK:      'mybank'
 };
