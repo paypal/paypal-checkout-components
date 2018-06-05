@@ -167,6 +167,10 @@ export let config = {
 
         'barkshop.com': {
             disable_venmo: true
+        },
+
+        'vividseats.com': {
+            disable_venmo: true
         }
 
     },
