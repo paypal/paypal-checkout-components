@@ -123,9 +123,7 @@ export function isIEIntranet() : boolean {
 
 export function isMacOsCna() : boolean {
     let userAgent = getUserAgent();
-    return (/Macintosh.*AppleWebKit(?!.*Safari)/i).test(userAgent) ||
-        (/\bwv\b/).test(userAgent) ||
-    (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
+    return (/Macintosh.*AppleWebKit(?!.*Safari)/i).test(userAgent);
 }
 
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
