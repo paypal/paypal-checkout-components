@@ -27,7 +27,7 @@ export const Card : Component<CardOptions> = create({
     name: 'ppcard',
 
     dimensions: {
-        height: '300px',
+        height: '350px',
         width:  '250px'
     },
 
