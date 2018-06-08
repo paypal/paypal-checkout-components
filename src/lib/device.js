@@ -121,7 +121,14 @@ export function isIEIntranet() : boolean {
     return false;
 }
 
+export function isMacOsCna() : boolean {
+    let userAgent = getUserAgent();
+    return (/Macintosh.*AppleWebKit(?!.*Safari)/i).test(userAgent) ||
+        (/\bwv\b/).test(userAgent) ||
+    (/Android.*Version\/(\d)\.(\d)/i).test(userAgent);
+}
+
 export function supportsPopups(ua? : string = getUserAgent()) : boolean {
     return !(isIosWebview(ua) || isAndroidWebview(ua) || isOperaMini(ua) ||
-        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron());
+        isFirefoxIOS(ua) || isFacebookWebView(ua) || isQQBrowser(ua) || isElectron() || isMacOsCna());
 }
