@@ -9,6 +9,7 @@ import { config } from './config';
 import { noop, isIE, getDomainSetting, extendUrl, patchMethod, once, extend } from './lib';
 import { Button } from './button';
 import { Checkout } from './checkout';
+import { BillingPage } from './billing';
 import { BUTTON_LABEL, BUTTON_SIZE, BUTTON_COLOR } from './constants';
 import { rest } from './api';
 
@@ -225,3 +226,7 @@ if (Button.isChild()) {
         window.Promise = ZalgoPromise;
     }
 }
+
+patchMethod(BillingPage, 'renderTo', ({ args: [ win, props, el ], original, context }) => {
+    return original.call(context, win.top, props, el);
+});
