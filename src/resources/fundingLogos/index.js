@@ -22,6 +22,8 @@ import eps          from './eps.svg';
 import eps_white         from './eps_white.svg';
 import mybank       from './mybank.svg';
 import mybank_white       from './mybank_white.svg';
+import sofort       from './sofort.svg';
+import sofort_white       from './sofort_white.svg';
 
 export let fundingLogos = {
 
@@ -63,6 +65,11 @@ export let fundingLogos = {
     [ BUTTON_LOGO.GIROPAY ]: {
         [ BUTTON_LOGO_COLOR.ANY ]:     giropay,
         [ BUTTON_LOGO_COLOR.WHITE ]:   giropay_white
+    },
+
+    [ BUTTON_LOGO.SOFORT ]: {
+        [ BUTTON_LOGO_COLOR.ANY ]:     sofort,
+        [ BUTTON_LOGO_COLOR.WHITE ]:   sofort_white
     },
 
     [ BUTTON_LOGO.EPS ]: {

@@ -559,7 +559,7 @@ if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
                 let topPayButton = document.querySelector('.buttons.reviewButton.topReviewButton');
                 let reviewSection = document.querySelector('section.review');
 
-                let throttle = getThrottle('top_pay_button', 50);
+                let throttle = getThrottle('top_pay_button', 0);
 
                 let hash = window.location.hash;
                 
