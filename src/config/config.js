@@ -147,6 +147,10 @@ export let config = {
 
         'moeller.org': {
             disable_venmo: true
+        },
+
+        'getcargo.today': {
+            disable_venmo: true
         }
     },
 
