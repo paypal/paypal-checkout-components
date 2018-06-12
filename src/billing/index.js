@@ -5,8 +5,9 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create } from 'xcomponent/src';
 import { type Component } from 'xcomponent/src/component/component';
+import { getBrowserLocale } from '../lib';
 
-import billingTemplate from './template';
+import { containerTemplate, componentTemplate } from '../checkout/template';
 import { ENV } from '../constants';
 
 import { config } from '../config';
@@ -24,7 +25,7 @@ type BillingOptions = {
 
 export const BillingPage : Component<BillingOptions> = create({
     tag:  'billing-page',
-    name: 'billingPage',
+    name: 'billing-page',
 
     buildUrl(props) : string {
         let env = props.env || config.env;
@@ -46,6 +47,20 @@ export const BillingPage : Component<BillingOptions> = create({
         return config.paypalDomains;
     },
 
+    props: {
+        locale: {
+            type:          'string',
+            required:      false,
+            queryParam:    'locale.x',
+            allowDelegate: true,
+
+            def() : string {
+                let { lang, country } = getBrowserLocale();
+                return `${ lang }_${ country }`;
+            }
+        }
+    },
+
     on: {
         type:       'function',
         required:   false,
@@ -65,5 +80,5 @@ export const BillingPage : Component<BillingOptions> = create({
         noop:     true
     },
 
-    containerTemplate: billingTemplate
+    containerTemplate,
 });
