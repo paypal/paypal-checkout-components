@@ -62,6 +62,12 @@ export const Card : Component<CardOptions> = create({
         sameDomain: true
     },
 
+    getState: {
+        type:       'function',
+        required:   false,
+        sameDomain: true
+    },
+
     dispatch: {
         type:       'object',
         required:   false,

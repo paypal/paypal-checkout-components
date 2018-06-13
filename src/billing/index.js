@@ -80,5 +80,5 @@ export const BillingPage : Component<BillingOptions> = create({
         noop:     true
     },
 
-    containerTemplate,
+    containerTemplate
 });
