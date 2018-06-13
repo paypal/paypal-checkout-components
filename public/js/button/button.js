@@ -96,7 +96,6 @@ export function setupButton() {
                 return fn(event);
             }
         });
-        element.addEventListener('touchstart', fn);
     };
 
     if (window.name && window.name.indexOf('__prerender') === 0) {
